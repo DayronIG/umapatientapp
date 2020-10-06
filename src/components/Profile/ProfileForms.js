@@ -49,17 +49,17 @@ export const ProfilePic = ({ user }) => {
 					<Loader />
 				</div>
 			) : (
-				<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-					<div className='input-file'>
-						<p>Buscar Imagen</p>
-						<FiUpload size='1.3rem' />
-						<input type='file' name='profile_pic' onChange={uploadImage} />
-					</div>
-					<button className='btn btn-blue-lg' type='submit'>
-						Subir
+					<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+						<div className='input-file'>
+							<p>Buscar Imagen</p>
+							<FiUpload size='1.3rem' />
+							<input type='file' name='profile_pic' onChange={uploadImage} />
+						</div>
+						<button className='btn btn-blue-lg' type='submit'>
+							Subir
 					</button>
-				</form>
-			)}
+					</form>
+				)}
 		</>
 	);
 };
@@ -81,8 +81,6 @@ export const PersonalData = ({ user }) => {
 			newValues: { ...userData },
 		};
 		let headers = { 'Content-Type': 'Application/json', Authorization: token };
-		console.log(headers)
-		debugger
 		axios
 			.patch(`${node_patient}/${user.dni}`, data, headers)
 			.then((res) => {

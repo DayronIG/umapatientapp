@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { withRouter } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { CustomUmaLoader } from '../../global/Spinner/Loaders';
 import { getFreeAppointmentsCustom } from '../../../store/actions/getAssignations';
 import { getDoctor } from '../../../store/actions/firebaseQueries';
-import { regexWord } from '../../Utils/regex';
+import { regexNumbers, regexWord } from '../../Utils/regex';
 import { modifyAppointsForCalendar } from '../../Utils/appointmentsUtils';
 import { spacesToUnderscore } from '../../Utils/stringUtils';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
@@ -19,8 +19,7 @@ import ListTurns from './ListTurns';
 import swal from 'sweetalert';
 import './styles.scss';
 
-const MyCalendar = ({ match, history }) => {
-	const dispatch = useDispatch();
+const MyCalendar = () => {
 	const patient = useSelector((state) => state.queries.patient);
 	const [appointmentsOnline, setAppointmentsOnline] = useState([]);
 	const [date, setDate] = useState(
@@ -30,22 +29,25 @@ const MyCalendar = ({ match, history }) => {
 	);
 	const [loading, setLoading] = useState(true);
 	const [filterDt, setFilterDt] = useState('');
-	const [mountOverflow, setMounthOverflow] = useState(false);
+	// const [mountOverflow, setMounthOverflow] = useState(false);
 	const [calendarAppoints, setCalendarAppoints] = useState([]);
 	const localizer = momentLocalizer(moment);
 	const dt_calendar = date;
 	const yearMonth = moment(date).format('YYYYMM');
-	const { dni, condition } = match.params;
+	const { dni, condition } = useParams();
+	const history = useHistory();
+	const dispatch = useDispatch();
+
 	moment.locale('es');
 	/* const urlRedirect = condition.match(regexWord) ? 
-    `/${dni}/appointmentsonline/` : `/${dni}/appointmentsonline/search-doctor` */
+		`/${dni}/appointmentsonline/` : `/${dni}/appointmentsonline/search-doctor` */
 
 	useEffect(() => {
 		(async function getAppointments() {
 			window.scroll(0, 0);
 			if (patient.dni) {
 				setLoading(true);
-				let apponits = await findFreeAppointments();
+				await findFreeAppointments();
 				setLoading(false);
 			}
 			return () => window.scroll(0, 0);
@@ -54,22 +56,18 @@ const MyCalendar = ({ match, history }) => {
 
 	const findFreeAppointments = async () => {
 		if (!(patient && Object.keys(patient).length > 0)) return;
-
 		setTimeout(() => setLoading(false), 10000);
 		const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
 		try {
-			let specialty = '',
-				queryCondition = '';
-			queryCondition = !!patient.always && patient.always.length >= 1 ? patient.always : [''];
+			let specialty = '', queryCondition = '';
 			if (condition.match(regexWord)) {
 				specialty = spacesToUnderscore(condition);
 			} else {
 				specialty = await getDoctor(condition).then((r) => r.matricula_especialidad);
 			}
-			if (queryCondition && queryCondition[0] === '' && patient.first_time && patient.first_time.length > 5) {
-				queryCondition = patient.first_time;
-			}
-			if (social_work.includes(patient.corporate_norm)) {
+			if (condition?.match?.(regexNumbers)) {
+				queryCondition = condition;
+			} else if (social_work.includes(patient.corporate_norm)) {
 				queryCondition = [patient.corporate_norm];
 			}
 			let appoints = await getFreeAppointmentsCustom(yearMonth, `online_${specialty}`, queryCondition);
@@ -79,12 +77,9 @@ const MyCalendar = ({ match, history }) => {
 					.format('YYYYMM');
 				appoints = await getFreeAppointmentsCustom(nextMonth, `online_${specialty}`, queryCondition);
 			}
-
 			let firstTurn = parseInt(appoints?.[0]?.date.slice(5, 7));
 			let currentMounth = parseInt(date.slice(5, 7));
-
 			let mounthOverflow = false;
-
 			if (appoints?.length > 0 && firstTurn === currentMounth + 1) {
 				setDate(
 					moment(date)
@@ -93,7 +88,6 @@ const MyCalendar = ({ match, history }) => {
 				);
 				mounthOverflow = true;
 			}
-
 			if (appoints?.length > 0 && firstTurn === currentMounth && !mounthOverflow) {
 				setCalendarAppoints(modifyAppointsForCalendar(appoints));
 				setAppointmentsOnline(appoints);
@@ -187,13 +181,13 @@ const MyCalendar = ({ match, history }) => {
 					<div className='calendar__legend'>
 						<FontAwesomeIcon icon={faUserMd} /> Turnos disponibles este día
 					</div>
-					<FooterBtn text='Volver' callback={() => history.replace(`/${dni}/`)} />
+					<FooterBtn text='Volver' callback={() => history.replace(`/${dni}/appointmentsonline/specialty`)} />
 				</>
 			) : (
-				<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />
-			)}
+					<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />
+				)}
 		</>
 	);
 };
 
-export default withRouter(MyCalendar);
+export default MyCalendar;

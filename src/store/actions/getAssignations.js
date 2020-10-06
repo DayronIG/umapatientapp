@@ -1,5 +1,5 @@
 import DBConnection from '../../config/DBConnection';
-import { dateWoHour, timeWoDate, yearAndMonth, dateWoHourPlus } from '../../components/Utils/dateUtils';
+import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
 import moment from 'moment';
 import 'moment-timezone';
@@ -30,7 +30,7 @@ export function listenAssigns(specialty) {
 				{
 					includeMetadataChanges: true,
 				},
-				function(snapshot) {
+				function (snapshot) {
 					const assigns = [];
 					snapshot.forEach((subDoc) => {
 						// let now = new Date()
@@ -66,7 +66,7 @@ export function listenAssigns(specialty) {
 	}
 }
 export function getAssignedAppointments(specialty, collectionName, doctors, userDni, date) {
-	return new Promise(async function(resolve, reject) {
+	return new Promise(async function (resolve, reject) {
 		try {
 			const assigns = [];
 			firestore
@@ -74,7 +74,7 @@ export function getAssignedAppointments(specialty, collectionName, doctors, user
 				.where('date', '==', date)
 				.where('appointments.0', 'array-contains', userDni)
 				.get()
-				.then(async function(snapshot) {
+				.then(async function (snapshot) {
 					snapshot.forEach((subDoc) => {
 						const data = { ...subDoc.data(), path: subDoc.ref.path };
 						const u = JSON.parse(localStorage.getItem('userData'));
@@ -99,7 +99,7 @@ export function getAssignedAppointments(specialty, collectionName, doctors, user
 						// && dt.getTime() > now.getTime()
 						if (data && match) assigns.push(data);
 					});
-					const assigned = await assigns.find(function(assign) {
+					const assigned = await assigns.find(function (assign) {
 						if (assign.state === 'ASSIGN' || assign.state === 'ATT' || assign.state === 'OVERBOOK') {
 							return assign;
 						}
@@ -113,7 +113,7 @@ export function getAssignedAppointments(specialty, collectionName, doctors, user
 }
 
 export function getFreeAppointments(specialty, doctors, date) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function (resolve, reject) {
 		try {
 			let assigns = [];
 			const query = firestore
@@ -122,7 +122,7 @@ export function getFreeAppointments(specialty, doctors, date) {
 				.collection(yearMonth)
 				.where('date', '==', date)
 				.where('state', '==', 'FREE');
-			query.get().then(function(res) {
+			query.get().then(function (res) {
 				res.forEach((subDoc) => {
 					const data = { ...subDoc.data(), path: subDoc.ref.path };
 					const u = JSON.parse(localStorage.getItem('userData'));
@@ -190,7 +190,7 @@ export async function getFreeAppointmentsCustom(date, specialty, condition) {
 	try {
 		const assigns = [];
 		let query = {};
-		if (!!condition && typeof condition !== 'object' && !!condition.match(regexNumbers)) {
+		if (!!condition?.match?.(regexNumbers)) {
 			query = firestore
 				.collection(`assignations/${specialty}/${date}`)
 				.where('state', '==', 'FREE')
@@ -214,7 +214,6 @@ export async function getFreeAppointmentsCustom(date, specialty, condition) {
 				let arr = fullDate.split(/[- :]/);
 				dt = new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]);
 			}
-
 			if (data && dt.getTime() > now.getTime()) assigns.push(data);
 		});
 		return assigns;
@@ -236,7 +235,7 @@ export function listenAppointment(specialty, key, cm) {
 			{
 				includeMetadataChanges: true,
 			},
-			function(snapshot) {
+			function (snapshot) {
 				appointment = {
 					...snapshot.data(),
 					path: snapshot.ref.path,
