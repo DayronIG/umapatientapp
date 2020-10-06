@@ -1,0 +1,65 @@
+
+@import '../index.scss';
+
+.transportWrapper {
+  .register-form {
+    margin-top: 75px !important;
+  }
+  .header-container {
+    margin-bottom: 20px
+  }
+  .form-control {
+    padding: 15px;
+    height: 55px;
+    border-radius: 5px;
+    margin: 6px 0 8px 0;
+    border: 0;
+    color: $border-light;
+  }
+  .form-control::placeholder {
+    color: $border-light !important;
+  }
+  .buttonsContainer {
+    margin-top: 20px;
+    .buttonContainer {
+      margin-top: 20px;
+      button {
+        width: 100%;
+        text-align: center;
+        background-color: $secondary-color;
+        color: $white-color;
+        padding: 12px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+    .wrapperLoading {
+      .loading {
+        position: initial;
+        color: $white-color !important;
+      }
+    }
+  }
+  .stepsContainer {
+    position: absolute;
+    width: 100%;
+    top: 86px;
+    .firstStep,
+    .secondStep,
+    .thirdStep {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      margin: 0 5px;
+      padding: 15px;
+      border-radius: 50px;
+      background-color: $white-color;
+      color: $border-light;
+    }
+    .active {
+      background-color: $secondary-color;
+      color: $white-color;
+      font-weight: bold;
+    }
+  }
+}

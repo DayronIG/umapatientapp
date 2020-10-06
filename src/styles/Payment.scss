@@ -1,0 +1,227 @@
+@import './global/Vars.scss';
+@import './global/Fonts.scss';
+
+.payment-tempbody {
+  background: linear-gradient($bg-yellow 1%, rgba(209, 230, 202, 0.74) 20%, rgba(65, 204, 201, 0.2) 30%, $bg-light) !important;
+  height: 100vh;
+  .payment-card {
+    bottom: 70px;
+    margin: 3%;
+    padding: 15px;
+    border-radius: 5px;
+    background: $white-color;
+    height: 180px;
+    width:95%;
+    .payment-title {
+      display: flex;
+      justify-content: space-between;
+      .wizard-bullet {
+        font-size: 0.5rem;
+        margin: 0 3px 3px 3px;
+        color: $secondary-blue;
+      }
+      .wizard-current {
+        color: $primary-orange;
+      }
+    }
+    .payment-input {
+      label {
+        color: $secondary-blue;
+      }
+      input {
+        border: none;
+        border-bottom: 1px solid $secondary-blue;
+        padding-left: 0;
+      }
+      input:focus {
+        outline: 0;
+      }
+    }
+    .payment-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      .move-action {
+        background: #51e3e0;
+        color: $white-color;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        padding-top: 4px;
+      }
+    }
+  }
+  .payment-footer{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: $primary-blue;
+    .payment-button {
+      margin-top: -25px;
+      height: 50px;
+      width: 80%;
+      background: $primary-orange;
+      color: $white-color;
+    }
+  }
+  .payment-footer.footer-active {
+    background: $secondary-orange;
+    z-index:2 !important;
+  }
+
+.checkoutresponse-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: $primary-cyan;
+  color: $white-color;
+  text-align: center;
+  z-index: 12 !important;
+  &.rejected {
+    background: $red-high;
+  }
+  .checkoutresponse-title {
+    height: 70px;
+    width: 100%;
+    font-size: 1.3rem;
+    font-weight: 200;
+    padding-top: 20px;
+    background: $secondary-cyan;
+    &.rejected {
+      background: $inactive-secondary;
+      color: $red-high;
+      font-weight: 700;
+    }
+  }
+  .checkoutresponse-body {
+    margin-top: 20px;
+    padding: 20px;
+    padding-bottom: 40px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.8rem;
+    height: 90%;
+  }
+  .checkoutresponse-image {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin: 20px calc(50% - 50px);
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 4px solid $white-color;
+    overflow: hidden;
+    .checkoutresponse-check {
+      position: absolute;
+      margin-left: calc(50% - 15px);
+      font-size: 2rem;
+    }
+  }
+  .checkoutresponse-backto {
+    // background: linear-gradient(to bottom, $secondary-white 10%, $white-color 100%);
+    padding: 25px;
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    color: $white-color;
+    height: 200px;
+  }
+  .checkoutresponse-footer {
+    position: sticky !important;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background: $primary-cyan;
+    button { 
+      background: $secondary-cyan;
+      color: $white-color;
+      margin-top: -25px;
+      width: 80%;
+      height: 50px;
+      font-weight: 600;
+    }
+    &.rejected {
+      background: $text-dark;
+      button {
+        background: $inactive-secondary;
+        color: $red-high;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// REMOVE FROM HERE LATER
+form {
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  fieldset {
+    padding: 0px;
+    border: 0px;
+  }
+  
+  ul {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+  }
+  
+  label {
+    display: block;
+    margin: 5px 0px 0px 0px !important;
+  }
+  
+  input,
+  select {
+    padding: 12px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #eee;
+    border-radius: 0px;
+    height: 40px;
+  }
+  
+  input[type=submit] {
+    margin-top: 10px;
+    padding: 5px 15px;
+    color: white;
+    background: #009ee3;
+    border: 1px solid #009ee3;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height: 50px;
+    font-size: 14px;
+  }
+  
+  input[type=submit]:hover {
+    background: #32b3ff;
+    border-color: #32b3ff;
+  }
+  
+  .cvvAndExpiration {
+    display: flex;
+    #cvv {
+      width: 50px;
+    }
+    .cardExpiration {
+      display: flex;
+      #cardExpirationMonth {
+        width: 50px;  
+    }
+    #cardExpirationYear {
+      width: 50px;
+    }
+  }
+}
+}

@@ -1,0 +1,44 @@
+.carga-input {
+  font-family: nunito;
+  width: 100%;
+  input {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #106ba0;
+    display: inline-block;
+    transition: all 0.5s;
+    cursor: pointer;
+    /* padding: 15px 40px !important; */
+    text-transform: uppercase;
+    /* width: fit-content; */
+    text-align: center;
+  }
+  .principalta {
+    background-color: #80808021;
+  }
+}
+.General {
+  width: 100%;
+  .tableprincipal {
+    border-radius: 25px;
+    width: 94%;
+    background-color: white;
+    margin: auto;
+    .Diagnostico {
+      font-weight: bold;
+    }
+    .one {
+      display: flex;
+      align-items: flex-end;
+      /* flex-direction: row; */
+      justify-content: space-evenly;
+    }
+    .graficos {
+      margin-top: 15px;
+    }
+    .graficosTitulo {
+      margin-top: 15px;
+    }
+  }
+}

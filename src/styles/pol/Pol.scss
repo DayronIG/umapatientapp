@@ -1,0 +1,988 @@
+@import '../index.scss';
+
+.pol-wrapper {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    height: 100vh;
+    top: 0;
+    .react-html5-camera-photo {
+        video {
+            filter: blur(6px);
+        }
+    }
+}
+
+.pol-framework {
+    position: absolute;
+    top: 25%;
+    height: 35%;
+    width: 90%;
+    margin-left: 5%;
+    border: 5px solid $primary-cyan;
+    border-radius: 15px;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.pol-camera {
+    width: 100%;
+    height: 100%;
+}
+
+.pol-camera-photo {
+    #container-circles {
+        display: none;
+    }
+    video {
+        filter: blur(0);
+    }
+}
+
+.description-text{
+    position: absolute;
+    bottom: 22%;
+    font-size: 1.3rem;
+    color: $primary-color;
+    background: $white-color;
+    border-radius: 15px;
+    width: 90%;
+    margin-left: 5%;
+    z-index: 10;
+    height: 100px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    b {
+        font-weight: bolder;
+    }
+}
+
+.pol-header {
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+
+.pol-container {
+    z-index: 4;
+    .pol-instructions {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+        .instructions-register-title {
+            margin-top: -15px;
+            margin-left: 10%;
+            width: 80%;
+            height: 100px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $primary-blue;
+            border-radius: 0px 0 15px 15px;
+            z-index: 0;
+        }
+        .polInstructions {
+            font-size: 1.2rem;
+            color: $primary-blue;
+            font-weight: 400;
+            padding: 10px;
+            background: $white-color;
+            border-radius: $regular-borders;
+            width: 90%;
+            margin-left: 5%;
+            .polInstructions__container {
+              .polInstructions__container--title {
+                font-size: 22px;
+                font-weight: bold;
+                color: $black;
+                padding-top: 15px;
+              }
+              .polInstructions__container--text {
+                padding: 5px 0;
+              }
+            }
+            .instruction-number {
+                color: $primary-color;
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+            .instruction-name {
+                font-size: 1rem;
+                color: $black;
+                line-height: 15px;
+                width: 100%;
+                height: 100%;
+                text-align: left;
+                padding-left:10%;
+              }
+            .instruction-image {
+                font-size: 2rem;
+                color: $primary-color;
+                width: 40px;
+                height: 40px;
+            }
+            ul > li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 30px;
+                svg{
+                  width: 35px;
+                  height: 35px;
+                }
+            }
+        }
+
+        .welcome-register-next{
+            hr {
+                width: 100%;
+            }
+        }
+    }
+    .pol-dni {
+        @extend .pol-wrapper;
+        .dni-framework {
+            @extend .pol-framework;
+            .dni-camera {
+               @extend .pol-camera;
+                .react-html5-camera-photo {
+                    @extend .pol-camera-photo;
+                }
+            }
+        }
+        .dni-instruction {
+            @extend .description-text;
+        }
+        #container-circles {
+            bottom: 20%;
+        }
+    }
+    .pol-selfie {
+         @extend .pol-wrapper;
+        .selfie-framework{
+            @extend .pol-framework;
+            .selfie-camera{
+                @extend .pol-camera;
+                .react-html5-camera-photo {
+                    @extend .pol-camera-photo;
+                }
+            }
+        }
+        .selfie-instruction{
+            @extend .description-text;
+        }
+    }
+    .polWelcomeWrapper{
+      .polWelcome {
+        font-family: Nunito;
+        color: $primary-blue;
+        height: auto;
+        width: 90%;
+        margin: 20px auto;
+        text-align: center;
+        background-color: $white-color;
+        position: relative;
+        border-radius: 6px;
+        padding: 5px 0;
+        .polWelcome__info {
+          position: absolute;
+          right: 15px;
+          top: 10px;
+          font-size: 1.5rem;
+        }
+        .polWelcome__container{
+          width: 100%;
+          padding-top: 15px;
+          text-align: center;
+          font-size: 2rem;
+              .polWelcome__container--text{
+                padding: 30px 60px;
+                font-size: 18px;
+                font-weight: 300;
+                width: 95%;
+                margin-bottom: 38px;
+              }
+              .polWelcome__container--textBack {
+                font-size: 1rem;
+                margin-top: 30px;
+                padding: 10px 20px;
+                font-weight: bold;
+                color: $primary-blue;
+                line-height: 1.2rem;
+              }
+              .polWelcome__container--cobertura {
+                margin-top: 20px;
+                font-size: 1rem;
+              }
+              img {
+                  max-width: 150px;
+                  margin-top: 70px;
+              }
+              .h13 {
+                margin-top: 30px;
+                font-weight: 900;
+                color: #64D6D3;
+                font-size: 28px;
+              }
+              &:last-child {
+                  bottom: 20px;
+                  .polWelcome__container--info { 
+                      width: 45px;
+                      height: 45px;
+                      background-color: $primary-color;
+                      outline: none;
+                      border: none;
+                      border-radius: 100%;
+                      color:$white-color;
+                      font-size: 22px;
+                  }
+              }
+          }
+      }
+    }
+}
+
+.pol-proof-container {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  padding-bottom: 50px;
+  .pol-failure,
+  .pol-success,
+  .pol-denied {
+    padding-top: 25%;
+  }
+  /*  
+    ==================================================
+    =========== Instructions container ===============
+    ================================================== 
+  */
+  .progress-container {
+    width: 90%;
+    height: 20px;
+    z-index: 5;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba($color: #000000, $alpha: 0.75);
+    border-radius: $regular-borders;
+    position: relative !important;
+    bottom: 35px;
+    & > div {
+      transition: width 1.25s ease-in-out;
+      background-color: $secondary-cyan;
+      border-radius: $regular-borders 0 0 $regular-borders;
+      height: inherit;
+      z-index: 10;
+      width: 0;
+    }
+    .prog-10 {
+      width: 10%;
+    }
+    .prog-25 {
+      width: 25%;
+    }
+    .prog-50 {
+      width: 50%;
+    }
+    .prog-75 {
+      width: 75%;
+    }
+    .prog-100 {
+      width: 100%;
+      border-radius: $regular-borders;
+    }
+  }
+
+  .pol-action-container {
+    .header-container {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+    }
+
+    .sub-header {
+      text-align: center;
+      background-color: #fff;
+      color: #9a9a9a;
+      font-size: 13px;
+      padding: 10px;
+      width: 100%;
+      box-shadow: 0px -2px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      z-index: 3;
+    }
+  }
+
+  /* 
+    ==================================================
+    ========= CAPTURE WINDOW & VIDEO =================
+    ================================================== 
+  */
+
+  #capture {
+    overflow: hidden;
+    max-height: 85vh;
+  }
+  
+  #video {
+    -o-transform : scaleX(-1);
+    -webkit-transform : scaleX(-1);
+    transform : scaleX(-1);
+    -ms-filter : fliph; 
+    filter : fliph;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  .squared-window { 
+    position: absolute;
+    font-size: 5rem;
+    color: #41ac41;
+    border: 2px solid rgba(28, 28, 28, 0.384);
+    height: 75%;
+    left: 8%;
+    right: 8%;
+    top: 5%;
+    background:
+        linear-gradient(to right, #1c1c1c 4px, transparent 4px) 0 0,
+        linear-gradient(to right, #1c1c1c 4px, transparent 4px) 0 100%,
+        linear-gradient(to left, #1c1c1c 4px, transparent 4px) 100% 0,
+        linear-gradient(to left, #1c1c1c 4px, transparent 4px) 100% 100%,
+        linear-gradient(to bottom, #1c1c1c 4px, transparent 4px) 0 0,
+        linear-gradient(to bottom, #1c1c1c 4px, transparent 4px) 100% 0,
+        linear-gradient(to top, #1c1c1c 4px, transparent 4px) 0 100%,
+        linear-gradient(to top, #1c1c1c 4px, transparent 4px) 100% 100%;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    z-index: 5;
+  }
+  
+  .circle-window { 
+    position: absolute;
+    font-size: 5rem;
+    border: 16px solid #f6f6f6;
+    background-color: rgba(255, 255, 255, 0.37);
+    border-radius: 50%;
+    width: 85%;
+    padding: 5px;
+    height: 58%;
+    margin-top: 20px;
+    left: 8%;
+    right: 8%;
+    top: 5%;
+    box-shadow: 0px -2px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    z-index: 1;
+  }
+
+  .imageHelper {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 47px;
+  } 
+
+  .loaderWrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 18;
+  }
+
+  .loaderWrapper .loadingText {
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    top: calc(50% - -34px);
+    color: #a2a2a2;
+  }
+
+  .content-dotted {
+    width: 100%;
+    height: 100%;
+    left: 8%;
+    right: 8%;
+    top: 5%;
+    border-radius: 200px;
+    border: 2px dotted #efefef;
+  }
+      
+  .circle-window.first {
+    border-right: 16px solid #42a5f5;
+  }
+  
+  .circle-window.second {
+    border-right: 16px solid #42a5f5;
+    border-bottom: 16px solid #42a5f5;
+  }
+  
+  .circle-window.third {
+    border-right: 16px solid #42a5f5;
+    border-bottom: 16px solid #42a5f5;
+    border-left: 16px solid #42a5f5;
+  }
+  
+  .circle-window.fourth {
+    border: 16px solid #42a5f5;
+  }
+      
+  // .counter {
+  //   text-align: center;
+  //   line-height: 1rem;
+  //   z-index: 63;
+  //   position: fixed;
+  //   background-color: white;
+  //   bottom: 0;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  // }
+  
+  // .finished {
+  //   position: absolute;
+  //   top: -10%;
+  //   left: 0;
+  //   border: none;
+  //   border-radius: 0;
+  //   width: 100%;
+  //   height: 105%;
+  // }
+  
+  .percentaje {
+    font-size: 1rem !important;
+    position: absolute;
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    width: 100%;
+    top: calc(50% - 83px);
+    z-index: 99999;
+    color: #fff;
+  }
+
+  .counter-finished {
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    color: #a7a7a7;
+    position: fixed;
+    display: inherit;
+    margin: auto;
+    width: 100%;
+    top: calc(50% - 66px);
+  }
+    
+  .counter-finished-retry {
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 15px;
+    color: #a7a7a7;
+    line-height: 1.2rem;
+    position: fixed;
+    display: inherit;
+    margin: auto;
+    width: 100%;
+    top: calc(25% - 66px);
+  }  
+
+  .instructions {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: #42a5f5;
+  }
+
+  .counter-finished .check-icon {
+    color: #42a5f5;
+  }
+
+  // .finished .content-dotted {
+  //   border: none;
+  // }
+  
+      /*  ==================================================
+          ================ICONS AND BUTTONS ================
+          ================================================== */
+      
+  .image-button {
+    position: absolute;
+    z-index: 15;
+    top: 9%;
+    left: 12%;
+    width: 70px;
+    height: 40px;
+  }
+  
+  .video-button {
+    position: absolute;
+    z-index: 15;
+    margin-top: 15px;
+    top: 1%;
+    right: 0;
+    width: 70px;
+    height: 40px;
+    color: #3e72ff;
+  }
+  
+  .stop-button {
+    position: absolute;
+    z-index: 15;
+    top: 9%;
+    left: 66%;
+    width: 70px;
+    height: 40px;
+  }
+  
+  /*
+  .switch-camera {
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 50%;
+    font-size: 35px;
+    color: #42a5f5;
+  }
+  */
+  
+  .check-icon {
+    font-size: 55px;
+    margin-bottom: 25px;
+    border-radius: 50px;
+  }
+
+  .accept {
+    width: 100%;
+    position: absolute;
+    bottom: 8%;
+  }
+  
+  .accept .btn {
+    margin: auto;
+    display: block;
+    padding: 14px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #42a5f5;
+    border: 0;
+  }
+
+  .tips-list {
+    list-style-type: circle;
+    text-align: left;
+    padding: 40px;
+    line-height: 1.4rem;
+    position: fixed;
+    top: calc(45% - 66px);
+  }
+
+  
+  /*  ==================================================
+      =============== LASER EFFECT =====================
+      ================================================== */
+  
+  .laser {
+    width: 100%;
+    margin-top: -5%;
+    background-color: #fff;
+    height: 2px;
+    position: absolute;
+    top: 1%;
+    box-shadow: 0 0 11px #94c9e8;
+    animation: scanning 4s infinite;
+    z-index: 2;
+  }
+      
+  .diode {
+    animation: beam .01s infinite;
+  }
+  
+  /*  ==================================================
+      ================= SPINNER =====================
+      ================================================== */
+    .loader,
+    .loader:before,
+    .loader:after {
+      background: #42a5f5;
+      -webkit-animation: load1 1s infinite ease-in-out;
+      animation: load1 1s infinite ease-in-out;
+      width: 1em;
+      box-shadow: 0px -2px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      height: 4em;
+    }
+    .loader {
+      color: #42a5f5;
+      text-indent: -9999em;
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      font-size: 11px;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+      z-index: 6;
+    }
+    .loader:before,
+    .loader:after {
+      position: absolute;
+      top: 0;
+      content: '';
+    }
+    .loader:before {
+      left: -1.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+    .loader:after {
+      left: 1.5em;
+    }
+
+    @-webkit-keyframes load1 {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 0;
+        height: 4em;
+      }
+      40% {
+        box-shadow: 0 -2em;
+        height: 5em;
+      }
+    }
+    @keyframes load1 {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 0;
+        height: 4em;
+      }
+      40% {
+        box-shadow: 0 -2em;
+        height: 5em;
+      }
+    }
+  /*  ==================================================
+  ================= FILED SPINNER =====================
+  ================================================== */
+
+  .error {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    width: 20%;
+    margin-bottom: 20px;
+  }
+  .path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+  .circle {
+    -webkit-animation: dash .9s ease-in-out;
+    animation: dash .9s ease-in-out;
+  }
+  .line {
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash .9s .35s ease-in-out forwards;
+    animation: dash .9s .35s ease-in-out forwards;
+  }
+  .check {
+    stroke-dashoffset: -100;
+    -webkit-animation: dash-check .9s .35s ease-in-out forwards;
+    animation: dash-check .9s .35s ease-in-out forwards;
+  }
+  @-webkit-keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @-webkit-keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  @keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  
+  
+  /* =================================================
+    ================= UX CUSTOM ======================
+    ================================================== */
+
+    .realHeader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+    }
+
+
+  /*  ==================================================
+      ================= ANIMATIONS =====================
+      ================================================== */
+  
+  @keyframes scanning {
+    50% {
+      transform: translateY(470px);
+    }
+  }
+  
+  @keyframes beam {
+    50% {
+      opacity: 0;
+    }
+  }
+      
+      
+  /*  ==================================================
+      ====== DONT TOUCH OR YOU GONNA BE FIRED ==========
+      ================================================== */
+  
+  /*   .dni-sample {
+    background-image: url('../assets/dni.jpg') !important;
+    background-size: cover;
+    transform: rotate(-90deg);
+    z-index: 7;
+    width: 80%;
+    height: 70%;
+    left: 10%;
+    top: 25%;
+  }
+  */
+  
+  #overlay {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    -o-transform : scaleX(-1);
+    -webkit-transform : scaleX(-1);
+    transform : scaleX(-1);
+    -ms-filter : fliph; /*IE*/
+    filter : fliph; /*IE*/
+  }
+  
+  .imgRender {
+    display: none !important;
+    width: 100%;
+  }
+      
+  .arrow-downward { color: white; font-size: 2rem; text-decoration: none; }
+  
+  .arrow {
+    position: absolute;
+    font-size: 3rem;
+    bottom: 11%;
+    left: 46%;
+    text-align: center;
+    margin: 8% 0;
+  }
+  .bounce {
+    -moz-animation: bounce 2s infinite;
+    -webkit-animation: bounce 2s infinite;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-30px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
+  }
+
+  .pol-action-container{
+    position: absolute;
+    bottom: 0;
+  }
+.modalWrapper {
+    position: fixed;
+    z-index: 2;
+  }
+
+  .modalWrapper.hide {
+    display: none;
+  }
+  
+  .modalWrapper .darkBackground {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: grey;
+    z-index: 6;
+    opacity: 0.9;
+  }
+  
+  .modalWrapper .modalContent {
+    position: fixed;
+    background-color: $white-color;
+    height: 92%;
+    width: 90%;
+    z-index: 7;
+    left: 5%;
+    top: 4%;
+  }
+  
+  .modalWrapper .imageHelper {
+    margin: 35px auto;
+    width: 100%;
+  }
+  
+  .modalWrapper .imageHelper img {
+    width: 100%;
+  }
+  
+  .modalWrapper .imageHelper .centerFace {
+    margin-top: 33px;
+  }
+  
+  .modalWrapper .instructionsWrapper {
+    width: 100%;
+    bottom: 22%;
+    position: absolute;
+    padding: 16px 24px;
+    text-align: center;
+    font-size: 14px;
+    color: #838383;
+  }
+  
+  .modalWrapper .accept {
+    width: 100%;
+    position: absolute;
+    bottom: 8%;
+  }
+  
+  .modalWrapper .accept .btn {
+    margin: auto;
+    display: block;
+    padding: 14px;
+    color: $white-color;
+    font-weight: bold;
+    background-color: #42a5f5;
+    border: 0;
+  }
+} 
+
+.polRegister-container{
+  height: 100vh;
+    .polText-container{
+      text-align: center;
+      margin-top: 100px;
+        .polIcon{
+          width: 50px;
+          height: 50px;
+          color: $green-uma;
+        }
+        .text{
+          margin-top: 10%;
+          color: $green-uma;
+          font-size: 1.5em;
+        }
+      }
+
+  .polRegister-footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 56px;
+    background-color: $primary-cyan;
+    z-index: 2;  
+
+  }
+      .begin-button {
+        height: 60px;
+        width: 90%;
+        position: absolute;
+        margin: 0;
+        padding: 15px;
+        border-radius: 6px;
+        background-color: $secondary-cyan;
+        color: $white-color;
+        z-index: 3;
+        border: 0;
+        bottom: 100px;
+        left: 5%;
+      }
+      .proof-button {
+        left: 5%;
+        width: 90%;
+        height: 60px;
+        margin: 0;
+        border-radius: 6px;
+        background-color: $secondary-cyan;
+        color: $white-color;
+        position: absolute;
+        bottom: 30px;
+        z-index: 3;
+        border: 0;
+      }
+}
+
+.polResponseContainer {
+  width: 100%;
+  .polResponseContainer__container {
+    width: inherit;
+    text-align: center;
+    .warning {
+      color: $red-high !important;
+    }
+    .success {
+      color: $secondary-cyan !important;
+    }
+    .polResponseContainer__container--icon {
+      font-size: 45px;
+    }
+    .polResponseContainer__container--title {
+      padding: 25px;
+      font-weight: bold;
+    }
+    .polResponseContainer__container--retry {
+      @include commonButton($width: 90%);
+      margin-top: 35%;
+      background-color: $secondary-cyan;
+      border: none;
+      outline: none;
+    }
+    .polResponseContainer__container--text {
+      padding: 15px;
+      margin: 0;
+    }
+  }
+}
+
+
+
+

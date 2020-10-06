@@ -1,0 +1,38 @@
+[
+    {
+		"label": "¿Actualmente esta conviviendo con alguien que tiene COVID confirmado?", 
+		"value": "convive con caso confirmado"
+	},
+    {
+        "label": "¿Tiene mas de 70 años de edad?",
+        "value": "mayor de 70"
+    },
+    {
+        "label": "¿Tiene diabetes?",
+        "value": "diabetes"
+    },
+    {
+        "label": "¿Tiene antecedente de problemas cardíacos? -Ej: infarto previo, insuficiencia cardíaca-",
+        "value": "antecedente cardiaco"
+    },
+    {
+        "label": "¿Tiene antecedentes respiratorios? -Ej: Asma moderada-severa, EPOC-",
+        "value": "insuficiencia pulmonar"
+    },
+    {
+        "label": "¿Tiene antecedentes de problemas del riñón? -Ej: Insuficiencia renal severa, diálisis-?",
+        "value": "insuficiencia renal"
+    },
+    {
+        "label": "¿Es un paciente inmunosuprimido?-Ej: HIV, Cancer, trasplantado o toma medicación inmunosupresora",
+        "value": "inmunosuprimido"
+    },
+    {
+        "label": "¿Convive con personas que tienen enfermedades crónicas con riesgos de tener complicaciones por el COVID? -Ej: Enfermedades cardíacas, pulmononares, diabetes, inmunosuprimidos",
+        "value": "convive con personas de riesgo"
+    },
+    {
+        "label": "¿Han tenido que internarlo en los últimos 6 meses o tiene antecedentes de salud que le son difíciles de controlar?",
+        "value": "internacion reciente - no lleva control de sus antecedentes"
+    }
+]

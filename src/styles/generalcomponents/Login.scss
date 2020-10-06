@@ -1,0 +1,75 @@
+
+@import '../index.scss';
+
+.loginWrapper {
+    padding-top: 0;
+    width: 100%;
+    margin: 0 auto 28px auto;
+    form { 
+        padding: 10px;
+    }
+    .formWrapper {
+        width: 90%;
+        margin: 16px auto 0 auto;
+        label {
+            color: $text-dark;
+        }
+        .codeHelper {
+            padding: 17px 44px 42px 44px;
+            margin: 0 auto 0 auto;
+            .imageContainer {
+                margin: 20px;
+            }
+        }
+        .codeHelper,
+        .phoneNumber {
+            width: 100%;
+            display: block;
+            border: 0;
+            background-color: $white-color;
+            border-radius: 6px;
+        }
+        .buttonSendLogin,
+        .buttonSendCode {
+            width: 100% !important;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .buttonSendLogin {
+            padding: 14px 0;
+            margin: 17px 0 22px 0;
+        }
+        .buttonSentCode {
+            padding: 14px 0;
+            margin: 5px 0 15px 0;  
+            width: 100% !important;
+        }
+        .buttonSendCode {
+            margin: 5px 0 15px 0;  
+            padding: 14px 0;
+        }
+        .passwordLabelWrapper {
+            margin: 4px auto 10px auto;
+            padding: 14px 30px 20px 30px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.3;
+            background-color: $white-color;
+            border-radius: 6px;
+            .imageContainer {
+                img {
+                    width: 35%;
+                }
+            }
+        }
+        .passwordInput {
+            padding: 28px;
+            text-align: center;
+            border-radius: 6px;
+        }
+    }
+    .register {
+        font-size: 16px;
+        color: $blue-button;
+    }
+}

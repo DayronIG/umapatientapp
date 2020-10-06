@@ -1,0 +1,33 @@
+@import '../global/Vars.scss';
+
+.derivations {
+  position: relative;
+  img.preassigned {
+    width: 40%;
+    position: relative;
+    left: 18px;
+  }
+  img {
+    width: 40%;
+    margin-bottom: 60px;
+  }
+}
+
+.titleVmd {
+  font-weight: 900;
+  color: $secondary-color;
+  font-size: 30px;
+  margin-top: 7vh;
+  margin-bottom: 20px;
+}
+
+.subtitleVmd {
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 7px;
+  background-color: $buttons-green;
+  padding: $btn-general-padding;
+  width: $btn-general-width;
+  box-shadow: $general-shadow;
+}

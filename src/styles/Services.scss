@@ -1,0 +1,81 @@
+@import './global/Vars.scss';
+
+.services-container {
+    width: 95%;
+    text-align: center;
+    background: $white-color;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    img {
+        border-radius: 5px;
+    }
+    .title {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        p {
+            margin: 0;
+            color: $black;
+            font-weight: 600;
+        }
+    }
+    .service {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $text-color;
+        margin: 0;
+        .service-description {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            span{
+                font-size: 20px;
+                color: $primary-color;
+            }
+        }
+    }
+    .ambulance-service {
+        width: 100%;
+        img {
+            width: 100%;
+        }
+    }
+}
+.fileService{
+    .fileService__container{
+        padding: 0 10px 0 20px;
+        .fileService__container--icon {
+            width: 100%;
+            font-size: 3rem;
+            color: $primary-cyan;
+            text-align: center;
+            img {
+                width: 100px;
+                border-radius: 15px;
+                padding: 10px;
+            }
+            .svgBiomarker{ 
+                width: 100%;
+                height: 50px;
+                margin-left: 7.5%;
+                margin-bottom: 10px;
+                path{
+                    fill: $secondary-cyan;
+                }
+            }
+        }
+        .fileService__container--text{
+            .important{
+                color: $red-high;
+                font-weight: bold;
+            }
+            & > div {
+                text-align: center;
+            }
+        }
+    }
+}

@@ -1,0 +1,111 @@
+@import "./global/Vars.scss";
+@import "./global/Fonts.scss";
+
+.ambulance-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  .searchAmbulance-container {
+    width: 100%;
+    .search-container {
+      width: 90%;
+      margin: 5%;
+      background: $white-color;
+      border-radius: 10px;
+      position: relative;
+      .search-title {
+        padding: 7px;
+        width: 100%;
+        color: #97c1d3;
+        text-align: center;
+        background-color: $white-color;
+      }
+      .search-input {
+        margin: 10px;
+        border: 0;
+        width: 100%;
+        input {
+            height: inherit;
+            width: 90%;
+            padding-bottom: 7px;
+            border-bottom: 1px solid $primary-color;
+        }
+        }
+      .search-input:focus {
+        outline: none;
+      }
+      .tag-delicon {
+        position: absolute;
+        color: #97C1D3;
+        right: 5%;
+        bottom: 15px;
+      }
+    }
+    .search-map {
+      margin: 5%;
+      padding: 25px;
+      font-size: 20px;
+      line-height: 24px;
+      color: #a5bacb;
+      border-radius: 6px;
+      background-color: $white-color;
+    }
+  }
+
+
+  .recheck-button {
+    width: 90%;
+    position: absolute;
+    margin: 0;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: $secondary-cyan;
+    color: $white-color;
+    z-index: 3;
+    border: 0;
+    font-weight: 600;
+    font-size: 16px;
+    bottom: 100px;
+  }
+
+  .ambulance-circle {
+    top: 14%;
+    position: fixed;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    text-align: center;
+    background: #ffffff;
+    padding-top: 5%;
+    svg {
+      color: $primary-cyan;
+      font-size: 2.5rem;
+    }
+  }
+
+  .ambulance-info {
+    position: fixed;
+    font-size: 20px;
+    color: #97c1d3;
+    text-align: center;
+    line-height: 24px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 6px;
+    width: 80%;
+    bottom: 50%;
+  }
+  .ambulance-time {
+    padding: 18px;
+    position: fixed;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 24px;
+    color: #a5bacb;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 6px;
+    bottom: 28%;
+  }
+}

@@ -1,0 +1,68 @@
+@import '../global//Vars.scss';
+
+#CardTable::-webkit-scrollbar { 
+    display: none;
+}
+
+#CardInfo::-webkit-scrollbar { 
+    display: none;
+}
+
+
+.carousel .indicators .indicator-item {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  height: 10px;
+  width: 10px;
+  margin: 24px 4px;
+  background-color: #90a4ae;
+  transition: background-color .3s;
+  border-radius: 50%;
+}
+
+.carousel .indicators .indicator-item.active {
+  background-color: #8bc34a;
+}
+
+
+.alphabetsoup__header--container {
+  margin: -12px 0 0;
+  font-size: 14px;
+  width: 100%;
+  overflow: hidden;
+  overflow-x: scroll;
+  .alphabetsoup__words--container {
+    position: relative;
+    margin: 10px 0;
+    .alphabetsoup__words--name {
+      font-size: 0.8rem;
+      width: 100%;
+      margin: 0 10px;
+    }
+  }
+}
+
+.alphabetsoup__table--container {
+  .alphabetsoup__letter {
+    width: 7vw;
+    padding: 3px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    td {
+      width: 50px;
+      overflow: hidden;
+    }
+  }
+  .green {
+    background: $green-high;
+  }
+  
+  .blue {
+    background: $light-blue;
+  }
+  .purple {
+    background: $primary-cyan;
+  }
+}

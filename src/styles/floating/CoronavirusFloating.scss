@@ -1,0 +1,93 @@
+@import '../global/Vars.scss';
+
+.coronavirus__floating--container {
+    position: fixed;
+    bottom: 14px;
+    right: 10px;
+    left: 10px;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0px 4px 12px rgba(70, 70, 70, 0.24);
+    .coronavirus__floating--image {
+        font-size: 2rem;
+        background: $violet-high;
+        color: $white-color;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        padding-top: 10px;
+        text-align: center;
+    }
+    .coronavirus__floating--textContainer {
+        color: $violet-high;
+        border-radius: 10px;
+        margin-top: 5px;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 3.6;
+    }
+    .conoravirus__floating--close {
+        position: absolute;
+        right: 8px;
+        top: 5px;
+        color: $violet-high;
+        border-radius: 15px;
+        font-size: 1.2rem;
+        height: 27px;
+    }
+}
+
+.coronavirus__modal--container {
+    position: relative;
+    .coronavirus__autonomousContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        min-height: 50vh;
+        .autonomous {
+            min-height: 50vh;
+            .umaLoader {
+                position: relative !important;
+                padding-top: 40%;
+            }
+            .star-container {
+                font-size: 0.5rem !important;
+            }
+            svg {
+                width: 25px !important;
+            }
+        }
+    }
+    .search-footer {
+        // display: none;
+        position: relative !important;
+        background: none !important;
+        margin-top: 20px;
+    }
+    .modalContent {
+        min-height: 60vh;
+        padding: 5px 0;
+        .autonomous {
+            margin-top: 10px;
+        }
+    }
+    .autonomous-welcome {
+        padding-bottom: 0 !important;
+    }
+    .tag {
+        font-size: 0.6rem !important;
+        min-height: 25px !important;
+    }
+    .check-button {
+        padding: 10px !important;
+        height: auto !important;
+        font-size: 18px;
+    }
+}

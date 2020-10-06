@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript – Convert Image to Base64 String</title>
+  </head>
+  <body>
+    <h2>HTML5 Canvas approach</h2>
+    <div>Data URL:</div>
+    <div id="result"></div>
+
+    <script type="text/javascript">
+      function toDataURL(src, callback) {
+        var image = new Image();
+        image.crossOrigin = "Anonymous";
+
+        image.onload = function() {
+          var canvas = document.createElement("canvas");
+          var context = canvas.getContext("2d");
+          canvas.height = this.naturalHeight;
+          canvas.width = this.naturalWidth;
+          context.drawImage(this, 0, 0);
+          var dataURL = canvas.toDataURL("image/jpeg");
+          callback(dataURL);
+        };
+
+        image.src = src;
+      }
+
+      toDataURL(
+        "https://cnnespanol2.files.wordpress.com/2019/12/s_64a163f16ecbb099e52f2f8271f73cbbfcfc9034be4d646f7375e4db1ca6f3d7_1573501883482_ap_19001106049831-1.jpg?quality=100&strip=info&w=320&h=240&crop=1",
+        function(dataURL) {
+          // do something with dataURL
+          document.getElementById("result").innerHTML = dataURL;
+        }
+      );
+    </script>
+
+    <br /><br />
+    <div>
+      <a
+        href="https://bytenota.com/javascript-convert-image-to-base64-string/"
+        target="_blank"
+        rel="noopener"
+        >← Back to the post.</a
+      >
+    </div>
+  </body>
+</html>

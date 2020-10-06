@@ -1,0 +1,182 @@
+@import '../global/Vars.scss';
+@import '../global/Fonts.scss';
+@import '../mixins/Modal.scss';
+@import '../mixins/Background.scss';
+
+.autonomous{
+    width: 100%;
+    .autonomous-welcome {
+        height: 80%;
+        padding-bottom: 100px;
+        width: 100%;
+        text-align: center;
+        .tags-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            height: auto;
+            .tag-text {
+                width: 100%;
+                line-height: 1;
+                display: flex;
+                justify-content: center;
+            }
+        }
+        .autonomous-welcome-title {
+            width: 100%;
+            font-weight: bold;
+            font-size: 26px;
+            line-height: 2rem;
+            color: $grey-navigation-color;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            .autonomous-welcome-umalogo {
+                height: 32px;
+                margin-left: 5px;
+            }
+        }
+    }
+    .question-container {
+        position: relative;
+        height: 100%;
+        text-align: center;
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 20px;
+            flex-direction: column;
+            line-height: 1.2;
+            color: $grey-navigation-color;
+            background-color: $white-color;
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            min-height: 230px;
+            border-radius: 6px;
+            margin-left: 5%;
+            padding: 20px;
+            margin-right: 5%;
+        }
+        .responseWrapper {
+            width: 90%;
+            margin: 20px 5% 20px 5%;
+            .check-button {
+                height: 60px;
+                width: 100%;
+                margin: 10px 0 0 0;
+                padding: 5px;
+                font-weight: 900;
+                border-radius: 6px;
+                bottom: 33px;
+                background-color: $secondary-cyan;
+                color: $white-color;
+                z-index: 5;
+                border: 0;
+                text-transform: uppercase;
+              }
+              .detail-question{
+                left:0px;
+                text-align: center;
+                min-height:70%;
+                }
+        }
+    }
+
+    .autonomous-predict {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        .container-predicts{
+            padding: 0 20px;
+            .sugested-action {
+                padding: 10px;
+                width: 100%;
+                color: #fff;
+                border-radius: 15px;
+                overflow: hidden;
+                cursor: pointer;
+                display: flex;
+                &.green {
+                    background: $green-high;
+                }
+                &.yellow {
+                    background: $yellow-high;
+                }
+                &.red {
+                    background: $red-high;
+                }
+                &.violet{
+                    background: $violet-high;
+                }
+                .suggested-ico {
+                    display: flex;
+                    direction: column;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    padding: 7% 10px;
+                }
+                p {
+                    margin: 0 !important;
+                    line-height: 1rem;
+                    padding: 5px;
+                }
+            }
+            .predict-advisor {
+                font-size: 0.8rem;
+                line-height: 1rem;
+                margin: 10px 0;
+            }
+            .predict-title{
+                font-size: 1.3rem;
+                padding: 7px;
+                width: 100%;
+                color: #97c1d3;
+                text-align: center;
+                background-color: $white-color;
+             }
+             .predict-description {
+                 color: $black;
+             }
+            .predict-container {
+                background: $white-color;
+                color: $primary-color;
+                border-radius: 15px;
+                padding: 10px;
+                margin-top: 10px;
+                .percentage-predict {
+                    font-size: 32px;
+                }
+            }
+            .secondary-predict-container {
+                display: flex;
+                justify-content: space-around;
+                .secondary-predict {
+                    width: 45%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100%;
+                }
+            }
+            .other-predicts{
+                text-align: center;
+                div{
+                    color: #40afa9;
+                    padding-top: 20px;
+                    margin-top: 10px;
+                    padding-bottom: 20px;
+                    .percentage-predict{
+                        font-size:32px;
+                    }
+                }
+                h5{
+                    margin-top:20px;
+                    margin-bottom:20px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+
+.genericChart {
+    padding: 6px;
+    .barContainer,
+    .rulerContainer {
+        display: flex;
+        width: 100%;
+    }.title{
+        font-family: Arial;
+        font-size: unset;
+
+    }
+    .arrowContainer {
+        width: 100%;
+        height: 40px;
+        position: relative;
+        margin-top: -4px;
+        
+    }
+    .barContainer {
+        height: 22px;
+        .bar {
+            height: 100%;
+            line-height: 1.5;
+        }
+        
+        .bar-b-tot {
+            background-color: green;
+            width: 97%;
+        }
+        .bar-c-tot {
+            background-color: red;
+            width: 22%;
+        }
+    }
+    .rulerContainer {
+        border-top: 1px solid #a5bacb;
+        margin-top: 2px;
+        height: 6px;
+    
+        .measure {
+            width: 20%;
+            border-right: 1px solid black;
+            position: relative;
+            .dataMead {
+                position: absolute;
+                right: -20px;
+                bottom: -28px;
+            }
+        }
+        .measure:last-child {
+            border-right: 0;
+        }
+    }
+}

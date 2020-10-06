@@ -1,0 +1,28 @@
+@import '../global//Vars.scss';
+
+.selectReason {
+	.tags-container {
+		.tag-empty {
+			background-color: $secondary-blue;
+			border-radius: 6px;
+			color: $white-color;
+			font-size: 15px;
+			line-height: 0;
+			padding: 27px;
+		}
+	}
+
+	.question-title {
+		color: $white-color !important;
+		font-size: 20px;
+		font-weight: 600;
+	}
+	.backButtonContainer {
+		a {
+			svg {
+				position: absolute;
+				left: 0;
+			}
+		}
+	}
+}

@@ -1,0 +1,58 @@
+@import "../global/Vars.scss";
+
+.toastNotificationContainer{
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    top: -150px;
+
+    transition: all 0.5s ease-out;
+    .toastNotification{
+        width: 90%;
+        background-color: #ffffffee;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 6px 20px -6px rgba(0,0,0,0.75);
+        .closeButtonContainer{
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: -15px;
+            color:$red-high;
+            font-size: 19px;
+            
+        }
+
+        .contentContainer{
+            display: flex;
+            justify-content: center;
+            h2{
+                font-size: 18px;
+                font-weight: 600;
+                color: $data-profile
+            }
+        }
+
+        .buttonsContainer{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            button{
+                background-color: transparent;
+                border: rgba(255, 255, 255, 0.301) 1px solid ;
+                border-radius: 6px;
+                font-weight: 600;
+                color:  rgb(255, 255, 255);
+                width: 215px;
+                box-shadow: 0px 0px 16px -10px rgba(0, 0, 0, 0.068);
+                background-color:  rgb(64, 153, 46);
+            }
+        }
+    }
+
+}.active{
+    transition: all 0.5s ease-in;
+    top: 45px;
+}
+

@@ -1,0 +1,41 @@
+
+@import "../index.scss";
+
+.homeCare {
+    width: 90%;
+    margin: 24px auto;
+    height: auto;
+    padding: 23px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: $white-color;
+    border-radius: $regular-borders;
+    .homeCare__container {
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+        .homeCare__container--icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 20px;
+            color: $primary-color;
+        }
+        .homeCare__container--img {
+            width: 75% !important;
+            width: inherit;
+        }
+        .homeCare__container--title {
+            font-weight: 900;
+            color: $secondary-color;
+            font-size: 28px;
+            margin-top: 20px;
+        }
+        .homeCare__container--text {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+    }
+}

@@ -1,0 +1,386 @@
+[
+  {
+
+    "style": {
+      "container":{
+        display: 'block'
+      }
+    },
+    "outputs": {
+      "style": "content-col: col-12",
+      "outputs": [
+        {
+          "type": "text",
+          "content": "Selecciona cuantas opciones apliquen.",
+          "options": {
+            "min-length": "50",
+            "style": {color: '#fff'}
+          }
+        }
+      ]
+    },
+    "inputs": {
+      "style": "col-6",
+      "inputs": [
+        {
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        },{
+          "type": "button",
+          "style": {color: '#fff',margin: '4px'},
+          "options": {
+            "text": "opcion #1",
+            "option_id": "firebase id for this option",
+            "style": {
+              margin: '4px', 
+              borderRadius: '4px',
+              backgroundColor: '#50697E',
+              border: '1px solid #3F5A71',
+              color: '#fff'
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+
+  "style": {
+    "container":""
+  },
+  "outputs": {
+    "style": "content-col: col-12",
+    "outputs": [
+      {
+        "type": "text",
+        "content": "Selecciona cuantas opciones apliquen.",
+        "options": {
+          "min-length": "50",
+          "styles": {}
+        }
+      }
+    ]
+  },
+  "inputs": {
+    "style": "col-6",
+    "inputs": [
+      {
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      },{
+        "type": "button",
+        "style": "",
+        "options": {
+          "text": "opcion #1",
+          "option_id": "firebase id for this option",
+          "styles": {}
+        }
+      }
+    ]
+  }
+},
+
+
+{
+  "style": {
+    "container":""
+  },
+  "outputs": {
+    "style": "content-col: col-12",
+    "outputs": [
+      {
+        "type": "text",
+        "content": "How do you feel?",
+        "options": {
+          "min-length": "50",
+          "styles": {}
+        }
+      }
+    ]
+  },
+  "inputs": {
+    "style": "col-6",
+    "inputs": [
+      {
+        "type": "audio",
+        "style": "button button--red button--round",
+        "options": {
+          "icon": "microphone",
+          "type": "horizontal",
+          "range": [1, 2],
+          "styles": {}
+        }
+      }
+    ]
+  }
+},
+
+{
+  "style": {
+    "container":""
+  },
+  "outputs": {
+    "style": "content-col: col-12",
+    "outputs": [
+      {
+        "type": "text",
+        "content": "",
+        "options": {
+          "min-length": "50",
+          "styles": {}
+        }
+      }
+    ]
+  },
+  "inputs": {
+    "style": "col-6",
+    "inputs": [
+      {
+        "type": "breathe",
+        "style": "",
+        "options": {
+          "inhale": [10,4, 14],
+          "styles": {}
+        }
+      }
+    ]
+  }
+}
+
+]

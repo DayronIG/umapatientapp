@@ -1,0 +1,12 @@
+.graficocontainer {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 0;
+}
+
+@media screen and (max-width: 450px) {
+  .graficocontainer {
+    width: 100%;
+  }
+}

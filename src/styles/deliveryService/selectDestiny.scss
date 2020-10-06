@@ -1,0 +1,46 @@
+@import '../index.scss';
+
+.selectDestiny {
+	width: 90%;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+	.selectDestiny__container.map {
+		height: 30vh;
+	}
+	.selectDestiny__container {
+		width: 100%;
+		margin-top: 15px;
+		.selectDestiny__container--marker {
+			font-size: 22px;
+		}
+		input {
+			width: 100%;
+			border: 1px solid $deep-blue;
+			border-radius: $regular-borders;
+			padding: 5px 10px;
+		}
+		input:focus {
+			outline: none;
+		}
+		.selectDestiny__container--row {
+			width: inherit;
+			display: flex;
+			justify-content: space-between;
+
+			input:first-child {
+				margin-right: 5px;
+			}
+			input:last-child {
+				margin-left: 5px;
+			}
+			button {
+				outline: none;
+				border: none;
+				border-radius: $regular-borders;
+				background-color: $deep-blue;
+				color: #fff;
+			}
+		}
+	}
+}

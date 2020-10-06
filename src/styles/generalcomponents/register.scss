@@ -1,0 +1,101 @@
+@import '../index.scss';
+
+.register-form {
+   z-index: -1;
+   padding: 0 5%;
+   margin-top: 16px;
+   .form-label {
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: $gray-font;
+      width: 100%;
+   }
+   .addressLabel,
+   .sexLabel,
+   .birthLabel {
+      margin-top: 12px;
+   }
+   .sexLabel,
+   .birthLabel {
+      margin-bottom: 0px;
+   }
+   .sexLabel {
+      visibility: hidden;
+   }
+   .sexContainer {
+      select {
+         width: -webkit-fill-available;
+      }
+   }
+   .birthInputContainer {
+      input {
+         width: 25% !important;
+      }
+      input:last-child {
+         width: 40% !important;
+      }
+   }
+   input,
+   input::placeholder,
+   select {
+      margin: 6px 0 8px 0;
+      color: $lighter-grey !important;
+   }
+   input {
+      padding: 1rem;
+      width: 100%;
+      border-radius: $regular-borders;
+      border: 0;
+   }
+   select {
+      border: 0;
+   }
+   small {
+      color: $blue-button;
+   }
+   .enabled {
+      height: 32px;
+      .react-switch-bg {
+         background-color: $secondary-color !important;
+      }
+   }
+   .disabled {
+      height: 32px;
+      .react-switch-bg {
+         background-color: $lighter-grey !important;
+      }
+   }
+   .form-mid-input {
+      border-radius: $regular-borders;
+      height: 58px !important;
+      padding: 0.5rem;
+      width: 44vw;
+      background-color: $white-color;
+   }
+   .sendButtonStyles {
+      background-color: $secondary-color;
+      color: $white-color;
+      border-radius: $regular-borders;
+      width: 100% !important;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 15px 0;
+      margin: 25px 0 28px 0;
+   }
+   .registerContainerProps {
+      width: 90%;
+      margin: 10px auto 20px auto;
+      input,
+      select {
+         width: 100%;
+         border: 0 !important;
+      }
+      label:first-child() {
+         margin-top: 12px;
+      }
+   }
+   .form-label {
+      margin-top: 15px;
+      margin-bottom: 10px;
+   }
+}

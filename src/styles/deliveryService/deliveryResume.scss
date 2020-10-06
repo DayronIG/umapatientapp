@@ -1,0 +1,14 @@
+@import '../index.scss';
+
+.deliveryResume {
+	width: 90%;
+	height: 40vh;
+	background-color: #fff;
+	.deliveryResume__container {
+		display: flex;
+		flex-direction: column;
+		.deliveryResume__container--title {
+			font-weight: bold;
+		}
+	}
+}
