@@ -1,0 +1,51 @@
+
+@import '../global/Vars.scss';
+@import '../global/Fonts.scss';
+
+.subscription-container {
+     width: 100%;
+     .subscription-module {
+          display: flex;
+          justify-content: space-between;
+          width: 90%;
+          margin: 22px 5% 42px;
+          padding: 0 20px;
+          font-size: 0.8rem;
+          border-radius: $regular-borders;
+          background: $white-color;
+          color: $secondary-color;
+     }
+     .subscription-plan,
+     .subscription-expire, 
+     .subscription-points {
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          b {
+               font-weight: 600;
+               font-size: 14px;
+               margin-bottom: 8px;
+               color: #a4bbd2;
+          }
+          span {
+               text-transform: uppercase;
+               font-size: 15px;
+          }
+     }
+   .subscription-payments {
+          background: $secondary-color;
+          color: $white-color;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-left: 15px;
+          padding: 10px;
+          text-align: right;
+          font-weight: 700;
+          .subscription-arrow {
+               font-size: 1.2rem;
+               padding-top: 5px;
+          }
+   }
+}

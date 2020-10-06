@@ -1,0 +1,130 @@
+@import "./global/Vars.scss";
+@import "./global/Fonts.scss";
+
+.ambulance-container {
+  background: $reduced-back-gradient;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  .tag-delicon {
+    width: 50%;
+    height: 50%;
+    color: #64d6d3;
+    margin-top: 20px;
+  }
+
+  .ambulance-circle {
+    top: 14%;
+    position: fixed;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    text-align: center;
+    background: #ffffff;
+  }
+  .ambulance-info {
+    position: fixed;
+    font-size: 20px;
+    color: #97c1d3;
+    text-align: center;
+    line-height: 24px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 6px;
+    width: 80%;
+    bottom: 50%;
+  }
+  .ambulance-time {
+    padding: 18px;
+    position: fixed;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 24px;
+    color: #a5bacb;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 6px;
+    bottom: 28%;
+  }
+  .ambulance-button2 {
+    display: flex;
+    position: fixed;
+    padding: 12px;
+    width: 80%;
+    border-radius: 6px;
+    bottom: 17%;
+    background-color: #51e3e0;
+    color: white;
+    z-index: 10;
+    justify-content: center;
+    border: 0;
+  }
+  .ambulance-button {
+    display: flex;
+    position: fixed;
+    width: 80%;
+    padding: 12px;
+    border-radius: 6px;
+    bottom: 33px;
+    background-color: #f8bd1d;
+    color: white;
+    z-index: 9;
+    justify-content: center;
+    border: 0;
+  }
+}
+.search-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  .search-location {
+    padding: 18px;
+    position: fixed;
+    width: 80%;
+    text-align: center;
+    font-size: 17px;
+    line-height: 24px;
+    color: #97c1d3;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 6px;
+    bottom: 70%;
+  }
+
+  .search-container {
+    align-items: center;
+  }
+  .tag-delicon {
+    margin-left: -30px;
+  }
+  .search-input {
+    margin-top: 10px;
+    border-radius: 5px;
+    border-bottom: 3px solid #d4ebf5;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-right: 35px;
+    width: 100%;
+  }
+
+  .search-input:focus {
+    outline: none;
+  }
+
+  .search-map {
+    padding: 16px;
+    position: fixed;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 24px;
+    color: #a5bacb;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 6px;
+    bottom: 18%;
+  }
+}

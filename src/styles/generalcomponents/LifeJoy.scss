@@ -1,0 +1,56 @@
+
+@import '../index.scss';
+
+.lifejoy-container {
+      width: 90%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: auto auto 14px auto;
+      .btn-home-container {
+         display: flex;
+         flex-direction: column;
+         justify-content: flex-start;
+         align-items: center;
+         width: 100%;
+         height: 120px;
+         .circular-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: $rounded-elements;
+            width: 60px;
+            height: 60px;
+            color: $white-color;
+            z-index: 4;
+            svg{
+               font-size: 22px;
+            }
+         }
+         .btn-green {
+            background-color: $secondary-color;
+         }
+         .btn-yellow {
+            background-color: $yellow-opaque;
+            text-align: center;
+         }
+        .btn-disabled {
+          background-color: $lighter-grey;
+          text-align: center;
+          
+        }
+        .btn-disabled + span {
+          color: $lighter-grey !important;
+        }
+         .polLogo {
+            width: 80%;
+         }
+         span{
+            font-size: 15px;
+            color: $text-green;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.3;
+         }
+      }
+}

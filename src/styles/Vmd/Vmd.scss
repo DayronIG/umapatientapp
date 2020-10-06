@@ -1,0 +1,144 @@
+@import '../global/Vars.scss';
+@import '../global//Fonts.scss';
+
+.vmd-container {
+    min-height: 60vh;
+    height: 100%;
+    font-family: Nunito;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .searchVmd-container {
+      width: 100%;
+      .search-container {
+        width: 90%;
+        margin: 0 5%;
+        background: $white-color;
+        border-radius: 10px;
+        padding: 5px;
+        position: relative;
+        .search-title {
+          padding: 7px;
+          width: 100%;
+          color: #97c1d3;
+          text-align: center;
+          background-color: $white-color;
+        }
+        .search-input {
+          margin: 10px;
+          border: 0;
+          width: 100%;
+          input {
+              height: inherit;
+              width: 90%;
+              padding-bottom: 7px;
+              border-bottom: 1px solid $primary-color;
+          }
+        }
+        .search-input:focus {
+          outline: none;
+        }
+        .tag-delicon {
+          position: absolute;
+          color: #97C1D3;
+          right: 7%;
+          bottom: 35px;
+        }
+      }
+      .search-map {
+        margin: 5%;
+        padding: 25px;
+        font-size: 20px;
+        line-height: 24px;
+        color: #a5bacb;
+        border-radius: 6px;
+        background-color: $white-color;
+      }
+      .coverage-container {
+        width: 90%;
+        margin-left: 5%;
+        text-align: center;
+        margin-top: 30px;
+            .coverage-title {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 0;
+                p {
+                  margin: 0 !important;
+                }
+            }
+            .coverage-description {
+                font-size: 1.2rem;
+                font-weight: 300;
+                margin-bottom: 0;
+            }
+            .vmd-img-container {
+                margin-top: -25px;
+                height: 35vh;
+                img { 
+                  height: inherit;
+                }
+            }
+            .vmd-img {
+              max-height: 250px !important;
+            }
+        }
+    }
+    .action-container {
+        position: relative;
+        text-align: center;
+        width: 90%;
+        margin: 10px 5%;
+        background: $white-color;
+        border-radius: 10px;
+        padding: 5% 15%;
+      .action-title {
+          width: 100%;
+          font-size: 1.1rem;
+          font-weight: 500;
+          margin-bottom: 0;
+          color: $primary-color;
+      }
+    }
+    .action-call {
+      display: flex;
+      justify-content: space-around;
+      padding: 2% 0;
+      background: $primary-cyan;
+      height: 50px;
+      border-radius: 5px;
+      width: 90%;
+      margin-left: 5%;
+      color: $white-color;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      a { 
+        color: $white-color;
+      }
+      .action-icon {
+        margin: 5px 5px;
+        font-size: 1rem;
+        color: $white-color;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+      }
+      .action-text {
+        padding-top: 5px;
+      }
+    }
+    .checkout-button {
+      width: $btn-general-width;
+      padding: $btn-general-padding;
+      margin-left: 5%;
+      border-radius: $regular-borders;
+      background-color: $primary-orange;
+      color: $white-color;
+      position: absolute;
+      bottom: 80px;
+      z-index: 3;
+      font-size: 16px;
+      border: 0;
+    }
+}

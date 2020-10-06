@@ -1,0 +1,61 @@
+@import '../global/Vars.scss';
+
+.searchDoctor_container {
+    padding-bottom: 92px;
+    .backButtonContainer {
+        top: -2px;
+    }
+    .timeDelay {
+        border-radius: 0 0 6px 6px;
+    }
+    .customFooterBtn {
+        background-color: $white-color;
+        height: 100px;
+        .customFooterBtn__container {
+            position: initial;
+        }
+    }
+    .searchDoctor__input {
+        width: 90%;
+        margin: 15px 5% 10px 5%;
+        border-radius: 5px;
+        background: $white-color;
+        text-align: center;
+        font-family: Nunito;
+        font-weight: 300;
+        color: $primary-color;
+        label {
+            font-size: 1.2rem;
+        }
+        input,
+        input::placeholder,
+        select {
+            margin: 1px 0 8px 0;
+            color: $lighter-grey !important;
+        }
+        input {
+            width: 100%;
+            height: 50px;
+            padding-left: 16px;
+            margin: 0;
+            border-radius: 5px;
+            border: 0;
+            background-color: #F3F4F9;
+            color: #b6b6b6;
+        }
+        input:focus {
+            outline: 0;
+        }
+    }
+    .searchDoctor__welcomeImage {
+        display: flex;
+        justify-content: center;
+
+    }
+    .searchDoctor_results {
+        text-align: center;
+        font-size: 1.2rem;
+        color: $primary-color;
+        margin: 28px 5%;
+    }
+}

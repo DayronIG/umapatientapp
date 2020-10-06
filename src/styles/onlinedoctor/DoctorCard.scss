@@ -1,0 +1,194 @@
+@import '../global/Vars.scss';
+
+.doctorCard-container:first-child {
+    margin-top: -14px;
+}
+.doctorCard-container {
+    border: 0px solid $primary-color;
+    box-shadow: $blured-box-shadow;
+    cursor: pointer;
+    .star-ratings path {
+        // fill: $yellow-opaque !important;
+    }
+    .doctorCard-firstRow {
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        background: $secondary-color;
+        border-radius: 6px 6px 0 0;
+        overflow: hidden;
+        color: $white-color;
+        &.guardDoctor {
+            background: #51ce69 !important;
+            border-radius: 6px;
+            height: 50vh;
+            max-height: 280px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            hr {
+                width: 60%;
+                background: $white-color;
+            }
+        }
+        &.disabled{
+            background: $primary-grey !important;
+        }
+        .doctorCard-photoContainer {
+            margin: 12px 0;
+            border-radius: 100px;
+            width: 30%;
+            max-width: 105px;
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            padding: 2px 8px 2px 16px;
+            justify-content: center;
+            vertical-align: middle;
+            &.guardDoctor {
+                border-radius: 0px !important;
+            }
+            .guard-icon {
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .doctorImage {
+                filter: saturate(200%);
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                border-radius: 100px;
+            }
+        }
+        .doctorCard-doctorInfo {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 55%;
+            margin: 0;
+            .doctorName {
+                text-align: center;
+                margin-bottom: 6px;
+                margin-left: 5px;
+                font-size: 0.9rem;
+                line-height: 0.9rem;
+                overflow: hidden;
+                &.guardDoctor {
+                    font-size: 1.5rem;
+                    line-height: 1.5rem;
+                    overflow: initial;
+                }
+            }
+            .doctorStars {
+                text-align: center;
+                margin-left: 5px;
+                font-size: 0.5rem;
+            }
+            .doctorAtts {
+                text-align: center;
+                margin-left: 5px;
+                font-size: 0.8rem;
+            }
+        }
+        .doctorCard-timeContainer {
+            position: relative;
+            width: 30%;
+            padding-top: 25px;
+            border-left: 1px solid $white-color;
+            .timeRemaining {
+                text-align: center;
+                font-size: 2.5rem;
+                margin: 0;
+                padding: 0;
+            }
+            .timeRemainingBefore{
+                font-size: 0.8rem;
+                padding: 5px 10px 0 5px;
+                line-height: 1rem;
+                text-align: center;
+                span {
+                    font-size: 18px;
+                }
+            }
+            .timeRemainingAfter{
+                font-size: 0.8rem;
+                text-align: center;
+            }
+        }
+    }
+    .doctorCard-secondRow {
+        width: 100%;
+        margin-bottom: 15px;
+        // border-top: 1px solid $white-color;
+        .timeDelay {
+            width: 100%;
+            height: 20px;
+            padding: 14px 0;
+            line-height: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: white;
+        }
+        .verygood {
+            // background: $green-high;
+            background: linear-gradient(to right, $green-high 80%, $green-low);
+        }
+        .good {
+            // background: $green-low;
+            background: linear-gradient(to right, $green-high 80%, $orange-high);
+        }
+        .regular {
+            // background: $orange-high;
+            background: linear-gradient(to right, $green-high 10%, $orange-high 30%);
+        }
+        .doctorCard-comments{ 
+            width: 100%;
+            text-align: center;
+            background: $white-color;
+            color: $secondary-color;
+            border-radius: 0  0 6px 6px;
+            font-weight: 700;
+            padding: 10px;
+            min-height: 20px;
+            cursor: pointer;
+        }
+    }
+}
+
+.feedback-container {
+    min-height: 100px;
+    overflow: scroll;
+    max-height: 500px;
+    .feedback-subtitle {
+        color: #000;
+        font-weight: 700;
+    }
+    .feedback-stars {
+        margin-bottom: 5px;
+        path {
+            fill: $yellow-opaque !important;
+        }
+    }
+    .feedback-no-comments {
+        position: absolute;
+        top: 75px;
+        padding: 20px;
+        text-align: center;
+    }
+    .feedback-comment {
+        position: relative;
+        background: $inactive-primary;
+        color: $text-light;
+        padding: 8px 15px 20px 15px;
+        margin-bottom: 10px;
+    }
+    .feedback-date {
+        font-size: 0.7rem;
+        margin-right: 10px;
+        margin-top: 7px;
+        font-weight: 800;
+    }
+}

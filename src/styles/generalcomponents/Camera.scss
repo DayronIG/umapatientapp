@@ -1,0 +1,55 @@
+
+@import '../index.scss';
+
+.camera {
+  display: flex;
+  flex-direction: column;
+  canvas{
+    display: none;
+  }
+}
+
+.camera__view, 
+.camera__sensor, 
+.camera__output {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  align-self: center;
+  justify-self: center;
+}
+
+.flip {
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+
+.camera__trigger {
+  background-color: $white-color;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 18px;
+  .camera__trigger--btn {
+    width: 100%;
+    background-color: $primary-color;
+    color: $white-color;
+    font-size: 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    margin: auto;
+    display: block;
+    &:focus {
+      outline: none;
+    }
+    .icon{
+      margin-right: 10px;
+      margin-top: -5px;
+    }
+  }
+}

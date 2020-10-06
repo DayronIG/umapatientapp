@@ -1,0 +1,38 @@
+
+@import "../index.scss";
+
+.accessDenied {
+    width: 90%;
+    margin: 60px auto 0 auto;
+    height: auto;
+    padding: 25px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: $white-color;
+    border-radius: $regular-borders;
+    .accessDenied__container {
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+        .accessDenied__container--icon {
+            font-size: 50px;
+            color: $primary-color;
+        }
+        .accessDenied__container--img {
+            width: 75% !important;
+            width: inherit;
+        }
+        .accessDenied__container--title {
+            font-weight: 900;
+            color: $primary-color;
+            font-size: 28px;
+            margin-top: 20px;
+        }
+        .accessDenied__container--text {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+    }
+}

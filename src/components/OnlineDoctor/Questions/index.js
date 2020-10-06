@@ -1,0 +1,309 @@
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GenericHeader } from '../../GeneralComponents/Headers';
+import VideoInput from '../../Inputs/Video';
+import CameraInput from '../../Inputs/Picture';
+import Modal from '../../GeneralComponents/Modal/MobileModal';
+import CovidModal from './CovidModal';
+import HtaModal from './HtaModal';
+import HabitatOrTerms from './HabitatOrTerms';
+import Loading from '../../GeneralComponents/Loading';
+import ContainerAssessmentAppointment from './ContainerAssessmentAppointment';
+import BackButton from '../../GeneralComponents/Backbutton'
+import '../../../styles/questions.scss';
+import '../../../styles/onlinedoctor/QuestionsModal.scss';
+import isIos from '../../Utils/isIos';
+
+const covidActivators = [
+	'Tos',
+	'Fiebre',
+	'Dolor de garganta',
+	'Sospecha de covid',
+	'Dolor de cabeza',
+	'Vómitos',
+	'Diarrea',
+];
+const htaActivators = ['Hipertensión', 'Dolor de pecho'];
+const cameraActivators = [
+	'Problemas en la piel',
+	'salpullido',
+	'sarpullido',
+	'roncha',
+	'ampolla',
+	'lunar',
+	'quemadura',
+	'erupción',
+	'irritación',
+	'orzuelo',
+	'picazón',
+	'hinchazón',
+	'manchas',
+	'sarna',
+	'verruga',
+	'grano',
+	'piel'
+];
+
+const Questions = () => {
+	const dispatch = useDispatch();
+	const [i, seti] = useState(0);
+	const [j, setj] = useState(0);
+	const [modals, setModals] = useState({
+		fever: false,
+		questions: false,
+		habitat: false,
+		termsAndConditions: false,
+		htaModal: false,
+		cameraModal: false,
+	});
+	const [alerta, setAlerta] = useState('');
+	const [ubicacion, setUbicacion] = useState('');
+	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
+	const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
+	const { assessment } = useSelector((state) => state);
+	const { questions } = useSelector((state) => state.queries);
+	const { loading } = useSelector((state) => state.front);
+	const posOptions = { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
+	const propsContainerAssessmentAppointment = { seti, setj, i, j, responseIA, coordinates, alerta };
+
+	useEffect(() => {
+		questionsForEachSymptom();
+	}, [assessment.selectedSymptoms, questions, dispatch]);
+
+	// Effect that get the current question and their answers
+	useEffect(() => {
+		let getQuestion = assessment.selectedQuestions[i];
+		let currentQuestion = {};
+		if (getQuestion && getQuestion.length >= 1) {
+			let id = getQuestion[j].id;
+			let title = getQuestion[j].question;
+			let answers = getQuestion[j].answers;
+			let required = getQuestion[j].required;
+			currentQuestion = { id, title, answers, required };
+		}
+		dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
+	}, [assessment.selectedQuestions, dispatch, i, j]);
+
+	useEffect(() => {
+		try {
+			const isIos = () => {
+				const userAgent = window.navigator.userAgent.toLowerCase();
+				return /iphone|ipad|ipod/.test(userAgent);
+			};
+			if (!isIos) {
+				navigator.permissions
+					.query({ name: 'geolocation' })
+					.then(function(result) {
+						if (result.state === 'granted') {
+							navigator.geolocation.getCurrentPosition(currentPos, watchError, posOptions);
+						} else if (result.state === 'prompt') {
+							navigator.geolocation.getCurrentPosition(currentPos, watchError, posOptions);
+						}
+						// result.state === 'denied'
+					})
+					.catch((err) => {
+						setCoordinates({ lat: '', lng: '' });
+					});
+			} else {
+				navigator.geolocation.getCurrentPosition(currentPos, watchError, posOptions);
+			}
+		} catch (err) {
+			setCoordinates({ lat: '', lng: '' });
+		}
+	}, []);
+
+	useEffect(() => {
+		const covidActive = covidActivators.some((activator) => assessment.selectedSymptoms.includes(activator));
+		const htaActive = htaActivators.some((activator) => assessment.selectedSymptoms.includes(activator));
+		const cameraActive = cameraActivators.some(
+			(activator) =>
+				assessment.selectedSymptoms.includes(activator) || assessment.selectedOtherSymptoms.includes(activator)
+		);
+
+		if (covidActive) {
+			setModals({ ...modals, questions: true });
+			setAlerta('COVID');
+		}
+		if (htaActive && !covidActive) {
+			// setHtaModal(true);
+			setModals({ ...modals, htaModal: true });
+			setAlerta('HTA');
+		}
+		if (cameraActive) {
+			setModals({ ...modals, cameraModal: true });
+		}
+	}, []);
+
+	const watchError = () => console.log('Hubo un error al rastrear la posición');
+
+	const currentPos = ({ coords }) =>
+		setCoordinates({ lat: coords.latitude.toString() || '', lng: coords.longitude.toString() || '' });
+	// Effect that get all selected questions for the patient's symptoms and save them to store
+	const questionsForEachSymptom = () => {
+		let selectedQuestions = [];
+		assessment.selectedSymptoms.forEach((symptom) => {
+			let filterQuestions = questions.find((t) => {
+				if (t.symptom === symptom && t.questions.length > 0) return t;
+			});
+			if (!!filterQuestions) selectedQuestions.push(filterQuestions.questions);
+		});
+		dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: selectedQuestions });
+	};
+
+	const habitatResponseCondition = (responses) => {
+		if (ubicacion === 'provincia') {
+			// TO DO: Agregar o Anosmia
+			// TO DO: Contacto estrecho + Respiratorio o "Diarrea/cefalea/mialgias"
+			// TO DO: O convive con caso confirmado
+			// TO DO: Agregar mialgias en preguntas (las pasa el doc)
+			// TO DO: En lugar de preguntar ciudad seria: Ciudad, GBA, Otro
+			// TO DO: DOCTOR: solo puede cerrar hisopados a Ciudad y Gba. Si no contestó preguntas de Covid se muestra el cierre.
+			// TO DO: UMACARE: Contacto estrecho y confirmado por epidemio no se les pregunta hisopado.
+			// TO DO: Umacare steps no se preguntan.
+			// TO DO: Cuando pasa a "bad" mensaje de quique.
+			// TO DO: Cuando finaliza trackeo de umacare boton de consulta para alta.
+			if ((responses.includes('contacto estrecho') && !responses.includes('personal esencial')) || responses.includes('anosmia/disgeusia') ) {
+				setResponseIA({
+					...responseIA,
+					destino_final: 'En domicilio con instrucciones',
+					diagnostico: 'INESP   Confirmado COVID19 x epidemiol',
+				});
+				setModals({ ...modals, fever: false, habitat: false, termsAndConditions: true });
+			} else if (responses.includes('posee habitacion individual') && responses.length === 1) {
+				setResponseIA({ ...responseIA, destino_final: 'En domicilio con monitoreo' });
+				setModals({ ...modals, fever: false, habitat: false, termsAndConditions: true });
+			} else {
+				setModals({ ...modals, fever: false, habitat: false });
+			}
+		} else if (ubicacion === 'caba') {
+			if (responses.includes('contacto estrecho') && !responses.includes('personal esencial')) {
+				setResponseIA({
+					...responseIA,
+					destino_final: 'En domicilio con instrucciones',
+					diagnostico: 'INESP   Confirmado COVID19 x epidemiol',
+				});
+				setModals({ ...modals, fever: false, habitat: false, termsAndConditions: true });
+			} else if (responses.includes('posee habitacion individual') && responses.length === 1) {
+				setResponseIA({ ...responseIA, destino_final: 'En domicilio con monitoreo' });
+				setModals({ ...modals, fever: false, habitat: false, termsAndConditions: true });
+			} else if (
+				responses.length > 0 &&
+				!responses.includes('internacion reciente - no lleva control de sus antecedentes') &&
+				!responses.includes('contacto estrecho')
+			) {
+				setResponseIA({ ...responseIA, destino_final: 'En domicilio con monitoreo' });
+				setModals({ ...modals, fever: false, habitat: false, termsAndConditions: true });
+			} else if (responses.length > 0) {
+				setResponseIA({ ...responseIA, destino_final: 'Traslado protocolo pandemia' });
+				setModals({ ...modals, fever: false, habitat: false });
+			} else {
+				setModals({ ...modals, fever: false, habitat: false });
+			}
+		}
+	};
+
+	const switchModalContent = ({ fever, questions, habitat, termsAndConditions, htaModal, cameraModal }) => {
+		if (questions) {
+			return (
+				<Modal title='COVID-19' hideCloseButton>
+					<CovidModal
+						setResponseIA={(res) => {
+							setResponseIA(res);
+							const covidActive = covidActivators.some((activator) =>
+								assessment.selectedSymptoms.includes(activator)
+							);
+							if (
+								covidActive &&
+								res.diagnostico === 'INESP   Sospecha COVID19' &&
+								res.destino_final !== 'Evaluación en rojo' &&
+								res.destino_final !== 'Evaluación en amarillo'
+							) {
+								if (res.epicrisis.includes('fiebre')) {
+									setModals({ ...modals, questions: false, fever: true });
+								} else {
+									setModals({ ...modals, questions: false, habitat: true });
+								}
+							} else {
+								setModals({ ...modals, questions: false });
+							}
+						}}
+					/>
+				</Modal>
+			);
+		}
+
+		if (fever && !isIos()) {
+			return (
+				<Modal title='Muestra médica' hideCloseButton>
+					<VideoInput
+						isModal={true}
+						finalAction={() => setModals({ ...modals, habitat: true, fever: false })}
+					/>
+				</Modal>
+			);
+		}
+
+		if (habitat || (fever && isIos())) {
+			return (
+				<Modal title='Preguntas de hábitat' hideCloseButton>
+					<HabitatOrTerms
+						formHandler={(responses) => habitatResponseCondition(responses)}
+						typeComponent='habitat'
+						ubicacion={ubicacion}
+						setUbicacion={setUbicacion}
+						mode='button'
+					/>
+				</Modal>
+			);
+		}
+
+		if (termsAndConditions) {
+			return (
+				<Modal title='Declaración jurada' hideCloseButton>
+					<HabitatOrTerms
+						formHandler={() => setModals({ ...modals, termsAndConditions: false })}
+						typeComponent='terminos'
+						ubicacion={ubicacion}
+						activateDefault={true}
+					/>
+				</Modal>
+			);
+		}
+
+		if (htaModal) {
+			return (
+				<Modal title='Hipertensión' hideCloseButton>
+					<HtaModal
+						unsetModal={() => setModals({ ...modals, htaModal: false })}
+						setResponseIA={setResponseIA}
+					/>
+				</Modal>
+			);
+		}
+
+		if (cameraModal) {
+			return (
+				<Modal title='Fotos' hideCloseButton>
+					<CameraInput modal={true} finalAction={() => setModals({ ...modals, cameraModal: false })} />
+				</Modal>
+			);
+		}
+	};
+
+	return (
+		<>
+			<GenericHeader children='Preguntas' />
+			{loading && <Loading centered={true} />}
+			<BackButton />
+			<div className='text-center'>
+				<div className='assessment-text mt-4 mb-4'>
+					{assessment.currentQuestion && assessment.currentQuestion.title}
+				</div>
+				{switchModalContent(modals)}
+				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
+			</div>
+		</>
+	);
+};
+
+export default Questions;

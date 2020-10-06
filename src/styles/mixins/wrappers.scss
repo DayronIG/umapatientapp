@@ -1,0 +1,47 @@
+@import "../global/Vars.scss";
+
+@mixin providerWrapper($padding: 10px, $margin: 0 0 10px 0) {
+    padding: $padding;
+    margin: $margin;
+    [data-active="true"] {
+        background-color: $white-color;
+        color: $secondary-color;
+    }
+}
+
+@mixin wrapper(
+    $margin: 0 auto 0 auto, 
+    $width: 100%, 
+    $height: 100%, 
+    $background-color: $secondary-color, 
+    $flex-dir: row,
+    $justify-cont:center,
+    $align-items:flex-start,
+    $align-content: flex-start ) {
+        border-radius: $regular-borders;
+        background-color: $background-color;
+        margin: $margin;
+        height: $height;
+        width: $width;
+        display: flex;
+        flex-direction: $flex-dir;
+        justify-content: $justify-cont;
+        align-items: $align-items;
+}
+
+@mixin card($width: 100%, $height: 100%) {
+    width: $width;
+    height: $height;
+    border-radius: $regular-borders;
+    position: relative;
+    bottom: 20px;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    border: none !important;
+}

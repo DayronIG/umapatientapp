@@ -1,0 +1,59 @@
+@import './global/Vars.scss';
+@import './global/Fonts.scss';
+
+.traslados-welcome-container{
+    width: 100%;
+    height: 100vh;
+    font-family: Nunito;
+    .traslados-content {
+        width: 90%;
+        text-align: center;
+        margin-left: 5%;
+        height: auto;
+        padding: 20px;
+        border-radius: 6px;
+        margin-top: 15px;
+        background-color: white;
+        color: $primary-blue;
+        .h12 {
+            font-weight: 700;
+            color: $secondary-color;
+            font-size: 34px;
+            margin-top: 50px;
+        }
+        .h32 {
+            font-size: 20px;
+            font-weight: 200;
+            color: $primary-blue;
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+    .search-button{
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        width: 80%;
+        padding: 12px;
+        border-radius: 6px;
+        bottom: 33px;
+        background-color: $secondary-cyan;
+        color: $white-color;
+        z-index: 9;
+        justify-content: center;
+        border: 0;
+        left: 10%;
+        font-size: 20px;
+    }
+
+    .footer{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 56px;
+        background-color: $primary-cyan;
+        z-index: 8;
+        justify-content: center;
+    }
+}

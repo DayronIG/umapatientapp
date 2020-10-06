@@ -1,0 +1,86 @@
+@import './global/Vars.scss';
+@import './mixins/buttons.scss';
+
+.yes-no-btn {
+    border: rgba($color: #000000, $alpha: .3);
+    min-width: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    height: 40px;
+    color: $white-color;
+    border-radius: 4px;
+    outline: none;
+    margin-top: 5px;
+}
+
+.covidTermsAndConditions {
+    font-size: 13px;
+    .covidTermsAndConditions__container {
+        width: 100%;
+        .covidTermsAndConditions__container--paragraph {
+            padding: 0;
+            text-align: justify;
+        }
+        .covidTermsAndConditions__container--questions {
+            text-align: justify;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            .buttonContainer {
+                width: 100%;
+                button {
+                    width: 100%;
+                }
+            }
+            &:last-child {
+                border-bottom: none;
+            }
+            p {
+                padding: 0;
+                margin: 0 0 10px 0;
+                text-align: center;
+                font-size: 16px;
+            }
+            .ubicacion {
+                border: rgba($color: #000000, $alpha: .3);
+                min-width: 50px;
+                font-weight: bold;
+                font-size: 20px;
+                height: 40px;
+                color: rgba(#000, .5);
+                border-radius: 4px;
+                outline: none;
+                margin: 5px 5px 0 0;
+                &.active {
+                    background-color: $primary-blue;
+                    color: $white-color;
+                }
+            }
+            .yes {
+                @extend .yes-no-btn;
+            }
+            .no {
+                @extend .yes-no-btn;
+                margin-left: 10px;
+            }
+            .yes.active{
+                background-color: $secondary-color;
+            }
+            .no.disabled{
+                background-color: $red-high;
+            }
+        }
+        .covidTermsAndConditions__container--questions.switch {
+            border-bottom: 1px solid rgba($color: #000000, $alpha: 0.3);
+        }
+
+        .covidTermsAndConditions__container--questions.buttons{
+            flex-direction: column;
+        }
+        .covidTermsAndConditions__container--submit{
+            @include commonButton();
+            margin-top: 10px;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+// import Autocomplete from '../../GeneralComponents/Autocomplete';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import swal from 'sweetalert';
+import Backbutton from '../../GeneralComponents/Backbutton';
+import symptoms from '../../../config/symptoms.json';
+import useScrollPosition from '../../Utils/use-scroll-position';
+
+const SelectReason = (props) => {
+	const dispatch = useDispatch();
+	const questionsList = useSelector((state) => state.queries.questions);
+	const symptomsList = useSelector((state) => state.queries.symptoms);
+	const selectedSymptoms = useSelector((state) => state.assessment.selectedSymptoms);
+	// const coords = useSelector(state => state.queries.geolocation)
+	const [otherSymptoms, setOtherSymptoms] = useState('');
+	let scrollPosition = useScrollPosition();
+
+	useEffect(() => {
+		dispatch({ type: 'GET_QUESTIONS', payload: symptoms });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch]);
+
+	useEffect(() => {
+		let symptoms = [];
+		questionsList.forEach((symptom) => symptoms.push(symptom.symptom));
+		if (symptoms.length > 0) dispatch({ type: 'GET_SYMPTOMS', payload: symptoms });
+	}, [questionsList, dispatch]);
+
+	function addReason(reason) {
+		if (!selectedSymptoms.includes(reason)) dispatch({ type: 'SET_SYMPTOM', payload: reason });
+	}
+	function deleteReason(symptom) {
+		const newTags = selectedSymptoms.filter((tags) => tags !== symptom);
+		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
+	}
+	function redirect() {
+		dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
+	}
+
+	return (
+		<>
+			<div className='dinamic-question'>
+				<Backbutton inlineButton={true} />
+				<span className='question-title'>Motivo de la consulta</span>
+				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
+					<>
+						{selectedSymptoms.length >= 1 ? (
+							selectedSymptoms.map((symptom, index) => {
+								return (
+									<div className='tag' key={index} onClick={(e) => deleteReason(symptom)}>
+										<span className='tag-text'>{symptom}</span>
+										<FontAwesomeIcon icon={faTimesCircle} className='tag-delicon' />
+									</div>
+								);
+							})
+						) : (
+							<div className='tag-empty'>No ha agregado motivos</div>
+						)}{' '}
+					</>
+					
+				</div>
+			</div>
+			<div className='symptom-list-container'>
+				{symptomsList.map((symptom) => (
+					<div
+						className='symptom-list d-flex justify-content-between'
+						key={symptom}
+						onClick={() => addReason(symptom)}>
+						<span className='symptom-text'>{symptom}</span>
+						<FontAwesomeIcon icon={faPlusCircle} className='symptom-addicon' />
+					</div>
+				))}
+			</div>
+			<div className='dinamic-add-reason'>
+				<div className='dinamic-reasons d-block text-center'>
+					<input
+						type='text'
+						onChange={(e) => setOtherSymptoms(e.target.value)}
+						value={otherSymptoms}
+						placeholder='Otros síntomas'
+					/>
+				</div>
+				<button className='btn btn-blue-lg confirmConsultReason' onClick={redirect}>
+					Siguiente
+				</button>
+			</div>
+		</>
+	);
+};
+
+export default withRouter(SelectReason);

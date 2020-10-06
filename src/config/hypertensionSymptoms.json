@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "HTA_medication",
+    "front": "Medicado por hipertensión",
+    "label": "antecedente de HTA",
+    "respuestas": ["si", "no"]
+  },
+  {
+    "tag": "ACV",
+    "front": "¿Comenzó a tener dificultades en el habla o perdió repentinamente la fuerza en las manos o los pies?",
+    "label": "sospecha de ACV",
+    "respuestas": ["si", "no"]
+  },
+  {
+    "tag": "cardio",
+    "front": "¿Le duele el pecho o siente que le cuesta respirar?",
+    "label": "probable compromiso cardíaco",
+    "respuestas": ["si", "no"]
+  },
+  {
+    "tag": "encefalopatía",
+    "front": "¿Le duele mucho la cabeza o ve borroso?",
+    "label": "probable encefalopatía",
+    "respuestas": ["si", "no"]
+  }
+]

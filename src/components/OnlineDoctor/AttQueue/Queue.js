@@ -1,0 +1,403 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { user_cancel, cx_action_create } from '../../../config/endpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { FaArrowLeft } from 'react-icons/fa';
+import { Link, withRouter, useHistory } from 'react-router-dom';
+import { calcReaminingHrsMins } from '../../Utils/dateUtils';
+import { getDocumentFB } from '../../Utils/firebaseUtils';
+import { getAppointmentByDni } from '../../../store/actions/firebaseQueries';
+import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
+import swal from 'sweetalert';
+import axios from 'axios';
+import QueueActions from './QueueActions';
+import MobileModal from '../../GeneralComponents/Modal/MobileModal';
+import SendComplain from './SendComplain';
+import AnswerComplain from '../../CX';
+import DBConnection from '../../../config/DBConnection';
+import Slider from './Slider';
+import Loading from '../../GeneralComponents/Loading';
+import tone from '../../../assets/ring.mp3';
+import moment from 'moment';
+import 'moment-timezone';
+import 'moment/locale/es';
+
+const Queue = (props) => {
+	const firestore = DBConnection.firestore();
+	const dispatch = useDispatch();
+	const history = useHistory()
+	const token = useSelector(state => state.userActive.token)
+	const [calling, setCalling] = useState(false)
+	const [showModalCancelOptions, setShowModalCancelOptions] = useState(false);
+	const [cancelOptions, setCancelOptions] = useState('')
+	const [cancelDescription, setCancelDescription] = useState('');
+	const [responseAction, setResponseAction] = useState({ response: '', action: '' })
+	const { openDetails, modalAction, remainingText, loading } = useSelector(state => state.front)
+	const { questions, callSettings, patient, assignedAppointment } = useSelector(state => state.queries)
+	const { salatoken } = useSelector(state => state.call)
+	const assessment = useSelector(state => state.assessment)
+	const [dni] = useState(props.match.params.dni)
+	const mr = useSelector(state => state.queries.medicalRecord[0])
+	const assignation = assignedAppointment?.appointments?.[0]?.['14']
+
+	useEffect(() => {
+		(async function checkAssignedAppointment() {
+			if (Object.keys(assignedAppointment).length === 0) {
+				dispatch({ type: 'LOADING', payload: true })
+				const user = await getDocumentFB(`users/${dni}`)
+				const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
+				const assigned = await findAllAssignedAppointment(dni, type)
+				dispatch({ type: 'LOADING', payload: false })
+				if (assigned) {
+					dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
+				} else {
+					return history.replace(`/${dni}`)
+				}
+			}
+		})()
+	}, [])
+
+	useEffect(() => {
+		let unsubscribe = null
+		if (dni && assignation) {
+			unsubscribe = firestore.doc(`events/mr/${dni}/${assignation}`)
+				.onSnapshot(res => {
+					if (mr && mr !== undefined) {
+						let mr = res.data() && res.data().mr
+						if (mr.destino_final === 'Paciente ausente' || mr.destino_final === 'Anula por falla de conexión') {
+							swal(`El médico cerró tu atencion.`, `Motivo: ${mr.destino_final}. Puedes tomar una nueva consulta.`, 'warning')
+							dispatch({ type: 'RESET_ALL' })
+						}
+					}
+				})
+		}
+		if (unsubscribe && typeof unsubscribe === "function") {
+			return () => unsubscribe()
+		}
+	}, [assignation, mr])
+
+	useEffect(() => {
+		if (!!assignedAppointment && Object.keys(assignedAppointment).length > 0) {
+			calculateRemainingTime(assignedAppointment)
+		}
+		const interval = setInterval(() => {
+			calculateRemainingTime(assignedAppointment)
+		}, 10000)
+		
+		return () => {
+			clearInterval(interval)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [assignedAppointment])
+
+	useEffect(() => {
+		let event, unsubscribeAuth, unsubscribeEvent = null
+		if(patient.ws && patient.ws !== "" && assignation) {
+			unsubscribeEvent = firestore.collection('events/requests/online').doc(assignation).onSnapshot((res) => {
+			event = res.data() 
+			unsubscribeAuth = firestore
+				.collection('auth')
+				.doc(patient.ws)
+				.onSnapshot(doc => {
+					let calltoken = doc.data()?._start_date;
+					if (calltoken !== '' && calltoken !== 'geo') { // Listening for doctor's call
+						let data = calltoken?.split('///');
+						setCalling(true);
+						dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } });
+					} else if ((calltoken === 'geo' && !event?.status_derivacion) || (event?.status_derivacion === "PREASSIGN")) { // Listening for take address
+						setCalling(false);
+						history.push(`/${patient.ws}/delivery/progress/${assignation}/hisopado`);
+					} else {
+						setCalling(false);
+						dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } });
+					}
+				})
+			})
+		}
+		return () => {
+			if (unsubscribeAuth && typeof unsubscribeAuth === "function") {
+				unsubscribeAuth()
+			}
+			if (unsubscribeEvent && typeof unsubscribeEvent === "function") {
+				unsubscribeEvent()
+			}
+		}
+	}, [dni])
+
+
+	// Effect to start audio calling
+	useEffect(() => {
+		try {
+			var audioControl = document.getElementById('toneAudio')
+			dispatch({ type: 'START_CALL' })
+			if (audioControl !== null) {
+				var interval = setInterval(() => {
+					audioControl.play()
+					try {
+						window.navigator.vibrate(1000)
+					} catch (err) {
+						console.log(err)
+					}
+				}, 3000)
+			}
+			return () => clearInterval(interval)
+		} catch (err) {
+			alert(err)
+		}
+	}, [calling, dispatch])
+
+	// Effect that get all selected questions for the patient's symptoms and save them to store
+	useEffect(() => {
+		function questionsForEachSymptom() {
+			let selectedQuestions = []
+			assessment.selectedSymptoms.forEach(symptom => {
+				let filterQuestions = questions.filter(t => {
+					if (t.symptom === symptom) {
+						return t
+					}
+				})
+				selectedQuestions.push(filterQuestions[0].questions)
+			})
+			if (selectedQuestions.length === 0) {
+				dispatch({ type: 'SHOW_ASK_TEXT', payload: false })
+			} else {
+				dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: selectedQuestions })
+			}
+		}
+		questionsForEachSymptom()
+	}, [assessment.selectedSymptoms, questions, dispatch])
+
+	const calculateRemainingTime = (assgnAppnt) => {
+		let now = moment(new Date()).format('HHmm')
+		let next = ''
+		let remainingTime = 0
+		const today = moment(new Date()).tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD')
+		if (!!assgnAppnt && assgnAppnt.time && assgnAppnt.cuil !== 'bag') {
+			next = assgnAppnt.time.replace(/:/g, '')
+			next = parseInt(next.slice(0, 2) * 60) + parseInt(next.slice(2, 4))
+			now = parseInt(now.slice(0, 2) * 60) + parseInt(now.slice(2, 4))
+			remainingTime = next - now
+			let text = ''
+			if (remainingTime > 0 && assgnAppnt.date === today) {
+				if (remainingTime < 60) {
+					text = `Será atendido en ${remainingTime} minutos`
+				} else {
+					try {
+						const calcTime = calcReaminingHrsMins(remainingTime)
+						if (calcTime.reaminingMinutes > 0) {
+							text = `Será atendido en ${calcTime.remainingHours} horas y ${calcTime.reaminingMinutes} minutos.`
+						} else {
+							text = `Será atendido en ${calcTime.remainingHours} horas.`
+						}
+					} catch (error) {
+						// console.error(error)
+						text = 'En breve será atendido.'
+					}
+				}
+				dispatch({ type: 'REMAINING_ATT_TIME', payload: text })
+			} else if (assgnAppnt.date === today) {
+				dispatch({ type: 'REMAINING_ATT_TIME', payload: 'En breve será atendido.' })
+			} else {
+				const hoursToMidNight = (1440 - now)
+				const fromMidNightToAtt = next
+				const totalTimeToNext = hoursToMidNight + fromMidNightToAtt
+				const hoursToNext = totalTimeToNext / 60
+				const calcTime = calcReaminingHrsMins(totalTimeToNext)
+				if (assgnAppnt.date !== today && hoursToNext < 22) {
+					text = `Será atendido en ${calcTime.remainingHours} horas y ${calcTime.reaminingMinutes} minutos.`
+				} else {
+					text = 'Será atendido en aproxidamente 1 día.'
+				}
+				dispatch({ type: 'REMAINING_ATT_TIME', payload: text })
+			}
+		} else {
+			dispatch({
+				type: 'REMAINING_ATT_TIME',
+				payload: 'Seras atendido por el proximo medico disponible.'
+			})
+		}
+		dispatch({ type: 'SHOW_ASK_TEXT', payload: false })
+	}
+
+
+	function handleAppointment(type, claim) {
+		if (type === 'complain') {
+			handleComplain(type, claim)
+		} else {
+			cancelAppointment(type, claim)
+		}
+	}
+
+	async function handleComplain(type, claim) {
+		dispatch({ type: 'TOGGLE_MODAL_ACTION', payload: true })
+		dispatch({ type: 'TOGGLE_DETAIL' });
+		let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
+		let data = {
+			ws: patient.ws,
+			dni: patient.dni,
+			dt: moment().format('YYYY-MM-DD HH:mm:ss'),
+			assignation_id: patient.incidente_id,
+			appointment_path: '',
+			type,
+			complain: claim
+		}
+		try {
+			const res = await axios.post(cx_action_create, data, headers)
+			setResponseAction({ response: res.data.ai_response, action: res.data.ai_action })
+			dispatch({ type: 'SET_CX_RESPONSE', payload: res.data })
+		} catch (error) {
+			dispatch({ type: 'TOGGLE_MODAL_ACTION', payload: false })
+			swal('Error', 'Hubo un error al enviar el reclamo, intenta nuevamente.', 'error')
+		}
+	}
+
+	async function cancelAppointment(type, claim = '') {
+		dispatch({ type: 'LOADING', payload: true })
+		let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+		let documentBuild, aid = assignation, ws = patient.ws
+		if (assignedAppointment.cuil !== 'bag') {
+			documentBuild = `${assignedAppointment.path}`
+		} else {
+			try {
+				const request = await getAppointmentByDni(dni, 'bag')
+				aid = request.appointments[0][14]
+				documentBuild = `assignations/online_clinica_medica/bag/${aid}`
+			} catch (error) {
+				console.error(error)
+			}
+		}
+		try {
+			let data = {
+				ws,
+				dni: dni || '',
+				dt: date || '',
+				assignation_id: aid || '',
+				appointment_path: documentBuild || '',
+				type: type || '',
+				complain: claim.replace(/(\r\n|\n|\r)/gm, '').trim() || ''
+			}
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
+			if (assignedAppointment && (assignedAppointment.status === "ATT" || assignedAppointment.status === "DONE")) {
+				swal(`No se puede cancelar esta atención`,
+					`La atención ya fue iniciada por el médico.`,
+					'warning')
+			} else {
+				await axios.post(user_cancel, data, headers)
+				swal(`Consulta cancelada`,
+					`Será redireccionado/a al inicio`,
+					'success')
+			}
+		} catch (err) {
+			console.error(err)
+		} finally {
+			dispatch({ type: 'RESET_ALL' })
+			dispatch({ type: 'LOADING', payload: false })
+			if (type === 'cancel') {
+				return history.push('/')
+			}
+		}
+	}
+
+	return (
+		<>
+			{loading && <Loading />}
+			{showModalCancelOptions &&
+				<div className='text-center'>
+					<MobileModal title='Motivo de canelación' hideCloseButton>
+						<div className='detail-modal-content'>
+							<div className='mb-2 d-flex flex-wrap flex-column align-items-start'>
+								<div className='custom-control custom-radio'>
+									<input onChange={() => setCancelOptions('Me arrepentí')}
+										type='radio' id='customRadio1' name='customRadio' className='custom-control-input'
+									/>
+									<label className='custom-control-label' htmlFor='customRadio1'>Me arrepentí</label>
+								</div>
+								<div className='custom-control custom-radio'>
+									<input onChange={() => setCancelOptions('Demasiada espera')}
+										type='radio' id='customRadio2' name='customRadio' className='custom-control-input'
+									/>
+									<label className='custom-control-label' htmlFor='customRadio2'>Demasiada espera</label>
+								</div>
+								<div className='custom-control custom-radio'>
+									<input onChange={() => setCancelOptions('Error en la consulta anterior')}
+										type='radio' id='customRadio3' name='customRadio' className='custom-control-input'
+									/>
+									<label className='custom-control-label' htmlFor='customRadio3'>Error en la consulta anterior</label>
+								</div>
+								<div className='custom-control custom-radio'>
+									<input onChange={() => setCancelOptions('otro')}
+										type='radio' id='customRadio4' name='customRadio' className='custom-control-input'
+									/>
+									<label className='custom-control-label' htmlFor='customRadio4'>Otro</label>
+								</div>
+							</div>
+							{cancelOptions === 'otro' &&
+								<textarea onChange={e => setCancelDescription(e.target.value)} value={cancelDescription}></textarea>
+							}
+							<button className='btn btn-blue mt-3' onClick={() => {
+								let claim = ''
+								if (cancelOptions === 'otro') {
+									claim = cancelDescription
+								} else {
+									claim = cancelOptions
+								}
+								handleAppointment('cancel', claim)
+								setShowModalCancelOptions(false)
+								setCancelOptions('')
+								setCancelDescription('')
+							}}>
+								Confirmar
+							</button>
+						</div>
+					</MobileModal>
+				</div>
+			}
+			{openDetails &&
+				<MobileModal title='Enviar un reclamo'>
+					<SendComplain sendComplain={claim => handleAppointment('complain', claim)} />
+				</MobileModal>
+			}
+			{modalAction &&
+				<MobileModal title='Respuesta' hideCloseButton>
+					<AnswerComplain responseAction={responseAction} />
+				</MobileModal>
+			}
+			{calling ?
+				<>
+					<div className='ico-calling'>
+						<Link to={`/${dni}/onlinedoctor/attention/`} replace={true}>
+							<FontAwesomeIcon icon={faPhoneAlt} />
+						</Link>
+					</div>
+					<div className='dinamic-call'>
+						<div>Su médico lo está llamando</div>
+					</div>
+				</>
+				:
+				<>
+					<div className='dinamic-time mb-3'>
+						<Link to='/'>
+							<FaArrowLeft color='#fff' fontSize='2rem' />
+						</Link>
+						<div className='question-title'>
+							{!!remainingText ? remainingText : 'Será atendido pronto'}
+						</div>
+					</div>
+					<Slider />
+				</>
+			}
+			<QueueActions
+				setShowModalCancelOptions={setShowModalCancelOptions}
+				cancel={() => handleAppointment('cancel')}
+				dni={dni}
+				calling={calling}
+				appState={assignedAppointment.state}
+			/>
+			{calling && <audio src={tone} id='toneAudio' autoPlay />}
+		</>
+	)
+}
+
+export default withRouter(Queue);
