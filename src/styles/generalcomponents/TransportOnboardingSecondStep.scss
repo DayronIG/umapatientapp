@@ -1,0 +1,37 @@
+
+@import '../index.scss';
+
+.transportOnboardingSecondStep {
+  .register-form {
+    margin-top: 75px !important;
+  }
+  .secondStepContainer {
+    padding: 10px 20px 20px 20px;
+    .titleSecondStep,
+    .mandatory {
+      margin: 15px 10px;
+    }
+    .titleSecondStep {
+      color: $text-dark;
+    }
+    .mandatory {
+      color: $red-high;
+      font-weight: 600;
+    }
+    .buttonsContainer {
+      margin-top: 25px;
+      .buttonContainer {
+        margin-top: 20px;
+        button {
+          width: 100%;
+          text-align: center;
+          background-color: $secondary-color;
+          color: $white-color;
+          padding: 12px;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+export const MERCADOPAGO_PUBLIC_KEY = 'APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9'
+// export const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231'

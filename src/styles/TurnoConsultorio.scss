@@ -1,0 +1,66 @@
+@import './global/Vars.scss';
+@import './global/Fonts.scss';
+
+.successScheduledContainer {
+  width: 90%;
+  height: auto;
+  margin: 10px auto;
+  background: $white-color;
+  border-radius: $regular-borders;
+  padding: 5px;
+  .successScheduledContainer__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    .successScheduledContainer__container--icon {
+      font-size: 45px;
+      color: $green-high;
+    }
+  }
+}
+
+.appointmentInPlace {
+  .btn-cancel,
+  .btn-back,
+  .btn-calling {
+    font-size: 22px;
+    z-index: 9;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px;
+    height: 60px;
+    outline: none;
+    border: none;
+  }
+  .btn-back {
+    background-color: $primary-blue;
+  }
+  .btn-calling {
+    background-color: $primary-cyan !important;
+  }
+  .listScheduledAppoints {
+    width: 90%;
+    height: auto;
+    margin: 32px auto 15px auto;
+    border-radius: $regular-borders;
+    .listScheduledAppoints__list {
+      display: block;
+      max-height: 60vh;
+      overflow-y: auto;
+      width: 100%;
+      .listScheduledAppoints__list--item {
+        background-color: $secondary-blue;
+        color: $white-color;
+        border-radius: $regular-borders;
+        margin-top: 4px;
+        margin-bottom: 8px;
+        padding: 10px 13px;
+        font-size: 15px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+}

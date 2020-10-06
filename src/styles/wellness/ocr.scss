@@ -1,0 +1,235 @@
+@import '../global/Vars.scss';
+@import '../global/Fonts.scss';
+@import '../mixins/Modal.scss';
+@import '../mixins/Background.scss';
+
+.ocr{
+    width: 100%;
+    .ocr-welcome {
+        height: 80%;
+        padding-bottom: 100px;
+        width: 90%;
+        text-align: center;
+        margin-left: 5%;
+        .tags-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            height: auto;
+            .tag {
+                color: $white-color;
+                background: $secondary-color;
+                height: 20px;
+                min-width: 100px;
+                max-width: 150px;
+                font-size: 0.8rem;
+                min-height: 40px;
+                border-radius: $regular-borders;
+                line-height: 1rem;
+                margin: 5px 3px 5px 0;
+                padding: 5px;
+                text-align: center;
+            }
+            .tag-text {
+                width: 90%;
+                line-height: 1;
+                display: flex;
+                justify-content: center;
+            }
+        }
+        .ocr-welcome-title {
+            width: 100%;
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 2rem;
+            color: $grey-navigation-color;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            .ocr-welcome-umalogo {
+                height: 32px;
+                margin-left: 5px;
+            }
+        }
+        .search-container {
+            width: 90%;
+            margin: 50px 5% 0 5%;
+            background: $white-color;
+            border-radius: 10px;
+            position: relative;
+            .search-title {
+              padding: 7px;
+              width: 100%;
+              color: #97c1d3;
+              text-align: center;
+              background-color: $white-color;
+              font-size: 1.4rem;
+            }
+        }
+        .search-input {
+            margin: 10px;
+            border: 0;
+            width: 100%;
+            input {
+                height: inherit;
+                outline: none;
+                width: 90%;
+                padding-bottom: 7px;
+                border-bottom: 1px solid $primary-color;
+            }
+        }
+        .search-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 56px;
+            background-color: $primary-cyan;
+            color: $white-color;
+            z-index: 2;
+            .check-button {
+              height: 60px;
+              width: 90%;
+              margin: -50px 5% 0 5%;
+              padding: 15px;
+              border-radius: 6px;
+              bottom: 33px;
+              background-color: $secondary-cyan;
+              color: $white-color;
+              z-index: 5;
+              border: 0;
+            }
+          }
+    }
+
+    .question-container {
+        position: relative;
+        height: 100%;
+        text-align: center;
+        .question {
+            width: 100%;
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 2rem;
+            color: $grey-navigation-color;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .responseWrapper {
+            width: 90%;
+            margin: 50px 5% 0 5%;
+            .check-button {
+                height: 60px;
+                width: 90%;
+                margin: 10px 5% 0 5%;
+                padding: 5px;
+                border-radius: 6px;
+                bottom: 33px;
+                background-color: $secondary-cyan;
+                color: $white-color;
+                z-index: 5;
+                border: 0;
+                text-transform: uppercase;
+              }
+              .detail-question{
+                left:0px;
+                text-align: center;
+                min-height:70%;
+                }
+        }
+    }
+
+    .ocr-predict {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        .container-predicts{
+            padding: 0 20px;
+            .sugested-action {
+                padding: 10px;
+                width: 100%;
+                color: #fff;
+                border-radius: 5px;
+                overflow: hidden;
+                cursor: pointer;
+                display: flex;
+                &.green {
+                    background: $green-high;
+                }
+                &.yellow {
+                    background: $yellow-high;
+                }
+                &.red {
+                    background: $red-high;
+                }
+                .suggested-ico {
+                    display: flex;
+                    direction: column;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    padding: 7% 10px;
+                }
+                p {
+                    margin: 0 !important;
+                    line-height: 1rem;
+                    padding: 5px;
+                }
+            }
+            .predict-advisor {
+                font-size: 0.8rem;
+                line-height: 1rem;
+                margin: 10px 0;
+            }
+            .predict-title{
+                font-size: 1.3rem;
+                padding: 7px;
+                width: 100%;
+                color: #97c1d3;
+                text-align: center;
+                background-color: $white-color;
+             }
+             .predict-description {
+                 color: $black;
+             }
+            .predict-container {
+                background: $white-color;
+                color: $primary-color;
+                border-radius: 15px;
+                padding: 10px;
+                margin-top: 10px;
+                .percentage-predict {
+                    font-size: 32px;
+                }
+            }
+            .secondary-predict-container {
+                display: flex;
+                justify-content: space-around;
+                .secondary-predict {
+                    width: 45%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 100%;
+                }
+            }
+            .other-predicts{
+                text-align: center;
+                div{
+                    color: #40afa9;
+                    padding-top: 20px;
+                    margin-top: 10px;
+                    padding-bottom: 20px;
+                    .percentage-predict{
+                        font-size:32px;
+                    }
+                }
+                h5{
+                    margin-top:20px;
+                    margin-bottom:20px;
+                }
+            }
+        }
+    }
+}

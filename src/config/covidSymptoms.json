@@ -1,0 +1,55 @@
+[
+	{ "tag": "Tos", "front": "Tos", "label": "tos", "respuestas": ["si", "no"] },
+	{ "tag": "Fiebre", "front": "Fiebre (> 37,5 de temperatura)", "label": "fiebre", "respuestas": ["si", "no"] },
+	{ "tag": "Dolor de garganta", "front": "Dolor de garganta", "label": "odinofagia", "respuestas": ["si", "no"] },
+	{
+		"tag": "anosmia/disgeusia",
+		"front": "Pérdida de olfato y/o gusto",
+		"label": "anosmia/disgeusia",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "mialgias", 
+		"front": "¿Está con fuertes dolores musculares?", 
+		"label" : "mialgias", 
+		"respuestas": ["si", "no"]
+	},
+	{ "tag": "disnea", "front": "Dificultad para respirar", "label": "disnea", "respuestas": ["si", "no"] },
+	{ "tag": "cefalea", "front": "Dolor de cabeza", "label": "cefalea", "respuestas": ["si", "no"] },
+	{
+		"tag": "diarrea y/o vómitos",
+		"front": "Diarrea y/o vómitos",
+		"label": "diarrea y/o vómitos",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "contacto",
+		"front": "¿Ha estado a una distancia menor a 2 metros, durante al menos 15 minutos, de un caso confirmado de COVID mientras este presentaba síntomas (ej. convivientes, visitas, compañeros de trabajo)?",
+		"label": "contacto estrecho",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "esencial",
+		"front": "¿Es personal de salud, seguridad, fuerzas armadas o trabaja en intituciones cerradas (Ej penitenciarias, residencias de adultos mayores, instituciones neuropsiquiátricas?)",
+		"label": "personal esencial",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "riesgo",
+		"front": "¿Tiene algún síntoma de gravedad como mucha falta de aire o confusión mental?",
+		"label": "signos de riesgo",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "barrio_popular",
+		"front": "¿Vive en un asentamiento o barrio popular?",
+		"label": "barrio popular",
+		"respuestas": ["si", "no"]
+	},
+	{
+		"tag": "amba",
+		"front": "¿Vive en el área metropolitana de Buenos Aires, Argentina? (Ciudad de Buenos Aires y Conurbano)",
+		"label": "amba",
+		"respuestas": ["si", "no"]
+	}
+]

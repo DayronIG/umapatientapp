@@ -1,0 +1,91 @@
+
+@import '../global/Vars.scss';
+
+.autonomous-welcome {
+    .backButtonContainer {
+        position: absolute;
+        top: 57px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 8px 21px;
+        a {
+            display: block;
+            text-align: left;
+        }
+    }
+    .question {
+        margin-top: 25px;
+    }
+    .search-footer {
+        position: absolute;
+        bottom: 12px;
+        width: 100%;
+        height: 56px;
+        color: $white-color;
+        z-index: 2;
+        .check-button {
+          height: 60px;
+          width: 90%;
+          margin: -50px 5% 0 5%;
+          font-size: 20px;
+          font-weight: 700;
+          padding: 15px;
+          border-radius: 6px;
+          bottom: 33px;
+          background-color: $secondary-cyan;
+          color: $white-color;
+          z-index: 5;
+          border: 0;
+        }
+    }
+    .search-container {
+        margin: 20px 5% 0 5%;
+        border-radius: 6px;
+        width: 90%;
+        background: $white-color;
+        position: relative;
+        .search-title {
+            border-radius: 6px;
+            padding: 16px 7px 7px 7px;
+            width: 100%;
+            color: $primary-color;
+            text-align: center;
+            background-color: $white-color;
+            font-size: 1.4rem;
+        }
+        .search-input {
+            border: 0;
+            width: 100%;
+            padding: 10px 12px 24px 12px;
+            input {
+                margin-bottom: 25px;
+                text-align: center;
+                height: inherit;
+                outline: none;
+                width: 90%;
+                color: $text-dark;
+                padding: 12px;
+                border-radius: 6px;
+                background-color: $white-color;
+                box-shadow: $middle-shadow;
+                &::placeholder {
+                    color: $lighter-grey;
+                }
+            }
+            .tags-container {
+                .tag {
+                    color: $white-color;
+                    background: $secondary-color;
+                    font-size: 1rem;
+                    border-radius: $regular-borders;
+                    line-height: 1rem;
+                    margin: 5px 3px 0 0;
+                    padding: 12px 8px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+

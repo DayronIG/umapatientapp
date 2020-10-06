@@ -1,0 +1,26 @@
+@import '../global/Vars.scss';
+
+.search-footer {
+    width: 100%;
+    min-height: 80px;
+    border: none;
+    .check-button {
+      font-size: 15px;
+      font-weight: 700;
+      padding: 15px;
+      border: 0;
+      border-radius: 6px;
+      background-color: $secondary-cyan;
+      color: $white-color;
+      margin-top: 5%;
+      text-align: center;
+    }
+    .text {
+      display: block;
+      color: $white-color;
+    }
+
+    .logo {
+      font-size: 2rem;
+    }
+};

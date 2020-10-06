@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "umaonlineapp"
+  },
+  "targets": {
+    "umaonlineapp": {
+      "hosting": {
+        "umaonlineapp": [
+          "umaonline-patient"
+        ]
+      }
+    }
+  }
+}

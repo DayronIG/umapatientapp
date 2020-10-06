@@ -1,0 +1,51 @@
+@import '../index.scss';
+
+.trackProgress {
+	width: 90%;
+	height: auto;
+	margin: 20px auto 0 auto;
+	.trackProgress__container {
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		.trackProgress__container--step {
+			width: 20px;
+			font-size: 30px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.trackProgress__container--text {
+			position: absolute;
+			top: 30px;
+			left: -5px;
+			font-size: 12px;
+			width: 69px;
+			line-height: 15px;
+			color: #000;
+		}
+		.accomplished {
+			.progress__step {
+				background-color: $deep-blue;
+			}
+			.progress__description {
+				color: $gray-font;
+			}
+		}
+	}
+	.trackProgress__container.map {
+		height: 30vh;
+		margin-top: 25px;
+		.trackProgress__container--marker {
+			font-size: 22px;
+		}
+	}
+	.trackProgress__container.progressBar {
+		background-color: #fff;
+		padding: 30px 15%;
+		overflow: hidden;
+		border-radius: $regular-borders;
+		height: 100px;
+		width: 100%;
+	}
+}

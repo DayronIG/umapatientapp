@@ -1,0 +1,31 @@
+.containerLab {
+  font-family: nunito;
+  width: 100vw;
+  .laboratorios {
+    font-size: 27px;
+    line-height: 62px;
+    margin-top: -55px;
+    color: #00b0f0;
+    font-weight: 900;
+  }
+  .Button {
+    line-height: 128px;
+  }
+  .imggenlab {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .containerLab {
+    width: 100%;
+    .laboratorios {
+      line-height: 29px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+    .imggenlab {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+@import '../index.scss';
+
+.symptoms {
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  .symptoms__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 14px;
+    margin-top: 13px;
+    &:nth-last-child(3){
+      border-bottom: none;
+    }
+    .symptoms__container--question {
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #95a5b3;
+    }
+    .symptoms__container--buttons {
+      display: flex;
+      width: 100%;
+      button {
+        border: rgba($color: #000000, $alpha: .3);
+        width: 100%;
+        font-weight: bold;
+        font-size: 20px;
+        height: 40px;
+        background-color: #dae0e6;
+        color: $white-color;
+        border-radius: 4px;
+        outline: none;
+        &:nth-child(2) {
+          margin-left: 10px;
+        }
+      }
+      .yes-active {
+        background-color: $secondary-color;
+      }
+      .no-active {
+        background-color: $red-high;
+      }
+      .disabled-btn {
+        background-color: $lighter-grey;
+      }
+    }
+  }
+  .btnVolver {
+    font-size: 1.2rem;
+    text-align: center;
+    border: none;
+    font-weight: 700;
+    padding: 15px 16px;
+    min-height: 20px;
+    margin-top: .8rem;
+    border-radius: $regular-borders;
+    color: $white-color;
+    background: $secondary-color;  
+  }
+  .btnVolver[type="submit"] {
+    margin-top: 20px;
+  }
+  .subtitulo-modal {
+    margin: -15px -15px 5px -15px;
+    text-align: center;
+    font-size: 14px;
+    padding: 14px;
+    font-weight: 700;
+    color: #737373;
+    border-bottom: 1px solid #d6d6d6;
+    box-shadow: 0 0 5px 0 rgba(180, 180, 180, 0.53)
+  }
+  .calamardoKempes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    margin-top: 14px;
+    p {
+      font-size: 14px;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      line-height: 0.9rem;
+    }
+    .input-hta {
+      height: 50px;
+      text-align: center;
+      outline: none;
+      font-size: 35px;
+      font-weight: bold;
+      border: 0;
+      width: 30%;
+      background: none;
+      color: $secondary-color;
+      &::placeholder {
+        color: #ccc;
+      }
+    }
+  }
+}

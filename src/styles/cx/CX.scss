@@ -1,0 +1,46 @@
+@import '../index.scss';
+
+.question {
+  color: #97c1d3;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  font-size: 20px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.response {
+  font-weight: bold;
+  margin-bottom: 20px;
+  // background: $secondary-white;
+  border-radius: 7px;
+  text-align: center;
+  color: $black;
+}
+
+button.btnSI,
+a.btnSI,
+button.btnNO {
+  border: none;
+  display: block;
+  border-radius: 6px;
+  text-align: center;
+  width: 100%;
+  line-height: 2;
+  min-height: 46px;
+  color: $white-color;
+  font-weight: bold;
+  padding: 5px 0;
+  font-size: 20px;
+}
+
+.btnSI {
+ background: $primary-cyan;
+ margin: 0 0 10px 0;
+}
+
+.btnNO {
+  background: $primary-cyan;
+  margin: 0;
+}

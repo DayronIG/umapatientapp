@@ -1,0 +1,40 @@
+@import './global/Vars.scss';
+@import './global/Fonts.scss';
+
+.affiliateWelcome{
+    width: 100%;
+    font-family: Nunito;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: $white-color;
+    top: 0;
+    color: $gray-navigation-color;
+    overflow: hidden;
+    padding-top: 50px;
+    z-index: 50 !important;
+    .affiliateWelcome__container {
+        display: flex;
+        text-align: center;
+        .affiliateWelcome__container--img {
+            img {
+                width: 200px;
+                margin-bottom: 20px;
+            }
+            &:first-child{
+                margin-right: 10px;
+            }
+            &:last-child{
+                margin-left: 10px;
+            }
+        }
+        .affiliateWelcome__container--title {
+            text-transform: uppercase;
+            color: $pami-color;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    }
+}

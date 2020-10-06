@@ -1,0 +1,21 @@
+@import '../../global/Vars.scss';
+
+.picture-container {
+    .title{
+        border-radius: 6px;
+        width: 100%;
+        color: $primary-color;
+        text-align: center;
+        background-color: $white-color;
+        font-size: 1.2rem;
+        padding: 15px;
+        border-radius: 6px;
+        align-self: center;
+        }
+
+    .bold {
+        color: cadetblue;
+        font-weight: bold;
+    }
+
+}

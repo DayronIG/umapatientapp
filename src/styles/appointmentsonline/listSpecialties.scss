@@ -1,0 +1,79 @@
+@import '../index.scss';
+
+.listSpecialties {
+  width: 85%;
+  height: auto;
+  margin: 65px auto 0 auto;
+  background: $white-color;
+  border-radius: $regular-borders;
+  padding: 10px 10px;
+  box-shadow: $dark-shadow;
+  // padding: 10px 3vw 30px 3vw;
+
+  .backButtonContainer {
+    position: absolute;
+    left: 0px;
+    top: 55px;
+  }
+  .listSpecialties__container {
+    text-align: center;
+    margin-top: 15px;
+    .listSpecialties__container--title {
+      margin-bottom: 0;
+      font-weight: bold;
+      color: $primary-color;
+      font-size: 1.1rem;
+    }
+    .listSpecialties__list {
+      display: block;
+      margin: 10px auto 0 auto;
+      height: 40vh;
+      overflow-y: scroll;
+      @media (min-height: 568px) {
+        height: 50vh;
+      }
+      @media (min-height: 700px) {
+        height: 60vh;
+      }
+  
+      .listSpecialties__list--item {
+        display: flex;
+        align-items: center;
+        background-color: rgba($primary-grey, .8);
+        justify-content: space-between;
+        text-transform: capitalize;
+        color: $white-color;
+        border-radius: $regular-borders;
+        margin-top: 8px;
+        padding: 0 15px;
+        height: 40px;
+        &.active {
+          background: $primary-blue;
+        }
+      }
+    }
+  }
+}
+.searchByDoctor {
+  margin: 20px auto;
+  padding: 15px 0;
+  width: 85%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $primary-color;
+  color: $white-color;
+  border-radius: $regular-borders;
+  box-shadow: $dark-shadow;
+
+  a {
+    color: $white-color;
+    font-weight: bold;
+    margin-right: 4px;
+  }
+
+  svg {
+    font-size: 22px;
+  }
+}

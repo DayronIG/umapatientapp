@@ -1,0 +1,175 @@
+@import '../../global/Vars.scss';
+
+.contenedor-video {
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+	.instrucciones-video {
+		position: absolute;
+		z-index: 9999;
+		height: 100%;
+		width: 100%;
+		text-align: left;
+		background: #fff;
+		padding: 25px;
+
+		h3 {
+			text-align: center;
+			font-size: 18px;
+			color: #97c1d3;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		p {
+			color: #000;
+			font-weight: normal;
+		}
+
+		button {
+			width: 100%;
+			font-size: 18px;
+			background-color: #97c1d3;
+			color: #fff;
+			border-radius: 6px;
+			border: none;
+			padding: 8px;
+			text-align: center;
+			display: block;
+			font-weight: bold;
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	p {
+		font-weight: bold;
+		color: #fff;
+
+		&.noModal {
+			position: fixed;
+		}
+		&.isModal {
+			position: absolute;
+		}
+		right: 9%;
+		top: 1.5%;
+		z-index: 100;
+	}
+
+	.spiner-video {
+		width: 1rem;
+		height: 1rem;
+
+		&.noModal {
+			position: fixed;
+		}
+		&.isModal {
+			position: absolute;
+		}
+		right: 2%;
+		top: 2%;
+		z-index: 100;
+	}
+
+	.contenedor-video-circulo {
+		height: 100%;
+		position: relative;
+		padding: 2px;
+		.circulo-video {
+			height: 75%;
+			width: 60%;
+			position: absolute;
+			border-radius: 50%;
+			left: 50%;
+			top: 12%;
+			z-index: 999;
+			transform: translateX(-50%);
+		}
+		.circulo-video.red {
+			border: 6px solid $red-high;
+		}
+		.circulo-video.green {
+			border: 6px solid $green-high;
+		}
+		.floating-text {
+			position: absolute;
+			top: 7.5%;
+			right: 9%;
+			z-index: 999;
+			font-weight: bold;
+		}
+		.circulo-video.red + .floating-text {
+			color: $red-high;
+		}
+		.circulo-video.green + .floating-text {
+			color: $green-high;
+		}
+		video {
+			width: 100%;
+			height: 100%;
+			vertical-align: top;
+			object-fit: cover;
+			max-height: 40vh;
+			transform: scaleX(-1);
+			&.noModal {
+				position: fixed;
+				top: 0;
+				left: 0;
+			}
+		}
+	}
+
+	.footer-reproducir {
+		background: #fff;
+		color: $secondary-color;
+		text-align: center;
+
+		&.noModal {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+		}
+
+		.contenedor-btn-reproducir {
+			background-color: #fff;
+			padding: 18px;
+
+			.title-video {
+				color: $primary-color;
+				text-align: center;
+				font-size: 1.2rem;
+				padding: 15px;
+				font-weight: bold;
+			}
+
+			button {
+				width: 100%;
+				background-color: #97c1d3;
+				color: #fff;
+				border-radius: 6px;
+				border: none;
+				padding: 15px 20px;
+				text-align: center;
+				margin: auto;
+				display: block;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				outline: none;
+
+				.btn-reproducir {
+					font-size: 25px;
+					margin-right: 10px;
+				}
+
+				span {
+					font-weight: bold;
+					font-size: 22px;
+				}
+			}
+		}
+	}
+}

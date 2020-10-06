@@ -1,0 +1,264 @@
+@import '../global/Vars.scss';
+
+.calamardotentaculos {
+	margin: 0 10px;
+	border-radius: 6px;
+	z-index: 20;
+	&.amarillo {
+		background: #f8bd1d;
+	}
+	&.gris {
+		background: #9e9c97;
+	}
+	&.rojo {
+		background: #f73e1e;
+	}
+	&.verde {
+		background: #afd427;
+	}
+
+	h5 {
+		color: #fff;
+		padding: 15px;
+		font-weight: bold;
+		font-size: 15px;
+	}
+
+	.detalles-status {
+		color: #fff;
+		font-size: 13px;
+		text-align: center;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		padding: 0 3px;
+
+		.active {
+			font-weight: bold;
+		}
+	}
+
+	.progressbar {
+		padding: 0 40px 20px 40px;
+		.indexedStep {
+			color: #fff;
+			width: 25px;
+			height: 25px;
+			font-size: 2rem;
+			font-weight: bold;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		// Clases de la librería
+		.RSPBprogression {
+			background-color: transparent;
+			border-top: 1px dashed #fff;
+			top: 5px;
+		}
+		.RSPBprogressBar {
+			background-color: transparent;
+		}
+	}
+}
+
+.detalle {
+	background: #fff;
+	box-shadow: 0px 4px 40px rgba(185, 210, 229, 0.75);
+	border-radius: 0px 0px 13px 13px;
+	padding: 25px;
+	margin-top: -40px;
+	&.amarillo {
+		border-top: 5px solid #f8bd1d;
+	}
+	&.gris {
+		border-top: 5px solid #ccc;
+	}
+	&.rojo {
+		border-top: 5px solid #f73e1e;
+	}
+	&.verde {
+		border-top: 5px solid #afd427;
+	}
+
+	h3 {
+		// font-family: Visby Round CF;
+		font-weight: bold;
+		font-size: 16px;
+		line-height: 19px;
+		color: #686464;
+		margin: 20px 0;
+	}
+
+	.text-image {
+		display: flex;
+		margin-bottom: 20px;
+		justify-content: space-between;
+		align-items: center;
+
+		.text {
+			font-size: 14px;
+			line-height: 20px;
+			color: #686464;
+		}
+		.detalle-img {
+			margin: 0 18px;
+		}
+	}
+
+	.link {
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 17px;
+		color: #40d6d2;
+		text-decoration: underline;
+	}
+}
+
+.estado-salud {
+	background: #fff;
+	margin: 20px;
+	box-shadow: 0px 4px 50px rgba(185, 210, 229, 0.5);
+	border-radius: 6px;
+	padding: 20px;
+	h3 {
+		font-weight: bold;
+		font-size: 16px;
+		line-height: 19px;
+		color: #686464;
+	}
+	p {
+		// font-family: Visby Round CF;
+		font-size: 14px;
+		line-height: 17px;
+		color: #686464;
+	}
+
+	button {
+		border: none;
+		font-weight: bold;
+		font-size: 15px;
+		color: #fff;
+		margin-right: 5px;
+		background: #54e3e0;
+		border-radius: 6px;
+		padding: 5px 12px;
+	}
+	// a {
+	//   font-weight: bold;
+	//   font-size: 14px;
+	//   line-height: 17px;
+	//   text-align: center;
+	//   text-decoration-line: underline;
+	//   color: #686464;
+	// }
+}
+
+.slider-recomendaciones {
+	background: #fff;
+	margin: 0 20px 20px 20px;
+	box-shadow: 0px 4px 50px rgba(185, 210, 229, 0.5);
+	border-radius: 6px;
+	padding: 20px 20px 35px 20px;
+	h3 {
+		font-weight: bold;
+		font-size: 16px;
+		line-height: 19px;
+		color: #686464;
+		margin-bottom: 20px;
+	}
+
+	.slider {
+		.slide-item {
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+			align-items: center;
+			column-gap: 10px;
+
+			.image {
+				width: 100%;
+				img {
+					// width: 100%;
+					max-height: 100px;
+					object-fit: cover;
+				}
+			}
+			.description {
+				font-size: 15px;
+				line-height: 15px;
+				color: #686464;
+			}
+		}
+
+		// Clase de la libreria carousel
+		.slider-control-bottomcenter {
+			bottom: -45px !important;
+			li.active button {
+				fill: #3fd6d2 !important;
+			}
+		}
+	}
+}
+
+.back-home {
+	padding: 15px;
+	display: inline-block;
+	width: 80%;
+	background: #51e3e0;
+	box-shadow: 0px 4px 7px #3fd6d2;
+	border-radius: 6px;
+	outline: none;
+	font-weight: 900;
+	font-size: 20px;
+	line-height: 24px;
+	color: #fff;
+	text-align: center;
+	margin: 0 auto 20px auto;
+}
+
+.seguimientos-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #fff;
+	color: #3fd6d2;
+	padding: 10px 20px;
+	width: 95%;
+	margin: 10px auto;
+	border-radius: 8px;
+
+	h4 {
+		font-weight: bold;
+		font-size: 15px;
+		margin: 0;
+	}
+}
+
+.lista-seguimientos {
+	background: #fff;
+	box-shadow: 0px 4px 50px rgba(185, 210, 229, 0.5);
+	margin: 0 auto 20px auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	margin-bottom: 25px;
+	border-radius: 6px;
+	width: 95%;
+
+	.event {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 5% 0 6.5%;
+		width: 100%;
+		height: 60px;
+		color: #3fd6d2;
+
+		span {
+			margin-left: 25px;
+			font-size: 15px;
+			color: #a5bacb;
+		}
+	}
+}

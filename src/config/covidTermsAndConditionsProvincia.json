@@ -1,0 +1,53 @@
+[
+    {
+        "label": "En el caso de ser diagnosticado/a con la enfermedad denominada COVID-19 y en el caso que mi médico/a tratante defina que mi condición clínica lo permita, podre continuar el seguimiento en forma ambulatoria en mi domicilio cumpliendo con lo que detallo a continuación:"
+    },
+    {
+        "label": "No convivir con personas mayores de 60 años o que tengan comorbilidades como diabetes, enfermedad cardiovascular, enfermedades respiratorias o inmunosuprimidos que estén en alto riesgo de tener formas graves de COVID-19.",
+        "value": "No convivir con personas mayores de 60 años o que tengan comorbilidades como diabetes, enfermedad cardiovascular, enfermedades respiratorias o inmunosuprimidos que estén en alto riesgo de tener formas graves de COVID-19."
+    },
+    {
+        "label": "Mientras dure el aislamiento, no recibir visitas de ningún tipo (excepto personal sanitario que esté involucrado en forma directa en mi seguimiento y atención), ni concurrir a trabajar, ni asistir a eventos sociales, reuniones o actividades grupales de ningún tipo. ",
+        "value": "Mientras dure el aislamiento, no recibir visitas de ningún tipo (excepto personal sanitario que esté involucrado en forma directa en mi seguimiento y atención), ni concurrir a trabajar, ni asistir a eventos sociales, reuniones o actividades grupales de ningún tipo. "
+    },
+    {
+        "label": "Mantenerme alejado de situaciones en las que pudiera entrar en contacto cercano (menos de 2 metros) con cualquier otra persona, incluyendo quienes convivan conmigo. Si por razones de fuerza mayor esto fuera inevitable, tanto yo como la otra persona debemos usar barbijo quirúrgico. ",
+        "value": "Mantenerme alejado de situaciones en las que pudiera entrar en contacto cercano (menos de 2 metros) con cualquier otra persona, incluyendo quienes convivan conmigo. Si por razones de fuerza mayor esto fuera inevitable, tanto yo como la otra persona debemos usar barbijo quirúrgico. "
+    },
+    {
+        "label": "Permanecer en una habitación individual con la puerta cerrada, a la que nadie más que yo debo entrar y de la que sólo puedo salir para actividades absolutamente imprescindibles como ir al baño.",
+        "value": "Permanecer en una habitación individual con la puerta cerrada, a la que nadie más que yo debo entrar y de la que sólo puedo salir para actividades absolutamente imprescindibles como ir al baño."
+    },
+    {
+        "label": "Lavarme las manos con frecuencia con agua y jabón o alcohol en gel.",
+        "value": "Lavarme las manos con frecuencia con agua y jabón o alcohol en gel."
+    },
+    {
+        "label": "Si convivo con otras personas, debo usar barbijo quirúrgico cada vez que salga de la habitación. ",
+        "value": "Si convivo con otras personas, debo usar barbijo quirúrgico cada vez que salga de la habitación. "
+    },
+    {
+        "label": "Si uso un baño compartido, debo usar barbijo y al finalizar debo lavarme las manos y limpiar todas las superficies que haya tocado con alcohol o una solución de agua y lavandina. ",
+        "value": "Si uso un baño compartido, debo usar barbijo y al finalizar debo lavarme las manos y limpiar todas las superficies que haya tocado con alcohol o una solución de agua y lavandina. "
+    },
+    {
+        "label": "No compartir utensilios, vajilla, toallas, ropa de cama almohadas ni ningún otro artículo del hogar. Después de usarlos, todos estos artículos deben ser lavados cuidadosamente con agua caliente y jabón sin sacudirlos. Si no soy yo quien los lava, la persona encargada debe utilizar medida de protección personal. ",
+        "value": "No compartir utensilios, vajilla, toallas, ropa de cama almohadas ni ningún otro artículo del hogar. Después de usarlos, todos estos artículos deben ser lavados cuidadosamente con agua caliente y jabón sin sacudirlos. Si no soy yo quien los lava, la persona encargada debe utilizar medida de protección personal. "
+    },
+    {
+        "label": "Cubrirme la boca y nariz al estornudar o toser con un pañuelo descartable o el codo. Si uso un pañuelo descartable, debo tirarlo en un cesto con bolsa y tapa y lavarme las manos inmediatamente con agua y jabón o alcohol en gel. ",
+        "value": "Cubrirme la boca y nariz al estornudar o toser con un pañuelo descartable o el codo. Si uso un pañuelo descartable, debo tirarlo en un cesto con bolsa y tapa y lavarme las manos inmediatamente con agua y jabón o alcohol en gel. "
+    },
+    {
+        "label": "Por este medio acepto que la autoridad sanitaria se comunique conmigo todas las veces que sea necesario para evaluar mi estado de salud y verificar el cumplimiento de los requisitos que se enumeraron anteriormente. Declaro que en ese teléfono puedo ser ubicado las 24 horas del día."
+    },
+    {
+        "label": "Fui informado de que en caso de presentar dificultad respiratoria, fiebre, empeoramiento de los síntomas debo informarlo inmediatamente."
+    },
+    {
+        "label": "Por la presente declaro que todas mis dudas fueron respondidas y que comprendí las obligaciones que se enumeran más arriba. Entiendo además que su incumplimiento constituye un delito contra la salud pública de acuerdo a lo previsto en el artículo 205 del Código Penal y que puede acarrear consecuencias graves para otras personas y para mí mismo/a, incluyendo la cárcel."
+    },
+    {
+        "label": "Cumplir el aislamiento en forma estricta es una medida clave para prevenir la transmisión del virus a los convivientes, compañeros de trabajo y a la población en general, y una obligación para proteger a las personas más vulnerables de la sociedad. El incumplimiento de las medidas de aislamiento es considerado un delito en nuestro país, y puede acarrear consecuencias legales graves."
+    }
+]

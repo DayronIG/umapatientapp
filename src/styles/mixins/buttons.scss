@@ -1,0 +1,57 @@
+
+@import '../global/Vars.scss';
+
+@mixin commonButton(
+    $width: 100%, 
+    $fontColor: $white-color,
+    $fontWeight: 600, 
+    $height: 50px, 
+    $borderRadius: $regular-borders, 
+    $fontSize: 20px,
+    $backgroundColor: $primary-cyan
+  ) {
+        width: $width;
+        height: $height;
+        color: $fontColor;
+        font-weight: $fontWeight;
+        border-radius: $borderRadius;
+        font-size: $fontSize;
+        border: 0;
+        text-transform: capitalize;
+        padding: 10px 15px;
+        background-color: $backgroundColor;
+        outline: none;
+        border: none;
+}
+
+@mixin module-button($width: 25%, $height:50%, $padding: 2%) {
+    width: $width;
+    height: $height;
+    padding: $padding;
+    background-color: $white-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;     
+}
+
+@mixin large-button(
+    $background-color: $primary-cyan, 
+    $color: $white-color, 
+    $padding: 0 5% 0 6.5%,
+    $border-radius: $regular-borders,
+    $width: 100% ) {
+        background-color: $background-color;
+        border-radius: $border-radius;
+        width: $width;
+        color: $color;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $padding;
+        font-weight: 700;
+        font-size: 16px;
+        border: none;
+        outline: none;
+}
