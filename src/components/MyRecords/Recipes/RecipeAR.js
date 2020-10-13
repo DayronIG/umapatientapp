@@ -8,248 +8,312 @@ class RecipePDF extends React.Component {
 		const {
 			prescriptionNumber,
 			patient: { n_afiliado },
+			recipe
 		} = this.props;
-		const cvRecipe = document.getElementById('barcodeRecipePrint'),
-			cvRecipe_rep = document.getElementById('barcodeRecipePrint_rep'),
-			cvAff = document.getElementById('barcodeAffiliatePrint'),
-			cvAff_rep = document.getElementById('barcodeAffiliatePrint_rep');
-		if (!!prescriptionNumber) {
-			cvRecipe &&
-				JsBarcode(cvRecipe, prescriptionNumber, {
-					format: 'EAN13',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
-			cvRecipe_rep &&
-				JsBarcode(cvRecipe_rep, prescriptionNumber, {
-					format: 'EAN13',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
-		}
-		if (!!n_afiliado) {
-			cvAff &&
-				JsBarcode(cvAff, n_afiliado, {
-					format: 'CODE128',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
-			cvAff_rep &&
-				JsBarcode(cvAff_rep, n_afiliado, {
-					format: 'CODE128',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
+		for (let i = 0; i <= recipe.length; i++) {
+			const cvRecipe = document.getElementById(`barcodeRecipe_${i}`),
+			cvRecipe_rep = document.getElementById(`barcodeAffiliate_${i}`),
+			cvAff = document.getElementById(`barcodeRecipe_rep_${i}`),
+			cvAff_rep = document.getElementById(`barcodeAffiliate_rep_${i}`);
+			if (!!prescriptionNumber) {
+				cvRecipe &&
+					JsBarcode(cvRecipe, prescriptionNumber, {
+						format: 'EAN13',
+						width: 3,
+						height: 50,
+						fontSize: 20,
+						flat: true,
+					});
+				cvRecipe_rep &&
+					JsBarcode(cvRecipe_rep, prescriptionNumber, {
+						format: 'EAN13',
+						width: 3,
+						height: 50,
+						fontSize: 20,
+						flat: true,
+					});
+			}
+			if (!!n_afiliado) {
+				cvAff &&
+					JsBarcode(cvAff, n_afiliado, {
+						format: 'CODE128',
+						width: 3,
+						height: 50,
+						fontSize: 20,
+						flat: true,
+					});
+				cvAff_rep &&
+					JsBarcode(cvAff_rep, n_afiliado, {
+						format: 'CODE128',
+						width: 3,
+						height: 50,
+						fontSize: 20,
+						flat: true,
+					});
+			}
 		}
 	}
 
 	render() {
 		const { patient, recipe, doctorInfo, prescriptionDate, mr, logo } = this.props;
-		const replicate = recipe.some((med) => parseInt(med.duplicado) === 1);
-		return (
-			<div>
-				<div className='recipeToPrint'>
-					<div className='recipeToPrint__container logo_container'>
-						{!logo && <img src={UMA} className='recipeToPrint__container--logo' alt='' />}
-						{logo && <img src={logo} className='recipeToPrint__container--logo' alt='' />}
-					</div>
-					<div className='recipeToPrint__container'>
-						<h1 className='recipeToPrint__container--title'>Receta Médica</h1>
-					</div>
-					<div className='recipeToPrint__container pt-4'>
-						<ul className='recipeToPrint__container--list'>
-							<li>Nombre completo: {patient && patient.fullname}</li>
-							{mr.diagnostico && <li>Diagnóstico: {mr.diagnostico}</li>}
-							<li>Fecha de prescripción: {recipe && prescriptionDate}</li>
-							{patient && patient.obra_social && <li>Obra Social: {patient.obra_social}</li>}
-							{patient && patient.n_afiliado && <li>Número de afiliado: {patient.n_afiliado}</li>}
-						</ul>
-					</div>
-					<div className='recipeToPrint__container'>
-						<table className='recipeToPrint__container--table'>
-							<thead>
-								<tr>
-									<th>Cantidad</th>
-									<th>Producto</th>
-									<th>Presentación</th>
-									<th>Droga</th>
-								</tr>
-							</thead>
-							<tbody>
-								{recipe.map((medicine, index) => (
-									<tr key={index}>
-										<td>{medicine.cantidad}</td>
-										<td>{medicine.productName}</td>
-										<td>{medicine.presentationName}</td>
-										<td>{medicine.drugName}</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-					<div className='recipeToPrint__bottomContainer'>
-						<div className='d-flex justify-content-between align-items-center'>
-							<div
-								className={
-									!!patient.n_afiliado
-										? 'recipeToPrint__bottomContainer--barcode'
-										: 'recipeToPrint__bottomContainer--barcode position_center'
-								}
-							>
-								<h6>Número de receta</h6>
-								<div>
-									<canvas
-										id='barcodeRecipePrint'
-										style={{
-											display: 'block',
-										}}
-									/>
-								</div>
-							</div>
-							{!!patient.n_afiliado ? (
-								<div className='recipeToPrint__bottomContainer--barcode'>
-									<h6>Número de afiliado</h6>
-									<div>
-										<canvas
-											id='barcodeAffiliatePrint'
-											style={{
-												display: 'block',
-											}}
-										/>
+		let printTimes = 0, printArr = [];
+		let helper = recipe.length;
+		if (helper === 1) {
+			printTimes = 1;
+		} else if (helper % 2 === 0) {
+			printTimes = helper / 2;
+		} else if (helper % 2 !== 0) {
+			printTimes = helper / 2 + 1;
+		} else {
+			printTimes = 0;
+		}
+		for (let i = 1; i <= printTimes; i++) {
+			printArr.push(i);
+		}
+		if (printArr.length > 0 && recipe[0]) {
+			return (
+				<div>
+					{printArr.map((item, i) => {
+						let replicate,
+							mapMeds = [];
+						if (i === 0) {
+							mapMeds.push(recipe[i]);
+							if (recipe[i + 1]) {
+								mapMeds.push(recipe[i + 1]);
+							}
+						} else if (i === 1) {
+							if (recipe[i + 1]) {
+								mapMeds.push(recipe[i + 1]);
+							}
+							if (recipe[i + 2]) {
+								mapMeds.push(recipe[i + 2]);
+							}
+						} else {
+							if (recipe[i + 2]) {
+								mapMeds.push(recipe[i + 2]);
+							}
+							if (recipe[i + 3]) {
+								mapMeds.push(recipe[i + 3]);
+							}
+						}
+						if (mapMeds[0]) {
+							replicate = mapMeds.some((med) => parseInt(med.duplicado) === 1);
+						}
+						return (
+							<>
+								<div className='recipeToPrint'>
+									<div className='recipeToPrint__container logo_container'>
+										<img src={logo || UMA} className='recipeToPrint__container--logo' alt='' />
 									</div>
-								</div>
-							) : (
-									<canvas id='barcodeAffiliatePrint' style={{ display: 'none' }} />
-								)}
-						</div>
-						<h6 className='recipeToPrint__bottomContainer--doctorData'>
-							{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
-						</h6>
-						<h6 className='recipeToPrint__bottomContainer--doctorData'>
-							{!!doctorInfo && <span>Matrícula número: {doctorInfo.matricula}</span>}
-						</h6>
-						<div className='recipeToPrint__bottomContainer--firm'>
-							{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='Firma del doctor' />}
-						</div>
-						<div className='recipeToPrint__bottomContainer--mail'>
-							<span>Contacto: info@uma-health.com - 0800-888-3637</span>
-							<br />
-							<span>Dirección: Melián 2752</span>
-							<br /> <br />
-							<small className='pl-2'>RECETA DE EMERGENCIA COVID-19</small>
-						</div>
-					</div>
-					{replicate && (
-						<>
-							<div className='recipeToPrint__container logo_container'>
-								<img src={UMA} className='recipeToPrint__container--logo' alt='' />
-							</div>
-							<div className='recipeToPrint__container'>
-								<h5>Duplicado</h5>
-							</div>
-							<div className='recipeToPrint__container'>
-								<h1 className='recipeToPrint__container--title'>Receta Médica</h1>
-							</div>
-							<div className='recipeToPrint__container'>
-								<ul className='recipeToPrint__container--list'>
-									<li>Nombre completo: {patient && patient.fullname}</li>
-									{mr.diagnostico && <li>Diagnóstico: {mr.diagnostico}</li>}
-									<li>Fecha de prescripción: {recipe && prescriptionDate}</li>
-									{patient && patient.obra_social && <li>Obra Social: {patient.obra_social}</li>}
-									{patient && patient.n_afiliado && <li>Número de afiliado: {patient.n_afiliado}</li>}
-								</ul>
-							</div>
-							<div className='recipeToPrint__container'>
-								<table className='recipeToPrint__container--table'>
-									<thead>
-										<tr>
-											<th>Cantidad</th>
-											<th>Producto</th>
-											<th>Presentación</th>
-											<th>Droga</th>
-										</tr>
-									</thead>
-									<tbody>
-										{recipe.map((medicine, index) => {
-											if (parseInt(medicine.duplicado) === 1) {
-												return (
+									<div className='recipeToPrint__container'>
+										<h1 className='recipeToPrint__container--title'>
+											Receta Médica
+										</h1>
+									</div>
+									<div className='recipeToPrint__container'>
+										<ul className='recipeToPrint__container--list'>
+											<li>Nombre completo: {patient.fullname}</li>
+											{mr.diagnostico && 
+												<li>Diagnóstico: {mr.diagnostico}</li>
+											}
+											<li>Fecha de prescripción: {prescriptionDate}</li>
+											{patient.obra_social && 
+												<li>Obra Social: {patient.obra_social}</li>
+											}
+											{patient.n_afiliado && 
+												<li>Número de afiliado: {patient.n_afiliado}</li>
+											}
+											{patient.dni && 
+												<li>Dni del paciente: {patient.dni}</li>
+											}
+										</ul>
+									</div>
+									<div className='recipeToPrint__container'>
+										<table className='recipeToPrint__container--table'>
+											<thead>
+												<tr>
+													<th>Cantidad</th>
+													<th>Producto</th>
+													<th>Presentación</th>
+													<th>Droga</th>
+												</tr>
+											</thead>
+											<tbody>
+												{mapMeds.map((medicine, index) => (
 													<tr key={index}>
 														<td>{medicine.cantidad}</td>
 														<td>{medicine.productName}</td>
 														<td>{medicine.presentationName}</td>
 														<td>{medicine.drugName}</td>
 													</tr>
-												);
-											}
-										})}
-									</tbody>
-								</table>
-							</div>
-							<div className='recipeToPrint__bottomContainer'>
-								<div className='d-flex justify-content-between align-items-center'>
-									<div
-										className={
-											!!patient.n_afiliado
-												? 'recipeToPrint__bottomContainer--barcode'
-												: 'recipeToPrint__bottomContainer--barcode position_center'
-										}
-									>
-										<h6>Número de receta</h6>
-										<div>
-											<canvas
-												id='barcodeRecipePrint_rep'
-												style={{
-													display: 'block',
-												}}
-											/>
+												))}
+											</tbody>
+										</table>
+									</div>
+									<div className='recipeToPrint__bottomContainer'>
+										<div className='d-flex justify-content-between align-items-center'>
+											<div
+												className={
+													!!patient.n_afiliado
+														? 'recipeToPrint__bottomContainer--barcode'
+														: 'recipeToPrint__bottomContainer--barcode position_center'
+												}>
+												<h6>Número de receta</h6>
+												<div>
+													<canvas id={`barcodeRecipe_${i}`} />
+												</div>
+											</div>
+											{!!patient.n_afiliado ? (
+												<div className='recipeToPrint__bottomContainer--barcode'>
+													<h6>Número de afiliado</h6>
+													<div>
+														<canvas id={`barcodeAffiliate_${i}`} />
+													</div>
+												</div>
+											) : (
+												<canvas id='barcodeAffiliate' style={{ display: 'none' }} />
+											)}
+										</div>
+										<h6 className='recipeToPrint__bottomContainer--doctorData'>
+											{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
+										</h6>
+										<h6 className='recipeToPrint__bottomContainer--doctorData'>
+											{!!doctorInfo && <span>Matrícula número: {doctorInfo.matricula}</span>}
+										</h6>
+										<div className='recipeToPrint__bottomContainer--firm'>
+											{!!doctorInfo.signature && (
+												<img src={doctorInfo.signature} alt='Firma del doctor' />
+											)}
+										</div>
+										<div className='recipeToPrint__bottomContainer--mail'>
+											<span>Contacto: info@uma-health.com - 0800-888-3637</span>
+											<br />
+											<span>Dirección: Melián 2752</span>
+											<br />
+											<span>Válida por 7 días a partir de la fecha de emisión.</span>
+											<br /> <br />
+											<small className='pl-2'>RECETA DE EMERGENCIA COVID-19</small>
 										</div>
 									</div>
-									{!!patient.n_afiliado ? (
-										<div className='recipeToPrint__bottomContainer--barcode'>
-											<h6>Número de afiliado</h6>
-											<div>
-												<canvas
-													id='barcodeAffiliatePrint_rep'
-													style={{
-														display: 'block',
-													}}
-												/>
+								</div>
+								{replicate && (
+									<div className='recipeToPrint'>
+										<div className='recipeToPrint__container logo_container'>
+											<img
+												src={logo || UMA}
+												className='recipeToPrint__container--logo'
+												alt=''
+											/>
+										</div>
+										<div className='recipeToPrint__container'>
+											<h5>
+												<b>DUPLICADO</b>
+											</h5>
+										</div>
+										<div className='recipeToPrint__container'>
+											<h1 className='recipeToPrint__container--title'>Receta Médica</h1>
+										</div>
+										<div className='recipeToPrint__container'>
+											<ul className='recipeToPrint__container--list'>
+												{patient && 
+													<li>Nombre completo: {patient.fullname}</li>
+												}
+												{mr.diagnostico && 
+													<li>Diagnóstico: {mr.diagnostico}</li>
+												}
+												<li>Fecha de prescripción: {prescriptionDate}</li>
+												{patient.obra_social && 
+													<li>Obra Social: {patient.obra_social}</li>
+												}
+												{patient.n_afiliado && 
+													<li>Número de afiliado: {patient.n_afiliado}</li>
+												}
+												{patient.dni && <li>Dni del paciente: {patient.dni}</li>}
+											</ul>
+										</div>
+										<div className='recipeToPrint__container'>
+											<table className='recipeToPrint__container--table'>
+												<thead>
+													<tr>
+														<th>Cantidad</th>
+														<th>Producto</th>
+														<th>Presentación</th>
+														<th>Droga</th>
+													</tr>
+												</thead>
+												<tbody>
+													{mapMeds.map((medicine, index) => {
+														if (parseInt(medicine.duplicado) === 1) {
+															return (
+																<tr key={index}>
+																	<td>{medicine.cantidad}</td>
+																	<td>{medicine.productName}</td>
+																	<td>{medicine.presentationName}</td>
+																	<td>{medicine.drugName}</td>
+																</tr>
+															);
+														}
+													})}
+												</tbody>
+											</table>
+										</div>
+										<div className='recipeToPrint__bottomContainer'>
+											<div className='d-flex justify-content-between align-items-center'>
+												<div
+													className={
+														!!patient.n_afiliado
+															? 'recipeToPrint__bottomContainer--barcode'
+															: 'recipeToPrint__bottomContainer--barcode position_center'
+													}>
+													<h6>Número de receta</h6>
+													<div>
+														<canvas id={`barcodeRecipe_rep_${i + 1}`} />
+													</div>
+												</div>
+												{!!patient.n_afiliado ? (
+													<div className='recipeToPrint__bottomContainer--barcode'>
+														<h6>Número de afiliado</h6>
+														<div>
+															<canvas id={`barcodeAffiliate_rep_${i + 1}`} />
+														</div>
+													</div>
+												) : (
+													<canvas id='barcodeAffiliate_rep' style={{ display: 'none' }} />
+												)}
+											</div>
+											<h6 className='recipeToPrint__bottomContainer--doctorData'>
+												{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
+											</h6>
+											<h6 className='recipeToPrint__bottomContainer--doctorData'>
+												{!!doctorInfo && 
+													<span>Matrícula número: {doctorInfo.matricula}</span>
+												}
+											</h6>
+											<div className='recipeToPrint__bottomContainer--firm'>
+												{!!doctorInfo.signature && (
+													<img src={doctorInfo.signature} alt='Firma del doctor' />
+												)}
+											</div>
+											<div className='recipeToPrint__bottomContainer--mail'>
+												<span>Contacto: info@uma-health.com - 0800-888-3637</span>
+												<br />
+												<span>Dirección: Melián 2752</span>
+												<br />
+												<span>Válida por 7 días a partir de la fecha de emisión.</span>
+												<br /> <br />
+												<small className='pl-2'>RECETA DE EMERGENCIA COVID-19</small>
 											</div>
 										</div>
-									) : (
-											<canvas id='barcodeAffiliatePrint_rep' style={{ display: 'none' }} />
-										)}
-								</div>
-								<h6 className='recipeToPrint__bottomContainer--doctorData'>
-									{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
-								</h6>
-								<h6 className='recipeToPrint__bottomContainer--doctorData'>
-									{!!doctorInfo && <span>Matrícula número: {doctorInfo.matricula}</span>}
-								</h6>
-								<div className='recipeToPrint__bottomContainer--firm'>
-									{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='Firma del doctor' />}
-								</div>
-								<div className='recipeToPrint__bottomContainer--mail'>
-									<span>Contacto: info@uma-health.com - 0800-888-3637</span>
-									<br />
-									<span>Dirección: Melián 2752</span>
-									<br /> <br />
-									<small className='pl-2'>RECETA DE EMERGENCIAS COVID-19</small>
-								</div>
-							</div>
-						</>
-					)}
+									</div>
+								)}
+							</>
+						);
+					})}
 				</div>
-			</div>
-		);
+			);
+		} else {
+			return <div></div>;
+		}
 	}
 }
 
@@ -550,7 +614,6 @@ const Recipe = ({ att, doc }) => {
 	});
 	const [fromUP] = useState(prescripNum?.length > 13 ? true : false);
 	const [prescripDate] = useState(mr?.receta[0]?.prescriptionDate ? mr.receta[0].prescriptionDate : '');
-	console.log(mr.receta?.[0]);
 	const dataToPrint = {
 		patient: patient,
 		recipe: mr.receta,
@@ -561,9 +624,6 @@ const Recipe = ({ att, doc }) => {
 		prescriptionDate: prescripDate || '',
 		mr,
 	};
-
-
-	console.log();
 
 	useEffect(() => {
 		if (mr?.receta[0]) {

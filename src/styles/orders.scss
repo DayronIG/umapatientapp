@@ -12,7 +12,8 @@
 }
 
 .recipeToprint {
-	width: 550px;
+	width: 600px;
+	height: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	font-size: 22px;
@@ -40,7 +41,7 @@
 			margin: 0;
 			text-align: center;
 			font-size: 1.6em;
-			margin-bottom: -30px;
+			margin-bottom: 50px;
 		}
 		.recipeToPrint__container--list {
 			margin-top: 20px;
@@ -68,7 +69,7 @@
 			}
 			tbody {
 				td {
-					font-size: 0.72em;
+					font-size: 1em;
 				}
 			}
 		}
