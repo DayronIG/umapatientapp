@@ -1,0 +1,188 @@
+@import '../../index.scss';
+
+.record__trigger--btn {
+  bottom: 0px;
+  width: 100%;
+  background-color: $primary-color;
+  color: $white-color;
+  font-size: 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  padding: 15px 20px;
+  text-align: center;
+  margin: auto;
+  display: block;
+  height: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    .icon{
+      margin-right: 10px;
+      margin-top: -5px;
+    }
+}
+
+.instrucciones-audio {
+  position: absolute;
+  z-index: 9999;
+  height: 40vh;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  padding: 25px;
+
+  h3 {
+    text-align: center;
+    font-size: 18px;
+    color: #97c1d3;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  p {
+    color: #000;
+    font-weight: normal;
+  }
+
+  button {
+    width: 100%;
+    font-size: 18px;
+    background-color: #97c1d3;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    padding: 8px;
+    text-align: center;
+    display: block;
+    font-weight: bold;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+
+.disabled {
+  background-color: lightgray!important;
+}
+
+.audio-container{
+  .counter{
+    p {
+      position: absolute;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 100;
+    }
+
+    .spiner-video {
+      position: absolute;
+      width: 2.8rem; 
+      height: 2.8rem;
+      z-index: 100;
+    }
+  }
+  .isModal{
+		.styleSpinner {
+			left: 2%;
+			top: 2%;
+		}
+		.styleCounter {
+			left: 7.5%;
+      top: 2.5%;      
+		}
+  }
+  .isFullscreen{
+    .styleSpinner {
+			left: 2%;
+			top: 1%;
+		};
+		.styleCounter {
+			left: 6.5%;
+      top: 2.2%;
+		};
+		.styleButton{
+			position: absolute;
+			bottom: 20%;
+		};
+  }
+  .title{
+    border-radius: 6px;
+    margin-top: 3vh;
+    width: 100%;
+    color: $primary-color;
+    text-align: center;
+    background-color: $white-color;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 6px;
+    align-self: center;
+}
+.title-fullscreen{
+  position: absolute;
+  bottom: 26%;
+  border-radius: 0;
+}
+}
+
+
+.audio-analizer{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+canvas {
+  padding: 2px;
+  display: block;
+}
+.canvas-fullscreen{
+  position: absolute;
+  bottom: 60%;
+  width:200;
+  height:200;
+}
+
+.canvas-modal{
+  width:200;
+  height:200;
+}
+}
+
+.audio-reproducer{
+    position: absolute;
+    bottom: 40%;
+    left: 10%;
+  }
+
+.loader-audio-player-container{
+  padding: 20%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.heart-record-indications{
+  display: flex;
+  justify-content: center;
+  img{
+    height: 30vh;
+  }
+}
+
+.loader__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.isModalAnimation{
+  height: 30vh;
+}
+.isFullscreenAnimation{
+  height: 70vh;
+}

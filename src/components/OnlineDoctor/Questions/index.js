@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import VideoInput from '../../Inputs/Video';
 import CameraInput from '../../Inputs/Picture';
+import AudioInput from '../../Inputs/Audio';
 import Modal from '../../GeneralComponents/Modal/MobileModal';
 import CovidModal from './CovidModal';
 import HtaModal from './HtaModal';
@@ -43,6 +44,13 @@ const cameraActivators = [
 	'verruga',
 	'grano',
 	'piel'
+];
+const audioRecorderActivators = [
+	'arritmia',
+	'dolor de pecho',
+	'palpitaciones',
+	'falta de aire',
+	'fiebre',
 ];
 
 const Questions = () => {
@@ -132,6 +140,10 @@ const Questions = () => {
 			(activator) =>
 				assessment.selectedSymptoms.includes(activator) || assessment.selectedOtherSymptoms.includes(activator)
 		);
+		const audioRecorderActive = audioRecorderActivators.some(
+			(activator) =>
+				assessment.selectedSymptoms.includes(activator) || assessment.selectedOtherSymptoms.includes(activator)
+		);
 
 		if (covidActive) {
 			setModals({ ...modals, questions: true });
@@ -144,6 +156,9 @@ const Questions = () => {
 		}
 		if (cameraActive) {
 			setModals({ ...modals, cameraModal: true });
+		}
+		if (audioRecorderActive) {
+			setModals({ ...modals, audioModal: true });
 		}
 	}, []);
 
@@ -216,7 +231,7 @@ const Questions = () => {
 		}
 	};
 
-	const switchModalContent = ({ fever, questions, habitat, termsAndConditions, htaModal, cameraModal }) => {
+	const switchModalContent = ({ fever, questions, habitat, termsAndConditions, htaModal, cameraModal, audioModal }) => {
 		if (questions) {
 			return (
 				<Modal title='COVID-19' hideCloseButton>
@@ -299,6 +314,14 @@ const Questions = () => {
 			return (
 				<Modal title='Fotos' hideCloseButton>
 					<CameraInput modal={true} finalAction={() => setModals({ ...modals, cameraModal: false })} />
+				</Modal>
+			);
+		}
+
+		if (audioModal) {
+			return (
+				<Modal title='Audio' hideCloseButton>
+					<AudioInput modal={true} finalAction={() => setModals({ ...modals, audioModal: false })} />
 				</Modal>
 			);
 		}

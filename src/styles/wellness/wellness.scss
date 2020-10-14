@@ -1,4 +1,4 @@
-@import "../index.scss"; 
+@import "../index.scss";
 
 .biomarkers {
     width: 90%;
@@ -51,7 +51,7 @@
                        font-size: 2.5rem;
                        width: 80px;
                        height: 80px;
-                       &.active {
+                       &.active__marker {
                            background: $primary-cyan !important;
                        }
                        img {

@@ -3,6 +3,7 @@ import queries from './patientReducers';
 import front from './frontReducers';
 import assignations from './assignReducers';
 import assessment from './assessmentReducers';
+import biomarkers from './biomarkersReducer';
 import call from './callReducers';
 import survey from './surveyReducers';
 import userActive from './userActiveReducers';
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
 	assessment,
 	assignations,
 	autonomous,
+	biomarkers,
 	cx,
 	call,
 	front,

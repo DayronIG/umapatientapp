@@ -55,6 +55,13 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
     })
   }
 
+  useEffect(()=>{
+    //SKIPPING LAST QUESTION
+    if(qa_next.pregunta[0] === "¿Tiene algún otro síntoma?"){
+      nextQuestion(qa_next.respuesta[0])
+    }
+  }, [qa_next])
+
   return (
     <div className={'fadeIn animated question-container'}>
       {
