@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import specialties from '../../../config/specialties';
-import DB from '../../../config/DBConnection';
+import DB from '../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
-import { Loader } from '../../global/Spinner/Loaders';
-import { getUser } from '../../../store/actions/firebaseQueries';
+import { Loader } from '../global/Spinner/Loaders';
+import { getUser } from '../../store/actions/firebaseQueries';
+import { getDocumentFB } from '../Utils/firebaseUtils';
+
 const db = DB.firestore();
 
 const Specialties = (props) => {
@@ -17,9 +18,8 @@ const Specialties = (props) => {
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
 	const mesActual = moment().format('YYYYMM');
-	const mesSiguiente = moment()
-		.add(1, 'month')
-		.format('YYYYMM');
+	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
+
 	// const agePediatry = moment().diff(user.dob, 'years') <= 16;
 
 	useEffect(() => {
@@ -32,25 +32,28 @@ const Specialties = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (user.corporate_norm) {
-			dispatch({ type: 'LOADING', payload: true });
-			Promise.all(specialties.map((specialty) => getSpecialties(specialty))).then((data) => {
-				let ordenado = data.sort((a, b) => b.active - a.active);
-				setArraySpecialties(ordenado);
-			});
-		}
+		getSpecialtiesTurns();
 	}, [user]);
 
-	const getSpecialties = async ({ name, label }) => {
-		let currentMonth = [],
-			nextMonth = [];
+	async function getSpecialtiesTurns() {
+		if (user.corporate_norm) {
+			dispatch({ type: 'LOADING', payload: true });
+			const specialties = await getDocumentFB('/parametros/specialties');
+			const data = await Promise.all(specialties.specialties_list.map(getSpecialtyTurns));
+			const ordered = data.sort((a, b) => b.active - a.active);
+			setArraySpecialties(ordered);
+			dispatch({ type: 'LOADING', payload: false });
+		}
+	}
+	async function getSpecialtyTurns({ label, value }) {
+		let currentMonth = [], nextMonth = [];
 		currentMonth = await db
-			.collection(`/assignations/${name}/${mesActual}`)
+			.collection(`/assignations/online_${value}/${mesActual}`)
 			.where('social_work', 'array-contains', user.corporate_norm.toUpperCase())
 			.where('state', '==', 'FREE')
 			.get();
 		nextMonth = await db
-			.collection(`/assignations/${name}/${mesSiguiente}`)
+			.collection(`/assignations/online_${value}/${mesSiguiente}`)
 			.where('social_work', 'array-contains', user.corporate_norm.toUpperCase())
 			.where('state', '==', 'FREE')
 			.get();
@@ -58,9 +61,9 @@ const Specialties = (props) => {
 			const algo = currentMonth.docs;
 			const algo2 = nextMonth.docs;
 			const juntos = algo.concat(algo2);
-			return retornaObjeto(juntos, name, label);
+			return retornaObjeto(juntos, value, label);
 		} else {
-			return { name, label, active: false };
+			return { name: value, label, active: false };
 		}
 	};
 
