@@ -1,0 +1,90 @@
+@import '../../styles/global/Vars.scss';
+
+.y {
+    background-color: green;
+    width: 40%;
+    position: absolute;
+    left: 0px;
+    bottom: -8px; 
+    margin: 5%;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.n {
+    background-color: red;
+    width: 40%;
+    position: absolute;
+    right: 0px;
+    bottom: -8px; 
+    margin: 5%;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ready{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.title{
+    border-radius: 6px;
+    width: 100%;
+    color: $primary-color;
+    text-align: center;
+    background-color: $white-color;
+    font-size: 1.2rem;
+    padding: 15px;
+    border-radius: 6px;
+    align-self: center;
+    font-weight: bold;
+    }
+
+.modal--audiometry{
+    height: 65vh;
+}
+
+.confirm--audiometry{
+    margin-bottom: 0%;
+}
+
+.results {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.list-requirenments{
+    list-style-type: circle;
+    li {
+        margin-top: 15px;
+      }
+}
+
+.message--derivation{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 45%;
+    .icon{
+        margin-top: -5%;
+        margin-bottom: 5%;
+        font-size: 2rem;
+        display: block;
+    }
+    a{
+        color: #640e64;
+    }
+}
+
+.chart--message{
+    position: relative;
+    top: 100px;
+}

@@ -10,10 +10,13 @@ export default function (path) {
       xhr.responseType = 'blob';
       xhr.onload = function(event) {
         let blob = xhr.response;
+        resolve(blob);
+        // document.querySelector('#audio').src = URL.createObjectURL(this.response)
       };
       xhr.open('GET', url);
-      return xhr.send();
-    
+      xhr.send();
+      
+
     }).catch(function(error) {
       // Handle any errors
     });

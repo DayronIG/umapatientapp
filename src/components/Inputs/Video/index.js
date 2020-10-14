@@ -142,9 +142,9 @@ const VideoComponent = (props) => {
 								<button onClick={() => setInstrucciones(false)}>Continuar</button>
 							</div>
 						)}
-						{iniciado && (
+						{iniciado && contador !== 0  && (
 							<>
-								<p className={`${clases(isModal)}`}>{contador !== 0 ? contador : 'Procesando'}</p>
+								<p className={`${clases(isModal)}`}>{contador}</p>
 								<div
 									className={`spinner-border text-light spiner-video ${clases(isModal)}`}
 									role='status'>
@@ -153,9 +153,11 @@ const VideoComponent = (props) => {
 							</>
 						)}
 						{terminado ? (
-							<div className='p-5 mx-auto'>
-								<Loader />
-							</div>
+						<div>
+							<br />
+							<Loader />
+							<div className='mt-5'>Cargando...</div>
+						</div>
 						) : (
 							<div className='contenedor-video-circulo'>
 								<div className={`circulo-video ${modelPrediction}`} />
@@ -165,6 +167,7 @@ const VideoComponent = (props) => {
 								<video className={`${clases(isModal)}`} ref={videoRef} autoPlay playsInline></video>
 							</div>
 						)}
+						{!terminado && <>
 						<div className={`footer-reproducir ${clases(isModal)}`}>
 							<div className='contenedor-btn-reproducir'>
 								<div className='title-video'>
@@ -183,6 +186,7 @@ const VideoComponent = (props) => {
 								)}
 							</div>
 						</div>
+						</>}
 					</div>
 				</>
 			)}

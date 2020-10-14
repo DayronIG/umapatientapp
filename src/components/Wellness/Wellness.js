@@ -22,6 +22,7 @@ import lungs from "../../assets/icons/lungs.svg";
 import WellnessCard from "../../assets/checkout/wellness.png";
 import "../../styles/wellness/wellness.scss";
 
+
 const Wellness = props => {
   const { dni, ws } = useSelector(state => state.queries.patient);
   const dispatch = useDispatch();
@@ -36,11 +37,15 @@ const Wellness = props => {
   return (
     <>
       {modalFile.state && (
-        <MobileModal callback={() => setModalFile(!modalFile.state)}>
+        <MobileModal callback={() => {
+          setModalFile(!modalFile.state)
+          dispatch({type: "TOGGLE_DETAIL", payload: false})}}>
           <FileService
+            patient={{dni: dni}}
             type="biomarker"
             title={modalFile.title}
             description={modalFile.description}
+            modalClose={() => setModalFile(false)}
           />
         </MobileModal>
       )}
@@ -55,7 +60,7 @@ const Wellness = props => {
             <ul className="markers">
               <li className="markers__item">
                 <Link to={`/${dni}/laboratorio`}>
-                  <div className="markers__item--icon active">
+                  <div className="markers__item--icon active__marker">
                     <FontAwesomeIcon icon={faFileMedicalAlt} />
                     <div className="markers__item--info">
                       <FontAwesomeIcon icon={faInfo} />
@@ -67,14 +72,14 @@ const Wellness = props => {
                 className="markers__item"
                 onClick={() => biomarkerHandler("sthethoscop")}
               >
-                <div className="markers__item--icon">
+                <div className="markers__item--icon active__marker">
                   <FontAwesomeIcon icon={faStethoscope} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />
                   </div>
                 </div>
               </li>
-              <li
+              {/* <li
                 className="markers__item"
                 onClick={() => biomarkerHandler("heartbeat")}
               >
@@ -84,12 +89,12 @@ const Wellness = props => {
                     <FontAwesomeIcon icon={faInfo} />
                   </div>
                 </div>
-              </li>
+              </li> */}
               <li
                 className="markers__item"
                 onClick={() => biomarkerHandler("frank")}
               >
-                <div className="markers__item--icon">
+                <div className="markers__item--icon active__marker">
                   <FontAwesomeIcon icon={faDeaf} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />

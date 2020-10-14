@@ -1,7 +1,9 @@
 const initialState = {
     first_predict: [],
     assignation_id: '',
+    allBiomarkers: {},
     biomarker: [],
+    current_biomarker: "",
     current_step:{
         active:'welcome'
     },
@@ -23,9 +25,17 @@ const initialState = {
             return Object.assign({}, state, {
                 assignation_id: action.payload
             })
-        case 'AUTONOMOUS_SET_BIOMARKER':
+        case 'AUTONOMOUS_SET_BIOMARKERS':
             return Object.assign({}, state, {
                 biomarker: action.payload
+            })
+        case 'AUTONOMOUS_SET_ALL_BIOMARKERS':
+            return Object.assign({}, state, {
+                allBiomarkers: { ...state.allBiomarkers,...action.payload}
+            })
+        case 'AUTONOMOUS_SET_CURRENT_BIOMARKER':
+            return Object.assign({}, state, {
+                current_biomarker: action.payload
             })
         case 'AUTONOMOUS_SET_FIRST_PREDICT':
             return Object.assign({}, state, {
