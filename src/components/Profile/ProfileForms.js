@@ -20,9 +20,8 @@ export const ProfilePic = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', Authorization: token };
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, headers)
+			.patch(`${node_patient}/${user.dni}`, data, {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -80,9 +79,8 @@ export const PersonalData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', Authorization: token };
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, headers)
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -130,9 +128,8 @@ export const ContactData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', Authorization: token };
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, headers)
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -173,9 +170,8 @@ export const HealtData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', Authorization: token };
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, headers)
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})

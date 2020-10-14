@@ -5,19 +5,19 @@ import DBConnection from '../../config/DBConnection';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
 import Version from '../GeneralComponents/Version';
-import { FaArrowLeft, FaUser, FaUserEdit, FaUserCheck } from 'react-icons/fa';
+import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import moment from 'moment';
 import '../../styles/profile.scss';
 import Loader from '../GeneralComponents/Loading';
 
-const ProfileComponent = (props) => {
+const ProfileComponent = () => {
 	const dispatch = useDispatch();
 	const db = DBConnection.firestore();
 	const user = useSelector((state) => state.queries.patient);
 	const modal = useSelector((state) => state.front.openDetails);
 	const { section } = useSelector((state) => state.front);
-	const [editionMode, setEditionMode] = useState(false);
+	const [editionMode, ] = useState(true);
 	const [usuario, setUsuario] = useState({});
 	const [loading, setLoading] = useState(true);
 	const { fullname, dni, corporate, dob, ws, address, subscription, sex, piso, profile_pic } = usuario;
@@ -80,17 +80,6 @@ const ProfileComponent = (props) => {
 					<Link to='/'>
 						<FaArrowLeft color='#fff' size='1.5rem' />
 					</Link>
-					{editionMode ? (
-						<div className='edit-icons' onClick={() => setEditionMode(false)}>
-							<small>Listo</small>
-							<FaUserCheck size='1.2rem' />
-						</div>
-					) : (
-						<div className='edit-icons' onClick={() => setEditionMode(true)}>
-							<small>Editar Datos</small>
-							<FaUserEdit size='1.2rem' />
-						</div>
-					)}
 				</div>
 				<div>
 					<div className='profile-photo'>
@@ -129,10 +118,6 @@ const ProfileComponent = (props) => {
 							<b>Suscripción: </b>
 							{subscription}
 						</p>
-						{/* <p>
-              <b>Dirección: </b>
-              {!street ? '-' : street}
-            </p> */}
 					</div>
 				</div>
 				<div className='profile-section section'>
