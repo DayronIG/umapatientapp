@@ -20,8 +20,6 @@ const Specialties = (props) => {
 	const mesActual = moment().format('YYYYMM');
 	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
 
-	// const agePediatry = moment().diff(user.dob, 'years') <= 16;
-
 	useEffect(() => {
 		getUser(dni)
 			.then((user) => {
@@ -86,7 +84,6 @@ const Specialties = (props) => {
 	};
 
 	const handleClick = (sp, active) => {
-		console.log(sp)
 		const speciality = sp
 		if (speciality !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
@@ -119,8 +116,6 @@ const Specialties = (props) => {
 		<>
 			{!!loading && <Loader />}
 			<ul className='listSpecialties__list'>
-			{console.log(arraySpecialties)}
-
 				{arraySpecialties.map(({ name, label, active }) => (
 					<li
 						key={name}

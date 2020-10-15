@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ComingSoon from '../GeneralComponents/ComingSoon';
@@ -16,7 +16,11 @@ const OnlineSpecialist = ({ match, history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		(async function checkPatientPermission() {
+		checkPatientPermission();
+	}, [patient]);
+
+	const checkPatientPermission = useCallback(
+		async () => {
 			if (!(Object.keys(patient).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
 			try {
@@ -29,9 +33,8 @@ const OnlineSpecialist = ({ match, history }) => {
 					localStorage.setItem('up_affNum', credNum || '');
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
-				} else if (
-					social_work.includes(patient.corporate_norm) ||
-					social_work.includes(patient.corporate?.toUpperCase())
+				} else if (social_work.includes(patient.corporate_norm) ||
+						social_work.includes(patient.corporate?.toUpperCase())
 				) {
 					redirect = true;
 				}
@@ -52,13 +55,10 @@ const OnlineSpecialist = ({ match, history }) => {
 				console.log('ERROR EN ROUTING', err, err.message);
 				return history.replace('/');
 			}
-		})();
-	}, [patient]);
+		}
+	,[patient]) 
 
 	const render = (redirect) => {
-		// if (patient.always && patient.always.length >= 1 && patient.always[0] !== '') {
-		// 	history.push(`/${dni}/appointmentsonline/specialty`);
-		// } else
 		if (patient.first_time && patient.first_time.length >= 1) {
 			history.push(`/${dni}/appointmentsonline/${patient.first_time}/calendar`);
 		} else if (redirect) {

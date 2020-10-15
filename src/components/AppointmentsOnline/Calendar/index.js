@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { useParams, useHistory } from 'react-router-dom';
 import { GenericHeader } from '../../GeneralComponents/Headers';
@@ -22,25 +22,19 @@ import './styles.scss';
 const MyCalendar = () => {
 	const patient = useSelector((state) => state.queries.patient);
 	const [appointmentsOnline, setAppointmentsOnline] = useState([]);
-	const [date, setDate] = useState(
-		moment()
+	const [date, setDate] = useState(moment()
 			.tz('America/Argentina/Buenos_Aires')
-			.format()
-	);
+			.format());
 	const [loading, setLoading] = useState(true);
 	const [filterDt, setFilterDt] = useState('');
-	// const [mountOverflow, setMounthOverflow] = useState(false);
 	const [calendarAppoints, setCalendarAppoints] = useState([]);
 	const localizer = momentLocalizer(moment);
 	const dt_calendar = date;
 	const yearMonth = moment(date).format('YYYYMM');
 	const { dni, condition } = useParams();
 	const history = useHistory();
-	const dispatch = useDispatch();
 
 	moment.locale('es');
-	/* const urlRedirect = condition.match(regexWord) ? 
-		`/${dni}/appointmentsonline/` : `/${dni}/appointmentsonline/search-doctor` */
 
 	useEffect(() => {
 		(async function getAppointments() {
@@ -70,7 +64,6 @@ const MyCalendar = () => {
 			} else if (social_work.includes(patient.corporate_norm)) {
 				queryCondition = [patient.corporate_norm];
 			}
-			console.log(specialty, condition)
 			let appoints = await getFreeAppointmentsCustom(yearMonth, `online_${specialty}`, queryCondition);
 			if (appoints.length === 0) {
 				const nextMonth = moment(yearMonth)

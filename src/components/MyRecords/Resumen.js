@@ -17,8 +17,7 @@ const Resumen = ({att, docData}) => {
                 <>
                     <p><b>Motivo de consulta</b><br />{att.mr.motivos_de_consulta || '-'}</p>
                     <hr />
-                </>
-            }
+                </>}
             <p><b>Resumen de la atención</b><br />{att.mr.epicrisis || '-'}</p>
             <hr />
             <p><b>Indicaciones</b><br />{att.mr.tratamiento || '-'}</p>
