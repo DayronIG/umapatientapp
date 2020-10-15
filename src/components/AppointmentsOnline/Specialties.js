@@ -86,7 +86,8 @@ const Specialties = (props) => {
 	};
 
 	const handleClick = (sp, active) => {
-		const speciality = sp.split('online_')[1];
+		console.log(sp)
+		const speciality = sp
 		if (speciality !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
 			return;
@@ -118,6 +119,8 @@ const Specialties = (props) => {
 		<>
 			{!!loading && <Loader />}
 			<ul className='listSpecialties__list'>
+			{console.log(arraySpecialties)}
+
 				{arraySpecialties.map(({ name, label, active }) => (
 					<li
 						key={name}

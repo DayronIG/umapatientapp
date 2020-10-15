@@ -97,10 +97,8 @@ const DeliverySelectDestiny = (props) => {
 		if (!isValidForm) return swal('Error', 'Por favor, vuelva a seleccionar la dirección', 'warning');
 		dispatch(handleDeliveryForm(formState));
 		const data = { newValues: formState };
-		const headers = { 'Content-Type': 'Application/json', Authorization: localStorage.getItem('token') };
-		console.log(headers)
 		try {
-			const res = await Axios.patch(`${node_patient}/${patient.dni}`, data, headers);
+			const res = await Axios.patch(`${node_patient}/${patient.dni}`, data, {headers: { 'Content-Type': 'Application/json', Authorization: localStorage.getItem('token') }});
 			if (res.status !== 200) throw new Error('Error al enviar la request');
 			return props.history.push(`/${ws}/deliveryService/trackProgress/${service}/${serviceId}`);
 		} catch (error) {

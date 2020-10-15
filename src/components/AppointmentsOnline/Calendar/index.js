@@ -70,6 +70,7 @@ const MyCalendar = () => {
 			} else if (social_work.includes(patient.corporate_norm)) {
 				queryCondition = [patient.corporate_norm];
 			}
+			console.log(specialty, condition)
 			let appoints = await getFreeAppointmentsCustom(yearMonth, `online_${specialty}`, queryCondition);
 			if (appoints.length === 0) {
 				const nextMonth = moment(yearMonth)
@@ -99,7 +100,7 @@ const MyCalendar = () => {
 				setLoading(false);
 				return swal(
 					'Aviso',
-					'En estos momentos no hay médicos disponibles para esta especialidad y en esta fecha.',
+					'En este momento no hay médicos disponibles para esta especialidad.',
 					'warning'
 				);
 			}
