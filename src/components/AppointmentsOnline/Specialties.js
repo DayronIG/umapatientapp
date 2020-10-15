@@ -45,6 +45,7 @@ const Specialties = (props) => {
 			dispatch({ type: 'LOADING', payload: false });
 		}
 	}
+
 	async function getSpecialtyTurns({ label, value }) {
 		let currentMonth = [], nextMonth = [];
 		currentMonth = await db
@@ -124,7 +125,8 @@ const Specialties = (props) => {
 					<li
 						key={name}
 						className={`listSpecialties__list--item ${active && 'active'}`}
-						onClick={() => handleClick(name, active)}>
+						onClick={() => handleClick(name, active)}
+					>
 						<span>{label}</span>
 					</li>
 				))}
