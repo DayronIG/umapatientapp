@@ -19,17 +19,18 @@ const AudioRecorder = ({
 	innerTextToRender="Coloque el micrófono en su corazón como indica la figura.", 
 	finalAction = (() => console.log("no final action")),
 	upload_url_prop = false,
-	autonomus = false 
+	autonomus = false ,
+	wellness = false
 	}) => {
 
-	const [audioBlob, setAudioBlob] = useState(null)
-	const [chunks, setChunks] = useState([])
-	const [mediaRecorder, setMediaRecorder] = useState(null)
+	const [audioBlob, setAudioBlob] = useState(null);
+	const [chunks, setChunks] = useState([]);
+	const [mediaRecorder, setMediaRecorder] = useState(null);
 	const [onRecord, setOnRecord] = useState(false);
 	const [counter, setCounter] = useState(time);
 	const [finishedRecording, setFinishedRecording] = useState(false);
 	const [audioToPlot, setAudioToPlot] = useState(null);
-	const appoint = useSelector((state) => state.assignations.selectedAppointment)
+	const appoint = useSelector((state) => state.assignations.selectedAppointment);
 	const { patient } = useSelector((state) => state.queries);
 	const dispatch = useDispatch();
 
@@ -53,7 +54,7 @@ const AudioRecorder = ({
 	
 	const stopMicrophone = () => {
 		mediaRecorder.stop();
-		setMediaRecorder(null)
+		setMediaRecorder(null);
 		setAudioToPlot(null);
 	};
 
@@ -81,9 +82,11 @@ const AudioRecorder = ({
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
 					var headers = { 'Content-Type': 'Application/Json' }
+					var timeID = moment().format("HH-mm-ss")
+					if(id === "AOT") {dispatch({type: "SET_STHETOSCOPE_ID", payload: timeID})}
 					var data = {
 						"url": fileLink, 
-						"id": `${moment().format("HH-mm-ss")}##${id}##`,
+						"id": `${timeID}##${id}##`,
 						"upload_url": upload_url_prop? upload_url_prop:`${patient.dni}/attached/${appoint?.path?.split('/')?.[3]}`
 					}
 					await axios.post(heartbeatEndpoint, data, headers)
@@ -91,6 +94,7 @@ const AudioRecorder = ({
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: fileLink}): finalAction()
                 } catch(error) {
 					swal("Algo falló", "Intente nuevamente mas tarde", "warning")
+					autonomus? finalAction({[`audio_sthetocope_${id}`]: ""}): finalAction()
 					console.error(error);
 				}
 			})};

@@ -186,3 +186,17 @@ canvas {
 .isFullscreenAnimation{
   height: 70vh;
 }
+
+.wellness__results__img__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .wellness__results__img{
+    width: 82vw;
+  }
+}
+
+.wellness__results__title{
+  text-align: center;
+}
+
