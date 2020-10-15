@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import {Link} from 'react-router-dom';
 import Sthetoscope from "./Sthetoscope";
 import { storage } from "firebase"
-import moment from 'moment-timezone';
 import instructionsAortico from "./assets/focoaortico.jpg"
 import instructionsMitral from "./assets/focomitral.png"
-import getBlobFirebase from "../../Utils/getBlobFirebase"
 import '../../../styles/inputs/audio/Audio.scss';
 
 
@@ -16,6 +15,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const [sthetoscopeGraph, setSthetoscopeGraph] = useState("")
     const [sthetoscopeBpm, setSthetoscopeBpm] = useState("")
     const timeID = useSelector(state => state.biomarkers.sthetoscopeID)
+    const {ws} = useSelector(state => state.queries.patient)
 
     useEffect(() => {
         var imageRecognizer = `AOT`
@@ -74,9 +74,15 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                 showResults && wellness &&
                 <>
                     <div className="wellness__results__img__container">
-                        <img className="wellness__results__img" src={sthetoscopeGraph} />
+                        <img className="wellness__results__img" src={sthetoscopeGraph} alt="waveform" />
                     </div>
-                    <div className="wellness__results__title">Frecuencia cardíaca estimada: {sthetoscopeBpm}</div>
+                    <div className="wellness__results__title">
+                        <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>
+                        <small>Éste escaneo se encuentra en etapa experimental y no constituye ni reemplaza un análisis médico.</small>
+                        <Link to={`/${ws}/onlinedoctor/`}>
+                            <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
+                        </Link>
+                    </div>
                     <div className="record__trigger--btn styleButton">
                         <span onClick={() => finalAction()}>Volver</span>
                     </div>

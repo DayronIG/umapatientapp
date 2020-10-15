@@ -1,30 +1,25 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { start_biomarker } from "../../config/endpoints";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStethoscope,
-  faHeartbeat,
   faDeaf,
   faFileMedicalAlt,
   faInfo,
   faAllergies,
   faBriefcaseMedical
 } from "@fortawesome/free-solid-svg-icons";
-import { GenericHeader } from "../GeneralComponents/Headers";
 import FooterBtn from "../GeneralComponents/FooterBtn";
-import Backbutton from "../GeneralComponents/Backbutton";
 import MobileModal from "../GeneralComponents/Modal/MobileModal";
 import FileService from "../GeneralComponents/SelectService/FileService";
-import Axios from "axios";
 import lungs from "../../assets/icons/lungs.svg";
 import WellnessCard from "../../assets/checkout/wellness.png";
 import "../../styles/wellness/wellness.scss";
 
 
 const Wellness = props => {
-  const { dni, ws } = useSelector(state => state.queries.patient);
+  const { dni } = useSelector(state => state.queries.patient);
   const dispatch = useDispatch();
   const [modalFile, setModalFile] = React.useState({
     state: false,
@@ -79,17 +74,6 @@ const Wellness = props => {
                   </div>
                 </div>
               </li>
-              {/* <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("heartbeat")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faHeartbeat} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li> */}
               <li
                 className="markers__item"
                 onClick={() => biomarkerHandler("frank")}

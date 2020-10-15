@@ -1,5 +1,5 @@
-//takes in an array of objects describing inputs, returns the rendered component
-import React, { useState, useEffect, useRef } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import moment from 'moment-timezone';
 import axios from "axios";
@@ -20,10 +20,8 @@ const AudioRecorder = ({
 	finalAction = (() => console.log("no final action")),
 	upload_url_prop = false,
 	autonomus = false ,
-	wellness = false
 	}) => {
 
-	const [audioBlob, setAudioBlob] = useState(null);
 	const [chunks, setChunks] = useState([]);
 	const [mediaRecorder, setMediaRecorder] = useState(null);
 	const [onRecord, setOnRecord] = useState(false);
@@ -105,7 +103,7 @@ const AudioRecorder = ({
 
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
-				<img src={image}/>
+				<img src={image} alt="hb"/>
 			</div>}
 
 			{finishedRecording && (
@@ -129,18 +127,16 @@ const AudioRecorder = ({
 			{!finishedRecording  && 
 			<> 			
 			{!onRecord && !audioToPlot && <p className= {modal? "title":"title title-fullscreen"}>{innerTextToRender}</p>}
-			<div className = "record__trigger--btn styleButton">
 			{ !onRecord ?
-			<>
+			<div className = "record__trigger--btn styleButton" onClick={startMicrophone}>
 				<FaMicrophone className="icon" />
-                <span onClick={startMicrophone}>Grabar</span>
-			</>
+                <span>Grabar</span>
+			</div>
 			:
-			<>
+			<div className = "record__trigger--btn styleButton">
 				<RiRecordCircleLine className="btn-reproducir" />
 				<span>Grabando...</span>
-			</>}
-			</div>
+			</div>}
 			</>}
 		</div>
 		</div>
