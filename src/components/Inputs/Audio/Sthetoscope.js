@@ -22,7 +22,6 @@ const AudioRecorder = ({
 	autonomus = false ,
 	}) => {
 
-	const [chunks, setChunks] = useState([]);
 	const [mediaRecorder, setMediaRecorder] = useState(null);
 	const [onRecord, setOnRecord] = useState(false);
 	const [counter, setCounter] = useState(time);
@@ -43,7 +42,7 @@ const AudioRecorder = ({
 			setOnRecord(false)
 			setFinishedRecording(true)
 		}
-	  }, [counter, onRecord])
+	}, [counter, onRecord])
 
 	const startMicrophone = () => {
 			setTimeout(() => setOnRecord(true), 300)
@@ -57,7 +56,6 @@ const AudioRecorder = ({
 	};
 
 	const getMicrophone = async () => {
-		setChunks([])
 		const audio = await navigator.mediaDevices.getUserMedia({
 		  audio: true,
 		  video: false
@@ -103,11 +101,13 @@ const AudioRecorder = ({
 
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
-				<img src={image} alt="hb"/>
+				<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
 			</div>}
 
 			{finishedRecording && (
 						<div className="loader__container">
+							<br />
+							<br />
 							<br />
 							<Loader />
 							<div className='mt-5'>Cargando...</div>
@@ -119,9 +119,7 @@ const AudioRecorder = ({
 			{onRecord &&
             <div className="counter">
                 <p className="styleCounter">{counter}</p> 
-                  {/* <div className="spinner-border text-light spiner-video styleSpinner" role="status"> */}
                 <span className="sr-only">Loading...</span>
-                  {/* </div> */}
             </div>}
 
 			{!finishedRecording  && 

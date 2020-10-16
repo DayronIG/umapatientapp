@@ -119,9 +119,6 @@ export default ({ questions }) => {
   function renderQuestions(answers) {
       if(autonomous.current_biomarker === "video") {
         return <>
-                <br/>
-                <br/>
-                <br/>
                 <Video isModal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("video", link)
@@ -131,9 +128,6 @@ export default ({ questions }) => {
               </>
       } else if(autonomous.current_biomarker === "audio_sthetoscope") {
         return <>
-                <br/>
-                <br/>
-                <br/>
                 <AudioInput autonomus={true} modal={false} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("audio_sthetoscope", link)
@@ -142,9 +136,6 @@ export default ({ questions }) => {
               </>
       } else if(autonomous.current_biomarker === "photo1") {
         return <>
-                <br/>
-                <br/>
-                <br/>
                 <CameraInput modal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("photo1", link)
@@ -205,7 +196,8 @@ export default ({ questions }) => {
           <div className={'back-button'} disabled={actualQuestion.position === 0 || loading} onClick={backQuestion}></div></> :
           <div className={'return-button'} onClick={restartAll}>Volver al Inicio</div>}
         {actualQuestion.content && renderQuestions(actualQuestion.content['1'])}
-      </div> : <Loading />}
+      </div> : 
+      <Loading />}
     </div>
   )
 }

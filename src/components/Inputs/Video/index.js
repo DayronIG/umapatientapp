@@ -155,6 +155,8 @@ const VideoComponent = (props) => {
 						{terminado ? (
 						<div>
 							<br />
+							<br />
+							<br />
 							<Loader />
 							<div className='mt-5'>Cargando...</div>
 						</div>
