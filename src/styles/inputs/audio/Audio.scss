@@ -203,8 +203,23 @@ canvas {
 
 .wellness__results__img__container{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  .record__trigger--btn{
+    width: 20vw;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    .icon{
+      margin-top: 0.1vh;
+      margin-left: 2.5vw;
+      font-size: 0.8rem;
+    }
+  }
   .wellness__results__img{
     width: 82vw;
   }

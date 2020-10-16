@@ -82,7 +82,7 @@ const AudioRecorder = ({
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
 					var headers = { 'Content-Type': 'Application/Json' }
-					var timeID = moment().format("HH-mm-ss")
+					var timeID = moment().format("YYYY-MM-DD-HH-mm-ss")
 					if(id === "AOT") {dispatch({type: "SET_STHETOSCOPE_ID", payload: timeID})}
 					var data = {
 						"url": fileLink, 
