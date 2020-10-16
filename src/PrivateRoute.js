@@ -34,14 +34,13 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     useEffect(() => {
         if (patient.ws) {
             try {
-
                 let subscription, queryUser = firestore.doc(`auth/${patient.ws}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     if (doc.data()?._start_date !== '') {
                         let data = doc.data()?._start_date.split('///')
                         if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/' && rest.path !== '/:dni/onlinedoctor/queue')
                             setNotification(true)
-                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: data[0], token: data[1] } })
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
                     } else {
                         setNotification(false)
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
@@ -54,8 +53,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 console.log(error)
             }
         }
-
-    }, [patient, RouteComponent])
+    }, [patient, RouteComponent, firestore, callRejected, rest.path, dispatch])
 
     return (
 

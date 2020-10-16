@@ -24,7 +24,7 @@ const LaboralMotive = ({ unsetScreen }) => {
                 onChange={e => setOtherSymptoms(e.target.value)} >
                 <option defaultValue>Motivo de la consulta</option>
                 <option value="Primera revisión">Primera revisión</option>
-                <option value="Segimiento">Segimiento</option>
+                <option value="Seguimiento">Seguimiento</option>
                 <option value="Renovación de licencia">Renovación de licencia</option>
               </select>
         </div>
