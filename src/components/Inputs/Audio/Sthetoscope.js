@@ -105,11 +105,13 @@ const AudioRecorder = ({
 
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
-				<img src={image}/>
+				<img className={autonomus? "margin-top-autonomous": ""} src={image}/>
 			</div>}
 
 			{finishedRecording && (
 						<div className="loader__container">
+							<br />
+							<br />
 							<br />
 							<Loader />
 							<div className='mt-5'>Cargando...</div>
