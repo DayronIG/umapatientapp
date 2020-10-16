@@ -79,7 +79,6 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
         }
     }, [showResults])
 
-
     return (
         <div>
             {!showResults && <>
@@ -114,7 +113,6 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
             {
                 showResults && wellness &&
                 <>
-                    {console.log(sthetoscopeAudio)}
                     <div className="wellness__results__img__container">
                         <img className="wellness__results__img" src={sthetoscopeGraph} />
                         <div className="wellness__results__title">Frecuencia cardíaca estimada: {sthetoscopeBpm}</div>
