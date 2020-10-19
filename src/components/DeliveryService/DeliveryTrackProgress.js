@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { calculateProgressPercentage } from '../Utils/deliveryServicesUtils';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +16,7 @@ const DeliveryTrackProgress = (props) => {
 	// assignations/delivery/bag -> al estilo medicos. Se crea un documento on-demand.
 	// const [{ ws, service, incidenteId }] = useState(props.match.params);
 	const [percent, setPercent] = useState(0);
-	const [track, setTrack] = useState({
+	const [track] = useState({
 		active: 'searchingProvider',
 		incidente_id: '202008241530_95976131',
 		lat: 0,
@@ -35,10 +36,6 @@ const DeliveryTrackProgress = (props) => {
 	});
 
 	useEffect(() => {
-		// (async function getServiceState() {
-		// getDocumentFB('/events/requests/online/props.match.params.incidente_id')
-		// setTrack()
-		// })();
 		setPercent(calculateProgressPercentage(track.progress));
 	}, []);
 

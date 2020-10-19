@@ -1,8 +1,7 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import Axios from 'axios';
-import Moment from 'moment';
 
 import {GenericHeader} from '../GeneralComponents/Headers';
 import StarRatings from 'react-star-ratings';
@@ -19,11 +18,6 @@ const SurveyComponent = (props) => {
     const starsValue = useSelector((state) => state.survey.stars);
     const starsValueDriver = useSelector((state) => state.survey.starsDriver);
     const commentsValue = useSelector((state) => state.survey.comments);
-
-    useEffect(() => {
-        console.log(Moment().format('YY-MM-DD_hh-mm-ss'));
-        console.log(props);
-    }, [])
 
     function setRatingApp(value) {
         dispatch({type: 'ADD_STARS_SURVEY', payload: value})
@@ -42,7 +36,7 @@ const SurveyComponent = (props) => {
             'uma_eval': starsValue.toString(),
             'doc_eval': starsValueDriver.toString(),
             'notes': commentsValue
-        }, { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } })
+        }, { headers: { 'Content-Type': 'application/json;charset=UTF-8' , 'Authorization': token  } })
         .then(function (response) {
             setModalDisplay(true);
             console.log(response);

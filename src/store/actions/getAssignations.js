@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import DBConnection from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';

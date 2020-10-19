@@ -9,7 +9,6 @@ import { getUser } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import { Loader } from '../../GeneralComponents/Loading';
-import Axios from 'axios';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import Backbutton from '../../GeneralComponents/Backbutton';
@@ -17,7 +16,6 @@ import { findAllAssignedAppointment, findAllFreeAppointments } from '../../Utils
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
-	const token = useSelector((state) => state.userActive.token);
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const { feedback, patient } = useSelector((state) => state.queries);

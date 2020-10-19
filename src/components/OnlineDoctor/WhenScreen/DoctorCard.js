@@ -139,13 +139,6 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 		regular: doctor && doctor.metrics && doctor.metrics.punctuality >= 1.5,
 	});
 
-	function viewComments(doc) {
-		getFeedback(doc).then((res) => {
-			dispatch({ type: 'SET_FEEDBACK', payload: res });
-			dispatch({ type: 'TOGGLE_DETAIL' });
-		});
-	}
-
 	function selectDoctor(selected) {
 		history.replace(`/${dni}/onlinedoctor/reason`);
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });

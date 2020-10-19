@@ -15,6 +15,7 @@ const ChartAudiometry = ({
     linkConsulta = "/"
     }) => {
     const { dni, ws } = useSelector(state => state.queries.patient) 
+    const token = localStorage.getItem('token');
     const dBHL = [-13.5/20, -7.5/20, -9/20, -12/20];
 
     for(var i = 0; i < dBHL.length; i++){
@@ -38,9 +39,8 @@ const ChartAudiometry = ({
             type: "audiometry",
             ws: ws
         }
-        let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': token */ }
-        axios.post(`${post_biomarkers}/${dni}`, data, headers)
-        .then(console.log("DONE", data))
+        var headers = { 'Authorization': token, 'Content-Type': 'Application/Json' }
+        axios.post(`${post_biomarkers}/${dni}`, data, {headers})
     }, [])
 
     var message;

@@ -20,10 +20,8 @@ const Register = props => {
   const user = useSelector(state => state.queries.patient);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
-  const isTransport =
-    props.history.location.pathname.split("/").pop() === "transport";
-  const { dni, dni_titular, email, day, month,
-    year, date, sex, address, city, piso, ws, os, fullname } = useSelector(state => state.register);
+  const { dni,  day, month,
+    year, sex, address, piso, os, fullname } = useSelector(state => state.register);
   const monthRef = useRef();
   const yearRef = useRef();
 
@@ -52,7 +50,7 @@ const Register = props => {
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
     let dob = `${year}-${month}-${day}`;
     let data = {
-      address: address || "", // getAddress.concat(", " + getCity) ||
+      address: address || "", 
       core_id: "",
       corporate: os || "",
       dni_titular: user.dni || "",
@@ -61,14 +59,12 @@ const Register = props => {
       dt: date || "",
       email: user.email || "",
       fullname: fullname || "",
-      piso: piso || "", // getPiso ||
+      piso: piso || "", 
       sex: sex || "",
       ws: user.ws || ""
     }
-    console.log(data)
-    let headers = { ContentType: "Application/json"/*, 'Authorization': token */ };
     axios
-      .post(afiliado, data, headers)
+      .post(afiliado, data, {headers: { ContentType: "Application/json", 'Authorization': token } })
       .then(res => {
         if (props.redirectToConsultory === 'true') {
           props.history.replace(`/${dni}/appointmentsonline/`)

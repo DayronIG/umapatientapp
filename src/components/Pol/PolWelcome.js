@@ -12,7 +12,6 @@ import { cobertura } from '../../config/endpoints';
 
 const PolWelcome = (props) => {
   const dispatch = useDispatch()
-  const token = useSelector(state => state.userActive.token)
   const patient = useSelector(state => state.queries.patient)
   const front = useSelector(state => state.front)
   const [back, setBack] = useState(false)

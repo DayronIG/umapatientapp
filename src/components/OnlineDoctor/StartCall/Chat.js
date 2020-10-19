@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -15,7 +16,7 @@ const Chat = (props) => {
     const { dni, ws } = useSelector((state) => state.queries.patient)
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
-    const [medicalRecord, setMedicalRecord] = useState([])
+    const [, setMedicalRecord] = useState([])
     const token = useSelector(state => state.userActive.token)
     const [dataChat, setDataChat] = useState([])
     const [inputValue, setInputValue] = useState('')
@@ -44,7 +45,6 @@ const Chat = (props) => {
             })
         }
     }, [dni])
-
 
     useEffect(() => {
         if (current.appointments) {
@@ -181,7 +181,6 @@ const Chat = (props) => {
     return (
         <>
             {loading && <Loading />}
-            {/*  <STT /> */}
             <div className="chatWrapper">
                 {dataChat.length >= 1 ? dataChat.map((content, index) =>
                     <div className="listContainer" key={index} ref={chatRef}>

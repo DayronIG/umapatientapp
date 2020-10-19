@@ -23,6 +23,7 @@ const VideoComponent = (props) => {
 	const { dni, ws } = useSelector((state) => state.queries.patient);
 	const [modelPrediction, setmodelPrediction] = useState('red');
 	const dispatch = useDispatch();
+	const token = localStorage.getItem('token');
 
 	useEffect(() => {
 		if (!stream) {
@@ -105,7 +106,7 @@ const VideoComponent = (props) => {
 					};
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: biomarker });
 					setIniciado(false);
-					var headers = { 'Content-Type': 'Application/Json' }
+					var headers = { 'Authorization': token, 'Content-Type': 'Application/Json' }
 					let post_biomarkers_data = {
 						data: {},
 						date: moment().format("YYYY-MM-DD_HH-mm-ss"),
@@ -114,7 +115,7 @@ const VideoComponent = (props) => {
 						type: `fever-video`,
 						ws: ws
 					}
-					Axios.post(`${post_biomarkers}/${dni}`, post_biomarkers_data, headers)
+					Axios.post(`${post_biomarkers}/${dni}`, post_biomarkers_data, {headers})
 					finalAction(biomarker);
 				})
 				.catch((err) => {

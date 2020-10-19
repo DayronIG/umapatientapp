@@ -7,7 +7,7 @@ import Chat from './Chat';
 const StartCall = (props) => {
 	const dispatch = useDispatch();
 	const {session } = useSelector((state) => state.call);
-	const [callRef, setCallRef] = useState({});
+	const [, setCallRef] = useState({});
 	const [error, setError] = useState(null);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
@@ -54,7 +54,7 @@ const StartCall = (props) => {
 	};
 
 	useEffect(() => {
-		let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
+		// let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
 		setDni(dni);
 		navigator.getUserMedia =
 			navigator.getUserMedia ||

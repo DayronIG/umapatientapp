@@ -13,10 +13,6 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
   const patient = useSelector(state => state.queries.patient)
   const dispatch = useDispatch();
 
-  const restartAll = () => {
-    dispatch({ type: 'AUTONOMOUS_SET_STEP', payload: { active: 'first_questions' } })
-  }
-
   const nextQuestion = (resx) => {
     const parsed_date = patient.dni !== '' ? patient.dni : uid.getUid();
     getNewQuestion(parsed_date, resx);
