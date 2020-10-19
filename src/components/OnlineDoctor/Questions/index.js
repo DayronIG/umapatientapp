@@ -48,8 +48,7 @@ const Questions = () => {
 
 	// Effect that get the current question and their answers
 	useEffect(() => {
-		console.log(assessment.selectedQuestions);
-		let getQuestion = assessment.selectedQuestions[i];
+		let getQuestion = assessment.selectedQuestions;
 		let currentQuestion = {};
 		if (getQuestion && getQuestion.length >= 1) {
 			let id = getQuestion[j].id;
@@ -92,7 +91,6 @@ const Questions = () => {
 
 			dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: selectedQuestions });
 		})
-
 	};
 
 	return (
