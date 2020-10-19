@@ -102,8 +102,9 @@ const Questions = () => {
 				<div className='assessment-text mt-4 mb-4'>
 					{assessment.currentQuestion && assessment.currentQuestion.title}
 				</div>
+				{Array.isArray(assessment.selectedQuestions) && assessment.selectedQuestions.length === 0 && <Loading centered={true} /> }
 				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
-			</div>￼
+			</div>
 		</>
 	);
 };
