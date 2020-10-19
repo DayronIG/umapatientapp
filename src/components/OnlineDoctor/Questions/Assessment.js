@@ -67,7 +67,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
       case "float": {
         return (
           <form onSubmit={(e) => saveInputAndNext(e, assessment.currentQuestion.id)} key={index}>
-            <input type='number' className='form-control text' id='inputValue' name='inputValue' />
+            <input type='number' className='form-control text' step="0.1" id='inputValue' name='inputValue' />
             <button type='submit' className='btn btn-blue-lg mt-1 p-2'>Enviar</button>
           </form>
         )
