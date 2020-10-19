@@ -104,8 +104,8 @@ const AppointmentsOnlineHistory = (props) => {
 					type: 'cancel',
 					complain: ''
 				}
-				let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': token  */ }
-				await axios.post(user_cancel, data, headers)
+				let headers =
+				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
 				return props.history.push('/')
 			} catch (err) {

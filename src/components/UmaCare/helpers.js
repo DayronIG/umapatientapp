@@ -1,9 +1,9 @@
 import React from 'react';
-import hisopado from "../../assets/img/hisopado.png";
-import muestra from "../../assets/img/muestra.png";
-import negative from "../../assets/img/negative.png";
-import positive from "../../assets/img/positive.png";
-import alta from "../../assets/img/alta.png";
+import hisopado from "./img/hisopado.png";
+import muestra from "./img/muestra.png";
+import negative from "./img/negative.png";
+import positive from "./img/positive.png";
+import alta from "./img/alta.png";
 
 export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual) => {
   // eslint-disable-next-line default-case
@@ -70,7 +70,7 @@ export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual
             estadoActual.resultado == 'positive' ? 
             setTextDetail("Un test positivo significa que actualmente está infectado con el virus COVID-19. No debe alarmarse, pero si debe saber que es muy importante que respete las medidas de aislamiento para no contagiar a otras personas.")
             :
-            setTextDetail('Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado. En este caso la probabilidad que tenga COVID-19 es baja y no es necesario extremar medidas de aislamiento más allá de las recomendaciones de cuarentena obligatoria.')
+            setTextDetail('Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado. En este caso la probabilidad que tenga COVID-19 es baja y no es necesario extremar medidas de aislamiento más allá de las recomendaciones de cuarentena obligatoria. ')
           }}>Más Información</p>
         </>
       ) 

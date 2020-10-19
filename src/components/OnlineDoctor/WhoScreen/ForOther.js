@@ -1,15 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import moment from "moment";
 import 'moment-timezone';
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { afiliado } from "../../../config/endpoints";
-import DBConnection from "../../../config/DBConnection";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
-import BackButton from '../../GeneralComponents/Backbutton';
 // import { getPatientData } from "../../../store/actions/firebaseQueries";
 // import app from "../../../config/DBConnection";
 // import { GenericHeader } from "../../GeneralComponents/Headers";
@@ -88,7 +86,7 @@ const Register = props => {
             type: "warning",
             title: "No se pudo registrar",
             msg:
-              "No se pudo completar su registro."
+              "No se pudo completar tu registro."
           }
         })
         dispatch({ type: "LOADING", payload: false })
@@ -129,7 +127,6 @@ const Register = props => {
         />
       )}
       <form className="registerWrapper register-form" onSubmit={e => handleSignUp(e)}>
-      <BackButton />
         <div className="registerContainerProps">
           <input className="form-input" id="name" placeholder="Nombre y apellido" required
             autoComplete="on" type="text"
@@ -139,7 +136,7 @@ const Register = props => {
           </label>
           <input
               className='form-input' id='dni' placeholder='e.g. 34111111' autoComplete='on'
-              onChange={e => handleDni(e.target.value)} value={dni || ''} required />
+              onChange={e => handleDni(e.target.value)} value={dni} required />
          <div className="d-flex justify-content-start">
             <div className="birthContainer w-50">
               <label className="form-label birthLabel">

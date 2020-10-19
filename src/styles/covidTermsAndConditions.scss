@@ -47,11 +47,13 @@
                 min-width: 50px;
                 font-weight: bold;
                 font-size: 20px;
-                height: 40px;
                 color: rgba(#000, .5);
                 border-radius: 4px;
                 outline: none;
                 margin: 5px 5px 0 0;
+                padding: 10px;
+                overflow: hidden;
+                line-height: 1.3rem;
                 &.active {
                     background-color: $primary-blue;
                     color: $white-color;

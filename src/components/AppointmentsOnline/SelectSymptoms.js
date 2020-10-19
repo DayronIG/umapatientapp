@@ -1,21 +1,19 @@
 
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import '../../styles/dinamic.scss';
 
-const SelectReason = ({ match, history, unsetScreen }) => {
+const SelectSymptom = ({ unsetScreen }) => {
   const dispatch = useDispatch()
   const selectedSymptoms = useSelector(state => state.assessment.selectedSymptoms)
   const [otherSymptoms, setOtherSymptoms] = useState('')
-  // const urlRedirect = condition.match(regexWord) ? `/${dni}/appointmentsonline/` : `/${dni}/appointmentsonline/search-doctor`
 
   function sumbitSymptoms() {
     const symptomsStr = selectedSymptoms.join('. ').concat('. ' + otherSymptoms)
     dispatch({ type: 'SET_SELECTED_SYMPTOMS_STR', payload: symptomsStr })
-    // history.replace(`/${dni}/appointmentsonline/${condition}/calendar`)
     unsetScreen()
   }
+
 
   return (
     <>
@@ -41,4 +39,4 @@ const SelectReason = ({ match, history, unsetScreen }) => {
   )
 }
 
-export default withRouter(SelectReason)
+export default SelectSymptom

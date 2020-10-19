@@ -28,7 +28,6 @@ const SearchBox = ({ map, mapApi, handleChangePlace }) => {
 
 	return (
 		<input
-			className="selectDestiny__input--address"
 			ref={searchInput}
 			value={inputValue}
 			type='text'

@@ -28,14 +28,17 @@ export const GenericHeader = (props) => {
 		<section className='header-container'>
 			<div className='contentWrapper'>
 				{props.logo === 'umacare' ? (
-					<div className='logo-container'>
-						<Link to='/'>
-							<div className='logo'>
-								<img src={umacare} alt='UMA CARE' />
-							</div>
-						</Link>
-					</div>
+					<>
+						<div className='logo-container'>
+							<Link to='/'>
+								<div className='logo'>
+									<img src={umacare} alt='UMA CARE' />
+								</div>
+							</Link>
+						</div>
+					</>
 				) : (
+					<>
 						<div className='logo-container'>
 							<Link to='/'>
 								<div className='logo'>
@@ -43,14 +46,15 @@ export const GenericHeader = (props) => {
 								</div>
 							</Link>
 						</div>
-					)}
+					</>
+				)}
 				{props.back ? (
 					<Link to='/'>
 						<FontAwesomeIcon className='mt-2 pt-1' icon={faArrowLeft} />
 					</Link>
 				) : (
-						<p className='header-title'>{props.children}</p>
-					)}
+					<p className='header-title'>{props.children}</p>
+				)}
 				{/* <div className={displayNews ? 'bell-menu active' : 'bell-menu'} onClick={() => setDisplayNews(!displayNews)}>
           <div className='notifications'>2</div>
           <FontAwesomeIcon className='menu-profile' icon={faBell} />
@@ -63,13 +67,13 @@ export const GenericHeader = (props) => {
 									<img src={profile_pic} alt='Profile Pic' />
 								</div>
 							) : (
-									<FontAwesomeIcon className='menu-profile' icon={faUserCircle} />
-								)}
+								<FontAwesomeIcon className='menu-profile' icon={faUserCircle} />
+							)}
 						</Link>
 					</div>
 				) : (
-						<div style={{ width: '50px' }}></div>
-					)}
+					<div style={{ width: '50px' }}></div>
+				)}
 			</div>
 			{displayNews ? (
 				<div className='displayNotifications'>
@@ -89,8 +93,8 @@ export const GenericHeader = (props) => {
 					</ul>
 				</div>
 			) : (
-					''
-				)}
+				''
+			)}
 		</section>
 	);
 };

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import SymptomsTracking from '../components/SymptomsTracking/SymptomsForm';
 import { SymptomsEnd, SymptomsOk, SymptomsWarning } from '../components/SymptomsTracking/SymptomsStatus';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
-import { umacare } from '../config/endpoints';
+import { umacare_tracking } from '../config/endpoints';
 import Loading from '../components/GeneralComponents/Loading';
 import { getDocumentFB } from '../components/Utils/firebaseUtils';
 import swal from 'sweetalert';
@@ -36,9 +36,8 @@ const SymptomsTrackingView = (props) => {
             status: userUmacareStatus,
             biomarker: biomarker[0] ? biomarker[0].video : ''
         }
-        const config = { headers: { 'Content-Type': 'application/json'/* , 'Authorization': token  */} }
         try {
-            const { data: response } = await Axios.post(umacare, sendData, config)
+            const { data: response } = await Axios.post(umacare_tracking, sendData, { headers: { 'Content-Type': 'application/json', 'Authorization': token  } })
             if (response.output === 'si') {
                 return setComponent('ok')
             } else if (response.output === 'no') {
@@ -62,6 +61,7 @@ const SymptomsTrackingView = (props) => {
         (async function getUmacareStatus() {
             setComponent('loading')
             const data = await getDocumentFB(`/events/labs/umacare/${paramsData}`)
+            dispatch({ type: 'SET_UMACARE', payload: data })
             dispatch({ type: 'SET_UMACARE_STATUS', payload: data ? data.status : '' })
             dispatch({ type: 'SET_UMACARE_STARTDT', payload: data ? data.dt_cierre : '' })
             setComponent(null)

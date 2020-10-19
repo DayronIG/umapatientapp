@@ -1,4 +1,5 @@
 const initialState = {
+    answerQuestions: false,
     alert: {
         active: false,
         type: 'success',
@@ -6,23 +7,23 @@ const initialState = {
         msg: ''
     },
     biomarker: { open: true, status: 0 },
+    checkStatus: false,
+    currentQuestion: 0,
+    dinamic: { whenDinamic: false, queueDinamic: true },
     error: '',
     loading: false,
-    checkStatus: false,
-    dinamic: { whenDinamic: false, queueDinamic: true },
-    sidebar: { first: false, second: false },
-    modal: false,
-    otherReason: false,
-    answerQuestions: false,
-    paginationTransport: 1,
-    showAskText: true,
-    nextQuestion: '',
-    currentQuestion: 0,
-    openDetails: false,
-    modalAction: false,
     mic_cam_permissions: '',
+    modalAction: false,
+    modal: false,
+    nextQuestion: '',
+    openDetails: false,
+    otherReason: false,
+    paginationTransport: 1,
+    remainingText: '',
+    showAskText: true,
+    sidebar: { first: false, second: false },
+    versions: {patients: '0.0.0'},
     vmdStage: 'who',
-    remainingText: ''
 }
 
 export default function frontReducers(state = initialState, action) {
@@ -115,6 +116,8 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, vmdStage: action.payload };
         case 'SET_CAM_MIC_PERMISSIONS':
             return { ...state, mic_cam_permissions: action.payload };
+        case 'SET_VERSIONS':
+            return { ...state, versions: action.payload }
         default:
             return state;
     }

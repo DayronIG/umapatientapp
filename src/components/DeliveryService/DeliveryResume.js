@@ -1,35 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import db from '../../config/DBConnection';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { get_provider } from '../../config/endpoints';
-import Axios from 'axios';
 import '../../styles/deliveryService/deliveryResume.scss';
 
-function DeliveryResume({ state, duration }) {
-	const { modifiedObjService = {}, currentService = {} } = useSelector(state => state.deliveryService);
-	const { deliveryData = {}, status_derivacion } = modifiedObjService;
-	const [nurseData, setNurseData] = useState(null);
-
-	useEffect(() => {
-		if(!deliveryData.cuit_nurse) return;
-		Axios.get(`${get_provider}/${deliveryData.cuit_nurse}`)
-		.then(res => setNurseData(res.data))
-		.catch(err => console.log(err));
-	},[])
-	  
+function DeliveryResume({ deliveryData }) {
+	const { patient } = useSelector((state) => state.queries);
 	return (
-		<>
-			{nurseData && <section className='deliveryResume'>
-				<div className='deliveryResume__container'>
-					<ul className='deliveryResume__container--list'>
-						<li><span className="deliveryResume__container--item">Profesional asignado: </span>{nurseData.fullname}</li>
-						<li><span className="deliveryResume__container--item">Estado: </span>{state}</li>
-						{status_derivacion === 'ASSIGN' && duration && <li><span className="deliveryResume__container--item">Tiempo estimado: </span>{duration}</li>}
-
-					</ul>
-				</div>
-			</section>}
-		</>
+		<section className='deliveryResume'>
+			<div className='deliveryResume__container'>
+				<h5 className='deliveryResume__container--title'>Servicio</h5>
+				<ul className='deliveryResume__container--list'>
+					<li>Servicio: {deliveryData.service}</li>
+					<li>Doctor: {deliveryData.doctor}</li>
+					<li>Cuit: {deliveryData.cuit}</li>
+					<li>Matrícula: {deliveryData.enrollment}</li>
+				</ul>
+			</div>
+			<div className='deliveryResume__container'>
+				<h5 className='deliveryResume__container--title'>Paciente:</h5>
+				<ul className='deliveryResume__container--list'>
+					<li>Nombre: {patient.fullname}</li>
+					<li>Dirección: {patient.address}</li>
+					<li>Fecha de nacimiento: patient.dob</li>
+				</ul>
+			</div>
+		</section>
 	);
 }
 

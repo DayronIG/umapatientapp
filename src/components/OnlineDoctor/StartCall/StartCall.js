@@ -6,12 +6,11 @@ import Chat from './Chat';
 
 const StartCall = (props) => {
 	const dispatch = useDispatch();
-	const { publish, subscribe, session } = useSelector((state) => state.call);
+	const {session } = useSelector((state) => state.call);
 	const [callRef, setCallRef] = useState({});
 	const [error, setError] = useState(null);
-	const [publishVideo, setPublishVideo] = useState(true);
+	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
-	const [vid, setVid] = useState('');
 
 	const sessionEventHandlers = {
 		sessionConnected: () => {
@@ -38,9 +37,9 @@ const StartCall = (props) => {
 		streamDestroyed: ({ reason }) => {
 			// console.log(`Publisher stream destroyed because: ${reason}`);
 			// console.log(reason, props.sala);
-			// if (props.sala === '' || reason === 'unpublished') {
-			// 	props.history.replace(`/feedback`);
-			// }
+			if (props.sala === '' || reason === 'unpublished') {
+				props.history.replace(`/feedback`);
+			}
 			/* callRef.sessionHelper.session.off() */
 		},
 	};
@@ -56,7 +55,6 @@ const StartCall = (props) => {
 
 	useEffect(() => {
 		let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
-		setVid(vid);
 		setDni(dni);
 		navigator.getUserMedia =
 			navigator.getUserMedia ||
@@ -150,15 +148,15 @@ const StartCall = (props) => {
 								<strong></strong>
 							</div>
 						) : (
-								<OTStreams>
-									<OTSubscriber
-										properties={{ width: 100, height: 100 }}
-										onSubscribe={onSubscribe}
-										onError={onSubscribeError}
-										eventHandlers={subscriberEventHandlers}
-									/>
-								</OTStreams>
-							)}
+							<OTStreams>
+								<OTSubscriber
+									properties={{ width: 100, height: 100 }}
+									onSubscribe={onSubscribe}
+									onError={onSubscribeError}
+									eventHandlers={subscriberEventHandlers}
+								/>
+							</OTStreams>
+						)}
 					</div>
 				</>
 			</OTSession>

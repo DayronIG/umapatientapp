@@ -8,6 +8,7 @@ import Axios from "axios";
 import { getDocumentFB } from '../Utils/firebaseUtils';
 import { push_token } from '../../config/endpoints';
 import * as DetectRTC from 'detectrtc';
+import { HiddenCacheClearer } from './VersionComponent';
 
 export const AuthContext = React.createContext()
 
@@ -46,16 +47,17 @@ function AuthProvider({ children }) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
 			let plan = undefined;
-			const subscription = userAuth?.suscription || userAuth?.subscription;
+			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
 			if (!!subscription) {
-				plan = await getDocumentFB(`services/porfolio/${subscription.toUpperCase()}/active`)
+				let path = `services/porfolio/${subscription.toUpperCase()}/active`
+				plan = await getDocumentFB(path)
 				if (!plan || !('onlinedoctor' in plan)) {
 					plan = await getDocumentFB('services/porfolio/FREE/active')
 				}
-			} else if (userAuth) {
+			} else if (!!userAuth) {
 				plan = await getDocumentFB('services/porfolio/FREE/active')
 			}
-			if (userAuth) {
+			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			}
@@ -64,6 +66,7 @@ function AuthProvider({ children }) {
 
 	return (
 		<AuthContext.Provider value={{ currentUser }}>
+			<HiddenCacheClearer />
 			{children}
 		</AuthContext.Provider>
 	)

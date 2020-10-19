@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import headUp from '../../assets/pol/headUp.svg';

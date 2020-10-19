@@ -1,10 +1,9 @@
 
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Axios from 'axios';
+import axios from 'axios';
 import { transportFormCompleted } from '../../config/endpoints';
 import Loading from '../GeneralComponents/Loading';
-
 import '../../styles/generalcomponents/TransportMain.scss';
 
 const TransportWrapperComponent = (props) => {
@@ -15,14 +14,12 @@ const TransportWrapperComponent = (props) => {
     const userDataToJson = JSON.parse(getUserData);
 
     useEffect(function() {
-        console.log(userDataToJson);
         dispatch({type: 'LOADING', payload: true})
-        Axios.post(transportFormCompleted, {
+        axios.post(transportFormCompleted, {
             'ws': userDataToJson.ws,
             'dni': userDataToJson.dni
         }, { headers: { 'Content-Type': 'application/json;charset=UTF-8', 'Authorization': token } })
         .then(function (response) {
-            console.log(response);
             setActivated(response.data.output);
             dispatch({type: 'LOADING', payload: false})
         })
@@ -30,6 +27,7 @@ const TransportWrapperComponent = (props) => {
             dispatch({type: 'LOADING', payload: false})
             console.log(error);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(function() {

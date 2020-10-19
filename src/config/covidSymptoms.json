@@ -35,15 +35,21 @@
 		"respuestas": ["si", "no"]
 	},
 	{
+		"tag": "riesgo",
+		"front": "¿Tiene algún síntoma de gravedad como mucha falta de aire o confusión mental?",
+		"label": "signos de riesgo",
+		"respuestas": ["si", "no"]
+	},
+	{
 		"tag": "barrio_popular",
 		"front": "¿Vive en un asentamiento o barrio popular?",
 		"label": "barrio popular",
 		"respuestas": ["si", "no"]
 	},
 	{
-		"tag": "riesgo",
-		"front": "¿Tiene algún síntoma de gravedad como mucha falta de aire o confusión mental?",
-		"label": "signos de riesgo",
+		"tag": "amba",
+		"front": "¿Vive en el área metropolitana de Buenos Aires, Argentina? (Ciudad de Buenos Aires y Conurbano)",
+		"label": "amba",
 		"respuestas": ["si", "no"]
 	}
 ]

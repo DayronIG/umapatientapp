@@ -20,3 +20,12 @@ export default function CustomUmaLoader() {
 export function Loader() {
 	return <div className='loader'></div>;
 }
+
+export function DeliveryCustomLoader() {
+	return (
+		<div className='deliveryLoader'>
+			<div className='loader' />
+			<p>Buscando prestador, por favor espere...</p>
+		</div>
+	);
+}

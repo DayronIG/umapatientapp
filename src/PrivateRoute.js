@@ -9,74 +9,74 @@ import ToastNotification from '../src/components/GeneralComponents/toastNotifica
 import tone from '../src/assets/ring.mp3'
 
 const Login = () => {
-	const [delay, setDelay] = useState(false)
+    const [delay, setDelay] = useState(false)
 
-	useEffect(() => {
-		let timeout = setTimeout(() => setDelay(true), 2000)
-		return () => clearTimeout(timeout)
-	}, [])
-
-	if (delay) {
-		return <LoginComponent />
-	} else {
-		return <Loading />
-	}
+    useEffect(() => {
+        let timeout = setTimeout(() => setDelay(true), 2000)
+        return () => clearTimeout(timeout)
+    }, [])
+    if (delay) {
+        return <LoginComponent />
+    } else {
+        return <Loading />
+    }
 }
 
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
-	const dispatch = useDispatch();
-	const firestore = db.firestore();
-	const { currentUser } = useContext(AuthContext);
-	const { patient } = useSelector(store => store.queries);
-	const [notification, setNotification] = useState(false);
+    const dispatch = useDispatch()
+    const firestore = db.firestore()
+    const { currentUser } = useContext(AuthContext)
+    const { patient } = useSelector(store => store.queries)
+    const [notification, setNotification] = useState(false)
+    const { callRejected } = useSelector(store => store.call)
 
-	useEffect(() => {
-		if (patient.ws) {
-			try {
-				let subscription, queryUser = firestore.doc(`auth/${patient.ws}`);
-				subscription = queryUser.onSnapshot(async function (doc) {
-					let user = doc.data()
-					if (user?._start_date !== undefined && user?._start_date !== '' && user?._start_date !== 'geo') {
-						let data = user?._start_date?.split('///');
-						setNotification(true);
-						dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0] || '', token: data?.[1] || '' } });
-						setTimeout(() => {
-							setNotification(false);
-						}, 10000)
-					} else {
-						setNotification(false);
-						dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } });
-					}
-				});
-				return () => {
-					if (typeof subscription === 'function') subscription();
-				}
-			} catch (error) {
-				console.log(error)
-			}
-		}
-	}, [patient, RouteComponent])
+    useEffect(() => {
+        if (patient.ws) {
+            try {
+                let subscription, queryUser = firestore.doc(`auth/${patient.ws}`)
+                subscription = queryUser.onSnapshot(async function (doc) {
+                    if (doc.data()?._start_date !== '') {
+                        let data = doc.data()?._start_date.split('///')
+                        if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/' && rest.path !== '/:dni/onlinedoctor/queue')
+                            setNotification(true)
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
+                    } else {
+                        setNotification(false)
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
+                    }
+                })
+                return () => {
+                    if (typeof subscription === 'function') subscription()
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }, [patient, RouteComponent, firestore, callRejected, rest.path, dispatch])
 
-	return (
-		<>
-			{notification &&
-				<ToastNotification
-					title='Tu profesional te está llamando...'
-					button='Ingresar'
-					action={`/${patient.dni}/onlinedoctor/attention/`}
-					unsetNotification={setNotification}
-					audio={tone}
-				/>
-			}
-			<Route
-				{...rest}
-				render={routeProps =>
-					!!currentUser ? <RouteComponent {...routeProps} /> : <Login />
-				}
-			/>
-		</>
-	)
+    return (
+
+        <>
+            {notification && <>
+                <ToastNotification
+                    title={'LLAMADA ENTRANTE...'}
+                    button={'Contestar'}
+                    action={`/${patient.dni}/onlinedoctor/attention/`}
+                    unsetNotification={setNotification}
+                    audio={tone}
+                />
+            </>}
+
+            <Route
+                {...rest}
+                render={routeProps =>
+                    !!currentUser ? <RouteComponent {...routeProps} /> : <Login />
+                }
+            />
+
+        </>
+    )
 }
 
 

@@ -2,7 +2,7 @@ const initialState = {
   appointment: '',
   answers: '',
   answersId: [],
-  biomarkers: [],
+  biomarkers: {},
   currentQuestion: { title: '', answers: [] },
   dominio: '',
   files: [],
@@ -65,7 +65,7 @@ export default (state = initialState, action) => {
     case 'SET_ASSESSMENT_BIOMARKER':
       return {
         ...state,
-        'biomarkers': [{...state.biomarkers[0], ...action.payload}]
+        'biomarkers': {...state.biomarkers, ...action.payload}
       }
     case 'SET_NEXT_ATT':
       return {

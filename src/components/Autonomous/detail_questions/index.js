@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uid from '../api_uid';
@@ -54,6 +55,13 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
       dispatch({ type: 'AUTONOMOUS_SET_STEP', payload: { active: 'welcome' } })
     })
   }
+
+  useEffect(()=>{
+    //SKIPPING LAST QUESTION
+    if(qa_next.pregunta[0] === "¿Tiene algún otro síntoma?"){
+      nextQuestion(qa_next.respuesta[0])
+    }
+  }, [qa_next])
 
   return (
     <div className={'fadeIn animated question-container'}>

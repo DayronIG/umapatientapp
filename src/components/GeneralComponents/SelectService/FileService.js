@@ -1,7 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStethoscope, faHeartbeat, faDeaf, faFileMedicalAlt, faInfo, faAllergies, faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons';
-import lungs from '../../../assets/icons/lungs.svg';
+import { faStethoscope, faHeartbeat, faFileMedicalAlt, faAllergies, faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons';
+import AudioInput from '../../Inputs/Audio';
+import Audiometry from "../../Audiometry"
 
 const FileService = (props) => {
     if (props.type === "amb") {
@@ -58,13 +59,14 @@ const FileService = (props) => {
         return (
             <div className="fileService">
                 <div className="fileService__container">
-                    <p className="fileService__container--text">
+                    <div className="fileService__container--text">
                         {props.title === "sthethoscop" &&
                             <div>
                                 <span className="fileService__container--icon">
                                     <FontAwesomeIcon icon={faStethoscope} />
-                                </span> <br />
-                                <span>Identificación de soplos cardíacos</span>
+                                </span> 
+                                <br />
+                                <AudioInput wellness={true} modal={true} finalAction={() => props.modalClose()} upload_url_prop={`${props.patient.dni}/wellness/heartbeat`}/>
                             </div>
                         }
                         {props.title === "heartbeat" &&
@@ -79,12 +81,10 @@ const FileService = (props) => {
                         }
                         {props.title === "frank" &&
                             <div>
-                                <span className="fileService__container--icon">
+                                {/* <span className="fileService__container--icon">
                                     <FontAwesomeIcon icon={faDeaf} />
-                                </span> <br />
-                                <span>
-                                    Detección inteligente de signos asociados con enfermedad coronaria
-                                </span>
+                                </span> <br /> */}
+                                <Audiometry modal={true} />
                             </div>
                         }
                         {props.title === "file" &&
@@ -183,7 +183,7 @@ const FileService = (props) => {
                                 <span>Identificación de enfermedades respiratorias.</span>
                             </div>
                         }
-                    </p>
+                    </div>
                 </div>
             </div>
         )

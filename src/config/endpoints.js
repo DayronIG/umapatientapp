@@ -1,6 +1,6 @@
 const isLocal = window.location.origin.includes('localhost');
 const URN_UMA = `https://uma-v2.uc.r.appspot.com`;
-const NODE_DEV = `http://localhost:8080`;
+const NODE_DEV = `http://localhost:8080`; // https://20200924t180300-dot-nodeserver-dot-uma-v2.uc.r.appspot.com
 const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const EVENTS = `https://gps-dot-uma-v2.appspot.com/v1/users`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;
@@ -28,7 +28,7 @@ export const pol_selfie = `${POL}/pol_selfie`;
 export const start_biomarker = `${URN_UMA}/biomarkers`;
 export const cobertura = `${URN_UMA}/cobertura`;
 export const games = `${URN_UMA}/games`;
-export const umacare = `${URN_UMA}/umacare`;
+export const umacare_tracking = `${URN_UMA}/umacare`;
 export const write_os = `${URN_UMA}/check_user`;
 export const transcription = `${URN_UMA}/transcripcion`;
 export const reassign_portal = `${URN_UMA}/reassign_portal`;
@@ -58,8 +58,3 @@ export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;
-// Delivery
-export const mobility_address = `${URN_UMA}/mobility_address`;
-
-// Providers
-export const get_provider = `${NODE_SERVER}/providers`;

@@ -58,10 +58,11 @@ import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
+import RedirectConsultation from './components/RedirectConsultation/';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
-function App() {
+function App(props) {
 	return (
 		<div className='App'>
 			<Switch>

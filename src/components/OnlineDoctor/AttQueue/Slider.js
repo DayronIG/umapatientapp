@@ -6,10 +6,6 @@ import SlideItem from './SlideItem';
 import '../../../styles/Slider.scss'
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import slides from '../../slider-content';
-import sopaDeLetras from '../../../assets/SopaDeLetras.png'
-import memoTest from '../../../assets/MemoTest.png'
-import PlayGround from '../../Games/MemoTest/MemoTest';
-import AlphabetSoup from '../../Games/AlphabetSoup';
 
 const Slider = () => {
   const [modalOpen, setModalOpen] = useState(false);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -5,27 +6,23 @@ import { getDoctor, getUser } from '../../../store/actions/firebaseQueries';
 import { CustomUmaLoader } from '../../global/Spinner/Loaders';
 import { make_appointment } from '../../../config/endpoints';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
-import { FaFileMedicalAlt } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { writeOSData } from '../../../store/actions/UPActions';
 import { underscoreToSpaces } from '../../Utils/stringUtils';
-import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { post } from 'axios';
+import AttachFile from '../AttachFile';
 import moment from 'moment';
 import swal from 'sweetalert';
 import 'moment-timezone';
 import '../../../styles/map/mapSidebar.scss';
 
-const SidebarContent = ({ match, appoint, history, unsetSelected }) => {
+const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) => {
 	const [doctor, setDoctor] = useState({});
 	const [coordinates, setCoordinates] = useState({ lat: '', lon: '' });
 	const { selectedSymptomsString } = useSelector((state) => state.assessment);
 	const { upNumAff_store } = useSelector((state) => state.queries);
 	const { loading } = useSelector((state) => state.front);
-
-	const [File, setFile] = useState([]);
-	const [contador, setContador] = useState(0);
 	const dispatch = useDispatch();
 	const { dni } = match.params;
 	const token = useSelector((state) => state.userActive.token);
@@ -43,24 +40,6 @@ const SidebarContent = ({ match, appoint, history, unsetSelected }) => {
 		enableHighAccuracy: true,
 		timeout: 5000,
 		maximumAge: 0,
-	};
-
-	const uploadImage = (e) => {
-		dispatch({ type: 'LOADING', payload: true });
-		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');
-		let file = e.target.files[0];
-		let fileName = e.target.files[0].name;
-		uploadFileToFirebase(file, `${dni}/attached/${appoint?.path?.split('/')?.[3]}/${dt}_${fileName}`)
-			.then((imgLink) => {
-				setContador(contador + 1);
-				setFile([...File, imgLink]);
-				dispatch({ type: 'LOADING', payload: false });
-				swal('Éxito', 'Archivo cargado exitosamente', 'success');
-			})
-			.catch(() => {
-				dispatch({ type: 'LOADING', payload: false });
-				swal('Error', 'Hubo un error al adjuntar el archivo, intente nuevamente', 'error');
-			});
 	};
 
 	useEffect(() => {
@@ -238,17 +217,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected }) => {
 				{renderUserData('ESPECIALIDAD', underscoreToSpaces(doctor.matricula_especialidad) || '')}
 			</div>
 			<div className='btn-confirm-container'>
-				<div className='input-file'>
-					<FaFileMedicalAlt size='1.5rem' />
-					<p>
-						{contador < 1
-							? 'Adjuntar archivo'
-							: contador === 1
-							? `${contador} archivo adjunto`
-							: `${contador} archivos adjuntos`}
-					</p>
-					<input type='file' onChange={uploadImage} />
-				</div>
+				<AttachFile assign={appoint} specialty={specialty} />
 				<button type='button' className='btn-container-confirmContent' onClick={confirmAppointment}>
 					Confirmar
 				</button>

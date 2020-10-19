@@ -21,7 +21,7 @@ const VMD = () => {
 				user = JSON.parse(localStorage.getItem('userData'));
 			}
 			getUser(user.dni).then((res) => {
-				getPlan(res.suscription)
+				getPlan(res.subscription)
 					.then((res) => {
 						if (res) {
 							dispatch({ type: 'SET_PLAN_DATA', payload: res });

@@ -25,7 +25,7 @@ const PictureCapture = ({innerText = "", quantity = 3, modal = false, finalActio
   const storeImage = async (photo) => {
     files.push(photo);
     setCounter(files.length);
-    if (files.length === quantity) {
+    if (files.length >= quantity) {
       setLoading(true);
       await handleSubmit();
       setLoading(false);

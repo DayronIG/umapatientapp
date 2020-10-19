@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import VideoInput from '../../Inputs/Video';
 import CameraInput from '../../Inputs/Picture';
+import AudioInput from '../../Inputs/Audio';
 import Modal from '../../GeneralComponents/Modal/MobileModal';
 import CovidModal from './CovidModal';
 import HtaModal from './HtaModal';
@@ -22,6 +23,7 @@ const covidActivators = [
 	'Dolor de cabeza',
 	'Vómitos',
 	'Diarrea',
+	'mialgias'
 ];
 const htaActivators = ['Hipertensión', 'Dolor de pecho'];
 const cameraActivators = [
@@ -43,6 +45,13 @@ const cameraActivators = [
 	'grano',
 	'piel'
 ];
+const audioRecorderActivators = [
+	'arritmia',
+	'dolor de pecho',
+	'palpitaciones',
+	'falta de aire',
+	'fiebre',
+];
 
 const Questions = () => {
 	const dispatch = useDispatch();
@@ -56,6 +65,7 @@ const Questions = () => {
 		htaModal: false,
 		cameraModal: false,
 	});
+	const [responses, setResponses] = useState()
 	const [alerta, setAlerta] = useState('');
 	const [ubicacion, setUbicacion] = useState('');
 	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
@@ -68,7 +78,18 @@ const Questions = () => {
 
 	useEffect(() => {
 		questionsForEachSymptom();
-	}, [assessment.selectedSymptoms, questions, dispatch]);
+		if(assessment.biomarkers?.[0]) {
+			let respTemp = [assessment.answers];
+			let ent = Object.entries(assessment.biomarkers[0])
+			ent.forEach((el)=> {
+				if(el[1] === "yes") {
+					return respTemp.push(el[0])
+				}
+			})
+			setResponses(JSON.stringify(respTemp))
+		}
+	}, [assessment.selectedSymptoms, assessment.biomarkers, questions]);
+
 
 	// Effect that get the current question and their answers
 	useEffect(() => {
@@ -119,6 +140,10 @@ const Questions = () => {
 			(activator) =>
 				assessment.selectedSymptoms.includes(activator) || assessment.selectedOtherSymptoms.includes(activator)
 		);
+		const audioRecorderActive = audioRecorderActivators.some(
+			(activator) =>
+				assessment.selectedSymptoms.includes(activator) || assessment.selectedOtherSymptoms.includes(activator)
+		);
 
 		if (covidActive) {
 			setModals({ ...modals, questions: true });
@@ -131,6 +156,9 @@ const Questions = () => {
 		}
 		if (cameraActive) {
 			setModals({ ...modals, cameraModal: true });
+		}
+		if (audioRecorderActive) {
+			setModals({ ...modals, audioModal: true });
 		}
 	}, []);
 
@@ -151,18 +179,14 @@ const Questions = () => {
 	};
 
 	const habitatResponseCondition = (responses) => {
+		console.log(ubicacion)
 		if (ubicacion === 'provincia') {
-			// TO DO: Agregar o Anosmia
-			// TO DO: Contacto estrecho + Respiratorio o "Diarrea/cefalea/mialgias"
-			// TO DO: O convive con caso confirmado
-			// TO DO: Agregar mialgias en preguntas (las pasa el doc)
-			// TO DO: En lugar de preguntar ciudad seria: Ciudad, GBA, Otro
-			// TO DO: DOCTOR: solo puede cerrar hisopados a Ciudad y Gba. Si no contestó preguntas de Covid se muestra el cierre.
-			// TO DO: UMACARE: Contacto estrecho y confirmado por epidemio no se les pregunta hisopado.
-			// TO DO: Umacare steps no se preguntan.
-			// TO DO: Cuando pasa a "bad" mensaje de quique.
-			// TO DO: Cuando finaliza trackeo de umacare boton de consulta para alta.
-			if ((responses.includes('contacto estrecho') && !responses.includes('personal esencial')) || responses.includes('anosmia/disgeusia') ) {
+			if (
+				(responses.includes('contacto estrecho') && !responses.includes('personal esencial'))
+				|| responses.includes('anosmia/disgeusia')
+				|| responses.includes('convive con caso confirmado')
+				|| (responses.includes('contacto estrecho') && covidActivators.some((activator) => responses.includes(activator.toLocaleLowerCase())))
+				) {
 				setResponseIA({
 					...responseIA,
 					destino_final: 'En domicilio con instrucciones',
@@ -175,8 +199,11 @@ const Questions = () => {
 			} else {
 				setModals({ ...modals, fever: false, habitat: false });
 			}
-		} else if (ubicacion === 'caba') {
-			if (responses.includes('contacto estrecho') && !responses.includes('personal esencial')) {
+		} else if (ubicacion === 'capital') {
+			if ((responses.includes('contacto estrecho') && !responses.includes('personal esencial'))
+			|| (responses.includes('contacto estrecho') && covidActivators.some((activator) => responses.includes(activator.toLocaleLowerCase())
+			|| responses.includes('anosmia/disgeusia')
+			|| responses.includes('convive con caso confirmado')))) {
 				setResponseIA({
 					...responseIA,
 					destino_final: 'En domicilio con instrucciones',
@@ -199,10 +226,12 @@ const Questions = () => {
 			} else {
 				setModals({ ...modals, fever: false, habitat: false });
 			}
+		} else {
+			setModals({ ...modals, fever: false, habitat: false });
 		}
 	};
 
-	const switchModalContent = ({ fever, questions, habitat, termsAndConditions, htaModal, cameraModal }) => {
+	const switchModalContent = ({ fever, questions, habitat, termsAndConditions, htaModal, cameraModal, audioModal }) => {
 		if (questions) {
 			return (
 				<Modal title='COVID-19' hideCloseButton>
@@ -247,7 +276,7 @@ const Questions = () => {
 			return (
 				<Modal title='Preguntas de hábitat' hideCloseButton>
 					<HabitatOrTerms
-						formHandler={(responses) => habitatResponseCondition(responses)}
+						formHandler={() => habitatResponseCondition(responses)}
 						typeComponent='habitat'
 						ubicacion={ubicacion}
 						setUbicacion={setUbicacion}
@@ -285,6 +314,14 @@ const Questions = () => {
 			return (
 				<Modal title='Fotos' hideCloseButton>
 					<CameraInput modal={true} finalAction={() => setModals({ ...modals, cameraModal: false })} />
+				</Modal>
+			);
+		}
+
+		if (audioModal) {
+			return (
+				<Modal title='Audio' hideCloseButton>
+					<AudioInput modal={true} finalAction={() => setModals({ ...modals, audioModal: false })} />
 				</Modal>
 			);
 		}

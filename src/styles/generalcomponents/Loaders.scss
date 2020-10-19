@@ -75,3 +75,15 @@
 .loader {
 	@include loader($width: 36px, $height: 36px);
 }
+
+.deliveryLoader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	p {
+		padding: 0;
+		margin: 0;
+		margin-top: 15px;
+	}
+}

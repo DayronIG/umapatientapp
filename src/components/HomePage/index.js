@@ -37,13 +37,12 @@ const HomePage = (props) => {
 					dispatch({ type: 'SET_STATUS', payload: 99 });
 					// caso core_id y user_id no coinciden PERO core_id existe
 				} else if (user && user.core_id !== userId && user.core_id !== '' && user.core_id !== undefined) {
-					setTimeout(() => {
-						dispatch({ type: 'SET_STATUS', payload: 404 });
-					}, 5000);
+					db.auth().signOut()
+					dispatch({ type: 'SET_STATUS', payload: 404 });
 					// caso core_id no existe pero usuario sí
 				} else if (user && user.fullname && user.core_id === undefined && user.fullname.length >= 4) {
 					dispatch({ type: 'SET_STATUS', payload: 99 });
-				} /*  (user === null || user.dni === "") */ else {
+				} else {
 					dispatch({ type: 'SET_STATUS', payload: 99 });
 				}
 			} catch (err) {

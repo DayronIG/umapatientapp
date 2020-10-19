@@ -8,7 +8,7 @@ import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { Loader } from '../global/Spinner/Loaders';
 import { node_patient } from '../../config/endpoints';
 
-let headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token')};
+const token = localStorage.getItem('token');
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const ProfilePic = ({ user }) => {
 			newValues: { ...userData },
 		};
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, { credentials: 'include', headers })
+			.patch(`${node_patient}/${user.dni}`, data, {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -48,17 +48,17 @@ export const ProfilePic = ({ user }) => {
 					<Loader />
 				</div>
 			) : (
-				<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-					<div className='input-file'>
-						<p>Buscar Imagen</p>
-						<FiUpload size='1.3rem' />
-						<input type='file' name='profile_pic' onChange={uploadImage} />
-					</div>
-					<button className='btn btn-blue-lg' type='submit'>
-						Subir
+					<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+						<div className='input-file'>
+							<p>Buscar Imagen</p>
+							<FiUpload size='1.3rem' />
+							<input type='file' name='profile_pic' onChange={uploadImage} />
+						</div>
+						<button className='btn btn-blue-lg' type='submit'>
+							Subir
 					</button>
-				</form>
-			)}
+					</form>
+				)}
 		</>
 	);
 };
@@ -80,7 +80,7 @@ export const PersonalData = ({ user }) => {
 			newValues: { ...userData },
 		};
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, { credentials: 'include', headers })
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -129,7 +129,7 @@ export const ContactData = ({ user }) => {
 			newValues: { ...userData },
 		};
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, { credentials: 'include', headers })
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})
@@ -171,7 +171,7 @@ export const HealtData = ({ user }) => {
 			newValues: { ...userData },
 		};
 		axios
-			.patch(`${node_patient}/${user.dni}`, data, { credentials: 'include', headers })
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 			})

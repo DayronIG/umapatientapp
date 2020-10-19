@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import switchConfig from '../../../config/switchConfig';
 import '../../../styles/covidTermsAndConditions.scss';
@@ -12,6 +12,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 	const [formState, setFormState] = useState([]);
 	const [selectedIndex, setSelectedIndex] = useState([]);
 	const [arreglo, setArreglo] = useState([]);
+	const biomarkers = useSelector(state => state.assessment.biomarkers)
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -19,7 +20,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 			const helper = arreglo.filter(item => 'value' in item && item).map(i => i.value);
 			setFormState(helper);
 		}
-	}, [arreglo]);
+	}, [activateDefault, arreglo]);
 
 	useEffect(() => {
 		if(typeComponent === 'habitat') {
@@ -29,7 +30,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 		}
 	}, [typeComponent, ubicacion])
 
-	const modifyState = (event, value) => {
+	const modifyState = (event, value, form) => {
 		let helper = [...formState];
 		if (event) {
 			helper.push(value);
@@ -38,11 +39,12 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 		}
 		helper = new Set(helper);
 		helper = Array.from(helper);
+		console.log(event, value, form)
 		return setFormState(helper);
 	};
 
-	const saveItem = (value, item, index) => {
-		modifyState(value, item.value);
+	const saveItem = (value, item, index, form) => {
+		modifyState(value, item.value, formState);
 		let helper = [...selectedIndex];
 		helper.push(index);
 		helper = Array.from(new Set(helper));
@@ -73,20 +75,20 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 	return (
 		<div className='covidTermsAndConditions'>
 			{
-				typeComponent !== 'terminos' &&
+				typeComponent !== 'terminos' && biomarkers?.[0].amba === "yes" && 
 				<div className='covidTermsAndConditions__container'>
 					<div className='covidTermsAndConditions__container--questions buttons'>
-						<p>¿Usted se encuentra ubicado en la Ciudad Autónoma de Buenos Aires?</p>
+						<p>¿Dónde se encuentra actualmente?</p>
 						<div className='d-flex justify-content-between buttonContainer'>
 							<button
 								className={`ubicacion ${ubicacion === 'capital' && 'active'}`}
 								onClick={() => setUbicacion('capital')}>
-									Sí
+									CABA
 							</button>
 							<button
 								className={`ubicacion ${ubicacion === 'provincia' && 'active'}`}
 								onClick={() => setUbicacion('provincia')}>
-									No
+									GBA
 							</button>
 						</div>
 					</div>
@@ -116,7 +118,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 										<div className='d-flex justify-content-between buttonContainer'>
 											<button
 												className={`yes ${formState.includes(item.value) ? 'active' : ''}`}
-												onClick={() => saveItem(true, item, index)}>
+												onClick={() => saveItem(true, item, index, formState)}>
 												Si
 											</button>
 											<button
@@ -125,7 +127,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 														? 'disabled'
 														: ''
 												}`}
-												onClick={() => saveItem(false, item, index)}>
+												onClick={() => saveItem(false, item, index, formState)}>
 												No
 											</button>
 										</div>
@@ -143,7 +145,6 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 				})
 			}
 			{
-				ubicacion !== '' &&
 				<div className='covidTermsAndConditions__container'>
 					<button className='covidTermsAndConditions__container--submit' onClick={() => formHandler(formState)}>
 						Confirmar

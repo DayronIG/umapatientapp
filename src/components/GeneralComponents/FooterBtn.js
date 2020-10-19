@@ -2,7 +2,7 @@ import React from 'react';
 import '../../styles/generalcomponents/FooterBtn.scss';
 
 const FooterBtn = ({
-	callback = () => {},
+	callback = () => console.log('empty'),
 	mode = 'single',
 	text = 'temporary text',
 	color = 'footer-primary',

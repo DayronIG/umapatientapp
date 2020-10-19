@@ -4,12 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import covidUmacare from '../../config/covidUmacare.json';
 
 const CovidSymptomsQuestions = ({ setAskQuestions }) => {
-    const { userUmacareStatus } = useSelector(state => state.queries)
+    const { userUmacareStatus, umacare } = useSelector(state => state.queries)
     const dispatch = useDispatch()
     const [renderQuestion, setRenderQuestion] = useState(0)
 
     const handleRes = (position, value, val) => {
-        console.log(position, value, val)
         let helper = userUmacareStatus ? userUmacareStatus : ''
         if(value === "no") {
             setRenderQuestion(3)
@@ -21,11 +20,15 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
         dispatch({ type: 'SET_UMACARE_STATUS', payload: helper })
         if (position === 3) setAskQuestions(false)
     }
-
+    
     useEffect(() => {
+        if(umacare.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
+            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
+            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
+                setAskQuestions(false)
+            }
         if (userUmacareStatus) {
             if (renderQuestion === 0 && userUmacareStatus.split('///')[0] !== '') {
-                console.log(userUmacareStatus.split('///')[0])
                 if (userUmacareStatus.split('///')[0] === 'yes' || userUmacareStatus.split('///')[0] === 'no') {
                     setRenderQuestion(1)
                 } else {

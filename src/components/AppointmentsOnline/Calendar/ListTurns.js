@@ -1,15 +1,24 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import moment from 'moment';
 import ConfirmContent from './ConfirmContent';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import SelectSymptoms from '../SelectSymptoms';
+import LaboralMotive from '../LaboralMotive';
 import '../../../styles/appointmentsonline/listAppointments.scss';
 
 export default function ({ appoints, filterDt, unsetDate }) {
   const [selectedAppoint, setSelectedAppoint] = useState('')
   const [symptomsScreen, setSymptomsScreen] = useState(true)
   moment.locale('es')
+
+  function getSymptomScreen(){
+    if(appoints[0].especialidad === 'medicinalaboral') {
+      return <LaboralMotive unsetScreen={() => setSymptomsScreen(false)} />
+    } else {
+      return <SelectSymptoms unsetScreen={() => setSymptomsScreen(false)} />
+    }
+  }
 
   return (
     <>
@@ -34,9 +43,9 @@ export default function ({ appoints, filterDt, unsetDate }) {
           </section>
         </>
         : symptomsScreen ?
-          <SelectSymptoms unsetScreen={() => setSymptomsScreen(false)} />
+          getSymptomScreen()
           :
-          <ConfirmContent unsetSelected={() => setSelectedAppoint('')} appoint={selectedAppoint} />
+          <ConfirmContent unsetSelected={() => setSelectedAppoint('')} appoint={selectedAppoint} specialty={appoints[0].especialidad} />
       }
     </>
   )

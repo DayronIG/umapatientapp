@@ -1,29 +1,25 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { start_biomarker } from "../../config/endpoints";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStethoscope,
-  faHeartbeat,
   faDeaf,
   faFileMedicalAlt,
   faInfo,
   faAllergies,
   faBriefcaseMedical
 } from "@fortawesome/free-solid-svg-icons";
-import { GenericHeader } from "../GeneralComponents/Headers";
 import FooterBtn from "../GeneralComponents/FooterBtn";
-import Backbutton from "../GeneralComponents/Backbutton";
 import MobileModal from "../GeneralComponents/Modal/MobileModal";
 import FileService from "../GeneralComponents/SelectService/FileService";
-import Axios from "axios";
 import lungs from "../../assets/icons/lungs.svg";
 import WellnessCard from "../../assets/checkout/wellness.png";
 import "../../styles/wellness/wellness.scss";
 
+
 const Wellness = props => {
-  const { dni, ws } = useSelector(state => state.queries.patient);
+  const { dni } = useSelector(state => state.queries.patient);
   const dispatch = useDispatch();
   const [modalFile, setModalFile] = React.useState({
     state: false,
@@ -36,11 +32,15 @@ const Wellness = props => {
   return (
     <>
       {modalFile.state && (
-        <MobileModal callback={() => setModalFile(!modalFile.state)}>
+        <MobileModal callback={() => {
+          setModalFile(!modalFile.state)
+          dispatch({type: "TOGGLE_DETAIL", payload: false})}}>
           <FileService
+            patient={{dni: dni}}
             type="biomarker"
             title={modalFile.title}
             description={modalFile.description}
+            modalClose={() => setModalFile(false)}
           />
         </MobileModal>
       )}
@@ -55,7 +55,7 @@ const Wellness = props => {
             <ul className="markers">
               <li className="markers__item">
                 <Link to={`/${dni}/laboratorio`}>
-                  <div className="markers__item--icon active">
+                  <div className="markers__item--icon active__marker">
                     <FontAwesomeIcon icon={faFileMedicalAlt} />
                     <div className="markers__item--info">
                       <FontAwesomeIcon icon={faInfo} />
@@ -67,19 +67,8 @@ const Wellness = props => {
                 className="markers__item"
                 onClick={() => biomarkerHandler("sthethoscop")}
               >
-                <div className="markers__item--icon">
+                <div className="markers__item--icon active__marker">
                   <FontAwesomeIcon icon={faStethoscope} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("heartbeat")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faHeartbeat} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />
                   </div>
@@ -89,7 +78,7 @@ const Wellness = props => {
                 className="markers__item"
                 onClick={() => biomarkerHandler("frank")}
               >
-                <div className="markers__item--icon">
+                <div className="markers__item--icon active__marker">
                   <FontAwesomeIcon icon={faDeaf} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import {useSelector} from 'react-redux';
 import TrasladosWelcome from './TrasladosWelcome';
-import FirstStep from '../../views/Register';
 import SecondStep from './TransportOnboardingSecondStep';
 import ThirdStep from './TransportOnboardingThirdStep';
 
