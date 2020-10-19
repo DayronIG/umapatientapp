@@ -25,7 +25,7 @@ export const sound_online = `${POL}/sound_online`;
 export const pol_dni_front = `${POL}/pol_dni_front`;
 export const pol_dni_back = `${POL}/pol_dni_back`;
 export const pol_selfie = `${POL}/pol_selfie`;
-export const start_biomarker = `${URN_UMA}/biomarkers`;
+export const start_biomarker = `${URN_UMA}/post_`;
 export const cobertura = `${URN_UMA}/cobertura`;
 export const games = `${URN_UMA}/games`;
 export const umacare_tracking = `${URN_UMA}/umacare`;
@@ -50,6 +50,7 @@ export const cx_user_response = `${NODE_SERVER}/cx/user_response`;
 // Patients
 export const send_user_code = `${NODE_SERVER}/patients/code`;
 export const node_patient = `${NODE_SERVER}/patients`;
+export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
 // Payments

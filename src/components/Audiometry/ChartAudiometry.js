@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from "react-redux";
 import ReactApexChart from "react-apexcharts"
 import { FaExclamationTriangle } from 'react-icons/fa'
+import { post_biomarkers } from "../../config/endpoints"
+import axios from "axios"
+import moment from "moment"
  
 const ChartAudiometry = ({
     leftEarResults,
@@ -10,13 +14,34 @@ const ChartAudiometry = ({
     compensation = 115,
     linkConsulta = "/"
     }) => {
-
+    const { dni, ws } = useSelector(state => state.queries.patient) 
     const dBHL = [-13.5/20, -7.5/20, -9/20, -12/20];
 
     for(var i = 0; i < dBHL.length; i++){
         leftEarResults[i] = leftEarResults[i] + dBHL[i]
         rightEarResults[i] = rightEarResults[i] + dBHL[i]
     }
+
+    const formatterEarData = (value) => {
+        return (Math.ceil(value * 20) + compensation)
+    } 
+
+    useEffect(()=>{
+        let data = {
+            data: {
+                leftEarResults: leftEarResults.map(x => formatterEarData(x)),
+                rightEarResults: rightEarResults.map(x => formatterEarData(x))
+            },
+            date: moment().format("YYYY-MM-DD_HH-mm-ss"),
+            dni: dni,
+            links: {},
+            type: "audiometry",
+            ws: ws
+        }
+        let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': token */ }
+        axios.post(`${post_biomarkers}/${dni}`, data, headers)
+        .then(console.log("DONE", data))
+    }, [])
 
     var message;
     var oido;
@@ -96,7 +121,7 @@ const ChartAudiometry = ({
                 reversed: true,
                 labels: {
                     formatter: function (value) {
-                    return -1 * (Math.ceil(value * 20) + compensation) + "dBHL";
+                    return formatterEarData(value) + "dBHL";
                     // return Math.ceil(value * 20) + "dB"; DBFS
                     }
                 },
@@ -165,7 +190,7 @@ const ChartAudiometry = ({
                 reversed: true,
                 labels: {
                     formatter: function (value) {
-                        return -1 * (Math.ceil(value * 20) + compensation) + "dBHL";
+                        return formatterEarData(value) + "dBHL";
                     }
                 },
                 },

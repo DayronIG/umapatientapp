@@ -8,6 +8,7 @@ import { RiRecordCircleLine } from 'react-icons/ri';
 import { Loader } from '../../GeneralComponents/Loading';
 import swal from 'sweetalert';
 import AudioAnalyser from "./AudioWaveformAnalizer/AudioAnalyser.js"
+import { post_biomarkers } from "../../../config/endpoints"
 
 import {uploadFileToFirebase} from '../../Utils/postBlobFirebase';
 
@@ -74,10 +75,9 @@ const AudioRecorder = ({
 
 		recorder.addEventListener("dataavailable", async event => {
 				try{
+					//POST TO COMPUTER VISION
 					const blobDataInWebaFormat = event.data; 
 					const blobDataInWavFormat = new Blob([blobDataInWebaFormat], { type : 'audio/wav' });
-					// const dataUrl = URL.createObjectURL(blobDataInWavFormat);
-					// console.log(dataUrl); 
 					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_heartbeat_original.wav`);
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
@@ -89,7 +89,21 @@ const AudioRecorder = ({
 						"id": `${timeID}##${id}##`,
 						"upload_url": upload_url_prop? upload_url_prop:`${patient.dni}/attached/${appoint?.path?.split('/')?.[3]}`
 					}
-					await axios.post(heartbeatEndpoint, data, headers)
+					const resData = await axios.post(heartbeatEndpoint, data, headers)
+					//POST TO BIOMARKERS
+					let post_biomarkers_data = {
+						data: {},
+						date: moment().format("YYYY-MM-DD_HH-mm-ss"),
+						dni: patient.dni,
+						links: {
+							[ `sthetoscope${id}_original`]: fileLink,
+							processed_hb: resData.data.processed_hb,
+							waveform: resData.data.waveform
+					},
+						type: `sthetoscope${id}`,
+						ws: patient.ws
+					}
+					await axios.post(`${post_biomarkers}/${patient.dni}`, post_biomarkers_data, headers)
 					swal("Captura exitosa", "Se ha grabado con éxito!", "success")
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: fileLink}): finalAction()
                 } catch(error) {
