@@ -24,6 +24,7 @@ const Questions = () => {
 	});
 	const [responses, setResponses] = useState()
 	const [alerta, setAlerta] = useState('');
+	const [counter, setCounter] = useState(0);
 	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
 	const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
 	const { assessment } = useSelector((state) => state);
@@ -54,8 +55,9 @@ const Questions = () => {
 			let id = getQuestion[j].id;
 			let title = getQuestion[j].question;
 			let answers = getQuestion[j].answers;
-			// let required = getQuestion[j].required;
-			currentQuestion = { id, title, answers };
+			let answerType = getQuestion[j].answerType;
+			currentQuestion = { id, title, answers, answerType };
+			setCounter(1);
 		}
 		dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
 	}, [assessment.selectedQuestions, dispatch, i, j]);
@@ -71,7 +73,8 @@ const Questions = () => {
 				selectedQuestions.push({
 					id: doc.id,
 					question: data.question,
-					answers: data.answer
+					answers: data.answer,
+					answerType: data.input.type
 				});
 
 				data.features.map(question => {
@@ -82,7 +85,8 @@ const Questions = () => {
 							selectedQuestions.push({
 								id: doc.id,
 								question: docData.question,
-								answers: docData.answer
+								answers: docData.answer,
+								answerType: docData.input.type
 							});
 						}
 					})
@@ -102,7 +106,7 @@ const Questions = () => {
 				<div className='assessment-text mt-4 mb-4'>
 					{assessment.currentQuestion && assessment.currentQuestion.title}
 				</div>
-				{Array.isArray(assessment.selectedQuestions) && assessment.selectedQuestions.length === 0 && <Loading centered={true} /> }
+				{counter === 0 && <Loading centered={true} /> }
 				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
 			</div>
 		</>

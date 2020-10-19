@@ -119,4 +119,33 @@
   }
 }
 
+.range-confirm {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+
+  &> .form-group {
+    flex: 2 2;
+  }
+
+  &> .btn-blue-lg {
+    flex: 1 1;
+  }
+}
+
+.form-control.text {
+  width: 90%;
+  margin: 0 auto 10px;
+  outline: none;
+
+  &:focus {
+    border: none;
+    box-shadow: 0 0 0 #000;
+  }
+
+  &.form-control-range {
+    padding: 0;
+  }
+}
 

@@ -37,7 +37,8 @@ const SelectReason = (props) => {
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
 	function redirect() {
-		dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
 		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
 	}
 
