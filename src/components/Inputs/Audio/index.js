@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import Sthetoscope from "./Sthetoscope";
 import { storage } from "firebase"
-import moment from 'moment-timezone';
 import { FaPlay, FaPause } from 'react-icons/fa'
 import instructionsAortico from "./assets/focoaortico.jpg"
 import instructionsMitral from "./assets/focomitral.png"
