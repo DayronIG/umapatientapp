@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
 import moment from 'moment';
-import { device_info } from '../../../config/endpoints';
 import * as DetectRTC from 'detectrtc';
 import { getUser } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
@@ -55,17 +54,8 @@ const WhenScreen = (props) => {
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
 		DetectRTC.load(function() {
-			let headers = { 'Content-Type': 'Application/Json', Authorization: token };
 			hasWebcam = DetectRTC.isWebsiteHasWebcamPermissions;
 			hasMicrophone = DetectRTC.isWebsiteHasMicrophonePermissions;
-			Axios.post(
-				device_info,
-				{
-					ws: `[${props.match.params.dni}]`,
-					data: DetectRTC,
-				},
-				headers
-			);
 			if (hasWebcam && hasMicrophone) dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: 'enabled' });
 			else dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: 'disabled' });
 		});
