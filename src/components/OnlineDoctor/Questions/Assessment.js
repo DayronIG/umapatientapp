@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import VideoComponent from '../../Inputs/Video';
-import PictureComponent from '../../Inputs/Picture'
+import PictureComponent from '../../Inputs/Picture';
+import InputFloat from '../../Inputs/Float';
+import OptionButton from '../../Inputs/Option';
+import InputRange from '../../Inputs/Range';
 
 const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
 
@@ -45,47 +48,27 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
         if(a.question.includes('rango')){
           return (
             <div className="range-confirm" key={index}>
-              <div className="form-group">
-                <label>{rangeValue}</label>
-                <input type="range" className="form-control-range form-control text" min="30" max="200" onChange={(e) => setRangeValue(e.target.value)} />
-              </div>
-              <div className='btn btn-blue-lg mt-1 p-2'
-              onClick={(e) => saveAnswerAndNext(assessment, rangeValue, assessment.currentQuestion.id)}>
-                Confirmar
-              </div>
+              <InputRange value={rangeValue} action={(e) => setRangeValue(e.target.value)} />
+              <OptionButton action={(e) => saveAnswerAndNext(assessment, rangeValue, assessment.currentQuestion.id)} text="Confirmar" />
             </div>
           );
         } else {
-          return (
-            <div className='btn btn-blue-lg mt-1 p-2' key={index}
-              onClick={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id)}>
-              {a.question}
-            </div>
-          )
+          return <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id)} text={a.question} key={index} />
         }
       }
-      case "float": {
-        return (
-          <form onSubmit={(e) => saveInputAndNext(e, assessment.currentQuestion.id)} key={index}>
-            <input type='number' className='form-control text' step="0.1" id='inputValue' name='inputValue' />
-            <button type='submit' className='btn btn-blue-lg mt-1 p-2'>Enviar</button>
-          </form>
-        )
-      }
+      case "float": return <InputFloat submit={(e) => saveInputAndNext(e, assessment.currentQuestion.id)} key={index} />
       case "video": {
+        // TODO: A veces después de cortar la grabación vuelve a la pregunta inicial.
         return <VideoComponent key={index} isModal={true} finalAction={stopAndNext} />
       }
-      case "photo": {
-        return <PictureComponent key={index} finalAction={stopAndNext} />
-      }
+      case "photo": return <PictureComponent key={index} finalAction={stopAndNext} />
     }
   }
 
   return (
     <>
       {
-        assessment.currentQuestion.answers.map((a, index) => inputType(a, index)
-        )
+        assessment.currentQuestion.answers.map((a, index) => inputType(a, index))
       }
     </>
   )
