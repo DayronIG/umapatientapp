@@ -327,9 +327,6 @@ const Register = props => {
                             <p className='p-2 mt-5 text-center'>
                                 Para iniciar el registro por favor dígale 'Hola' a UMA por whatsapp (<a href='tel:5491123000066'>5491123000066</a>)  y recibirá su link de registro.
                             </p>
-                            <a href='https://wa.me/5491123000066/?text=Hola'>
-                                <div className='btn btn-blue-lg'>Enviar saludo a UMA</div>
-                            </a>
                         </div>}
                 </>}
         </>

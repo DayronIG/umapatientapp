@@ -32,7 +32,6 @@ const ProfileComponent = () => {
 					setUsuario(user.data());
 				});
 		}
-
 		return () => unsubscribe;
 	}, [db, user.dni]);
 
@@ -73,7 +72,9 @@ const ProfileComponent = () => {
 				<MobileModal title='Editar datos'>
 					{
 						loading ? 
-						<div className="text-center" style={{minHeight: '200px', padding: '100px'}}><Loader /></div> :
+						<div className="text-center" style={{minHeight: '200px', padding: '100px'}}>
+							<Loader />
+						</div> :
 						<EditSection />
 					}
 				</MobileModal>

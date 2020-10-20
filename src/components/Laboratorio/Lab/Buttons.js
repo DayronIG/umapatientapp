@@ -49,7 +49,6 @@ function LoadAnalysis(props) {
     reader.onloadend = function () {
       const imgB64 = reader.result;
       postImg(imgB64.split("base64,")[1]);
-      console.log(imgB64.split("base64,")[1]);
     };
   };
 
@@ -57,12 +56,12 @@ function LoadAnalysis(props) {
     setresspiner(true);
     const datos = {
       assignation_id: "2019-04-23_12-04-17",
-      ws: "",
-      dni: "",
-      dt: "2019-04-23-12-04-17",
+      ws: patient.ws,
+      dni: patient.dni,
+      dt: fecha || "2019-04-23-12-04-17",
       b64: img,
-      sex: "",
-      age: ""
+      sex: patient.sex || '',
+      age: patient.age || ''
     };
     let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': token */ }
     axios
