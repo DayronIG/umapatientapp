@@ -23,6 +23,11 @@ export default (state = initialState, action) => {
         ...state,
         'selectedSymptoms': [...state.selectedSymptoms, action.payload]
       }
+    case 'CLEAN_SYMPTOM':
+      return {
+        ...state,
+        'selectedSymptoms': []
+      }
     case 'REMOVE_SYMPTOM_TAG': 
       return {
         ...state,

@@ -51,50 +51,59 @@ const Questions = () => {
 	useEffect(() => {
 		let getQuestion = assessment.selectedQuestions;
 		let currentQuestion = {};
-		if (getQuestion && getQuestion.length >= 1) {
+
+		if (assessment.selectedSymptoms.length >= 1 && getQuestion && getQuestion.length >= 1) {
 			let id = getQuestion[j].id;
 			let title = getQuestion[j].question;
 			let answers = getQuestion[j].answers;
 			let answerType = getQuestion[j].answerType;
 			currentQuestion = { id, title, answers, answerType };
 			setCounter(1);
+
+			dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
+		} else {
+			dispatch({ type: 'SET_CURRENT_QUESTION', payload: {} });
 		}
-		dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
 	}, [assessment.selectedQuestions, dispatch, i, j]);
 	
 	// Effect that get all selected questions for the patient's symptoms and save them to store
 	const questionsForEachSymptom = () => {
-		let selectedQuestions = [];
-		const selectedSymptomsLowercase = assessment.selectedSymptoms.map(s => s.toLowerCase());
-		db.collection('/parametros/userapp/assessment').where('triggers', 'array-contains-any', selectedSymptomsLowercase).get()
-		.then(query => {
-			query.forEach(doc => {
-				const data = doc.data();
-				selectedQuestions.push({
-					id: doc.id,
-					question: data.question,
-					answers: data.answer,
-					answerType: data.input.type
-				});
+		if(assessment.selectedSymptoms.length >= 1) {
+			let selectedQuestions = [];
+			const selectedSymptomsLowercase = assessment.selectedSymptoms.map(s => s.toLowerCase());
+			db.collection('/parametros/userapp/assessment').where('triggers', 'array-contains-any', selectedSymptomsLowercase).get()
+			.then(query => {
+				query.forEach(doc => {
+					const data = doc.data();
+					selectedQuestions.push({
+						id: doc.id,
+						question: data.question,
+						answers: data.answer,
+						answerType: data.input.type
+					});
 
-				data.features.map(question => {
-					db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
-					.then(doc => {
-						if(doc.exists) {
-							const docData = doc.data();
-							selectedQuestions.push({
-								id: doc.id,
-								question: docData.question,
-								answers: docData.answer,
-								answerType: docData.input.type
-							});
-						}
+					data.features.map(question => {
+						db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
+						.then(doc => {
+							if(doc.exists) {
+								const docData = doc.data();
+								selectedQuestions.push({
+									id: doc.id,
+									question: docData.question,
+									answers: docData.answer,
+									answerType: docData.input.type
+								});
+							}
+						})
 					})
 				})
-			})
 
-			dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: selectedQuestions });
-		})
+				dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: selectedQuestions });
+			})
+			.catch(e => console.log(e));
+		} else {
+			dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: null });
+		}
 	};
 
 	return (

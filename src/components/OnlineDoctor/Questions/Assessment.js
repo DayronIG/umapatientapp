@@ -26,8 +26,8 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     } else {
       seti(0)
       setj(0);
-      dispatch({ type: 'SET_CURRENT_QUESTION', payload: {} });
-      dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: null });
+      console.log('entré al limpiar el síntoma');
+      dispatch({ type: 'CLEAN_SYMPTOM' });
     }
   }
 
@@ -37,8 +37,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     } else {
       seti(0)
       setj(0);
-      dispatch({ type: 'SET_CURRENT_QUESTION', payload: {} });
-      dispatch({ type: 'SET_SELECTED_QUESTIONS', payload: null });
+      dispatch({ type: 'CLEAN_SYMPTOM' });
     }
   }
 
