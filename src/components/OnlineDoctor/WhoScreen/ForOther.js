@@ -5,7 +5,7 @@ import moment from "moment";
 import 'moment-timezone';
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
-import { afiliado } from "../../../config/endpoints";
+import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
 // import { getPatientData } from "../../../store/actions/firebaseQueries";
@@ -16,7 +16,6 @@ import "../../../styles/generalcomponents/register.scss";
 
 const Register = props => {
   const dispatch = useDispatch();
-  const token = useSelector(state => state.userActive.token)
   const user = useSelector(state => state.queries.patient);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
@@ -51,20 +50,19 @@ const Register = props => {
     let dob = `${year}-${month}-${day}`;
     let data = {
       address: address || "", 
-      core_id: "",
       corporate: os || "",
-      dni_titular: user.dni || "",
+      corporate_norm: os || "",
       dni: dni || "",
       dob: dob || "",
       dt: date || "",
-      email: user.email || "",
       fullname: fullname || "",
+      group: user.dni || "",
       piso: piso || "", 
       sex: sex || "",
-      ws: user.ws || ""
+      ws: user.ws || "",
     }
     axios
-      .post(afiliado, data, {headers: { ContentType: "Application/json", 'Authorization': token } })
+      .post(`${node_patient}/dependant`, {dependant: data})
       .then(res => {
         if (props.redirectToConsultory === 'true') {
           props.history.replace(`/${dni}/appointmentsonline/`)

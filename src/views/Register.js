@@ -4,8 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
-import { withRouter } from 'react-router-dom';
-import DBConnection from '../config/DBConnection';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,6 +21,7 @@ import '../../src/styles/generalcomponents/register.scss';
 
 const Register = props => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const [registered, setRegistered] = useState(false)
     const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
@@ -38,9 +38,14 @@ const Register = props => {
             e.preventDefault()
             setDeferredPrompt(e)
         })
-        dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-        getCountryCode()
-        generatePassword()
+        if(urlWS.length < 12) {
+            swal('Error', 'Este no es un teléfono válido.', 'warning')
+            history.push('/')
+        } else {
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            getCountryCode()
+            generatePassword()
+        }
     }, [dispatch, props.match])
 
     async function getCountryCode() {
@@ -153,7 +158,7 @@ const Register = props => {
                 } else if (res.creates === true) {
                     setTimeout(() => {
                         dispatch({ type: 'LOADING', payload: false })
-                        props.history.push('/')
+                        history.push('/')
                     }, 2000)
                 } else {
                     dispatch({ type: 'LOADING', payload: false })
@@ -197,13 +202,13 @@ const Register = props => {
                     let headers = { 'Content-Type': 'Application/Json' }
                     if (choiceResult.outcome === 'accepted') {
                         axios.post(install_event, data, headers)
-                        props.history.push('/')
+                        history.push('/')
                     } else {
-                        props.history.push('/')
+                        history.push('/')
                     }
                 })
                 .catch(err => {
-                    props.history.push('/')
+                    history.push('/')
                 })
         }
     }
@@ -318,7 +323,7 @@ const Register = props => {
                                 </button>
                             </div>
                             <div className='text-center link mb-4'
-                                onClick={() => props.history.push(`/login`)}>
+                                onClick={() => history.push(`/login`)}>
                                 Ya tengo un usuario (Ingresar)
                             </div>
                         </form>
@@ -333,4 +338,4 @@ const Register = props => {
     )
 }
 
-export default withRouter(Register)
+export default Register

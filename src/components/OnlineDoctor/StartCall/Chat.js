@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import  { useParams } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { transcription } from '../../../config/endpoints';
@@ -13,7 +14,8 @@ import '../../../styles/onlinedoctor/Chat.scss';
 
 const Chat = (props) => {
     const dispatch = useDispatch()
-    const { dni, ws } = useSelector((state) => state.queries.patient)
+    const { dni } = useParams()
+    const { ws } = useSelector((state) => state.queries.patient)
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
     const [, setMedicalRecord] = useState([])
@@ -32,12 +34,14 @@ const Chat = (props) => {
     useEffect(() => {
         if (dni) {
             getAppointmentByDni(dni).then((appoint) => {
+                console.log("APPOINT:", appoint, dni)
                 if (appoint) {
                     dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: appoint })
                 } else {
                     let mr = findMR()
                     mr.then(mr => {
-                        firestore.doc(`assignations/${mr[0].path}`).get().then(res => {
+                        console.log(mr)
+                        firestore.doc(`assignations/${mr[0]?.path}`).get().then(res => {
                             dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: res.data() })
                         })
                     })
@@ -47,7 +51,8 @@ const Chat = (props) => {
     }, [dni])
 
     useEffect(() => {
-        if (current.appointments) {
+        console.log(current)
+        if (current?.appointments) {
             let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", current.appointments[0]["14"])
             query.onSnapshot({
                 includeMetadataChanges: true
@@ -90,6 +95,7 @@ const Chat = (props) => {
                 })
                 setMedicalRecord(filteredRecords)
             }
+            console.log(filteredRecords)
             return filteredRecords
         } catch (error) {
             // console.error(error)
@@ -139,9 +145,9 @@ const Chat = (props) => {
 
 
     function postDataConversation(postValue) {
-        if (!current.cuil || !current.appointments[0]["14"]) {
+/*         if (!current?.cuil || !current?.appointments[0]["14"]) {
             window.location.reload();
-        }
+        } */
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
         // 'Accept': 'text/plain' 
@@ -150,11 +156,12 @@ const Chat = (props) => {
                 'ws': ws,
                 'dni': dni,
                 'dt': date,
-                'cuil': current.cuil || '',
-                'assignation_id': current.appointments && (current.appointments[0]["14"] || ''),
+                'cuil': current?.cuil || '',
+                'assignation_id': current?.appointments && (current?.appointments[0]["14"] || ''),
                 'rol': 'patient',
                 'text': inputValue || ''
             }
+            console.log(data)
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
             axios.post(transcription, data, { headers })
                 .then((res) => {

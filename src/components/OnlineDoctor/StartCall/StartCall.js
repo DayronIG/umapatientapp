@@ -116,7 +116,6 @@ const StartCall = (props) => {
 
 	return (
 		<>
-			{/* {(publish !== "SUCCESS" || subscribe !== "SUCCESS" || session !== "CONNECTED") && */}
 			<Chat />
 			<OTSession
 				apiKey={'46424032'}

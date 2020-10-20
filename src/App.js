@@ -51,14 +51,12 @@ import Pol from './views/Pol.js';
 import PolProof from './components/Pol/PolProof';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
-import DeliverySelectDestiny from './components/DeliveryService/DeliverySelectDestiny.js';
 /* SymptomsTracking */
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
-import RedirectConsultation from './components/RedirectConsultation/';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
