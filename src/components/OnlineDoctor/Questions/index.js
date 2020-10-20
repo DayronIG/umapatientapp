@@ -52,7 +52,11 @@ const Questions = () => {
 		let getQuestion = assessment.selectedQuestions;
 		let currentQuestion = {};
 
-		if (assessment.selectedSymptoms.length >= 1 && getQuestion && getQuestion.length >= 1) {
+		if(getQuestion === null) {
+			dispatch({ type: 'SET_CURRENT_QUESTION', payload: {title: "", answers: []} });
+		}
+
+		if (assessment.selectedSymptoms.length >= 1 && getQuestion && getQuestion[j] && getQuestion.length >= 1) {
 			let id = getQuestion[j].id;
 			let title = getQuestion[j].question;
 			let answers = getQuestion[j].answers;
@@ -61,8 +65,6 @@ const Questions = () => {
 			setCounter(1);
 
 			dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
-		} else {
-			dispatch({ type: 'SET_CURRENT_QUESTION', payload: {} });
 		}
 	}, [assessment.selectedQuestions, dispatch, i, j]);
 	
@@ -95,6 +97,27 @@ const Questions = () => {
 								});
 							}
 						})
+						.catch(e => console.log(e));
+					})
+
+					data.symptom.map(symptom => {
+						db.collection('parametros').doc('userapp').collection('assessment').doc(symptom).get()
+						.then(doc => {
+							if(doc.exists) {
+								let result = selectedQuestions.filter(item => item.id === doc.id);
+
+								if(result.length === 0) {
+									const symptomData = doc.data();
+									selectedQuestions.push({
+										id: doc.id,
+										question: symptomData.question,
+										answers: symptomData.answer,
+										answerType: symptomData.input.type
+									});
+								}
+							}
+						})
+						.catch(e => console.log(e));
 					})
 				})
 

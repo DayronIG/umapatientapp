@@ -26,7 +26,6 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     } else {
       seti(0)
       setj(0);
-      console.log('entré al limpiar el síntoma');
       dispatch({ type: 'CLEAN_SYMPTOM' });
     }
   }
