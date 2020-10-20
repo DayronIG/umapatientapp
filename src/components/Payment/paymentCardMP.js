@@ -190,9 +190,9 @@ const PaymentCardMP = (props) => {
           <>
           {loader && <CustomUmaLoader />}        
           <GenericHeader children="Contratar Servicio" />
-          <FaArrowLeft className="flecha-pay" />
+          {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
-            <p className="titulo-card">Servicio a Pagar</p>
+            {/* <p className="titulo-card">Servicio a Pagar</p> */}
             <Cards
               cvc={cvc}
               expiry={expiry}
@@ -243,7 +243,7 @@ const PaymentCardMP = (props) => {
             <div>
                 <div className="document">
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
-                <input type="text" id="docNumber" value={user.dni}
+                <input type="text" id="docNumber" defaultValue={user.dni}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>

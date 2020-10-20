@@ -1,12 +1,13 @@
 .flecha-pay {
   font-size: 2rem;
   color: #fff;
-  display: block;
+  position: absolute;
   margin: 20px 0 0 20px;
 }
 
 .tarjeta-credito {
-
+  margin-top: 25px;
+  
   // clase de la libreria
   .rccs__card--unknown > div {
     background: rgba(#64D6D3, .8);
