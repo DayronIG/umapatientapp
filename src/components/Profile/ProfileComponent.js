@@ -9,18 +9,18 @@ import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import moment from 'moment';
 import '../../styles/profile.scss';
-import Loader from '../GeneralComponents/Loading';
+import Loading from '../GeneralComponents/Loading';
+import {Loader} from '../GeneralComponents/Loading';
 
 const ProfileComponent = () => {
-	const dispatch = useDispatch();
-	const db = DBConnection.firestore();
-	const user = useSelector((state) => state.queries.patient);
-	const modal = useSelector((state) => state.front.openDetails);
-	const { section } = useSelector((state) => state.front);
-	const [editionMode, ] = useState(true);
-	const [usuario, setUsuario] = useState({});
-	const [loading, setLoading] = useState(true);
-	const { fullname, dni, corporate, dob, ws, address, subscription, sex, piso, profile_pic } = usuario;
+	const dispatch = useDispatch()
+	const db = DBConnection.firestore()
+	const user = useSelector((state) => state.queries.patient)
+	const {openDetails: modal, loading} = useSelector((state) => state.front)
+	const { section } = useSelector((state) => state.front)
+	const [editionMode, ] = useState(true)
+	const [usuario, setUsuario] = useState({})
+	const { fullname, dni, corporate, dob, ws, address, subscription, sex, piso, profile_pic } = usuario
 
 	useEffect(() => {
 		let unsubscribe;
@@ -30,7 +30,6 @@ const ProfileComponent = () => {
 				.doc(user.dni)
 				.onSnapshot((user) => {
 					setUsuario(user.data());
-					setLoading(false);
 				});
 		}
 
@@ -69,10 +68,14 @@ const ProfileComponent = () => {
 
 	return (
 		<>
-			{loading && <Loader />}
+			{loading && !fullname && <Loading />}
 			{modal && (
 				<MobileModal title='Editar datos'>
-					<EditSection />
+					{
+						loading ? 
+						<div className="text-center" style={{minHeight: '200px', padding: '100px'}}><Loader /></div> :
+						<EditSection />
+					}
 				</MobileModal>
 			)}
 			<div className='profile-container'>
@@ -100,24 +103,10 @@ const ProfileComponent = () => {
 					<div className='profile-section section'>
 						<EditButton section='contact' className='btn-edit' clase='contact' />
 						<p className='profile-section-title'>Datos de contacto</p>
-						<p>
-							<b>Teléfono: </b>
-							{ws}
-						</p>
-						<p>
-							<b>Dirección: </b>
-							{address}
-						</p>
-						{piso && (
-							<p>
-								<b>Piso/Dpto: </b>
-								{piso}
-							</p>
-						)}
-						<p>
-							<b>Suscripción: </b>
-							{subscription}
-						</p>
+						<p><b>Teléfono: </b> {ws} </p>
+						<p><b>Dirección: </b> {address} </p>
+						{piso && <p> <b>Piso/Dpto: </b> {piso} </p>}
+						<p><b>Suscripción: </b> {subscription} </p>
 					</div>
 				</div>
 				<div className='profile-section section'>
@@ -126,25 +115,10 @@ const ProfileComponent = () => {
 					<p>
 						<b>Sexo:</b> {(sex === 'M' && 'Hombre') || (sex === 'F' && 'Mujer')}
 					</p>
-					{/* 
-            <p><b>Peso:</b> 74 kg</p>
-            <p><b>Altura:</b> 183 cms</p>
-            <p><b>Crónicos: </b>Diabetes</p>
-            <p><b>Antecedentes familiares: </b>Coronarios</p> 
-          */}
 				</div>
-				<div className='umaVersion'>
+				<div className='umaVersion text-center'>
 					<Version />
 				</div>
-				{/* <div className="section">
-          <EditButton section="personal" className="btn-edit" />
-          <p className="profile-section-title">Datos de traslado</p>
-          <p><b>Discapacidad:</b> Total (Visceral) </p>
-          <p><b>Certificado:</b> 123456</p>
-          <p><b>Silla de ruedas: </b>Si (Plegable)</p>
-          <p><b>Amparo:</b> Si</p>
-          <p><b>Acompañante:</b> Fernando</p>
-        </div> */}
 			</div>
 		</>
 	);

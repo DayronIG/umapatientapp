@@ -5,10 +5,11 @@ const Version = () => {
   function logout() {
     SignOut()
   }
+
   return (
     <div className="text-center">
-      <p onClick={() => logout()} className="mb-3 close-sesion">{/* Cerrar sesión */}</p>
-      <p>UMA Versión 1.1.46</p>
+      <p onClick={() => logout()} className="close-sesion">Cerrar sesión</p>
+      <small className="mb-1 close-sesion">UMA Versión 1.1.46</small>
     </div>
   )
 }

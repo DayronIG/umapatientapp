@@ -12,16 +12,16 @@ const token = localStorage.getItem('token');
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(false);
 	const [userData, setUserData] = useState({ profile_pic: user.profile_pic || '' });
 
-	const handleSubmit = (e, userData, user) => {
+	const handleSubmit = async (e, userData, user) => {
+		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
 		};
 		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		axios
+		await axios
 			.patch(`${node_patient}/${user.dni}`, data, {headers})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
@@ -30,36 +30,29 @@ export const ProfilePic = ({ user }) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 				console.log(err);
 			});
+		dispatch({type: 'LOADING', payload: false})
 	};
 
 	const uploadImage = (e) => {
-		setLoading(true);
 		let dt = moment().format('YYYYMMDDHHmmss');
 		let fieldName = e.target.name;
 		uploadFileToFirebase(e.target.files[0], `${user.dni}/profile_pic/${dt}`).then((imgLink) => {
 			setUserData({ ...userData, [fieldName]: imgLink });
-			setLoading(false);
 		});
 	};
 
 	return (
 		<>
-			{loading ? (
-				<div className='text-center my-5'>
-					<Loader />
-				</div>
-			) : (
-					<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-						<div className='input-file'>
-							<p>Buscar Imagen</p>
-							<FiUpload size='1.3rem' />
-							<input type='file' name='profile_pic' onChange={uploadImage} />
-						</div>
-						<button className='btn btn-blue-lg' type='submit'>
-							Subir
-					</button>
-					</form>
-				)}
+		<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+			<div className='input-file'>
+				<p>Buscar Imagen</p>
+				<FiUpload size='1.3rem' />
+				<input type='file' name='profile_pic' onChange={uploadImage} />
+			</div>
+			<button className='btn btn-blue-lg' type='submit'>
+				Subir
+			</button>
+		</form>
 		</>
 	);
 };
@@ -75,13 +68,14 @@ export const PersonalData = ({ user }) => {
 	const handleChange = (e) => {
 		setUserData({ ...userData, [e.target.name]: e.target.value });
 	};
-	const handleSubmit = (e, userData, user) => {
+	const handleSubmit = async (e, userData, user) => {
+		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
 		};
 		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		axios
+		await axios
 			.patch(`${node_patient}/${user.dni}`, data, {headers})
 			.then((res) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
@@ -90,6 +84,7 @@ export const PersonalData = ({ user }) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 				console.log(err);
 			});
+			dispatch({type: 'LOADING', payload: false})
 	};
 
 	return (
@@ -126,6 +121,7 @@ export const ContactData = ({ user }) => {
 		piso: user.piso || '',
 	});
 	const handleSubmit = (e, userData, user) => {
+		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
@@ -140,6 +136,7 @@ export const ContactData = ({ user }) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 				console.log(err);
 			});
+		dispatch({type: 'LOADING', payload: false})
 	};
 
 	const handleChange = (e) => {
@@ -165,10 +162,9 @@ export const ContactData = ({ user }) => {
 
 export const HealtData = ({ user }) => {
 	const dispatch = useDispatch();
-	const [userData, setUserData] = useState({
-		sex: user.sex || '',
-	});
+	const [userData, setUserData] = useState({ sex: user.sex || '' });
 	const handleSubmit = (e, userData, user) => {
+		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
@@ -183,6 +179,7 @@ export const HealtData = ({ user }) => {
 				dispatch({ type: 'TOGGLE_DETAIL' });
 				console.log(err);
 			});
+		dispatch({type: 'LOADING', payload: false})
 	};
 
 	return (

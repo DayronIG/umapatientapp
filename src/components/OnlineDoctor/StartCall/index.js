@@ -6,7 +6,6 @@ import StartCall from './StartCall';
 import DBConnection from '../../../config/DBConnection';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import Loading from '../../GeneralComponents/Loading';
-import { getDocumentFB } from '../../Utils/firebaseUtils';
 import '@opentok/client';
 import './polyfills';
 import '../../../styles/onlinedoctor/Call.scss';
