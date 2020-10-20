@@ -28,7 +28,7 @@ const Questions = () => {
 	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
 	const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
 	const { assessment } = useSelector((state) => state);
-	const { questions } = useSelector((state) => state.queries);
+	const { questions, patient } = useSelector((state) => state.queries);
 	const { loading } = useSelector((state) => state.front);
 	const propsContainerAssessmentAppointment = { seti, setj, i, j, responseIA, coordinates, alerta };
 
@@ -89,12 +89,15 @@ const Questions = () => {
 						.then(doc => {
 							if(doc.exists) {
 								const docData = doc.data();
-								selectedQuestions.push({
-									id: doc.id,
-									question: docData.question,
-									answers: docData.answer,
-									answerType: docData.input.type
-								});
+
+								if(!docData.sex || docData.sex === patient.sex.toLowerCase()) {
+									selectedQuestions.push({
+										id: doc.id,
+										question: docData.question,
+										answers: docData.answer,
+										answerType: docData.input.type
+									});
+								}
 							}
 						})
 						.catch(e => console.log(e));
