@@ -160,10 +160,11 @@ const Queue = (props) => {
                     }
                     let queryUser = firestore.collection('auth').doc(patient.ws)
                     queryUser.onSnapshot(async function (doc) {
-                        if (doc.data()._start_date !== '') {
-                            let data = doc.data()._start_date?.split('///')
-                            if(data) {
-                                dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
+                        let data = doc.data()._start_date
+                        if (data !== '' && data !== "geo") {
+                            let callRoom = data.split('///')
+                            if(callRoom) {
+                                dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
                             }
                         } else {
                             dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
