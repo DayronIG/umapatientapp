@@ -10,62 +10,8 @@ const firestore = DBConnection.firestore();
 const currentMonth = moment()
 	.tz('America/Argentina/Buenos_Aires')
 	.format('YYYYMM');
-const fulldt = moment()
-	.tz('America/Argentina/Buenos_Aires')
-	.format('YYYY-MM-DD');
-const currentDate = [d.getFullYear(), currentMonth].join('');
 const yearMonth = yearAndMonth();
-const currentDt = moment()
-	.tz('America/Argentina/Buenos_Aires')
-	.format('YYYY-MM-DD');
 
-export function listenAssigns(specialty) {
-	try {
-		let query = firestore
-			.collection('assignations')
-			.doc(specialty)
-			.collection(currentDate);
-		let assignments = {};
-		return (dispatch) => {
-			query.onSnapshot(
-				{
-					includeMetadataChanges: true,
-				},
-				function (snapshot) {
-					const assigns = [];
-					snapshot.forEach((subDoc) => {
-						// let now = new Date()
-						//  -> EL IF CON && subDoc.data().date > now
-						let data = subDoc.data();
-						let date = new Date(data.date + 'T' + data.time);
-						let now = new Date().getTime();
-						if (subDoc.data() && date.getTime() > now) {
-							assignments = {
-								title: data.cm,
-								start: date,
-								end: date,
-								fullname: data.fullname,
-								address: data.cm,
-								img: data.path_profile_pic ? data.path_profile_pic : '',
-								specialty: data.especialidad,
-								geo: {
-									lat: data.geo.lat,
-									long: data.geo.lon,
-								},
-								key: subDoc.ref.id,
-								path: subDoc.ref.path,
-								datestring: data.date,
-							};
-						}
-					});
-					dispatch(getAssignations(assigns));
-				}
-			);
-		};
-	} catch (err) {
-		console.log(err);
-	}
-}
 export function getAssignedAppointments(specialty, collectionName, doctors, userDni, date) {
 	return new Promise(async function (resolve, reject) {
 		try {

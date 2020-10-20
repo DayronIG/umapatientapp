@@ -272,8 +272,7 @@ const Queue = (props) => {
 
     async function cancelAppointment(type, claim = '') {
         dispatch({ type: 'LOADING', payload: true })
-        let event = await getEvent()
-        console.log(event)
+        // let event = await getEvent()
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         let yearAndMonth = moment(new Date()).format('YYYYMM')
         let documentBuild, aid = assignation, ws = patient.ws
@@ -321,7 +320,7 @@ const Queue = (props) => {
                     `La atención ya fue iniciada por el médico.`, 
                     'warning')
             } else {
-                await axios.post(user_cancel, data, headers)
+                await axios.post(user_cancel, data, {headers})
                 swal(`Consulta cancelada`, 
                 `Será redireccionado/a al inicio`, 
                 'success')
