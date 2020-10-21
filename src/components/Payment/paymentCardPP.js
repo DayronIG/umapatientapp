@@ -1,22 +1,19 @@
 /* eslint-disable import/no-unresolved */
-import React, { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {withRouter, useHistory} from 'react-router-dom';
-import { setLoader } from 'ducks/actions/loader';
-import { Divider } from 'antd';
 import axios from 'axios';
-import Loader from 'features/loader';
+import {CustomUmaLoader} from '../global/Spinner/Loaders';
 import moment from "moment";
 import swal from "sweetalert"
-import './style.scss';
+import './payment.scss';
 
-const PaymentCardIC = (props) => {
+const PaymentCardPP = (props) => {
     const history = useHistory();
     const paypal = useRef();
-    const dispatch = useDispatch();
-    const { loader } = useSelector((state) => state.loader);
-    const user = useSelector(state => state.userAuthReducer.currentUser);
-    const totalPayment = useSelector(state => state.resumePaymentReducer.totalPayment);
+    const [loader, setLoader] = useState(false)
+    const user = useSelector(state => state.queries.patient);
+    const totalPayment = 200
 
     useEffect(() => {
         window.paypal
@@ -52,15 +49,14 @@ const PaymentCardIC = (props) => {
 
     return (
         <>  
-            {loader && <Loader />}
-            <div className="payment-card">
+            {loader && <CustomUmaLoader />}
+            <div className="formulario-credito paypal--payment">
                 <div className="payment-title">
-                <Divider orientation="left" plain>
-                    Datos de pago
-                </Divider>
+                    <b>Datos de pago</b>
+                    <hr/>
+                    <div className="international-payment-title"> Total: ${totalPayment}</div>
                 </div>
                 <div className="payment-input-paypal">
-                    <div className="international-payment-title"> Total: ${totalPayment}</div>
                     <br/>
                     <div ref={paypal}></div>
                 </div>
@@ -69,4 +65,4 @@ const PaymentCardIC = (props) => {
     )
 }
 
-export default withRouter(PaymentCardIC)
+export default withRouter(PaymentCardPP)

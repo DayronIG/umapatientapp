@@ -83,3 +83,10 @@
     }
   }
 }
+
+.paypal--payment{
+  height: fit-content !important;
+  .payment-title{
+    text-align: center;
+  }
+}

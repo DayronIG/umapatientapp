@@ -1,16 +1,13 @@
 /* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {withRouter, useHistory} from 'react-router-dom';
-// import { Divider } from 'antd';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
-import Cleave from "cleave.js/react";
 import moment from "moment";
 import swal from "sweetalert"
-import { GenericHeader } from '../GeneralComponents/Headers'
 import { FaArrowLeft } from 'react-icons/fa';
-import './payComponent.scss';
+import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 
@@ -189,7 +186,6 @@ const PaymentCardMP = (props) => {
       return (
           <>
           {loader && <CustomUmaLoader />}        
-          <GenericHeader children="Contratar Servicio" />
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
             {/* <p className="titulo-card">Servicio a Pagar</p> */}
