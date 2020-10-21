@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {Link} from 'react-router-dom';
 import {FaPlay, FaPause} from "react-icons/fa"
 import Sthetoscope from "./Sthetoscope";
 import { storage } from "firebase"
 import instructionsAortico from "./assets/focoaortico.jpg"
 import instructionsMitral from "./assets/focomitral.png"
+import getBlobFirebase from "../../Utils/getBlobFirebase"
 import '../../../styles/inputs/audio/Audio.scss';
 
 
@@ -20,7 +21,8 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const {ws} = useSelector(state => state.queries.patient)
     const [onPlay, setOnPlay] = useState(false);
     const audioElement = useSelector(state => state.biomarkers.audioData);
-    
+    const dispatch = useDispatch()
+
     const play = () => {
         try {
         audioElement.volume = 1;
@@ -58,18 +60,20 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
         if(showResults){
             storage().ref().child(upload_url_prop).listAll()
             .then(res => {
-                Promise.all(res.items.map(async item => await item.getDownloadURL()
+                Promise.all(res.items.map(async item => {
+                    await item.getDownloadURL()
                     .then(x => {
                         if (x.includes(imageRecognizer) && x.includes(timeID)) {
                             if (x.includes("signal_vs_time")) {
                                 setSthetoscopeGraph(x)
                             }
                             if (x.includes("_processed_hb_")) {
+                                setSthetoscopeAudio(item.location.path_)
                                 setSthetoscopeBpm(x?.split("_")[3]?.split(".wav")[0])
                             }
                         }
                     }
-                    )))
+                    )}))
             })
             .catch(err => console.error(err))
         }
