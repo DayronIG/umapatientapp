@@ -149,3 +149,33 @@
   }
 }
 
+.currentQuestion {
+  .assessment-text {
+    width: 90%;
+    margin: 1.5rem auto 0 !important;
+    padding: 2rem 1rem;
+    background: #fff;
+    border-radius: 6px;
+    color: $gray-font;
+  }
+}
+
+.progressQuestions {
+
+  progress {
+    -webkit-appearance: none;
+    height: 5px;
+    width: 100%;
+    position: relative;
+    top: -15px;
+    z-index: 10;
+  }
+
+  ::-webkit-progress-bar {
+    background-color: #fff;
+  }
+  
+  ::-webkit-progress-value {
+    background-color: $secondary-color;
+  }
+}

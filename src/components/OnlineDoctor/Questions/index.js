@@ -135,9 +135,17 @@ const Questions = () => {
 	return (
 		<>
 			<GenericHeader children='Preguntas' />
+			{
+				assessment.selectedQuestions.length >= 1 &&
+				<div className="progressQuestions">
+					<progress max={assessment.selectedQuestions.length} value={j + 1}>
+						{j + 1}
+					</progress>
+				</div>
+			}
 			{loading && <Loading centered={true} />}
 			<BackButton />
-			<div className='text-center'>
+			<div className='text-center currentQuestion'>
 				<div className='assessment-text mt-4 mb-4'>
 					{assessment.currentQuestion && assessment.currentQuestion.title}
 				</div>
