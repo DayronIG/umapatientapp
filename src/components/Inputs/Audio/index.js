@@ -117,7 +117,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                         <img className="wellness__results__img" src={sthetoscopeGraph} alt="waveform" />
                     </div>
                     <div className="wellness__results__title">
-                        {sthetoscopeBpm > 50 && sthetoscopeBpm < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
+                        {parseInt(sthetoscopeBpm) > 50 && parseInt(sthetoscopeBpm) < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?
                         <div onClick={play}  className = "record__trigger--btn styleButton">
                             <FaPlay className="icon" />
