@@ -33,14 +33,14 @@ const PaymentCardPP = (props) => {
               });
             },
             onApprove: async (data, actions) => {
-                swal('El pago se ha registrado correctamente', 'Gracias por confiar en Health-U!', 'success')
-                .then(()=> history.push("/progress"))
+                swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+                .then(()=> history.push("/"))
                 const order = await actions.order.capture();
                 console.log(order);
             },
             onError: (err) => {
                 swal('Ocurrió un problema al ingresar el pago', 'Porfavor intente mas tarde.', 'error')
-                .then(()=> history.push("/resumePayment"))
+                .then(()=> history.push("/"))
                 console.log(err);
             },
           })
