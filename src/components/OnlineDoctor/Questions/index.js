@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import Loading from '../../GeneralComponents/Loading';
 import ContainerAssessmentAppointment from './ContainerAssessmentAppointment';
-import BackButton from '../../GeneralComponents/Backbutton'
+import BackButton from '../../GeneralComponents/Backbutton';
+import ProgressBar from './ProgressBar';
 import '../../../styles/questions.scss';
 import '../../../styles/onlinedoctor/QuestionsModal.scss';
 import DB from '../../../config/DBConnection';
@@ -136,19 +137,20 @@ const Questions = () => {
 		<>
 			<GenericHeader children='Preguntas' />
 			{
-				assessment.selectedQuestions.length >= 1 &&
+				assessment.selectedQuestions && assessment.selectedQuestions.length >= 1 &&
 				<div className="progressQuestions">
-					<progress max={assessment.selectedQuestions.length} value={j + 1}>
-						{j + 1}
-					</progress>
+					<ProgressBar max={assessment.selectedQuestions.length} value={j + 1} />
 				</div>
 			}
 			{loading && <Loading centered={true} />}
 			<BackButton />
 			<div className='text-center currentQuestion'>
-				<div className='assessment-text mt-4 mb-4'>
-					{assessment.currentQuestion && assessment.currentQuestion.title}
-				</div>
+				{
+					assessment.currentQuestion && assessment.currentQuestion.title &&
+					<div className='assessment-text mt-4 mb-4'>
+						{assessment.currentQuestion.title}
+					</div>
+				}
 				{counter === 0 && <Loading centered={true} /> }
 				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
 			</div>
