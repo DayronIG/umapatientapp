@@ -117,7 +117,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                         <img className="wellness__results__img" src={sthetoscopeGraph} alt="waveform" />
                     </div>
                     <div className="wellness__results__title">
-                        <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>
+                        {sthetoscopeBpm > 50 && sthetoscopeBpm < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?
                         <div onClick={play}  className = "record__trigger--btn styleButton">
                             <FaPlay className="icon" />
@@ -131,9 +131,9 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                             <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
                         </Link>
                     </div>
-                    <div className="record__trigger--btn styleButton">
+                    {/* <div className="record__trigger--btn styleButton">
                         <span onClick={() => finalAction()}>Volver</span>
-                    </div>
+                    </div> */}
                 </>
             }
         </div>
