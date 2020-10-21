@@ -57,7 +57,7 @@ import Alert from '../../GeneralComponents/Alert/Alerts';
     const restartAll = () => {
         dispatch({type:'AUTONOMOUS_RESET'})
         dispatch({type: 'TOGGLE_DETAIL', payload: true})
-        history.push(`/${patient.ws}/onlinedoctor/who`)
+        history.push(`/${patient.ws}/`)
     }
 
     function redirectToOnlineDoc(predicted) {

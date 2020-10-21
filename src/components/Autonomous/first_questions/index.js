@@ -119,6 +119,16 @@ export default ({ questions }) => {
   function renderQuestions(answers) {
       if(autonomous.current_biomarker === "video") {
         return <>
+                <div className="skip-biomarker-container">
+                  <button 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </button>
+                </div>
                 <Video isModal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("video", link)
@@ -128,14 +138,35 @@ export default ({ questions }) => {
               </>
       } else if(autonomous.current_biomarker === "audio_sthetoscope") {
         return <>
+                <div className="skip-biomarker-container">
+                  <button 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </button>
+                </div>
                 <AudioInput autonomus={true} modal={false} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("audio_sthetoscope", link)
                   setChangeMultimedia(true)
                   }} upload_url_prop={`${patient.dni}/autonomous/heartbeat`}/>
+
               </>
       } else if(autonomous.current_biomarker === "photo1") {
         return <>
+                <div className="skip-biomarker-container">
+                  <button 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </button>
+                </div>
                 <CameraInput modal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("photo1", link)
