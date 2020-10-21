@@ -14,6 +14,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const [vitalSignsInstruction, setVitalSignsInstruction] = useState(true);
     const [showResults, setShowResults] = useState(false);
     const [sthetoscopeGraph, setSthetoscopeGraph] = useState("")
+    const [sthetoscopeAudio, setSthetoscopeAudio] = useState("");
     const [sthetoscopeBpm, setSthetoscopeBpm] = useState("")
     const timeID = useSelector(state => state.biomarkers.sthetoscopeID)
     const {ws} = useSelector(state => state.queries.patient)
@@ -38,6 +39,19 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
         audioElement.pause()
         setOnPlay(false);
     };
+
+    useEffect(() => {
+        if(sthetoscopeAudio){
+            (async function player () {
+                const audioBlob = await getBlobFirebase(sthetoscopeAudio);
+                var audioMp3 = new Blob ([audioBlob], {type:"audio/mp3"});
+                var url = URL.createObjectURL(audioMp3);
+                var audio = new Audio (url);
+                // setAudioElement(audio);
+                dispatch({type: "SET_AUDIO_ELEMENT", payload: audio});
+            })();
+    }
+    }, [sthetoscopeAudio]);
 
     useEffect(() => {
         var imageRecognizer = `AOT`
