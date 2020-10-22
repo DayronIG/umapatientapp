@@ -50,7 +50,6 @@ const audioRecorderActivators = [
 	'dolor de pecho',
 	'palpitaciones',
 	'falta de aire',
-	'fiebre',
 ];
 
 const Questions = () => {
