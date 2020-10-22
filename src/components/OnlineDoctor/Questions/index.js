@@ -157,7 +157,7 @@ const Questions = () => {
 		if (cameraActive) {
 			setModals({ ...modals, cameraModal: true });
 		}
-		if (audioRecorderActive) {
+		if (audioRecorderActive && !!window.chrome) {
 			setModals({ ...modals, audioModal: true });
 		}
 	}, []);

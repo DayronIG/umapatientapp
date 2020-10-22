@@ -136,7 +136,7 @@ export default ({ questions }) => {
                   }}
                    />
               </>
-      } else if(autonomous.current_biomarker === "audio_sthetoscope") {
+      } else if(autonomous.current_biomarker === "audio_sthetoscope" && !!window.chrome) {
         return <>
                 <div className="skip-biomarker-container">
                   <button 
