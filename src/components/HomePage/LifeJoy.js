@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserNurse, faSmile } from '@fortawesome/free-solid-svg-icons';
-import PolLogo from '../../assets/pol/polinwhite.png';
 import ValidateAction from '../ValidateAction/';
 import '../../styles/generalcomponents/LifeJoy.scss';
 
@@ -30,8 +29,7 @@ const LifeJoy = (props) => {
 	return (
 		<section className='lifejoy-container'>
 			{/* route, fieldToValidate, definition, icon, text, isImg, btnColorClass*/}
-			{renderBtn(`/${patient.ws}/wellness`, 'wellness', faSmile, 'Bienestar', false, 'btn-green')}
-			{renderBtn(`/${patient.ws}/pol`, 'pol', PolLogo, 'Pol', true, 'btn-yellow')}
+			{renderBtn(`/${patient.ws}/wellness`, 'wellness', faSmile, 'Estudios', false, 'btn-green')}
 			{renderBtn(`/${patient.ws}/umacare`, 'umacare', faUserNurse, 'UMA Care', false, 'btn-green')}
 		</section>
 	);

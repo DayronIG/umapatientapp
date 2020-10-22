@@ -46,9 +46,6 @@ import Laboratorio from './components/Laboratorio';
 /* Wellness */
 import Wellness from './views/Wellness';
 import Chat from './views/Chat';
-/* POL */
-import Pol from './views/Pol.js';
-import PolProof from './components/Pol/PolProof';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
 /* SymptomsTracking */
@@ -116,9 +113,6 @@ function App(props) {
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
-				{/* POL */}
-				<PrivateRoute exact path='/:ws?/pol/' component={Pol} />
-				<PrivateRoute exact path='/:ws?/pol/proof' component={PolProof} />
 				{/* Wellness */}
 				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
 				{/* Patient tracking */}

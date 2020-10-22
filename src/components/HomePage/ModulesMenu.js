@@ -15,22 +15,15 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
-import SliderHome from './SliderHome';
 import LifeJoy from './LifeJoy';
 import Subscription from './Subscription';
 import CoronavirusModal from './CoronavirusModal';
 import ValidateAction from '../ValidateAction';
 import PAMI from '../../assets/logos/pami.png';
-import ToastNotification from '../GeneralComponents/toastNotification'
 /* import { PamiAffiliate } from '../GeneralComponents/Affiliates/Affiliates'; */
-// import Module from './Module';
-// import { ModulesMenuLang } from '../../langs/';
-// import { getDoctorsCustom } from '../../store/actions/firebaseQueries';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = (props) => {
-	const [notification, setNotification] = useState(false)
-	const { incomingCall } = useSelector(state => state.call)
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
 	const [, setAffiliate] = useState();
@@ -44,11 +37,6 @@ const ModulesMenu = (props) => {
 
 
 	}, [])
-
-	useEffect(() => {
-		if (incomingCall) setNotification(true)
-	}, [incomingCall])
-
 
 	useEffect(() => {
 		let inter = setInterval(() => {
@@ -87,8 +75,7 @@ const ModulesMenu = (props) => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-
-					<Subscription />
+					{/* <Subscription /> */}
 					<section className='modules-container'>
 						<div className='card'>
 							{returnModule(
@@ -121,7 +108,7 @@ const ModulesMenu = (props) => {
 					</section>
 					<LifeJoy />
 					<EventsHistory />
-					<button className='promotions-button mx-auto' onClick={() => console.log('Send msg')}>
+{/* 				<button className='promotions-button mx-auto' onClick={() => console.log('Send msg')}>
 						<a
 							href={`whatsapp://send?text=Hola, te recomiendo UMA. Mi plataforma de salud y bienestar. Haz clic en el enlace para usarla https://wa.me/5491123000066?text=[REF:${props.ws}] Hola,%20quiero%20registrarme%20en%20Uma`}
 							data-action='share/whatsapp/share'>
@@ -136,8 +123,7 @@ const ModulesMenu = (props) => {
 							</div>
 							<div className='discount'>GIFT</div>
 						</a>
-					</button>
-					<SliderHome />
+					</button> */}
 				</>
 			) : (
 					<Loading />

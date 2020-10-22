@@ -44,7 +44,7 @@ const Register = props => {
             history.push('/')
         } else {
             dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', ref })
+            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
             getCountryCode()
             generatePassword()
         }
@@ -121,7 +121,7 @@ const Register = props => {
         }
         let dob = `${getYear}-${getMonth}-${getDay}`
         let dni = getId 
-        if(country !== null) {
+        if(country !== null && country !== "AR") {
             dni = `${country}${getId}`
         }
         let data = {
@@ -134,7 +134,7 @@ const Register = props => {
                 address: '', // getAddress.concat(', ' + getCity) ||
                 referral: '',
                 group: dni,
-                country: country || '',
+                country: country || 'AR',
                 core_id: reg || '',
                 dni: dni || '',
                 sex: getSex || '',

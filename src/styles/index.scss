@@ -61,14 +61,14 @@
 			}
 		}
 	}
-	.history-container {
+	.history__container {
 		@include wrapper(
 			$margin: 0 auto 20px auto,
 			$width: 90%,
 			$height: 245px,
 			$background-color: $white-color,
 			$flex-dir: column,
-			$justify-cont: flex-start
+			$justify-cont: space-between
 		);
 		margin-bottom: 25px;
 		border-radius: $regular-borders;
