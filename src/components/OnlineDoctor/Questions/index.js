@@ -61,8 +61,10 @@ const Questions = () => {
 			let id = getQuestion[j].id;
 			let title = getQuestion[j].question;
 			let answers = getQuestion[j].answers;
-			let answerType = getQuestion[j].answerType;
-			currentQuestion = { id, title, answers, answerType };
+			let input = getQuestion[j].input;
+			let showSkip = false || getQuestion[j].showSkip;
+
+			currentQuestion = { id, title, answers, input, showSkip };
 			setCounter(1);
 
 			dispatch({ type: 'SET_CURRENT_QUESTION', payload: currentQuestion });
@@ -82,27 +84,8 @@ const Questions = () => {
 						id: doc.id,
 						question: data.question,
 						answers: data.answer,
-						answerType: data.input.type
+						input: data.input
 					});
-
-					data.features.map(question => {
-						db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
-						.then(doc => {
-							if(doc.exists) {
-								const docData = doc.data();
-
-								if(!docData.sex || docData.sex === patient.sex.toLowerCase()) {
-									selectedQuestions.push({
-										id: doc.id,
-										question: docData.question,
-										answers: docData.answer,
-										answerType: docData.input.type
-									});
-								}
-							}
-						})
-						.catch(e => console.log(e));
-					})
 
 					data.symptom.map(symptom => {
 						db.collection('parametros').doc('userapp').collection('assessment').doc(symptom).get()
@@ -116,7 +99,27 @@ const Questions = () => {
 										id: doc.id,
 										question: symptomData.question,
 										answers: symptomData.answer,
-										answerType: symptomData.input.type
+										input: symptomData.input
+									});
+								}
+							}
+						})
+						.catch(e => console.log(e));
+					})
+
+					data.features.map(question => {
+						db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
+						.then(doc => {
+							if(doc.exists) {
+								const docData = doc.data();
+
+								if(!docData.sex || docData.sex === patient.sex.toLowerCase()) {
+									selectedQuestions.push({
+										id: doc.id,
+										question: docData.question,
+										answers: docData.answer,
+										input: docData.input,
+										showSkip: true
 									});
 								}
 							}

@@ -7,7 +7,7 @@ import InputRange from '../../Inputs/Range';
 
 const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
 
-  const [rangeValue, setRangeValue] = useState(30);
+  const [rangeValue, setRangeValue] = useState(0);
 
   const saveInputAndNext = (e, id, tag = '') => {
     e.preventDefault()
@@ -15,11 +15,26 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     saveAnswerAndNext('', a, id)
   }
 
-  const saveAnswerAndNext = (q, a, id) => {
+  const saveAnswerAndNext = (q, a, id, priority, rangeValue = null) => {
+    if(rangeValue) {
+      if(a.includes('{range}')) {
+        a = a.replace('{range}', rangeValue);
+      } else if(a.includes('(ppm)')) {
+        a = `${a} ${rangeValue}`;
+      }
+    }
+
     let string = `${a}. `, answers = []
     answers = answersId.concat(id)
     dispatch({ type: 'SAVE_ANSWERS', payload: string })
     dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers })
+
+    if(priority === "1") {
+      seti(0)
+      setj(0);
+      dispatch({ type: 'CLEAN_SYMPTOM' });
+      return;
+    }
     
     if (assessment.selectedQuestions[j + 1]) {
       setj(j + 1)
@@ -40,23 +55,34 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     }
   }
 
+  const stopQuestions = () => {
+    seti(0)
+    setj(0);
+    dispatch({ type: 'CLEAN_SYMPTOM' });
+  }
+
   const inputType = (a, index) => {
-    switch(assessment.currentQuestion.answerType) {
-      case "select": {
-        if(a.question.includes('rango')){
+    switch(assessment.currentQuestion.input.type) {
+      case "select": return <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id, a.priority)} text={a.question} key={index} />
+      case "range": {
+        if(a.question.includes('range')){
           return (
             <div className="range-confirm" key={index}>
-              <InputRange value={rangeValue} action={(e) => setRangeValue(e.target.value)} />
-              <OptionButton action={(e) => saveAnswerAndNext(assessment, rangeValue, assessment.currentQuestion.id)} text="Confirmar" />
+              <InputRange 
+                min={assessment.currentQuestion.input.min} 
+                max={assessment.currentQuestion.input.max}  
+                value={rangeValue || assessment.currentQuestion.input.min} 
+                action={(e) => setRangeValue(e.target.value)} 
+              />
+              <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id, a.priority, rangeValue)} text="Confirmar" />
             </div>
           );
         } else {
-          return <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id)} text={a.question} key={index} />
+          return <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id, a.priority)} text={a.question} key={index} />
         }
       }
       case "float": return <InputFloat submit={(e) => saveInputAndNext(e, assessment.currentQuestion.id)} key={index} />
       case "video": {
-        // TODO: A veces después de cortar la grabación vuelve a la pregunta inicial.
         return <VideoComponent key={index} isModal={true} finalAction={stopAndNext} />
       }
       case "photo": return <PictureComponent key={index} finalAction={stopAndNext} />
@@ -68,6 +94,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
       {
         assessment.currentQuestion.answers.map((a, index) => inputType(a, index))
       }
+      {assessment.currentQuestion.showSkip && <button className="skipBtn" onClick={stopQuestions}>Omitir preguntas restantes</button>}
     </>
   )
 }
