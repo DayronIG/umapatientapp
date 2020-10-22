@@ -5,18 +5,20 @@ import Assessment from './Assessment';
 
 const ContainerAssessmentAppointment = ({ seti, setj, i, j, responseIA, coordinates, alerta, selectedAppointment }) => {
   const dispatch = useDispatch();
-  const { assessment, assessment: { answersId, biomarkers, selectedSymptoms, selectedOtherSymptoms } } = useSelector(state => state);
+  const { assessment, assessment: { answersId, biomarkers, selectedSymptoms, answers, symptomsForDoc, selectedOtherSymptoms } } = useSelector(state => state);
   const { patient } = useSelector(state => state.queries);
 
   const propsConfirmAppointment = {
     selectedAppointment,
     selectedSymptoms,
     selectedOtherSymptoms,
+    symptomsForDoc,
     patient,
     biomarkers,
     responseIA,
     coordinates,
     alerta,
+    answers,
     dispatch,
     answersId,
     assessment,
