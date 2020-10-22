@@ -1,0 +1,17 @@
+
+.progressQuestions {
+    progress {
+      -webkit-appearance: none;
+      height: 5px;
+      width: 100 vw;
+    }
+  
+    ::-webkit-progress-bar {
+      background-color: #fff;
+    }
+    
+    ::-webkit-progress-value {
+      background-color: cyan;
+    }
+  }
+  

@@ -8,7 +8,7 @@ import { RiRecordCircleLine } from 'react-icons/ri';
 import { Loader } from '../../GeneralComponents/Loading';
 import swal from 'sweetalert';
 import AudioAnalyser from "./AudioWaveformAnalizer/AudioAnalyser.js"
-
+import ProgressBar from "../ProgressBar/ProgressBar"
 import {uploadFileToFirebase} from '../../Utils/postBlobFirebase';
 
 const AudioRecorder = ({ 
@@ -99,8 +99,13 @@ const AudioRecorder = ({
 
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
-				<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
-				{/* ACA PONER UN BUEN COUNTER */}
+				{!audioToPlot? 
+					<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
+				:
+				<>
+					<ProgressBar max={20} value={counter}/>
+					<div className="counter--sthetoscope">{counter}</div>
+				</>}
 			</div>}
 
 			{finishedRecording && (
@@ -114,12 +119,13 @@ const AudioRecorder = ({
 					)}
 
 			{audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''}
-
+			
+			{/* 
 			{onRecord &&
             <div className="counter">
                 <p className="styleCounter">{counter}</p> 
                 <span className="sr-only">Loading...</span>
-            </div>}
+            </div>} */}
 
 			{!finishedRecording  && 
 			<> 			
