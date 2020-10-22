@@ -49,7 +49,7 @@ const audioRecorderActivators = [
 	'arritmia',
 	'dolor de pecho',
 	'palpitaciones',
-	'falta de aire',
+	'falta de aire'
 ];
 
 const Questions = () => {
