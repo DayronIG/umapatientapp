@@ -72,7 +72,8 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
                 min={assessment.currentQuestion.input.min} 
                 max={assessment.currentQuestion.input.max}  
                 value={rangeValue || assessment.currentQuestion.input.min} 
-                action={(e) => setRangeValue(e.target.value)} 
+                action={(e) => setRangeValue(e.target.value)}
+                unit={assessment.currentQuestion.input.unit} 
               />
               <OptionButton action={(e) => saveAnswerAndNext(assessment, a.label, assessment.currentQuestion.id, a.priority, rangeValue)} text="Confirmar" />
             </div>
