@@ -86,10 +86,8 @@ const AudioRecorder = ({
 						"upload_url": upload_url_prop? upload_url_prop:`${patient.dni}/attached/${appoint?.path?.split('/')?.[3]}`
 					}
 					await axios.post(heartbeatEndpoint, data, headers)
-					swal("Captura exitosa", "Se ha grabado con éxito!", "success")
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: fileLink}): finalAction()
                 } catch(error) {
-					swal("Algo falló", "Intente nuevamente mas tarde", "warning")
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: ""}): finalAction()
 					console.error(error);
 				}
@@ -102,6 +100,7 @@ const AudioRecorder = ({
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
 				<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
+				{/* ACA PONER UN BUEN COUNTER */}
 			</div>}
 
 			{finishedRecording && (
