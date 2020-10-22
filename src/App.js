@@ -59,7 +59,6 @@ import UmaCare from './components/UmaCare/index.js';
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import RedirectConsultation from './components/RedirectConsultation/';
-import PayComponent from "./components/Payment"
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
@@ -142,7 +141,6 @@ function App(props) {
 					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
 					component={DeliveryTrackProgress}
 				/>
-				<PrivateRoute component={PayComponent} exact path='/:ws/mercadopago' />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
