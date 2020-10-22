@@ -6,9 +6,7 @@ import axios from "axios";
 import { FaMicrophone } from 'react-icons/fa'
 import { RiRecordCircleLine } from 'react-icons/ri';
 import { Loader } from '../../GeneralComponents/Loading';
-import swal from 'sweetalert';
 import AudioAnalyser from "./AudioWaveformAnalizer/AudioAnalyser.js"
-import { post_biomarkers } from "../../../config/endpoints"
 
 import {uploadFileToFirebase} from '../../Utils/postBlobFirebase';
 
@@ -31,7 +29,6 @@ const AudioRecorder = ({
 	const appoint = useSelector((state) => state.assignations.selectedAppointment);
 	const { patient } = useSelector((state) => state.queries);
 	const dispatch = useDispatch();
-	const token = localStorage.getItem('token');
 
 	useEffect(() => {
 		if(onRecord && counter > 0) {
@@ -72,40 +69,24 @@ const AudioRecorder = ({
 
 		recorder.addEventListener("dataavailable", async event => {
 				try{
-					//POST TO COMPUTER VISION
 					const blobDataInWebaFormat = event.data; 
 					const blobDataInWavFormat = new Blob([blobDataInWebaFormat], { type : 'audio/wav' });
+					// const dataUrl = URL.createObjectURL(blobDataInWavFormat);
+					// console.log(dataUrl); 
 					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_heartbeat_original.wav`);
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
-					var headersComputerVision = { 'Content-Type': 'Application/Json' }
-					var timeID = moment().format("YYYY-MM-DD-HH-mm-ss")
+					var headers = { 'Content-Type': 'Application/Json' }
+					var timeID = moment().format("HH-mm-ss")
 					if(id === "AOT") {dispatch({type: "SET_STHETOSCOPE_ID", payload: timeID})}
 					var data = {
 						"url": fileLink, 
 						"id": `${timeID}##${id}##`,
 						"upload_url": upload_url_prop? upload_url_prop:`${patient.dni}/attached/${appoint?.path?.split('/')?.[3]}`
-					} 
-					const resData = await axios.post(heartbeatEndpoint, data, {headersComputerVision})
-					//POST TO BIOMARKERS
-					let post_biomarkers_data = {
-						data: {},
-						date: moment().format("YYYY-MM-DD_HH-mm-ss"),
-						dni: patient.dni,
-						links: {
-							[ `sthetoscope${id}_original`]: fileLink,
-							processed_hb: resData.data.processed_hb,
-							waveform: resData.data.waveform
-						},
-							type: `sthetoscope${id}`,
-							ws: patient.ws
 					}
-					var headers = { 'Authorization': token, 'Content-Type': 'Application/Json' }
-					axios.post(`${post_biomarkers}/${patient.dni}`, post_biomarkers_data, {headers})
-					swal("Captura exitosa", "Se ha grabado con éxito!", "success")
+					await axios.post(heartbeatEndpoint, data, headers)
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: fileLink}): finalAction()
                 } catch(error) {
-					swal("Algo falló", "Intente nuevamente mas tarde", "warning")
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: ""}): finalAction()
 					console.error(error);
 				}
@@ -118,6 +99,7 @@ const AudioRecorder = ({
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
 				<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
+				{/* ACA PONER UN BUEN COUNTER */}
 			</div>}
 
 			{finishedRecording && (
