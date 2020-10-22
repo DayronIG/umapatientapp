@@ -26,6 +26,22 @@ const ProfileComponent = () => {
 		}
 	}, [auth.dni]);
 
+	useEffect(() => {
+		let unsubscribe;
+		if (auth.dni) {
+			unsubscribe = db
+				.collection('users')
+				.doc(auth.dni)
+				.onSnapshot((user) => {
+					dispatch({type: 'GET_PATIENT', payload: user.data()});
+					setLoading(false);
+				});
+		}
+
+		return () => unsubscribe;
+	}, [db, auth.dni]);
+
+
 	const EditButton = ({ section, clase }) => {
 		return (
 			<>
