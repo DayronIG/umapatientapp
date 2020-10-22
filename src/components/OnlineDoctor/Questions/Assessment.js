@@ -26,15 +26,23 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
 
     let string = `${a}. `, answers = []
     answers = answersId.concat(id)
-    dispatch({ type: 'SAVE_ANSWERS', payload: string })
-    dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers })
-
+    
     if(priority === "1") {
-      seti(0)
+      string += ' #ALERTA';
+
+      dispatch({ type: 'SAVE_ANSWERS', payload: string });
+      dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers });
+
+      seti(0);
       setj(0);
       dispatch({ type: 'CLEAN_SYMPTOM' });
       return;
     }
+
+    dispatch({ type: 'SAVE_ANSWERS', payload: string })
+    dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers })
+    
+
     
     if (assessment.selectedQuestions[j + 1]) {
       setj(j + 1)

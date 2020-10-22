@@ -149,7 +149,7 @@ const Questions = () => {
 			<BackButton />
 			<div className='text-center currentQuestion'>
 				{
-					assessment.currentQuestion && assessment.currentQuestion.title &&
+					assessment.currentQuestion && assessment.currentQuestion.title && assessment.currentQuestion.id !== '120' &&
 					<div className='assessment-text mt-4 mb-4'>
 						{assessment.currentQuestion.title}
 					</div>
