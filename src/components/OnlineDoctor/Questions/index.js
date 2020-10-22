@@ -260,7 +260,7 @@ const Questions = () => {
 			);
 		}
 
-		if (fever && !isIos()) {
+		if (fever && !isIos() && !!window.chrome) {
 			return (
 				<Modal title='Muestra médica' callback={() => setModals({ ...modals, habitat: true, fever: false })}>
 					<VideoInput
