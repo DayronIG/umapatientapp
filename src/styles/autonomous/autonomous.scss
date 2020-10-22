@@ -180,12 +180,12 @@
         }
     }
     
-    .skip-biomarker-copntainer{        
-        .skip-biomarker-button{
-            color: red !important;
-            background-color: white;
-            z-index: 10 !important;
-            text-align: left !important;
-        }
+    .skip-biomarker-container{        
+        background-color: white !important;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        color: $primary-color !important;
+        text-decoration: underline;
     }
 }
