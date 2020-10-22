@@ -38,7 +38,8 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 subscription = queryUser.onSnapshot(async function (doc) {
                     if (doc.data()?._start_date !== '') {
                         let data = doc.data()?._start_date.split('///')
-                        if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/' && rest.path !== '/:dni/onlinedoctor/queue')
+                        console.log(rest.path)
+                        if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/')
                             setNotification(true)
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
                     } else {
@@ -47,9 +48,13 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     }
                 })
                 return () => {
-                    if (typeof subscription === 'function') subscription()
+                    if (typeof subscription === 'function') {
+                        setNotification(false)
+                        subscription()
+                    }
                 }
             } catch (error) {
+                setNotification(false)
                 console.log(error)
             }
         }
