@@ -117,7 +117,7 @@ export default ({ questions }) => {
   }
 
   function renderQuestions(answers) {
-      if(autonomous.current_biomarker === "video") {
+      if(autonomous.current_biomarker === "video" && !!window.chrome) {
         return <>
                 <div className="skip-biomarker-container">
                   <a 
