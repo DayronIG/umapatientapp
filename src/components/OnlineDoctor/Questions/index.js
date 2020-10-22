@@ -263,7 +263,7 @@ const Questions = () => {
 
 		if (fever && !isIos()) {
 			return (
-				<Modal title='Muestra médica' hideCloseButton>
+				<Modal title='Muestra médica' callback={() => setModals({ ...modals, habitat: true, fever: false })}>
 					<VideoInput
 						isModal={true}
 						finalAction={() => setModals({ ...modals, habitat: true, fever: false })}
@@ -312,7 +312,7 @@ const Questions = () => {
 
 		if (cameraModal) {
 			return (
-				<Modal title='Fotos' hideCloseButton>
+				<Modal title='Fotos' callback={() => setModals({ ...modals, cameraModal: false })}>
 					<CameraInput modal={true} finalAction={() => setModals({ ...modals, cameraModal: false })} />
 				</Modal>
 			);
@@ -320,7 +320,7 @@ const Questions = () => {
 
 		if (audioModal) {
 			return (
-				<Modal title='Audio' hideCloseButton>
+				<Modal title='Audio' callback={() => setModals({ ...modals, audioModal: false })}>
 					<AudioInput modal={true} finalAction={() => setModals({ ...modals, audioModal: false })} />
 				</Modal>
 			);
