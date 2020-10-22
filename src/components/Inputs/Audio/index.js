@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {Link} from 'react-router-dom';
+import {FaPlay, FaPause} from "react-icons/fa"
 import Sthetoscope from "./Sthetoscope";
 import { storage } from "firebase"
-import { FaPlay, FaPause } from 'react-icons/fa'
 import instructionsAortico from "./assets/focoaortico.jpg"
 import instructionsMitral from "./assets/focomitral.png"
 import getBlobFirebase from "../../Utils/getBlobFirebase"
@@ -14,14 +15,14 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const [typeOfRec, setTypeOfRec] = useState("AOT");
     const [vitalSignsInstruction, setVitalSignsInstruction] = useState(true);
     const [showResults, setShowResults] = useState(false);
-    const [sthetoscopeGraph, setSthetoscopeGraph] = useState("");
+    const [sthetoscopeGraph, setSthetoscopeGraph] = useState("")
     const [sthetoscopeAudio, setSthetoscopeAudio] = useState("");
-    const [sthetoscopeBpm, setSthetoscopeBpm] = useState("");
+    const [sthetoscopeBpm, setSthetoscopeBpm] = useState("")
+    const timeID = useSelector(state => state.biomarkers.sthetoscopeID)
+    const {ws} = useSelector(state => state.queries.patient)
     const [onPlay, setOnPlay] = useState(false);
-    const timeID = useSelector(state => state.biomarkers.sthetoscopeID);
     const audioElement = useSelector(state => state.biomarkers.audioData);
     const dispatch = useDispatch()
-
 
     const play = () => {
         try {
@@ -36,7 +37,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
         }
         catch (error) {console.log("Wait until the audio is loaded to reproduce")}
     };
-
+    
     const pause = () => {
         audioElement.pause()
         setOnPlay(false);
@@ -114,9 +115,10 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                 showResults && wellness &&
                 <>
                     <div className="wellness__results__img__container">
-                        <img className="wellness__results__img" src={sthetoscopeGraph} alt="estetoscopio" />
-                        <div className="wellness__results__title">Frecuencia cardíaca estimada: {sthetoscopeBpm}</div>
-
+                        <img className="wellness__results__img" src={sthetoscopeGraph} alt="waveform" />
+                    </div>
+                    <div className="wellness__results__title">
+                        {parseInt(sthetoscopeBpm) > 50 && parseInt(sthetoscopeBpm) < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?
                         <div onClick={play}  className = "record__trigger--btn styleButton">
                             <FaPlay className="icon" />
@@ -125,10 +127,14 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                         <div onClick={pause} className = "record__trigger--btn styleButton">
                             <FaPause className="icon" />
                         </div>}
+                        <small>Éste escaneo se encuentra en etapa experimental y no constituye ni reemplaza un análisis médico.</small>
+                        <Link to={`/${ws}/onlinedoctor/`}>
+                            <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
+                        </Link>
                     </div>
-                    <div className="record__trigger--btn styleButton">
+                    {/* <div className="record__trigger--btn styleButton">
                         <span onClick={() => finalAction()}>Volver</span>
-                    </div>
+                    </div> */}
                 </>
             }
         </div>

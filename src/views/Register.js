@@ -2,9 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,12 +22,13 @@ import '../../src/styles/generalcomponents/register.scss';
 const Register = props => {
     const dispatch = useDispatch()
     const history = useHistory()
+    const {ws: urlWS, ref} = useParams()
     const [registered, setRegistered] = useState(false)
     const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const urlWS = props.match.params.ws
+    //const urlWS = props.match.params.ws
     const { dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country } = useSelector(state => state.register)
     const monthRef = useRef()
@@ -43,6 +44,7 @@ const Register = props => {
             history.push('/')
         } else {
             dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_OS', ref })
             getCountryCode()
             generatePassword()
         }
@@ -294,15 +296,16 @@ const Register = props => {
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
+                                            <option value='O'>Otro</option>
                                         </select>
                                     </div>
                                 </div>
-                                <input
+                                {!ref && <input
                                     className='form-input' id='os' placeholder='Cobertura / Seguro de Salud'
                                     autoComplete='off' type='text'
                                     onChange={e => dispatch({ type: 'REGISTER_FIRST_OS', payload: e.target.value })}
                                     required
-                                />
+                                />}
                             </div><br />
                             <div className='d-flex justify-content-between pl-3 pr-3'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">

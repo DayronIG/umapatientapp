@@ -70,7 +70,7 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/login' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/:ws/register' component={Register} />
+				<Route exact path='/:ws/register/:ref?' component={Register} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* General */}

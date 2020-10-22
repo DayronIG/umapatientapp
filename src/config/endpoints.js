@@ -34,6 +34,7 @@ export const transcription = `${URN_UMA}/transcripcion`;
 export const reassign_portal = `${URN_UMA}/reassign_portal`;
 export const validate_up_dni = `${UP}/account_login_by_document?user_credentials=${up_token}`;
 export const validate_up_dni_type2 = `${UP}/search/accounts_by?user_credentials=${up_token}`;
+
 /* Node Server */
 // Public
 export const log_info = `${NODE_SERVER}/public/log_info`;
