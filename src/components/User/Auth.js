@@ -17,6 +17,10 @@ function AuthProvider({ children }) {
 		const unsubscribe = DBConnection.auth().onAuthStateChanged(setCurrentUser)
 		if(currentUser) {
 			getInitialData(currentUser)
+			currentUser.getIdToken().then(token => {
+				localStorage.setItem(`token`, `Bearer ${token}`)
+				dispatch({ type: 'SET_LOGED_TOKEN', payload: token })
+			})
 		}
 		return () => unsubscribe()
 	}, [currentUser])

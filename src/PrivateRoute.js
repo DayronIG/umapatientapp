@@ -39,7 +39,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	const token = useSelector(state => state.userActive.token)
 
     useEffect(() => {
-        console.log(rest.path)
         if (patient.ws) {
             try {
                 let subscription, queryUser = firestore.doc(`auth/${patient.ws}`)
@@ -78,13 +77,9 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						messaginTokenUpdate(currentUser, DetectRTC, false)
 					}
 				})
-			currentUser.getIdToken().then(token => {
-				localStorage.setItem(`token`, `Bearer ${token}`)
-				dispatch({ type: 'SET_LOGED_TOKEN', payload: token })
-			})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, patient])
+	}, [currentUser, patient, token])
 
 
 
