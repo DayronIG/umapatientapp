@@ -43,11 +43,25 @@ const ConfirmAppointment = (props) => {
 		})
 	}
 
+	const cleanSyntoms = () => {
+		const finalSymptoms = [];
+	
+		symptomsForDoc.filter(Boolean).map(item => {
+			finalSymptoms.push(item);
+		});
+
+		answers.split('. ').filter(Boolean).map(item => {
+			finalSymptoms.push(item);
+		});
+
+		return finalSymptoms.join('.');
+	}
+
 	const postData = async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			let symptoms = '', userVerified;
-			if (!!symptomsForDoc) symptoms = symptomsForDoc.join('. ');
+			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			const appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
@@ -71,8 +85,6 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || patient.ws,
 			};
-
-			console.log(responseIA);
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
