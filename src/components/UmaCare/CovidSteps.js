@@ -1,16 +1,19 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import hisopado from "./img/hisopado.png";
 import muestra from "./img/muestra.png";
 import negative from "./img/negative.png";
 import positive from "./img/positive.png";
 import alta from "./img/alta.png";
 
-export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual) => {
+export const CovidSteps = ({percent, setTextDetail, result}) => {
   // eslint-disable-next-line default-case
-  switch(porcentaje) {
+  const dispatch = useDispatch()
+  console.log(percent, result)
+  switch(percent) {
     case 0:
       return (
-        <>
+        <div>
           <h3>El hisopado</h3>
           <div className="text-image">
             <div className="text">
@@ -20,26 +23,27 @@ export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual
               <img src={hisopado} alt="hisopado" />
             </div>
           </div>
-          <p className="link" onClick={() => {
-            setModalOpen(true);
-            setTextDetail("Para realizar el diagnóstico de COVID-19 es necesario tomar una muestra de las fosas nasales y/o garganta utilizando un hisopo. Este consiste en un bastoncillo de plástico con una punta de algodón. Sus síntomas pueden deberse a la infección por otros virus como la gripe o el resfrió común, por lo cual es importante que mantenga las medidas de higiene de manos y el uso de tapaboca para evitar el contagio de otras personas.");
-          }}>Más Información</p>
-        </>
+          <p className="link"
+                onClick={() => {
+                  dispatch({ type: "HANDLE_MODAL", payload: true });
+                  setTextDetail("Para realizar el diagnóstico de COVID-19 es necesario tomar una muestra de las fosas nasales y/o garganta utilizando un hisopo. Este consiste en un bastoncillo de plástico con una punta de algodón. Sus síntomas pueden deberse a la infección por otros virus como la gripe o el resfrió común, por lo cual es importante que mantenga las medidas de higiene de manos y el uso de tapaboca para evitar el contagio de otras personas.");
+                }}>Más Información</p>
+        </div>
       );
     case 35: 
       return (
         <>
-          <h3>{ !estadoActual.resultado && 'Esperando Resultados' }</h3>
+          <h3>{ !result && 'Esperando Resultados' }</h3>
           <div className="text-image">
             <div className="text">
-              { !estadoActual.resultado && 'La muestra del hisopado es llevada a un laboratorio especializado para su análisis... '}
+              { !result && 'La muestra del hisopado es llevada a un laboratorio especializado para su análisis... '}
             </div>
             <div className="detalle-img">
               <img src={muestra} alt="hisopado" />
             </div>
           </div>
           <p className="link" onClick={() => {
-            setModalOpen(true)
+            dispatch({ type: "HANDLE_MODAL", payload: true });
             setTextDetail("La muestra del hisopado es llevada a un laboratorio especializado para su análisis. En el mismo se realiza una técnica específica llamada PCR. La misma consiste en amplificar una porción del virus COVID-19, para así poder detectarlo. Dado que es una técnica compleja y con gran demanda los resultados suelen demorar entre 48 y 72hs.")
           }}>Más Información</p>
         </>
@@ -49,29 +53,30 @@ export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual
         <>
           <h3>
             { 
-              estadoActual.resultado == 'positive' && 'Resultado Positivo' ||
-              estadoActual.resultado == 'negative' && 'Resultado Negativo'
+              (result === 'positive' && 'Resultado Positivo') ||
+              (result === 'negative' && 'Resultado Negativo')
             }
           </h3>
           <div className="text-image">
             <div className="text">
               { 
-                estadoActual.resultado == 'positive' && 'Un test positivo significa que actualmente está infectado con el virus COVID-19...' ||
-
-                estadoActual.resultado == 'negative' && 'Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado... ' 
+                (result === 'positive' && 'Un test positivo significa que actualmente está infectado con el virus COVID-19...') ||
+                (result === 'negative' && 'Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado... ')
               }
             </div>
             <div className="detalle-img">
-              <img src={estadoActual.resultado == 'positive' ? positive : negative} alt="hisopado" />
+              <img src={result === 'positive' ? positive : negative} alt="hisopado" />
             </div>
           </div>
-          <p className="link" onClick={() => {
-            setModalOpen(true)
-            estadoActual.resultado == 'positive' ? 
-            setTextDetail("Un test positivo significa que actualmente está infectado con el virus COVID-19. No debe alarmarse, pero si debe saber que es muy importante que respete las medidas de aislamiento para no contagiar a otras personas.")
-            :
-            setTextDetail('Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado. En este caso la probabilidad que tenga COVID-19 es baja y no es necesario extremar medidas de aislamiento más allá de las recomendaciones de cuarentena obligatoria. ')
-          }}>Más Información</p>
+            <p className="link" onClick={() => {
+              dispatch({ type: "HANDLE_MODAL", payload: true });
+              result === 'positive' ?
+              setTextDetail("Un test positivo significa que actualmente está infectado con el virus COVID-19. No debe alarmarse, pero si debe saber que es muy importante que respete las medidas de aislamiento para no contagiar a otras personas.")
+              :
+              setTextDetail('Un test negativo significa que no se ha detectado la presencia del virus en el hisopado realizado. En este caso la probabilidad que tenga COVID-19 es baja y no es necesario extremar medidas de aislamiento más allá de las recomendaciones de cuarentena obligatoria. ')
+            }}>
+              Más Información
+            </p>
         </>
       ) 
     case 71: 
@@ -89,10 +94,12 @@ export const estadoStep = (porcentaje, setModalOpen, setTextDetail, estadoActual
             </div>
           </div>
           <p className="link" onClick={() => {
-            setModalOpen(true);
+            dispatch({ type: "HANDLE_MODAL", payload: true });
             setTextDetail("Ya han transcurrido 10 días del inicio de los síntomas y hemos observado que su evolución es favorable. Dentro de pocos días podrá obtener el alta médica. Fuerza que falta poco!");
           }}>Más Información</p>
         </>
       ) 
+    default:
+      return <>No hay seguimientos activos</>
   }
 }

@@ -1,5 +1,6 @@
 const initialState = {
     answerQuestions: false,
+    action: '',
     alert: {
         active: false,
         type: 'success',
@@ -13,8 +14,8 @@ const initialState = {
     error: '',
     loading: false,
     mic_cam_permissions: '',
-    modalAction: false,
     modal: false,
+    modalAction: false,
     nextQuestion: '',
     openDetails: false,
     otherReason: false,
@@ -50,6 +51,8 @@ export default function frontReducers(state = initialState, action) {
             }
         case 'ERROR':
             return { ...state, error: action.payload };
+        case 'HANDLE_MODAL':
+                return { ...state, modal: action.payload, action: action.action };
         case 'OPEN_MODAL':
             return { ...state, modal: true, action: action.action };
         case 'CLOSE_MODAL':
