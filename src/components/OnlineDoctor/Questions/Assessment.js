@@ -28,7 +28,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
     answers = answersId.concat(id)
     
     if(priority === "1") {
-      string += ' #ALERTA';
+      string += '#ALERTA';
 
       dispatch({ type: 'SAVE_ANSWERS', payload: string });
       dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers });
