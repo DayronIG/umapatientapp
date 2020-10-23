@@ -20,7 +20,8 @@ class AudioVisualiser extends Component {
     const sliceWidth = (width * 1.0) / audioData.length;
 
     context.lineWidth = 2;
-    context.strokeStyle = '#000000';
+    // context.strokeStyle = '#97c1d3';
+    context.strokeStyle = '#3fd6d2';
     context.clearRect(0, 0, width, height);
 
     context.beginPath();

@@ -104,7 +104,7 @@ const AudioRecorder = ({
 				:
 				<>
 					<ProgressBar max={20} value={counter}/>
-					<div className="counter--sthetoscope">{counter}</div>
+					{/* <div className="counter--sthetoscope">{counter}</div> */}
 				</>}
 			</div>}
 
