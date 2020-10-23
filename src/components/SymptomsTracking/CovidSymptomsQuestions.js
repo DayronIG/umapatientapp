@@ -22,9 +22,9 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
     }
     
     useEffect(() => {
-        if(umacare.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
-            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
-            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
+        if(umacare?.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
+            || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
+            || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
                 setAskQuestions(false)
             }
         if (userUmacareStatus) {

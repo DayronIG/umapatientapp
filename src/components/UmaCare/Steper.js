@@ -2,7 +2,7 @@ import React from 'react';
 import { IoIosRadioButtonOn, IoIosRadioButtonOff } from 'react-icons/io';
 import { ProgressBar, Step } from 'react-step-progress-bar';
 
-const Steper = ({ porcentaje, color, estadoActual }) => {
+const Steper = ({ porcentaje, color, actual }) => {
 	const returnIcon = (accomplished) => {
 		if (accomplished) {
 			return <IoIosRadioButtonOn />;
@@ -49,9 +49,9 @@ const Steper = ({ porcentaje, color, estadoActual }) => {
 			<div className='detalles-status'>
 				<p className={`${porcentaje >= 0 && 'active'}`}>Hisopado</p>
 				<p className={`${porcentaje >= 35 && 'active'}`}>
-					{(estadoActual.resultado === 'positive' && 'Resultado Positivo') ||
-						(estadoActual.resultado === 'negative' && 'Resultado Negativo') ||
-						(!estadoActual.resultado && 'Esperando Resultados')}
+					{(actual.resultado === 'positive' && 'Resultado Positivo') ||
+						(actual.resultado === 'negative' && 'Resultado Negativo') ||
+						(!actual.resultado && 'Esperando Resultados')}
 				</p>
 				<p className={`${porcentaje >= 70 && 'active'}`}>Proceso de alta</p>
 				<p className={`${porcentaje === 100 && 'active'}`}>Finalizado</p>

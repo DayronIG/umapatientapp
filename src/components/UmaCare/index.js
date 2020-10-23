@@ -1,45 +1,43 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import DBConnection from '../../config/DBConnection';
 import DinamicScreen from '../GeneralComponents/DinamicScreen';
 import Carousel from "nuka-carousel";
 import slides from '../slider-content';
 import SlideItem from './SlideItem';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from '../GeneralComponents/Modal/MobileModal';
 import Steper from './Steper';
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 import { estadoStep } from './helpers';
+import { FaUserMd } from 'react-icons/fa';
+import { MdExpandLess, MdMenu } from 'react-icons/md';
+import NoTracking from './NoTracking';
 import "react-step-progress-bar/styles.css";
 import "../../styles/umaCare/umaCare.scss";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-/* import { FaUserMd } from 'react-icons/fa';
-import { MdExpandLess, MdMenu } from 'react-icons/md'; */
-import NoTracking from './NoTracking';
 
-const UmaCare = props => {
+const UmaCare = _ => {
   let db = DBConnection.firestore();
-  const { dni } = useSelector(state => state.queries.patient);
+  const history = useHistory();
+  const { dni, ws } = useSelector(state => state.queries.patient);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [textDetail, setTextDetail] = useState('');
   const [porcentaje, setPorcentaje] = useState(0);
   const [color, setColor] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [seguimiento, setSeguimiento] = useState(false);
   const [exists, setExists] = useState(true);
-  const [estadoActual, setEstadoActual] = useState({
+  const [actual, setActual] = useState({
     hisopado: '',
     resultado: '',
     cuarentena: '',
     active: 'ok'
   });
-  const [rutaUmacare, setRutaUmacare] = useState({
-    doc_id: '',
-    ws: ''
-  });
-  const { doc_id, ws } = rutaUmacare;
+
   const properties = {
     autoplay: true,
     autoplayInterval: 3000,
@@ -60,26 +58,32 @@ const UmaCare = props => {
 
   useEffect(() => {
     if(dni) {
-      db.collection('events/labs/umacare').orderBy('dt_cierre', 'desc')
-      .where("patient_dni", "==", dni)
+      console.log(dni, ws)
+      db.collection('events/labs/umacare').where("patient_ws", "==", ws)
       .onSnapshot(data => {
-        const lastDocument = data.docs[0];
         setExists(!data.empty);
+        const lastDocument = data.docs[0];
+        let activeTracking = [], inactiveTracking = [], allTrackings = []
+        data.forEach((el) => {
+          if(el.data().active === "ok") {
+            activeTracking.push(el.data())
+          } else {
+            inactiveTracking.push(el.data())
+          }
+        })
+        allTrackings = activeTracking.concat(inactiveTracking)
+        dispatch({type: 'UMACARE_SET_TRACKINGS', payload: {activeTracking, inactiveTracking, allTrackings}})
         if(lastDocument) {
-          let { status, resp, patient_ws, active } = lastDocument.data();
+          let { status, resp, active } = lastDocument.data();
           let [ hisopado, resultado, cuarentena ] = status.split('///');
           if ( resultado === 'idky') resultado = '';
-          setEstadoActual({ 
+          setActual({ 
             hisopado: hisopado || '', 
             resultado: resultado || '', 
             cuarentena: cuarentena || '',
-            active
+            active,
+            id: lastDocument.ref.path
           });
-          setRutaUmacare({
-            doc_id: lastDocument.id,
-            ws: patient_ws
-          });
-
           let keys = Object.keys(resp);
           for (let i = keys.length; i >= 0; i--) {
             if(resp[keys[i]] && resp[keys[i]].faces !== "") {
@@ -97,25 +101,24 @@ const UmaCare = props => {
             }
           }
         }
-      })
-      setLoading(false);
+      }, (err) => console.error(err))
     }
   }, [dni])
 
   useEffect(() => {
-    if(estadoActual.hisopado === 'yes') {
+    if(actual.hisopado === 'yes') {
       setPorcentaje(35);
     } 
-    if (estadoActual.resultado === 'positive' || estadoActual.resultado === 'negative') {
+    if (actual.resultado === 'positive' || actual.resultado === 'negative') {
       setPorcentaje(70) 
     }
-    if (estadoActual.cuarentena) {
+    if (actual.cuarentena) {
       setPorcentaje(71) 
     }
-    if(estadoActual.active !== 'ok') {
+    if(actual.active !== 'ok') {
       setPorcentaje(100);
     }
-  }, [estadoActual])
+  }, [actual])
 
   return (
     <>
@@ -127,13 +130,12 @@ const UmaCare = props => {
           <>
             <div className="seguimientos-container">
               <h4>Seguimiento COVID-19</h4>
-            </div>
-              {/* {
+              {
                 !seguimiento ? 
                 <MdMenu {...iconProperties} /> :
                 <MdExpandLess {...iconProperties} /> 
               }
-
+            </div>
             <div className="collapse mt-2" id="collapseExample">
               <div className="lista-seguimientos">
                 <div className="event">
@@ -158,14 +160,14 @@ const UmaCare = props => {
                   <strong>30-06-2020</strong>
                 </div>
               </div>
-            </div> */}
+            </div> 
           </>
-          <Steper porcentaje={porcentaje} color={color} estadoActual={estadoActual} />
+          <Steper porcentaje={porcentaje} color={color} actual={actual} />
           {
-            estadoActual.active === 'ok' &&
+            actual.active === 'ok' &&
             <>
               <div className={`detalle ${color ? color : 'gris'}`}>
-                { estadoStep(porcentaje, setModalOpen, setTextDetail, estadoActual) }
+                { estadoStep(porcentaje, setModalOpen, setTextDetail, actual) }
               </div>
 
               <div className="estado-salud">
@@ -174,7 +176,7 @@ const UmaCare = props => {
                 <button
                   type="button"
                   onClick={() => {
-                  props.history.push(`/${ws}/umacare/${moment().format('YYYY-MM-DD')}/${doc_id}`)
+                  history.push(`/${ws}/umacare/${moment().format('YYYY-MM-DD')}/doc_id`) // ${}
                 }}
                 >Realizar test</button>
               </div>
