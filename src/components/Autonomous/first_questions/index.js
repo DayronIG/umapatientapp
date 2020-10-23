@@ -117,8 +117,18 @@ export default ({ questions }) => {
   }
 
   function renderQuestions(answers) {
-      if(autonomous.current_biomarker === "video") {
+      if(autonomous.current_biomarker === "video" && !!window.chrome) {
         return <>
+                <div className="skip-biomarker-container">
+                  <a 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </a>
+                </div>
                 <Video isModal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("video", link)
@@ -126,16 +136,37 @@ export default ({ questions }) => {
                   }}
                    />
               </>
-      } else if(autonomous.current_biomarker === "audio_sthetoscope") {
+      } else if(autonomous.current_biomarker === "audio_sthetoscope" && !!window.chrome) {
         return <>
+                <div className="skip-biomarker-container">
+                  <a 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </a>
+                </div>
                 <AudioInput autonomus={true} modal={false} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("audio_sthetoscope", link)
                   setChangeMultimedia(true)
                   }} upload_url_prop={`${patient.dni}/autonomous/heartbeat`}/>
+
               </>
       } else if(autonomous.current_biomarker === "photo1") {
         return <>
+                <div className="skip-biomarker-container">
+                  <a 
+                  className="skip-biomarker-button" 
+                  onClick={() => { 
+                    setChangeMultimedia(true)
+                  dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
+                  }}>
+                  Omitir
+                  </a>
+                </div>
                 <CameraInput modal={true} finalAction={(link) => {
                   dispatch({type: "AUTONOMOUS_SET_CURRENT_BIOMARKER", payload: "next"})
                   setBiomarker("photo1", link)

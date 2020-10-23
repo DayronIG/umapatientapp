@@ -1,0 +1,92 @@
+.flecha-pay {
+  font-size: 2rem;
+  color: #fff;
+  position: absolute;
+  margin: 20px 0 0 20px;
+}
+
+.tarjeta-credito {
+  margin-top: 25px;
+  
+  // clase de la libreria
+  .rccs__card--unknown > div {
+    background: rgba(#64D6D3, .8);
+    box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
+    color: #000;
+  }
+
+  .titulo-card {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+    text-align: center;
+    color: #686464;
+  }  
+}
+
+.formulario-credito {
+  box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
+  margin: 15px 10px;
+  padding: 20px 20px 0 20px;
+  background: rgba(#fff, .9);
+  border-radius: 6px;
+  small {
+    font-weight: bold;
+    font-size: 15px;
+    color: #64D6D3;
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+  }
+  input {
+    outline: none;
+    border: 2px solid rgba(138, 138, 138, 0.24);
+    height: 35px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+  }
+
+  .formulario-item {
+    input {
+      width: 100%;
+    }
+  }
+
+  .formulario-vencimiento {
+    display: flex;
+    .cardExpiration {
+      display: flex;
+      flex-direction: row;
+    }
+    input {
+      width: 80%;
+    }
+  }
+
+  button {
+    display: block;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px 0;
+    margin: 0 auto 10px auto;
+    width: 80%;
+    border-radius: 6px;
+    color: #fff;
+    background: #64D6D3;
+    border: none;
+    box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
+    position: relative;
+    bottom: -20px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.paypal--payment{
+  height: fit-content !important;
+  .payment-title{
+    text-align: center;
+  }
+}

@@ -75,7 +75,7 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 	return (
 		<div className='covidTermsAndConditions'>
 			{
-				typeComponent !== 'terminos' && biomarkers?.[0].amba === "yes" && 
+				typeComponent !== 'terminos' && biomarkers?.[0]?.amba === "yes" && 
 				<div className='covidTermsAndConditions__container'>
 					<div className='covidTermsAndConditions__container--questions buttons'>
 						<p>¿Dónde se encuentra actualmente?</p>
