@@ -25,9 +25,10 @@ function AuthProvider({ children }) {
 		return () => unsubscribe()
 	}, [currentUser])
 
-	const getInitialData = useCallback(async (user) => {
-		if (user.email) {
-			const userAuth = await getAuth(user.email.split("@")[0])
+	const getInitialData = useCallback(async () => {
+		if (currentUser.email) {
+			const userAuth = await getAuth(currentUser.email.split("@")[0])
+			console.log(userAuth)
 			let plan = undefined;
 			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
 			if (!!subscription) {
@@ -44,7 +45,7 @@ function AuthProvider({ children }) {
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			}
 		}
-	}, [])
+	}, [currentUser])
 
 	return (
 		<AuthContext.Provider value={{ currentUser }}>

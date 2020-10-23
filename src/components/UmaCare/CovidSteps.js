@@ -9,7 +9,6 @@ import alta from "./img/alta.png";
 export const CovidSteps = ({percent, setTextDetail, result}) => {
   // eslint-disable-next-line default-case
   const dispatch = useDispatch()
-  console.log(percent, result)
   switch(percent) {
     case 0:
       return (
@@ -33,13 +32,13 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
     case 35: 
       return (
         <>
-          <h3>{ !result && 'Esperando Resultados' }</h3>
+          <h3>Esperando Resultado</h3>
           <div className="text-image">
             <div className="text">
-              { !result && 'La muestra del hisopado es llevada a un laboratorio especializado para su análisis... '}
+              La muestra del hisopado es llevada a un laboratorio especializado para su análisis...
             </div>
             <div className="detalle-img">
-              <img src={muestra} alt="hisopado" />
+              <img src={muestra} alt="muestra" />
             </div>
           </div>
           <p className="link" onClick={() => {
@@ -100,6 +99,18 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
         </>
       ) 
     default:
-      return <>No hay seguimientos activos</>
+      return <>
+          <h3>
+            Seguimiento finalizado
+          </h3>
+          <div className="text-image">
+            <div className="text">
+              Transcurridos los 10 días del inicio de los síntomas si la evolución de los síntomas es favorable se procederá al alta.
+            </div>
+            <div className="detalle-img">
+              <img src={alta} alt="hisopado" />
+            </div>
+          </div>
+      </>
   }
 }

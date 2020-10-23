@@ -13,18 +13,32 @@ const SelectedTracking = ({setTextDetail}) => {
     const [color, setColor] = useState('');
     const [percent, setPercent] = useState(0);
     const [result, setResult] = useState()
+    const [steperTitle, setSteperTitle] = useState("Estado Actual")
 
     useEffect(() => {
-        let actual = umacare.activeTracking[umacare.selectedTracking]
-        getDays(actual)
+        let actual = umacare.allTrackings[umacare.selectedTracking]
         getStep(actual)
-    }, [umacare.activeTracking])
+        getDays(actual)
+    }, [umacare])
 
     const getDays = (actual) => {
         let days = Object.keys(actual.resp);
         let size = days.length
-        let current = days.findIndex(el => moment().format("YYYY-MM-DD"))
-        
+        let current = days.findIndex(el => {
+            if(el === moment().subtract(1, 'days').format("YYYY-MM-DD") ||
+            el === moment().format("YYYY-MM-DD")){
+                return true
+            } else {
+                return false
+            }
+        })
+        current = ++current
+        if(current === -1) {
+            setPercent(100);
+            setSteperTitle("Umacare ya ha finalizado")
+        } else {
+            setSteperTitle(`Estado actual. Día ${current} de ${size}`)
+        }
     }
 
     const getStep = (actual) => {
@@ -61,11 +75,12 @@ const SelectedTracking = ({setTextDetail}) => {
 
     return(
         <div className="tracking__container">
-            <Steper percent={percent} color={color} result={result} />
+            <Steper percent={percent} color={color} result={result} title={steperTitle} />
             <div className={`tracking__detail ${color ? color : 'gray'}`}>
                 <CovidSteps percent={percent}
                     setTextDetail={setTextDetail} result={result} />
             </div>
+            {umacare.allTrackings[umacare.selectedTracking]?.active === "ok" &&
             <div className="tracking__status">
                 <h3>Actualizar mi estado</h3>
                 <p>Realiza el test diario para actualizar tu estado de salud</p>
@@ -74,7 +89,8 @@ const SelectedTracking = ({setTextDetail}) => {
                         history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/doc_id`) }}>
                     Realizar test
                 </button>
-            </div>
+            </div>}
+
       </div>
     )
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -17,15 +18,13 @@ const HomePage = (props) => {
 		if (user && user.dni !== undefined) {
 			dispatch(getMedicalRecord(user.dni, user.ws))
 		}
+		localStorage.setItem('userData', JSON.stringify(user));
+		localStorage.setItem('userMr', JSON.stringify(mr));
 	}, [dispatch, user])
 
 	useEffect(() => {
 		localStorage.setItem('userMr', JSON.stringify(mr));
 	}, [mr])
-
-	useEffect(() => {
-		localStorage.setItem('userData', JSON.stringify(user));
-	}, [user])
 
 	useEffect(() => {
 		async function checkCore(user) {
@@ -51,6 +50,8 @@ const HomePage = (props) => {
 		}
 		checkCore(user);
 	}, [dispatch, user]);
+
+	console.log(checkStatus, user.ws)
 
 	if (!checkStatus) {
 		return <Loading />;

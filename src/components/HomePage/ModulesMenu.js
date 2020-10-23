@@ -33,52 +33,51 @@ const ModulesMenu = (props) => {
 	const { incomingCall } = useSelector(state => state.call)
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
-	const [, setAffiliate] = useState();
-	const [counter, setCounter] = useState(0); // Modificar a 5 cuando salgamos a prod.
+	// const [, setAffiliate] = useState();
+	// const [counter, setCounter] = useState(0); // Modificar a 5 cuando salgamos a prod.
 
-	useEffect(() => {
-		if (false && patient.corporate_norm && patient.corporate_norm === 'PAMI') {
+/* 	useEffect(() => {
+		if (patient.corporate_norm && patient.corporate_norm === 'PAMI') {
 			// Quitar false en prod
 			setAffiliate(patient.corporate_norm);
 		}
-
-
-	}, [])
+	}, []) */
 
 	useEffect(() => {
 		if (incomingCall) setNotification(true)
 	}, [incomingCall])
 
 
-	useEffect(() => {
+	/* useEffect(() => {
 		let inter = setInterval(() => {
 			if (counter === 0) {
 				setAffiliate(false);
 			} else {
 				setCounter(counter - 1);
 			}
-		}, 0); /* modificar a 1 seg en prod */
+		}, 1000);
 		return () => clearInterval(inter);
-	}, [counter]);
+	}, [counter]); */
 
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
 				<div className='module-button'>
 					<Link to={link} className='module-name'>
-						{/* patient.corporate_norm === "PAMI" */ false && field === 'onlinedoctor' ? (
+						{/* patient.corporate_norm === "PAMI"  false && field === 'onlinedoctor' ? (
 							<img src={PAMI} alt='pami' />
-						) : (
-								<div className='module-ico'>
-									<FontAwesomeIcon icon={icon} />
-								</div>
-							)}
+						) : ( )*/
+							<div className='module-ico'>
+								<FontAwesomeIcon icon={icon} />
+							</div>
+						}
 						<p className='module-title'>{text}</p>
 					</Link>
 				</div>
 			</ValidateAction>
 		);
 	};
+	console.log(props.ws)
 
 	return (
 		<>
@@ -87,7 +86,6 @@ const ModulesMenu = (props) => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-
 					<Subscription />
 					<section className='modules-container'>
 						<div className='card'>

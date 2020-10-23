@@ -42,7 +42,7 @@ const UmaCare = _ => {
         setExists(!data.empty);
         let activeTracking = [], inactiveTracking = [], allTrackings = []
         data.forEach((el) => {
-          let data = { ...el.data(), id: el.ref.path }
+          let data = { ...el.data(), id: el.ref.id }
           if(data.active === "ok") {
             activeTracking.push(data)
           } else {
@@ -69,9 +69,8 @@ const UmaCare = _ => {
         :
         <DinamicScreen>
           <TrackingSelector />
-          {umacare.activeTracking.length > 0
-              && umacare.activeTracking[umacare.selectedTracking]
-              && <SelectedTracking setTextDetail={(text) => setTextDetail(text)} />}
+          {umacare.allTrackings[umacare.selectedTracking]
+              && <SelectedTracking />}
           <div className="slider-recomendaciones">
             <h3>Recomendaciones COVID-19</h3>
             <div className="slider">

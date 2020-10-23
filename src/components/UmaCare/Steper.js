@@ -2,7 +2,7 @@ import React from 'react';
 import { IoIosRadioButtonOn, IoIosRadioButtonOff } from 'react-icons/io';
 import { ProgressBar, Step } from 'react-step-progress-bar';
 
-const Steper = ({ percent, color, result }) => {
+const Steper = ({ percent, color, result, title }) => {
 	const returnIcon = (accomplished) => {
 		if (accomplished) {
 			return <IoIosRadioButtonOn />;
@@ -13,7 +13,7 @@ const Steper = ({ percent, color, result }) => {
 
 	return (
 		<div className={`tracking__progress ${color ? color : 'gray'}`}>
-			<h5>Estado Actual día {} de {}</h5>
+			<h5>{title}</h5>
 			<div className='progressbar'>
 				<ProgressBar percent={percent}>
 					<Step>
