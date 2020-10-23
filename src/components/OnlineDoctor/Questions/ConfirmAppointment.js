@@ -55,7 +55,6 @@ const ConfirmAppointment = (props) => {
 			
 			let data = {
 				age: userVerified.age || '',
-				answers,
 				biomarker: biomarkers || [],
 				destino_final: responseIA.destino_final || '',
 				diagnostico: responseIA.diagnostico || '',
@@ -72,6 +71,8 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || patient.ws,
 			};
+
+			console.log(responseIA);
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
