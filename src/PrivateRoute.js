@@ -43,11 +43,12 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
             try {
                 let subscription, queryUser = firestore.doc(`auth/${patient.ws}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
-                    if (doc.data()?._start_date !== '' && doc.data()._start_date) {
-                        let data = doc.data()?._start_date?.split('///')
+                    let data = doc.data()
+                    if (data && data?._start_date !== '' && data._start_date) {
+                        let calldata = data?._start_date?.split('///')
                         if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/'){
                             setNotification(true)
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
+                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1] } })
                         }
                     } else {
                         setNotification(false)
