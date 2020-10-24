@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,11 +27,23 @@ const ModulesMenu = (props) => {
 	const { patient } = useSelector((state) => state.queries);
 	
 	useEffect(() => {
+		let clear
 		if(!patient.dni) {
 			console.log("retry")
-
+			clear = setTimeout(() => {
+				retryPage()
+			}, 10000)
 		}
+		return () => clear
 	}, [patient])
+
+	const retryPage = useCallback(() => {
+		if(!patient.ws || patient.ws === "") {
+			console.log(patient.ws, props)
+			debugger
+//			window.location.reload();
+		}
+	}, [patient.ws, props])
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -41,7 +53,6 @@ const ModulesMenu = (props) => {
 							<div className='module-ico'>
 								<FontAwesomeIcon icon={icon} />
 							</div>
-						}
 						<p className='module-title'>{text}</p>
 					</Link>
 				</div>
