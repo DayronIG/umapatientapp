@@ -23,14 +23,15 @@ import ValidateAction from '../ValidateAction';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = (props) => {
-	const [notification, setNotification] = useState(false)
-	const { incomingCall } = useSelector(state => state.call)
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
-
+	
 	useEffect(() => {
-		if (incomingCall) setNotification(true)
-	}, [incomingCall])
+		if(!patient.dni) {
+			console.log("retry")
+
+		}
+	}, [patient])
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -47,12 +48,11 @@ const ModulesMenu = (props) => {
 			</ValidateAction>
 		);
 	};
-	console.log(props.ws)
 
 	return (
 		<>
 			<CoronavirusModal />
-			{props.ws ? (
+			{patient.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
@@ -60,27 +60,27 @@ const ModulesMenu = (props) => {
 					<section className='modules-container'>
 						<div className='card'>
 							{returnModule(
-								`/${props.ws}/onlinedoctor/who`,
+								`/${patient.ws}/onlinedoctor/who`,
 								'onlinedoctor',
 								faLaptopMedical,
 								'Consulta Online (Guardia)'
 							)}
-							{returnModule(`/${props.ws}/transport`, 'translation', faBus, 'Traslados')}
+							{returnModule(`/${patient.ws}/transport`, 'translation', faBus, 'Traslados')}
 							{returnModule(
 								`/appointmentsonline/who?redirectConsultory=true`,
 								'my_specialist',
 								faNotesMedical,
 								'Mi especialista Online'
 							)}
-							{returnModule(`/${props.ws}/vmd`, 'vmd', faUserMd, 'Visita médica Domiciliaria')}
+							{returnModule(`/${patient.ws}/vmd`, 'vmd', faUserMd, 'Visita médica Domiciliaria')}
 							{returnModule(
-								`/${props.ws}/autonomous`,
+								`/${patient.ws}/autonomous`,
 								'autonomous',
 								faVrCardboard,
 								'Consulta Autonomous'
 							)}
 							{returnModule(
-								`/${props.ws}/comingSoon`,
+								`/${patient.ws}/comingSoon`,
 								'consultory_turn',
 								faClinicMedical,
 								'Turno en consultorio'
@@ -91,7 +91,7 @@ const ModulesMenu = (props) => {
 					<EventsHistory />
 					<button className='promotions-button mx-auto' onClick={() => console.log('Send msg')}>
 						<a
-							href={`whatsapp://send?text=Hola, te recomiendo UMA. Mi plataforma de salud y bienestar. Haz clic en el enlace para usarla https://wa.me/5491123000066?text=[REF:${props.ws}] Hola,%20quiero%20registrarme%20en%20Uma`}
+							href={`whatsapp://send?text=Hola, te recomiendo UMA. Mi plataforma de salud y bienestar. Haz clic en el enlace para usarla https://wa.me/5491123000066?text=[REF:${patient.ws}] Hola,%20quiero%20registrarme%20en%20Uma`}
 							data-action='share/whatsapp/share'>
 							<div className='d-flex'>
 								<div className='promotions-ico'>

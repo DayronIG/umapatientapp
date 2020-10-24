@@ -27,6 +27,8 @@ function AuthProvider({ children }) {
 
 	const getInitialData = useCallback(async () => {
 		if (currentUser.email) {
+			console.log(currentUser)
+			debugger
 			const userAuth = await getAuth(currentUser.email.split("@")[0])
 			console.log(userAuth)
 			let plan = undefined;
