@@ -20,12 +20,6 @@ import LifeJoy from './LifeJoy';
 import Subscription from './Subscription';
 import CoronavirusModal from './CoronavirusModal';
 import ValidateAction from '../ValidateAction';
-import PAMI from '../../assets/logos/pami.png';
-import ToastNotification from '../GeneralComponents/toastNotification'
-/* import { PamiAffiliate } from '../GeneralComponents/Affiliates/Affiliates'; */
-// import Module from './Module';
-// import { ModulesMenuLang } from '../../langs/';
-// import { getDoctorsCustom } from '../../store/actions/firebaseQueries';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = (props) => {
@@ -33,40 +27,16 @@ const ModulesMenu = (props) => {
 	const { incomingCall } = useSelector(state => state.call)
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
-	// const [, setAffiliate] = useState();
-	// const [counter, setCounter] = useState(0); // Modificar a 5 cuando salgamos a prod.
-
-/* 	useEffect(() => {
-		if (patient.corporate_norm && patient.corporate_norm === 'PAMI') {
-			// Quitar false en prod
-			setAffiliate(patient.corporate_norm);
-		}
-	}, []) */
 
 	useEffect(() => {
 		if (incomingCall) setNotification(true)
 	}, [incomingCall])
-
-
-	/* useEffect(() => {
-		let inter = setInterval(() => {
-			if (counter === 0) {
-				setAffiliate(false);
-			} else {
-				setCounter(counter - 1);
-			}
-		}, 1000);
-		return () => clearInterval(inter);
-	}, [counter]); */
 
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
 				<div className='module-button'>
 					<Link to={link} className='module-name'>
-						{/* patient.corporate_norm === "PAMI"  false && field === 'onlinedoctor' ? (
-							<img src={PAMI} alt='pami' />
-						) : ( )*/
 							<div className='module-ico'>
 								<FontAwesomeIcon icon={icon} />
 							</div>
