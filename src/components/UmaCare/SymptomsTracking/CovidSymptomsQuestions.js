@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import covidUmacare from '../../config/covidUmacare.json';
+import covidUmacare from '../../../config/covidUmacare.json';
 
 const CovidSymptomsQuestions = ({ setAskQuestions }) => {
     const { userUmacareStatus, umacare } = useSelector(state => state.queries)

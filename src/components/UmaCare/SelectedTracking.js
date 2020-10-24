@@ -86,7 +86,7 @@ const SelectedTracking = ({setTextDetail}) => {
                 <p>Realiza el test diario para actualizar tu estado de salud</p>
                 <button type="button"
                         onClick={() => {
-                        history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/doc_id`) }}>
+                        history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`) }}>
                     Realizar test
                 </button>
             </div>}
