@@ -18,13 +18,15 @@ const HomePage = (props) => {
 		if (user && user.dni !== undefined) {
 			dispatch(getMedicalRecord(user.dni, user.ws))
 		}
-		localStorage.setItem('userData', JSON.stringify(user));
-		localStorage.setItem('userMr', JSON.stringify(mr));
 	}, [dispatch, user])
 
 	useEffect(() => {
 		localStorage.setItem('userMr', JSON.stringify(mr));
 	}, [mr])
+
+	useEffect(() => {
+		localStorage.setItem('userData', JSON.stringify(user));
+	}, [user])
 
 	useEffect(() => {
 		checkCore();
@@ -33,7 +35,6 @@ const HomePage = (props) => {
 	const checkCore = useCallback(() => {
 		try {
 			var userId = db.auth().currentUser.uid;
-			console.log(user)
 			// Caso core_id y user_id coinciden
 			if (user && user.core_id === userId) {
 				//console.log("Valid CORE")

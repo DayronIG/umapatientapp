@@ -25,25 +25,6 @@ import '../../styles/generalcomponents/ModulesMenu.scss';
 const ModulesMenu = (props) => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
-	
-	useEffect(() => {
-		let clear
-		if(!patient.dni) {
-			console.log("retry")
-			clear = setTimeout(() => {
-				retryPage()
-			}, 10000)
-		}
-		return () => clear
-	}, [patient])
-
-	const retryPage = useCallback(() => {
-		if(!patient.ws || patient.ws === "") {
-			console.log(patient.ws, props)
-			debugger
-//			window.location.reload();
-		}
-	}, [patient.ws, props])
 
 	const returnModule = (link, field, icon, text) => {
 		return (

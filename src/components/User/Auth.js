@@ -15,19 +15,23 @@ function AuthProvider({ children }) {
 
 	useEffect(() => {  // Get authorization changes
 		const unsubscribe = DBConnection.auth().onAuthStateChanged(setCurrentUser)
-		if(currentUser) {
+		return () => unsubscribe()
+	}, [currentUser])
+
+	useEffect(() => {
+		if (currentUser) {
 			getInitialData(currentUser)
 			currentUser.getIdToken().then(token => {
 				localStorage.setItem(`token`, `Bearer ${token}`)
 				dispatch({ type: 'SET_LOGED_TOKEN', payload: token })
 			})
 		}
-		return () => unsubscribe()
-	}, [currentUser])
+	})
 
-	const getInitialData = useCallback(async () => {
-		if (currentUser.email) {
-			const userAuth = await getAuth(currentUser.email.split("@")[0])
+
+	async function getInitialData(user) {
+		if (user.email) {
+			const userAuth = await getAuth(user.email.split("@")[0])
 			let plan = undefined;
 			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
 			if (!!subscription) {
@@ -44,7 +48,8 @@ function AuthProvider({ children }) {
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			}
 		}
-	}, [currentUser])
+	}
+
 
 	return (
 		<AuthContext.Provider value={{ currentUser }}>
