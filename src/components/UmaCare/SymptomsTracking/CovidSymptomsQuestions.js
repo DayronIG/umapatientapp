@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import covidUmacare from '../../config/covidUmacare.json';
+import covidUmacare from '../../../config/covidUmacare.json';
 
 const CovidSymptomsQuestions = ({ setAskQuestions }) => {
     const { userUmacareStatus, umacare } = useSelector(state => state.queries)
@@ -22,9 +22,9 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
     }
     
     useEffect(() => {
-        if(umacare.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
-            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
-            || umacare.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
+        if(umacare?.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
+            || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
+            || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
                 setAskQuestions(false)
             }
         if (userUmacareStatus) {

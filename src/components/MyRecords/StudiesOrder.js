@@ -103,8 +103,8 @@ function StudiesOrder({ att, doc }) {
                     />
                 </>
                 :
-                <div className='w-100 text-center'>
-                    No se adjuntaron estudios.
+                <div className='w-100 text-center mt-5'>
+                    No se adjuntaron órdenes de estudios.
         </div>
             }
         </>

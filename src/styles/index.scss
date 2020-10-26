@@ -68,9 +68,10 @@
 			$height: 245px,
 			$background-color: $white-color,
 			$flex-dir: column,
-			$justify-cont: space-between
+			$justify-cont: space-between,
 		);
 		margin-bottom: 25px;
+		align-items: center;
 		border-radius: $regular-borders;
 		h5 {
 			padding: 5% 0 5% 6.5%;

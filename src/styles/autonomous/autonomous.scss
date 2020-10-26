@@ -97,6 +97,7 @@
                 overflow: hidden;
                 cursor: pointer;
                 display: flex;
+                margin-top: 10px;
                 &.green {
                     background: $green-high;
                 }
@@ -178,5 +179,14 @@
                 }
             }
         }
+    }
+    
+    .skip-biomarker-container{        
+        background-color: white !important;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        color: $primary-color !important;
+        text-decoration: underline;
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import "../../styles/umaCare/umaCareTracking.scss"
+import "../../../styles/umaCare/umaCareTracking.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
