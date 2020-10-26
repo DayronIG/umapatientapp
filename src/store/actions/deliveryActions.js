@@ -22,6 +22,10 @@ export const handleRedirectionIndicator = (indicator) => ({
 	type: deliveryTypes.SET_REDIRECTION_INDICATOR,
 	payload: indicator
 });
+export const handleAddressValidForHisopado = (isValid) => ({
+	type: deliveryTypes.ADDRESS_VALID_FOR_HISOPADO,
+	payload: isValid
+});
 
 export const listenToChangesInService = (aid) => {
 	if (!aid) return null;

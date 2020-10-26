@@ -11,7 +11,7 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 
-const PaymentCardMP = (props) => {
+const PaymentCardMP = ({finalAction}) => {
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
@@ -152,8 +152,9 @@ const PaymentCardMP = (props) => {
 
     useEffect(() => {
         if(paymentStatus === "approved"){
-            swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            .then(()=> history.push("/"))
+          finalAction()
+            // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+            // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             swal('Ocurrió un problema al ingresar el pago', 'Porfavor intente mas tarde.', 'error')
             .then(()=> history.push("/"))

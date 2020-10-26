@@ -6,7 +6,7 @@ import PaymentCardMP from './paymentCardMP';
 import PaymentCardPP from './paymentCardPP';
 import Loader from "../GeneralComponents/Loading"
 
-export default function Payment() {
+export default function Payment({finalAction}) {
     //DESCOMENTAR CUANDO PAYMENT SEA INTERNACIONAL
 
     // const {lat, lon} = useSelector(state => state.queries.patient)
@@ -55,10 +55,10 @@ export default function Payment() {
 
     return (
         <div>
-          <GenericHeader children="Contratar Servicio" />
+          {/* <GenericHeader children="Contratar Servicio" /> */}
             {/* {!country && <Loader/>} */}
             {/* {country === "AR"? <PaymentCardMP />: <PaymentCardPP />}  */}
-            <PaymentCardMP />
+            <PaymentCardMP finalAction={()=>finalAction()} />
         </div>
     )
 }

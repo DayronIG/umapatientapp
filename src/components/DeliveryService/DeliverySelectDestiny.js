@@ -15,7 +15,7 @@ import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import '../../styles/deliveryService/selectDestiny.scss';
 
-const DeliverySelectDestiny = () => {
+const DeliverySelectDestiny = ({finalAction}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -117,6 +117,9 @@ const DeliverySelectDestiny = () => {
 			console.error(error.message);
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
+		}
+		if(finalAction){
+			finalAction()
 		}
 	};
 
