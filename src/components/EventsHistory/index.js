@@ -22,7 +22,7 @@ const HistoryHome = ({ user }) => {
 
     return (
         <section className="history__container">
-            <h5 className="title">Mi historia</h5>
+            <h5 className="title">Mi historial</h5>
             {lastMr && lastMr.length === 0 ?
                 <div className="text-center p-2">Aún no hay eventos registrados.</div>
                 :
