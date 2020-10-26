@@ -52,6 +52,10 @@ export const send_user_code = `${NODE_SERVER}/patients/code`;
 export const node_patient = `${NODE_SERVER}/patients`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
+// Delivery
+export const mobility_address = `${URN_UMA}/mobility_address`;
+// Providers
+export const get_provider = `${NODE_SERVER}/providers`;
 // Payments
 export const payment_url = `${NODE_SERVER}/mercadopago/payment`;
 export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;

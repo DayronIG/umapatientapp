@@ -74,7 +74,7 @@ const AudioRecorder = ({
 					const blobDataInWavFormat = new Blob([blobDataInWebaFormat], { type : 'audio/wav' });
 					// const dataUrl = URL.createObjectURL(blobDataInWavFormat);
 					// console.log(dataUrl); 
-					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_heartbeat_original.wav`);
+					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_##${id}##_heartbeat_original.wav`);
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
 					var headers = { 'Content-Type': 'Application/Json' }

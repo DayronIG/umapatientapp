@@ -1,51 +1,223 @@
 @import '../index.scss';
 
 .trackProgress {
-	width: 90%;
+	width: 100%;
 	height: auto;
-	margin: 20px auto 0 auto;
+	
 	.trackProgress__container {
 		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-		.trackProgress__container--step {
-			width: 20px;
-			font-size: 30px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.trackProgress__container--text {
-			position: absolute;
-			top: 30px;
-			left: -5px;
-			font-size: 12px;
-			width: 69px;
-			line-height: 15px;
-			color: #000;
-		}
-		.accomplished {
-			.progress__step {
-				background-color: $deep-blue;
+		margin: 0 auto;
+
+			.trackProgress__container--item {
+				display: flex;
+				align-items: center;
+				margin-bottom: 24px;
+
+				@media screen and (max-width: 320px) {
+					margin-bottom: 10px;
+				}
+				
+				.trackProgress__container--step {
+					width: 20px;
+					font-size: 30px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin: auto;
+					svg {
+						color: $deep-blue;
+					}
+				}
+
+				.trackProgress__container--text {
+					font-size: 12px;
+					width: 69px;
+					line-height: 15px;
+					color: #000;
+
+					@media screen and (max-width: 320px) {
+						font-size: 10px;
+					}
+				}
+
+				.accomplished {
+					.progress__step {
+						background-color: $deep-blue;
+					}
+					.progress__description {
+						color: $gray-font;
+					}
+				}
 			}
-			.progress__description {
-				color: $gray-font;
+		}
+	.trackProgress__container {
+		.trackProgress__content {
+			width: 100%;
+			height: calc(100vh - 52px);
+			
+			.laboratory__container {
+				border-radius: $regular-borders;
+				width: 90%;
+				background: $white-color;
+				margin: 90px auto 0 auto;
+				padding: 20px;
+
+				.laboratory__header {
+					color: $deep-blue;
+					font-size: 1.2rem;
+					font-weight: bold;
+					text-transform: uppercase;
+					text-align: center;
+				}
+
+				.laboratory__description {
+					text-align: left;
+					color: $gray-font;
+				}
+
+				.laboratory__image {
+					text-align: center;
+					margin: 20px;
+
+					img {
+						height: 100px;
+					}
+				}
+
+				.laboratory__readmore {
+					margin-top: 20px;
+					text-align: right;
+					color: $blue-button;
+				}
 			}
 		}
 	}
-	.trackProgress__container.map {
-		height: 30vh;
-		margin-top: 25px;
-		.trackProgress__container--marker {
-			font-size: 22px;
-		}
-	}
-	.trackProgress__container.progressBar {
-		background-color: #fff;
-		padding: 30px 15%;
-		overflow: hidden;
+	.progressBar {
+		position: absolute;
+		top: 50px;
+		background-color: $white-color;
+		padding: 20px 10px;
 		border-radius: $regular-borders;
-		height: 100px;
-		width: 100%;
+		height: auto;
+		width: 100px;
+		margin: 20px;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		@media screen and (max-width: 320px) {
+			padding: 10px;
+		}
+
+		.trackProgress__container--percent {
+			width: 100%;
+
+			.trackProgress__container--chevron {
+				color: $deep-blue;
+				font-weight: bold;
+				position: relative;
+				left: 10px;
+			}
+
+			.trackProgress__container--current {
+				position: absolute;
+				left: 70px;
+				top: 0;
+				width: calc(100vw - 80px - 30px);
+				padding: 23px 20px 20px 20px;
+				background: #fff;
+				border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px;
+				color: $deep-blue;
+				font-weight: bold;
+				font-size: 14px;
+
+				@media screen and (max-width: 320px) {
+					padding: 13px 10px 10px 10px;
+				}
+			}
+
+			.RSPBprogressBar {
+				flex-direction: column;
+				width: 10px;
+				height: 100%;
+				margin-top: 20px;
+
+				@media screen and (max-width: 320px) {
+					margin-top: 5px;
+				}
+
+				.RSPBstep {
+					position: static;
+					width: 80px;
+					margin-left: 149px;
+					text-align: center;
+				}
+			}
+
+			&.p8 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 8%;
+					}
+				}
+			}
+
+			&.p23 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 23%;
+					}
+				}
+			}
+
+			&.p37 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 37%;
+					}
+				}
+			}
+
+			&.p50 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 50%;
+					}
+				}
+			}
+
+			&.p62 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 62%;
+					}
+				}
+			}
+
+			&.p77 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 77%;
+					}
+				}
+			}
+
+			&.p100 {
+				.RSPBprogressBar {
+					.RSPBprogression {
+						width: 10px !important;
+						height: 100%;
+					}
+				}
+			}
+		}
 	}
 }

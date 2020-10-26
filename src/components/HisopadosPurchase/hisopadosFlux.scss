@@ -1,0 +1,45 @@
+.hisopados-flux{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .hisopados-flux-container {
+        margin-top: 5vh;
+        background-color: white;
+        width: 90vw;
+        height: fit-content;
+        border-radius: 6px;
+        text-align: center;
+        padding: 15px;
+        .hisopados-title{
+            padding-top: 2vh;
+            font-size: 1.2rem;
+        }
+    }
+    .hisopados-button {
+        margin-top: 1vh;
+        width: 70vw;
+        height: 7vh;
+        color: white;
+        font-size: 1.3rem;
+        border-radius: 3px;
+        font-weight: bold;
+        border: none;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .frequent-questions{
+        margin-top: 4vh;
+
+    }
+    .hisopados-blue-background{
+        background-color: #008290;
+    }
+    .hisopados-blue-color{
+        color: #008290;
+    }
+}
