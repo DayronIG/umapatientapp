@@ -81,20 +81,20 @@ async function messaginTokenUpdate(currentUser, device) {
 		let ws = currentUser.email.split('@')[0]
 		// const patient = await getDocumentFB(`auth/${ws}`)
 		// if the messaging_token doesn't exist or is different than the userToken we update the document
-		try {
-			let data = {
-				ws,
-				device: {
-					messaging_token: userToken,
-					device: device.osName,
-					os: device.browser.name
-				}
-			}
-			let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': localStorage.getItem('token') */ }
-			Axios.post(push_token, data, headers)
-		} catch (err) {
-			// console.log(err)
-		}
+		// try {
+		// 	let data = {
+		// 		ws,
+		// 		device: {
+		// 			messaging_token: userToken,
+		// 			device: device.osName,
+		// 			os: device.browser.name
+		// 		}
+		// 	}
+		// 	let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': localStorage.getItem('token') */ }
+		// 	Axios.post(push_token, data, headers)
+		// } catch (err) {
+		// 	// console.log(err)
+		// }
 	}
 }
 

@@ -28,8 +28,10 @@ const Register = props => {
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
     const urlWS = props.match.params.ws
-    const { dni: getId, day: getDay, month: getMonth, year: getYear,
-        dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country } = useSelector(state => state.register)
+    const {
+         dni: getId, day: getDay, month: getMonth, year: getYear,
+        dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
+     } = useSelector(state => state.register)
     const monthRef = useRef()
     const yearRef = useRef()
 
@@ -216,6 +218,14 @@ const Register = props => {
         else if (!dni) dispatch({ type: 'REGISTER_FIRST_DNI', payload: '' })
     }
 
+    const handleCelular = (ws) => {
+        const reg = /^\d+$/
+        const str = ws.toString()
+        const isNumber = reg.test(str)
+        if (isNumber) dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
+        else if (!ws) dispatch({ type: 'REGISTER_FIRST_WS', payload: '' })
+    }
+
     return (
         <>
             {loading && <Loading />}
@@ -223,7 +233,10 @@ const Register = props => {
                 <Welcome showInstallPrompt={() => showInstallPrompt()} />
                 :
                 <>
-                    <GenericHeader profileDisabled={true}>Registro</GenericHeader>
+                    <GenericHeader profileDisabled={true}></GenericHeader>
+                    <div>
+                        <h2 className="formulario__title">Formulario de registro</h2>
+                    </div>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
                             <div className='contentData'>¡Te registraste con éxito!</div>
@@ -237,73 +250,72 @@ const Register = props => {
                         </MobileModal>
                     )}
                     {urlWS !== 'undefined' ?
+                    <div className="register__container">
+
                         <form className='registerWrapper register-form mt-2' onSubmit={e => handleSignUp(e)}>
-                            <div className='col-sm-12'>
+                            <div className='d-flex flex-wrap'>
+                            <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
-                                    Nombre y apellido
+                                    Nombre y apellido*
                                 </label>
-                                <input
-                                    className='form-input' id='name' placeholder='Nombre'
-                                    autoComplete='on' type='text'
-                                    onChange={e => dispatch({ type: 'REGISTER_FIRST_FULLNAME', payload: e.target.value })}
-                                    required
-                                />
+                                <input className='form-input' id='name' placeholder='Nombre'
+                                autoComplete='on' type='text'onChange={e => dispatch({ type: 'REGISTER_FIRST_FULLNAME', payload: e.target.value })} required/>
+                            </div>
+
+                            <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='dni'>
-                                    Identificación, cédula o DNI
+                                    Identificación, cédula o DNI*
                                 </label>
-                                <input
-                                    className='form-input' id='dni' placeholder='e.g. 99899899' autoComplete='on'
-                                    onChange={e => handleDni(e.target.value)} value={getId} required />
-                                <div className='d-flex justify-content-start align-items-end'>
-                                    <div className='birthContainer w-50'>
-                                        <label className='form-label birthLabel'>
-                                            Fecha de nacimiento
-                                        </label>
-                                        <div className='d-flex birthInputContainer'>
-                                            <input className='form-mid-input mr-2'
-                                                onChange={e => onChangeDay(e)} type='number' min='1'
-                                                max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
-                                                required />
-                                            <input
-                                                className='form-mid-input mr-2' maxLength='2' ref={monthRef}
-                                                onChange={e => onChangeMonth(e)}
-                                                type='number' min='1' max='12'
-                                                name='bMonth' id='dateMonth'
-                                                placeholder={getMonth}
-                                                required />
-                                            <input
-                                                className='form-mid-input mr-2' id='dateYear' placeholder={getYear}
-                                                maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
-                                                onChange={e => dispatch({ type: 'REGISTER_FIRST_YEAR', payload: e.target.value })}
-                                                required />
-                                        </div>
-                                    </div>
-                                    <div className='sexContainer w-50'>
+                                <input className='form-input' id='dni' placeholder='e.g. 99899899' autoComplete='on'
+                                onChange={e => handleDni(e.target.value)} value={getId} required />
+                            </div>
+
+                            <div className="form__spanWrapper">
+                                <label className='form-label' htmlFor='celular'>
+                                    N° de celular
+                                </label>
+                                <input className='form-input' id='ws' placeholder='(54) 11 33678925' autoComplete='on'
+                                onChange={e => handleCelular(e.target.value)} value={getWs} required />
+                            </div>
+                            <div className='form__spanWrapper'>
+                                <div className='birthContainer '>
+                                    <label className='form-label birthLabel'>
+                                        Fecha de nacimiento* 
+                                    </label>
+                                    <div className='inputsContainer'>
+                                        <input className='form-mid-input'
+                                            onChange={e => onChangeDay(e)} type='number' min='1'
+                                            max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
+                                            required />
+                                        <input
+                                            className='form-mid-input' maxLength='2' ref={monthRef}
+                                            onChange={e => onChangeMonth(e)}
+                                            type='number' min='1' max='12'
+                                            name='bMonth' id='dateMonth'
+                                            placeholder={getMonth}
+                                            required />
+                                        <input
+                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
+                                            maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
+                                            onChange={e => dispatch({ type: 'REGISTER_FIRST_YEAR', payload: e.target.value })}
+                                            required />
                                         <select
                                             className='form-mid-input'
-                                            style={{ height: '65%' }}
                                             id='gender'
                                             onChange={e => dispatch({ type: 'REGISTER_FIRST_SEX', payload: e.target.value })}
                                             placeholder={getSex}
-                                            required >
+                                            required 
+                                        >
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
                                         </select>
                                     </div>
                                 </div>
-                                <input
-                                    className='form-input' id='os' placeholder='Cobertura / Seguro de Salud'
-                                    autoComplete='off' type='text'
-                                    onChange={e => dispatch({ type: 'REGISTER_FIRST_OS', payload: e.target.value })}
-                                    required
-                                />
+                            </div>
                             </div><br />
-                            <div className='d-flex justify-content-between pl-3 pr-3'>
-                                <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
-                                    <small>Acepto los términos y condiciones</small>
-                                </a>
-                                <div className={termsSwitch ? 'enabled switchChangeWrapper' : 'disabled switchChangeWrapper'}>
+                            <div className='d-flex '>
+                            <div className={termsSwitch ? 'enabled switchChangeWrapper' : 'disabled switchChangeWrapper'}>
                                     <Switch type='checkbox'
                                         id='medicalVisit'
                                         checked={termsSwitch}
@@ -311,17 +323,18 @@ const Register = props => {
                                         onChange={() => setTermsSwitch(!termsSwitch)}
                                     />
                                 </div>
+                                <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
+                                    <small className="pl-3 ml-3">Acepto los términos y condiciones</small>
+                                </a>
+                                
                             </div>
                             <div className='text-right'>
                                 <button className='btn sendButtonStyles' type='submit'>
                                     Enviar
                                 </button>
                             </div>
-                            <div className='text-center link mb-4'
-                                onClick={() => props.history.push(`/login`)}>
-                                Ya tengo un usuario (Ingresar)
-                            </div>
                         </form>
+                    </div>
                         :
                         <div className='whatsapp-container'>
                             <p className='p-2 mt-5 text-center'>
@@ -330,7 +343,8 @@ const Register = props => {
                             <a href='https://wa.me/5491123000066/?text=Hola'>
                                 <div className='btn btn-blue-lg'>Enviar saludo a UMA</div>
                             </a>
-                        </div>}
+                        </div>
+                    }
                 </>}
         </>
     )

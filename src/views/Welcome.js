@@ -37,11 +37,9 @@ const Welcome = props => {
   return (
     <div className="welcome-container">
     <section className="welcome">
-      <div className="welcome__iconContainer">
-        <FontAwesomeIcon icon={faCheckCircle} />
-      </div>
+
       <div className="welcome__titleContainer">
-        <h2 className="welcome__titleContainer--title">Bienvenido a UMA</h2>
+        <h2 className="welcome__titleContainer--title mt-2">¡Te damos <br/> la bienvenida a UMA!</h2>
       </div>
       <div className="welcome__textContainer">
         {/* <p className="welcome__textContainer--paragraph">
@@ -49,18 +47,20 @@ const Welcome = props => {
         </p>
         <br /> */}
         <span className="welcome__textContainer--message">
-          Haga click en
-          <span onClick={() => props.showInstallPrompt()} className="link">
-            {" "}
-            instalar
-          </span>{" "}
-          y luego "Agregar UMA a la pantalla principal" para instalar la aplicación.
+        Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.
+        <span onClick={() => props.showInstallPrompt()} className="link"></span>
         </span>
-        {install ?
-          <div className="btn btn-blue-lg" onClick={() => installAction()}>Instalar</div>
-          :
-          <div className="btn btn-blue-lg" onClick={() => props.history.push('/')}>Continuar</div>
-        }
+        <br />
+        <div className="welcome__textContainer--instalar mt-4">
+          <span className="welcome__textContainer--messageAboveButton">Sigue las indicaciones para instalarla</span>        
+          {install ?
+            <button className="welcome__button--instalar" onClick={() => installAction()}>Instalar</button>
+            :            
+            <button className="btn btn-blue-lg" onClick={() => props.history.push('/')}>Continuar</button>
+          }
+          <br/><br/>
+          <span className="welcome__textContainer--messageBelowButton">(Para una mejor experiencia, te sugerimos realizar este proceso a través del celular)</span>
+        </div>
       </div>
       {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}
     </section>
