@@ -56,7 +56,7 @@ const ModulesMenu = (props) => {
 					<GenericHeader children={patient.fullname} />
 					<BuyHisopado />
 					<section className='modules-container'>
-						<div className='card length3'>
+						<div className='card length4'>
 							{returnModule(
 								`/${patient.ws}/onlinedoctor/who`,
 								'onlinedoctor',
@@ -75,12 +75,12 @@ const ModulesMenu = (props) => {
 								iconEstudios,
 								'Estudios'
 							)}
-							{/* {returnModule(
+							{returnModule(
 								`/appointmentsonline/who?redirectConsultory=true`,
 								'my_specialist',
 								iconEspecialista,
 								'Mi especialista'
-							)} */}
+							)}
 						</div>
 					</section>
 					<UmaCareHome />
