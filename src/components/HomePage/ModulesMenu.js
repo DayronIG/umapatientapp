@@ -67,7 +67,7 @@ const ModulesMenu = (props) => {
 								`/${patient.ws}/autonomous`,
 								'autonomous',
 								iconAutodiagnostico,
-								'Autodiagnóstico'
+								'Autoanálisis'
 							)}
 							{returnModule(
 								`/${patient.ws}/wellness`,
