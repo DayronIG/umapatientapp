@@ -67,7 +67,7 @@ const ModulesMenu = (props) => {
 								`/${patient.ws}/autonomous`,
 								'autonomous',
 								iconAutodiagnostico,
-								'Autoanálisis'
+								'Auto Diagnóstico'
 							)}
 							{returnModule(
 								`/${patient.ws}/wellness`,
@@ -86,7 +86,7 @@ const ModulesMenu = (props) => {
 					<UmaCareHome />
 					<TrasladosHome />
 					<EventsHistory />
-					<button class="needhelp__btn">
+					<button className="needhelp__btn">
 						<img src={iconBubbles} alt="Necesito ayuda"/>
 						Necesito ayuda
 					</button>

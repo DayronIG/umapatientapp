@@ -4,7 +4,7 @@
 /* MODULES CONTAINER */
 .modules-container {
   @include wrapper(
-      $margin: 0 auto 40px,
+      $margin: 0 auto 20px,
       $width: 95%, 
       $height: auto, 
       $background-color: inherit
@@ -68,7 +68,7 @@
             line-height: 1.2;
             font-size: 2rem;
             color: $deep-blue-new;
-            margin-bottom: 7px;
+            margin-bottom: 14px;
 
             img {
                width: 30px;
@@ -82,7 +82,34 @@
             font-weight: 700;
             height: auto;
             line-height: 1.5;
-            color: $text-super-dark;;
+            color: $text-super-dark;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+         }
+      }
+
+      &:first-child {
+         .module-ico {
+            img {
+               width: 45px;
+            }
+         }
+      }
+
+      &:nth-child(2) {
+         .module-ico {
+            img {
+               width: 37px;
+            }
+         }
+      }
+
+      &:nth-child(3) {
+         .module-ico {
+            img {
+               width: 30px;
+            }
          }
       }
    }
@@ -109,7 +136,7 @@
    display: flex;
    justify-content: center;
    width: 90%;
-   margin: 0 auto 40px;
+   margin: 0 auto 20px;
    background: #5C5286;
    border-radius: 6px;
    padding: 0.7rem;
