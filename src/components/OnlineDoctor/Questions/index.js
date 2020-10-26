@@ -178,7 +178,6 @@ const Questions = () => {
 	};
 
 	const habitatResponseCondition = (responses) => {
-		console.log(ubicacion)
 		if (ubicacion === 'provincia') {
 			if (
 				(responses.includes('contacto estrecho') && !responses.includes('personal esencial'))

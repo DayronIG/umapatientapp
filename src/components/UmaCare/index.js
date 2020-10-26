@@ -70,7 +70,7 @@ const UmaCare = _ => {
         <DinamicScreen>
           <TrackingSelector />
           {umacare.allTrackings[umacare.selectedTracking]
-              && <SelectedTracking />}
+              && <SelectedTracking setTextDetail={setTextDetail} />}
           <div className="slider-recomendaciones">
             <h3>Recomendaciones COVID-19</h3>
             <div className="slider">

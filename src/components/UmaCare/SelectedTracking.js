@@ -78,7 +78,7 @@ const SelectedTracking = ({setTextDetail}) => {
             <Steper percent={percent} color={color} result={result} title={steperTitle} />
             <div className={`tracking__detail ${color ? color : 'gray'}`}>
                 <CovidSteps percent={percent}
-                    setTextDetail={setTextDetail} result={result} />
+                    setTextDetail={(text) => setTextDetail(text)} result={result} />
             </div>
             {umacare.allTrackings[umacare.selectedTracking]?.active === "ok" &&
             <div className="tracking__status">
