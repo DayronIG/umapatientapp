@@ -147,12 +147,12 @@ function LoadAnalysis(props) {
 
   return (
     <>
-      <div className="carga-input">
+      <div className="load__input">
         <input type="file" id="files" accept="image/*"
           onChange={handleFileChange}
           placeholder="subir"
-          className="btn-blue-lg" class="hidden" />
-        <label for="files">Sacar foto o adjuntar documento</label>
+          className="btn-blue-lg" />
+        <label htmlFor="files">Sacar foto o adjuntar documento</label>
       </div>
       <br></br>
       {resCarga &&
