@@ -31,16 +31,16 @@ const ConfirmAppointment = (props) => {
 		let file = e.target.files[0];
 		let fileName = e.target.files[0].name;
 		uploadFileToFirebase(file, `${patient.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
-		.then(imgLink => {
-			setContador(contador + 1);
-			setFile([...File, imgLink]);
-			setLoading(false);
-			swal('Éxito', 'Archivo cargado exitosamente', 'success');
-		})
-		.catch(() => {
-			setLoading(false);
-			swal('Error', 'Hubo un error al adjuntar el archivo, intente nuevamente', 'error');
-		})
+			.then(imgLink => {
+				setContador(contador + 1);
+				setFile([...File, imgLink]);
+				setLoading(false);
+				swal('Éxito', 'Archivo cargado exitosamente', 'success');
+			})
+			.catch(() => {
+				setLoading(false);
+				swal('Error', 'Hubo un error al adjuntar el archivo, intente nuevamente', 'error');
+			})
 	}
 
 	const postData = async () => {

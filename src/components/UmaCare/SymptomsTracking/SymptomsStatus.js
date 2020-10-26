@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import FooterBtn from '../GeneralComponents/FooterBtn';
+import FooterBtn from '../../GeneralComponents/FooterBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import umacare from '../../assets/umacare.png';
+import umacare from '../../../assets/umacare.png';
 import Switch from 'react-switch';
 import NotifyFriends from './NotifyFriends';
 

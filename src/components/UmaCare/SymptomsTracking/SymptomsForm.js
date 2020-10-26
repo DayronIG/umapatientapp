@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import FooterBtn from '../GeneralComponents/FooterBtn';
-import isIos from '../Utils/isIos';
+import FooterBtn from '../../GeneralComponents/FooterBtn';
+import isIos from '../../Utils/isIos';
 import CovidSymptomsQuestions from './CovidSymptomsQuestions';
 import CovidMainQuestions from './CovidMainQuestions';
 

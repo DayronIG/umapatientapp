@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Slider from '@material-ui/core/Slider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSmile, faFrown, faMeh } from '@fortawesome/free-solid-svg-icons';
-import isIos from '../Utils/isIos';
-import Modal from '../GeneralComponents/Modal/MobileModal';
-import VideoInput from '../Inputs/Video';
-import personDown from '../../assets/difficulty-breathing.svg';
-import personHappy from '../../assets/happy.svg';
+import isIos from '../../Utils/isIos';
+import Modal from '../../GeneralComponents/Modal/MobileModal';
+import VideoInput from '../../Inputs/Video';
+import personDown from '../../../assets/difficulty-breathing.svg';
+import personHappy from '../../../assets/happy.svg';
 
 const SymptomsTracking = ({ setFaces, setFever, setDyspnoea, faces, fever, dyspnoea }) => {
     const [covidModal, setCovidModal] = useState(true)
 
     return (
         <div className='symptomsTracking'>
-            {covidModal && !isIos() && <Modal hideCloseButton={true}>
+            {covidModal && !isIos() && <Modal>
                 <VideoInput 
                     isModal={true} 
                     finalAction={() => 

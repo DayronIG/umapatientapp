@@ -18,7 +18,7 @@ const MobileModal = (props) => {
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
             if (props.callback) props.callback();
-            dispatch({ type: 'TOGGLE_DETAIL' })
+            dispatch({ type: 'HANDLE_MODAL', payload: false })
           }}>
             <FontAwesomeIcon icon={faTimesCircle} />
           </div>

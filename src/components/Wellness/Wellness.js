@@ -67,7 +67,7 @@ const Wellness = props => {
                 className="markers__item"
                 onClick={() => biomarkerHandler("sthethoscop")}
               >
-                <div className="markers__item--icon active__marker">
+                <div className={`markers__item--icon ${!!window.chrome? "active__marker": ""}`}>
                   <FontAwesomeIcon icon={faStethoscope} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />

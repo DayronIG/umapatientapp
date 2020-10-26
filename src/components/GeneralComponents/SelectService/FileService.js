@@ -68,7 +68,10 @@ const FileService = (props) => {
                                     <FontAwesomeIcon icon={faStethoscope} />
                                 </span> 
                                 <br />
+                                {
+                                !!window.chrome?
                                 <AudioInput wellness={true} modal={true} finalAction={() => props.modalClose()} upload_url_prop={`${props.patient.dni}/wellness/heartbeat`}/>
+                                : "Abra la aplicación desde Google Chrome para probar este servicio"}
                             </div>
                         }
                         {props.title === "heartbeat" &&

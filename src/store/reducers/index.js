@@ -12,6 +12,7 @@ import onboardingThirdStep from './onboardingThirdStepReducers';
 import register from './registerReducers';
 import pol from './polReducers';
 import autonomous from './autonomousReducers';
+import umacare from './umacareReducers';
 import deliveryService from './deliveryReducers';
 import cx from './cxReducers';
 
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
 	biomarkers,
 	cx,
 	call,
+	deliveryService,
 	front,
 	queries,
 	onboardingSecondStep,
@@ -29,8 +31,8 @@ const appReducer = combineReducers({
 	pol,
 	register,
 	survey,
+	umacare,
 	userActive,
-	deliveryService,
 });
 
 const rootReducer = (state, action) => {
