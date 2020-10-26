@@ -1,4 +1,4 @@
-import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO } from '../types/deliveryTypes';
+import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LONG_HISOPADO } from '../types/deliveryTypes';
 
 const initialState = {
 	selectHomeForm: {
@@ -8,7 +8,8 @@ const initialState = {
 		lat: 0,
 		lng: 0,
 	},
-	isAddressValidForHisopado: true
+	isAddressValidForHisopado: true,
+	addressLatLongHisopado: ""
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -17,6 +18,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, selectHomeForm: payload };
 		case ADDRESS_VALID_FOR_HISOPADO:
 			return { ...state, isAddressValidForHisopado: payload };
+		case SET_ADDRESS_LAT_LONG_HISOPADO:
+			return { ...state, addressLatLongHisopado: payload };
 		default:
 			return state;
 	}

@@ -26,6 +26,10 @@ export const handleAddressValidForHisopado = (isValid) => ({
 	type: deliveryTypes.ADDRESS_VALID_FOR_HISOPADO,
 	payload: isValid
 });
+export const setAddressLatLongHisopado = (latlong) => ({
+	type: deliveryTypes.SET_ADDRESS_LAT_LONG_HISOPADO,
+	payload: latlong
+});
 
 export const listenToChangesInService = (aid) => {
 	if (!aid) return null;

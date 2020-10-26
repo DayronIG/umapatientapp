@@ -7,7 +7,7 @@ import SearchBox from '../GeneralComponents/SearchBox';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { currentPositionHandler, errorHandler, mapConfig } from '../Utils/mapsApiHandlers';
 import { useDispatch } from 'react-redux';
-import { handleDeliveryForm } from '../../store/actions/deliveryActions';
+import { handleDeliveryForm, setAddressLatLongHisopado } from '../../store/actions/deliveryActions';
 import swal from 'sweetalert';
 import Axios from 'axios';
 import Loader from '../GeneralComponents/Loading';
@@ -75,6 +75,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
 		};
+		dispatch(setAddressLatLongHisopado(latlng))
 		geocoder.geocode({ location: latlng }, (results, status) => {
 			if (status === 'OK') {
 				if (results[0]) {
