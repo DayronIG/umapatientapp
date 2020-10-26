@@ -12471,6 +12471,11 @@ react-card-slide@1.0.13:
   resolved "https://registry.yarnpkg.com/react-card-slide/-/react-card-slide-1.0.13.tgz#f919dcaccf85e114a08eddbdaeb8463ed5b54cdb"
   integrity sha512-O6DhCqSdQM7bZSSdiGhzquZ5XxIx08xzhdCzNqolz94AzO3V6AuFp69exNXBonsec9cO/+IFm1eYCZe6OcsUWA==
 
+react-circular-progressbar@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-circular-progressbar/-/react-circular-progressbar-2.0.3.tgz#fa8eb59f8db168d2904bae4590641792c80f5991"
+  integrity sha512-YKN+xAShXA3gYihevbQZbavfiJxo83Dt1cUxqg/cltj4VVsRQpDr7Fg1mvjDG3x1KHGtd9NmYKvJ2mMrPwbKyw==
+
 react-credit-cards@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-credit-cards/-/react-credit-cards-0.8.3.tgz#608a8ee8bf3a88857fc83023ffba1ad536ba8c7e"

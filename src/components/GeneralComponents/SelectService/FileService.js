@@ -65,7 +65,7 @@ const FileService = (props) => {
                         {props.title === "sthethoscop" &&
                             <div>
                                 <span className="fileService__container--icon">
-                                    <FontAwesomeIcon icon={faStethoscope} />
+                                    <FontAwesomeIcon className="fileService__icon" icon={faStethoscope} />
                                 </span> 
                                 <br />
                                 {
