@@ -75,8 +75,8 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '-34.5633155', // Coordenadas de Melian si no hay location
-				lon: coordinates.lng || '-58.4739184',
+				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
+				lon: coordinates.lng || '',
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
