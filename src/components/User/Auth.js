@@ -32,9 +32,10 @@ function AuthProvider({ children }) {
 	async function getInitialData(user) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
-			getCoverage(userAuth)
 			let plan = undefined;
-			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
+			plan = await getCoverage(userAuth)
+			// El siguiente código comentado quedaría en desuso
+			/* let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
 			if (!!subscription) {
 				let path = `services/porfolio/${subscription.toUpperCase()}/active`
 				plan = await getDocumentFB(path)
@@ -43,7 +44,7 @@ function AuthProvider({ children }) {
 				}
 			} else if (!!userAuth) {
 				plan = await getDocumentFB('services/porfolio/FREE/active')
-			}
+			} */
 			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
@@ -71,7 +72,6 @@ function AuthProvider({ children }) {
 							basic.plan[service] = true
 						}
 					}
-					console.log(each, path, basic)
 				})
 			}
 			return basic
