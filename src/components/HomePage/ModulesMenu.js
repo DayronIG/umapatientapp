@@ -17,7 +17,6 @@ import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
 import SliderHome from './SliderHome';
 import LifeJoy from './LifeJoy';
-import Subscription from './Subscription';
 import CoronavirusModal from './CoronavirusModal';
 import ValidateAction from '../ValidateAction';
 import '../../styles/generalcomponents/ModulesMenu.scss';
@@ -48,7 +47,6 @@ const ModulesMenu = (props) => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-					<Subscription />
 					<section className='modules-container'>
 						<div className='card'>
 							{returnModule(
