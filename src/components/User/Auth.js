@@ -28,7 +28,6 @@ function AuthProvider({ children }) {
 		}
 	})
 
-
 	async function getInitialData(user) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
@@ -52,15 +51,14 @@ function AuthProvider({ children }) {
 		}
 	}	
 	
-	
 	const getCoverage = async (user) => {
 			// Busco BASIC primero porque es el básico sin ningun permiso
-			let basic = await getDocumentFB('services/porfolio/BASIC/active')
+			let plan = await getDocumentFB('services/porfolio/BASIC/active')
 			let free = await getDocumentFB('services/porfolio/FREE/active')
-			if(basic && free) {
-				basic["onlinedoctor"] = free.onlinedoctor
+			if(plan && free) {
+				plan["onlinedoctor"] = free.onlinedoctor
 			}
-			if (!!user.coverage && Array.isArray(user.coverage) && basic) { 
+			if (!!user.coverage && Array.isArray(user.coverage) && plan) { 
 				// Este else if es el mas importante. 
 				// Un usuario puede tener multiples subscriptions
 				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
@@ -69,12 +67,12 @@ function AuthProvider({ children }) {
 					let coverageTemp = await getDocumentFB(path)
 					for (const service in coverageTemp) {
 						if(coverageTemp[service] === true) {
-							basic.plan[service] = true
+							plan.plan[service] = true
 						}
 					}
 				})
 			}
-			return basic
+			return plan
 	}
 
 

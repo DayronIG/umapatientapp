@@ -14,7 +14,7 @@ import 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, selectedSymptoms, symptomsForDoc, answers, selectedOtherSymptoms, responseIA, patient, biomarkers, coordinates, alerta } = props;
+	const { dispatch, history, symptomsForDoc, answers, responseIA, patient, biomarkers, coordinates, alerta } = props;
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
@@ -75,8 +75,8 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '-34.5633155', // Coordenadas de Melian si no hay location
-				lon: coordinates.lng || '-58.4739184',
+				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
+				lon: coordinates.lng || '',
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
@@ -140,8 +140,7 @@ const ConfirmAppointment = (props) => {
 						<li>
 							<img src={selectedAppointment.path_profile_pic} alt="Doctor" />
 						</li>
-						<li>
-							Doctor: <b>{selectedAppointment.fullname}</b>
+						<li>Doctor: <b>{selectedAppointment.fullname}</b>
 						</li>
 						<li>
 							Hora: <b>{selectedAppointment.time}</b>

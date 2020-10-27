@@ -15,14 +15,6 @@ const Questions = () => {
 	const dispatch = useDispatch();
 	const [i, seti] = useState(0);
 	const [j, setj] = useState(0);
-	const [modals, setModals] = useState({
-		fever: false,
-		questions: false,
-		habitat: false,
-		termsAndConditions: false,
-		htaModal: false,
-		cameraModal: false,
-	});
 	const [responses, setResponses] = useState()
 	const [alerta, setAlerta] = useState('');
 	const [counter, setCounter] = useState(0);
@@ -154,7 +146,6 @@ const Questions = () => {
 						{assessment.currentQuestion.title}
 					</div>
 				}
-				{counter === 0 && <Loading centered={true} /> }
 				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
 			</div>
 		</>
