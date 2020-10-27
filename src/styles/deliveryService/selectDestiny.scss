@@ -1,24 +1,46 @@
 @import '../index.scss';
 
 .selectDestiny {
-	width: 90%;
+	width: 100vw;
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 20vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	.selectDestiny__header {
 		background-color: #fff;
 		margin-top: 10px;
 		border-radius: 5px;
-		padding: 5px;
-		color: $deep-blue;
 		font-size: 1.2rem;
 		font-weight: bold;
-		text-transform: uppercase;
 		text-align: center;
+		font-weight: 900;
+		font-size: 27.7183px;
+		line-height: 105.9%;
+		/* or 29px */
+		text-align: center;
+		/* Color-primary */
+		color: #008290;
 	}
 	.selectDestiny__container.map {
-		height: 50vh;
+		height: 65vh;
+		width: 100vw;
+	}
+	.selectDestiny__allcontainer{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		border-radius: 30px;
+		background-color: white;
+		position: fixed;
+		bottom: 3vh;
+		width: 100vw;
+		.selectDestiny__adjustmentDiv{
+			width: 80vw;
+		}
 	}
 	.selectDestiny__container {
 		width: 100%;
@@ -66,5 +88,19 @@
 				color: #fff;
 			}
 		}
+	}
+	.map-button{
+		background-color: #008290;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 15px;
+		margin-top: 5vh;
+		font-weight: 800;
+		font-size: 18px;
+		line-height: 25px;
+		width: 60vw;
+		height: 5vh;
+		color: #FFFFFF;
 	}
 }

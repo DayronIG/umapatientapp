@@ -25,9 +25,6 @@ export default function AddressPickerHisopado({ finalAction }) {
 
     return (
         <div>
-            <div className="hisopados-flux-container">
                 <DeliverySelectDesiny finalAction={() => finalAction()} />
-            </div>
-
         </div>)
 }

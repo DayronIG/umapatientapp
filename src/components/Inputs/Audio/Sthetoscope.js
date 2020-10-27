@@ -56,18 +56,22 @@ const AudioRecorder = ({
 	};
 
 	const getMicrophone = async () => {
+		// const constraints = {
+		// 	sampleRate: 16000
+		// }
 		const audio = await navigator.mediaDevices.getUserMedia({
 		  audio: true,
 		  video: false
 		});
+		// const track = audio.getAudioTracks()[0]
+		// await track.applyConstraints(constraints);
 		const options = {
-			mimeType: "audio/webm"
+			mimeType: "audio/webm;codecs=opus"
 		}
 		const recorder = new MediaRecorder(audio, options);
 		setMediaRecorder(recorder);
 		setAudioToPlot(recorder.stream);
 		recorder.start();
-
 		recorder.addEventListener("dataavailable", async event => {
 				try{
 					const blobDataInWebaFormat = event.data; 

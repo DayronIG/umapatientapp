@@ -65,6 +65,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			lng: place?.lng || place?.geometry?.location?.lng() || -58.4759768,
 			address: place?.formatted_address,
 		};
+		dispatch(setAddressLatLongHisopado({lat: pos.lat, lng: pos.lng}))
 		return handleForm(pos, true);
 	};
 
@@ -127,7 +128,6 @@ const DeliverySelectDestiny = ({finalAction}) => {
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
-			<h3 className="selectDestiny__header">Confirma tu domicilio</h3>
 			<div className='selectDestiny__container'>
 				<div className='selectDestiny__container--row'>
 					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} handleChangePlace={handleChangePlace} />}
@@ -144,6 +144,9 @@ const DeliverySelectDestiny = ({finalAction}) => {
 					<Marker  {...marker} />
 				</GoogleMapReact>
 			</div>
+			<div className="selectDestiny__allcontainer">
+			<h3 className="selectDestiny__header">Seleccioná tu <br/> domicilio</h3>
+			<div className="selectDestiny__adjustmentDiv">
 			<div className='selectDestiny__container'>
 				<input
 					onChange={handleForm}
@@ -168,7 +171,11 @@ const DeliverySelectDestiny = ({finalAction}) => {
 					/>
 				</div>
 			</div>
-			<FooterBtn callback={handleSubmit} text='Continuar' />
+			</div>
+			<div onClick={(e) => handleSubmit(e)} className="map-button">
+                Enviar
+            </div>
+			</div>
 		</form>
 	);
 };

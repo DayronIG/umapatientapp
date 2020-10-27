@@ -27,14 +27,14 @@ export default function AskForBuyHisopado({finalAction}) {
                 <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en el domicilio del cliente. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En solo 15 minutos tenés el resultado!</p>
                 <p className="info-title">Medios de pago</p>
                 <p>Podés pagarlo con tarjeta de débito, crédito o efectivo.</p>
-                <p className="info-warning">
+                <div className="info-warning">
                     <p className="warning-title">Atención: </p>
                     <ul>
                         <li>No emite certificado oficial</li>
                         <li>No sirve para viajar</li>
                         <li>No lo cubre ninguna obra social</li>
                     </ul>
-                    </p>
+                    </div>
                 <p className="info-title">Contacto cercano</p>
                 <p>Si sos contacto cercano... 5 días del contacto.</p>
             </div>
