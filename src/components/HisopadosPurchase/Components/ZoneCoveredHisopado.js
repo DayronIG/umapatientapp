@@ -5,30 +5,27 @@ export default function ZoneCoveredHisopado({finalAction}) {
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService) 
 
     return (
-        <div>
+        <div className="allwhite-hisopados-background">
             {isAddressValidForHisopado? 
-            <>
-                <div className="hisopados-flux-container">
-                   <h1>¡Contámos con cobertura en tu zona!</h1>
-                   <p>El tiempo de respuesta aproximado es de <b>21 minutos.</b></p>
-                </div>
-                <div onClick={() => console.log("VOLVER")} className="hisopados-button hisopados-blue-background">
-                    Probar otra dirección
-                </div>
-                <div onClick={() => finalAction()} className="hisopados-button hisopados-blue-color">
-                    Contratar Servicio
-                </div>
-                </>:
-                <>
-                <div className="hisopados-flux-container">
-                   <h1>¡No contámos con cobertura en tu zona!</h1>
-                   <p>¿Deseas que te avisemos cuando haya disponibilidad?</p>
-                   <p>Te enviaremos una notificación push para avisarte</p>
-                </div>
-                <div onClick={() => console.log("VOLVER")} className="hisopados-button hisopados-blue-background">
-                    ¡Sí, quiero!
-                </div>
-                </>}
+            <div className="instructions-container">
+                    <p className="hisopados-title">¡Contámos con cobertura en tu zona!</p>
+                    <p>Nuestro personal de salud estará en su domicilio en aproximadamente <b>21 minutos.</b></p>
+                    <p>Una vez confirmado el pago, le asignaremos un enfermero/a.</p>
+                    <div onClick={() => finalAction()} className="blue-button">
+                        Continuar con el pago
+                    </div>
+                    <div onClick={() => console.log("VOLVER")} className="blue-text">
+                        Cambiar domicilio
+                    </div>
+                </div>:
+                <div className="instructions-container">
+                    <p className="hisopados-title">¡No contámos con cobertura en tu zona!</p>
+                    <p>¿Deseas que te avisemos cuando haya disponibilidad?</p>
+                    <p>Te enviaremos una notificación push para avisarte</p>
+                    <div onClick={() => console.log("VOLVER")} className="hisopados-button hisopados-blue-background">
+                        ¡Sí, quiero!
+                    </div>
+                </div>}
         </div>
     )
 }
