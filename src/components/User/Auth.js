@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DBConnection from "../../config/DBConnection";
@@ -32,6 +32,7 @@ function AuthProvider({ children }) {
 	async function getInitialData(user) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
+			getCoverage(userAuth)
 			let plan = undefined;
 			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
 			if (!!subscription) {
@@ -48,6 +49,32 @@ function AuthProvider({ children }) {
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			}
 		}
+	}	
+	
+	
+	const getCoverage = async (user) => {
+			// Busco BASIC primero porque es el básico sin ningun permiso
+			let basic = await getDocumentFB('services/porfolio/BASIC/active')
+			let free = await getDocumentFB('services/porfolio/FREE/active')
+			if(basic && free) {
+				basic["onlinedoctor"] = free.onlinedoctor
+			}
+			if (!!user.coverage && Array.isArray(user.coverage) && basic) { 
+				// Este else if es el mas importante. 
+				// Un usuario puede tener multiples subscriptions
+				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
+				user.coverage.forEach(async each => {
+					let path = `services/porfolio/${each?.toUpperCase()}/active`
+					let coverageTemp = await getDocumentFB(path)
+					for (const service in coverageTemp) {
+						if(coverageTemp[service] === true) {
+							basic.plan[service] = true
+						}
+					}
+					console.log(each, path, basic)
+				})
+			}
+			return basic
 	}
 
 
