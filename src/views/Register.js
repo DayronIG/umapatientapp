@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
-import { withRouter } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import DBConnection from '../config/DBConnection';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
@@ -17,17 +17,19 @@ import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
+import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../../src/styles/generalcomponents/register.scss';
 
 const Register = props => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const [registered, setRegistered] = useState(false)
     const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const urlWS = props.match.params.ws
+    const {ws: urlWS, ref} = useParams()
     const {
          dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
@@ -40,11 +42,17 @@ const Register = props => {
             e.preventDefault()
             setDeferredPrompt(e)
         })
-        dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-        getCountryCode()
-        generatePassword()
-    }, [dispatch, props.match])
-
+        if(urlWS.length < 12) {
+            swal('Error', 'Este no es un teléfono válido.', 'warning')
+            history.push('/')
+        } else {
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
+            getCountryCode()
+            generatePassword()
+        }
+    }, [dispatch])
+    
     async function getCountryCode() {
         let code = await getCountry(urlWS)
         dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
@@ -155,7 +163,7 @@ const Register = props => {
                 } else if (res.creates === true) {
                     setTimeout(() => {
                         dispatch({ type: 'LOADING', payload: false })
-                        props.history.push('/')
+                        history.push('/')
                     }, 2000)
                 } else {
                     dispatch({ type: 'LOADING', payload: false })
@@ -182,32 +190,9 @@ const Register = props => {
         if (e.target.value.length === 2) yearRef.current.focus()
     }
 
-    const showInstallPrompt = () => {
-        if (deferredPrompt !== undefined) {
-            deferredPrompt.prompt()
-            deferredPrompt.userChoice
-                .then((choiceResult) => {
-                    let date = moment(new Date()).tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss')
-                    let data = {
-                        ws: urlWS,
-                        dni: getId,
-                        dt: date,
-                        lat: '',
-                        lon: '',
-                        event: 'INSTALL'
-                    }
-                    let headers = { 'Content-Type': 'Application/Json' }
-                    if (choiceResult.outcome === 'accepted') {
-                        axios.post(install_event, data, headers)
-                        props.history.push('/')
-                    } else {
-                        props.history.push('/')
-                    }
-                })
-                .catch(err => {
-                    props.history.push('/')
-                })
-        }
+    const showInstallPrompt = async () => {
+        await installPrompt(deferredPrompt, urlWS, getId);
+        history.push('/');
     }
 
     const handleDni = (dni) => {
@@ -230,13 +215,11 @@ const Register = props => {
         <>
             {loading && <Loading />}
             {registered ?
-                <Welcome showInstallPrompt={() => showInstallPrompt()} />
+                <Welcome />
                 :
                 <>
-                    <GenericHeader profileDisabled={true}></GenericHeader>
-                    <div>
-                        <h2 className="formulario__title">Formulario de registro</h2>
-                    </div>
+                    <GenericHeader profileDisabled={true}> Registro</GenericHeader>
+
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
                             <div className='contentData'>¡Te registraste con éxito!</div>
@@ -251,8 +234,7 @@ const Register = props => {
                     )}
                     {urlWS !== 'undefined' ?
                     <div className="register__container">
-
-                        <form className='registerWrapper register-form mt-2' onSubmit={e => handleSignUp(e)}>
+                        <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
                             <div className='d-flex flex-wrap'>
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
@@ -270,15 +252,25 @@ const Register = props => {
                                 onChange={e => handleDni(e.target.value)} value={getId} required />
                             </div>
 
-                            <div className="form__spanWrapper">
+                            {!urlWS && <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
                                 </label>
                                 <input className='form-input' id='ws' placeholder='(54) 11 33678925' autoComplete='on'
                                 onChange={e => handleCelular(e.target.value)} value={getWs} required />
-                            </div>
-                            <div className='form__spanWrapper'>
-                                <div className='birthContainer '>
+                            </div>}
+                            {!ref &&<div className="form__spanWrapper">
+                            <label className='form-label' htmlFor='celular'>
+                            Cobertura / Seguro de Salud
+                                </label>
+                             <input
+                                className='form-input' id='os' placeholder='ej: Unión Personal'
+                                autoComplete='off' type='text'
+                                onChange={e => dispatch({ type: 'REGISTER_FIRST_OS', payload: e.target.value })}
+                                required
+                            />
+                            </div>}
+                            <div className='form__spanWrapper'>                              
                                     <label className='form-label birthLabel'>
                                         Fecha de nacimiento* 
                                     </label>
@@ -309,29 +301,28 @@ const Register = props => {
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                        </select>                                        
+                                    </div>                                
                             </div>
                             </div><br />
                             <div className='d-flex '>
-                            <div className={termsSwitch ? 'enabled switchChangeWrapper' : 'disabled switchChangeWrapper'}>
+                                <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
+                                    <h5 className="text__terminosYcondiciones ml-5">Acepto los términos y condiciones</h5>
+                                </a>
+                                <div className={termsSwitch ? 'enabled switchChangeWrapper' : 'disabled switchChangeWrapper'}>
                                     <Switch type='checkbox'
                                         id='medicalVisit'
                                         checked={termsSwitch}
                                         name='medicalVisit'
                                         onChange={() => setTermsSwitch(!termsSwitch)}
                                     />
-                                </div>
-                                <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
-                                    <small className="pl-3 ml-3">Acepto los términos y condiciones</small>
-                                </a>
-                                
+                                </div>   
                             </div>
                             <div className='text-right'>
                                 <button className='btn sendButtonStyles' type='submit'>
                                     Enviar
                                 </button>
+                               
                             </div>
                         </form>
                     </div>
@@ -346,8 +337,9 @@ const Register = props => {
                         </div>
                     }
                 </>}
+                 <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? Ingresa</small>
         </>
     )
 }
 
-export default withRouter(Register)
+export default Register;

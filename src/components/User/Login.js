@@ -10,6 +10,7 @@ import { GenericHeader } from '../GeneralComponents/Headers';
 import PhoneInput from 'react-phone-input-2';
 import MobileLogin from '../../assets/mobileLogin.svg';
 import LoginCode from '../../assets/loginCode.svg';
+import { checkNum } from '../Utils/stringUtils';
 import swal from 'sweetalert';
 import 'react-phone-input-2/lib/bootstrap.css';
 import '../../styles/generalcomponents/Login.scss';
@@ -105,19 +106,7 @@ const SignIn = props => {
         }
     }
 
-    function checkNum(phone) {
-        let validPhone = `${parseInt(phone)}`
-        if (validPhone.slice(0, 2) === '54') {
-            if (validPhone.slice(2, 4) === '15' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(4, validPhone.length)}`
-            } else if (validPhone.slice(2, 4) === '11' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
-            } else if (validPhone.slice(2, 4) !== '11' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(2, validPhone.length)}`
-            }
-        }
-        return validPhone
-    }
+
 
 
     const sendWsCode = (ws, code) => {

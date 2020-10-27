@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
-import {withRouter} from 'react-router-dom';
+import {useHistory, useParams, withRouter} from 'react-router-dom';
 import "../styles/welcome.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import * as DetectRTC from 'detectrtc';
+import { getDocumentFB } from "../components/Utils/firebaseUtils";
+import logo from '../assets/icon.png'
+import { checkNum } from "../components/Utils/stringUtils";
+import Axios from "axios";
+import { node_patient } from "../config/endpoints";
+import swal from "sweetalert";
+import { installPrompt } from "../components/Utils/installPrompt";
 // import { useAddToHomescreenPrompt } from "../components/Utils/addToHomeHook";
 // import AddToHomescreen from 'react-add-to-homescreen';
-import logo from '../assets/icon.png'
 
 
 const Welcome = props => {
   const dispatch = useDispatch();
   const [install, setInstall] = React.useState(true)
-
+  const [deferredPrompt, setDeferredPrompt] = React.useState()
+  const { ws } = useParams();
+  const history = useHistory();
   useEffect(() => {
     //console.log(DetectRTC.isWebsiteHasWebcamPermissions())
     DetectRTC.load(function () {
@@ -24,13 +32,35 @@ const Welcome = props => {
     });
   }, []);
 
-  function installAction() {
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+    })
+  }, [])
+
+  async function installAction() {
     try {
-      props.showInstallPrompt()
-    } catch (err) {
-      props.history.push('/')
-    } finally {
-      setTimeout(() => props.history.push('/'), 1000)
+      if (ws) {
+        dispatch({ type: 'LOADING', payload: true })
+        try {
+          const validPhone = checkNum(ws);
+          const res = await Axios.get(`${node_patient}/exists/${validPhone}`);
+          if(res.data.redirect === 'register') {
+             history.replace(`/${validPhone}/register`)
+          } else {
+            await installPrompt(deferredPrompt, ws);
+            history.replace(`/${validPhone}/login`);
+          }
+        } catch (error) {
+          swal('Ocurrió un error en el Login', `${error}`, 'warning')
+        } finally {
+          dispatch({ type: 'LOADING', payload: false })
+        }
+     }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -52,14 +82,14 @@ const Welcome = props => {
         </span>
         <br />
         <div className="welcome__textContainer--instalar mt-4">
-          <span className="welcome__textContainer--messageAboveButton">Sigue las indicaciones para instalarla</span>        
+ 
           {install ?
-            <button className="welcome__button--instalar" onClick={() => installAction()}>Instalar</button>
+            <button className="welcome__button--instalar" onClick={installAction}>Instalar</button>
             :            
-            <button className="btn btn-blue-lg" onClick={() => props.history.push('/')}>Continuar</button>
+            <button className="welcome__button--instalar" onClick={installAction}>Continuar</button>
           }
           <br/><br/>
-          <span className="welcome__textContainer--messageBelowButton">(Para una mejor experiencia, te sugerimos realizar este proceso a través del celular)</span>
+          
         </div>
       </div>
       {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}

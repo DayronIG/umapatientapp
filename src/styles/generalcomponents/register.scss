@@ -12,8 +12,6 @@
    display: flex;
    justify-content: center;
    .register-form {
-    
-      padding: 0 5%;
       margin-top: 16px;
       width: 912px;
       text-align: center;
@@ -81,12 +79,18 @@
          color: $blue-button;
       }
       .enabled {
+         margin-left: 20px;
          height: 32px;
          .react-switch-bg {
             background-color: #008290 !important;
          }
+         .react-switch-handle{
+            width: 23px;
+            height: 23px;
+         }
       }
       .disabled {
+         margin-left: 20px;
          height: 32px;
          .react-switch-bg {
             background-color: $lighter-grey !important;
@@ -114,12 +118,12 @@
       .sendButtonStyles {
          background-color: #008290;
          color: $white-color;
-         border-radius: $regular-borders;
+         border-radius: 15px;
          width: 308px ;
          font-size: 1.2rem;
          font-weight: 600;
-         padding: 15px 0;
-         margin: 25px 0 28px 0;
+         height: 47px;
+         margin: 25px 0 15px 0;
       }
       .registerContainerProps {
          width: 90%;
@@ -137,10 +141,18 @@
          margin-top: 15px;
          margin-bottom: 10px;
       }
+      .text__terminosYcondiciones{
+         font-size: 12px;
+         font-weight: 400;
+         line-height: 16.37px;
+         color: #1E1E1E;
+      }
    }
-   .form__spanWrapper{
-      width:391px;
-   }
+.form__spanWrapper{
+   width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
    .text-right{
       display: flex;
       justify-content: center;

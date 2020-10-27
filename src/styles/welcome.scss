@@ -11,8 +11,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 450px;
-  width: 590px;
+  height: 441px;
+  width: 310px;
   margin: auto;
   text-align: center;
   border: none;
@@ -26,17 +26,12 @@
   .welcome__titleContainer {
     .welcome__titleContainer--title {
       font-weight: 900;
-      font-size: 36px;
+      font-size: 27.72px;
       color: #008290;
+      line-height: 29.35px;
     }
   }
-  .welcome__iconContainer {
-    margin-bottom: 20px;
-    svg {
-      color: $primary-color;
-      font-size: 50px;
-    }
-  }
+
   .welcome__textContainer {
     .welcome__textContainer--paragraph {
       font-size: 19px;
@@ -51,7 +46,7 @@
     .welcome__textContainer--message {
       font-style: normal;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 15px;
       line-height: 126.4%;
       width: auto;
       height: auto;
@@ -61,8 +56,6 @@
       justify-content: center;
       color: #1E1E1E;
       padding: 10px;
-      margin-right: 70px;
-      margin-left: 70px;
       .link {
         font-weight: bold;
       }
@@ -81,6 +74,7 @@
   font-weight:800;
   size:18px;
   border: none;
+  margin-top: inherit;
 }
 .welcome__textContainer--messageBelowButton{
   width: auto;
