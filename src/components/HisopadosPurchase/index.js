@@ -37,7 +37,7 @@ export default function HisopadosPurchase() {
 
     return (
         <div className="hisopados-flux">
-          <GenericHeader children="Contratar Hisopado" />
+          <GenericHeader children="Hisopado" />
           {renderContent()}
         </div>
     )
