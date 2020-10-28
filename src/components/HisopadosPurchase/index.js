@@ -20,7 +20,7 @@ export default function HisopadosPurchase() {
                 finalAction = {() => setFluxTrackerHisopado("ZONE_COVERED")}/>
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
-                finalAction = {() => setFluxTrackerHisopado("END_ASSIGNATION")}/>
+                finalAction = {() => setFluxTrackerHisopado("PAYMENT")}/>
             case "PAYMENT":
                 return <Payment 
                 finalAction = {() => setFluxTrackerHisopado("END_ASSIGNATION")}/>

@@ -2,19 +2,7 @@ import React, { useState, useEffect } from 'react'
 import hisopadosPay from "../../../assets/img/hisopados_pay.png"
 
 export default function EndAssignationHisopado() {
-    const [loaderWidth, setLoaderWidth] = useState(0)
-    const [varInterval, setVarInterval] = useState(null)
-
-    useEffect(()=>{
-        var intervalEffect = setInterval(()=>{
-                setLoaderWidth(loaderWidth + 1)
-            }, 100)
-        setVarInterval(intervalEffect)
-    },[loaderWidth])
-    
-    useEffect(() => {
-        if(loaderWidth===100){clearInterval(varInterval)}
-    }, [loaderWidth])
+    const [loaderWidth, setLoaderWidth] = useState(50)
         
     return (
         <div className="allwhite-hisopados-background" >
@@ -25,7 +13,7 @@ export default function EndAssignationHisopado() {
                     <p>Aguarde unos instantes</p>
                     <div className="progress">
                         {console.log(loaderWidth)}
-                        <div className="progress-blue" style={{width: `${loaderWidth}vw`}}></div>
+                        <div className="progress-blue" style={{width: `${loaderWidth}%`}}></div>
                     </div>
                 </div>
         </div>
