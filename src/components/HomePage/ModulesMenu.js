@@ -19,7 +19,7 @@ import CoronavirusModal from './CoronavirusModal';
 import ValidateAction from '../ValidateAction';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
-const ModulesMenu = (props) => {
+const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
 
