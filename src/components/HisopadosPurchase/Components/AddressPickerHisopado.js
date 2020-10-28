@@ -26,7 +26,7 @@ export default function AddressPickerHisopado({ finalAction }) {
     }, [addressLatLongHisopado])
 
     return (
-        <div>
+        <div className="allwhite-hisopados-background">
                 <DeliverySelectDesiny finalAction={() => finalAction()} />
         </div>)
 }

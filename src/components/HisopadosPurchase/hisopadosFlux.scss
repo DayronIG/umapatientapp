@@ -135,7 +135,11 @@
 		line-height: 25px;
 		width: 60vw;
 		height: 7vh;
-		color: #FFFFFF;
+        color: #FFFFFF;
+        .icon{
+            font-size: 1.2rem;
+            margin-right: 2vw;
+        }
     }
     .blue-text{
 		color: #008290;
@@ -154,9 +158,26 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        .hisopados_check_cross{
+        .hisopados_check{
             margin-top: 3vh;
             max-width: 40vw;
+        }
+        .hisopados_cross{
+            margin-top: 15vh;
+            max-width: 40vw;
+        }
+        .map-zone-covered-link{
+            color: #008290;
+            text-decoration: underline;
+        }
+        .progress{
+            margin-top: 3vh;
+            background-color: lightgray;
+            border-radius: 16px;
+            width: 40vw;
+            .progress-blue{
+            background-color: #008290
+            }    
         }
     }
 }
