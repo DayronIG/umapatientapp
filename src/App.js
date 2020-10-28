@@ -52,6 +52,7 @@ import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackPro
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
+import HisopadosPurchase from "./components/HisopadosPurchase/index"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -118,6 +119,26 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
+				{/* <PrivateRoute
+					exact
+					path='/:ws/consultationRedir/:finalDestination/:incidentId'
+					component={RedirectConsultation}
+				/>
+				<PrivateRoute
+					exact
+					path='/:ws/deliveryService/selectDestiny/:service/:incidenteId'
+					component={DeliverySelectDestiny}
+				/>
+				<PrivateRoute
+					exact
+					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
+					component={DeliveryTrackProgress}
+				/> */}
+				<PrivateRoute
+					exact
+					path='/:ws/hisopados'
+					component={HisopadosPurchase}
+				/>
 				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />

@@ -11,7 +11,7 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 
-const PaymentCardMP = (props) => {
+const PaymentCardMP = ({finalAction}) => {
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
@@ -152,8 +152,9 @@ const PaymentCardMP = (props) => {
 
     useEffect(() => {
         if(paymentStatus === "approved"){
-            swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            .then(()=> history.push("/"))
+          finalAction()
+            // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+            // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             swal('Ocurrió un problema al ingresar el pago', 'Porfavor intente mas tarde.', 'error')
             .then(()=> history.push("/"))
@@ -184,7 +185,7 @@ const PaymentCardMP = (props) => {
       }
     
       return (
-          <>
+          <div className="payment-arg">
           {loader && <CustomUmaLoader />}        
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
@@ -214,7 +215,7 @@ const PaymentCardMP = (props) => {
                 id="cardNumber" data-checkout="cardNumber"
                 type="text"
                 name="number"
-                placeholder="Número de tarjeta"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
                 onChange={(e) => {
                   handleChange(e)
                 }}
@@ -228,7 +229,7 @@ const PaymentCardMP = (props) => {
                 type="text"
                 name="name"
                 maxLength="30"
-                placeholder="Nombre"
+                placeholder="María Hernandez"
                 id="cardholderName"
                 data-checkout="cardholderName"
                 onChange={handleChange}
@@ -261,22 +262,35 @@ const PaymentCardMP = (props) => {
               </div>
             </div>
               <div className="formulario-item">
-                <small>CVC</small>
+                <small>Código de seguridad</small>
                 <input
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""
                   name="cvc"
                   maxLength="4"
-                  placeholder="CVC"
+                  placeholder="123"
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                />
+              </div>
+              <div className="formulario-item">
+                <small>Código de descuento</small>
+                <input
+                  id="securityCode" data-checkout="securityCode"
+                  type="text"
+                  className=""
+                  name="cvc"
+                  maxLength="4"
+                  placeholder="BOKITAELMASGRANDE"
                   onChange={handleChange}
                   onFocus={handleFocus}
                 />
               </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-            <button className="record__trigger--btn styleButton paymentButton" type="submit" form="pay">Pagar ${totalPayment}</button>
+            <button className="payment-button" type="submit" form="pay"><p className="button-text">Pagar ${totalPayment}</p></button>
           </form>
-        </>
+        </div>
       )
     }
 

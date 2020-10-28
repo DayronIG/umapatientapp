@@ -17,7 +17,7 @@ function Marker({
 			}
 			<div className='mapMarker__container'>
 				<span className='mapMarker__container--icon'>
-					{type === "remis" ? <FaCarSide /> : <img src={marker} />}
+					{type === 'remis' ? <FaCarSide /> : <img src={marker} />}
 				</span>
 			</div>
 		</div>

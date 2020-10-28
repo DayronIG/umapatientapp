@@ -1,79 +1,80 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
-import { calculateProgressPercentage } from '../Utils/deliveryServicesUtils';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
+import { listenToChangesInService, modifyServiceToProgress } from '../../store/actions/deliveryActions';
+import { GenericHeader } from '../GeneralComponents/Headers';
 import PackageOnTheWay from './PackageOnTheWay';
 import DeliveryProgressBar from './DeliveryProgressBar';
-import NotFound from '../GeneralComponents/NotFound';
-import Rating from '../OnlineDoctor/Rating/Rating';
-import { DeliveryCustomLoader } from '../GeneralComponents/Loading';
-import DeliveryResume from './DeliveryResume';
-import { GenericHeader } from '../GeneralComponents/Headers';
-import { withRouter } from 'react-router-dom';
+import DeliverySelectDestiny from './DeliverySelectDestiny';
+import SearchingProfessional from './SearchingProfessional';
+import WaitingCorporate from './WaitingCorporate';
+import Laboratory from './AnalysisSteps/Laboratory';
+import Hisopado from './AnalysisSteps/Hisopado';
+import Result from './AnalysisSteps/Result';
+import Loading from '../GeneralComponents/Loading';
+import FooterBtn from '../GeneralComponents/FooterBtn';
+import NotService from './NotService';
 import '../../styles/deliveryService/trackProgress.scss';
 
-const DeliveryTrackProgress = (props) => {
-	// assignations/delivery/bag -> al estilo medicos. Se crea un documento on-demand.
-	// const [{ ws, service, incidenteId }] = useState(props.match.params);
-	const [percent, setPercent] = useState(0);
-	const [track] = useState({
-		active: 'searchingProvider',
-		incidente_id: '202008241530_95976131',
-		lat: 0,
-		lng: 0,
-		progress: [
-			{ text: 'Buscando prestador', icon: faCircle, active: true },
-			{ text: 'Asignado. ETA: 15 mins', icon: faCircle, active: false },
-			{ text: 'En vía', icon: faCircle, active: false },
-			{ text: 'Llegó a destino', icon: faCircle, active: false },
-		],
-		deliveryData: {
-			service: 'Hisopado a domicilio',
-			doctor: 'Gustavo Daquarti',
-			cuit: '20959761311',
-			enrollment: '142706',
-		},
-	});
+const DeliveryTrackProgress = () => {
+	const { currentService, modifiedObjService } = useSelector(state => state.deliveryService);
+	const user = useSelector(state => state.queries.patient);
+	const { loading } = useSelector(state => state.front);
+	const { incidente_id } = useParams();
+	const history = useHistory();
 
 	useEffect(() => {
-		setPercent(calculateProgressPercentage(track.progress));
+		modifyServiceToProgress(currentService);
+	}, [currentService]);
+
+	useEffect(() => {
+		const subscription = listenToChangesInService(incidente_id);
+		return () => {
+			if (typeof subscription === 'function') subscription();
+		};
 	}, []);
 
 	const renderComponentByTrackProgress = (step) => {
-		switch (step) {
-			case 'searchingProvider':
-				return <DeliveryCustomLoader />;
-			case 'packageOnTheWay':
-				return (
-					<>
-						<PackageOnTheWay
-							providerCuit={track.providerCuit}
-							providerPos={{
-								lat: track.lat,
-								lng: track.lng,
-							}}
-						/>
-						<DeliveryResume deliveryData={track.deliveryData} />
-					</>
-				);
-			case 'deliverySurvey':
-				return <Rating />;
-			default:
-				return <NotFound />;
+		if (currentService?.status_derivacion && step !== "PREASSIGN") {
+			switch (step) {
+				case 'PREASSIGN:VALIDATE': return <WaitingCorporate />;
+				case 'PREASSIGN:READY': return <SearchingProfessional />;
+				case 'ASSIGN': return <PackageOnTheWay title="En camino" />;
+				case 'ASSIGN:READY': return <PackageOnTheWay title="Llegó a tu domicilio" />;
+				case 'DONE:HISOPADO': return <Hisopado />;
+				case 'DONE:IN_LAB': return <Laboratory />
+				case 'DONE:RESULT': return <Result />
+				default: return <NotService />;
+			}
+		} else if (user._start_date === 'geo' || step === "PREASSIGN") {
+			return <DeliverySelectDestiny />
+		} else {
+			return <NotService />
 		}
 	};
 
 	return (
-		<>
-			<GenericHeader />
-			<section className='trackProgress'>
-				<div className='trackProgress__container progressBar'>
-					<DeliveryProgressBar progress={track.progress} percent={percent} />
+		<div className="trackProgress">
+			<GenericHeader children="Hisopado" />
+			<section className='trackProgress__container'>
+				{loading && <Loading />}
+				{modifiedObjService?.status_derivacion && modifiedObjService?.status_derivacion !== "PREASSIGN" &&
+					<>
+						<div className='progressBar'>
+							<DeliveryProgressBar progress={modifiedObjService.progress} percent={modifiedObjService.percent} />
+						</div>
+						<FooterBtn
+							mode='single'
+							text='Volver'
+							callback={() => history.push('/')}
+						/>
+					</>}
+				<div className='trackProgress__content'>
+					{renderComponentByTrackProgress(modifiedObjService.status_derivacion)}
 				</div>
-				<div className='trackProgress__container map'>{renderComponentByTrackProgress(track.active)}</div>
 			</section>
-		</>
+		</div>
 	);
 };
 
-export default withRouter(DeliveryTrackProgress);
+export default DeliveryTrackProgress;
