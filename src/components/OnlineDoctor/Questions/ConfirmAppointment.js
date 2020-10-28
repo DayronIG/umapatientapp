@@ -99,7 +99,6 @@ const ConfirmAppointment = (props) => {
 			}
 		} catch (err) {
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
-			console.log(err)
 			dispatch({ type: 'LOADING', payload: false });
 			return history.replace('/');
 		}
