@@ -30,6 +30,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		address: patient?.address || '',
 		lat: patient?.lat || 0,
 		lng: patient?.lng || 0,
+		searchBox: '',
 	});
 
 	useEffect(() => {
@@ -55,7 +56,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			const { value, id } = event.target;
 			return setFormState({ ...formState, [id]: value });
 		} else {
-			return setFormState({ ...formState, ...event });
+			return setFormState({ ...formState, ...event, searchBox: event.address });
 		}
 	};
 
@@ -66,6 +67,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			address: place?.formatted_address,
 		};
 		dispatch(setAddressLatLongHisopado({lat: pos.lat, lng: pos.lng}))
+		dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload:  place.formatted_address})
 		return handleForm(pos, true);
 	};
 
@@ -128,11 +130,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
-			<div className='selectDestiny__container'>
-				<div className='selectDestiny__container--row'>
-					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} handleChangePlace={handleChangePlace} />}
-				</div>
-			</div>
+
 			<div className='selectDestiny__container map'>
 				<GoogleMapReact
 					{...mapConfig(
@@ -148,10 +146,15 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			<h3 className="selectDestiny__header">Seleccioná tu <br/> domicilio</h3>
 			<div className="selectDestiny__adjustmentDiv">
 			<div className='selectDestiny__container'>
+				<div className='selectDestiny__container--row'>
+					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} id="searchBox" handleChangePlace={handleChangePlace} value={formState.searchBox}/>}
+				</div>
+			</div>
+			<div className='selectDestiny__container'>
 				<input
 					onChange={handleForm}
 					placeholder='Dirección'
-					type='text'
+					type='hidden'
 					name='address'
 					id='address'
 					required
