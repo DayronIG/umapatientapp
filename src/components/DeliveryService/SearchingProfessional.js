@@ -1,20 +1,31 @@
 import React from 'react'
-import hospital from "../../assets/img/hospital.png";
+import enfermero from "../../assets/hisopados/enfermero_en_camino.svg";
 
 const SearchingProfessional = () => {
   return (
-    <div className="laboratory__container">
-      <h3 className="laboratory__header">Buscando un profesional para realizar el hisopado</h3>
-      <div className="laboratory__description">
-        <div className="laboratory__image">
-          <img src={hospital} alt="hisopado" />
-        </div>
-        <div className="laboratory__text">
-        Tu pedido ya fue aprobado y estamos buscando un profesional para realizar el hisopado, aguarda unos minutos...<br />
-        El hisopado consistirá en la extracción de una muestra de secreción de la parte superior de la garganta y el interior de la nariz utilizando un hisopo. Es una práctica habitual que se utiliza para identificar la presencia de distintos organismos que puedan causar enfermedades, entre ellos el virus COVID-19.  
-        </div>
+    <section className="tracking__container">
+      <img src={enfermero} alt="Enfermero en camino" className="tracking__photo"/>
+
+      <div className="tracking__titleContainer">
+        <h1 className="tracking__title">¡Tu enfemero es Juan Rodríguez!</h1>
+        <p className="tracking__subtitle">Llegará a tu casa en aproximadamente <span className="tracking__subtitle-bold">4 horas</span></p>
       </div>
-    </div>
+
+      <article className="tracking__indicaciones">
+        <h2 className="tracking__indicacionesTitle">Indicaciones para esperar en tu domicilio:</h2>
+
+        <ul className="tracking__indicacionesList">
+          <li className="tracking__indicacionesListItem"><span>No te automediques.</span></li>
+          <li className="tracking__indicacionesListItem"><span>Recuerda colocarte el barbijo para recibir al enfermero.</span></li>
+          <li className="tracking__indicacionesListItem"><span>Lávate las manos y evita el contacto con la cara.</span></li>
+        </ul>
+      </article>
+
+      <div className="tracking_buttons">
+        <button className="tracking_btn tracking__btn-info">Preguntas frecuentes</button>
+        <button className="tracking_btn tracking__btn-continue">Seguir hisopado</button>
+      </div>
+    </section>
   )
 }
 

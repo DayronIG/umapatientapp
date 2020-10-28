@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { GenericHeader } from '../GeneralComponents/Headers';
-import AskForBuyHisopado from "./Components/AskForBuyHisopado"
-import AddressPickerHisopado from "./Components/AddressPickerHisopado"
-import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
-import EndAssignationHisopado from "./Components/EndAssignationHisopado"
-import Payment from "../Payment"
-import "./hisopadosFlux.scss"
+import AskForBuyHisopado from "./Components/AskForBuyHisopado";
+import AddressPickerHisopado from "./Components/AddressPickerHisopado";
+import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado";
+import EndAssignationHisopado from "./Components/EndAssignationHisopado";
+import Payment from "../Payment";
+import "./hisopadosFlux.scss";
 
 export default function HisopadosPurchase() {
-    const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("ASK_FOR_BUY");
+    const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("END_ASSIGNATION");
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {
@@ -25,8 +25,7 @@ export default function HisopadosPurchase() {
                 return <Payment 
                 finalAction = {() => setFluxTrackerHisopado("END_ASSIGNATION")}/>
             case "END_ASSIGNATION":
-                return <EndAssignationHisopado 
-                finalAction = {() => console.log("REDIRECT TO TRACKER")}/>
+                return <EndAssignationHisopado />
             default: 
                 console.log("ALGO")
     }}
