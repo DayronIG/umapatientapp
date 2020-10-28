@@ -8,10 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
-// import { getPatientData } from "../../../store/actions/firebaseQueries";
-// import app from "../../../config/DBConnection";
-// import { GenericHeader } from "../../GeneralComponents/Headers";
-// import MobileModal from "../../GeneralComponents/Modal/MobileModal";
+import { GenericHeader } from "../../GeneralComponents/Headers";
 import "../../../styles/generalcomponents/register.scss";
 
 const Register = props => {
@@ -80,7 +77,7 @@ const Register = props => {
             type: "warning",
             title: "No se pudo registrar",
             msg:
-              "No se pudo completar tu registro."
+              `No se pudo completar tu registro. ${error?.response?.data?.message}`
           }
         })
         dispatch({ type: "LOADING", payload: false })
@@ -112,6 +109,7 @@ const Register = props => {
 
   return (
     <>
+    <GenericHeader/>
       {loading && <Loading />}
       {front.alert.active && (
         <Alert

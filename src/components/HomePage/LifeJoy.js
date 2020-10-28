@@ -1,18 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserNurse, faSmile } from '@fortawesome/free-solid-svg-icons';
 import ValidateAction from '../ValidateAction/';
 import '../../styles/generalcomponents/LifeJoy.scss';
 
-const LifeJoy = (props) => {
+const LifeJoy = () => {
+	const history = useHistory()
 	const { patient } = useSelector((state) => state.queries);
 
 	function renderBtn(link, field, icon, text, isImg, btnColor) {
 		return (
 			<ValidateAction action='redirect' field={field}>
-				<div className='btn-home-container' onClick={() => props.history.push(link)}>
+				<div className='btn-home-container' onClick={() => history.push(link)}>
 					<div className={`circular-button ${btnColor}`}>
 						{isImg ? (
 							<img src={icon} alt={`LOGO FOR ${text}`} className='polLogo' />
@@ -35,4 +36,4 @@ const LifeJoy = (props) => {
 	);
 };
 
-export default withRouter(LifeJoy);
+export default LifeJoy;

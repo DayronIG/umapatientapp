@@ -31,16 +31,25 @@ function AuthProvider({ children }) {
 	async function getInitialData(user) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
-			let plan = undefined;
-			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
-			if (!!subscription) {
+			// Busco BASIC primero porque es el básico sin ningun permiso
+			let plan = await getDocumentFB('services/porfolio/JAJAMON/active')
+			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;	
+			if (!!subscription && typeof subscription === "string") {
 				let path = `services/porfolio/${subscription.toUpperCase()}/active`
 				plan = await getDocumentFB(path)
-				if (!plan || !('onlinedoctor' in plan)) {
-					plan = await getDocumentFB('services/porfolio/FREE/active')
-				}
-			} else if (!!userAuth) {
-				plan = await getDocumentFB('services/porfolio/FREE/active')
+			} else if (!!subscription && Array.isArray(subscription)) { 
+				// Este else if es el mas importante. 
+				// Un usuario puede tener multiples subscriptions
+				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
+				subscription.forEach(async each => {
+					let path = `services/porfolio/${each.toUpperCase()}/active`
+					let tempPlan = await getDocumentFB(path)
+					for (const service in tempPlan) {
+						if(tempPlan[service] === true) {
+							plan[service] = true
+						}
+					}
+				})
 			}
 			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })

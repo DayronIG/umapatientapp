@@ -8,7 +8,7 @@ import ModulesMenu from './ModulesMenu';
 import Loading from '../GeneralComponents/Loading';
 import NotFound from '../GeneralComponents/NotFound';
 
-const HomePage = (props) => {
+const HomePage = () => {
 	const dispatch = useDispatch();
 	const checkStatus = useSelector((state) => state.front.checkStatus);
 	const user = useSelector((state) => state.queries.patient);
@@ -61,7 +61,7 @@ const HomePage = (props) => {
 	} else if (checkStatus === 99 && user.ws) {
 		return <ModulesMenu ws={user.ws} />;
 	} else {
-		return  <Loading />;
+		return <Loading />;
 	}
 };
 
