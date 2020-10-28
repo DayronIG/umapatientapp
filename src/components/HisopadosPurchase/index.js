@@ -3,7 +3,6 @@ import { GenericHeader } from '../GeneralComponents/Headers';
 import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
-import ConfirmationHisopado from "./Components/ConfirmationHisopado"
 import EndAssignationHisopado from "./Components/EndAssignationHisopado"
 import Payment from "../Payment"
 import "./hisopadosFlux.scss"
@@ -21,9 +20,6 @@ export default function HisopadosPurchase() {
                 finalAction = {() => setFluxTrackerHisopado("ZONE_COVERED")}/>
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
-                finalAction = {() => setFluxTrackerHisopado("CONFIRMATION")}/>
-            case "CONFIRMATION":
-                return <ConfirmationHisopado 
                 finalAction = {() => setFluxTrackerHisopado("PAYMENT")}/>
             case "PAYMENT":
                 return <Payment 

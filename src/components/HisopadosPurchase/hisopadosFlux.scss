@@ -112,7 +112,7 @@
         background: #D34600;
         border-radius: 20px;
         .button-text{
-            margin-top: 2vh;
+            margin-top: 3vh;
             font-weight: 800;
             font-size: 20px;
             line-height: 25px;
@@ -129,7 +129,7 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 15px;
-		margin-top: 5vh;
+		margin-top: 2vh;
 		font-weight: 800;
 		font-size: 18px;
 		line-height: 25px;
@@ -139,7 +139,7 @@
     }
     .blue-text{
 		color: #008290;
-		margin-top: 5vh;
+		margin-top: 3vh;
 		font-weight: 800;
 		font-size: 18px;
 		line-height: 25px;
@@ -154,5 +154,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        .hisopados_check_cross{
+            margin-top: 3vh;
+            max-width: 40vw;
+        }
     }
 }

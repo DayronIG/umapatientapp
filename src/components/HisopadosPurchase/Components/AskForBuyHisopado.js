@@ -34,7 +34,8 @@ export default function AskForBuyHisopado({finalAction}) {
                         <li>No sirve para viajar</li>
                         <li>No lo cubre ninguna obra social</li>
                     </ul>
-                    </div>
+                </div>
+                <br/>
                 <p className="info-title">Contacto cercano</p>
                 <p>Si sos contacto cercano... 5 días del contacto.</p>
             </div>

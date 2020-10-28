@@ -185,7 +185,7 @@ const PaymentCardMP = ({finalAction}) => {
       }
     
       return (
-          <>
+          <div className="payment-arg">
           {loader && <CustomUmaLoader />}        
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
@@ -215,7 +215,7 @@ const PaymentCardMP = ({finalAction}) => {
                 id="cardNumber" data-checkout="cardNumber"
                 type="text"
                 name="number"
-                placeholder="Número de tarjeta"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
                 onChange={(e) => {
                   handleChange(e)
                 }}
@@ -229,7 +229,7 @@ const PaymentCardMP = ({finalAction}) => {
                 type="text"
                 name="name"
                 maxLength="30"
-                placeholder="Nombre"
+                placeholder="María Hernandez"
                 id="cardholderName"
                 data-checkout="cardholderName"
                 onChange={handleChange}
@@ -262,22 +262,35 @@ const PaymentCardMP = ({finalAction}) => {
               </div>
             </div>
               <div className="formulario-item">
-                <small>CVC</small>
+                <small>Código de seguridad</small>
                 <input
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""
                   name="cvc"
                   maxLength="4"
-                  placeholder="CVC"
+                  placeholder="123"
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                />
+              </div>
+              <div className="formulario-item">
+                <small>Código de descuento</small>
+                <input
+                  id="securityCode" data-checkout="securityCode"
+                  type="text"
+                  className=""
+                  name="cvc"
+                  maxLength="4"
+                  placeholder="BOKITAELMASGRANDE"
                   onChange={handleChange}
                   onFocus={handleFocus}
                 />
               </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-            <button className="record__trigger--btn styleButton paymentButton" type="submit" form="pay">Pagar ${totalPayment}</button>
+            <button className="payment-button" type="submit" form="pay"><p className="button-text">Pagar ${totalPayment}</p></button>
           </form>
-        </>
+        </div>
       )
     }
 

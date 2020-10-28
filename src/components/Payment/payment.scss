@@ -1,3 +1,6 @@
+.payment-container{
+  background-color: white;
+  height: 100vh;
 .flecha-pay {
   font-size: 2rem;
   color: #fff;
@@ -6,7 +9,7 @@
 }
 
 .tarjeta-credito {
-  margin-top: 25px;
+  margin-top: 3vh;
   
   // clase de la libreria
   .rccs__card--unknown > div {
@@ -24,23 +27,25 @@
 }
 
 .formulario-credito {
-  box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
-  margin: 15px 10px;
+  margin: 5px 10px;
   padding: 20px 20px 0 20px;
-  background: rgba(#fff, .9);
   border-radius: 6px;
   small {
     font-weight: bold;
     font-size: 15px;
-    color: #64D6D3;
+    color: grey;
+    background-color: white;
+    width: fit-content;
+    margin-left: 5vw;
+    position: relative;
+    top: 2vh;
     display: block;
-    width: 100%;
-    margin-bottom: 3px;
+    padding: 1vw;
   }
   input {
     outline: none;
     border: 2px solid rgba(138, 138, 138, 0.24);
-    height: 35px;
+    height: 6vh;
     border-radius: 5px;
     margin-bottom: 5px;
     padding: 10px;
@@ -63,25 +68,25 @@
     }
   }
 
-  button {
-    display: block;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 5px 0;
-    margin: 0 auto 10px auto;
-    width: 80%;
-    border-radius: 6px;
-    color: #fff;
-    background: #64D6D3;
-    border: none;
-    box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
-    position: relative;
-    bottom: -20px;
+  // button {
+  //   display: block;
+  //   font-weight: bold;
+  //   font-size: 20px;
+  //   padding: 5px 0;
+  //   margin: 0 auto 10px auto;
+  //   width: 80%;
+  //   border-radius: 6px;
+  //   color: #fff;
+  //   background: #64D6D3;
+  //   border: none;
+  //   box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
+  //   position: relative;
+  //   bottom: -20px;
 
-    &:focus {
-      outline: none;
-    }
-  }
+  //   &:focus {
+  //     outline: none;
+  //   }
+  // }
 }
 
 .paypal--payment{
@@ -89,4 +94,22 @@
   .payment-title{
     text-align: center;
   }
+}
+.payment-button{
+  position: fixed;
+  width: 100vw;
+  height: 12vh;
+  left: 0;
+  border: none;
+  bottom: -3vh;
+  color: white;
+  background: #00838A;
+  border-radius: 20px;
+  .button-text{
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 25px;
+    color: #FFFFFF;
+  }
+}
 }
