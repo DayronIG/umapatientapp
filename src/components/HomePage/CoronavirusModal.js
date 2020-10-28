@@ -10,13 +10,16 @@ import '../../styles/floating/CoronavirusFloating.scss';
 const CoronavirusModal = () => {
     const dispatch = useDispatch()
     const [launcher, setLauncher] = useState(true)
-    const modal = useSelector(state => state.front.openDetails)
+    const modal = useSelector(state => state.front.modal)
 
     return (
         <>
             <div className="coronavirus__modal--container">
                 {modal &&
-                    <Modal title="Test autónomo" callback={() => dispatch({ type: 'AUTONOMOUS_RESET' })}>
+                    <Modal title="Test autónomo" callback={() => {
+                                dispatch({ type: 'AUTONOMOUS_RESET' })
+                                dispatch({ type: 'HANDLE_MODAL', payload: false })
+                            }}>
                         <div className="coronavirus__autonomousContainer">
                             <Autonomous isModal={true} />
                         </div>
@@ -27,10 +30,10 @@ const CoronavirusModal = () => {
                     <div className="conoravirus__floating--close" onClick={() => setLauncher(false)}>
                         <FontAwesomeIcon icon={faTimesCircle} />
                     </div>
-                    <div className="coronavirus__floating--image" onClick={() => dispatch({ type: 'TOGGLE_DETAIL', payload: true })}>
+                    <div className="coronavirus__floating--image" onClick={() => dispatch({ type: 'HANDLE_MODAL', payload: true })}>
                         <FontAwesomeIcon icon={faBiohazard} />
                     </div>
-                    <div className="coronavirus__floating--textContainer" onClick={() => dispatch({ type: 'TOGGLE_DETAIL', payload: true })}>
+                    <div className="coronavirus__floating--textContainer" onClick={() => dispatch({ type: 'HANDLE_MODAL', payload: true })}>
                         <span>¿Sospechas de coronavirus?</span>
                     </div>
                 </div>

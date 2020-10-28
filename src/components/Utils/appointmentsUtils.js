@@ -1,4 +1,4 @@
-import { timeWoDate } from './dateUtils';
+/* eslint-disable array-callback-return */
 import convertTimeToMins from './convertTimeToMins';
 import { calcReaminingHrsMins } from './dateUtils';
 import { yearAndMonth } from './dateUtils';

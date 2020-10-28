@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable no-use-before-define */
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import DBConnection, { askPermissionToRecieveNotifications } from "../../config/DBConnection";
+import DBConnection from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
-import isIos from '../Utils/isIos.js';
-import Axios from "axios";
 import { getDocumentFB } from '../Utils/firebaseUtils';
-import { push_token } from '../../config/endpoints';
-import * as DetectRTC from 'detectrtc';
 import { HiddenCacheClearer } from './VersionComponent';
 
 export const AuthContext = React.createContext()
@@ -21,18 +18,6 @@ function AuthProvider({ children }) {
 		return () => unsubscribe()
 	}, [currentUser])
 
-
-	useEffect(() => { // Get Device info and save messaging token(push notifications)
-		DetectRTC.load(function () {
-			if (currentUser && currentUser.email) {
-				const ios = isIos()
-				if (!ios) {
-					messaginTokenUpdate(currentUser, DetectRTC)
-				}
-			}
-		})
-	}, [currentUser])
-
 	useEffect(() => {
 		if (currentUser) {
 			getInitialData(currentUser)
@@ -43,20 +28,28 @@ function AuthProvider({ children }) {
 		}
 	})
 
-
 	async function getInitialData(user) {
 		if (user.email) {
 			const userAuth = await getAuth(user.email.split("@")[0])
-			let plan = undefined;
-			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;
-			if (!!subscription) {
+			// Busco BASIC primero porque es el básico sin ningun permiso
+			let plan = await getDocumentFB('services/porfolio/JAJAMON/active')
+			let subscription = userAuth.subscription || userAuth.suscription || userAuth.subcription;	
+			if (!!subscription && typeof subscription === "string") {
 				let path = `services/porfolio/${subscription.toUpperCase()}/active`
 				plan = await getDocumentFB(path)
-				if (!plan || !('onlinedoctor' in plan)) {
-					plan = await getDocumentFB('services/porfolio/FREE/active')
-				}
-			} else if (!!userAuth) {
-				plan = await getDocumentFB('services/porfolio/FREE/active')
+			} else if (!!subscription && Array.isArray(subscription)) { 
+				// Este else if es el mas importante. 
+				// Un usuario puede tener multiples subscriptions
+				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
+				subscription.forEach(async each => {
+					let path = `services/porfolio/${each.toUpperCase()}/active`
+					let tempPlan = await getDocumentFB(path)
+					for (const service in tempPlan) {
+						if(tempPlan[service] === true) {
+							plan[service] = true
+						}
+					}
+				})
 			}
 			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })
@@ -65,37 +58,13 @@ function AuthProvider({ children }) {
 		}
 	}
 
+
 	return (
 		<AuthContext.Provider value={{ currentUser }}>
 			<HiddenCacheClearer />
 			{children}
 		</AuthContext.Provider>
 	)
-}
-
-async function messaginTokenUpdate(currentUser, device) {
-	//first we get the messaging token
-	const userToken = await askPermissionToRecieveNotifications()
-	// now we get the current user
-	if (currentUser && currentUser.email) {
-		let ws = currentUser.email.split('@')[0]
-		// const patient = await getDocumentFB(`auth/${ws}`)
-		// if the messaging_token doesn't exist or is different than the userToken we update the document
-		try {
-			let data = {
-				ws,
-				device: {
-					messaging_token: userToken,
-					device: device.osName,
-					os: device.browser.name
-				}
-			}
-			let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': localStorage.getItem('token') */ }
-			Axios.post(push_token, data, headers)
-		} catch (err) {
-			// console.log(err)
-		}
-	}
 }
 
 export default withRouter(AuthProvider)

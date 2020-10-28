@@ -6,12 +6,11 @@ import Chat from './Chat';
 
 const StartCall = (props) => {
 	const dispatch = useDispatch();
-	const { publish, subscribe, session } = useSelector((state) => state.call);
-	const [callRef, setCallRef] = useState({});
+	const {session } = useSelector((state) => state.call);
+	const [, setCallRef] = useState({});
 	const [error, setError] = useState(null);
-	const [publishVideo, setPublishVideo] = useState(true);
+	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
-	const [vid, setVid] = useState('');
 
 	const sessionEventHandlers = {
 		sessionConnected: () => {
@@ -55,8 +54,7 @@ const StartCall = (props) => {
 	};
 
 	useEffect(() => {
-		let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
-		setVid(vid);
+		// let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
 		setDni(dni);
 		navigator.getUserMedia =
 			navigator.getUserMedia ||
@@ -118,7 +116,6 @@ const StartCall = (props) => {
 
 	return (
 		<>
-			{/* {(publish !== "SUCCESS" || subscribe !== "SUCCESS" || session !== "CONNECTED") && */}
 			<Chat />
 			<OTSession
 				apiKey={'46424032'}

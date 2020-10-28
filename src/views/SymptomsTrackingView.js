@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import SymptomsTracking from '../components/SymptomsTracking/SymptomsForm';
-import { SymptomsEnd, SymptomsOk, SymptomsWarning } from '../components/SymptomsTracking/SymptomsStatus';
+import SymptomsTracking from '../components/UmaCare/SymptomsTracking/SymptomsForm';
+import { SymptomsEnd, SymptomsOk, SymptomsWarning } from '../components/UmaCare/SymptomsTracking/SymptomsStatus';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 import { umacare_tracking } from '../config/endpoints';
 import Loading from '../components/GeneralComponents/Loading';
@@ -17,8 +18,22 @@ const SymptomsTrackingView = (props) => {
     const [paramsData] = useState(props.match.params.data)
     const [component, setComponent] = useState('loading')
     const token = useSelector(state => state.userActive.token)
-
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        window.onbeforeunload = () => true
+        getUmacareStatus()
+        return () => window.onbeforeunload = null
+    }, [])
+
+    const getUmacareStatus = useCallback(async() => {
+            setComponent('loading')
+            const data = await getDocumentFB(`/events/labs/umacare/${paramsData}`)
+            dispatch({ type: 'SET_UMACARE', payload: data })
+            dispatch({ type: 'SET_UMACARE_STATUS', payload: data ? data.status : '' })
+            dispatch({ type: 'SET_UMACARE_STARTDT', payload: data ? data.dt_cierre : '' })
+            setComponent(null)
+    }, [paramsData])
 
     const sendTracking = async (data, biomarker) => {
         if(!data.fever || !data.faces) {
@@ -36,7 +51,7 @@ const SymptomsTrackingView = (props) => {
             status: userUmacareStatus,
             biomarker: biomarker[0] ? biomarker[0].video : ''
         }
-        const config = { headers: { 'Content-Type': 'application/json'/* , 'Authorization': token  */} }
+        const config = { headers: { 'Content-Type': 'application/json' , 'Authorization': token  } }
         try {
             const { data: response } = await Axios.post(umacare_tracking, sendData, config)
             if (response.output === 'si') {
@@ -53,21 +68,6 @@ const SymptomsTrackingView = (props) => {
         }
     }
 
-    useEffect(() => {
-        window.onbeforeunload = () => true
-        return () => window.onbeforeunload = null
-    }, [])
-
-    useEffect(() => {
-        (async function getUmacareStatus() {
-            setComponent('loading')
-            const data = await getDocumentFB(`/events/labs/umacare/${paramsData}`)
-            dispatch({ type: 'SET_UMACARE', payload: data })
-            dispatch({ type: 'SET_UMACARE_STATUS', payload: data ? data.status : '' })
-            dispatch({ type: 'SET_UMACARE_STARTDT', payload: data ? data.dt_cierre : '' })
-            setComponent(null)
-        })()
-    }, [])
 
     const router = () => {
         switch (component) {

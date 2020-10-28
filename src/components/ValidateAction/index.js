@@ -1,15 +1,16 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 
 function ValidateAction(props) {
+    const history = useHistory()
     // props: action, field, moduleAction, children, msg
     const { plan } = useSelector(state => state.queries)
     const [activated, setActivated] = React.useState(false)
 
     React.useEffect(() => {
-        if (props.field && plan?.onlinedoctor?.[props.field] === '1')
+        if (props.field && plan?.[props.field] === true)
             setActivated(true)
         else
             setActivated(false)
@@ -22,7 +23,7 @@ function ValidateAction(props) {
             case 'moduleAction':
                 return props.moduleAction()
             case 'redirect':
-                return props.history.push('/accessDenied')
+                return history.push('/accessDenied')
             default:
                 return swal('Aviso', 'No tiene acceso este módulo.', 'warning')
         }
@@ -38,4 +39,4 @@ function ValidateAction(props) {
     )
 }
 
-export default withRouter(ValidateAction);
+export default ValidateAction;

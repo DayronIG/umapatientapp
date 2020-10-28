@@ -18,14 +18,14 @@ import '../../styles/TurnoConsultorio.scss';
 
 
 const AppointmentsOnlineHistory = (props) => {
-	// const firestore = db.firestore();
-	// const patient = useSelector(state => state.queries.patient);
-	const dispatch = useDispatch();
-	const token = useSelector(state => state.userActive.token);
-	const [medicalRecord, setMedicalRecord] = useState(props.mr || []);
-	const [loading, setLoading] = useState(false);
-	const salatoken = useSelector((state) => state.queries.callSettings);
-	const { dni } = props.match.params;
+	const firestore = db.firestore()
+	const dispatch = useDispatch()
+	const token = useSelector(state => state.userActive.token)
+	const patient = useSelector(state => state.queries.patient)
+	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
+	const [loading, setLoading] = useState(false)
+	const { incomingCall } = useSelector(state => state.call)
+	const { dni } = props.match.params
 
 	useEffect(() => {
 		if (dni) {
@@ -37,6 +37,25 @@ const AppointmentsOnlineHistory = (props) => {
 				.catch(err => console.log(err))
 		}
 	}, [])
+
+	useEffect(() => {
+		try {
+			var audioControl = document.getElementById('toneAudio')
+			dispatch({ type: 'START_CALL' })
+			if (audioControl !== null) {
+				var interval = setInterval(() => {
+					audioControl.play()
+					try {
+						window.navigator.vibrate(1000)
+					} catch (err) { }
+				}, 3000)
+			}
+			return () => clearInterval(interval)
+		} catch (err) {
+			alert(err)
+		}
+	}, [incomingCall, dispatch])
+
 
 	async function findMR(dni, ws) {
 		setLoading(true)
@@ -85,8 +104,8 @@ const AppointmentsOnlineHistory = (props) => {
 					type: 'cancel',
 					complain: ''
 				}
-				let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
-				await axios.post(user_cancel, data, headers)
+				let headers =
+				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
 				return props.history.push('/')
 			} catch (err) {
@@ -126,7 +145,7 @@ const AppointmentsOnlineHistory = (props) => {
 							))}
 						</ul>
 					</div>
-					{salatoken.room !== '' &&
+					{incomingCall &&
 						<div style={{ textAlign: 'center', color: 'green' }}>
 							<small>Su médico ya lo está esperando en la sala</small>
 							<Link to={`/${dni}/onlinedoctor/attention/`} replace={true}>
@@ -134,16 +153,11 @@ const AppointmentsOnlineHistory = (props) => {
 									type="button"
 									className="btn btn-blue-lg btn-calling">
 									Ingresar al consultorio
-						</button>
+                                </button>
 							</Link>
-						</div>
-					}
-					{salatoken.room === '' &&
-						<button className="btn btn-blue-lg btn-alert btn-cancel" onClick={cancelAppointment}>Cancelar consulta</button>
-					}
-					{salatoken.room !== '' &&
-						<audio src={tone} id='toneAudio' autoPlay />
-					}
+						</div>}
+					<button className="btn btn-blue-lg btn-alert btn-cancel" onClick={() => cancelAppointment()}>Cancelar consulta</button>
+					{incomingCall && <audio src={tone} id='toneAudio' autoPlay />}
 				</>
 			}
 			<button className="btn btn-blue-lg btn-back" onClick={() => props.history.push('/')}>Volver al inicio</button>

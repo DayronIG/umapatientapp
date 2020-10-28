@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import BackButton from '../../GeneralComponents/Backbutton';
@@ -39,7 +39,7 @@ const WhenScreen = props => {
     }
 
     function postComplain(type, claim) {
-        let headers = { 'Content-Type': 'Application/Json'/*, 'Authorization': token */ }
+        let headers = { 'Content-Type': 'Application/Json', 'Authorization': token  }
         let data = {
             ws: patient.ws,
             dni: patient.dni,
@@ -49,7 +49,7 @@ const WhenScreen = props => {
             type,
             complain: claim
         }
-        axios.post(cx_action_create, data, headers)
+        axios.post(cx_action_create, data, {headers})
     }
 
     return (

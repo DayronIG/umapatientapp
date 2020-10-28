@@ -55,13 +55,14 @@ function registerValidSW(swUrl, onUpdate) {
               // the fresh content will have been added to the cache.
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
-              
-              alert("Su aplicación se ha actualizado. Para que se apliquen la totalidad de los cambios deberá reiniciar la aplicación")
+              alert("UMA tuvo una actualización. Para que se apliquen la totalidad de los cambios te recomendamos reiniciar la aplicación")
+              console.log("App updated")
               if (onUpdate) onUpdate();
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
+              console.log("Content cached")
             }
           }
         };

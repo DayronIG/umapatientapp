@@ -260,8 +260,12 @@ export function getAuth(ws) {
 				.then((doc) => {
 					return resolve(doc.data());
 				})
-				.catch((err) => reject(err));
+				.catch((err) => {
+					console.log(err)
+					reject(err)
+				});
 		} catch (error) {
+			console.log(error)
 			return reject(error);
 		}
 	});
@@ -377,7 +381,7 @@ export function getMedicalRecord(dni, ws){
                     payload: result
                 });
             }, function(error) {
-               console.error(error)
+               console.log(error)
             });
         }
     } catch (err) {
@@ -389,12 +393,14 @@ export async function getUserMedicalRecord(dni, ws) {
 	try {
 		const query = firestore.collection(`events/mr/${dni}`).where('patient.ws', '==', ws);
 		let arr = []
-		await query.get().then(async (res) => {
+		await query.get()
+			.then(async (res) => {
 			await res.docs.forEach((content) => arr.push(content.data()))
-		});
+			})
+			.catch((err) => console.log(err))
 		return arr
 	} catch (err) {
-		console.error(err)
+		console.log(err)
 	}
 }
 

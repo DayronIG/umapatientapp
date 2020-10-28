@@ -2,10 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
-import { withRouter } from 'react-router-dom';
-import DBConnection from '../config/DBConnection';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,12 +21,14 @@ import '../../src/styles/generalcomponents/register.scss';
 
 const Register = props => {
     const dispatch = useDispatch()
+    const history = useHistory()
+    const {ws: urlWS, ref} = useParams()
     const [registered, setRegistered] = useState(false)
     const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const urlWS = props.match.params.ws
+    //const urlWS = props.match.params.ws
     const { dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country } = useSelector(state => state.register)
     const monthRef = useRef()
@@ -38,9 +39,15 @@ const Register = props => {
             e.preventDefault()
             setDeferredPrompt(e)
         })
-        dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-        getCountryCode()
-        generatePassword()
+        if(urlWS.length < 12) {
+            swal('Error', 'Este no es un teléfono válido.', 'warning')
+            history.push('/')
+        } else {
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
+            getCountryCode()
+            generatePassword()
+        }
     }, [dispatch, props.match])
 
     async function getCountryCode() {
@@ -114,7 +121,7 @@ const Register = props => {
         }
         let dob = `${getYear}-${getMonth}-${getDay}`
         let dni = getId 
-        if(country !== null) {
+        if(country !== null && country !== "AR") {
             dni = `${country}${getId}`
         }
         let data = {
@@ -127,7 +134,7 @@ const Register = props => {
                 address: '', // getAddress.concat(', ' + getCity) ||
                 referral: '',
                 group: dni,
-                country: country || '',
+                country: country || 'AR',
                 core_id: reg || '',
                 dni: dni || '',
                 sex: getSex || '',
@@ -153,7 +160,7 @@ const Register = props => {
                 } else if (res.creates === true) {
                     setTimeout(() => {
                         dispatch({ type: 'LOADING', payload: false })
-                        props.history.push('/')
+                        history.push('/')
                     }, 2000)
                 } else {
                     dispatch({ type: 'LOADING', payload: false })
@@ -197,13 +204,13 @@ const Register = props => {
                     let headers = { 'Content-Type': 'Application/Json' }
                     if (choiceResult.outcome === 'accepted') {
                         axios.post(install_event, data, headers)
-                        props.history.push('/')
+                        history.push('/')
                     } else {
-                        props.history.push('/')
+                        history.push('/')
                     }
                 })
                 .catch(err => {
-                    props.history.push('/')
+                    history.push('/')
                 })
         }
     }
@@ -289,15 +296,16 @@ const Register = props => {
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
+                                            <option value='O'>Otro</option>
                                         </select>
                                     </div>
                                 </div>
-                                <input
+                                {!ref && <input
                                     className='form-input' id='os' placeholder='Cobertura / Seguro de Salud'
                                     autoComplete='off' type='text'
                                     onChange={e => dispatch({ type: 'REGISTER_FIRST_OS', payload: e.target.value })}
                                     required
-                                />
+                                />}
                             </div><br />
                             <div className='d-flex justify-content-between pl-3 pr-3'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
@@ -318,7 +326,7 @@ const Register = props => {
                                 </button>
                             </div>
                             <div className='text-center link mb-4'
-                                onClick={() => props.history.push(`/login`)}>
+                                onClick={() => history.push(`/login`)}>
                                 Ya tengo un usuario (Ingresar)
                             </div>
                         </form>
@@ -327,13 +335,10 @@ const Register = props => {
                             <p className='p-2 mt-5 text-center'>
                                 Para iniciar el registro por favor dígale 'Hola' a UMA por whatsapp (<a href='tel:5491123000066'>5491123000066</a>)  y recibirá su link de registro.
                             </p>
-                            <a href='https://wa.me/5491123000066/?text=Hola'>
-                                <div className='btn btn-blue-lg'>Enviar saludo a UMA</div>
-                            </a>
                         </div>}
                 </>}
         </>
     )
 }
 
-export default withRouter(Register)
+export default Register

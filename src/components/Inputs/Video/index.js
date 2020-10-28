@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from 'react';
 import { url_facePos_model, url_facePos_metadata } from '../../../config/endpoints';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +9,8 @@ import UmaLoader, { Loader } from '../../GeneralComponents/Loading';
 import moment from 'moment';
 import { load } from '@teachablemachine/image';
 import '../../../styles/inputs/video/videoComponent.scss';
+import Axios from 'axios';
+import { post_biomarkers } from "../../../config/endpoints"
 
 const VideoComponent = (props) => {
 	const { time, title, isModal, finalAction, onError } = props;
@@ -17,9 +20,10 @@ const VideoComponent = (props) => {
 	const [iniciado, setIniciado] = useState(false);
 	const [terminado, setTerminado] = useState(false);
 	const [instrucciones, setInstrucciones] = useState(true);
-	const { dni } = useSelector((state) => state.queries.patient);
+	const { dni, ws } = useSelector((state) => state.queries.patient);
 	const [modelPrediction, setmodelPrediction] = useState('red');
 	const dispatch = useDispatch();
+	const token = localStorage.getItem('token');
 
 	useEffect(() => {
 		if (!stream) {
@@ -102,6 +106,16 @@ const VideoComponent = (props) => {
 					};
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: biomarker });
 					setIniciado(false);
+					var headers = { 'Authorization': token, 'Content-Type': 'Application/Json' }
+					let post_biomarkers_data = {
+						data: {},
+						date: moment().format("YYYY-MM-DD_HH-mm-ss"),
+						dni: dni,
+						links: biomarker,
+						type: `fever-video`,
+						ws: ws
+					}
+					Axios.post(`${post_biomarkers}/${dni}`, post_biomarkers_data, {headers})
 					finalAction(biomarker);
 				})
 				.catch((err) => {

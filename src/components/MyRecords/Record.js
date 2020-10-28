@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom';
@@ -13,10 +14,8 @@ const Record = (props) => {
     const { patient } = useSelector(state => state.queries)
 
     useEffect(() => {
-        let u = JSON.parse(localStorage.getItem('userData'))
-        // console.log('With get Voucher', props.dni, props.aid)
         dispatch(getVoucherById(props.dni, props.aid))
-    }, [dispatch, props.aid])
+    }, [props.aid])
 
     useEffect(() => {
         document.addEventListener('keydown', (e) => {

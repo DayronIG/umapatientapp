@@ -46,12 +46,8 @@ import Laboratorio from './components/Laboratorio';
 /* Wellness */
 import Wellness from './views/Wellness';
 import Chat from './views/Chat';
-/* POL */
-import Pol from './views/Pol.js';
-import PolProof from './components/Pol/PolProof';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
-import DeliverySelectDestiny from './components/DeliveryService/DeliverySelectDestiny.js';
 /* SymptomsTracking */
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
@@ -59,8 +55,6 @@ import UmaCare from './components/UmaCare/index.js';
 import HisopadosPurchase from "./components/HisopadosPurchase/index"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
-import RedirectConsultation from './components/RedirectConsultation/';
-
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
@@ -74,7 +68,7 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/login' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/:ws/register' component={Register} />
+				<Route exact path='/:ws/register/:ref?' component={Register} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* General */}
@@ -120,9 +114,6 @@ function App(props) {
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
-				{/* POL */}
-				<PrivateRoute exact path='/:ws?/pol/' component={Pol} />
-				<PrivateRoute exact path='/:ws?/pol/proof' component={PolProof} />
 				{/* Wellness */}
 				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
 				{/* Patient tracking */}
@@ -130,24 +121,10 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute
 					exact
-					path='/:ws/consultationRedir/:finalDestination/:incidentId'
-					component={RedirectConsultation}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/selectDestiny/:service?/:incidenteId?'
-					component={DeliverySelectDestiny}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
-					component={DeliveryTrackProgress}
-				/>
-				<PrivateRoute
-					exact
 					path='/:ws/hisopados'
 					component={HisopadosPurchase}
 				/>
+				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

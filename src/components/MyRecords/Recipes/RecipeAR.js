@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import JsBarcode from 'jsbarcode';
 import ReactToPrint from 'react-to-print';
@@ -252,6 +253,8 @@ class RecipePDF extends React.Component {
 																	<td>{medicine.drugName}</td>
 																</tr>
 															);
+														} else {
+															return null
 														}
 													})}
 												</tbody>
@@ -358,7 +361,7 @@ class RecipePDFUP extends React.Component {
 				<div className='recipeToPrintUp'>
 					<div className='recipeToPrintUp__container'>
 						<div className='recipeToPrintUp__container--title'>
-							<img src={UMA} />
+							<img src={UMA} alt="uma" />
 						</div>
 						<div className='recipeToPrintUp__container--recipeData'>
 							{prescriptionNumber && (
@@ -473,7 +476,7 @@ class RecipePDFUP extends React.Component {
 						</div>
 						<div className='recipeToPrintUp__container'>
 							<div className='recipeToPrintUp__container--title'>
-								<img src={UMA} />
+								<img src={UMA} alt={"uma"} />
 							</div>
 							<div className='recipeToPrintUp__container--recipeData'>
 								{!!prescriptionNumber && (
@@ -530,7 +533,7 @@ class RecipePDFUP extends React.Component {
 								<h1>
 									<b>Rp/</b>
 								</h1>
-								{recipe.map((medicine, index) => {
+								{recipe.forEach((medicine, index) => {
 									if (parseInt(medicine.duplicado) === 1) {
 										return (
 											<p className='pl-4' key={index}>
@@ -548,7 +551,7 @@ class RecipePDFUP extends React.Component {
 										<h1 className='mt-5'>
 											<b>INDICACIONES</b>
 										</h1>
-										{recipe.map((medicine, index) => {
+										{recipe.forEach((medicine, index) => {
 											if (parseInt(medicine.duplicado) === 1) {
 												return (
 													<p className='pl-4' key={index}>

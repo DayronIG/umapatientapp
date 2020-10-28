@@ -6,7 +6,6 @@ import axios from "axios";
 import { FaMicrophone } from 'react-icons/fa'
 import { RiRecordCircleLine } from 'react-icons/ri';
 import { Loader } from '../../GeneralComponents/Loading';
-import swal from 'sweetalert';
 import AudioAnalyser from "./AudioWaveformAnalizer/AudioAnalyser.js"
 import ProgressBar from "../ProgressBar/ProgressBar"
 import {uploadFileToFirebase} from '../../Utils/postBlobFirebase';

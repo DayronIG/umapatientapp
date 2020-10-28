@@ -2,9 +2,9 @@
 
 
 .progressQuestions {
-  max-width: 45vw;
+  max-width: 100vw;
   max-height: 45vw;
-  margin-top: 2vh;
+  margin-top: 0vh;
   .CircularProgressbar-path {
     stroke: $secondary-color !important;
   }
@@ -14,7 +14,7 @@
     progress {
       -webkit-appearance: none;
       height: 5px;
-      width: 100 vw;
+      width: 100vw;
     }
   
     ::-webkit-progress-bar {

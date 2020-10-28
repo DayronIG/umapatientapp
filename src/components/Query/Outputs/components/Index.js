@@ -6,7 +6,6 @@ import Video from './Video';
 import Button from './Button';
 import Chart from './Chart';
 import Image from './Image';
-import SlidingCards from './SlidingCards'
 export {
   Example,
   Image,
@@ -15,6 +14,5 @@ export {
   Text,
   Video,
   Button,
-  Chart,
-  SlidingCards
+  Chart
 }

@@ -7,8 +7,9 @@ const POL = `https://pol-dot-uma-v2.appspot.com`;
 const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
-
+const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
 export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
+
 export const log_event = `${EVENTS}/events`;
 export const user_online = `${URN_UMA}/user_online`;
 export const afiliado = `${URN_UMA}/afiliado`;
@@ -25,7 +26,7 @@ export const sound_online = `${POL}/sound_online`;
 export const pol_dni_front = `${POL}/pol_dni_front`;
 export const pol_dni_back = `${POL}/pol_dni_back`;
 export const pol_selfie = `${POL}/pol_selfie`;
-export const start_biomarker = `${URN_UMA}/biomarkers`;
+export const start_biomarker = `${URN_UMA}/post_`;
 export const cobertura = `${URN_UMA}/cobertura`;
 export const games = `${URN_UMA}/games`;
 export const umacare_tracking = `${URN_UMA}/umacare`;
@@ -34,6 +35,7 @@ export const transcription = `${URN_UMA}/transcripcion`;
 export const reassign_portal = `${URN_UMA}/reassign_portal`;
 export const validate_up_dni = `${UP}/account_login_by_document?user_credentials=${up_token}`;
 export const validate_up_dni_type2 = `${UP}/search/accounts_by?user_credentials=${up_token}`;
+
 /* Node Server */
 // Public
 export const log_info = `${NODE_SERVER}/public/log_info`;
@@ -50,6 +52,7 @@ export const cx_user_response = `${NODE_SERVER}/cx/user_response`;
 // Patients
 export const send_user_code = `${NODE_SERVER}/patients/code`;
 export const node_patient = `${NODE_SERVER}/patients`;
+export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
 // Delivery
@@ -62,3 +65,5 @@ export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;
+
+export const ocr_labo = `${computer_vision}/ocr_labo`;

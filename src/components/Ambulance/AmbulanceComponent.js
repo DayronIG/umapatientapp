@@ -11,7 +11,6 @@ import FooterBtn from '../GeneralComponents/FooterBtn';
 const AmbulanceComponent = props => {
   const dispatch = useDispatch();
   const tiempo = useSelector(state => state.queries.ambulanceTime);
-  const token = useSelector(state => state.userActive.token)
   const patient = useSelector(state => state.queries.patient)
   const [alert, setAlert] = React.useState({ display: false, type: '', title: '', customMessage: '' })
 

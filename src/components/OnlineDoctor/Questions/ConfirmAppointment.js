@@ -14,7 +14,7 @@ import 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, selectedSymptoms, selectedOtherSymptoms, responseIA, patient, biomarkers, coordinates, alerta } = props;
+	const { dispatch, history, selectedSymptoms, symptomsForDoc, answers, selectedOtherSymptoms, responseIA, patient, biomarkers, coordinates, alerta } = props;
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
@@ -31,23 +31,37 @@ const ConfirmAppointment = (props) => {
 		let file = e.target.files[0];
 		let fileName = e.target.files[0].name;
 		uploadFileToFirebase(file, `${patient.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
-		.then(imgLink => {
-			setContador(contador + 1);
-			setFile([...File, imgLink]);
-			setLoading(false);
-			swal('Éxito', 'Archivo cargado exitosamente', 'success');
-		})
-		.catch(() => {
-			setLoading(false);
-			swal('Error', 'Hubo un error al adjuntar el archivo, intente nuevamente', 'error');
-		})
+			.then(imgLink => {
+				setContador(contador + 1);
+				setFile([...File, imgLink]);
+				setLoading(false);
+				swal('Éxito', 'Archivo cargado exitosamente', 'success');
+			})
+			.catch(() => {
+				setLoading(false);
+				swal('Error', 'Hubo un error al adjuntar el archivo, intente nuevamente', 'error');
+			})
+	}
+
+	const cleanSyntoms = () => {
+		const finalSymptoms = [];
+	
+		symptomsForDoc.filter(Boolean).map(item => {
+			finalSymptoms.push(item);
+		});
+
+		answers.split('. ').filter(Boolean).map(item => {
+			finalSymptoms.push(item);
+		});
+
+		return finalSymptoms.join('.');
 	}
 
 	const postData = async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			let symptoms = '', userVerified;
-			if (!!selectedSymptoms) symptoms = selectedSymptoms.join('. ').concat('. ' + selectedOtherSymptoms);
+			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			const appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
@@ -61,8 +75,8 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '-34.5633155', // Coordenadas de Melian si no hay location
-				lon: coordinates.lng || '-58.4739184',
+				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
+				lon: coordinates.lng || '',
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
@@ -71,9 +85,11 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || patient.ws,
 			};
+
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
+			
 			if (res.data.fecha === '') {
 				return history.replace(`/${userVerified.dni}/onlinedoctor/who`);
 			} else {

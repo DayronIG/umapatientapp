@@ -9,33 +9,38 @@ import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import moment from 'moment';
 import '../../styles/profile.scss';
-import Loader from '../GeneralComponents/Loading';
+import Loading from '../GeneralComponents/Loading';
+import {Loader} from '../GeneralComponents/Loading';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
 	const db = DBConnection.firestore();
-	const user = useSelector((state) => state.queries.patient);
+	const auth = useSelector((state) => state.queries.patient);
 	const modal = useSelector((state) => state.front.openDetails);
 	const { section } = useSelector((state) => state.front);
 	const [editionMode, ] = useState(true);
-	const [usuario, setUsuario] = useState({});
 	const [loading, setLoading] = useState(true);
-	const { fullname, dni, corporate, dob, ws, address, subscription, sex, piso, profile_pic } = usuario;
+
+	useEffect(() => {
+		if (auth.dni) {
+			setLoading(false);
+		}
+	}, [auth.dni]);
 
 	useEffect(() => {
 		let unsubscribe;
-		if (user.dni) {
+		if (auth.dni) {
 			unsubscribe = db
 				.collection('users')
-				.doc(user.dni)
+				.doc(auth.dni)
 				.onSnapshot((user) => {
-					setUsuario(user.data());
+					dispatch({type: 'GET_PATIENT', payload: user.data()});
 					setLoading(false);
 				});
 		}
-
 		return () => unsubscribe;
-	}, [db, user.dni]);
+	}, [db, auth.dni]);
+
 
 	const EditButton = ({ section, clase }) => {
 		return (
@@ -55,13 +60,13 @@ const ProfileComponent = () => {
 
 	const EditSection = () => {
 		if (section === 'personal') {
-			return <PersonalData user={usuario} />;
+			return <PersonalData user={auth} />;
 		} else if (section === 'contact') {
-			return <ContactData user={usuario} />;
+			return <ContactData user={auth} />;
 		} else if (section === 'health') {
-			return <HealtData user={usuario} />;
+			return <HealtData user={auth} />;
 		} else if (section === 'pic') {
-			return <ProfilePic user={usuario} />;
+			return <ProfilePic user={auth} />;
 		} else {
 			return 'Esta sección aún no se encuentra disponible';
 		}
@@ -69,10 +74,16 @@ const ProfileComponent = () => {
 
 	return (
 		<>
-			{loading && <Loader />}
+			{loading && !auth.fullname && <Loading />}
 			{modal && (
 				<MobileModal title='Editar datos'>
-					<EditSection />
+					{
+						loading ? 
+						<div className="text-center" style={{minHeight: '200px', padding: '100px'}}>
+							<Loader />
+						</div> :
+						<EditSection />
+					}
 				</MobileModal>
 			)}
 			<div className='profile-container'>
@@ -84,67 +95,38 @@ const ProfileComponent = () => {
 				<div>
 					<div className='profile-photo'>
 						<EditButton section='pic' className='btn-edit' clase='pic' />
-						{profile_pic ? <img src={profile_pic} alt='Perfil' /> : <FaUser size='3.5rem' color='#fff' />}
+						{auth.profile_pic ? <img src={auth.profile_pic} alt='Perfil' /> : <FaUser size='3.5rem' color='#fff' />}
 					</div>
 				</div>
 				<div>
 					<div className='profile-info text-center'>
 						<EditButton section='personal' className='btn-edit' clase='personal' />
-						<p className='fullName'>{fullname}</p>
-						<p>{dni}</p>
-						<p>{corporate}</p>
-						<p>{moment(dob).format('DD-MM-YYYY')}</p>
+						<p className='fullName'>{auth.fullname}</p>
+						<p>{auth.dni}</p>
+						<p>{auth.corporate}</p>
+						<p>{moment(auth.dob).format('DD-MM-YYYY')}</p>
 					</div>
 				</div>
 				<div>
 					<div className='profile-section section'>
 						<EditButton section='contact' className='btn-edit' clase='contact' />
 						<p className='profile-section-title'>Datos de contacto</p>
-						<p>
-							<b>Teléfono: </b>
-							{ws}
-						</p>
-						<p>
-							<b>Dirección: </b>
-							{address}
-						</p>
-						{piso && (
-							<p>
-								<b>Piso/Dpto: </b>
-								{piso}
-							</p>
-						)}
-						<p>
-							<b>Suscripción: </b>
-							{subscription}
-						</p>
+						<p><b>Teléfono: </b> {auth.ws} </p>
+						<p><b>Dirección: </b> {auth.address} </p>
+						{auth.piso && <p> <b>Piso/Dpto: </b> {auth.piso} </p>}
+						<p><b>Suscripción: </b> {auth.subscription} </p>
 					</div>
 				</div>
 				<div className='profile-section section'>
 					<EditButton section='health' className='btn-edit' clase='health' />
 					<p className='profile-section-title'>Salud</p>
 					<p>
-						<b>Sexo:</b> {(sex === 'M' && 'Hombre') || (sex === 'F' && 'Mujer')}
+						<b>Sexo:</b> {(auth.sex === 'M' && 'Hombre') || (auth.sex === 'F' && 'Mujer')}
 					</p>
-					{/* 
-            <p><b>Peso:</b> 74 kg</p>
-            <p><b>Altura:</b> 183 cms</p>
-            <p><b>Crónicos: </b>Diabetes</p>
-            <p><b>Antecedentes familiares: </b>Coronarios</p> 
-          */}
 				</div>
-				<div className='umaVersion'>
+				<div className='umaVersion text-center'>
 					<Version />
 				</div>
-				{/* <div className="section">
-          <EditButton section="personal" className="btn-edit" />
-          <p className="profile-section-title">Datos de traslado</p>
-          <p><b>Discapacidad:</b> Total (Visceral) </p>
-          <p><b>Certificado:</b> 123456</p>
-          <p><b>Silla de ruedas: </b>Si (Plegable)</p>
-          <p><b>Amparo:</b> Si</p>
-          <p><b>Acompañante:</b> Fernando</p>
-        </div> */}
 			</div>
 		</>
 	);
