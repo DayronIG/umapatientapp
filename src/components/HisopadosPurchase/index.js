@@ -32,7 +32,7 @@ export default function HisopadosPurchase() {
     }}
 
     return (
-        <div className="hisopados-flux">
+        <div className={`hisopados-flux ${(fluxTrackerHisopado === "ADDRESS_PICKER" )? "no-scroll-container": ""}`}>
           <GenericHeader children="Hisopado" />
           {renderContent()}
         </div>

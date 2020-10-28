@@ -1,3 +1,7 @@
+.no-scroll-container{
+	position: fixed;
+}
+
 .hisopados-flux{
     display: flex;
     align-items: center;
@@ -38,14 +42,14 @@
         font-weight: 800;
         font-size: 45px;
         line-height: 105.9%;
-        color: #D34600;
+        color: #E9005E;
     }
     .hisopados-discount{
         position: absolute;
         left: 252px;
         top: 427px;
         font-weight: 800;
-        font-size: 29.6762px;
+        font-size: 34px;
         line-height: 105.9%;
         color: #000000;
 
@@ -95,7 +99,7 @@
                 font-size: 18px;
                 line-height: 22px;
             }
-            color: #D34600;
+            color: #E9005E;
             li{
                 list-style-type: circle;
                 margin-left: 7vw;
@@ -109,7 +113,7 @@
         height: 12vh;
         bottom: -3vh;
         color: white;
-        background: #D34600;
+        background: #E9005E;
         border-radius: 20px;
         .button-text{
             margin-top: 3vh;
