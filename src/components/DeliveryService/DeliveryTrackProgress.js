@@ -37,14 +37,14 @@ const DeliveryTrackProgress = () => {
 	const renderComponentByTrackProgress = (step) => {
 		// if (currentService?.status_derivacion && step !== "PREASSIGN") {
 		switch (step) {
-			case 'PREASSIGN:VALIDATE': return <WaitingCorporate />;
+			// case 'PREASSIGN:VALIDATE': return <WaitingCorporate />;
 			case 'PREASSIGN:READY': return <SearchingProfessional />;
 			case 'ASSIGN': return <PackageOnTheWay title="En camino" />;
 			case 'ASSIGN:READY': return <PackageOnTheWay title="Llegó a tu domicilio" />;
 			case 'DONE:HISOPADO': return <Hisopado />;
-			case 'DONE:IN_LAB': return <Laboratory />
+			// case 'DONE:IN_LAB': return <Laboratory />
 			case 'DONE:RESULT': return <Result />
-			default: return <NotService />;
+			default: return <NotService />; 
 		}
 		// } else if (user._start_date === 'geo' || step === "PREASSIGN") {
 		// 	return <DeliverySelectDestiny />

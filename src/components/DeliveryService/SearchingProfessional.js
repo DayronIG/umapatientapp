@@ -1,7 +1,15 @@
-import React from 'react'
-import enfermero from "../../assets/hisopados/enfermero_en_camino.svg";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import Check from '@material-ui/icons/Check';
+import enfermero from "../../assets/img/enfermero_en_camino.svg";
 
 const SearchingProfessional = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
     <section className="tracking__container">
       <img src={enfermero} alt="Enfermero en camino" className="tracking__photo"/>
@@ -22,8 +30,45 @@ const SearchingProfessional = () => {
       </article>
 
       <div className="tracking_buttons">
-        <button className="tracking_btn tracking__btn-info">Preguntas frecuentes</button>
-        <button className="tracking_btn tracking__btn-continue">Seguir hisopado</button>
+        <button className="tracking__btn-info">Preguntas frecuentes</button>
+        {/* <button className="tracking__btn tracking__btn-continue">Seguir hisopado</button>
+        <button className="tracking__btn tracking__btn-cancel">Cancelar hisopado</button> */}
+      </div>
+
+      <div className="tracking__stepper">
+        <h2 className="tracking__stepperTitle">Detalle del pedido</h2>
+        <Stepper activeStep={activeStep} orientation="vertical" className="tracking__stepperBar">
+          <Step className="tracking__step">
+            <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En preparación</StepLabel>
+            <StepContent className="tracking__stepContent">
+              El personal de salud  está preparando su equipo
+            </StepContent>
+          </Step>
+          <Step className="tracking__step">
+            <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En camino</StepLabel>
+            <StepContent className="tracking__stepContent">
+              El enfermero está en camino
+            </StepContent>
+          </Step>
+          <Step className="tracking__step">
+            <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En domicilio</StepLabel>
+            <StepContent className="tracking__stepContent">
+              El enfermero ha llegado al domicilio
+            </StepContent>
+          </Step>
+          <Step className="tracking__step">
+            <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>Hisopado</StepLabel>
+            <StepContent className="tracking__stepContent">
+              Se ha realizado el hisopado 
+            </StepContent>
+          </Step>
+          <Step className="tracking__step">
+            <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>Resultado</StepLabel>
+            <StepContent className="tracking__stepContent">
+              Se ha cargado el resultado 
+            </StepContent>
+          </Step>
+      </Stepper>
       </div>
     </section>
   )

@@ -22,38 +22,38 @@ const PackageOnTheWay = ({ title, status }) => {
 		handleApiLoaded(setUserLocation);
 	}
 
-	useInterval(() => {
-		if (typeof drawRoute === 'function') {
-			const userPos = {
-				lat: modifiedObjService.user_lat,
-				lng: modifiedObjService.user_lng
-			};
-			drawRoute(
-				{
-					lng: modifiedObjService.delivery_lng, 
-					lat: modifiedObjService.delivery_lat
-				}, 
-				userPos
-			)
-			.then(res => setDuration(res))
-			.catch(err => console.error(err));
-		}
-	}, 5000);
+	// useInterval(() => {
+	// 	if (typeof drawRoute === 'function') {
+	// 		const userPos = {
+	// 			lat: modifiedObjService.user_lat,
+	// 			lng: modifiedObjService.user_lng
+	// 		};
+	// 		drawRoute(
+	// 			{
+	// 				lng: modifiedObjService.delivery_lng, 
+	// 				lat: modifiedObjService.delivery_lat
+	// 			}, 
+	// 			userPos
+	// 		)
+	// 		.then(res => setDuration(res))
+	// 		.catch(err => console.error(err));
+	// 	}
+	// }, 5000);
 
-	useEffect(() => {
-		if (typeof mapBounder === 'function') {
-			mapBounder([
-				{
-					lat: modifiedObjService.delivery_lat,
-					lng: modifiedObjService.delivery_lng
-				},
-				{
-					lat: modifiedObjService.user_lat,
-					lng: modifiedObjService.user_lng
-				}
-			]);
-		}
-	}, [mapBounder, modifiedObjService])
+	// useEffect(() => {
+	// 	if (typeof mapBounder === 'function') {
+	// 		mapBounder([
+	// 			{
+	// 				lat: modifiedObjService.delivery_lat,
+	// 				lng: modifiedObjService.delivery_lng
+	// 			},
+	// 			{
+	// 				lat: modifiedObjService.user_lat,
+	// 				lng: modifiedObjService.user_lng
+	// 			}
+	// 		]);
+	// 	}
+	// }, [mapBounder, modifiedObjService])
 	
 	return (
 		<>
@@ -62,13 +62,13 @@ const PackageOnTheWay = ({ title, status }) => {
 				onGoogleApiLoaded={setMapFunctions}
 			>
 				<Marker
-					lat={modifiedObjService.delivery_lat}
-					lng={modifiedObjService.delivery_lng}
+					lat={-34.563169}
+					lng={-58.473520}
 					text='Ubicación del remis'
 				/>
 				<Marker
-					lat={modifiedObjService.user_lat}
-					lng={modifiedObjService.user_lng}
+					lat={-34.563544}
+					lng={-58.455438}
 					text='Tú ubicación'
 				/>
 			</GoogleMapReact>

@@ -299,8 +299,7 @@
 			margin-top: 20px;
 		}
 
-		.tracking__btn-continue {
-			background-color: #0A6DD7;
+		.tracking__btn {
 			border-radius: 15px;
 			padding: 10px;
 			border: none;
@@ -312,6 +311,34 @@
 			color: #fff;
 			display: block;
 			margin: 20px auto;
+
+			&.tracking__btn-continue {
+				background-color: #0A6DD7;
+			}
+
+			&.tracking__btn-cancel {
+				background-color: #D80000;
+			}
+		}
+
+	}
+
+	.tracking__stepper {
+		padding: 3rem 0;
+		width: 90%;
+		margin: auto;
+
+		.tracking__stepperTitle {
+			font-weight: 900;
+			font-size: 28px;
+			line-height: 1.1;
+			text-align: center;
+			color: #0A6DD7;
+			margin-bottom: 40px;
+		}
+
+		.tracking__stepperBar {
+			padding: 0;
 		}
 	}
 }
