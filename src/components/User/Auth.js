@@ -52,17 +52,18 @@ function AuthProvider({ children }) {
 	}	
 	
 	const getCoverage = async (user) => {
-			// Busco BASIC primero porque es el básico sin ningun permiso
-			let plan = await getDocumentFB('services/porfolio/BASIC/active')
-			let free = await getDocumentFB('services/porfolio/FREE/active')
-			if(plan && free) {
-				plan["onlinedoctor"] = free.onlinedoctor
-			}
-			if (!!user.coverage && Array.isArray(user.coverage) && plan) { 
-				// Este else if es el mas importante. 
-				// Un usuario puede tener multiples subscriptions
-				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
-				user.coverage.forEach(async each => {
+		// Busco BASIC primero porque es el básico sin ningun permiso
+		let plan = await getDocumentFB('services/porfolio/BASIC/active')
+		let free = await getDocumentFB('services/porfolio/FREE/active')
+		if(plan && free) {
+			plan["onlinedoctor"] = free.onlinedoctor
+		}
+		if (!!user.coverage && Array.isArray(user.coverage) && plan) { 
+			// Este else if es el mas importante. 
+			// Un usuario puede tener multiples subscriptions
+			// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
+			user.coverage.forEach(async each => {
+				if(each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
 					let coverageTemp = await getDocumentFB(path)
 					for (const service in coverageTemp) {
@@ -70,10 +71,12 @@ function AuthProvider({ children }) {
 							plan.plan[service] = true
 						}
 					}
-				})
-			}
-			return plan
+				}
+			})
+		}
+		return plan
 	}
+
 
 
 	return (
