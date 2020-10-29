@@ -147,7 +147,6 @@ const Questions = () => {
 						{assessment.currentQuestion.title}
 					</div>
 				}
-				{counter === 0 && <Loading centered={true} /> }
 				<ContainerAssessmentAppointment {...propsContainerAssessmentAppointment} />
 			</div>
 		</>

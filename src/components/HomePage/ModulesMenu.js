@@ -28,7 +28,7 @@ import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 import iconBubbles from '../../assets/icons/icon-bubbles.svg';
 
-const ModulesMenu = (props) => {
+const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
 
