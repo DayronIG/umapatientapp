@@ -14,8 +14,8 @@ function SearchBoxFunc({ map, mapApi, handleChangePlace }){
         searchBox.addListener('place_changed', function() {
             let place = searchBox.getPlace();
             let latlng = {
-                lat: parseFloat(place.geometry.location.lat()),
-                lng: parseFloat(place.geometry.location.lng())
+                lat: parseFloat(place.geometry?.location.lat()),
+                lng: parseFloat(place.geometry?.location.lng())
             }
 		    handleChangePlace(place);
             dispatch({type: 'SET_MARKER_INPUT_ADDRESS', payload: latlng})

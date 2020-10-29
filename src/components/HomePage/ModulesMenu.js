@@ -54,7 +54,9 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-					<BuyHisopado />
+					<Link to={`/${patient.ws}/hisopado`}>
+						<BuyHisopado />
+					</Link>
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
