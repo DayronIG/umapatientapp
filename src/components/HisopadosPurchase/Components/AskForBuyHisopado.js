@@ -1,10 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
+import TermsConditions from "./TermsConditions"
+import FrequentQuestions from "./FrequentQuestions"
 import IllustrationHisopado from "../../../assets/img/Illustration-Hisopado.png"
 
 export default function AskForBuyHisopado({finalAction}) {
-    return (
-        <div>
+    const [termsConditions, setTermsConditions] = useState(false)
+    const [frequentQuestions, setFrequentQuestions] = useState(false)
+
+    const renderContent = () => {
+        if(termsConditions){
+            return <TermsConditions />
+        } else if (frequentQuestions) {
+            return <FrequentQuestions />
+        } else {
+            return (
+            <div>
             <img className="hisopados-image" src={IllustrationHisopado} />
             <p className="hisopados-title">¡Comprá tu hisopado a domicilio!</p>
             <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
@@ -42,14 +53,17 @@ export default function AskForBuyHisopado({finalAction}) {
                 <p>Si sos contacto cercano... 5 días del contacto.</p>
             </div>
             <p className="terms-questions">
-                Términos y condiciones
+                <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
                 <br/>
                 <br/>
-                Preguntas frecuentes
+                <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
             </p>
             <div onClick={() => finalAction()} className="hisopados-button">
                 <p className="button-text"><FaCartPlus className="icon"/>Comprar hisopado</p>
 			</div>
-        </div>
-    )
+        </div>)
+        }
+    }
+    
+    return renderContent()
 }
