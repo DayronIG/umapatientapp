@@ -15,7 +15,7 @@ const PaymentCardMP = ({finalAction}) => {
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
-    const totalPayment = 200
+    const totalPayment = 3499
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
     const [creditCard, setCreditCard] = useState("");

@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
-import hisopadosTic from "../../../assets/img/hisopados_tic.png"
-import hisopadosCross from "../../../assets/img/hisopados_cross.png"
+import hisopadosTic from "../../../assets/img/hisopados_tic.svg"
+import hisopadosCross from "../../../assets/img/hisopados_cross.svg"
 
-export default function ZoneCoveredHisopado({finalAction}) {
+export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) {
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService) 
-    const [showCongrats, setShowCongrats] = useState(false)
+    const [showCongrats, setShowCongrats] = useState(false);
+
+    useEffect(()=>{
+        if(showCongrats){
+            //SUSCRIBIR A AVISOS
+        }
+    },[showCongrats])
 
     return (
         <div className="allwhite-hisopados-background">
@@ -19,7 +25,7 @@ export default function ZoneCoveredHisopado({finalAction}) {
                     <div onClick={() => finalAction()} className="blue-button">
                         Continuar con el pago
                     </div>
-                    <div onClick={() => console.log("VOLVER")} className="blue-text">
+                    <div onClick={() => goPrevious()} className="blue-text">
                         Cambiar domicilio
                     </div>
                 </div>:
@@ -30,7 +36,7 @@ export default function ZoneCoveredHisopado({finalAction}) {
                     <p className="hisopados-title">¡Felicitaciones!</p>
                     <p>Hemos recibido su solicitud</p>
                     <p>Te enviaremos una notificación cuando se habiliten nuevas zonas</p>
-                    <div onClick={() => console.log("VOLVER")} className="blue-button">
+                    <div onClick={() => history.push("/")} className="blue-button">
                         <FaHome className="icon" />
                         Ir al inicio
                     </div>
@@ -45,8 +51,8 @@ export default function ZoneCoveredHisopado({finalAction}) {
                     <div onClick={() => setShowCongrats(true)} className="blue-button">
                         ¡Sí, quiero!
                     </div>
-                    <div onClick={() => console.log("VOLVER")} className="blue-text">
-                        No, no quiero
+                    <div onClick={() => goPrevious()} className="blue-text">
+                        Probar otro domicilio
                     </div>
                     </>
                     }
