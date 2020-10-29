@@ -51,8 +51,8 @@ export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) 
                     <div onClick={() => setShowCongrats(true)} className="blue-button">
                         ¡Sí, quiero!
                     </div>
-                    <div onClick={() => history.push("/")} className="blue-text">
-                        No, no quiero
+                    <div onClick={() => goPrevious()} className="blue-text">
+                        Probar otro domicilio
                     </div>
                     </>
                     }
