@@ -6,7 +6,7 @@ import axios from 'axios';
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
 import swal from "sweetalert"
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
@@ -107,7 +107,7 @@ const PaymentCardMP = ({finalAction}) => {
         let { paymentMethodId } = form.elements
         console.log(paymentMethodId, form.elements, token)
         let paymentData = {
-            email: `${user.email}`, // hardcoded
+            email: `${user.email}`, // hardcoded // CHANGESANTI
             paymentMethodId: paymentMethodId.value, 
             token: token,
             dni: `${user.dni}`,
@@ -117,7 +117,7 @@ const PaymentCardMP = ({finalAction}) => {
          }
         console.log(paymentData) 
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-         axios.post(payment_url_test, paymentData, headers)
+         axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
                  setLoader(false)
                  console.log(res.data.body)
@@ -152,6 +152,7 @@ const PaymentCardMP = ({finalAction}) => {
 
     useEffect(() => {
         if(paymentStatus === "approved"){
+          setLoader(false)
           finalAction()
             // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             // .then(()=> history.push("/"))
@@ -277,7 +278,7 @@ const PaymentCardMP = ({finalAction}) => {
               <div className="formulario-item">
                 <small>Código de descuento</small>
                 <input
-                  id="securityCode" data-checkout="securityCode"
+                  id="discount" data-checkout="discount"
                   type="text"
                   className=""
                   name="cvc"
@@ -288,7 +289,7 @@ const PaymentCardMP = ({finalAction}) => {
                 />
               </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-            <button className="payment-button" type="submit" form="pay"><p className="button-text">Pagar ${totalPayment}</p></button>
+            <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${totalPayment}</p></button>
           </form>
         </div>
       )
