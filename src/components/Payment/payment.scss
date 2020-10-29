@@ -1,9 +1,11 @@
+@import "../../styles/global/Vars.scss";
+
 .payment-container{
-  background-color: white;
+  background-color: $white-color;
   height: 100vh;
 .flecha-pay {
   font-size: 2rem;
-  color: #fff;
+  color: $white-color;
   position: absolute;
   margin: 20px 0 0 20px;
 }
@@ -34,7 +36,7 @@
     font-weight: bold;
     font-size: 15px;
     color: grey;
-    background-color: white;
+    background-color: $white-color;
     width: fit-content;
     margin-left: 5vw;
     position: relative;
@@ -49,7 +51,7 @@
     border-radius: 5px;
     margin-bottom: 5px;
     padding: 10px;
-    background-color: white !important;
+    background-color: $white-color !important;
   }
 
   .formulario-item {
@@ -68,26 +70,6 @@
       width: 80%;
     }
   }
-
-  // button {
-  //   display: block;
-  //   font-weight: bold;
-  //   font-size: 20px;
-  //   padding: 5px 0;
-  //   margin: 0 auto 10px auto;
-  //   width: 80%;
-  //   border-radius: 6px;
-  //   color: #fff;
-  //   background: #64D6D3;
-  //   border: none;
-  //   box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
-  //   position: relative;
-  //   bottom: -20px;
-
-  //   &:focus {
-  //     outline: none;
-  //   }
-  // }
 }
 
 .paypal--payment{
@@ -103,14 +85,14 @@
   left: 0;
   border: none;
   bottom: -3vh;
-  color: white;
-  background: #00838A;
+  color: $white-color;
+  background: $new-primary-color;
   border-radius: 20px;
   .button-text{
     font-weight: 800;
     font-size: 20px;
     line-height: 25px;
-    color: #FFFFFF;
+    color: $white-color;
   }
 }
 }
