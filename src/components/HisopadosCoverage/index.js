@@ -29,10 +29,12 @@ const HisopadosCoverage = () => {
       
         let coverage = new maps.Polygon({
           paths: coords,
-          strokeColor: "#0A6DD7",
+          // strokeColor: "#0A6DD7",
+          strokeColor: "#009042",
           strokeOpacity: 0.8,
           strokeWeight: 2,
-          fillColor: "#0A6DD7",
+          // fillColor: "#0A6DD7",
+          fillColor: "#009042",
           fillOpacity: 0.35
         });
         coverage.setMap(map);
