@@ -63,11 +63,13 @@ function AuthProvider({ children }) {
 				// Un usuario puede tener multiples subscriptions
 				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
 				user.coverage.forEach(async each => {
-					let path = `services/porfolio/${each?.toUpperCase()}/active`
-					let coverageTemp = await getDocumentFB(path)
-					for (const service in coverageTemp) {
-						if(coverageTemp[service] === true) {
-							plan.plan[service] = true
+					if(each?.plan) {
+						let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
+						let coverageTemp = await getDocumentFB(path)
+						for (const service in coverageTemp) {
+							if(coverageTemp[service] === true) {
+								plan.plan[service] = true
+							}
 						}
 					}
 				})
