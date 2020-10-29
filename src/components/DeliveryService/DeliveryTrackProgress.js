@@ -39,8 +39,8 @@ const DeliveryTrackProgress = () => {
 		switch (step) {
 			// case 'PREASSIGN:VALIDATE': return <WaitingCorporate />;
 			case 'PREASSIGN:READY': return <SearchingProfessional />;
-			case 'ASSIGN': return <PackageOnTheWay title="En camino" />;
-			case 'ASSIGN:READY': return <PackageOnTheWay title="Llegó a tu domicilio" />;
+			case 'ASSIGN': return <PackageOnTheWay />;
+			case 'ASSIGN:READY': return <PackageOnTheWay />;
 			case 'DONE:HISOPADO': return <Hisopado />;
 			// case 'DONE:IN_LAB': return <Laboratory />
 			case 'DONE:RESULT': return <Result />

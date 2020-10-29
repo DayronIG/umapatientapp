@@ -6,7 +6,7 @@ import DeliveryResume from './DeliveryResume';
 import Marker from '../global/Marker';
 import useInterval from '../Hooks/useInterval';
 
-const PackageOnTheWay = ({ title, status }) => {
+const PackageOnTheWay = () => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const { modifiedObjService } = useSelector(state => state.deliveryService);
 	const [mapBounder, setMapBounder] = useState(undefined);
@@ -72,7 +72,7 @@ const PackageOnTheWay = ({ title, status }) => {
 					text='Tú ubicación'
 				/>
 			</GoogleMapReact>
-			<DeliveryResume state={title} duration={duration} />
+			<DeliveryResume duration={duration} />
 		</>
 	);
 };
