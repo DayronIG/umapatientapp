@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import hisopadosPay from "../../../assets/img/hisopados_pay.png"
+import hisopadosPay from "../../../assets/img/hisopados_payment.svg"
 
 export default function EndAssignationHisopado() {
     const [loaderWidth, setLoaderWidth] = useState(50)

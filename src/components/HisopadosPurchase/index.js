@@ -5,10 +5,12 @@ import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
 import EndAssignationHisopado from "./Components/EndAssignationHisopado"
 import Payment from "../Payment"
+import { useHistory } from "react-router-dom"
 import "./hisopadosFlux.scss"
 
 export default function HisopadosPurchase() {
     const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("ASK_FOR_BUY");
+    const history = useHistory()
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {
@@ -20,12 +22,15 @@ export default function HisopadosPurchase() {
                 finalAction = {() => setFluxTrackerHisopado("ZONE_COVERED")}/>
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
+                history={history}
+                goPrevious = {() => setFluxTrackerHisopado("ADDRESS_PICKER")}
                 finalAction = {() => setFluxTrackerHisopado("PAYMENT")}/>
             case "PAYMENT":
                 return <Payment 
                 finalAction = {() => setFluxTrackerHisopado("END_ASSIGNATION")}/>
             case "END_ASSIGNATION":
                 return <EndAssignationHisopado 
+                history={history}
                 finalAction = {() => console.log("REDIRECT TO TRACKER")}/>
             default: 
                 console.log("ALGO")

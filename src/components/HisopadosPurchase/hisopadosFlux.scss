@@ -42,7 +42,7 @@
         .hisopados-previous-price{
             font-size: 16px;
             line-height: 105.9%;
-            color: #1E1E1E;
+            color: $new-text-color;
             text-decoration: line-through;
             margin-right: 2vw;
         }
@@ -73,7 +73,7 @@
             flex-wrap: wrap;
             font-size: 16px;
             line-height: 16px;
-            color: #1E1E1E;
+            color: $new-text-color;
             p{
                 margin: 5vw
             }
@@ -101,7 +101,7 @@
             font-weight: 800;
             font-size: 18px;
             line-height: 22px;
-            color: #1E1E1E;
+            color: $new-text-color;
         }
         .info-warning{
             .warning-title{
