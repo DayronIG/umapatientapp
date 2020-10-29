@@ -5,7 +5,8 @@ import hisopadosTic from "../../../assets/img/hisopados_tic.svg"
 import hisopadosCross from "../../../assets/img/hisopados_cross.svg"
 
 export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) {
-    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService) 
+    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService);
+    const { ws } = useSelector(state => state.queries.patient); 
     const [showCongrats, setShowCongrats] = useState(false);
 
     useEffect(()=>{
@@ -46,7 +47,7 @@ export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) 
                     <img src={hisopadosCross} alt="hisopados_cross" className="hisopados_cross"/>
                     <p className="hisopados-title">¡Ups!</p>
                     <p>Esta zona aún no cuenta con covertura</p>
-                    <p className="map-zone-covered-link">Ver mapa</p>
+                    <p className="map-zone-covered-link" onClick={() => history.push(`/${ws}/hisopado/cobertura`)}>Ver mapa</p>
                     <p>¿Deseas que te avisemos cuando haya disponibilidad?</p>
                     <div onClick={() => setShowCongrats(true)} className="blue-button">
                         ¡Sí, quiero!

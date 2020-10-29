@@ -52,8 +52,9 @@ import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackPro
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
-import HisopadosPurchase from "./components/HisopadosPurchase/index"
-import HisopadoResults from "./components/HisopadoResults/index"
+import HisopadosPurchase from "./components/HisopadosPurchase"
+import HisopadosCoverage from './components/HisopadosCoverage'
+import HisopadoResults from "./components/HisopadoResults"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -139,6 +140,11 @@ function App(props) {
 					exact
 					path='/:ws/hisopado'
 					component={HisopadosPurchase}
+				/>
+				<PrivateRoute
+					exact
+					path='/:ws/hisopado/cobertura'
+					component={HisopadosCoverage}
 				/>
 				<PrivateRoute
 					exact
