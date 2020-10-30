@@ -1,8 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
   
-function SearchBoxFunc({ map, mapApi, handleChangePlace }){
-    const selector = useSelector(state => state.deliveryService.hisopadoUserAddress);
+function SearchBoxFunc({ map, mapApi, handleChangePlace, value }){
     const dispatch = useDispatch();
     let searchInput= useRef(null);
 
@@ -28,7 +27,7 @@ function SearchBoxFunc({ map, mapApi, handleChangePlace }){
 
     return(
         <input 
-        value={selector}
+        value={value}
         ref={(ref) => { searchInput = ref; }}
         onChange={(e) => handleAddressChange(e)}
         onClick={() => dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload:  ""})}

@@ -33,6 +33,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		lng: patient?.lng || -58.3815704,
 		searchBox: '',
 	});
+	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
 	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
 	const firestore = DBConnection.firestore()
 
@@ -53,13 +54,10 @@ const DeliverySelectDestiny = ({finalAction}) => {
                 }
                 let coverage = new mapApi.Polygon({
                     paths: coords,
-                    // strokeColor: "#0A6DD7",
                     strokeColor: "#009042",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    // fillColor: "#0A6DD7",
+                    strokeOpacity: 0,
                     fillColor: "#009042",
-                    fillOpacity: 0.35
+                    fillOpacity: 0
                   });
                   coverage.setMap(mapInstance);
                   console.log(mapApi.geometry);
@@ -75,7 +73,8 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			};
 			console.log(latlng)
 			setMarker({ ...latlng, text: formState.address });
-	}, [formState.lat, formState.lng]);
+			setFormState({...formState, searchBox: userGeoguessedAddress, address: userGeoguessedAddress})
+	}, [formState.lat, formState.lng, userGeoguessedAddress]);
 
 	const handleApiLoaded = (map, maps) => {
 		setMapInstance(map);
@@ -83,7 +82,11 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		setGeocoder(new maps.Geocoder());
 		if (!navigator.geolocation) return null;
 		navigator.geolocation.getCurrentPosition((pos) => {
-			console.log(pos)
+			fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.coords.latitude},${pos.coords.longitude}&key=AIzaSyDLnpXWJx1qKAfHtTeYWa30b9jGH2GeXfs`)
+            .then(response => response.json())
+            .then(apiData => {
+                setUserGeoguessedAddress(apiData.results[0].formatted_address)
+            })
 			handleForm(currentPositionHandler(pos), true)}, errorHandler);
 	
 	};
@@ -184,6 +187,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			<div className="selectDestiny__adjustmentDiv">
 			<div className='selectDestiny__container'>
 				<div className='selectDestiny__container--row'>
+					{console.log(formState)}
 					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} id="searchBox" handleChangePlace={handleChangePlace} value={formState.searchBox}/>}
 				</div>
 			</div>
