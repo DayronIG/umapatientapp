@@ -1,0 +1,31 @@
+.timepicker {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	position: relative;
+	.timepicker__separator {
+		padding-left: 5px;
+	}
+  .timepicker__input {
+    width: 40px !important;
+    height: 30px !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: 1px solid #42a5f5 !important;
+    transition: all 0.5s !important;
+    text-align: left !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-left: 5px !important;
+    text-align: center !important;
+    &:focus {
+      outline: none !important;
+      border-radius: 5px !important;
+      transition: all 0.5s !important;
+    }
+  }
+}
