@@ -71,13 +71,10 @@ const DeliverySelectDestiny = ({finalAction}) => {
 					)
 					console.log(resultPath)
 					dispatch(handleAddressValidForHisopado(resultPath))
-				}, 50)
+				}, 1000)
 
             }
 			fetchData();
-			
-			console.log(addressLatLongHisopado)
-
 		}
 	}, [mapApi, mapInstance, addressLatLongHisopado])
 

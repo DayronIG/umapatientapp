@@ -57,7 +57,6 @@ export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
 // Delivery
 export const mobility_address = `${URN_UMA}/mobility_address`;
-export const is_distance_valid_for_hisopado = `${NODE_SERVER}/delivery/is_distance_valid_for_hisopado`;
 // Providers
 export const get_provider = `${NODE_SERVER}/providers`;
 // Payments

@@ -8,7 +8,7 @@ function SearchBoxFunc({ map, mapApi, handleChangePlace, value }){
     const [counter, setCounter] = useState(true)
 
     useEffect(()=>{
-        if(counter){
+        if(counter && value){
             dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload: value})
             setCounter(false)
         }
