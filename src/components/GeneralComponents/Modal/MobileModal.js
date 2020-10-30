@@ -22,7 +22,7 @@ const MobileModal = (props) => {
           }}>
             <FontAwesomeIcon icon={faTimesCircle} />
           </div>
-        }
+        }z
         <div className="modaTitle">{props.title}</div>
         <div className="modalContent">{props.children}</div>
       </div>

@@ -6,6 +6,7 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 function DeliveryResume({ duration }) {
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
+	const [surveyModal, setSurveyModal] = useState(false);
 
 	useEffect(() => {
 		if(!toggle) {
@@ -13,13 +14,15 @@ function DeliveryResume({ duration }) {
 		}
 	}, [toggle]);
 
-	const activeStep = 2;
+	const activeStep = 3;
+
 	return (
 		<section className={`
 			stepper__containerMap 
 			${toggle ? 'fullOpen' : ''} 
 			${toggleIndications ? 'showIndications' : ''}
-			${!toggle && toggleIndications ? 'mediumOpen' : ''} 
+			${!toggle && toggleIndications ? 'mediumOpen' : ''}
+			${activeStep === 3 ? 'showBtn' : ''} 
 		`}>
 			<div className="stepper__containerContent">
 				<h2 className="tracking__stepperTitle">Detalle del pedido</h2>
@@ -42,15 +45,24 @@ function DeliveryResume({ duration }) {
 				</article>
 
 				<TrackingStepper active={activeStep} />
+				{
+					activeStep === 3 &&
+					<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
+						Continuar
+					</button>
+				}
 			</div>
 
-			<button className="stepper__toggle" onClick={() => setToggle(!toggle)}>
-				{
-					toggle ? 
-					<FontAwesomeIcon icon={faChevronUp} /> :
-					<FontAwesomeIcon icon={faChevronDown} />
-				}
-			</button>
+			{
+				activeStep !== 3 &&
+				<button className="stepper__toggle" onClick={() => setToggle(!toggle)}>
+					{
+						toggle ? 
+						<FontAwesomeIcon icon={faChevronUp} /> :
+						<FontAwesomeIcon icon={faChevronDown} />
+					}
+				</button>
+			}
 		</section>
 	);
 }

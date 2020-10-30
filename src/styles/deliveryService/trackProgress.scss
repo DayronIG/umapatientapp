@@ -204,6 +204,11 @@
 				@media screen and (min-width: 400px) {
 					height: calc(75vh - 52px);
 				}
+
+				&.showBtn {
+					height: calc(100vh - 52px);
+					border-radius: 0;
+				}
 			}
 
 			&:not(.fullOpen) {
@@ -234,6 +239,19 @@
 				background: none;
 				color: $new-text-secondary-color;
 				outline: none;
+			}
+
+			.stepper__btn {
+				width: 100%;
+				border: none;
+				background: $new-primary-color;
+				border-radius: 15px;
+				padding: 10px;
+				color: $white-color;
+				font-size: 18px;
+				font-weight: 800;
+				line-height: 1.3;
+				margin-top: 20px;
 			}
 
 			.tracking__indications {
