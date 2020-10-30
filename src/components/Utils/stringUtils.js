@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
 export function replaceDiacritics(str) {
     var diacritics = [
         { char: 'A', base: /[\300-\306]/g },
