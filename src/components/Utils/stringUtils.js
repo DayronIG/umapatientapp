@@ -72,6 +72,10 @@ export function underscoreToSpaces(str) {
     }
 }
 
+export function genTransportId({ dni }) {
+	return `${moment().format('YYYYMMDDhhmm')}_${dni}`;
+}
+
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
