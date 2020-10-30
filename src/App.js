@@ -24,11 +24,14 @@ import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
 import Derivations from './components/VMD/Derivations';
-/* Survey and Transport */
+// Survey and Transport 
 import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
 import TransportRegister from './components/Transport/TransportRegister';
 import TransportUserActive from './components/Transport/TransportUserActive';
+import CreateTransportRouteView from './views/CreateTransportRouteView';
+import ScheduleTransportView from './views/ScheduleTransportView';
+import TransportDetailsView from './views/TransportDetailsView';
 // Appointments Online
 import OnlineSpecialist from './components/AppointmentsOnline/';
 import ListSpecialties from './components/AppointmentsOnline/ListSpecialties';
@@ -111,10 +114,13 @@ function App(props) {
 				<PrivateRoute exact path='/:dni/appointmentsonline/:condition/calendar' component={CalendarOnline} />
 				<PrivateRoute exact path='/:dni/appointmentsonline/:scheduled?/history' component={AppointmentsOnlineHistory} />
 				{/* TRASLADOS */}
-				<PrivateRoute exact path={'/survey/ws=:ws&:asid=:asid&dni=:dni'} component={Survey} />
-				<PrivateRoute exact path={'/:ws/transport'} component={TransportMain} />
-				<PrivateRoute exact path={'/:ws/TransportRegister'} component={TransportRegister} />
-				<PrivateRoute exact path={'/:ws/transportUserActive'} component={TransportUserActive} />
+				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
+				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />
+				<PrivateRoute exact path='/:ws/transportRegister' component={TransportRegister} />
+				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
+				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
+				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
+				<PrivateRoute exact path='/:dni/transportDetails/:incidente_id' component={TransportDetailsView} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
