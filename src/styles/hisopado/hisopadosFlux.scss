@@ -70,6 +70,13 @@
             .answer-div{
                 text-align: left;
                 padding-bottom: 10px;
+                .question-answer-ul{
+                    margin-left: 2vw;
+                    li{
+                        list-style-type: circle;
+                        margin-left: 5vw
+                    }
+                }
             }
         }
     }

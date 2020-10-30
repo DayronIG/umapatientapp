@@ -26,7 +26,8 @@ export default function FrequentQuestions({goBack}) {
             "1) a menos de 2 metros distancia de un caso confirmado, ",
             "2) durante más de 15 minutos y" ,
             "3) durante las 48 horas previas al inicio de los síntomas." ,
-            "En personas sintomáticas: de hasta 7 días de evolución desde la fecha de inicio de síntomas."]
+            "En personas sintomáticas: de hasta 7 días de evolución desde la fecha de inicio de síntomas."],
+            notUl: true
         },
         {
             question: "¿Es un PCR?",
@@ -46,7 +47,8 @@ export default function FrequentQuestions({goBack}) {
             "Dolor o presión en el pecho",
             "Incapacidad para hablar o moverse",
             "Cefalea",
-            "Diarrea y/o vómitos"]
+            "Diarrea y/o vómitos"],
+            firstNotUl: true
         },
         {
             question: "Ya pedí el servicio, ¿qué hago?",
@@ -69,7 +71,7 @@ export default function FrequentQuestions({goBack}) {
                 <p className="title">Preguntas frecuentes</p>
             </div>
             {qa.map((el) => {
-                return <QuestionAnswer key={el.question} question={el.question} answer={el.answer}/>
+                return <QuestionAnswer key={el.question} notUl={el.notUl} firstNotUl={el.firstNotUl} question={el.question} answer={el.answer}/>
             })}
         </div>)
 }
