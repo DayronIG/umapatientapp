@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 export function replaceDiacritics(str) {
     var diacritics = [
@@ -74,6 +75,10 @@ export function underscoreToSpaces(str) {
 
 export function genTransportId({ dni }) {
 	return `${moment().format('YYYYMMDDhhmm')}_${dni}`;
+}
+
+export function getDay(index) {
+	return days[index];
 }
 
 export function capitalizeFirstLetter(string) {
