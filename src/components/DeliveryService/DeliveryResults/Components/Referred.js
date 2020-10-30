@@ -1,5 +1,5 @@
 import React from 'react'
-import hisopadosNeg from "../../../../assets/img/hisopado_neg.svg"
+import hisopadosNeg from "../../../../assets/img/estamos_con_vos.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
 import { GiTransparentTubes } from "react-icons/gi"
 
@@ -8,7 +8,7 @@ export default function EndAssignationHisopado({finalAction}) {
     return (
         <div className="allwhite-hisopados-background" >
                 <div className="results-container">
-                    <img src={hisopadosNeg} alt="hisopado_neg" className="hisopados_res"/>
+                    <img src={hisopadosNeg} alt="hisopado_neg" className="estamos_con_vos"/>
                     <p className="hisopados-title">Estamos con vos</p>
                     <p>Si eres contacto estrecho, te recomendamos hacer un seguimiento de tus síntomas</p>
                 </div>
