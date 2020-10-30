@@ -10,9 +10,9 @@ export default function AskForBuyHisopado({finalAction}) {
 
     const renderContent = () => {
         if(termsConditions){
-            return <TermsConditions />
+            return <TermsConditions goBack={() => setTermsConditions(false)} />
         } else if (frequentQuestions) {
-            return <FrequentQuestions />
+            return <FrequentQuestions goBack={() => setFrequentQuestions(false)}/>
         } else {
             return (
             <div>

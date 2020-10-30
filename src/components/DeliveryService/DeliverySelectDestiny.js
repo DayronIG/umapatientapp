@@ -13,6 +13,7 @@ import Axios from 'axios';
 import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
+import DBConnection from '../../config/DBConnection';
 import '../../styles/deliveryService/selectDestiny.scss';
 
 const DeliverySelectDestiny = ({finalAction}) => {
@@ -28,19 +29,52 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		piso: patient?.piso || '',
 		depto: patient?.depto || '',
 		address: patient?.address || '',
-		lat: patient?.lat || 0,
-		lng: patient?.lng || 0,
+		lat: patient?.lat || -34.6037389,
+		lng: patient?.lng || -58.3815704,
 		searchBox: '',
 	});
+	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
+	const firestore = DBConnection.firestore()
 
 	useEffect(() => {
-		if (mapInstance) {
+		if(mapApi && mapInstance){
+			async function fetchData() {
+                let coords = [];
+                const coordsRef = firestore.collection('parametros').doc('userapp').collection('delivery').doc('hisopados')
+                const allCoords = await coordsRef.get();
+                if(allCoords.exists) {
+                    allCoords.data().zones.caba.map(coord => {
+                        let coordToNumber = {
+                            lat: Number(coord.lat),
+                            lng: Number(coord.lng)
+                        }
+                        coords.push(coordToNumber);
+                    })
+                }
+                let coverage = new mapApi.Polygon({
+                    paths: coords,
+                    // strokeColor: "#0A6DD7",
+                    strokeColor: "#009042",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    // fillColor: "#0A6DD7",
+                    fillColor: "#009042",
+                    fillOpacity: 0.35
+                  });
+                  coverage.setMap(mapInstance);
+                  console.log(mapApi.geometry);
+            }
+            fetchData();
+		}
+	}, [mapApi, mapInstance, addressLatLongHisopado])
+
+	useEffect(() => {
 			const latlng = {
 				lat: parseFloat(formState.lat),
 				lng: parseFloat(formState.lng),
 			};
+			console.log(latlng)
 			setMarker({ ...latlng, text: formState.address });
-		}
 	}, [formState.lat, formState.lng]);
 
 	const handleApiLoaded = (map, maps) => {
@@ -48,7 +82,10 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		setMapApi(maps);
 		setGeocoder(new maps.Geocoder());
 		if (!navigator.geolocation) return null;
-		navigator.geolocation.getCurrentPosition((pos) => handleForm(currentPositionHandler(pos), true), errorHandler);
+		navigator.geolocation.getCurrentPosition((pos) => {
+			console.log(pos)
+			handleForm(currentPositionHandler(pos), true)}, errorHandler);
+	
 	};
 
 	const handleForm = (event, isCoords = false) => {
@@ -62,8 +99,8 @@ const DeliverySelectDestiny = ({finalAction}) => {
 
 	const handleChangePlace = (place) => {
 		const pos = {
-			lat: place?.lat || place?.geometry?.location?.lat() || -34.5633064,
-			lng: place?.lng || place?.geometry?.location?.lng() || -58.4759768,
+			lat: place?.lat || place?.geometry?.location?.lat() || "",
+			lng: place?.lng || place?.geometry?.location?.lng() || "",
 			address: place?.formatted_address,
 		};
 		dispatch(setAddressLatLongHisopado({lat: pos.lat, lng: pos.lng}))
