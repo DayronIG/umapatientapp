@@ -55,6 +55,7 @@ import UmaCare from './components/UmaCare/index.js';
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults"
+import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -137,6 +138,8 @@ function App(props) {
 					component={DeliveryResults}
 				/>
 				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				{/* Referred */}
+				<Route exact path='/:ws?/referred' component={Referred} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

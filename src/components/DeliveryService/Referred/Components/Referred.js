@@ -2,8 +2,12 @@ import React from 'react'
 import hisopadosNeg from "../../../../assets/img/estamos_con_vos.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
 import { GiTransparentTubes } from "react-icons/gi"
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-export default function EndAssignationHisopado({finalAction}) {
+export default function ReferredInvitation({finalAction}) {
+    const history = useHistory(); 
+    const patient = useSelector(state => state.queries.patient)
 
     return (
         <div className="allwhite-hisopados-background" >
@@ -13,14 +17,18 @@ export default function EndAssignationHisopado({finalAction}) {
                     <p>Si eres contacto estrecho, te recomendamos hacer un seguimiento de tus síntomas</p>
                 </div>
                 <div className="results-menu-map-container">
-                    <div className="results-menu-map-item highlighted-color">
+                    <div className="results-menu-map-item highlighted-color"
+                    onClick={() => history.push(`/hisopado/${patient.ws}`)}
+                    >
                         <div>
                             <GiTransparentTubes className="icon" />
                             Comprar hisopado
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>
-                    <div className="results-menu-map-item">
+                    <div className="results-menu-map-item"
+                    onClick={() => history.push(`/${patient.ws}/onlinedoctor/who`)}
+                    >
                         <div>
                             <FaUserNurse className="icon" />
                             Quiero una consulta médica
@@ -34,7 +42,9 @@ export default function EndAssignationHisopado({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>
-                    <div className="results-menu-map-item">
+                    <div className="results-menu-map-item"
+                    onClick={() => history.push(`/${patient.ws}/autonomous`)}
+                    >
                         <div>
                             <FaPencilAlt className="icon" />
                             Hacer autodiagnóstico

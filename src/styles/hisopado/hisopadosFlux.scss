@@ -278,24 +278,7 @@
             }
         }
     }
-    .blue-button{
-		background-color: $new-primary-color;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 15px;
-		margin-top: 2vh;
-		font-weight: 800;
-		font-size: 18px;
-		line-height: 25px;
-		width: 60vw;
-		height: 7vh;
-        color: $white-color;
-        .icon{
-            font-size: 1.2rem;
-            margin-right: 2vw;
-        }
-    }
+    
     .blue-text{
 		color: $new-primary-color;
 		margin-top: 3vh;
@@ -315,7 +298,7 @@
         align-items: center;
         color: $new-text-color;
         .estamos_con_vos{
-            margin-top: 5vh;
+            margin-top: 2vh;
             width: 80vw;
         }
         .hisopados_res{
@@ -351,4 +334,26 @@
             }    
         }
     }
+}
+.blue-button{
+    background-color: $new-primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin-top: 2vh;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 25px;
+    width: 60vw;
+    height: 7vh;
+    color: $white-color;
+    .icon{
+        font-size: 1.2rem;
+        margin-right: 2vw;
+    }
+}
+
+.referred-register{
+    
 }
