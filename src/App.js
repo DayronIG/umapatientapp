@@ -121,21 +121,6 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				{/* <PrivateRoute
-					exact
-					path='/:ws/consultationRedir/:finalDestination/:incidentId'
-					component={RedirectConsultation}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/selectDestiny/:service/:incidenteId'
-					component={DeliverySelectDestiny}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
-					component={DeliveryTrackProgress}
-				/> */}
 				<PrivateRoute
 					exact
 					path='/hisopado/:ws?'

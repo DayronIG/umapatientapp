@@ -25,7 +25,7 @@ export default function AskForBuyHisopado({finalAction}) {
             <p className="hisopados-previous-price">$5500</p>
                 <p className="hisopados-discount">40% off</p>
             </div>
-                <p className="hisopados-price">{delivery.price}</p>
+                <p className="hisopados-price">{delivery?.price}</p>
             <div className="hisopados-bullets-container">
             <div className="hisopados-bullets">
                 <p><FaMapMarker className="icon"/>A domicilio</p>

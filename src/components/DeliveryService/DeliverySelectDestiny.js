@@ -35,20 +35,15 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
-	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
-	const firestore = DBConnection.firestore()
-
-
+	const { addressLatLongHisopado, params } = useSelector(state => state.deliveryService);
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
 			async function fetchData() {
                 let coords = [];
-                const coordsRef = firestore.collection('parametros').doc('userapp').collection('delivery').doc('hisopados')
-                const allCoords = await coordsRef.get();
-                if(allCoords.exists) {
+                if(params.zones?.caba) {
                     // eslint-disable-next-line array-callback-return
-                    allCoords.data().zones.caba.map(coord => {
+                    params.zones.caba.map(coord => {
                         let coordToNumber = {
                             lat: Number(coord.lat),
                             lng: Number(coord.lng)
@@ -70,7 +65,6 @@ const DeliverySelectDestiny = ({finalAction}) => {
 						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
 						coverage
 					)
-					console.log(resultPath)
 					dispatch(handleAddressValidForHisopado(resultPath))
 				}, 1000)
 

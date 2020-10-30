@@ -17,7 +17,7 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
     },[showCongrats])
 
     return (
-        <div className="allwhite-delivery-background">
+        <div className="allwhite-hisopados-background">
             {isAddressValidForDelivery? 
             <div className="instructions-container">
                     <img src={hisopadoTic} alt="delivery_check" className="delivery_check"/>
@@ -48,7 +48,7 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
                     <img src={hisopadoCross} alt="delivery_cross" className="delivery_cross"/>
                     <p className="delivery-title">¡Ups!</p>
                     <p>Esta zona aún no cuenta con covertura</p>
-                    <p className="map-zone-covered-link" onClick={() => history.push(`/${ws}/hisopado/cobertura`)}>Ver mapa</p>
+                    <p className="map-zone-covered-link" onClick={() => history.push(`/hisopado/cobertura/${ws}`)}>Ver mapa</p>
                     <p>¿Deseas que te avisemos cuando haya disponibilidad?</p>
                     <div onClick={() => setShowCongrats(true)} className="blue-button">
                         ¡Sí, quiero!
