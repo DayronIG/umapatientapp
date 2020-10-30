@@ -24,11 +24,14 @@ import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
 import Derivations from './components/VMD/Derivations';
-/* Survey and Transport */
+// Survey and Transport 
 import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
 import TransportRegister from './components/Transport/TransportRegister';
 import TransportUserActive from './components/Transport/TransportUserActive';
+import CreateTransportRouteView from './views/CreateTransportRouteView';
+import ScheduleTransportView from './views/ScheduleTransportView';
+import TransportDetailsView from './views/TransportDetailsView';
 // Appointments Online
 import OnlineSpecialist from './components/AppointmentsOnline/';
 import ListSpecialties from './components/AppointmentsOnline/ListSpecialties';
