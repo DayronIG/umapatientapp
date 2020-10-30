@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import TrackingStepper from './Stepper';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import MobileModal from '../GeneralComponents/Modal/MobileModal';
+import surveyModal from '../../assets/img/surveyModal.svg';
 
 function DeliveryResume({ duration }) {
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);
+	const [surveyResponse, setSurveyResponse] = useState({
+		personal: '',
+		app: '',
+		comment: ''
+	})
 
 	useEffect(() => {
 		if(!toggle) {
@@ -17,6 +24,7 @@ function DeliveryResume({ duration }) {
 	const activeStep = 3;
 
 	return (
+		<>
 		<section className={`
 			stepper__containerMap 
 			${toggle ? 'fullOpen' : ''} 
@@ -64,6 +72,14 @@ function DeliveryResume({ duration }) {
 				</button>
 			}
 		</section>
+		{
+			surveyModal &&
+			<MobileModal hideTitle hideCloseButton surveyHisopados>
+				<img src="surveyModal" alt="Encuesta" />
+
+			</MobileModal>
+		}
+		</>
 	);
 }
 
