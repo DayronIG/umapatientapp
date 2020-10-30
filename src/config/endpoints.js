@@ -8,8 +8,8 @@ const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
 const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
-export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
 
+export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
 export const log_event = `${EVENTS}/events`;
 export const user_online = `${URN_UMA}/user_online`;
 export const afiliado = `${URN_UMA}/afiliado`;
