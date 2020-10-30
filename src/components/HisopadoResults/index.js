@@ -14,7 +14,7 @@ export default function HisopadosPurchase() {
         switch (fluxTrackerHisopado) {
             case "RESULT_REVEAL":
                 return <ResultReveal 
-                finalAction = {() => setFluxTrackerHisopado("NEGATIVE")}/>
+                finalAction = {() => setFluxTrackerHisopado("POSITIVE")}/>
             case "POSITIVE":
                 return <PositiveResult 
                 finalAction = {() => history.push("/")}/>
