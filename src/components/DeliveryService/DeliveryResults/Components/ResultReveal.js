@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import hisopadosList from "../../../assets/img/hisopados_list.svg"
+import React from 'react'
+import hisopadosList from "../../../../assets/img/hisopados_list.svg"
 
 export default function EndAssignationHisopado({finalAction}) {
 

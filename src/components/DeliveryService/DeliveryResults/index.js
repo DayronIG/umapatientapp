@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { GenericHeader } from '../GeneralComponents/Headers';
+import React, { useState } from 'react'
+import { GenericHeader } from '../../GeneralComponents/Headers';
 import ResultReveal from "./Components/ResultReveal"
 import PositiveResult from "./Components/PositiveResult"
 import NegativeResult from "./Components/NegativeResult"
 import { useHistory } from "react-router-dom"
-import "../../styles/hisopado/hisopadosFlux.scss"
+import "../../../styles/hisopado/hisopadosFlux.scss"
 
 export default function HisopadosPurchase() {
     const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("RESULT_REVEAL");

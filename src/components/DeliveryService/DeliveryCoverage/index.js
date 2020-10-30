@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { GenericHeader } from '../GeneralComponents/Headers';
+import { useSelector } from 'react-redux';
+import { GenericHeader } from '../../GeneralComponents/Headers';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded } from '../Utils/mapsApiHandlers';
-import DBConnection from '../../config/DBConnection';
-import '../../styles/hisopado/coverage.scss';
+import '../../../styles/hisopado/coverage.scss';
 
 const HisopadosCoverage = () => {
     const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
-    const firestore = DBConnection.firestore();
+    const allCoords = useSelector(state => state.deliveryService.coverage)
 
     const onGoogleApiLoaded = async (map, maps) => {
         let coords = [];
-
-        const coordsRef = firestore.collection('parametros').doc('userapp').collection('delivery').doc('hisopados')
-        const allCoords = await coordsRef.get();
         
         if(allCoords.exists) {
             allCoords.data().zones.caba.map(coord => {

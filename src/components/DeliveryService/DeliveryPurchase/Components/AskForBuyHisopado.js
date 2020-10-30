@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
@@ -7,6 +8,7 @@ import IllustrationHisopado from "../../../../assets/img/Illustration-Hisopado.p
 export default function AskForBuyHisopado({finalAction}) {
     const [termsConditions, setTermsConditions] = useState(false)
     const [frequentQuestions, setFrequentQuestions] = useState(false)
+    const delivery = useSelector(state => state.deliveryService.params)
 
     const renderContent = () => {
         if(termsConditions){
@@ -16,14 +18,14 @@ export default function AskForBuyHisopado({finalAction}) {
         } else {
             return (
             <div>
-            <img className="hisopados-image" src={IllustrationHisopado} />
+            <img className="hisopados-image" src={IllustrationHisopado}  alt="Hisopado" />
             <p className="hisopados-title">¡Comprá tu hisopado a domicilio!</p>
             <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
             <div className="price-container">
             <p className="hisopados-previous-price">$5500</p>
                 <p className="hisopados-discount">40% off</p>
             </div>
-                <p className="hisopados-price">$3499</p>
+                <p className="hisopados-price">{delivery.price}</p>
             <div className="hisopados-bullets-container">
             <div className="hisopados-bullets">
                 <p><FaMapMarker className="icon"/>A domicilio</p>

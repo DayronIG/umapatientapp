@@ -1,23 +1,11 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faLaptopMedical,
-	faUserMd,
-	faClinicMedical,
-	faNotesMedical,
-	faBus,
-	faVrCardboard,
-	faStethoscope
-} from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
-import LifeJoy from './LifeJoy';
-import BuyHisopado from '../Hisopado'
-import CoronavirusModal from './CoronavirusModal';
+import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home'
 import TrasladosHome from '../Traslados/Home'

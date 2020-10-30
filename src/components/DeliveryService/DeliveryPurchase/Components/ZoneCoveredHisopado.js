@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
-import hisopadoTic from "../../../../assets/img/hisopado_tic.svg"
-import hisopadoCross from "../../../../assets/img/hisopado_cross.svg"
+import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
+import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
 
 export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) {
     const { isAddressValidForDelivery } = useSelector(state => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient); 
     const [showCongrats, setShowCongrats] = useState(false);
+    const delivery = useSelector(state => state.deliveryService.params)
 
     useEffect(()=>{
         if(showCongrats){
@@ -21,7 +22,7 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
             <div className="instructions-container">
                     <img src={hisopadoTic} alt="delivery_check" className="delivery_check"/>
                     <p className="delivery-title">¡Contámos con cobertura en tu zona!</p>
-                    <p>Nuestro personal de salud estará en su domicilio en aproximadamente <b>21 minutos.</b></p>
+                    <p>Nuestro personal de salud estará en su domicilio en <b>{delivery.delay}</b></p>
                     <p>Una vez confirmado el pago, le asignaremos un enfermero/a.</p>
                     <div onClick={() => finalAction()} className="blue-button">
                         Continuar con el pago
