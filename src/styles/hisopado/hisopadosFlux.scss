@@ -43,6 +43,11 @@
             background-color: $new-primary-color;
         }
     }
+    .terms-conditions{
+        margin-top: 2vh;
+        text-align: left;
+        width: 90vw;
+    }
     .questions-container{
         height: fit-content;
         width: 90vw;
@@ -56,6 +61,7 @@
                 justify-content: space-between;
                 p{
                     width: 70vw;
+                    text-align: left;
                 }
                 .icon{
                     margin-top: 1vh;
@@ -63,6 +69,14 @@
             }
             .answer-div{
                 text-align: left;
+                padding-bottom: 10px;
+                .question-answer-ul{
+                    margin-left: 2vw;
+                    li{
+                        list-style-type: circle;
+                        margin-left: 5vw
+                    }
+                }
             }
         }
     }

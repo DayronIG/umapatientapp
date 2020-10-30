@@ -1,20 +1,40 @@
 import React, {useState} from 'react'
 import { MdKeyboardArrowRight, MdKeyboardArrowDown } from "react-icons/md"
 
-export default function QuestionAnswer() {
+export default function QuestionAnswer({question, answer, firstNotUl, notUl= false}) {
     const [state, setState] = useState("none")
     return (
             <div className="questions-container">
                 <div className="qa-container">
                     <div className="question-div">
-                        <p>¿Cuáles son las ventajas de hacer un test rápido de hisopado a domicilio?</p>
+                    <p>{question}</p>
                         {state === "none" ? <MdKeyboardArrowRight className="icon" onClick={()=>setState("block")}  />:
                         <MdKeyboardArrowDown className="icon" onClick={()=>setState("none")}  />}
                     </div>
                     <div className="answer-div" style={{display: state}}>
-                    <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias dolores, accusamus sed est totam fugit ut hic suscipit voluptate nulla?
-                    </p>
+                    <div>
+                        {
+                            (typeof answer === "object")?
+                            (!notUl) ? 
+                            <ul className="question-answer-ul">
+                            {answer.map((item, index) => 
+                            (firstNotUl && index === 0)?
+                            item
+                            :
+                            <li key={item}>{item}</li>)}
+                            </ul>
+                            :
+                            <ul>
+                            {answer.map((item, index) => 
+                            (firstNotUl && index === 0)?
+                            item
+                            :
+                            <li key={item}>{item}</li>)}
+                            </ul>
+                            :
+                            answer
+                        }
+                    </div>
                 </div>
                 </div>
             </div>
