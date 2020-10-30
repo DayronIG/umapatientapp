@@ -1,0 +1,47 @@
+import React from 'react'
+import hisopadosNeg from "../../../../assets/img/hisopado_neg.svg"
+import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
+import { GiTransparentTubes } from "react-icons/gi"
+
+export default function EndAssignationHisopado({finalAction}) {
+
+    return (
+        <div className="allwhite-hisopados-background" >
+                <div className="results-container">
+                    <img src={hisopadosNeg} alt="hisopado_neg" className="hisopados_res"/>
+                    <p className="hisopados-title">Estamos con vos</p>
+                    <p>Si eres contacto estrecho, te recomendamos hacer un seguimiento de tus síntomas</p>
+                </div>
+                <div className="results-menu-map-container">
+                    <div className="results-menu-map-item highlighted-color">
+                        <div>
+                            <GiTransparentTubes className="icon" />
+                            Comprar hisopado
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                    <div className="results-menu-map-item">
+                        <div>
+                            <FaUserNurse className="icon" />
+                            Quiero una consulta médica
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                    <div className="results-menu-map-item">
+                        <div>
+                            <FaListUl className="icon" />
+                            Medidas de prevención
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                    <div className="results-menu-map-item">
+                        <div>
+                            <FaPencilAlt className="icon" />
+                            Hacer autodiagnóstico
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                </div>
+        </div>
+    )
+}

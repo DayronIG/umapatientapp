@@ -225,6 +225,17 @@
         }
     }
     
+    .highlighted-color{
+        background-color: $new-secondary-color !important;
+        color: $white-color !important;
+        font-size: 1.2rem !important;
+        font-weight: bold;
+        .icon{
+            color: $white-color !important;
+            font-size: 1.7rem !important;
+        }
+    }
+
     .results-menu-map-item{
         width: 90vw;
         height: 10vh;
