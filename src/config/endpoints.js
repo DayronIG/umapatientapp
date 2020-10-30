@@ -20,7 +20,6 @@ export const user_cancel = `${URN_UMA}/user_cancel`;
 export const assessment_url = `${URN_UMA}/assessment`;
 export const triage = `${TRIAGE_UMA}/api_python`;
 export const transport = `${URN_UMA}/user_traslados_app`;
-export const transportFormCompleted = `${URN_UMA}/check_exist`;
 export const install_event = `${URN_UMA}/events`;
 export const sound_online = `${POL}/sound_online`;
 export const pol_dni_front = `${POL}/pol_dni_front`;
@@ -65,3 +64,5 @@ export const get_provider = `${NODE_SERVER}/providers`;
 // Transport
 export const att_history = `${NODE_SERVER}/transportistas/v1/att_history`;
 export const create_traslado = `${NODE_SERVER}/transportistas/v1/create_traslado`;
+export const transport_register = `${NODE_DEV}/transportistas/v1/user_traslados_app`;
+export const check_exist = `${NODE_DEV}/transportistas/v1/check_exist`;
