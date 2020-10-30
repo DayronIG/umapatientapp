@@ -59,5 +59,9 @@ export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;
-
 export const ocr_labo = `${computer_vision}/ocr_labo`;
+// Providers 
+export const get_provider = `${NODE_SERVER}/providers`;
+// Transport
+export const att_history = `${NODE_SERVER}/transportistas/v1/att_history`;
+export const create_traslado = `${NODE_SERVER}/transportistas/v1/create_traslado`;
