@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import '../../styles/hisopado/hisopado.scss';
+import '../../../styles/hisopado/delivery.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,7 +13,7 @@ const BuyHisopado = () => {
 		window.gtag('event', 'select_item', {
 			'item_list_name': 'Hisopado Antígeno'
 		  });
-		  history.push(`/hisopado/${patient.ws}`)
+        history.push(`/hisopado/${patient.ws}`)
     }
     
     return <section className="hisopado__container" onClick={() => buyHisopado()}>

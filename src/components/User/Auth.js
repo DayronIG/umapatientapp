@@ -19,6 +19,7 @@ function AuthProvider({ children }) {
 	}, [currentUser])
 
 	useEffect(() => {
+		getParams()
 		if (currentUser) {
 			getInitialData(currentUser)
 			currentUser.getIdToken().then(token => {
@@ -27,6 +28,11 @@ function AuthProvider({ children }) {
 			})
 		}
 	})
+
+    async function getParams() {
+        const hisopados = await getDocumentFB('parametros/userapp/delivery/hisopados')
+        dispatch({type: 'SET_DELIVERY_PARAMS', payload: hisopados})
+    }
 
 	async function getInitialData(user) {
 		if (user.email) {

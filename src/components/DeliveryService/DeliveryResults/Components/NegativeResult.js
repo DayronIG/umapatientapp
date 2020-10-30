@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import hisopadosNeg from "../../../assets/img/hisopado_neg.svg"
+import React from 'react'
+import hisopadosNeg from "../../../../assets/img/hisopado_neg.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
 
 export default function EndAssignationHisopado({finalAction}) {

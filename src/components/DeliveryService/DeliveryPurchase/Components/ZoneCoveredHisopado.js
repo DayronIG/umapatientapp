@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
-import hisopadosTic from "../../../assets/img/hisopados_tic.svg"
-import hisopadosCross from "../../../assets/img/hisopados_cross.svg"
+import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
+import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
 
-export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) {
-    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService);
+export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) {
+    const { isAddressValidForDelivery } = useSelector(state => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient); 
     const [showCongrats, setShowCongrats] = useState(false);
+    const delivery = useSelector(state => state.deliveryService.params)
 
     useEffect(()=>{
         if(showCongrats){
@@ -16,12 +17,12 @@ export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) 
     },[showCongrats])
 
     return (
-        <div className="allwhite-hisopados-background">
-            {isAddressValidForHisopado? 
+        <div className="allwhite-delivery-background">
+            {isAddressValidForDelivery? 
             <div className="instructions-container">
-                    <img src={hisopadosTic} alt="hisopados_check" className="hisopados_check"/>
-                    <p className="hisopados-title">¡Contámos con cobertura en tu zona!</p>
-                    <p>Nuestro personal de salud estará en su domicilio en aproximadamente <b>21 minutos.</b></p>
+                    <img src={hisopadoTic} alt="delivery_check" className="delivery_check"/>
+                    <p className="delivery-title">¡Contámos con cobertura en tu zona!</p>
+                    <p>Nuestro personal de salud estará en su domicilio en <b>{delivery.delay}</b></p>
                     <p>Una vez confirmado el pago, le asignaremos un enfermero/a.</p>
                     <div onClick={() => finalAction()} className="blue-button">
                         Continuar con el pago
@@ -33,8 +34,8 @@ export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) 
                 <div className="instructions-container">
                     {showCongrats ? 
                     <>
-                    <img src={hisopadosTic} alt="hisopados_tic" className="hisopados_cross"/>
-                    <p className="hisopados-title">¡Felicitaciones!</p>
+                    <img src={hisopadoTic} alt="delivery_tic" className="delivery_cross"/>
+                    <p className="delivery-title">¡Felicitaciones!</p>
                     <p>Hemos recibido su solicitud</p>
                     <p>Te enviaremos una notificación cuando se habiliten nuevas zonas</p>
                     <div onClick={() => history.push("/")} className="blue-button">
@@ -44,8 +45,8 @@ export default function ZoneCoveredHisopado({finalAction, history, goPrevious}) 
                     </>
                     :
                     <>
-                    <img src={hisopadosCross} alt="hisopados_cross" className="hisopados_cross"/>
-                    <p className="hisopados-title">¡Ups!</p>
+                    <img src={hisopadoCross} alt="delivery_cross" className="delivery_cross"/>
+                    <p className="delivery-title">¡Ups!</p>
                     <p>Esta zona aún no cuenta con covertura</p>
                     <p className="map-zone-covered-link" onClick={() => history.push(`/${ws}/hisopado/cobertura`)}>Ver mapa</p>
                     <p>¿Deseas que te avisemos cuando haya disponibilidad?</p>

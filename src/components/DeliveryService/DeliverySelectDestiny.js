@@ -47,6 +47,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
                 const coordsRef = firestore.collection('parametros').doc('userapp').collection('delivery').doc('hisopados')
                 const allCoords = await coordsRef.get();
                 if(allCoords.exists) {
+                    // eslint-disable-next-line array-callback-return
                     allCoords.data().zones.caba.map(coord => {
                         let coordToNumber = {
                             lat: Number(coord.lat),
