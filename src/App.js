@@ -137,12 +137,12 @@ function App(props) {
 				/> */}
 				<PrivateRoute
 					exact
-					path='/:ws/hisopado'
+					path='/hisopado/:ws?'
 					component={HisopadosPurchase}
 				/>
 				<PrivateRoute
 					exact
-					path='/:ws/hisopadoResult'
+					path='/hisopadoResult/:ws?'
 					component={HisopadoResults}
 				/>
 				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />

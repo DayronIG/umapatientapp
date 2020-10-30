@@ -157,8 +157,7 @@ const PaymentCardMP = ({finalAction}) => {
             // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
-            swal('Ocurrió un problema al ingresar el pago', 'Porfavor intente mas tarde.', 'error')
-            .then(()=> history.push("/"))
+            swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
         }
     }, [paymentStatus, history])
 

@@ -4,7 +4,6 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/messaging';
 import 'firebase/auth';
-import 'firebase/auth';
 import isIos from '../components/Utils/isIos'
 
 var messaging;
@@ -15,8 +14,12 @@ var config = {
     projectId: 'uma-v2',
     storageBucket: 'uma-v2.appspot.com',
     messagingSenderId: '320149797683',
-    appId: '1:320149797683:web:6cb56009aaa69a3dc9dc46'
+    appId: '1:320149797683:web:6cb56009aaa69a3dc9dc46',
+    measurementId: "G-X3PCZVPML7"
 };
+
+
+
 
 function DBConnection() {
     Firebase.initializeApp(config);

@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { listenToChangesInService, modifyServiceToProgress } from '../../store/actions/deliveryActions';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import PackageOnTheWay from './PackageOnTheWay';
-import DeliveryProgressBar from './DeliveryProgressBar';
-import DeliverySelectDestiny from './DeliverySelectDestiny';
 import SearchingProfessional from './SearchingProfessional';
-import WaitingCorporate from './WaitingCorporate';
-import Laboratory from './AnalysisSteps/Laboratory';
 import Hisopado from './AnalysisSteps/Hisopado';
 import Result from './AnalysisSteps/Result';
 import Loading from '../GeneralComponents/Loading';
-import FooterBtn from '../GeneralComponents/FooterBtn';
 import NotService from './NotService';
 import '../../styles/deliveryService/trackProgress.scss';
+import { listenToChangesInService, modifyServiceToProgress } from '../../store/actions/deliveryActions';
+import DeliveryProgressBar from './DeliveryProgressBar';
+import DeliverySelectDestiny from './DeliverySelectDestiny';
+import WaitingCorporate from './WaitingCorporate';
+import Laboratory from './AnalysisSteps/Laboratory';
+import FooterBtn from '../GeneralComponents/FooterBtn';
 
 const DeliveryTrackProgress = () => {
 	const { currentService, modifiedObjService } = useSelector(state => state.deliveryService);
@@ -71,7 +71,7 @@ const DeliveryTrackProgress = () => {
 					</>} */}
 				<div className='trackProgress__content'>
 					{/* {renderComponentByTrackProgress(modifiedObjService.status_derivacion)} */}
-					{renderComponentByTrackProgress('ASSIGN:READY')}
+					{renderComponentByTrackProgress('ASSIGN')}
 				</div>
 			</section>
 		</div>
