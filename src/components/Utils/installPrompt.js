@@ -2,7 +2,8 @@ import Axios from "axios"
 import { install_event } from "../../config/endpoints"
 import moment from 'moment';
 
-export const installPrompt = async (deferredPrompt, ws, dni) => {
+export const installPrompt = async (deferredPrompt, ws, dni = '') => {
+    console.log(deferredPrompt)
     if (deferredPrompt !== undefined) {
         deferredPrompt.prompt()
         try {

@@ -82,7 +82,7 @@
          margin-left: 20px;
          height: 32px;
          .react-switch-bg {
-            background-color: #008290 !important;
+            background-color: #0A6DD7 !important;
          }
          .react-switch-handle{
             width: 23px;
@@ -116,7 +116,7 @@
       }
 
       .sendButtonStyles {
-         background-color: #008290;
+         background-color: #0A6DD7;
          color: $white-color;
          border-radius: 15px;
          width: 308px ;
@@ -124,6 +124,7 @@
          font-weight: 600;
          height: 47px;
          margin: 25px 0 15px 0;
+         border: none;
       }
       .registerContainerProps {
          width: 90%;
@@ -157,4 +158,13 @@
       display: flex;
       justify-content: center;
    }
+}
+.form__validation--error{
+   color: #D80000;
+   font-weight: 600;
+   font-size: 12px;
+}
+.label__absolute{
+   position: absolute;
+   margin-top: 65px;
 }

@@ -22,6 +22,31 @@ export function replaceDiacritics(str) {
     return str;
 };
 
+export function validateInput(type, value) {
+    let isValid = false;
+    switch (type) {
+        case 'tel':
+            if(!!value && /^\d+$/.test){              
+                isValid = true;
+            } 
+            return isValid;
+        case 'text':
+            if(!!value && value.length > 2) {
+                isValid  = true;
+            }
+            return isValid;
+        case 'number':
+            if(!!value && value.length >= 2 && /^\d+$/.test){
+                isValid = true
+            }
+            return isValid;
+        // case 'password':
+        //     break;
+        default:
+            break;
+    }
+}
+
 export function capitalizeName(name) {
     const length = name.length
     const firstLetter = name.slice(0, 1).toUpperCase()

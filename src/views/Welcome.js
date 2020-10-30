@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {useHistory, useParams, withRouter} from 'react-router-dom';
-import "../styles/welcome.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
@@ -14,7 +13,8 @@ import swal from "sweetalert";
 import { installPrompt } from "../components/Utils/installPrompt";
 // import { useAddToHomescreenPrompt } from "../components/Utils/addToHomeHook";
 // import AddToHomescreen from 'react-add-to-homescreen';
-
+import InformationPage from '../components/GeneralComponents/InformationPage.js';
+import "../styles/welcome.scss";
 
 const Welcome = props => {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const Welcome = props => {
   const [deferredPrompt, setDeferredPrompt] = React.useState()
   const { ws } = useParams();
   const history = useHistory();
+
   useEffect(() => {
     //console.log(DetectRTC.isWebsiteHasWebcamPermissions())
     DetectRTC.load(function () {
@@ -32,12 +33,15 @@ const Welcome = props => {
     });
   }, []);
 
-
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    const promptListener = (e) => {
       e.preventDefault()
       setDeferredPrompt(e)
-    })
+    }
+    window.addEventListener('beforeinstallprompt', promptListener)
+    return () => {
+      window.removeEventListener('beforeinstallprompt', promptListener);
+    }
   }, [])
 
   async function installAction() {
@@ -65,36 +69,16 @@ const Welcome = props => {
   }
 
   return (
-    <div className="welcome-container">
-    <section className="welcome">
-
-      <div className="welcome__titleContainer">
-        <h2 className="welcome__titleContainer--title mt-2">¡Te damos <br/> la bienvenida a UMA!</h2>
-      </div>
-      <div className="welcome__textContainer">
-        {/* <p className="welcome__textContainer--paragraph">
-          El registro fue exitoso. Ahora instala la aplicación para comenzar a utilizarla.
-        </p>
-        <br /> */}
-        <span className="welcome__textContainer--message">
-        Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.
-        <span onClick={() => props.showInstallPrompt()} className="link"></span>
-        </span>
-        <br />
-        <div className="welcome__textContainer--instalar mt-4">
- 
-          {install ?
-            <button className="welcome__button--instalar" onClick={installAction}>Instalar</button>
-            :            
-            <button className="welcome__button--instalar" onClick={installAction}>Continuar</button>
-          }
-          <br/><br/>
-          
-        </div>
-      </div>
-      {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}
-    </section>
-    </div>
+    
+        <InformationPage
+            callback={installAction}
+            title='¡Te damos la bienvenida a UMA! '                   
+            texts={[
+              'Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.'
+            ]}
+            button='Instalar'
+        />
+    
   );
 };
 

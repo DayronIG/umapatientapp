@@ -17,6 +17,7 @@ import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
+import { validateInput } from '../components/Utils/stringUtils';
 import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../../src/styles/generalcomponents/register.scss';
@@ -27,21 +28,30 @@ const Register = props => {
     const [registered, setRegistered] = useState(false)
     const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
+    const [formSubmitted, setFormSubmitted] = useState(false)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
     const {ws: urlWS, ref} = useParams()
     const {
-         dni: getId, day: getDay, month: getMonth, year: getYear,
+        dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
      } = useSelector(state => state.register)
     const monthRef = useRef()
     const yearRef = useRef()
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault()
-            setDeferredPrompt(e)
-        })
+        const promptListener = (e) => {
+          e.preventDefault()
+          setDeferredPrompt(e)
+        }
+        window.addEventListener('beforeinstallprompt', promptListener)
+        return () => {
+          window.removeEventListener('beforeinstallprompt', promptListener);
+        }
+    }, [])
+
+    useEffect(() => {
         if(urlWS.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/')
@@ -118,7 +128,7 @@ const Register = props => {
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
         composeDate()
         let subscription
-        let source = props.match?.params?.affiliate // To do move to back
+        let source = props.match.params.affiliate // To do move to back
         if (source && source.toLowerCase().includes('rappi_peru')) {
             subscription = 'AUT'
         }
@@ -129,7 +139,7 @@ const Register = props => {
         }
         let data = {
             patient: {
-                affiliate: props.match?.params?.affiliate,
+                affiliate: props.match.params.affiliate,
                 geohash: '',
                 lat: '',
                 lon: '',
@@ -163,7 +173,8 @@ const Register = props => {
                 } else if (res.creates === true) {
                     setTimeout(() => {
                         dispatch({ type: 'LOADING', payload: false })
-                        history.push('/')
+                        setFormSubmitted(true)
+                        // history.push('/')
                     }, 2000)
                 } else {
                     dispatch({ type: 'LOADING', payload: false })
@@ -180,35 +191,24 @@ const Register = props => {
         }
     }
 
-    const onChangeDay = e => {
-        dispatch({ type: 'REGISTER_FIRST_DAY', payload: e.target.value })
-        if (e.target.value.length === 2) monthRef.current.focus()
-    }
-
-    const onChangeMonth = e => {
-        dispatch({ type: 'REGISTER_FIRST_MONTH', payload: e.target.value })
-        if (e.target.value.length === 2) yearRef.current.focus()
-    }
-
     const showInstallPrompt = async () => {
         await installPrompt(deferredPrompt, urlWS, getId);
         history.push('/');
     }
 
-    const handleDni = (dni) => {
-        const reg = /^\d+$/
-        const str = dni.toString()
-        const isNumber = reg.test(str)
-        if (isNumber) dispatch({ type: 'REGISTER_FIRST_DNI', payload: dni })
-        else if (!dni) dispatch({ type: 'REGISTER_FIRST_DNI', payload: '' })
-    }
+    const handleInput = (typeDispatch) => (event) => {
+        const { type, value, name } = event.target;
 
-    const handleCelular = (ws) => {
-        const reg = /^\d+$/
-        const str = ws.toString()
-        const isNumber = reg.test(str)
-        if (isNumber) dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
-        else if (!ws) dispatch({ type: 'REGISTER_FIRST_WS', payload: '' })
+        const isValid = validateInput(type, value);
+        if(!isValid && value !== "") {
+            dispatch({ type: typeDispatch, payload: value })
+            return setErrors({ ...errors, [name]: true });
+        } else if (value === "") { 
+            dispatch({ type: typeDispatch, payload: '' })
+        } else {
+            setErrors({ ...errors, [name]: false });
+            dispatch({ type: typeDispatch, payload: value })
+        }
     }
 
     return (
@@ -219,7 +219,6 @@ const Register = props => {
                 :
                 <>
                     <GenericHeader profileDisabled={true}> Registro</GenericHeader>
-
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
                             <div className='contentData'>¡Te registraste con éxito!</div>
@@ -238,26 +237,36 @@ const Register = props => {
                             <div className='d-flex flex-wrap'>
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
-                                    Nombre y apellido*
+                                    Nombre y apellido* 
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
-                                autoComplete='on' type='text'onChange={e => dispatch({ type: 'REGISTER_FIRST_FULLNAME', payload: e.target.value })} required/>
+                                autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} required/>
+                                {console.log(errors)}
+                                 {errors.nombre && (
+                                    <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
+                                )}
                             </div>
 
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='dni'>
                                     Identificación, cédula o DNI*
                                 </label>
-                                <input className='form-input' id='dni' placeholder='e.g. 99899899' autoComplete='on'
-                                onChange={e => handleDni(e.target.value)} value={getId} required />
+                                <input className='form-input' id='dni' name='dni' type='text' placeholder='e.g. 99899899' autoComplete='off'
+                                onChange={handleInput('REGISTER_FIRST_DNI')} value={getId} required />
+                                {errors.dni && (
+                                    <p className="form__validation--error">x Debe ingresar su identificación</p>
+                                )}
                             </div>
 
                             {!urlWS && <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
                                 </label>
-                                <input className='form-input' id='ws' placeholder='(54) 11 33678925' autoComplete='on'
-                                onChange={e => handleCelular(e.target.value)} value={getWs} required />
+                                <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
+                                onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs} required />
+                                {errors.ws && (
+                                    <p className="form__validation--error">x Debe ingresar su identificación</p>
+                                )}
                             </div>}
                             {!ref &&<div className="form__spanWrapper">
                             <label className='form-label' htmlFor='celular'>
@@ -266,9 +275,13 @@ const Register = props => {
                              <input
                                 className='form-input' id='os' placeholder='ej: Unión Personal'
                                 autoComplete='off' type='text'
-                                onChange={e => dispatch({ type: 'REGISTER_FIRST_OS', payload: e.target.value })}
+                                onChange={handleInput('REGISTER_FIRST_OS')}
+                                name='cobertura'
                                 required
                             />
+                            {errors.cobertura && (
+                                    <p className="form__validation--error">x Debe ingresar su cobertura o seguro de salud</p>
+                                )}
                             </div>}
                             <div className='form__spanWrapper'>                              
                                     <label className='form-label birthLabel'>
@@ -276,12 +289,19 @@ const Register = props => {
                                     </label>
                                     <div className='inputsContainer'>
                                         <input className='form-mid-input'
-                                            onChange={e => onChangeDay(e)} type='number' min='1'
+                                            onChange={(e) => {
+                                                handleInput('REGISTER_FIRST_DAY')(e);
+                                                if(e.target.value.length === 2) monthRef.current.focus();
+                                            }} type='number' min='1'
                                             max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
                                             required />
+                                            
                                         <input
                                             className='form-mid-input' maxLength='2' ref={monthRef}
-                                            onChange={e => onChangeMonth(e)}
+                                            onChange={(e) => {
+                                                handleInput('REGISTER_FIRST_MONTH')(e);
+                                                if(e.target.value.length === 2) yearRef.current.focus();
+                                            }}
                                             type='number' min='1' max='12'
                                             name='bMonth' id='dateMonth'
                                             placeholder={getMonth}
@@ -289,19 +309,29 @@ const Register = props => {
                                         <input
                                             className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
                                             maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
-                                            onChange={e => dispatch({ type: 'REGISTER_FIRST_YEAR', payload: e.target.value })}
-                                            required />
+                                            onChange={handleInput('REGISTER_FIRST_YEAR')}
+                                            required
+                                        />
                                         <select
                                             className='form-mid-input'
                                             id='gender'
                                             onChange={e => dispatch({ type: 'REGISTER_FIRST_SEX', payload: e.target.value })}
                                             placeholder={getSex}
-                                            required 
-                                        >
+                                            required>
+
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
                                         </select>                                        
+                                        <span className="form__validation--error label__absolute">
+                                            {errors.bday ? 
+                                                'x Debe ingresar el día'
+                                            : errors.bMonth ?
+                                                'x Debe ingresar el mes'
+                                            : errors.bYear &&
+                                                'x Debe ingresar el año'
+                                            }
+                                        </span>
                                     </div>                                
                             </div>
                             </div><br />
@@ -319,9 +349,9 @@ const Register = props => {
                                 </div>   
                             </div>
                             <div className='text-right'>
-                                <button className='btn sendButtonStyles' type='submit'>
+                                <button className='sendButtonStyles' type='submit'>
                                     Enviar
-                                </button>
+                                </button>          
                                
                             </div>
                         </form>

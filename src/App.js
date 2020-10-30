@@ -61,6 +61,8 @@ import AccessDenied from './components/GeneralComponents/AccessDenied';
 import RedirectConsultation from './components/RedirectConsultation/';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
+import Install from './views/Install.js';
+import Success from './views/RegisterSuccess.js';
 
 function App(props) {
 	return (
@@ -72,7 +74,9 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/login' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
+				<Route exact path='/:ws/install' component={Install} />
 				<Route exact path='/:ws/register/:ref?' component={Register} />
+				<Route exact path='/:ws/registersuccess' component={Success} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* General */}
