@@ -283,7 +283,7 @@ const PaymentCardMP = ({finalAction}) => {
                   className=""
                   name="cvc"
                   maxLength="4"
-                  placeholder="BOKITAELMASGRANDE"
+                  placeholder="CÓDIGO"
                   onChange={handleChange}
                   onFocus={handleFocus}
                 />

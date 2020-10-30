@@ -11,7 +11,8 @@ const initialState = {
 	isAddressValidForHisopado: true,
 	addressLatLongHisopado: "",
 	hisopadoUserAddress: "",
-	params: ""
+	params: "",
+	step: "ASK_FOR_BUY"
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -26,6 +27,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, hisopadoUserAddress: payload };
 		case "SET_DELIVERY_PARAMS":
 			return { ...state, params: payload }
+		case "SET_DELIVERY_STEP":
+			return { ...state, step: payload}
 		default:
 			return state;
 	}

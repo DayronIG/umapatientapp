@@ -23,7 +23,7 @@ export default function HisopadosPurchase() {
                 history={history}
                 finalAction = {() => history.push("/")}/>
             default: 
-                console.log("ALGO")
+                return null
     }}
 
     return (
