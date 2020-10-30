@@ -14,6 +14,7 @@ import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import DBConnection from '../../config/DBConnection';
+import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
 import '../../styles/deliveryService/selectDestiny.scss';
 
 const DeliverySelectDestiny = ({finalAction}) => {
@@ -37,6 +38,8 @@ const DeliverySelectDestiny = ({finalAction}) => {
 	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
 	const firestore = DBConnection.firestore()
 
+
+
 	useEffect(() => {
 		if(mapApi && mapInstance){
 			async function fetchData() {
@@ -58,11 +61,23 @@ const DeliverySelectDestiny = ({finalAction}) => {
                     strokeOpacity: 0,
                     fillColor: "#009042",
                     fillOpacity: 0
-                  });
-                  coverage.setMap(mapInstance);
-                  console.log(mapApi.geometry);
+				  });
+				  
+				let resultPath;
+				setTimeout(()=>{
+					resultPath = mapApi.geometry?.poly.containsLocation(
+						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
+						coverage
+					)
+					console.log(resultPath)
+					dispatch(handleAddressValidForHisopado(resultPath))
+				}, 50)
+
             }
-            fetchData();
+			fetchData();
+			
+			console.log(addressLatLongHisopado)
+
 		}
 	}, [mapApi, mapInstance, addressLatLongHisopado])
 
@@ -71,7 +86,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 				lat: parseFloat(formState.lat),
 				lng: parseFloat(formState.lng),
 			};
-			console.log(latlng)
+			dispatch({type: "SET_ADDRESS_LAT_LONG_HISOPADO", payload: latlng})
 			setMarker({ ...latlng, text: formState.address });
 			setFormState({...formState, searchBox: userGeoguessedAddress, address: userGeoguessedAddress})
 	}, [formState.lat, formState.lng, userGeoguessedAddress]);
@@ -187,7 +202,6 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			<div className="selectDestiny__adjustmentDiv">
 			<div className='selectDestiny__container'>
 				<div className='selectDestiny__container--row'>
-					{console.log(formState)}
 					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} id="searchBox" handleChangePlace={handleChangePlace} value={formState.searchBox}/>}
 				</div>
 			</div>

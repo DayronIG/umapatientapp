@@ -1,9 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
   
 function SearchBoxFunc({ map, mapApi, handleChangePlace, value }){
     const dispatch = useDispatch();
     let searchInput= useRef(null);
+    const selector = useSelector(state => state.deliveryService.hisopadoUserAddress);
+    const [counter, setCounter] = useState(true)
+
+    useEffect(()=>{
+        if(counter){
+            dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload: value})
+            setCounter(false)
+        }
+    }, [value])
 
     const handleAddressChange = (e) => {
        dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload: e.target.value})
@@ -20,14 +29,11 @@ function SearchBoxFunc({ map, mapApi, handleChangePlace, value }){
             dispatch({type: 'SET_MARKER_INPUT_ADDRESS', payload: latlng})
             // dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload: user.formatted_address})
         });
-        
-        
-        
     }
 
     return(
         <input 
-        value={value}
+        value={selector}
         ref={(ref) => { searchInput = ref; }}
         onChange={(e) => handleAddressChange(e)}
         onClick={() => dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload:  ""})}
