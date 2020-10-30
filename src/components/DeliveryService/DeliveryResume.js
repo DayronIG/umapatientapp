@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import TrackingStepper from './Stepper';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import surveyModal from '../../assets/img/surveyModal.svg';
+import surveyModalImg from '../../assets/img/surveyModal.svg';
+import StarRatings from 'react-star-ratings';
 
 function DeliveryResume({ duration }) {
+	const history = useHistory();
+	const { ws } = useSelector(store => store.queries.patient)
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);
 	const [surveyResponse, setSurveyResponse] = useState({
-		personal: '',
-		app: '',
+		personal: 0,
+		app: 0,
 		comment: ''
 	})
 
@@ -22,6 +27,27 @@ function DeliveryResume({ duration }) {
 	}, [toggle]);
 
 	const activeStep = 3;
+
+	const changePersonalRating = (newRating) => {
+		setSurveyResponse({...surveyResponse, personal: newRating});
+	}
+
+	const changeAppRating = (newRating) => {
+		setSurveyResponse({...surveyResponse, app: newRating});
+	}
+
+	const handleChangeComment = (e) => {
+		setSurveyResponse({...surveyResponse, comment: e.target.value});
+	}
+
+	const sendRating = () => {	
+		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
+			console.log('send data');
+			// TODO: Acá habría que cambiar el status derivación a DONE:RESULT
+			history.push(`/hisopadoResult/${ws}`);
+		}
+	}
+
 
 	return (
 		<>
@@ -75,8 +101,44 @@ function DeliveryResume({ duration }) {
 		{
 			surveyModal &&
 			<MobileModal hideTitle hideCloseButton surveyHisopados>
-				<img src="surveyModal" alt="Encuesta" />
-
+				<img src={surveyModalImg} alt="Encuesta" />
+				<div className="surveyQuestion">
+					<h3>¿Cómo evaluaría la atención de nuestro personal de salud?</h3>
+					<div className="surveyStars">
+						<StarRatings
+							rating={surveyResponse.personal}
+							starRatedColor="#A13DDF"
+							starHoverColor="#A13DDF"
+							changeRating={changePersonalRating}
+							numberOfStars={5}
+							name='personal'
+							starDimension="25px"
+						/>
+					</div>
+				</div>
+				<div className="surveyQuestion">
+					<h3>¿Cómo evaluaría la aplicación?</h3>
+					<div className="surveyStars">
+						<StarRatings
+							rating={surveyResponse.app}
+							starRatedColor="#A13DDF"
+							starHoverColor="#A13DDF"
+							changeRating={changeAppRating}
+							numberOfStars={5}
+							name='app'
+							starDimension="25px"
+						/>
+					</div>
+				</div>
+				<div className="surveyQuestion">
+					<h3>¿Qué podríamos mejorar?</h3>
+					<div className="surveyComment">
+						<textarea name="comment" onChange={handleChangeComment} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
+					</div>
+				</div>
+				<button className="stepper__btn" onClick={sendRating}>
+					Enviar
+				</button>
 			</MobileModal>
 		}
 		</>
