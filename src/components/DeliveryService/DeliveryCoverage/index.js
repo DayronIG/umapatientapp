@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import GoogleMapReact from 'google-map-react';
-import { mapConfig, handleApiLoaded } from '../Utils/mapsApiHandlers';
+import { mapConfig, handleApiLoaded } from '../../Utils/mapsApiHandlers';
 import '../../../styles/hisopado/coverage.scss';
 
 const HisopadosCoverage = () => {

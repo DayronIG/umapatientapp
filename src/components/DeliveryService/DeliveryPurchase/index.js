@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { GenericHeader } from '../GeneralComponents/Headers';
+import { GenericHeader } from '../../GeneralComponents/Headers';
 import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
 import EndAssignationHisopado from "./Components/EndAssignationHisopado"
-import Payment from "../Payment"
+import Payment from "../../Payment"
 import { useHistory } from "react-router-dom"
 import "../../../styles/hisopado/hisopadosFlux.scss"
 
