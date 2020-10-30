@@ -1,10 +1,21 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faLaptopMedical,
+	faUserMd,
+	faClinicMedical,
+	faNotesMedical,
+	faBus,
+	faVrCardboard,
+	faStethoscope
+} from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
+import LifeJoy from './LifeJoy';
 import BuyHisopado from '../Hisopado'
 import CoronavirusModal from './CoronavirusModal';
 import ValidateAction from '../ValidateAction';
@@ -43,7 +54,9 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-					<BuyHisopado />
+					<Link to={`/${patient.ws}/hisopado`}>
+						<BuyHisopado />
+					</Link>
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

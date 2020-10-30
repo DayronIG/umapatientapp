@@ -143,7 +143,7 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/:ws/hisopado/cobertura'
+					path='/hisopado/cobertura/:ws?'
 					component={HisopadosCoverage}
 				/>
 				<PrivateRoute

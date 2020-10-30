@@ -13,7 +13,7 @@ const BuyHisopado = () => {
 		window.gtag('event', 'select_item', {
 			'item_list_name': 'Hisopado Antígeno'
 		  });
-		  history.push(`/hisopado/${patient.ws}`)
+        history.push(`/hisopado/${patient.ws}`)
     }
     
     return <section className="hisopado__container" onClick={() => buyHisopado()}>
