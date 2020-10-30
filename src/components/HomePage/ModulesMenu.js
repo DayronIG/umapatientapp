@@ -49,14 +49,11 @@ const ModulesMenu = () => {
 
 	return (
 		<>
-			<CoronavirusModal />
 			{patient.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-					<Link to={`/${patient.ws}/hisopado`}>
-						<BuyHisopado />
-					</Link>
+					<BuyHisopado />
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
