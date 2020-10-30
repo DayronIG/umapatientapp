@@ -29,11 +29,9 @@ const HisopadosCoverage = () => {
       
         let coverage = new maps.Polygon({
           paths: coords,
-          // strokeColor: "#0A6DD7",
           strokeColor: "#009042",
           strokeOpacity: 0.8,
           strokeWeight: 2,
-          // fillColor: "#0A6DD7",
           fillColor: "#009042",
           fillOpacity: 0.35
         });
@@ -45,7 +43,7 @@ const HisopadosCoverage = () => {
             <GenericHeader children="Hisopado" />
             <div className="coverage__map">
                 <GoogleMapReact 
-                    {...mapConfig({lat: userLocation.lat, lng: userLocation.lng })}
+                    {...mapConfig({lat: -34.663069, lng: -58.424647 }, () => {}, 11)}
                     onGoogleApiLoaded={({ map, maps }) => onGoogleApiLoaded(map, maps)}
                 />
                 <article className="coverage__card">
