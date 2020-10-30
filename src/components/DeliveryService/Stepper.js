@@ -33,7 +33,7 @@ const TrackingStepper = ({active}) => (
         </Step>
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>Resultado</StepLabel>
-            <StepContent className="tracking__stepConten t">
+            <StepContent className="tracking__stepContent">
                 Se ha cargado el resultado 
             </StepContent>
         </Step>
