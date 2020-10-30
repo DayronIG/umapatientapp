@@ -5,8 +5,7 @@ import { GenericHeader } from '../GeneralComponents/Headers';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
-import BuyHisopado from '../Hisopado'
-import CoronavirusModal from './CoronavirusModal';
+import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home'
 import TrasladosHome from '../Traslados/Home'
@@ -38,7 +37,6 @@ const ModulesMenu = () => {
 
 	return (
 		<>
-			<CoronavirusModal />
 			{patient.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}

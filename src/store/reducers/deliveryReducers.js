@@ -10,7 +10,8 @@ const initialState = {
 	},
 	isAddressValidForHisopado: true,
 	addressLatLongHisopado: "",
-	hisopadoUserAddress: ""
+	hisopadoUserAddress: "",
+	params: ""
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -23,6 +24,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, addressLatLongHisopado: payload };
 		case "SET_HISOPADO_USER_ADDRESS":
 			return { ...state, hisopadoUserAddress: payload };
+		case "SET_DELIVERY_PARAMS":
+			return { ...state, params: payload }
 		default:
 			return state;
 	}

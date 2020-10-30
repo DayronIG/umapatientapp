@@ -52,9 +52,9 @@ import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackPro
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
-import HisopadosPurchase from "./components/HisopadosPurchase"
-import HisopadosCoverage from './components/HisopadosCoverage'
-import HisopadoResults from "./components/HisopadoResults"
+import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
+import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
+import DeliveryResults from "./components/DeliveryService/DeliveryResults"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -121,35 +121,20 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				{/* <PrivateRoute
-					exact
-					path='/:ws/consultationRedir/:finalDestination/:incidentId'
-					component={RedirectConsultation}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/selectDestiny/:service/:incidenteId'
-					component={DeliverySelectDestiny}
-				/>
-				<PrivateRoute
-					exact
-					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
-					component={DeliveryTrackProgress}
-				/> */}
 				<PrivateRoute
 					exact
 					path='/hisopado/:ws?'
-					component={HisopadosPurchase}
+					component={DeliveryPurchase}
 				/>
 				<PrivateRoute
 					exact
-					path='/:ws/hisopado/cobertura'
-					component={HisopadosCoverage}
+					path='/hisopado/cobertura/:ws?'
+					component={DeliveryCoverage}
 				/>
 				<PrivateRoute
 					exact
 					path='/hisopadoResult/:ws?'
-					component={HisopadoResults}
+					component={DeliveryResults}
 				/>
 				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}

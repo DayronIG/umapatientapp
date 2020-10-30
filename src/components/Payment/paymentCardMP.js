@@ -12,10 +12,11 @@ import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 
 const PaymentCardMP = ({finalAction}) => {
+    const delivery = useSelector(state => state.deliveryService.params)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
-    const totalPayment = 3499
+    const totalPayment = parseInt(delivery.price) || 3499
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
     const [creditCard, setCreditCard] = useState("");
