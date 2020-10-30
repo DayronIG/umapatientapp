@@ -5,12 +5,13 @@ import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
 import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
 
 export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) {
-    const { isAddressValidForDelivery } = useSelector(state => state.deliveryService);
+    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient); 
     const [showCongrats, setShowCongrats] = useState(false);
     const delivery = useSelector(state => state.deliveryService.params)
 
     useEffect(()=>{
+        console.log(isAddressValidForHisopado)
         if(showCongrats){
             //SUSCRIBIR A AVISOS
         }
@@ -18,7 +19,7 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
 
     return (
         <div className="allwhite-hisopados-background">
-            {isAddressValidForDelivery? 
+            {isAddressValidForHisopado ? 
             <div className="instructions-container">
                     <img src={hisopadoTic} alt="delivery_check" className="delivery_check"/>
                     <p className="delivery-title">¡Contámos con cobertura en tu zona!</p>
