@@ -58,7 +58,7 @@ export default function Payment({finalAction}) {
           {/* <GenericHeader children="Contratar Servicio" /> */}
             {/* {!country && <Loader/>} */}
             {/* {country === "AR"? <PaymentCardMP />: <PaymentCardPP />}  */}
-            <PaymentCardMP finalAction={()=>finalAction()} />
+            <PaymentCardMP />
         </div>
     )
 }

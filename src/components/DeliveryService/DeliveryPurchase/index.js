@@ -26,8 +26,7 @@ export default function HisopadosPurchase() {
                 goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
                 finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
             case "PAYMENT":
-                return <Payment 
-                finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})}/>
+                return <Payment />
             case "END_ASSIGNATION":
                 return <EndAssignationHisopado 
                 history={history}
