@@ -1,9 +1,9 @@
 import React from 'react'
 import DeliverySelectDesiny from "../../../DeliveryService/DeliverySelectDestiny"
 
-export default function AddressPickerHisopado({ finalAction }) {
+export default function AddressPickerHisopado() {
     return (
         <div className="allwhite-hisopados-background">
-                <DeliverySelectDesiny finalAction={() => finalAction()} />
+                <DeliverySelectDesiny />
         </div>)
 }

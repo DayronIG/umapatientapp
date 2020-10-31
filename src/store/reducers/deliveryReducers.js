@@ -1,6 +1,11 @@
 import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LONG_HISOPADO } from '../types/deliveryTypes';
 
 const initialState = {
+	addressLatLongHisopado: "",
+	deliveryType: '',
+	hisopadoUserAddress: "",
+	isAddressValidForHisopado: true,
+	params: "",
 	selectHomeForm: {
 		piso: '',
 		depto: '',
@@ -8,10 +13,6 @@ const initialState = {
 		lat: 0,
 		lng: 0,
 	},
-	isAddressValidForHisopado: true,
-	addressLatLongHisopado: "",
-	hisopadoUserAddress: "",
-	params: "",
 	step: "ASK_FOR_BUY"
 };
 
@@ -29,6 +30,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, params: payload }
 		case "SET_DELIVERY_STEP":
 			return { ...state, step: payload}
+		case "SET_DELIVERY_CURRENT":
+			return { ...state, current: payload}
 		default:
 			return state;
 	}

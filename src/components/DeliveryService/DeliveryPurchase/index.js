@@ -19,8 +19,7 @@ export default function HisopadosPurchase() {
             case "ASK_FOR_BUY":
                 return <AskForBuyHisopado />
             case "ADDRESS_PICKER":
-                return <AddressPickerHisopado 
-                finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})}/>
+                return <AddressPickerHisopado />
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
                 history={history}
