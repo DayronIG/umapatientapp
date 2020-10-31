@@ -17,8 +17,7 @@ export default function HisopadosPurchase() {
     const renderContent = () => {
         switch (step) {
             case "ASK_FOR_BUY":
-                return <AskForBuyHisopado 
-                finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}/>
+                return <AskForBuyHisopado />
             case "ADDRESS_PICKER":
                 return <AddressPickerHisopado 
                 finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})}/>

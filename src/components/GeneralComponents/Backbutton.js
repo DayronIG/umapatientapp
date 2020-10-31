@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLaptopMedical, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import "../../styles/global/Backbutton.scss";
 
 export default (props) => {

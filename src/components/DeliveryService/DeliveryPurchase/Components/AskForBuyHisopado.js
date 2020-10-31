@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import IllustrationHisopado from "../../../../assets/img/Illustration-Hisopado.png"
 
-export default function AskForBuyHisopado({finalAction}) {
+export default function AskForBuyHisopado() {
     const [termsConditions, setTermsConditions] = useState(false)
     const [frequentQuestions, setFrequentQuestions] = useState(false)
     const delivery = useSelector(state => state.deliveryService.params)
+    const dispatch = useDispatch()
+
+    const startBuying = () => {
+        console.log("TO DO Endpoint de empezar compra")
+        dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+    }
 
     const renderContent = () => {
         if(termsConditions){
@@ -60,7 +66,7 @@ export default function AskForBuyHisopado({finalAction}) {
                 <br/>
                 <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
             </p>
-            <div onClick={() => finalAction()} className="hisopados-button">
+            <div onClick={() => startBuying()} className="hisopados-button">
                 <p className="button-text"><FaCartPlus className="icon"/>Comprar hisopado</p>
 			</div>
         </div>)

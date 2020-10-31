@@ -12,7 +12,7 @@
 		// font-family: Visby Round CF !important;
 		// background-image: linear-gradient(to bottom,#F7F6CA,#41CCC9,#EFF8FF);
 		// background: $main-gradient-figma;
-		background: $new-main-gradient-figma;
+		background: $main-back-gradient;
 		background-repeat: no-repeat;
 		.btn.disabled,
 		.btn:disabled {
@@ -99,7 +99,7 @@
 				align-items: center;
 
 				svg {
-					color: $new-primary-color;
+					color: $uma-primary;
 					font-size: 1.8rem;
 				}
 
@@ -125,7 +125,7 @@
 				$border-radius: 0 0 $regular-borders $regular-borders
 			);
 
-			background: $new-primary-color;
+			background: $uma-primary;
 		}
 	}
 	.promotions-button {
