@@ -10,7 +10,8 @@ import { useHistory } from "react-router-dom"
 import "../../../styles/hisopado/hisopadosFlux.scss"
 
 export default function HisopadosPurchase() {
-    const step = useSelector((state) => state.deliveryService.step);
+    const {step, params} = useSelector((state) => state.deliveryService.step);
+
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -26,6 +27,11 @@ export default function HisopadosPurchase() {
                 goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
                 finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
             case "PAYMENT":
+                window.gtag('event', 'begin_checkout', {
+                    'items': 'Hisopado Antígeno',
+                    'currency': 'ARS',
+                    'value': params?.price
+                  });
                 return <Payment />
             case "END_ASSIGNATION":
                 return <EndAssignationHisopado 

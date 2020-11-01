@@ -16,7 +16,6 @@ export default function AskForBuyHisopado() {
     const patient = useSelector(state => state.queries.patient)
     const dispatch = useDispatch()
 
-
     useEffect(() => {
         if(patient.dni) {
             getCurrentService()
@@ -37,6 +36,9 @@ export default function AskForBuyHisopado() {
     }
 
     const startBuying = async () => {
+        window.gtag('event', 'select_item', {
+            'item_list_name': 'Hisopado Antígeno'
+          });
         if(!current?.status) {
             let data = {
                 dni: patient.dni,

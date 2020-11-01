@@ -12,8 +12,11 @@ const BuyHisopado = () => {
     const price = useSelector((state) => state.deliveryService.params.price);
 
     const buyHisopado = () => {
-		window.gtag('event', 'select_item', {
-			'item_list_name': 'Hisopado Antígeno'
+		window.gtag('event', 'view_promotion', {
+            'items': 'Hisopado Antígeno',
+            'promotion_id': '1',
+            'promotion_name': 'Hisopado',
+            'location_id': 'home' 
 		  });
         history.push(`/hisopado/${patient.ws}`)
     }
@@ -22,8 +25,8 @@ const BuyHisopado = () => {
         <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>
         <div className="hisopado__content">
             <div className="hisopado__info">
-                <h2 className="hisopado__title">¡Hisopate hoy!</h2>
-                <p className="hisopado__text">Hacete tu testeo a domicilio.</p>
+                <h2 className="hisopado__title">¡Hisópate hoy!</h2>
+                <p className="hisopado__text">Hazte tu testeo a domicilio.</p>
                 <button className="hisopado__btn">Conocer más <FontAwesomeIcon icon={faArrowRight} /></button>
             </div>
             <div className="hisopado__price">
