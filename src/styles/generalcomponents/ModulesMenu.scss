@@ -4,7 +4,7 @@
 /* MODULES CONTAINER */
 .modules-container {
   @include wrapper(
-      $margin: 0 auto 20px,
+      $margin: 20px auto,
       $width: 95%, 
       $height: auto, 
       $background-color: inherit
