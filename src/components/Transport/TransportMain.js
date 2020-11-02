@@ -30,13 +30,13 @@ const TransportWrapperComponent = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(function() {
-        if(activated === '1') {
-            props.history.push(`/${props.match.params.ws}/transportUserActive`) 
-        } else if(activated === '') {
-            props.history.push(`/${props.match.params.ws}/TransportRegister`) 
-        }
-    }, [activated, props.history, props.match.params.ws])
+    // useEffect(function() {
+    //     if(activated === '1') {
+    //         props.history.push(`/${props.match.params.ws}/transportRegister`) 
+    //     } else if(activated === '') {
+    //         props.history.push(`/${props.match.params.ws}/TransportRegister`) 
+    //     }
+    // }, [activated, props.history, props.match.params.ws])
 
     return (
         <>

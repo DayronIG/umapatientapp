@@ -3,18 +3,20 @@ import React, { useState, useEffect } from 'react';
 import {withRouter} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
-
+import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import { transport } from '../../config/endpoints';
 import Alert  from  '../GeneralComponents/Alert/Alerts';
-
+import Cleave from 'cleave.js/react';
 import '../../styles/generalcomponents/TransportOnboardingThirdStep.scss';
+import Loader from '../GeneralComponents/Loading';
 
 const TransportOnboarding = (props) => {
     const dispatch = useDispatch();
     const token = useSelector(state => state.userActive.token)
+    const user = useSelector(state => state.onboardingSecondStep)
     /* Second Form data */
     const getDisability = useSelector((state) => state.onboardingSecondStep.disability);
     const getCertificate = useSelector((state) => state.onboardingSecondStep.certificateNumber);
@@ -32,17 +34,32 @@ const TransportOnboarding = (props) => {
     const getIdExpires = useSelector((state) => state.onboardingThirdStep.idExpires);
     const getCredentialExpires = useSelector((state) => state.onboardingThirdStep.credentialExpires);
     const getDisabilityExpires = useSelector((state) => state.onboardingThirdStep.disabilityExpires);
+    const getLoader = useSelector((state) => state.front.loading)
     /* Local States */
     const [displayAlert, setDisplayAlert] = useState(false);
     const [getLoading, setLoading] = useState(false);
-
+    const getUserData = JSON.parse(localStorage.getItem('userData'))
     function goBack() {
         dispatch({type: 'SET_PAGINATION_TRANSPORT', payload: 1})
     }
-
+    
     function sendForm() {
+        
+        
+        const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
+        if (!date.test(getIdExpires) || !date.test(getCredentialExpires)){
+            swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+            return};
+            
+        if (user.disability != "0-NINGUNA"){
+            if (!date.test(getDisabilityExpires)){
+                swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+                return}
+        }
+        
         const getUserData = JSON.parse(localStorage.getItem('userData'))
         setLoading(true)
+        dispatch({type: 'LOADING', payload: true})
         Axios.post(transport, {
             'ws': getUserData.ws,
             'dni': getUserData.dni,
@@ -62,7 +79,6 @@ const TransportOnboarding = (props) => {
         }, { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } })
         .then(function (response) {
             backToMainMenu();
-            console.log(response);
             setLoading(false);
             setDisplayAlert(true);
         })
@@ -71,15 +87,21 @@ const TransportOnboarding = (props) => {
             alert('Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...')
             setTimeout(function() {
                 props.history.push(`/TransportRegister`) 
+                goBack()
             }, 4000)
+            
             console.log(error);
         })
+        
     }
 
     function backToMainMenu() {
         setTimeout(function() {
-            props.history.push(`/`) 
+            props.history.push(`/${getUserData.ws}/transportUserActive`) 
         }, 4000)
+        setTimeout(function(){
+            dispatch({type: 'LOADING', payload: false})
+        }, 2000)
     }
 
     function buildImages(typeAction, fileValue) {
@@ -94,6 +116,7 @@ const TransportOnboarding = (props) => {
 
     return (
         <>
+         {getLoader && <Loader />}
             <GenericHeader>Registro</GenericHeader>
             { displayAlert &&
                 <Alert 
@@ -167,32 +190,57 @@ const TransportOnboarding = (props) => {
                 <div className="dateDocumentExpiresWrapper">
                     <div className="titleThirdStep">Vencimiento de DNI</div>
                     { getIdExpires ? '': <span className="mandatoryField">* Obligatorio</span> }
-                    <input type="text" 
+                    {/* <input type="text" 
+                    options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
                         placeholder={'dd/mm/aaaa'}
                         value={getIdExpires} 
                         className="form-control expireDate"
-                        onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}/>
+                        onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                         <Cleave
+                         
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getIdExpires} 
+                            className="form-control expireDate"
+                        /> 
                     <div className="titleThirdStep">Vencimiento de Credencial</div>
                     { getCredentialExpires ? '': <span className="mandatoryField">* Obligatorio</span> }
-                    <input type="text" 
+                    {/* <input type="text" 
                         placeholder={'dd/mm/aaaa'}
                         value={getCredentialExpires} 
                         className="form-control expireDate"
-                        onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}/>
+                        onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                     <Cleave
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getCredentialExpires} 
+                            className="form-control expireDate"
+                        /> 
                     { getDisability !== "0-NINGUNA" ? 
                         <div>
                             <div className="titleThirdStep">Vencimiento de Certificado de discapacidad</div>
-                            <input type="text" 
+                            {/* <input type="text" 
                                 placeholder={'dd/mm/aaaa'}
                                 value={getDisabilityExpires} 
                                 className="form-control expireDate"
-                                onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}/>
+                                onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                            <Cleave
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getDisabilityExpires} 
+                            className="form-control expireDate"
+                        /> 
                         </div>
+                        
                     : ''}
                 </div>
                 <div className="buttonsContainer">
                     <div className="buttonContainer">
                         <button  
+                            
                             disabled={!getIdPreview || !getLicencePreview || !getIdExpires || !getCredentialExpires} 
                             className="btn btn-active" 
                             onClick={() => sendForm()}>      
