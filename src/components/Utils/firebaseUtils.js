@@ -82,13 +82,13 @@ export async function snapDocumentsByFilter(route, filters, limit = false, postF
 			ref = ref.where(filter.field, filter.comparator, filter.value);
 		});
 		if (limit !== false) ref.limit(limit)
-		await ref.onSnapshot().then((snapshot) => {
+		await ref.onSnapshot((snapshot) => {
 			snapshot.forEach((doc) => {
 				let document = doc.data();
 				document.docId = doc.id;
 				result.push(document);
 			});
-		});
+		})
 	} catch (err) {
 		console.error('errror', err);
 	}

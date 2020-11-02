@@ -10,8 +10,8 @@ const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
     const price = useSelector((state) => state.deliveryService.params.price);
-    const [active, setActive] = useState(false)
     const state = ""
+    const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status);
 
     const buyHisopado = () => {
 		window.gtag('event', 'view_promotion', {
