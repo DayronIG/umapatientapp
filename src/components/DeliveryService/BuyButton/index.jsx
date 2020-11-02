@@ -10,9 +10,7 @@ const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
     const price = useSelector((state) => state.deliveryService.params.price);
-    const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status) || "ASSIGN:DELIVERY"
-
-    console.log(deliveryStatus)
+    const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status) || "FREE"
 
     const buyHisopado = () => {
 		window.gtag('event', 'view_promotion', {

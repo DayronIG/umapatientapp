@@ -8,7 +8,7 @@ const initialState = {
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
-	deliveryInfo: {status: "ASSIGN:DELIVERY"},
+	deliveryInfo: {},
 	selectHomeForm: {
 		piso: '',
 		depto: '',
