@@ -10,22 +10,10 @@ const HisopadosCoverage = () => {
     const allCoords = useSelector(state => state.deliveryService.coverage)
 
     const onGoogleApiLoaded = async (map, maps) => {
-        let coords = [];
-        
-        if(allCoords.exists) {
-            allCoords.data().zones.caba.map(coord => {
-                let coordToNumber = {
-                    lat: Number(coord.lat),
-                    lng: Number(coord.lng)
-                }
-                coords.push(coordToNumber);
-            })
-        }
-
         handleApiLoaded(setUserLocation);
       
         let coverage = new maps.Polygon({
-          paths: coords,
+          paths: allCoords,
           strokeColor: "#009042",
           strokeOpacity: 0.8,
           strokeWeight: 2,

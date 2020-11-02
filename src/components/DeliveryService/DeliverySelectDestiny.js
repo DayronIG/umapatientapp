@@ -58,6 +58,8 @@ const DeliverySelectDestiny = () => {
                     fillColor: "#009042",
                     fillOpacity: 0
 				  });
+
+				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
 				  
 				let resultPath;
 				setTimeout(()=>{

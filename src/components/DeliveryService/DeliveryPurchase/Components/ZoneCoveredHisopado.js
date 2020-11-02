@@ -46,7 +46,7 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
                     </>
                     :
                     <>
-                    <img src={hisopadoCross} alt="delivery_cross" className="delivery_cross"/>
+                    <img src={hisopadoCross} alt="delivery_cross" className="delivery_cross hisopados_cross"/>
                     <p className="delivery-title">¡Ups!</p>
                     <p>Esta zona aún no cuenta con covertura</p>
                     <p className="map-zone-covered-link" onClick={() => history.push(`/hisopado/cobertura/${ws}`)}>Ver mapa</p>
