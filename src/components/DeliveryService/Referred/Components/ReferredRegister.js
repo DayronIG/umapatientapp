@@ -23,13 +23,13 @@ const ReferredRegister = () => {
                         value={''} 
                         onChange={(e) => dispatch({type: 'ADD_DISABILITY', payload: e.target.value})} 
                     />
-                        </div>
-                        <div>
-                            <button 
-                                className="blue-button"
-                                onClick={() => goToNextStep()}>
-                                Enviar
-                            </button>
+                    </div>
+                    <div>
+                        <button 
+                            className="blue-button"
+                            onClick={() => goToNextStep()}>
+                            Enviar
+                        </button>
                     </div>
             </div>
         </>
