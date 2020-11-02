@@ -56,7 +56,7 @@ export default function DeliveryProgressBar({ percent }) {
 						</div>
 					)}
 				</Step>
-				<Step transition='scale'>
+				{/* <Step transition='scale'>
 					{({ accomplished }) => (
 						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
 							<FaCheckCircle />
@@ -66,7 +66,7 @@ export default function DeliveryProgressBar({ percent }) {
 							</div>
 						</div>
 					)}
-				</Step>
+				</Step> */}
 				<Step transition='scale'>
 					{({ accomplished }) => (
 						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>

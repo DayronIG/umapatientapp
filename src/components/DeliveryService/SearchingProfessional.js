@@ -4,8 +4,7 @@ import enfermero from "../../assets/img/enfermero_en_camino.svg";
 import FrequentQuestions from './DeliveryPurchase/Components/FrequentQuestions';
 import '../../styles/hisopado/frequentQuestions.scss';
 
-const SearchingProfessional = () => {
-  const activeStep = 0;
+const SearchingProfessional = ({ active }) => {
   const [frequentQuestions, setFrequentQuestions] = useState(false);
 
   const renderContent = () => {
@@ -33,13 +32,11 @@ const SearchingProfessional = () => {
     
           <div className="tracking_buttons">
             <button className="tracking__btn-info" onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</button>
-            {/* <button className="tracking__btn tracking__btn-continue">Seguir hisopado</button>
-            <button className="tracking__btn tracking__btn-cancel">Cancelar hisopado</button> */}
           </div>
     
           <div className="tracking__stepper">
             <h2 className="tracking__stepperTitle">Detalle del pedido</h2>
-            <DeliveryProgressBar percent={10} />
+            <DeliveryProgressBar percent={active} />
           </div>
         </section>
       )
