@@ -7,6 +7,26 @@
             height: calc(100vh - 52px) !important;
         }
 
+        .coverage__back {
+            position: absolute;
+            top: 60px;
+            left: 5%;
+            z-index: 1;
+            background: none;
+            border: none;
+            color: $white-color;
+            font-size: 2rem;
+            line-height: 0;
+            padding: 0;
+            margin: 0;
+            outline: none;
+
+            svg {
+                stroke-width: 20px;
+                stroke: $uma-input;
+            }
+        }
+
         .coverage__card {
             position: fixed;
             bottom: 0;

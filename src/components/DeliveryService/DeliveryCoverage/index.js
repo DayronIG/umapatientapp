@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded } from '../../Utils/mapsApiHandlers';
+import { IoMdArrowRoundBack } from 'react-icons/io'
 import '../../../styles/hisopado/coverage.scss';
 
 const HisopadosCoverage = () => {
+    const history = useHistory();
     const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
     const allCoords = useSelector(state => state.deliveryService.coverage)
+    const { ws } = useSelector(state => state.queries.patient)
 
     const onGoogleApiLoaded = async (map, maps) => {
         handleApiLoaded(setUserLocation);
@@ -27,6 +31,9 @@ const HisopadosCoverage = () => {
         <div className="coverage__container">
             <GenericHeader children="Hisopado" />
             <div className="coverage__map">
+                <button className="coverage__back" onClick={()=> history.push(`/hisopado/${ws}`)}>
+                    <IoMdArrowRoundBack />
+                </button>
                 <GoogleMapReact 
                     {...mapConfig({lat: -34.663069, lng: -58.424647 }, () => {}, 11)}
                     onGoogleApiLoaded={({ map, maps }) => onGoogleApiLoaded(map, maps)}
