@@ -5,7 +5,6 @@ import '../../../styles/hisopado/delivery.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import HomeHisopado from '../../../assets/img/home-hisopado.png';
-import {getDocumentFB} from "../../Utils/firebaseUtils"
 
 const BuyHisopado = () => {
     const history = useHistory()
@@ -24,22 +23,7 @@ const BuyHisopado = () => {
         history.push(`/hisopado/${patient.ws}`)
     }
 
-    const getActive = async () => {
-        const data = await getDocumentFB("parametros/hisopados")
-        if (data.active === "true"){
-            setActive(true)
-        }
-        if (data.active === "false"){
-            setActive(false)
-        }
-    }
-
-    useEffect(() => {
-        getActive()
-    }, [])
-
     const renderButtonContentFromState = () => {
-        if(active){
             switch (state){
                 case(""):
                     return (
@@ -57,11 +41,7 @@ const BuyHisopado = () => {
                             </div>
                         </section>
                     )
-            }
-        } else{
-            return <></>
-        }
-    }
+    }}
     
     return renderButtonContentFromState()
 }

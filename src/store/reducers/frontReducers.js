@@ -12,6 +12,7 @@ const initialState = {
     currentQuestion: 0,
     dinamic: { whenDinamic: false, queueDinamic: true },
     error: '',
+    hisopadosActive: false,
     loading: false,
     mic_cam_permissions: '',
     modal: false,
@@ -81,6 +82,8 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, paginationTransport: action.payload };
         case 'SHOW_ASK_TEXT':
             return { ...state, showAskText: action.payload };
+        case 'SET_HISOPADOS_ACTIVE':
+            return { ...state, hisopadosActive: action.payload };
         case 'TOGGLE_DETAIL':
             return { ...state, openDetails: !state.openDetails };
         case 'TOGGLE_MODAL_ACTION':
