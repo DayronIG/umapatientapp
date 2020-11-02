@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import TrackingStepper from './Stepper';
+import DeliveryProgressBar from './DeliveryProgressBar';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
@@ -78,7 +78,7 @@ function DeliveryResume({ duration }) {
 					</ul>
 				</article>
 
-				<TrackingStepper active={activeStep} />
+				<DeliveryProgressBar percent={activeStep} />
 				{
 					activeStep === 3 &&
 					<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
