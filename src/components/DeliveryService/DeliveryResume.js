@@ -8,7 +8,7 @@ import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
 
-function DeliveryResume({ duration }) {
+function DeliveryResume({ duration, active }) {
 	const history = useHistory();
 	const { ws } = useSelector(store => store.queries.patient)
 	const [toggle, setToggle] = useState(true);
@@ -26,8 +26,6 @@ function DeliveryResume({ duration }) {
 		}
 	}, [toggle]);
 
-	const activeStep = 3;
-
 	const changePersonalRating = (newRating) => {
 		setSurveyResponse({...surveyResponse, personal: newRating});
 	}
@@ -43,7 +41,6 @@ function DeliveryResume({ duration }) {
 	const sendRating = () => {	
 		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
 			console.log('send data');
-			// TODO: Acá habría que cambiar el status derivación a DONE:RESULT
 			history.push(`/hisopadoResult/${ws}`);
 		}
 	}
@@ -56,7 +53,7 @@ function DeliveryResume({ duration }) {
 			${toggle ? 'fullOpen' : ''} 
 			${toggleIndications ? 'showIndications' : ''}
 			${!toggle && toggleIndications ? 'mediumOpen' : ''}
-			${activeStep === 3 ? 'showBtn' : ''} 
+			${active === 3 ? 'showBtn' : ''} 
 		`}>
 			<div className="stepper__containerContent">
 				<h2 className="tracking__stepperTitle">Detalle del pedido</h2>
@@ -78,9 +75,9 @@ function DeliveryResume({ duration }) {
 					</ul>
 				</article>
 
-				<DeliveryProgressBar percent={activeStep} />
+				<DeliveryProgressBar percent={active} />
 				{
-					activeStep === 3 &&
+					active === 3 &&
 					<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
 						Continuar
 					</button>
@@ -88,7 +85,7 @@ function DeliveryResume({ duration }) {
 			</div>
 
 			{
-				activeStep !== 3 &&
+				active !== 3 &&
 				<button className="stepper__toggle" onClick={() => setToggle(!toggle)}>
 					{
 						toggle ? 

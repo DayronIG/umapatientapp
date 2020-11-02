@@ -7,10 +7,11 @@ import {useHistory} from "react-router-dom"
 export default function EndAssignationHisopado() {
     const history = useHistory();
     const { ws } = useSelector(state => state.queries.patient);
+    const { id } = useSelector(state => state.deliveryService.deliveryInfo[0]);
 
     useEffect(() => {
         if(ws) {
-            history.push(`/delivery/progress/${ws}/94429191_202010281140/`) /* TODO ROUTE */
+            history.push(`/delivery/progress/${ws}/${id}/`)
         }
     }, [ws]);
         

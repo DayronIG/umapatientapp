@@ -11,7 +11,6 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
     const delivery = useSelector(state => state.deliveryService.params)
 
     useEffect(()=>{
-        console.log(isAddressValidForHisopado)
         if(showCongrats){
             //SUSCRIBIR A AVISOS
         }
