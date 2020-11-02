@@ -10,8 +10,9 @@ const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
     const price = useSelector((state) => state.deliveryService.params.price);
-    const state = ""
-    const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status);
+    const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status) || "ASSIGN:DELIVERY"
+
+    console.log(deliveryStatus)
 
     const buyHisopado = () => {
 		window.gtag('event', 'view_promotion', {
@@ -23,9 +24,11 @@ const BuyHisopado = () => {
         history.push(`/hisopado/${patient.ws}`)
     }
 
+    //CAMBIOSANTI MANDAR A MAPA Y A RESULT
+
     const renderButtonContentFromState = () => {
-            switch (state){
-                case(""):
+            switch (deliveryStatus){
+                case("FREE"):
                     return (
                         <section className="hisopado__container" onClick={() => buyHisopado()}>
                             <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>
@@ -41,6 +44,32 @@ const BuyHisopado = () => {
                             </div>
                         </section>
                     )
+                case("ASSIGN:DELIVERY"):
+                    return (
+                        <section className="hisopado__container" onClick={() => history.push(`/`)}>
+                            <div className="hisopado__content">
+                                <div className="hisopado__info">
+                                    <h2 className="hisopado__title">¡Sigue tu hisopado!</h2>
+                                    <p className="hisopado__text">En camino</p>
+                                    <button className="hisopado__btn">Ver estado <FontAwesomeIcon icon={faArrowRight} /></button>
+                                </div>
+                            </div>
+                        </section>
+                    )
+                case("DONE:RESULT"):
+                    return (
+                        <section className="hisopado__container" onClick={() => history.push(`/`)}>
+                            <div className="hisopado__content">
+                                <div className="hisopado__info">
+                                    <h2 className="hisopado__title">¡Están tus resultados!</h2>
+                                    <p className="hisopado__text">Mira el resultado de tu hisopado</p>
+                                    <button className="hisopado__btn">Ver resultado <FontAwesomeIcon icon={faArrowRight} /></button>
+                                </div>
+                            </div>
+                        </section>
+                    )
+                default:
+                    return <></>
     }}
     
     return renderButtonContentFromState()
