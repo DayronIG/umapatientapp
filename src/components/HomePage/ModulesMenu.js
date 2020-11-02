@@ -19,6 +19,7 @@ import iconBubbles from '../../assets/icons/icon-bubbles.svg';
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
+	const { hisopadosActive } = useSelector((state) => state.front);
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -41,7 +42,7 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
-					<BuyHisopado />
+					{hisopadosActive && <BuyHisopado />}
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

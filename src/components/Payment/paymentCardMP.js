@@ -119,18 +119,21 @@ const PaymentCardMP = () => {
             id: current.id,
             type: 'delivery'
          }
-        console.log("POSTING") 
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
          axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
                 setLoader(false)
                  if (res.data.body.status === "approved") {
                      setStatus("approved")
-                 } else if (res.data.body.status === "rejected") {
+                } else if (res.data.body.status === "rejected") {
                      setStatus(res.data.body.status)
-                     // alert(res.data.body.status)Failed
-             }
-    })}
+                     // alert(res.data.body.status)
+                }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+  }
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
