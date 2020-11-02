@@ -14,7 +14,7 @@ const MobileModal = (props) => {
   return (
     <div className="modalContainer">
       <div className="modal-back"></div>
-      <div className="mobile-modal">
+      <div className={`mobile-modal ${props.surveyHisopados ? 'hisopados' : ''}`}>
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
             if (props.callback) props.callback();
@@ -23,7 +23,10 @@ const MobileModal = (props) => {
             <FontAwesomeIcon icon={faTimesCircle} />
           </div>
         }
-        <div className="modaTitle">{props.title}</div>
+        {
+          props.hideTitle ? '' : 
+          <div className="modaTitle">{props.title}</div>
+        }
         <div className="modalContent">{props.children}</div>
       </div>
     </div>

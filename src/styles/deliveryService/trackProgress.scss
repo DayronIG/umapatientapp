@@ -32,14 +32,14 @@
 				font-weight: 900;
 				font-size: 24px;
 				line-height: 1.6;
-				color: $new-primary-color;
+				color: $uma-primary;
 			}
 
 			.tracking__subtitle {
 				font-weight: 600;
 				font-size: 18px;
 				line-height: 24px;
-				color: $new-text-color;
+				color: $uma-text;
 
 				.tracking__subtitle-bold {
 					font-weight: 900;
@@ -58,13 +58,13 @@
 				font-weight: 800;
 				font-size: 18px;
 				line-height: 22px;
-				color: $new-text-color;
+				color: $uma-text;
 				margin-bottom: 16px;
 			}
 
 			.tracking__indicacionesList {
 				list-style: disc;
-				color: $new-text-color;
+				color: $uma-text;
 				font-size: 15px;
 				line-height: 22px;
 
@@ -100,7 +100,7 @@
 				margin: 20px auto;
 
 				&.tracking__btn-continue {
-					background-color: $new-primary-color;
+					background-color: $uma-primary;
 				}
 
 				&.tracking__btn-cancel {
@@ -121,7 +121,7 @@
 			font-size: 28px;
 			line-height: 1.1;
 			text-align: center;
-			color: $new-primary-color;
+			color: $uma-primary;
 			margin-bottom: 30px;
 		}
 
@@ -204,6 +204,11 @@
 				@media screen and (min-width: 400px) {
 					height: calc(75vh - 52px);
 				}
+
+				&.showBtn {
+					height: calc(100vh - 52px);
+					border-radius: 0;
+				}
 			}
 
 			&:not(.fullOpen) {
@@ -232,8 +237,21 @@
 				margin-top: 20px;
 				font-size: 1.5rem;
 				background: none;
-				color: $new-text-secondary-color;
+				color: $uma-text-secondary;
 				outline: none;
+			}
+
+			.stepper__btn {
+				width: 100%;
+				border: none;
+				background: $uma-primary;
+				border-radius: 15px;
+				padding: 10px;
+				color: $white-color;
+				font-size: 18px;
+				font-weight: 800;
+				line-height: 1.3;
+				margin-top: 20px;
 			}
 
 			.tracking__indications {
@@ -250,14 +268,14 @@
 					background: none;
 					display: flex;
 					justify-content: space-between;
-					color: $new-text-color;
+					color: $uma-text;
 					font-size: 14px;
 					font-weight: 800;
 					line-height: 1.3;
 					outline: none;
 
 					svg {
-						color: $new-input-color;
+						color: $uma-input;
 					}
 				}
 
@@ -266,7 +284,7 @@
 
 					.tracking__indicationsListItem {
 						font-size: 14px;
-						color: $new-text-color;
+						color: $uma-text;
 						line-height: 1.5;
 						list-style: disc inside;
 					}

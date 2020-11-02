@@ -70,9 +70,9 @@ const ModulesMenu = () => {
 							)}
 						</div>
 					</section>
-					<UmaCareHome />
-					<TrasladosHome />
 					<EventsHistory />
+					<UmaCareHome />
+					{/* <TrasladosHome /> */}
 					<button className="needhelp__btn">
 						<img src={iconBubbles} alt="Necesito ayuda"/>
 						Necesito ayuda

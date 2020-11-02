@@ -41,9 +41,14 @@ const DeliveryTrackProgress = () => {
 			case 'PREASSIGN:READY': return <SearchingProfessional />;
 			case 'ASSIGN': return <PackageOnTheWay />;
 			case 'ASSIGN:READY': return <PackageOnTheWay />;
-			case 'DONE:HISOPADO': return <Hisopado />;
+			case 'DONE:HISOPADO': return <PackageOnTheWay />;
 			// case 'DONE:IN_LAB': return <Laboratory />
-			case 'DONE:RESULT': return <Result />
+			case 'DONE:RESULT': {
+				if(user.ws){
+					history.push(`/hisopadoResult/${user.ws}`);
+				}
+				return;
+			}
 			default: return <NotService />; 
 		}
 		// } else if (user._start_date === 'geo' || step === "PREASSIGN") {
@@ -71,7 +76,7 @@ const DeliveryTrackProgress = () => {
 					</>} */}
 				<div className='trackProgress__content'>
 					{/* {renderComponentByTrackProgress(modifiedObjService.status_derivacion)} */}
-					{renderComponentByTrackProgress('ASSIGN')}
+					{renderComponentByTrackProgress('PREASSIGN:READY')}
 				</div>
 			</section>
 		</div>

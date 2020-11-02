@@ -9,6 +9,7 @@
       $height: auto, 
       $background-color: inherit
   );
+
   .card{
       width: 95%;
       background-color: transparent;
@@ -19,6 +20,7 @@
       border: none;
       overflow-x: hidden;
       border-radius: 6px;
+      box-shadow: 0px 4px 24px #E6E6E6;
 
       &.length3 .module-button {
          width: 33.33%;
@@ -137,8 +139,8 @@
    justify-content: center;
    width: 90%;
    margin: 0 auto 20px;
-   background: #5C5286;
-   border-radius: 6px;
+   background: $uma-accent-color;
+   border-radius: 15px;
    padding: 0.7rem;
    border: none;
    font-weight: 800;

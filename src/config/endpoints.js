@@ -8,6 +8,8 @@ const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
 const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
+export const config = { headers: { 'Content-Type': 'application/json' , 'Authorization': localStorage.getItem('Notification_Token')  } }
+
 export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
 
 export const log_event = `${EVENTS}/events`;
@@ -55,15 +57,18 @@ export const node_patient = `${NODE_SERVER}/patients`;
 export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
-// Delivery
-export const mobility_address = `${URN_UMA}/mobility_address`;
 // Providers
 export const get_provider = `${NODE_SERVER}/providers`;
 // Payments
 export const payment_url = `${NODE_SERVER}/mercadopago/payment`;
 export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;
+// Delivery
+export const create_delivery = `${NODE_SERVER}/delivery`
+export const mobility_address = `${NODE_SERVER}/delivery/mobility_address`;
+
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;
+
 
 export const ocr_labo = `${computer_vision}/ocr_labo`;

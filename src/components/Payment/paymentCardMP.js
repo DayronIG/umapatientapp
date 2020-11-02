@@ -11,17 +11,18 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 
-const PaymentCardMP = ({finalAction}) => {
-    const delivery = useSelector(state => state.deliveryService.params)
+const PaymentCardMP = () => {
+    const dispatch = useDispatch()
+    const {params, current} = useSelector(state => state.deliveryService)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
-    const totalPayment = parseInt(delivery.price) || 3499
+    const totalPayment = parseInt(params?.price) || 3499
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
-    const payment_url_test = `http://localhost:8080/mercadopago/payment`;
+    const payment_url_test = `http://localhost:8080/payments/mercadopago`;
     const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
@@ -106,7 +107,7 @@ const PaymentCardMP = ({finalAction}) => {
     function postData(form, token) {
         setLoader(true)
         let { paymentMethodId } = form.elements
-        console.log(paymentMethodId, form.elements, token)
+        // console.log(paymentMethodId, form.elements, token)
         let paymentData = {
             email: `${user.email}`, // hardcoded // CHANGESANTI
             paymentMethodId: paymentMethodId.value, 
@@ -114,14 +115,15 @@ const PaymentCardMP = ({finalAction}) => {
             dni: `${user.dni}`,
             fullname: `${user.fullname}`,
             amount: parseInt(totalPayment),
-            currency: 'ARS'
+            currency: 'ARS',
+            id: current.id,
+            type: 'delivery'
          }
-        console.log(paymentData) 
+        // console.log(paymentData) 
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
          axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
                  setLoader(false)
-                 console.log(res.data.body)
                  if (res.data.body.status === "approved") {
                      setStatus("approved")
                  } else if (res.data.body.status === "rejected") {
@@ -134,7 +136,7 @@ const PaymentCardMP = ({finalAction}) => {
              })
              .catch(err => {
                  setLoader(false)
-                 console.log(err)
+                 // console.log(err)
                  setStatus("failed")
              })
     }
@@ -153,12 +155,14 @@ const PaymentCardMP = ({finalAction}) => {
 
     useEffect(() => {
         if(paymentStatus === "approved"){
+          console.log("Payment success")
           setLoader(false)
-          finalAction()
+          dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
             // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+            console.log("Payment failed")
         }
     }, [paymentStatus, history])
 

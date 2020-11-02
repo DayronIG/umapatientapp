@@ -10,31 +10,31 @@ const TrackingStepper = ({active}) => (
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En preparación</StepLabel>
             <StepContent className="tracking__stepContent">
-            El personal de salud  está preparando su equipo
+                El personal de salud está preparando su equipo
             </StepContent>
         </Step>
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En camino</StepLabel>
             <StepContent className="tracking__stepContent">
-            El enfermero está en camino
+                Tu enfermero Juan Rodríguez está en camino
             </StepContent>
         </Step>
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>En domicilio</StepLabel>
             <StepContent className="tracking__stepContent">
-            El enfermero ha llegado al domicilio
+                Tu enfermero Juan Rodríguez ha llegado a tu domicilio
             </StepContent>
         </Step>
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>Hisopado</StepLabel>
             <StepContent className="tracking__stepContent">
-            Se ha realizado el hisopado 
+                Se ha realizado el hisopado 
             </StepContent>
         </Step>
         <Step className="tracking__step">
             <StepLabel className="tracking__stepLabel" StepIconComponent={Check}>Resultado</StepLabel>
             <StepContent className="tracking__stepContent">
-            Se ha cargado el resultado 
+                Se ha cargado el resultado 
             </StepContent>
         </Step>
     </Stepper>

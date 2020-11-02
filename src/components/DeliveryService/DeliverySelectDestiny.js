@@ -13,11 +13,11 @@ import Axios from 'axios';
 import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
-import DBConnection from '../../config/DBConnection';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
 import '../../styles/deliveryService/selectDestiny.scss';
+import { type } from 'jquery';
 
-const DeliverySelectDestiny = ({finalAction}) => {
+const DeliverySelectDestiny = () => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -35,7 +35,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
-	const { addressLatLongHisopado, params } = useSelector(state => state.deliveryService);
+	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
@@ -146,15 +146,17 @@ const DeliverySelectDestiny = ({finalAction}) => {
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 		const data = { newValues: formState };
 		const data2 = {
-			'key': 'HISOPADO',
+			'key': deliveryType || 'HISOPADO',
 			'ws': ws,
 			'dni': patient.dni,
 			'format_address': formState.address,
 			'user_address': formState.address,
 			'lat': formState.lat,
 			'lon': formState.lng,
-			'piso_dpto': `${formState.depto} ${formState.piso}`,
-			'incidente_id': incidente_id
+			'floor': `${formState.piso}`,
+			'number': `${formState.depto}`,
+			'incidente_id': current.id,
+			'range': isAddressValidForHisopado || false
 		};
 		try {
 			// Primera request
@@ -169,9 +171,7 @@ const DeliverySelectDestiny = ({finalAction}) => {
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
-		if(finalAction){
-			finalAction()
-		}
+			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 	};
 
 	return (
