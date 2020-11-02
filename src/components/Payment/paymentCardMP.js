@@ -21,6 +21,7 @@ const PaymentCardMP = () => {
     const totalPayment = parseInt(params?.price) || 3499
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
+    const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
@@ -77,12 +78,9 @@ const PaymentCardMP = () => {
 
     function handleSubmit(event) {
         event.preventDefault()
-        // if (!submit) {
-            const form = document.getElementsByTagName('form')[0]
-            window.Mercadopago.createToken(form, sdkResponseHandler)
-        // } else {
-        //   alert("Ya realizaste el pago")
-        // }
+        const form = document.getElementsByTagName('form')[0]
+        window.Mercadopago.createToken(form, sdkResponseHandler)
+
     }
 
     function sdkResponseHandler(status, response) {
@@ -126,7 +124,8 @@ const PaymentCardMP = () => {
                  if (res.data.body.status === "approved") {
                      setStatus("approved")
                 } else if (res.data.body.status === "rejected") {
-                     setStatus(res.data.body.status)
+                  setStatusDetail(res.data.body.status_detail)
+                  setStatus(res.data.body.status)
                      // alert(res.data.body.status)
                 }
             })
@@ -155,7 +154,24 @@ const PaymentCardMP = () => {
             // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
-            swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+            switch(statusDetail){
+              case("cc_rejected_insufficient_amount"):
+                swal('Fondos insuficientes!', 'Intente nuevamente con otra tarjeta.', 'error')
+                break;
+              case("cc_rejected_bad_filled_security_code"):
+                swal('Código de seguridad inválido!', 'Verifique el código ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_date"):
+                swal('Fecha de expiración inválida!', 'Verifique la fecha ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_other"):
+                swal('Datos inválidos!', 'Verifique los datos ingresados.', 'error')
+                break;
+              default: 
+                swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+                break;
+            }
+            window.Mercadopago.clearSession();
             console.log("Payment failed")
         }
     }, [paymentStatus, history])

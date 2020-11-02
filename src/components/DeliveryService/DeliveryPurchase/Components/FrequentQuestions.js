@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import QuestionAnswer from "./QuestionAnswer"
 import { MdKeyboardArrowLeft } from "react-icons/md"
 
@@ -63,6 +63,10 @@ export default function FrequentQuestions({goBack}) {
             answer: "Las llamadas “pruebas rápidas” pueden ser de dos tipos: las que detectan antígenos (proteínas del virus) y las que detectan anticuerpos (IgM/IgG). Aquellas que detectan “antígenos” son útiles como criterio para confirmar la presencia del virus en el momento en que se toma la muestra. Aquellas que detectan anticuerpos, indican solamente un contacto previo con el virus, no permite demostrar ni descartar la presencia del virus en el momento en que se toma la muestra. La presencia de anticuerpos no indica ausencia de virus (dependiendo del momento de la toma de muestra) y tampoco indica necesariamente protección contra el virus."
         }
     ]
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
     return (
         <div className="allwhite-hisopados-background">
