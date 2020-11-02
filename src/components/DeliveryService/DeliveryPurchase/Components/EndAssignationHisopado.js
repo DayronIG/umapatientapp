@@ -10,7 +10,7 @@ export default function EndAssignationHisopado() {
 
     useEffect(() => {
         if(ws) {
-            history.push(`/${ws}/delivery/progress/94429191_202010281140/`) /* TODO ROUTE */
+            history.push(`/delivery/progress/${ws}/94429191_202010281140/`) /* TODO ROUTE */
         }
     }, [ws]);
         

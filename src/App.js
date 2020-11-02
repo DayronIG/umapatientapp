@@ -136,7 +136,7 @@ function App(props) {
 					path='/hisopadoResult/:ws?'
 					component={DeliveryResults}
 				/>
-				<PrivateRoute exact path='/:ws?/delivery/progress/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
