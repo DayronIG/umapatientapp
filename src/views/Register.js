@@ -115,8 +115,7 @@ const Register = props => {
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
         composeDate()
         let subscription
-        let source = props.match?.params?.affiliate // To do move to back
-        if (source && source.toLowerCase().includes('rappi_peru')) {
+        if (ref && ref.toLowerCase().includes('rappi_peru')) {
             subscription = 'AUT'
         }
         let dob = `${getYear}-${getMonth}-${getDay}`
