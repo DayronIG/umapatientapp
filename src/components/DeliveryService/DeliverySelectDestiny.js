@@ -157,7 +157,7 @@ const DeliverySelectDestiny = () => {
 			'lon': formState.lng,
 			'floor': `${formState.piso}`,
 			'number': `${formState.depto}`,
-			'incidente_id': current.id,
+			'incidente_id': current?.id,
 			'range': isAddressValidForHisopado || false
 		};
 		try {
