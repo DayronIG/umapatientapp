@@ -21,8 +21,8 @@ export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) 
         <div className="allwhite-hisopados-background">
             {isAddressValidForHisopado ? 
             <div className="instructions-container">
-                    <img src={hisopadoTic} alt="delivery_check" className="delivery_check"/>
-                    <p className="delivery-title">¡Contámos con cobertura en tu zona!</p>
+                    <img src={hisopadoTic} alt="delivery_check" className="delivery_check hisopados_check"/>
+                    <p className="delivery-title">¡Tu hisopado está cada vez mas cerca!</p>
                     <p>Nuestro personal de salud estará en su domicilio en <b>{delivery.delay}</b></p>
                     <p>Una vez confirmado el pago, le asignaremos un enfermero/a.</p>
                     <div onClick={() => finalAction()} className="blue-button">

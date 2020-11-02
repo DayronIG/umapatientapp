@@ -10,6 +10,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
+import { payment_url_test, payment_url } from "../../config/endpoints"
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -22,7 +23,6 @@ const PaymentCardMP = () => {
     const [paymentStatus, setStatus] = useState(false);
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
-    const payment_url_test = `http://localhost:8080/payments/mercadopago`;
     const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
@@ -77,12 +77,12 @@ const PaymentCardMP = () => {
 
     function handleSubmit(event) {
         event.preventDefault()
-        if (!submit) {
+        // if (!submit) {
             const form = document.getElementsByTagName('form')[0]
             window.Mercadopago.createToken(form, sdkResponseHandler)
-        } else {
-            alert("Ya realizaste el pago")
-        }
+        // } else {
+        //   alert("Ya realizaste el pago")
+        // }
     }
 
     function sdkResponseHandler(status, response) {
@@ -119,27 +119,18 @@ const PaymentCardMP = () => {
             id: current.id,
             type: 'delivery'
          }
-        // console.log(paymentData) 
+        console.log("POSTING") 
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
          axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
-                 setLoader(false)
+                setLoader(false)
                  if (res.data.body.status === "approved") {
                      setStatus("approved")
                  } else if (res.data.body.status === "rejected") {
                      setStatus(res.data.body.status)
-                     // alert(res.data.body.status)
-                 } else {
-                     setStatus(res.data.body.status)
-                     swal(res.data.body.status, "", "error")
-                 }
-             })
-             .catch(err => {
-                 setLoader(false)
-                 // console.log(err)
-                 setStatus("failed")
-             })
-    }
+                     // alert(res.data.body.status)Failed
+             }
+    })}
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){

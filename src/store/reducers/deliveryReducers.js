@@ -14,7 +14,7 @@ const initialState = {
 		lat: 0,
 		lng: 0,
 	},
-	step: {step: "ASK_FOR_BUY", params: ""}
+	step: "ASK_FOR_BUY"
 };
 
 export default (state = initialState, { type, payload }) => {
