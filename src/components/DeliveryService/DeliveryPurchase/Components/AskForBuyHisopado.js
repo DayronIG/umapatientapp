@@ -66,11 +66,15 @@ export default function AskForBuyHisopado() {
             <img className="hisopados-image" src={IllustrationHisopado}  alt="Hisopado" />
             <p className="hisopados-title">¡Comprá tu hisopado a domicilio!</p>
             <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
-            <div className="price-container">
-            <p className="hisopados-previous-price">$5500</p>
-                <p className="hisopados-discount">40% off</p>
-            </div>
+            <div className="price-center-aligner">
+                <div className="price-container">
+                <div className="discount-container">
+                    <p className="hisopados-previous-price">$5500</p>
+                    <p className="hisopados-discount">40% off</p>
+                </div>
                 <p className="hisopados-price">${params?.price}</p>
+                </div>
+            </div>
             <div className="hisopados-bullets-container">
             <div className="hisopados-bullets">
                 <p><FaMapMarker className="icon"/>A domicilio</p>
