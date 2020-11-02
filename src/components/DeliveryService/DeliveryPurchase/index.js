@@ -8,6 +8,7 @@ import EndAssignationHisopado from "./Components/EndAssignationHisopado"
 import Payment from "../../Payment"
 import { useHistory } from "react-router-dom"
 import "../../../styles/hisopado/hisopadosFlux.scss"
+import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
     const {step, params} = useSelector((state) => state.deliveryService.step);

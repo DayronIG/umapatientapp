@@ -76,7 +76,7 @@ const DeliveryTrackProgress = () => {
 					</>} */}
 				<div className='trackProgress__content'>
 					{/* {renderComponentByTrackProgress(modifiedObjService.status_derivacion)} */}
-					{renderComponentByTrackProgress('DONE:HISOPADO')}
+					{renderComponentByTrackProgress('PREASSIGN:READY')}
 				</div>
 			</section>
 		</div>
