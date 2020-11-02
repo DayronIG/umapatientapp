@@ -1,28 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar, Step } from 'react-step-progress-bar';
-import { IoIosRadioButtonOn, IoIosRadioButtonOff } from 'react-icons/io';
+import { FaCheckCircle } from 'react-icons/fa';
 
-export default function DeliveryProgressBar({ progress, percent }) {
-	const returnIcon = (accomplished) => {
-		if (accomplished) {
-			return <IoIosRadioButtonOn />;
-		} else {
-			return <IoIosRadioButtonOff />;
+export default function DeliveryProgressBar({ percent }) {
+	const [qty, setQty] = useState(20);
+
+	useEffect(() => {
+		switch(percent) {
+			case 0: setQty(20);
+			break;
+			case 1: setQty(40);
+			break;
+			case 2: setQty(60);
+			break;
+			case 3: setQty(80);
+			break;
+			case 4: setQty(100);
+			break;
 		}
-	};
+	}, [])
 
 	return (
-		<ProgressBar filledBackground='#97c1d3' percent={percent}>
-			{progress.map((item) => (
+		<div id="progressBar" className={`fill_${qty}`}>
+			<ProgressBar filledBackground='#009042' percent={qty}>
 				<Step transition='scale'>
 					{({ accomplished }) => (
 						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
-							{returnIcon(accomplished)}
-							<span className='trackProgress__container--text'>{item.text}</span>
+							<FaCheckCircle />
+							<div className='trackProgress__container--text'>
+								<h3>En preparación</h3>
+								<p>El personal de salud  está preparando su equipo</p>
+							</div>
 						</div>
 					)}
 				</Step>
-			))}
-		</ProgressBar>
+				<Step transition='scale'>
+					{({ accomplished }) => (
+						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
+							<FaCheckCircle />
+							<div className='trackProgress__container--text'>
+								<h3>En camino</h3>
+								<p>El enfermero está en camino</p>
+							</div>
+						</div>
+					)}
+				</Step>
+				<Step transition='scale'>
+					{({ accomplished }) => (
+						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
+							<FaCheckCircle />
+							<div className='trackProgress__container--text'>
+								<h3>En domicilio</h3>
+								<p>El enfermero ha llegado al domicilio</p>
+							</div>
+						</div>
+					)}
+				</Step>
+				<Step transition='scale'>
+					{({ accomplished }) => (
+						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
+							<FaCheckCircle />
+							<div className='trackProgress__container--text'>
+								<h3>Hisopado</h3>
+								<p>Se ha realizado el hisopado</p>
+							</div>
+						</div>
+					)}
+				</Step>
+				<Step transition='scale'>
+					{({ accomplished }) => (
+						<div className={`trackProgress__container--step ${accomplished ? 'accomplished' : ''}`}>
+							<FaCheckCircle />
+							<div className='trackProgress__container--text'>
+								<h3>Resultado</h3>
+								<p>Se ha cargado el resultado</p>
+							</div>
+						</div>
+					)}
+				</Step>
+			</ProgressBar>
+		</div>
 	);
 }

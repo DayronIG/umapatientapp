@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TrackingStepper from './Stepper';
+import DeliveryProgressBar from './DeliveryProgressBar';
 import enfermero from "../../assets/img/enfermero_en_camino.svg";
 import FrequentQuestions from './DeliveryPurchase/Components/FrequentQuestions';
 import '../../styles/hisopado/frequentQuestions.scss';
@@ -39,7 +39,7 @@ const SearchingProfessional = () => {
     
           <div className="tracking__stepper">
             <h2 className="tracking__stepperTitle">Detalle del pedido</h2>
-            <TrackingStepper active={activeStep} />
+            <DeliveryProgressBar percent={10} />
           </div>
         </section>
       )
