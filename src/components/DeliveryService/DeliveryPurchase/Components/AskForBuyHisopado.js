@@ -109,7 +109,7 @@ export default function AskForBuyHisopado() {
                 <br/>
                 <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
             </p>
-            <div onClick={() => startBuying()} className="hisopados-button">
+            <div onClick={() => params?.price ? startBuying(): ""} className="hisopados-button">
                 <p className="button-text"><FaCartPlus className="icon"/>Comprar hisopado</p>
 			</div>
         </div>)
