@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import { getAuth } from '../../store/actions/firebaseQueries';
-import { getDocumentFB, getDocumentsByFilter } from '../Utils/firebaseUtils';
+import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
 import db, { askPermissionToRecieveNotifications }  from '../../config/DBConnection';
 import { node_patient } from '../../config/endpoints';
@@ -120,12 +120,11 @@ function AuthProvider({ children }) {
 
 
     const getDeliveryInfo = useCallback(async()=> {
-		console.log(patient.dni)
         const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
 		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
-		let filters =  [ {field: 'status', value: ['ASSIGN:DELIVERY'], comparator: 'in'}, {field: 'patient.dni', value: patient.dni, comparator: '=='}]
-		const pendingDelivery = await getDocumentsByFilter('events/requests/delivery', filters)
-		dispatch({type: 'SET_DELIVERY_PENDING', payload: pendingDelivery})
+		let filters =  [{field: 'status', value: ['ASSIGN:DELIVERY', "PREASSIGN", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.dni', value: patient.dni, comparator: '=='}]
+		const deliveryInfo = await snapDocumentsByFilter('events/requests/delivery', filters)
+		dispatch({type: 'SET_DELIVERY', payload: deliveryInfo})
     }, [patient])
 
 	async function getInitialData(user) {

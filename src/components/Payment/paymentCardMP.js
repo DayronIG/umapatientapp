@@ -227,6 +227,7 @@ const PaymentCardMP = () => {
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
               <input
+                autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"
                 type="text"
                 name="number"
@@ -241,6 +242,7 @@ const PaymentCardMP = () => {
             <div className="formulario-item">
               <small>Nombre</small>
               <input
+                autoComplete="off"
                 type="text"
                 name="name"
                 maxLength="30"
@@ -255,7 +257,9 @@ const PaymentCardMP = () => {
             <div>
                 <div className="document">
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
-                <input type="text" id="docNumber" defaultValue={user.dni}
+                <input 
+                autoComplete="off"
+                type="text" id="docNumber" defaultValue={user.dni}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>
@@ -265,11 +269,14 @@ const PaymentCardMP = () => {
               <div>
                 <small>Vencimiento</small>
                 <div className="cardExpiration">
-                <input type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
+                <input 
+                autoComplete="off"
+                type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
                     placeholder="Mes" autoComplete="off" className="mr-3" maxLength="2"
                     onChange={handleChange}
                     onFocus={handleFocus}/>
                 <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
+                    autoComplete="off"
                     placeholder="Año" autoComplete="off" maxLength="2" onChange={e => expirationYearCheck(e.target.value)}
                     onChange={handleChange}
                     onFocus={handleFocus}/>
@@ -279,6 +286,7 @@ const PaymentCardMP = () => {
               <div className="formulario-item">
                 <small>Código de seguridad</small>
                 <input
+                autoComplete="off"
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""
@@ -292,6 +300,7 @@ const PaymentCardMP = () => {
               <div className="formulario-item">
                 <small>Código de descuento</small>
                 <input
+                autoComplete="off"
                   id="discount" data-checkout="discount"
                   type="text"
                   className=""
