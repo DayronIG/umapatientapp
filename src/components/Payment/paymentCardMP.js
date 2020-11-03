@@ -135,6 +135,7 @@ const PaymentCardMP = () => {
                 }
             })
             .catch(err => {
+              setLoader(false)
               swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
               window.Mercadopago.clearSession();
             })
