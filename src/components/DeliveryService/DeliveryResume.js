@@ -19,6 +19,7 @@ function DeliveryResume({ duration, active }) {
 		app: 0,
 		comment: ''
 	})
+	const [error, setError] = useState(false);
 
 	useEffect(() => {
 		if(!toggle) {
@@ -43,6 +44,8 @@ function DeliveryResume({ duration, active }) {
 			console.log('send data');
 			// TODO: pegarle al endpoint de feedback
 			history.push(`/hisopadoResult/${ws}`);
+		} else {
+			setError(true);
 		}
 	}
 
@@ -134,6 +137,9 @@ function DeliveryResume({ duration, active }) {
 						<textarea name="comment" onChange={handleChangeComment} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
 					</div>
 				</div>
+				
+				{error && <p className="stepper__error">Todos los campos son obligatorios</p>}
+				
 				<button className="stepper__btn" onClick={sendRating}>
 					Enviar
 				</button>

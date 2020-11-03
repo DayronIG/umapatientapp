@@ -150,6 +150,7 @@
 .mobile-modal.hisopados {
   border-radius: 15px;
   padding: 20px;
+  max-height: 90vh;
 
   .modalContent {
     display: flex;
@@ -201,6 +202,7 @@
           outline: none;
           resize: none;
           width: 100%;
+          margin: 0 0 5px;
         }
       }
     }
@@ -217,5 +219,11 @@
     font-weight: 800;
     line-height: 1.3;
     outline: none;
+  }
+
+  .stepper__error {
+    font-size: 15px;
+    color: #D80000;
+    font-weight: 600;
   }
 }
