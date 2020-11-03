@@ -63,7 +63,6 @@
 		"react-loading-skeleton": "2.0.1",
 		"react-localization": "1.0.15",
 		"react-mic-record": "1.0.6",
-		"react-moment": "0.9.2",
 		"react-phone-input-2": "2.12.1",
 		"react-redux": "7.1.0",
 		"react-router-dom": "^5.2.0",
@@ -78,7 +77,6 @@
 		"react-to-print": "2.11.0",
 		"redux": "4.0.1",
 		"redux-devtools-extension": "2.13.8",
-		"redux-saga": "1.0.5",
 		"redux-thunk": "2.3.0",
 		"styled-components": "5.1.1",
 		"sweetalert": "2.1.2"
