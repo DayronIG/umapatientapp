@@ -11,6 +11,8 @@ import StarRatings from 'react-star-ratings';
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
 	const { ws } = useSelector(store => store.queries.patient)
+	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[0].eval);
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);
@@ -19,12 +21,17 @@ function DeliveryResume({ duration, active }) {
 		app: 0,
 		comment: ''
 	})
+	const [error, setError] = useState(false);
 
 	useEffect(() => {
 		if(!toggle) {
 			setToggleIndications(false);
 		}
 	}, [toggle]);
+
+	if(status === 'DONE:RESULT' && notes && nurse_eval && uma_eval){
+		history.push(`/hisopadoResult/${ws}`);
+	} 
 
 	const changePersonalRating = (newRating) => {
 		setSurveyResponse({...surveyResponse, personal: newRating});
@@ -41,7 +48,10 @@ function DeliveryResume({ duration, active }) {
 	const sendRating = () => {	
 		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
 			console.log('send data');
+			// TODO: pegarle al endpoint de feedback
 			history.push(`/hisopadoResult/${ws}`);
+		} else {
+			setError(true);
 		}
 	}
 
@@ -133,6 +143,9 @@ function DeliveryResume({ duration, active }) {
 						<textarea name="comment" onChange={handleChangeComment} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
 					</div>
 				</div>
+				
+				{error && <p className="stepper__error">Todos los campos son obligatorios</p>}
+				
 				<button className="stepper__btn" onClick={sendRating}>
 					Enviar
 				</button>

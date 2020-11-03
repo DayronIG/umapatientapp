@@ -43,7 +43,7 @@
             flex: 3;
             position: relative;
 
-            &::after {
+            &.active__hisopado::after {
                 content: '';
                 height: 100%;
                 width: 2px;

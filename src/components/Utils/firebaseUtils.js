@@ -65,7 +65,7 @@ export async function getDocumentsByFilter(route, filters, limit = false, postFi
 	} */
 }
 
-export async function snapDocumentsByFilter(route, filters, limit = false, postFilters = false) {
+export async function snapDocumentsByFilter(route, filters, action = (data) => console.log(data),limit = false, postFilters = false) {
 	/**
    * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
    * also take into account the fact that .where() querys are inefficient.
@@ -82,9 +82,10 @@ export async function snapDocumentsByFilter(route, filters, limit = false, postF
 			ref = ref.where(filter.field, filter.comparator, filter.value);
 		});
 		if (limit !== false) ref.limit(limit)
-		await ref.onSnapshot((snapshot) => {
+		ref.onSnapshot((snapshot) => {
 			snapshot.forEach((doc) => {
 				let document = doc.data();
+				action(document)
 				document.docId = doc.id;
 				result.push(document);
 			});

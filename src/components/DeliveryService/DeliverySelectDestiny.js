@@ -160,7 +160,6 @@ const DeliverySelectDestiny = () => {
 			'incidente_id': current?.id,
 			'range': isAddressValidForHisopado || false
 		};
-		console.log(current?.id)
 		try {
 			// Primera request
 			await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });

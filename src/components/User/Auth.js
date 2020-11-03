@@ -123,8 +123,7 @@ function AuthProvider({ children }) {
         const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
 		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
 		let filters =  [{field: 'status', value: ['ASSIGN:DELIVERY', "PREASSIGN", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.dni', value: patient.dni, comparator: '=='}]
-		const deliveryInfo = await snapDocumentsByFilter('events/requests/delivery', filters)
-		dispatch({type: 'SET_DELIVERY', payload: deliveryInfo})
+		await snapDocumentsByFilter('events/requests/delivery', filters, (data) => dispatch({type: 'SET_DELIVERY', payload: [data]}))
     }, [patient])
 
 	async function getInitialData(user) {

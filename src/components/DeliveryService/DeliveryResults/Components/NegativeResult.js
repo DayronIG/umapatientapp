@@ -24,13 +24,13 @@ export default function EndAssignationHisopado({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div> */}
-                    <div className="results-menu-map-item">
+                    {/* <div className="results-menu-map-item">
                         <div>
                             <FaListUl className="icon" />
                             Medidas de prevención
                         </div>
                         <FaArrowRight className="icon-arrow" />
-                    </div>
+                    </div> */}
                 </div>
         </div>
     )

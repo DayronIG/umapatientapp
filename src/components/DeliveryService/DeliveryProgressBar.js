@@ -16,7 +16,7 @@ export default function DeliveryProgressBar({ percent }) {
 			case 3: setQty(100);
 			break;
 		}
-	}, [])
+	}, [percent])
 
 	return (
 		<div id="progressBar" className={`fill_${qty}`}>

@@ -8,8 +8,7 @@ import useInterval from '../Hooks/useInterval';
 
 const PackageOnTheWay = ({ active }) => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
-	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
-	// const { delivery } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const { delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[0]);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
@@ -23,38 +22,38 @@ const PackageOnTheWay = ({ active }) => {
 		handleApiLoaded(setUserLocation);
 	}
 
-	// useInterval(() => {
-	// 	if (typeof drawRoute === 'function') {
-	// 		const userPos = {
-	// 			lat: addressLatLongHisopado.lat,
-	// 			lng: addressLatLongHisopado.lng
-	// 		};
-	// 		drawRoute(
-	// 			{
-	// 				lng: delivery.lon_delivery, 
-	// 				lat: delivery.lat_delivery
-	// 			}, 
-	// 			userPos
-	// 		)
-	// 		.then(res => setDuration(res))
-	// 		.catch(err => console.error(err));
-	// 	}
-	// }, 5000);
+	useInterval(() => {
+		if (typeof drawRoute === 'function') {
+			const userPos = {
+				lat: destination.user_lat,
+				lng: destination.user_lon
+			};
+			drawRoute(
+				{
+					lng: delivery.lon_delivery, 
+					lat: delivery.lat_delivery
+				}, 
+				userPos
+			)
+			.then(res => setDuration(res))
+			.catch(err => console.error(err));
+		}
+	}, 5000);
 
-	// useEffect(() => {
-	// 	if (typeof mapBounder === 'function') {
-	// 		mapBounder([
-	// 			{
-	// 				lat: delivery.lat_delivery,
-	// 				lng: delivery.lon_delivery
-	// 			},
-	// 			{
-	// 				lat: addressLatLongHisopado.user_lat,
-	// 				lng: addressLatLongHisopado.user_lng
-	// 			}
-	// 		]);
-	// 	}
-	// }, [mapBounder, delivery])
+	useEffect(() => {
+		if (typeof mapBounder === 'function') {
+			mapBounder([
+				{
+					lat: delivery.lat_delivery,
+					lng: delivery.lon_delivery
+				},
+				{
+					lat: destination.user_lat,
+					lng: destination.user_lng
+				}
+			]);
+		}
+	}, [mapBounder, delivery])
 	
 	return (
 		<>
@@ -63,13 +62,13 @@ const PackageOnTheWay = ({ active }) => {
 				onGoogleApiLoaded={setMapFunctions}
 			>
 				<Marker
-					lat={-34.563169}
-					lng={-58.473520}
+					lat={delivery.lat_delivery}
+					lng={delivery.lon_delivery}
 					text='Ubicación del remis'
 				/>
 				<Marker
-					lat={addressLatLongHisopado.lat}
-					lng={addressLatLongHisopado.lng}
+					lat={destination.user_lat}
+					lng={destination.user_lon}
 					text='Tú ubicación'
 				/>
 			</GoogleMapReact>
