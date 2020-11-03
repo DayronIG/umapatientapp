@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 // import Autocomplete from '../../GeneralComponents/Autocomplete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import swal from 'sweetalert';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import symptoms from '../../../config/symptoms.json';
 import useScrollPosition from '../../Utils/use-scroll-position';
