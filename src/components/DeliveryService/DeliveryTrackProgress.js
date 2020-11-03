@@ -15,7 +15,7 @@ const DeliveryTrackProgress = () => {
 	const history = useHistory();
 
 	const renderComponentByTrackProgress = (step) => {
-		if (status && status !== 'FREE' && status !== "FREE:IN_RANGE") {
+		// if (status && status !== 'FREE' && status !== "FREE:IN_RANGE") {
 			switch (step) {
 				case 'PREASSIGN': return <SearchingProfessional active={0} />;
 				case 'ASSIGN:DELIVERY': return <PackageOnTheWay active={1} />;
@@ -29,11 +29,11 @@ const DeliveryTrackProgress = () => {
 				// }
 				default: return <NotService />; 
 			}
-		} else if(status && status === 'FREE' || status === "FREE:IN_RANGE") {
-			history.push(`/hisopado/${user.ws}`);
-		} else {
-			return <NotService />;
-		}
+		// } else if(status && status === 'FREE' || status === "FREE:IN_RANGE") {
+		// 	history.push(`/hisopado/${user.ws}`);
+		// } else {
+		// 	return <NotService />;
+		// }
 	};
 
 	return (
@@ -43,7 +43,7 @@ const DeliveryTrackProgress = () => {
 				{loading && <Loading />}
 				<div className='trackProgress__content'>
 					{/* {renderComponentByTrackProgress(modifiedObjService.status_derivacion)} */}
-					{renderComponentByTrackProgress(status)}
+					{renderComponentByTrackProgress("ASSIGN:DELIVERY")}
 				</div>
 			</section>
 		</div>
