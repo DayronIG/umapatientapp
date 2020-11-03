@@ -7,7 +7,7 @@ import ButtonStyle from "./ButtonStyle"
 const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
-    const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.id)
+    const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
     const deliveryStatus = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.status) || ""
 
     const buyHisopado = () => {
