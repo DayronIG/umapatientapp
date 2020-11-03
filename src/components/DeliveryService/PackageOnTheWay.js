@@ -7,6 +7,7 @@ import Marker from '../global/Marker';
 import useInterval from '../Hooks/useInterval';
 
 const PackageOnTheWay = ({ active }) => {
+	console.log(active);
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
 	// const { delivery } = useSelector(state => state.deliveryService.deliveryInfo[0]);
