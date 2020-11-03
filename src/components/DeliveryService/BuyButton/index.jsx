@@ -9,6 +9,7 @@ import HomeHisopado from '../../../assets/img/home-hisopado.png';
 const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
+    // const { id } = useSelector(state => state.deliveryService?.deliveryInfo[0]);
     const price = useSelector((state) => state.deliveryService.params.price);
     const deliveryStatus = useSelector((state) => state.deliveryService.deliveryInfo?.status) || "FREE"
 
@@ -44,7 +45,7 @@ const BuyHisopado = () => {
                     )
                 case("ASSIGN:DELIVERY"):
                     return (
-                        <section className="hisopado__container" onClick={() => history.push(`/`)}>
+                        <section className="hisopado__container" onClick={() => history.push(`/delivery/progress/${patient.ws}/${"123123"}/`)}>
                             <div className="hisopado__content">
                                 <div className="hisopado__info">
                                     <h2 className="hisopado__title">¡Sigue tu hisopado!</h2>
