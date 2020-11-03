@@ -25,6 +25,10 @@
     .hisopado__img {
         width: 100%;
         filter: brightness(0.9);
+
+        @media screen and (min-width: 769px) {
+            display: none;
+        }
     }
 
     .hisopado__content {

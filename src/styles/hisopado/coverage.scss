@@ -9,22 +9,22 @@
 
         .coverage__back {
             position: absolute;
-            top: 60px;
+            top: 70px;
             left: 5%;
             z-index: 1;
             background: none;
             border: none;
             color: $white-color;
-            font-size: 2rem;
+            font-size: 1.4rem;
             line-height: 0;
             padding: 0;
             margin: 0;
             outline: none;
-
-            svg {
-                stroke-width: 20px;
-                stroke: $uma-input;
-            }
+            background: $uma-primary;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
         }
 
         .coverage__card {

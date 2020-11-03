@@ -160,11 +160,12 @@ const DeliverySelectDestiny = () => {
 			'incidente_id': current?.id,
 			'range': isAddressValidForHisopado || false
 		};
+		console.log(current?.id)
 		try {
 			// Primera request
 			await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });
 			// Segunda request
-			await Axios.post(mobility_address, data2, headers);
+			await Axios.post(mobility_address, data2, {headers});
 
 			dispatch({ type: 'LOADING', payload: false });
 		} catch (error) {
