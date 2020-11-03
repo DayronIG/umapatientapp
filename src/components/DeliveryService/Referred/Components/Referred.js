@@ -18,8 +18,8 @@ export default function ReferredInvitation({finalAction}) {
                 </div>
                 <div className="results-menu-map-container">
                     <div className="results-menu-map-item highlighted-color"
-                    onClick={() => history.push(`/hisopado/${patient.ws}`)}
-                    >
+                        onClick={() => history.push(`/hisopado/${patient.ws}`)}
+                        >
                         <div>
                             <GiTransparentTubes className="icon" />
                             Comprar hisopado
