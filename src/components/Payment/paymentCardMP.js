@@ -10,7 +10,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import { payment_url_test, payment_url } from "../../config/endpoints"
+import { payment_url_test, payment_url, node_patient } from "../../config/endpoints"
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -103,11 +103,13 @@ const PaymentCardMP = () => {
     }
 
     function postData(form, token) {
+      let { paymentMethodId, email } = form.elements
+      console.log(paymentMethodId.value)
+      // console.log(paymentMethodId, form.elements, token)
+      if(paymentMethodId.value !== "unknown"){
         setLoader(true)
-        let { paymentMethodId } = form.elements
-        // console.log(paymentMethodId, form.elements, token)
         let paymentData = {
-            email: `${user.email}`, // hardcoded // CHANGESANTI
+            email: email.value, // hardcoded // CAMBIOSANTI
             paymentMethodId: paymentMethodId.value, 
             token: token,
             dni: `${user.dni}`,
@@ -118,6 +120,9 @@ const PaymentCardMP = () => {
             type: 'delivery'
          }
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
+         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+         .then(res => console.log(res))
+         .catch(err => console.log(err))
          axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
                 setLoader(false)
@@ -132,6 +137,9 @@ const PaymentCardMP = () => {
             .catch(err => {
               console.log(err)
             })
+      } else {
+        swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+      }
   }
 
     const expirationYearCheck = (year) => {
@@ -235,6 +243,20 @@ const PaymentCardMP = () => {
                 onChange={(e) => {
                   handleChange(e)
                 }}
+                onFocus={handleFocus}
+              />
+            </div>
+
+            <div className="formulario-item">
+              <small>Email</small>
+              <input
+                autoComplete="off"
+                type="text"
+                name="email"
+                placeholder="nombre@email.com"
+                id="email"
+                data-checkout="email"
+                onChange={handleChange}
                 onFocus={handleFocus}
               />
             </div>

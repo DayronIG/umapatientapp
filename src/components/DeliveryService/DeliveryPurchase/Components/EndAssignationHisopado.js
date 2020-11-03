@@ -7,7 +7,8 @@ import {useHistory} from "react-router-dom"
 export default function EndAssignationHisopado() {
     const history = useHistory();
     const { ws } = useSelector(state => state.queries.patient);
-    const { id } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+    // const { id } = useSelector(state => state.deliveryService.deliveryInfo[0]); 
+    const id = 123
 
     useEffect(() => {
         if(ws) {
