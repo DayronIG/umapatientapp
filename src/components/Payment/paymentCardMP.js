@@ -326,7 +326,7 @@ const PaymentCardMP = () => {
                   id="discount" data-checkout="discount"
                   type="text"
                   className=""
-                  name="cvc"
+                  name="discount"
                   maxLength="4"
                   placeholder="CÓDIGO"
                   onChange={handleChange}
