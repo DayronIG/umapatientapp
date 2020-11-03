@@ -97,15 +97,12 @@ const PaymentCardMP = () => {
             card.setAttribute('value', response.id)
             card.setAttribute('id', 'token')
             form.appendChild(card)
-            // console.log("Response", response)
             postData(form, response.id)
         }
     }
 
     function postData(form, token) {
       let { paymentMethodId, email } = form.elements
-      console.log(paymentMethodId.value)
-      // console.log(paymentMethodId, form.elements, token)
       if(paymentMethodId.value !== "unknown"){
         setLoader(true)
         let paymentData = {
