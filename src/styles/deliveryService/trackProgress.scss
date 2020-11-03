@@ -282,11 +282,11 @@
 				@media screen and (min-width: 400px) {
 					height: calc(85vh - 52px);
 				}
+			}
 
-				&.showBtn {
-					height: calc(100vh - 52px);
-					border-radius: 0;
-				}
+			&.showBtn {
+				height: calc(100vh - 52px);
+				border-radius: 0;
 			}
 
 			&:not(.fullOpen) {
