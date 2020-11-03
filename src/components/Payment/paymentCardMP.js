@@ -252,7 +252,7 @@ const PaymentCardMP = () => {
             <div className="formulario-item">
               <small>Email</small>
               <input
-                autoComplete="off"
+                autoComplete="on"
                 type="text"
                 name="email"
                 placeholder="nombre@email.com"
@@ -266,7 +266,7 @@ const PaymentCardMP = () => {
             <div className="formulario-item">
               <small>Nombre</small>
               <input
-                autoComplete="off"
+                autoComplete="on"
                 type="text"
                 name="name"
                 maxLength="30"

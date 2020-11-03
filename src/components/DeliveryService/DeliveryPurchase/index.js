@@ -4,14 +4,16 @@ import { GenericHeader } from '../../GeneralComponents/Headers';
 import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
-import EndAssignationHisopado from "./Components/EndAssignationHisopado"
 import Payment from "../../Payment"
+import DeliveryTrackProgress from '../DeliveryTrackProgress';
 import { useHistory } from "react-router-dom"
-import "../../../styles/hisopado/hisopadosFlux.scss"
+import "../../../styles/hisopado/hisopadosFlux.scss";
 import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
     const {step, params} = useSelector((state) => state.deliveryService);
+    const { ws } = useSelector(state => state.queries.patient);
+    const { id } = useSelector(state => state.deliveryService.current);
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -47,9 +49,8 @@ export default function HisopadosPurchase() {
                     'content_type': 'END_ASSIGNATION',
                     'item_id': 'Hisopado Antígeno',
                   });
-                return <EndAssignationHisopado 
-                history={history}
-                finalAction = {() => console.log("REDIRECT TO TRACKER")}/>
+                history.push(`/delivery/progress/${ws}/${id}/`);
+            break;
             default: 
                 console.log("ALGO")
     }}
