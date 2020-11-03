@@ -135,7 +135,8 @@ const PaymentCardMP = () => {
                 }
             })
             .catch(err => {
-              console.log(err)
+              swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+              window.Mercadopago.clearSession();
             })
       } else {
         swal("Verifique el número de tarjeta ingresado", "" ,"warning")
