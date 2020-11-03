@@ -281,7 +281,7 @@ const PaymentCardMP = () => {
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
                 <input 
                 autoComplete="off"
-                type="text" id="docNumber" defaultValue={user.dni}
+                type="text" id="docNumber" defaultValue={user.dni.length <= 8? user.dni: "12345678"}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>
