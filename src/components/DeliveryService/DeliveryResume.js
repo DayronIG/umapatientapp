@@ -11,6 +11,8 @@ import StarRatings from 'react-star-ratings';
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
 	const { ws } = useSelector(store => store.queries.patient)
+	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[0].eval);
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);
@@ -26,6 +28,10 @@ function DeliveryResume({ duration, active }) {
 			setToggleIndications(false);
 		}
 	}, [toggle]);
+
+	if(status === 'DONE:RESULT' && notes && nurse_eval && uma_eval){
+		history.push(`/hisopadoResult/${ws}`);
+	} 
 
 	const changePersonalRating = (newRating) => {
 		setSurveyResponse({...surveyResponse, personal: newRating});

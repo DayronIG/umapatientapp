@@ -20,8 +20,6 @@ const BuyHisopado = () => {
         history.push(`/hisopado/${patient.ws}`)
     }
 
-    console.log(deliveryStatus)
-
     const renderButtonContentFromState = () => {
             switch (deliveryStatus){
                 case("PREASSIGN"):
