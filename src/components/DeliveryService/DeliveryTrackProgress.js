@@ -6,6 +6,7 @@ import PackageOnTheWay from './PackageOnTheWay';
 import SearchingProfessional from './SearchingProfessional';
 import Loading from '../GeneralComponents/Loading';
 import NotService from './NotService';
+import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Components/EndAssignationHisopado"
 import '../../styles/deliveryService/trackProgress.scss';
 
 const DeliveryTrackProgress = () => {
@@ -17,7 +18,7 @@ const DeliveryTrackProgress = () => {
 	const renderComponentByTrackProgress = (step) => {
 		if (status && status !== 'FREE' && status !== "FREE:IN_RANGE") {
 			switch (step) {
-				case 'PREASSIGN': return <SearchingProfessional active={0} />;
+				case 'PREASSIGN': return <EndAssignationHisopado />;
 				case 'ASSIGN:DELIVERY': return <PackageOnTheWay active={1} />;
 				case 'ASSIGN:ARRIVED': return <PackageOnTheWay active={2} />;
 				case 'DONE:RESULT': return <PackageOnTheWay active={3} />;
