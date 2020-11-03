@@ -13,9 +13,6 @@ export default function EndAssignationHisopado() {
                 <p className="hisopados-title">¡Hemos recibido su pago!</p>
                 <p>Estamos buscando al profesional más cercano para realizar el hisopado</p>
                 <p>Aguarde unos instantes</p>
-                <br/>
-                <br/>
-                <Loader/>
             </div>
         </div>
     )
