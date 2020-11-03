@@ -19,8 +19,16 @@ export default function HisopadosPurchase() {
     const renderContent = () => {
         switch (step) {
             case "ASK_FOR_BUY":
+                window.gtag('event', 'select_content', {
+                    'content_type': 'ASK_FOR_BUY',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 return <AskForBuyHisopado />
             case "ADDRESS_PICKER":
+                window.gtag('event', 'select_content', {
+                    'content_type': 'ADDRESS_PICKER',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 return <AddressPickerHisopado />
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
@@ -35,6 +43,10 @@ export default function HisopadosPurchase() {
                   });
                 return <Payment />
             case "END_ASSIGNATION":
+                window.gtag('event', 'select_content', {
+                    'content_type': 'END_ASSIGNATION',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 return <EndAssignationHisopado 
                 history={history}
                 finalAction = {() => console.log("REDIRECT TO TRACKER")}/>

@@ -68,6 +68,9 @@ const SignIn = props => {
         if (password) {
             localStorage.setItem('accessCode', password.value)
             let email = `${validPhone}@${password.value}.com`;
+            window.gtag('event', 'login', {
+                'method': 'Email'
+              });
             db.auth()
                 .signInWithEmailAndPassword(email, password.value)
                 .then(async (reg) => {
