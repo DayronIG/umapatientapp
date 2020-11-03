@@ -9,8 +9,7 @@ import useInterval from '../Hooks/useInterval';
 const PackageOnTheWay = ({ active }) => {
 	console.log(active);
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
-	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
-	const { delivery } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const { delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[0]);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
@@ -27,8 +26,8 @@ const PackageOnTheWay = ({ active }) => {
 	useInterval(() => {
 		if (typeof drawRoute === 'function') {
 			const userPos = {
-				lat: addressLatLongHisopado.lat,
-				lng: addressLatLongHisopado.lng
+				lat: destination.user_lat,
+				lng: destination.user_lon
 			};
 			drawRoute(
 				{
@@ -50,8 +49,8 @@ const PackageOnTheWay = ({ active }) => {
 					lng: delivery.lon_delivery
 				},
 				{
-					lat: addressLatLongHisopado.user_lat,
-					lng: addressLatLongHisopado.user_lng
+					lat: destination.user_lat,
+					lng: destination.user_lng
 				}
 			]);
 		}
@@ -69,8 +68,8 @@ const PackageOnTheWay = ({ active }) => {
 					text='Ubicación del remis'
 				/>
 				<Marker
-					lat={addressLatLongHisopado.lat}
-					lng={addressLatLongHisopado.lng}
+					lat={destination.user_lat}
+					lng={destination.user_lon}
 					text='Tú ubicación'
 				/>
 			</GoogleMapReact>
