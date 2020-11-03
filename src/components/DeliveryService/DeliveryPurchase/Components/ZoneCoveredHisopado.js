@@ -5,15 +5,31 @@ import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
 import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
 
 export default function ZoneCoveredDelivery({finalAction, history, goPrevious}) {
-    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService);
+    const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient); 
     const [showCongrats, setShowCongrats] = useState(false);
     const delivery = useSelector(state => state.deliveryService.params)
 
     useEffect(()=>{
-        console.log(isAddressValidForHisopado)
+        if(!isAddressValidForHisopado) {
+            window.gtag('event', 'select_content', {
+                'content_type': 'OUT_OF_RANGE',
+                'item_id': 'Hisopado Antígeno',
+              });
+        } else {
+            window.gtag('event', 'select_content', {
+                'content_type': 'IN_RANGE',
+                'item_id': 'Hisopado Antígeno',
+              });
+        }
         if(showCongrats){
-            //SUSCRIBIR A AVISOS
+            // TO DO SUSCRIBIR A AVISOS
+            window.gtag('event', 'select_content', {
+                'content_type': 'add_to_wishlist',
+                'items': 'Hisopado Antígeno',
+                'value': params?.price || '0',
+                'currency': 'ARS'
+              });
         }
     },[showCongrats])
 

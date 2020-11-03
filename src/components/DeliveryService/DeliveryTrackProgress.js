@@ -10,10 +10,8 @@ import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Componen
 import '../../styles/deliveryService/trackProgress.scss';
 
 const DeliveryTrackProgress = () => {
-	const { status } = useSelector(state => state.deliveryService.current);
-	const user = useSelector(state => state.queries.patient);
+	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]) || "NOT:SERVICE";
 	const { loading } = useSelector(state => state.front);
-	const history = useHistory();
 
 	const renderComponentByTrackProgress = (step) => {
 		if (status && status !== 'FREE' && status !== "FREE:IN_RANGE") {
@@ -22,16 +20,8 @@ const DeliveryTrackProgress = () => {
 				case 'ASSIGN:DELIVERY': return <PackageOnTheWay active={1} />;
 				case 'ASSIGN:ARRIVED': return <PackageOnTheWay active={2} />;
 				case 'DONE:RESULT': return <PackageOnTheWay active={3} />;
-				// case 'DONE:RESULT': {
-				// 	if(user.ws){
-				// 		history.push(`/hisopadoResult/${user.ws}`);
-				// 	}
-				// 	return;
-				// }
 				default: return <NotService />; 
 			}
-		} else if(status && status === 'FREE' || status === "FREE:IN_RANGE") {
-			history.push(`/hisopado/${user.ws}`);
 		} else {
 			return <NotService />;
 		}
@@ -43,7 +33,6 @@ const DeliveryTrackProgress = () => {
 			<section className='trackProgress__container'>
 				{loading && <Loading />}
 				<div className='trackProgress__content'>
-					{/* {renderComponentByTrackProgress(modifiedObjService.status_derivacion)} */}
 					{renderComponentByTrackProgress(status)}
 				</div>
 			</section>

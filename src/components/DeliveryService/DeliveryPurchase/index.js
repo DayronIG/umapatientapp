@@ -5,8 +5,9 @@ import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
 import Payment from "../../Payment"
+import DeliveryTrackProgress from '../DeliveryTrackProgress';
 import { useHistory } from "react-router-dom"
-import "../../../styles/hisopado/hisopadosFlux.scss"
+import "../../../styles/hisopado/hisopadosFlux.scss";
 import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
@@ -20,8 +21,16 @@ export default function HisopadosPurchase() {
     const renderContent = () => {
         switch (step) {
             case "ASK_FOR_BUY":
+                window.gtag('event', 'select_content', {
+                    'content_type': 'ASK_FOR_BUY',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 return <AskForBuyHisopado />
             case "ADDRESS_PICKER":
+                window.gtag('event', 'select_content', {
+                    'content_type': 'ADDRESS_PICKER',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 return <AddressPickerHisopado />
             case "ZONE_COVERED":
                 return <ZoneCoveredHisopado 
@@ -36,9 +45,10 @@ export default function HisopadosPurchase() {
                   });
                 return <Payment />
             case "END_ASSIGNATION":
-                // return <EndAssignationHisopado 
-                // history={history}
-                // finalAction = {() => console.log("REDIRECT TO TRACKER")}/>
+                window.gtag('event', 'select_content', {
+                    'content_type': 'END_ASSIGNATION',
+                    'item_id': 'Hisopado Antígeno',
+                  });
                 history.push(`/delivery/progress/${ws}/${id}/`);
             break;
             default: 

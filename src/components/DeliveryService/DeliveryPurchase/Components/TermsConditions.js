@@ -1,7 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { MdKeyboardArrowLeft } from "react-icons/md"
 
 export default function TermsConditions({goBack}) {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <div className="allwhite-hisopados-background">
             <div className="title-terms-frequent-container">

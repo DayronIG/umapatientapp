@@ -7,15 +7,13 @@ export default function DeliveryProgressBar({ percent }) {
 
 	useEffect(() => {
 		switch(percent) {
-			case 0: setQty(20);
+			case 0: setQty(25);
 			break;
-			case 1: setQty(40);
+			case 1: setQty(50);
 			break;
-			case 2: setQty(60);
+			case 2: setQty(75);
 			break;
-			case 3: setQty(80);
-			break;
-			case 4: setQty(100);
+			case 3: setQty(100);
 			break;
 		}
 	}, [])

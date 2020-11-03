@@ -8,7 +8,8 @@ import useInterval from '../Hooks/useInterval';
 
 const PackageOnTheWay = ({ active }) => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
-	const { modifiedObjService } = useSelector(state => state.deliveryService);
+	const { addressLatLongHisopado } = useSelector(state => state.deliveryService);
+	// const { delivery } = useSelector(state => state.deliveryService.deliveryInfo[0]);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
@@ -25,13 +26,13 @@ const PackageOnTheWay = ({ active }) => {
 	// useInterval(() => {
 	// 	if (typeof drawRoute === 'function') {
 	// 		const userPos = {
-	// 			lat: modifiedObjService.user_lat,
-	// 			lng: modifiedObjService.user_lng
+	// 			lat: addressLatLongHisopado.lat,
+	// 			lng: addressLatLongHisopado.lng
 	// 		};
 	// 		drawRoute(
 	// 			{
-	// 				lng: modifiedObjService.delivery_lng, 
-	// 				lat: modifiedObjService.delivery_lat
+	// 				lng: delivery.lon_delivery, 
+	// 				lat: delivery.lat_delivery
 	// 			}, 
 	// 			userPos
 	// 		)
@@ -44,16 +45,16 @@ const PackageOnTheWay = ({ active }) => {
 	// 	if (typeof mapBounder === 'function') {
 	// 		mapBounder([
 	// 			{
-	// 				lat: modifiedObjService.delivery_lat,
-	// 				lng: modifiedObjService.delivery_lng
+	// 				lat: delivery.lat_delivery,
+	// 				lng: delivery.lon_delivery
 	// 			},
 	// 			{
-	// 				lat: modifiedObjService.user_lat,
-	// 				lng: modifiedObjService.user_lng
+	// 				lat: addressLatLongHisopado.user_lat,
+	// 				lng: addressLatLongHisopado.user_lng
 	// 			}
 	// 		]);
 	// 	}
-	// }, [mapBounder, modifiedObjService])
+	// }, [mapBounder, delivery])
 	
 	return (
 		<>
@@ -67,8 +68,8 @@ const PackageOnTheWay = ({ active }) => {
 					text='Ubicación del remis'
 				/>
 				<Marker
-					lat={-34.563544}
-					lng={-58.455438}
+					lat={addressLatLongHisopado.lat}
+					lng={addressLatLongHisopado.lng}
 					text='Tú ubicación'
 				/>
 			</GoogleMapReact>

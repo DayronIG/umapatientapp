@@ -2,19 +2,10 @@ import React, { useEffect } from 'react'
 import {useSelector} from "react-redux"
 import hisopadosPay from "../../../../assets/img/hisopados_payment.svg"
 import { Loader } from '../../../GeneralComponents/Loading';
-import {useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom";
+import "../../../../styles/hisopado/hisopadosFlux.scss";
 
-export default function EndAssignationHisopado() {
-    const history = useHistory();
-    const { ws } = useSelector(state => state.queries.patient);
-    const { id } = useSelector(state => state.deliveryService.deliveryInfo[0]);
-
-    useEffect(() => {
-        if(ws) {
-            history.push(`/delivery/progress/${ws}/${id}/`)
-        }
-    }, [ws]);
-        
+export default function EndAssignationHisopado() {        
     return (
         <div className="allwhite-hisopados-background" >
             <div className="instructions-container">

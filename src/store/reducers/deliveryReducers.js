@@ -8,7 +8,7 @@ const initialState = {
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
-	pending: {},
+	deliveryInfo: {},
 	selectHomeForm: {
 		piso: '',
 		depto: '',
@@ -35,8 +35,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, step: payload}
 		case "SET_DELIVERY_CURRENT":
 			return { ...state, current: payload}
-		case "SET_DELIVERY_PENDING":
-			return { ...state, pending: payload}
+		case "SET_DELIVERY":
+			return { ...state, deliveryInfo: payload}
 		case "SET_DELIVERY_COVERAGE":
 			return {...state, coverage: payload}
 		default:

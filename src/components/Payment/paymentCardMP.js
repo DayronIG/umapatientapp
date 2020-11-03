@@ -10,7 +10,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import { payment_url_test, payment_url } from "../../config/endpoints"
+import { payment_url_test, payment_url, node_patient } from "../../config/endpoints"
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -21,6 +21,7 @@ const PaymentCardMP = () => {
     const totalPayment = parseInt(params?.price) || 3499
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
+    const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
@@ -77,12 +78,9 @@ const PaymentCardMP = () => {
 
     function handleSubmit(event) {
         event.preventDefault()
-        // if (!submit) {
-            const form = document.getElementsByTagName('form')[0]
-            window.Mercadopago.createToken(form, sdkResponseHandler)
-        // } else {
-        //   alert("Ya realizaste el pago")
-        // }
+        const form = document.getElementsByTagName('form')[0]
+        window.Mercadopago.createToken(form, sdkResponseHandler)
+
     }
 
     function sdkResponseHandler(status, response) {
@@ -105,11 +103,13 @@ const PaymentCardMP = () => {
     }
 
     function postData(form, token) {
+      let { paymentMethodId, email } = form.elements
+      console.log(paymentMethodId.value)
+      // console.log(paymentMethodId, form.elements, token)
+      if(paymentMethodId.value !== "unknown"){
         setLoader(true)
-        let { paymentMethodId } = form.elements
-        // console.log(paymentMethodId, form.elements, token)
         let paymentData = {
-            email: `${user.email}`, // hardcoded // CHANGESANTI
+            email: email.value, // hardcoded // CAMBIOSANTI
             paymentMethodId: paymentMethodId.value, 
             token: token,
             dni: `${user.dni}`,
@@ -120,19 +120,28 @@ const PaymentCardMP = () => {
             type: 'delivery'
          }
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
+         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+         .then(res => console.log(res))
+         .catch(err => console.log(err))
          axios.post(payment_url_test, paymentData, {headers})
              .then(res => {
                 setLoader(false)
                  if (res.data.body.status === "approved") {
                      setStatus("approved")
                 } else if (res.data.body.status === "rejected") {
-                     setStatus(res.data.body.status)
+                  setStatusDetail(res.data.body.status_detail)
+                  setStatus(res.data.body.status)
                      // alert(res.data.body.status)
                 }
             })
             .catch(err => {
-              console.log(err)
+              setLoader(false)
+              swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+              window.Mercadopago.clearSession();
             })
+      } else {
+        swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+      }
   }
 
     const expirationYearCheck = (year) => {
@@ -155,7 +164,24 @@ const PaymentCardMP = () => {
             // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
-            swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+            switch(statusDetail){
+              case("cc_rejected_insufficient_amount"):
+                swal('Fondos insuficientes!', 'Intente nuevamente con otra tarjeta.', 'error')
+                break;
+              case("cc_rejected_bad_filled_security_code"):
+                swal('Código de seguridad inválido!', 'Verifique el código ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_date"):
+                swal('Fecha de expiración inválida!', 'Verifique la fecha ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_other"):
+                swal('Datos inválidos!', 'Verifique los datos ingresados.', 'error')
+                break;
+              default: 
+                swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+                break;
+            }
+            window.Mercadopago.clearSession();
             console.log("Payment failed")
         }
     }, [paymentStatus, history])
@@ -211,6 +237,7 @@ const PaymentCardMP = () => {
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
               <input
+                autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"
                 type="text"
                 name="number"
@@ -221,10 +248,25 @@ const PaymentCardMP = () => {
                 onFocus={handleFocus}
               />
             </div>
+
+            <div className="formulario-item">
+              <small>Email</small>
+              <input
+                autoComplete="off"
+                type="text"
+                name="email"
+                placeholder="nombre@email.com"
+                id="email"
+                data-checkout="email"
+                onChange={handleChange}
+                onFocus={handleFocus}
+              />
+            </div>
             
             <div className="formulario-item">
               <small>Nombre</small>
               <input
+                autoComplete="off"
                 type="text"
                 name="name"
                 maxLength="30"
@@ -239,7 +281,9 @@ const PaymentCardMP = () => {
             <div>
                 <div className="document">
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
-                <input type="text" id="docNumber" defaultValue={user.dni}
+                <input 
+                autoComplete="off"
+                type="text" id="docNumber" defaultValue={user.dni.length <= 8? user.dni: "12345678"}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>
@@ -249,11 +293,14 @@ const PaymentCardMP = () => {
               <div>
                 <small>Vencimiento</small>
                 <div className="cardExpiration">
-                <input type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
+                <input 
+                autoComplete="off"
+                type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
                     placeholder="Mes" autoComplete="off" className="mr-3" maxLength="2"
                     onChange={handleChange}
                     onFocus={handleFocus}/>
                 <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
+                    autoComplete="off"
                     placeholder="Año" autoComplete="off" maxLength="2" onChange={e => expirationYearCheck(e.target.value)}
                     onChange={handleChange}
                     onFocus={handleFocus}/>
@@ -263,6 +310,7 @@ const PaymentCardMP = () => {
               <div className="formulario-item">
                 <small>Código de seguridad</small>
                 <input
+                autoComplete="off"
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""
@@ -276,10 +324,11 @@ const PaymentCardMP = () => {
               <div className="formulario-item">
                 <small>Código de descuento</small>
                 <input
+                autoComplete="off"
                   id="discount" data-checkout="discount"
                   type="text"
                   className=""
-                  name="cvc"
+                  name="discount"
                   maxLength="4"
                   placeholder="CÓDIGO"
                   onChange={handleChange}
