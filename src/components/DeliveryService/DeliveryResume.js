@@ -41,6 +41,7 @@ function DeliveryResume({ duration, active }) {
 	const sendRating = () => {	
 		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
 			console.log('send data');
+			// TODO: pegarle al endpoint de feedback
 			history.push(`/hisopadoResult/${ws}`);
 		}
 	}
