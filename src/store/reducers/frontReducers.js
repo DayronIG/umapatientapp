@@ -131,24 +131,16 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, origin_translate_thursday: action.payload };
         case 'SET_ORIGIN_TRANSLATE_FRIDAY':
             return { ...state, origin_translate_friday: action.payload };
-        case 'SET_ORIGIN_TRANSLATE_SATURDAY':
-            return { ...state, origin_translate_saturday: action.payload };
-        case 'SET_ORIGIN_TRANSLATE_SUNDAY':
-            return { ...state, origin_translate_sunday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_MONDAY':
-                return { ...state, destiny_translate_monday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_TUESDAY':
-            return { ...state, destiny_translate_tuesday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_WEDNESDAY':
-            return { ...state, destiny_translate_wednesday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_THURSDAY':
-            return { ...state, destiny_translate_thursday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_FRIDAY':
-            return { ...state, destiny_translate_friday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_SATURDAY':
-            return { ...state, destiny_translate_saturday: action.payload };
-        case 'SET_DESTINY_TRANSLATE_SUNDAY':
-            return { ...state, destiny_translate_sunday: action.payload };
+        case 'SET_BACK_TRANSLATE_MONDAY':
+                return { ...state, back_translate_monday: action.payload };
+        case 'SET_BACK_TRANSLATE_TUESDAY':
+            return { ...state, back_translate_tuesday: action.payload };
+        case 'SET_BACK_TRANSLATE_WEDNESDAY':
+            return { ...state, back_translate_wednesday: action.payload };
+        case 'SET_BACK_TRANSLATE_THURSDAY':
+            return { ...state, back_translate_thursday: action.payload };
+        case 'SET_BACK_TRANSLATE_FRIDAY':
+            return { ...state, back_translate_friday: action.payload };
         default:
             return state;
     }

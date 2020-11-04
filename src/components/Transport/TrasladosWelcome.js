@@ -14,7 +14,7 @@ const TrasladosWelcome = (props) => {
 				<div className='transport-img'>
 					<img src={taxi} alt="Traslados sanitarios" />
 				</div>
-				<h1 className='h12'>Traslados</h1>
+				<h1 className='h12'>Traslados sanitarios</h1>
 				<h4 className='h32'>Haga click en comenzar para registrarse en el servicio.</h4>
 			</div>
 			<FooterBtn
