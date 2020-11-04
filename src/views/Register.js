@@ -7,7 +7,6 @@ import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
-import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
@@ -17,38 +16,39 @@ import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
 import 'moment-timezone';
+import 'react-datepicker/dist/react-datepicker.css';
 import '../../src/styles/generalcomponents/register.scss';
 
 const Register = props => {
-    const dispatch = useDispatch()
-    const history = useHistory()
-    const {ws: urlWS, ref} = useParams()
-    const [registered, setRegistered] = useState(false)
-    const [deferredPrompt, setDeferredPrompt] = React.useState()
-    const [termsSwitch, setTermsSwitch] = useState(true)
-    const [modalDisplay, ] = useState(false)
-    const loading = useSelector(state => state.front.loading)
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const {ws: urlWS, ref} = useParams();
+    const [registered, setRegistered] = useState(false);
+    const [deferredPrompt, setDeferredPrompt] = React.useState();
+    const [termsSwitch, setTermsSwitch] = useState(true);
+    const [modalDisplay, ] = useState(false);
+    const loading = useSelector(state => state.front.loading);
     //const urlWS = props.match.params.ws
     const { dni: getId, day: getDay, month: getMonth, year: getYear,
-        dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country } = useSelector(state => state.register)
-    const monthRef = useRef()
-    const yearRef = useRef()
+        dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country } = useSelector(state => state.register);
+    const monthRef = useRef();
+    const yearRef = useRef();
 
     useEffect(() => {
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault()
-            setDeferredPrompt(e)
+            e.preventDefault();
+            setDeferredPrompt(e);
         })
         if(urlWS.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/')
+            swal('Error', 'Este no es un teléfono válido.', 'warning');
+            history.push('/');
         } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS });
+            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref });
+            getCountryCode();
+            generatePassword();
         }
-    }, [dispatch, props.match])
+    }, [dispatch, props.match]);
 
     async function getCountryCode() {
         let code = await getCountry(urlWS)

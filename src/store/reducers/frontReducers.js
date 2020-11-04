@@ -1,6 +1,4 @@
 const initialState = {
-    answerQuestions: false,
-    action: '',
     alert: {
         active: false,
         type: 'success',
@@ -8,23 +6,29 @@ const initialState = {
         msg: ''
     },
     biomarker: { open: true, status: 0 },
-    checkStatus: false,
-    currentQuestion: 0,
-    dinamic: { whenDinamic: false, queueDinamic: true },
     error: '',
     loading: false,
-    mic_cam_permissions: '',
-    modal: false,
-    modalAction: false,
-    nextQuestion: '',
-    openDetails: false,
-    otherReason: false,
-    paginationTransport: 1,
-    remainingText: '',
-    showAskText: true,
+    checkStatus: false,
+    dinamic: { whenDinamic: false, queueDinamic: true },
     sidebar: { first: false, second: false },
-    versions: {patients: '0.0.0'},
+    modal: false,
+    origin_translate_monday: false,
+    origin_translate_tuesday: false,
+    origin_translate_wednesday: false,
+    origin_translate_thursday: false,
+    origin_translate_friday: false,
+    origin_translate_saturday: false,
+    otherReason: false,
+    answerQuestions: false,
+    paginationTransport: 1,
+    showAskText: true,
+    nextQuestion: '',
+    currentQuestion: 0,
+    openDetails: false,
+    modalAction: false,
+    mic_cam_permissions: '',
     vmdStage: 'who',
+    remainingText: ''
 }
 
 export default function frontReducers(state = initialState, action) {
@@ -51,8 +55,6 @@ export default function frontReducers(state = initialState, action) {
             }
         case 'ERROR':
             return { ...state, error: action.payload };
-        case 'HANDLE_MODAL':
-                return { ...state, modal: action.payload, action: action.action };
         case 'OPEN_MODAL':
             return { ...state, modal: true, action: action.action };
         case 'CLOSE_MODAL':
@@ -119,8 +121,26 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, vmdStage: action.payload };
         case 'SET_CAM_MIC_PERMISSIONS':
             return { ...state, mic_cam_permissions: action.payload };
-        case 'SET_VERSIONS':
-            return { ...state, versions: action.payload }
+        case 'SET_ORIGIN_TRANSLATE_MONDAY':
+            return { ...state, origin_translate_monday: action.payload };
+        case 'SET_ORIGIN_TRANSLATE_TUESDAY':
+            return { ...state, origin_translate_tuesday: action.payload };
+        case 'SET_ORIGIN_TRANSLATE_WEDNESDAY':
+            return { ...state, origin_translate_wednesday: action.payload };
+        case 'SET_ORIGIN_TRANSLATE_THURSDAY':
+            return { ...state, origin_translate_thursday: action.payload };
+        case 'SET_ORIGIN_TRANSLATE_FRIDAY':
+            return { ...state, origin_translate_friday: action.payload };
+        case 'SET_BACK_TRANSLATE_MONDAY':
+                return { ...state, back_translate_monday: action.payload };
+        case 'SET_BACK_TRANSLATE_TUESDAY':
+            return { ...state, back_translate_tuesday: action.payload };
+        case 'SET_BACK_TRANSLATE_WEDNESDAY':
+            return { ...state, back_translate_wednesday: action.payload };
+        case 'SET_BACK_TRANSLATE_THURSDAY':
+            return { ...state, back_translate_thursday: action.payload };
+        case 'SET_BACK_TRANSLATE_FRIDAY':
+            return { ...state, back_translate_friday: action.payload };
         default:
             return state;
     }

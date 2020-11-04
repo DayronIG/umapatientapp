@@ -1,23 +1,28 @@
-
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
+import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
+import { transport } from '../../config/endpoints';
+import Alert  from  '../GeneralComponents/Alert/Alerts';
+import Cleave from 'cleave.js/react';
 import { transport_register } from '../../config/endpoints';
 import { fileToBlob } from '../Utils/fileToBlob';
 import InputFile from '../Inputs/InputFile';
-import swal from 'sweetalert';
-import Loading from '../GeneralComponents/Loading';
+import CustomUmaLoader from '../GeneralComponents/Loading';
 import { putFileFB } from '../Utils/firebaseUtils';
 import '../../styles/generalcomponents/TransportOnboardingThirdStep.scss';
+import moment from 'moment';
+
 
 const TransportOnboarding = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	/* Second Form data */
 	const { disability, certificateNumber, wheelChair, diagnostic, protection, companionName } = useSelector((state) => state.onboardingSecondStep);
-	const { loading } = useSelector(state => state.front);
 	/* Third Form data */
 	const { credentialExpires, disabilityExpires } = useSelector((state) => state.onboardingThirdStep);
 	const getIdPreview = useSelector((state) => state.onboardingThirdStep.id.filePreview);
@@ -25,61 +30,120 @@ const TransportOnboarding = () => {
 	const getLicencePreview = useSelector((state) => state.onboardingThirdStep.licence.filePreview);
 	const getLicenceFile = useSelector((state) => state.onboardingThirdStep.licence.file);
 	const getQualificationPreview = useSelector((state) => state.onboardingThirdStep.qualification.filePreview);
-	const getIdExpires = useSelector((state) => state.onboardingThirdStep.idExpires);
-	// const getQualificationFile = useSelector((state) => state.onboardingThirdStep.qualification.file);
-	/* Local States */
-	/* Hooks */
-	
+    const getIdExpires = useSelector((state) => state.onboardingThirdStep.idExpires);
+    const getCredentialExpires = useSelector((state) => state.onboardingThirdStep.credentialExpires);
+    const getDisabilityExpires = useSelector((state) => state.onboardingThirdStep.disabilityExpires)
+    const getDisability = useSelector((state) => state.onboardingThirdStep.disability)
+    const [displayAlert, setDisplayAlert] = useState(false)
+    const { loading } = useSelector(state => state.front);
+    const [loader, setLoader] = useState(false)
+    const user = useSelector((state) => state.onboardingSecondStep)
+    const { ws } = useParams();
+    const getUserData = JSON.parse(localStorage.getItem('userData'));
+
+    function backToMainMenu() {
+        setTimeout(function() {
+            history.push(`/${getUserData.ws}/transportUserActive`) 
+        }, 4000)
+        setTimeout(function(){
+            dispatch({type: 'LOADING', payload: false})
+        }, 2000)
+    }
+
+        const t = moment().add(7, 'days')
+        const today = t.valueOf()
+        const date = getIdExpires.replace(/\//g, '-')
+        const idDate = moment(date).valueOf();
+
+        const t2 = moment().add(7, 'days')
+        const today2 = t2.valueOf()
+        const date2 = getCredentialExpires.replace(/\//g, '-')
+        const credDate = moment(date2).valueOf();
+
+        const t3 = moment().add(7, 'days')
+        const today3 = t3.valueOf()
+        const date3 = getDisabilityExpires.replace(/\//g, '-')
+        const disDate = moment(date3).valueOf();
+           
 	async function sendForm() {
-		dispatch({ type: 'SET_LOADING', payload: true });
-		const licenceBlob = await fileToBlob(getLicenceFile);
-		const dniBlob = await fileToBlob(getIdFile);
-		const getUserData = JSON.parse(localStorage.getItem('userData'));
-		const [url_credential, url_dni] = await Promise.all([
-			putFileFB(dniBlob, `/${getUserData.dni}/dni_photo`), 
-			putFileFB(licenceBlob, `/${getUserData.dni}/licence_photo`)
-		]);
-		const data = {
-			'ws': getUserData.ws,
-			'dni': getUserData.dni,
-			'dt': '',
-			'discapacidad': disability,
-			'credencial': certificateNumber,
-			'silla_ruedas': wheelChair,
-			'diagnostico': diagnostic,
-			'amparo': protection,
-			'acompanante': companionName,
-			'dni_foto': url_dni,
-			'credencial_foto': getLicenceFile,
-			'certificado_foto': url_credential,
-			'dni_vencimiento': getIdExpires,
-			'credencial_vencimiento': credentialExpires,
-			'certificado_discapacidad_vencimiento': disabilityExpires
-		};
-		const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
+        setLoader(true)
 		try {
-			await Axios.post(transport_register, data, config);
+            const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
+            if (!date.test(getIdExpires) || !date.test(getCredentialExpires)){
+                swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+                return};
+                
+            if (user.disability !== "0-NINGUNA"){
+                if (!date.test(getDisabilityExpires)){
+                    swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+                    return
+                }
+                if (today >= disDate){
+                    swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
+               return
+                }
+            }
+        
+            if(today >= idDate){
+                swal('Aviso', 'La fecha de vencimiento de DNI es incorrecta', 'warning')
+                return
+            }
+
+            if(today2 >= credDate){
+                swal('Aviso', 'La fecha de vencimiento de la credencial es incorrecta', 'warning')
+                return
+            }
+            
+            const licenceBlob = await fileToBlob(getLicenceFile);
+            const dniBlob = await fileToBlob(getIdFile);
+            const getUserData = JSON.parse(localStorage.getItem('userData'));
+            const [url_credential, url_dni] = await Promise.all([
+                putFileFB(dniBlob, `/${getUserData.dni}/dni_photo`), 
+                putFileFB(licenceBlob, `/${getUserData.dni}/licence_photo`)
+            ]);
+            const data = {
+                'ws': getUserData.ws,
+                'dni': getUserData.dni,
+                'dt': '',
+                'discapacidad': disability,
+                'credencial': certificateNumber,
+                'silla_ruedas': wheelChair,
+                'diagnostico': diagnostic,
+                'amparo': protection,
+                'acompanante': companionName,
+                'dni_foto': url_dni,
+                'credencial_foto': getLicenceFile,
+                'certificado_foto': url_credential,
+                'dni_vencimiento': getIdExpires,
+                'credencial_vencimiento': credentialExpires,
+                'certificado_discapacidad_vencimiento': disabilityExpires
+            };
+		    const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
+            await Axios.post(transport_register, data, config);
+            console.log(data);
+            setTimeout(() =>{
+                history.push(`/${getUserData.ws}/transportUserActive`);
+            },4000)
+            setDisplayAlert(true)
 			await swal({
 				title: "Formulario enviado",
 				text: "En breve será redireccionado a la página de inicio",
 				icon: "success",
 				buttons: true,
 				timer: 3000
-			});
-			redirectToDestinySelection();
-		} catch (error) {
-			swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
-			setTimeout(function () {
-				history.push(`/TransportRegister`);
-			}, 4000);
+            }); 
+        } catch (error) {
+            console.error(error);
+            swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
+            setTimeout(function () {
+                history.push(`/${ws}/transportRegister`);
+            }, 2000);
 		} finally {
-			dispatch({ type: 'SET_LOADING', payload: false });
+            setLoader(false)
 		}
 	}
 
-	const redirectToDestinySelection = () => {
-		history.push(`/`);
-	}
+	
 
 	function buildImages(typeAction, fileValue) {
 		let imagePreview = '';
@@ -90,91 +154,138 @@ const TransportOnboarding = () => {
 		}
 		dispatch({ type: typeAction, payload: { filePreview: imagePreview, file: fileValue } })
 	}
+    const validateForm = !getIdPreview || !getLicencePreview || !getIdExpires || !getCredentialExpires;
+ 
+    return (
+        <>
+            <GenericHeader>Registro</GenericHeader>
+            {loader && <CustomUmaLoader />}
+            <div className="TransportOnboardingThirdStep">
+                <div className="uploadDocumentationWrapper">
+                    <div className="d-flex justify-content-center">
+                        <div className="columnUpload">
+                            <div className="uploadMandatoryWrapper d-flex justify-content-center">
+                                <div className="title">DNI</div>
+                                { getIdPreview ? '': <span className="mandatoryField">&nbsp;*</span> }
+                            </div>
+                            <label htmlFor="upload-photo-dni" className="btn btn-active inputfile">
+                                <div className="imgPreview">
+                                    { getIdPreview ? 
+                                        <img src={ getIdPreview } alt="DNI"/> 
+                                        : <FontAwesomeIcon className="folder" icon={faFolderOpen}/> 
+                                    } 
+                                </div>
+                                <FontAwesomeIcon className="addDoc" icon={faPlusCircle}/>
+                            </label>
+                            <input type="file" 
+                                name="Cargar DNI" 
+                                id="upload-photo-dni" 
+                                onChange={(e) => buildImages('ADD_ID_THIRD_STEP', e.target.files[0])}/>
+                        </div>
+                        <div className="columnUpload">
+                            <div className="uploadMandatoryWrapper d-flex justify-content-center">
+                                <div className="title">Credencial</div>
+                                { getLicencePreview ? '': <span className="mandatoryField">&nbsp;*</span> }
+                            </div>
+                            <label htmlFor="upload-photo-licence" className="btn btn-active inputfile">
+                                <div className="imgPreview">
+                                    { getLicencePreview ? 
+                                        <img src={ getLicencePreview } alt="Credencial"/> 
+                                        : <FontAwesomeIcon className="folder" icon={faFolderOpen}/> 
+                                    }
+                                </div>
+                                <FontAwesomeIcon className="addDoc" icon={faPlusCircle}/>
+                            </label>
+                            <input type="file" 
+                                name="Cargar Credencial" 
+                                id="upload-photo-licence" 
+                                onChange={(e) => buildImages('ADD_LICENCE_THIRD_STEP', e.target.files[0])}/> 
+                        </div>
+                        { user.disability  !== "0-NINGUNA" ? 
+                            <div className="columnUpload">
+                                <div className="title">Certificado</div>
+                                <label htmlFor="upload-photo-disability" className="btn btn-active inputfile">
+                                    <div className="imgPreview">
+                                        { getQualificationPreview ? 
+                                            <img src={ getQualificationPreview } alt="Certificado"/> 
+                                            : <FontAwesomeIcon className="folder" icon={faFolderOpen}/> 
+                                        }
+                                    </div>
 
-	const validateForm = () => !getIdPreview || !getLicencePreview || !getIdExpires || !credentialExpires;
-
-	return (
-		<>
-			<GenericHeader>Registro</GenericHeader>
-			{loading && <Loading />}
-			<div className='TransportOnboardingThirdStep'>
-				<div className='uploadDocumentationWrapper'>
-					<div className='d-flex justify-content-center'>
-						<InputFile
-							title='DNI'
-							value={getIdPreview}
-							inputProps={{
-								name: 'Cargar DNI',
-								id: 'upload-photo-dni',
-								onChange: (e) => buildImages('ADD_ID_THIRD_STEP', e.target.files[0])
-							}}
-						/>
-						<InputFile
-							title='Credencial'
-							value={getLicencePreview}
-							inputProps={{
-								id: 'upload-photo-licence',
-								name: 'Cargar Credencial',
-								onChange: (e) => buildImages('ADD_LICENCE_THIRD_STEP', e.target.files[0])
-							}}
-						/>
-						{disability !== '0-NINGUNA' &&
-							<InputFile
-								title='Certificado'
-								value={getQualificationPreview}
-								inputProps={{
-									id: 'upload-photo-licence',
-									name: 'Cargar Discapacidad',
-									onChange: (e) => buildImages('ADD_QUALIFICATION_THIRD_STEP', e.target.files[0])
-								}}
-							/>
-						}
-					</div>
-				</div>
-				<div className='dateDocumentExpiresWrapper'>
-					<div className='titleThirdStep'>Vencimiento de DNI</div>
-					{!getIdExpires && <span className='mandatoryField'>* Obligatorio</span>}
-					<input
-						type='text'
-						placeholder='dd/mm/aaaa'
-						value={getIdExpires}
-						className='form-control expireDate'
-						onChange={(e) => dispatch({ type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value })}
-					/>
-					<div className='titleThirdStep'>Vencimiento de Credencial</div>
-					{!credentialExpires && <span className='mandatoryField'>* Obligatorio</span>}
-					<input
-						type='text'
-						placeholder='dd/mm/aaaa'
-						value={credentialExpires}
-						className='form-control expireDate'
-						onChange={(e) => dispatch({ type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value })}
-					/>
-					{disability !== '0-NINGUNA' &&
-						<div>
-							<div className='titleThirdStep'>Vencimiento de Certificado de discapacidad</div>
-							<input type='text'
-								placeholder={'dd/mm/aaaa'}
-								value={disabilityExpires}
-								className='form-control expireDate'
-								onChange={(e) => dispatch({ type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value })}
-							/>
-						</div>
-					}
-				</div>
-				<div className='buttonsContainer'>
-					<div className='buttonContainer'>
-						<button
-							disabled={validateForm()}
-							className='btn btn-active'
-							onClick={sendForm}>
-							Enviar
-						</button>
-					</div>
-				</div>
-			</div>
-		</>
-	)
+                                    <FontAwesomeIcon className="addDoc" icon={faPlusCircle}/>
+                                </label>
+                                <input type="file" 
+                                    name="Cargar Discapacidad" 
+                                    id="upload-photo-disability" 
+                                    onChange={(e) => buildImages('ADD_QUALIFICATION_THIRD_STEP', e.target.files[0])}/>
+                            </div>
+                        : ''}
+                    </div>
+                </div>
+                <div className="dateDocumentExpiresWrapper">
+                    <div className="titleThirdStep">Vencimiento de DNI</div>
+                    { getIdExpires ? '': <span className="mandatoryField">* Obligatorio</span> }
+                    {/* <input type="text" 
+                    options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                        placeholder={'dd/mm/aaaa'}
+                        value={getIdExpires} 
+                        className="form-control expireDate"
+                        onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                         <Cleave
+                         
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getIdExpires} 
+                            className="form-control expireDate"
+                        /> 
+                    <div className="titleThirdStep">Vencimiento de Credencial</div>
+                    { getCredentialExpires ? '': <span className="mandatoryField">* Obligatorio</span> }
+                    {/* <input type="text" 
+                        placeholder={'dd/mm/aaaa'}
+                        value={getCredentialExpires} 
+                        className="form-control expireDate"
+                        onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                        <Cleave
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getCredentialExpires} 
+                            className="form-control expireDate"
+                        /> 
+                    { user.disability  !== "0-NINGUNA" ? 
+                        <div>
+                            <div className="titleThirdStep">Vencimiento de Certificado de discapacidad</div>
+                            { getDisabilityExpires ? '': <span className="mandatoryField">* Obligatorio</span> }
+                            {/* <input type="text" 
+                                placeholder={'dd/mm/aaaa'}
+                                value={getDisabilityExpires} 
+                                className="form-control expireDate"
+                                onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
+                            <Cleave
+							placeholder="dd/mm/aaaa"
+                            options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
+                            onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}
+                            value={getDisabilityExpires} 
+                            className="form-control expireDate"
+                        /> 
+                        </div>
+                    : ''}
+                </div>
+                <div className="buttonsContainer">
+                    <div className="buttonContainer">
+                        <button  
+                            disabled={validateForm} 
+                            className="btn btn-active" 
+                            onClick={sendForm}
+                        >      
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </>
+    )      
 }
 
 export default TransportOnboarding;
