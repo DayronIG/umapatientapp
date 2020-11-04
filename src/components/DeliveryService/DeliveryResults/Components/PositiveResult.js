@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import hisopadoPos from "../../../../assets/img/hisopado_pos.svg"
-import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
+import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
 
 export default function EndAssignationHisopado({finalAction}) {
     const history = useHistory(); 
@@ -39,6 +39,27 @@ export default function EndAssignationHisopado({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div> */}
+                    <div className="results-menu-map-item" onClick={() => history.push(`/${patient.ws}/onlinedoctor/who`)}>
+                        <div>
+                        <FaUserNurse className="icon" />
+                            Quiero una consulta médica
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                    <div className="results-menu-map-item" onClick={() => history.push(`/${patient.ws}/autonomous`)}>
+                        <div>
+                        <FaStethoscope className="icon" />
+                            Hacer autodiagnóstico
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
+                    <div className="results-menu-map-item" onClick={()=>history.push("/")}>
+                        <div>
+                            <FaHome className="icon" />
+                            Ir al inicio
+                        </div>
+                        <FaArrowRight className="icon-arrow" />
+                    </div>
                 </div>
             </div>
         </div>

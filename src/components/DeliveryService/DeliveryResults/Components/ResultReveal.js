@@ -9,7 +9,6 @@ export default function EndAssignationHisopado({finalAction}) {
                     <img src={hisopadosList} alt="hisopados_list" className="hisopados_cross"/>
                     <p className="hisopados-title">Conocé tu resultado</p>
                     <p>Ya se encuentra a tu disposición el resutlado de tu hisopado</p>
-                    <p>Aguarde unos instantes</p>
                 </div>
                 <div onClick={() => finalAction()} className="blue-button">
                     Ver resultado
