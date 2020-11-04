@@ -48,6 +48,21 @@ function DeliveryResume({ duration, active }) {
 	const sendRating = () => {	
 		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
 			console.log('send data');
+			let data =
+				{
+					"key": "delivery",
+					"data": {
+					  "review": {
+						"ws": "patient_ws",
+						"dni": "patient_dni",
+						"cuit": "20944291912",
+						"uma_eval": 5,
+						"doc_eval": 5,
+						"notes": "notes"
+					  },
+					  "incidente_id": "94429193_202010301520"
+					}
+				  }
 			// TODO: pegarle al endpoint de feedback
 			history.push(`/hisopadoResult/${ws}`);
 		} else {
