@@ -60,5 +60,17 @@
 				}
 			}
 		}
+
+		.scheduleForm__observations{
+			display:flex;
+			flex-direction: column;
+			justify-content: center;
+			input{
+				line-height: 10em;
+			}
+			h5{
+				text-align: center;
+			}
+		}
 	}
 }
