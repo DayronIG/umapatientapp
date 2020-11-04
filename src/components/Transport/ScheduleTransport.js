@@ -34,6 +34,11 @@ function ScheduleTransport() {
 			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
 		}
 	}
+	if(!transportData.hasReturn){
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
+	}
+
+	
 
 	return (
 		<form className='scheduleForm'>
@@ -88,15 +93,7 @@ function ScheduleTransport() {
 				/>
 			)}
 			</div>
-			{/* <div className='scheduleForm__container'>
-				<div className='scheduleForm__container--input'>
-					<label>Tiempo de referencia:</label>
-					<select value={transportData.timeReference} onChange={transportActions.setTimeReference}>
-						<option value='ORIGEN'>Origen</option>
-						<option value='DESTINO'>Destino</option>
-					</select>
-				</div>
-			</div> */}
+			
 			<div className='scheduleForm__container'>
 				<div className="scheduleForm__observations"> 
 					<h5>Observaciones</h5>
@@ -105,8 +102,8 @@ function ScheduleTransport() {
 						placeholder='Escribe tus comentarios aquí...'
 						name='notes'
 						id='notes'
-						value={transportData.notes}
-						onChange={transportActions.setNotes}
+						// value={transportData.notes}
+						// onChange={transportActions.setNotes}
 					/>
 				</div>
 			</div>
