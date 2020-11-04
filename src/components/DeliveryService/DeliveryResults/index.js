@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import ResultReveal from "./Components/ResultReveal"
@@ -12,6 +12,13 @@ export default function HisopadosPurchase() {
     const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("RESULT_REVEAL");
     const history = useHistory()
     const result = useSelector(state => state.deliveryService?.deliveryInfo[0]?.lab?.result_lab)
+    const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[0]?.eval?.notes) 
+
+    useEffect(()=>{
+        if(survey){
+            setFluxTrackerHisopado(result)
+        }
+    }, [survey])
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {

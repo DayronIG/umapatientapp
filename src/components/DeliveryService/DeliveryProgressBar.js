@@ -40,7 +40,7 @@ export default function DeliveryProgressBar({ percent }) {
 							<FaCheckCircle />
 							<div className='trackProgress__container--text'>
 								<h3>En camino</h3>
-								<p>El enfermero <span>{fullname_nurse ? fullname_nurse : ''}</span> está en camino</p>
+								<p><span>{fullname_nurse ? fullname_nurse : 'Tu profesional'}</span> está en camino</p>
 							</div>
 						</div>
 					)}
@@ -51,7 +51,7 @@ export default function DeliveryProgressBar({ percent }) {
 							<FaCheckCircle />
 							<div className='trackProgress__container--text'>
 								<h3>En domicilio</h3>
-								<p>El enfermero <span>{fullname_nurse ? fullname_nurse : ''}</span> ha llegado al domicilio</p>
+								<p><span>{fullname_nurse ? fullname_nurse : 'Tu profesional'}</span> ha llegado al domicilio</p>
 							</div>
 						</div>
 					)}

@@ -4,9 +4,10 @@ import { useHistory } from "react-router-dom";
 import hisopadoPos from "../../../../assets/img/hisopado_pos.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
 
-export default function EndAssignationHisopado({finalAction}) {
+export default function PositiveResult({finalAction}) {
     const history = useHistory(); 
     const patient = useSelector(state => state.queries.patient)
+    const discount = useSelector(state => state.deliveryService.params.discount)
 
     return (
         <div className="allwhite-hisopados-background" >
@@ -17,13 +18,14 @@ export default function EndAssignationHisopado({finalAction}) {
                 </div>
             <div className="hisopados-flux-results-container">
                 <p className="bold-text">Informale a tus contactos estrechos para que tomen medidas de prevención</p>
-                <div onClick={() => finalAction()} className="blue-button">
-                    Informar a mis contactos
+                <div className="blue-button">
+                    <a href="LINKAWP" className="link_whatsapp">Informar a mis contactos</a>
                 </div>
                 <p>Ingresando el siguiente código, obtienen un descuento para realizarse el hisopado a domicilio:</p>
                 <div className="hisopados-flux-results-code-container">
-                    <p className="hisopados-code">COVID-REF</p>
+                <p className="hisopados-code">{discount.code}</p>
                 </div>
+            </div>
                 <div className="results-menu-map-container">
                     {/* <div className="results-menu-map-item">
                         <div>
@@ -61,7 +63,6 @@ export default function EndAssignationHisopado({finalAction}) {
                         <FaArrowRight className="icon-arrow" />
                     </div>
                 </div>
-            </div>
         </div>
     )
 }

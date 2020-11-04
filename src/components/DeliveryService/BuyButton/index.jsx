@@ -39,7 +39,7 @@ const BuyHisopado = () => {
                 case("ASSIGN:ARRIVED"):
                     return <ButtonStyle 
                     title="¡Sigue tu hisopado!" 
-                    innerText="Tu enfermero/a ha llegado al domicilio." 
+                    innerText="Tu profesional ha llegado al domicilio." 
                     checkoutText="En domicilio " 
                     finalAction={() => history.push(`/delivery/progress/${patient.ws}/${id}/`)}
                     /> 

@@ -18,12 +18,14 @@ const PaymentCardMP = () => {
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
-    const totalPayment = parseInt(params?.price) || 3499
+    const hisopadoPrice = parseInt(params?.price);
+    const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
     const [paymentStatus, setStatus] = useState(false);
     const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
+    const discountParam = useSelector(state => state.deliveryService.params.discount)
     const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
@@ -195,6 +197,14 @@ const PaymentCardMP = () => {
       const handleFocus = e => {
         setState({ ...state, focus: e.target.name });
       }
+
+      const validateDiscount = (e) => {
+        if(e.target.value === discountParam.code){
+          setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
+        } else {
+          setTotalPayment(hisopadoPrice)
+        }
+      }
     
       const handleChange = e => {
         const { name, value } = e.target;
@@ -326,9 +336,13 @@ const PaymentCardMP = () => {
                   type="text"
                   className=""
                   name="discount"
-                  maxLength="4"
                   placeholder="CÓDIGO"
-                  onChange={handleChange}
+                  onChange={
+                    (e) => {
+                      validateDiscount(e)
+                      handleChange(e)
+                    }
+                  }
                   onFocus={handleFocus}
                 />
               </div>

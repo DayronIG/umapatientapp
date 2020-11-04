@@ -248,6 +248,9 @@
             font-size: 1.2rem;
             margin-right: 2vw;
         }
+        .link_whatsapp{
+            color: $white-color
+        }
     }
     .blue-text{
 		color: $uma-primary;
@@ -284,6 +287,7 @@
     align-items: center;
     margin-top: 20px;
     text-align: center;
+    min-height: calc(100vh - 72px);
     .hisopados-title{
         margin-top: 4vh;
         margin-bottom: 4vh;

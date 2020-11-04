@@ -4,7 +4,7 @@ import hisopadosNeg from "../../../../assets/img/hisopado_neg.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
 import { useHistory } from "react-router-dom"
 
-export default function EndAssignationHisopado({finalAction}) {
+export default function NegativeResult({finalAction}) {
     const history = useHistory(); 
     const patient = useSelector(state => state.queries.patient)
 
