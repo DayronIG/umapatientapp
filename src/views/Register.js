@@ -56,6 +56,10 @@ const Register = props => {
     }
 
     const handleSignUp = async event => {
+        window.gtag('event', 'register', {
+            'event_category' : 'action',
+            'event_label' : 'register'
+          });
         event.preventDefault()
         window.scroll(0, 0)
         let dniAlert = await swal({
@@ -166,6 +170,12 @@ const Register = props => {
                 }
             } catch (res) {
                 user.delete()
+                if(res.response?.data?.message === "Ya existe un usuario con este documento") {
+                    window.gtag('event', 'repeated_document', {
+                        'event_category' : 'warning',
+                        'event_label' : 'register'
+                      });
+                }
                 setTimeout(() => {
                     swal('Error',
                     `No se pudo completar tu registro. ${res?.response?.data?.message}. Por favor comunícate a info@uma-health.com`,
