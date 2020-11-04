@@ -5,6 +5,7 @@ import ResultReveal from "./Components/ResultReveal"
 import PositiveResult from "./Components/PositiveResult"
 import NegativeResult from "./Components/NegativeResult"
 import { useHistory } from "react-router-dom"
+import NotService from "../NotService";
 import "../../../styles/hisopado/hisopadosFlux.scss"
 
 export default function HisopadosPurchase() {
@@ -25,7 +26,7 @@ export default function HisopadosPurchase() {
                 history={history}
                 finalAction = {() => history.push("/")}/>
             default: 
-                return null
+                return <NotService />
     }}
 
     return (
