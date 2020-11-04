@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import DeliveryProgressBar from './DeliveryProgressBar';
+import {user_feedback, config} from '../../config/endpoints';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
@@ -63,6 +64,7 @@ function DeliveryResume({ duration, active }) {
 					  "incidente_id": "94429193_202010301520"
 					}
 				  }
+			// axios.post(user_feedback, data, config)
 			// TODO: pegarle al endpoint de feedback
 			history.push(`/hisopadoResult/${ws}`);
 		} else {

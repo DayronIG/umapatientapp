@@ -57,6 +57,8 @@ export const node_patient = `${NODE_SERVER}/patients`;
 export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
+// Feedback
+export const user_feedback = `${NODE_SERVER}/providers`;
 // Providers
 export const get_provider = `${NODE_SERVER}/providers`;
 // Payments
