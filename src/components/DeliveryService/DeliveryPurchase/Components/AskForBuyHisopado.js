@@ -5,6 +5,7 @@ import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
 import IllustrationHisopado from "../../../../assets/img/Illustration-Hisopado.png"
+import omsImg from "../../../../assets/img/oms.svg"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
 import db from "../../../../config/DBConnection";
@@ -90,6 +91,11 @@ export default function AskForBuyHisopado() {
             </div>
             </div>
             <p>Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
+            <div className="oms-container">
+            <img className="hisopados-image" src={omsImg} alt="oms" />
+            Avalado por la OMS
+            </div>
+            
             <div className="hisopados-flux-container">
                 <p className="info-title">¿En qué consiste?</p>
                 <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en el domicilio del cliente. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En solo 15 minutos tenés el resultado!</p>

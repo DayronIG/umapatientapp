@@ -1,12 +1,7 @@
 import React from 'react'
-import { useSelector } from "react-redux";
 import narrowContact from "../../../../assets/img/narrow-contact.svg"
-import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
-import { useHistory } from "react-router-dom"
 
 export default function NegativeResult({goBack}) {
-    const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
 
     return (
         <div className="allwhite-hisopados-background" >
