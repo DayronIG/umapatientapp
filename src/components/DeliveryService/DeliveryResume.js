@@ -8,11 +8,12 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
+import axios from 'axios';
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
-	const { ws } = useSelector(store => store.queries.patient)
-	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const { ws, dni,  } = useSelector(store => store.queries.patient)
+	const { status, delivery, docId } = useSelector(state => state.deliveryService.deliveryInfo[0]);
 	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[0].eval);
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
@@ -48,25 +49,24 @@ function DeliveryResume({ duration, active }) {
 
 	const sendRating = () => {	
 		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
-			console.log('send data');
 			let data =
 				{
 					"key": "delivery",
 					"data": {
 					  "review": {
-						"ws": "patient_ws",
-						"dni": "patient_dni",
-						"cuit": "20944291912",
-						"uma_eval": 5,
-						"doc_eval": 5,
-						"notes": "notes"
+						"ws": ws,
+						"dni": dni,
+						"cuit": delivery.cuit_nurse,
+						"uma_eval": surveyResponse.app,
+						"doc_eval": surveyResponse.personal,
+						"notes": surveyResponse.comment
 					  },
-					  "incidente_id": "94429193_202010301520"
+					  "incidente_id": docId
 					}
 				  }
-			// axios.post(user_feedback, data, config)
-			// TODO: pegarle al endpoint de feedback
-			history.push(`/hisopadoResult/${ws}`);
+			axios.post(user_feedback, data, config)
+			.then(() => history.push(`/hisopadoResult/${ws}`))
+			.catch((e) => console.log(e));
 		} else {
 			setError(true);
 		}
