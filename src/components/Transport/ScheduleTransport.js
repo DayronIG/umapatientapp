@@ -5,6 +5,7 @@ import * as transportActions from '../../store/actions/transportActions';
 import { useHistory, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 import DaysSlider from '../GeneralComponents/DaysSlider';
+import DaysSlider2 from '../GeneralComponents/DaysSlider2';
 import Loading from '../GeneralComponents/Loading';
 import moment from 'moment';
 import '../../styles/transport/scheduleTransport.scss';
@@ -18,7 +19,7 @@ function ScheduleTransport() {
 	const [tomorrow] = useState(moment().add(1, 'day').format('YYYY-MM-DD'));
 	const dispatch = useDispatch();
 	const history = useHistory();
-	
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
@@ -37,53 +38,57 @@ function ScheduleTransport() {
 	return (
 		<form className='scheduleForm'>
 			{loading && <Loading />}
-			<div className='scheduleForm__container'>
-				<h5 className='scheduleForm__container--title'>Horarios <small>(Formato 24hs)</small></h5>
-				<label htmlFor='scheduleReturn'>Ida y vuelta:</label> {' '}
-				<input
-					type='checkbox'
-					value='returnSchedule'
-					onChange={transportActions.handleHasReturn}
-					id='scheduleReturn'
-					name='scheduleReturn'
-					value={transportData.hasReturn}
-				/>
-			</div>
-			<DaysSlider
-				title='Horarios de Partida'
-				values={transportData.startSchedules}
-				handleChange={transportActions.setStartSchedule}
-			/>
-			{transportData.hasReturn && (
-				<DaysSlider
-					title='Horarios de Retorno'
-					values={transportData.returnSchedules}
-					handleChange={transportActions.setReturnSchedule}
-				/>
-			)}
+			
 			<div className='scheduleForm__container'>
 				<div className='scheduleForm__container--input'>
+				
 					<label>Fecha desde:</label>
-					<input 
+					<input
 						required
 						min={today}
 						type='date'
 						value={transportData.start_date}
-						onChange={transportActions.setStartDate} 
+						onChange={transportActions.setStartDate}
 					/>
 				</div>
 				<div className='scheduleForm__container--input'>
 					<label>Fecha hasta:</label>
-					<input 
+					<input
 						required
 						min={tomorrow}
 						type='date'
 						value={transportData.end_date}
-						onChange={transportActions.setEndDate} 
+						onChange={transportActions.setEndDate}
 					/>
 				</div>
 			</div>
 			<div className='scheduleForm__container'>
+				<div className="centeredElements">
+				<h5 className='scheduleForm__container--title'>Horario</h5>
+				<label htmlFor='scheduleReturn'>Ida y vuelta:</label> {' '}
+				<input
+					type='checkbox'
+					onChange={transportActions.setHasReturn}
+					id='scheduleReturn'
+					name='scheduleReturn'
+					value={transportData.hasReturn}
+				/>
+				</div>
+			<DaysSlider
+				title='Llegada a destino'
+				values={transportData.startSchedules}
+				handleChange={transportActions.setStartSchedule}
+			/>
+
+			{transportData.hasReturn && (
+				<DaysSlider2
+					title='Regreso a origen'
+					values={transportData.returnSchedules}
+					handleChange={transportActions.setReturnSchedule}
+				/>
+			)}
+			</div>
+			{/* <div className='scheduleForm__container'>
 				<div className='scheduleForm__container--input'>
 					<label>Tiempo de referencia:</label>
 					<select value={transportData.timeReference} onChange={transportActions.setTimeReference}>
@@ -91,13 +96,13 @@ function ScheduleTransport() {
 						<option value='DESTINO'>Destino</option>
 					</select>
 				</div>
-			</div>
+			</div> */}
 			<div className='scheduleForm__container'>
-				<div className='scheduleForm__container--input'>
-					<label htmlFor='notes'>Notas del viaje:</label>
+				<div className="scheduleForm__observations"> 
+					<h5>Observaciones</h5>
 					<input
 						type='text'
-						placeholder='notas...'
+						placeholder='Escribe tus comentarios aquí...'
 						name='notes'
 						id='notes'
 						value={transportData.notes}
@@ -105,11 +110,13 @@ function ScheduleTransport() {
 					/>
 				</div>
 			</div>
+			<div className="centeredElements">
 			<FooterBtn
 				callback={handleSubmit}
 				text='Confirmar'
 				type='submit'
 			/>
+			</div>
 		</form>
 	);
 }
