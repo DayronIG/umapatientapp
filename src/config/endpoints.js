@@ -63,7 +63,7 @@ export const user_feedback = `${NODE_SERVER}/feedback`;
 export const get_provider = `${NODE_SERVER}/providers`;
 // Payments
 export const payment_url = `${NODE_SERVER}/mercadopago/payment`;
-export const payment_url_test = `${NODE_DEV}/mercadopago/payment`;
+export const payment_url_test = `${NODE_SERVER}/mercadopago/payment`;
 // Delivery
 export const create_delivery = `${NODE_SERVER}/delivery`
 export const mobility_address = `${NODE_SERVER}/delivery/mobility_address`;

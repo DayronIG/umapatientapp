@@ -3,6 +3,12 @@
 .payment-container{
   background-color: $white-color;
   height: 100vh;
+  padding-bottom: 20vh;
+
+  .payment-arg{
+    background-color: $white-color;
+  }
+
   /* Change the white to any color ;) */
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
@@ -64,6 +70,10 @@
   }
   input:focus{
     background-color: $white-color !important;
+  }
+
+  .last__input{
+    padding-bottom: 10vh;
   }
 
   .formulario-item {

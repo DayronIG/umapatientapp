@@ -328,7 +328,7 @@ const PaymentCardMP = () => {
                   onFocus={handleFocus}
                 />
               </div>
-              <div className="formulario-item">
+              <div className="formulario-item last__input">
                 <small>Código de descuento</small>
                 <input
                 autoComplete="off"
