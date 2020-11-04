@@ -32,6 +32,7 @@ const Register = props => {
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
     const {ws: urlWS, ref} = useParams()
+    const { ws } = useParams();
     const {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
@@ -71,14 +72,21 @@ const Register = props => {
     const handleSignUp = async event => {
         event.preventDefault()
         window.scroll(0, 0)
-        let dniAlert = await swal({
-            title: `Confirma tu número de documento: ${getId}`,
-            text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
-            icon: 'warning',
-            buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
-            dangerMode: true,
-        })
-        if (dniAlert && termsSwitch && getFullname.length >= 7) {
+        let validDni = await validateInput('text', getId)
+        let dniAlert = false
+        if(validDni) {
+            dniAlert = await swal({
+                title: `Confirma tu número de documento: ${getId}`,
+                text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
+                icon: 'warning',
+                buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
+                dangerMode: true,
+            })
+        }
+        let validFullname = await validateInput('text', getFullname)
+        let validOs = await validateInput ('text', getOs)
+        let validDate = await validateInput ('number', getDate)
+        if (validDni && validFullname && dniAlert && termsSwitch && validOs && validDate) {
             dispatch({ type: 'LOADING', payload: true })
             let pwd = generatePassword()
             let user = `${getWs}@${pwd}.com`
@@ -99,9 +107,16 @@ const Register = props => {
             } catch (error) {
                 swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
             }
-        } else if (getFullname.length <= 8){
-            swal('Aviso', 'Debes completar tu nombre y apellido completos', 'warning')
-        } else if (!dniAlert) {
+        } else if(!validDni) {
+            setErrors({dni: true})
+        } else if (!validFullname){
+            setErrors({nombre: true})
+        } else if(!validOs){
+            setErrors({cobertura: true})
+        } else if(!validDate){
+            setErrors({bday: true})
+        }
+        else if (!dniAlert) {
             return null
         } else {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
@@ -114,6 +129,7 @@ const Register = props => {
         let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
         dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
         dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+        return date
     }
 
     const generatePassword = () => {
@@ -123,10 +139,10 @@ const Register = props => {
         return password
     }
 
-    let handleSubmit = async (reg, user, pwd) => {
+    let handleSubmit = async (reg, user) => {
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
-        composeDate()
+        let dt = composeDate()
         let subscription
         let source = props.match.params.affiliate // To do move to back
         if (source && source.toLowerCase().includes('rappi_peru')) {
@@ -139,7 +155,7 @@ const Register = props => {
         }
         let data = {
             patient: {
-                affiliate: props.match.params.affiliate,
+                affiliate: props.match.params.affiliate || '',
                 geohash: '',
                 lat: '',
                 lon: '',
@@ -153,7 +169,7 @@ const Register = props => {
                 sex: getSex || '',
                 dob: dob || '',
                 ws: urlWS || '',
-                dt: getDate || '',
+                dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
@@ -169,16 +185,9 @@ const Register = props => {
                         dispatch({ type: 'SET_STATUS', payload: 99 });
                         setRegistered(true)
                         dispatch({ type: 'LOADING', payload: false })
+                        history.push(`/${ws}/redirectws`)
                     }, 2000)
-                } else if (res.creates === true) {
-                    setTimeout(() => {
-                        dispatch({ type: 'LOADING', payload: false })
-                        setFormSubmitted(true)
-                        // history.push('/')
-                    }, 2000)
-                } else {
-                    dispatch({ type: 'LOADING', payload: false })
-                }
+                } 
             } catch (res) {
                 user.delete()
                 setTimeout(() => {
@@ -189,11 +198,6 @@ const Register = props => {
                 }, 2500)
             }
         }
-    }
-
-    const showInstallPrompt = async () => {
-        await installPrompt(deferredPrompt, urlWS, getId);
-        history.push('/');
     }
 
     const handleInput = (typeDispatch) => (event) => {
@@ -240,35 +244,35 @@ const Register = props => {
                                     Nombre y apellido* 
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
-                                autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} required/>
+                                autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
                                 {console.log(errors)}
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
                             </div>
-
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='dni'>
                                     Identificación, cédula o DNI*
                                 </label>
                                 <input className='form-input' id='dni' name='dni' type='text' placeholder='e.g. 99899899' autoComplete='off'
-                                onChange={handleInput('REGISTER_FIRST_DNI')} value={getId} required />
+                                onChange={handleInput('REGISTER_FIRST_DNI')} value={getId} />
                                 {errors.dni && (
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
                             </div>
-
-                            {!urlWS && <div className="form__spanWrapper">
+                            {!urlWS && 
+                            <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
                                 </label>
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
-                                onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs} required />
+                                onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs}  />
                                 {errors.ws && (
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
                             </div>}
-                            {!ref &&<div className="form__spanWrapper">
+                            {!ref &&
+                            <div className="form__spanWrapper">
                             <label className='form-label' htmlFor='celular'>
                             Cobertura / Seguro de Salud
                                 </label>
@@ -277,7 +281,7 @@ const Register = props => {
                                 autoComplete='off' type='text'
                                 onChange={handleInput('REGISTER_FIRST_OS')}
                                 name='cobertura'
-                                required
+                                
                             />
                             {errors.cobertura && (
                                     <p className="form__validation--error">x Debe ingresar su cobertura o seguro de salud</p>
@@ -294,7 +298,7 @@ const Register = props => {
                                                 if(e.target.value.length === 2) monthRef.current.focus();
                                             }} type='number' min='1'
                                             max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
-                                            required />
+                                             />
                                             
                                         <input
                                             className='form-mid-input' maxLength='2' ref={monthRef}
@@ -305,19 +309,19 @@ const Register = props => {
                                             type='number' min='1' max='12'
                                             name='bMonth' id='dateMonth'
                                             placeholder={getMonth}
-                                            required />
+                                             />
                                         <input
                                             className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
                                             maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
                                             onChange={handleInput('REGISTER_FIRST_YEAR')}
-                                            required
+                                            
                                         />
                                         <select
                                             className='form-mid-input'
                                             id='gender'
                                             onChange={e => dispatch({ type: 'REGISTER_FIRST_SEX', payload: e.target.value })}
                                             placeholder={getSex}
-                                            required>
+                                            >
 
                                             <option value=''>Género</option>
                                             <option value='M'>Masculino</option>

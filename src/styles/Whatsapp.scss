@@ -1,10 +1,10 @@
-@import '../global/Vars.scss';
+@import './global/Vars.scss';
 .information__container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    .welcome {
+    .whatsapp {
         background: white;
         display: flex;
         flex-direction: column;
@@ -21,15 +21,17 @@
         left: 0px;
         right: 0px;
         border-radius: 6px;
-        &.withoutImg{    
-            height: 70vh;
-        }
+
         .titleContainer {
             .titleContainer__title {
             font-weight: 900;
             font-size: 27.72px;
             color: #008290;
             line-height: 29.35px;
+            margin-top: 10px;
+            .hola{
+                color: #36a853;
+            }
         }
     }
         
@@ -40,7 +42,7 @@
         margin: 0;
         font-style: normal;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 18px;
         width: auto;
         height: auto;
         left: auto;
@@ -58,15 +60,15 @@
     }
   }
   .button__instalar{
-    width: 85%;
+    width: 60%;
     height: 47px;
-    margin-left: auto;
-    margin-right: auto;    
-    background: #0A6DD7;
-    border-radius: $button-borders;
+    margin: auto;
+    background-color: #36a853;
+    border-radius: 10px;
     color: white;
-    font-weight:800;
     border: none;
+    font-weight: normal;
+    
   }
   
 }
@@ -77,4 +79,44 @@
     height: 160px;
     margin-top: 30px;
 }
+.terminos__container{
+    width: 90%;
+				margin: auto;
+				margin-bottom: 30px;
+				margin-top: 30px;
+				display: flex;
+				justify-content: space-evenly;
+				.landingSwitchContainer {
+					margin-top: 10px;
+				}
+				.termsText {
+					text-align: left;
+					margin-left: 20px;
+					color: #686464;
+					font-weight: bold;
+					font-size: 14px;
+                    line-height: 1;
+                    width: 60%;
+				}
+}
+    .phoneinput__cointainer{
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 85%;
+        .react-tel-input {
+            input {
+                width: 100%;
+                padding-left: 50px;
+                border: none;
+                border-bottom: 1px solid #a5bacb;
+                border-radius: 0;
+                &:focus {
+                    outline: none !important;
+                    border: none !important;
+                    border-bottom: 1px solid #a5bacb !important;
+                }
+            }
+        }
+    }
 }

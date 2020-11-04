@@ -63,6 +63,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 import Install from './views/Install.js';
 import Success from './views/RegisterSuccess.js';
+import RedirectWs from './views/RedirectWs.js';
+import Whatsapp from './views/Whatsapp.js';
 
 function App(props) {
 	return (
@@ -72,11 +74,13 @@ function App(props) {
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />
+				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/:ws?/login' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				<Route exact path='/:ws/install' component={Install} />
 				<Route exact path='/:ws/register/:ref?' component={Register} />
 				<Route exact path='/:ws/registersuccess' component={Success} />
+				<Route exact path='/:ws/redirectws' component={RedirectWs} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* General */}

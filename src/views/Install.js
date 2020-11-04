@@ -26,7 +26,7 @@ const Install = (props) => {
 
 
     async function redirect() {
-        // await installPrompt(deferredPrompt, ws);
+        await installPrompt(deferredPrompt, ws);
         setShowInstall(false);
     }
 
@@ -46,7 +46,10 @@ const Install = (props) => {
                             'Para acceder a todos los beneficios de nuestra plataforma, te invitamos a instalar UMA en tu pantalla principal.',
                             'No te preocupes, ¡UMA no ocupa espacio en tu celular!'
                         ]}
-                        img={image}
+                        imgProps={{
+                            styles: {},
+                            img: image
+                        }}
                         button='Instalar'
                     />
                 </div>
@@ -60,7 +63,10 @@ const Install = (props) => {
                             'Has instalado correctamente UMA en tu celular.',
                             'Puedes ingresar y registrarte en la plataforma.'
                         ]}
-                        img={imageFelicitaciones}
+                        imgProps={{
+                            styles: {},
+                            img: imageFelicitaciones
+                        }}
                         button='Continuar'
                     />
                     <span className='text__install'>¿Ya tienes un usuario? Ingresá.</span>

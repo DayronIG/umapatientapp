@@ -76,7 +76,7 @@ const Welcome = props => {
             texts={[
               'Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.'
             ]}
-            button='Instalar'
+            button='Continuar'
         />
     
   );
