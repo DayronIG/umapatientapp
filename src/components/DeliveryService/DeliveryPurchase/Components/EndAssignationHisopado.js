@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 import "../../../../styles/hisopado/hisopadosFlux.scss";
 
 export default function EndAssignationHisopado() {        
+    const history = useHistory();
     return (
         <div className="allwhite-hisopados-background" >
             <div className="instructions-container">
@@ -13,6 +14,10 @@ export default function EndAssignationHisopado() {
                 <p className="hisopados-title">¡Hemos recibido su pago!</p>
                 <p>Estamos buscando al profesional más cercano para realizar el hisopado</p>
                 <p>Aguarde unos instantes</p>
+
+            <button className="go__home" onClick={() => history.push('/')}>
+                Ir a inicio
+            </button>
             </div>
         </div>
     )

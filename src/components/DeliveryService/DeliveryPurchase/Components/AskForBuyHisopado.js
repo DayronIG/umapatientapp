@@ -30,6 +30,7 @@ export default function AskForBuyHisopado() {
         .then(res => {
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
+                console.log(document)
                 dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
         })
