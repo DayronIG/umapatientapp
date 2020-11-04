@@ -1,0 +1,73 @@
+@import '../global/Vars.scss';
+
+.inputFile {
+	width: 130px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	.inputFile__container {
+		display: flex;
+		justify-content: center;
+		.inputFile__container--title{
+			color: $special-grey;
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+		.inputFile__container--warning{
+			color: $red-high;
+			font-weight: bold;
+			margin-left: 10px;
+		}
+	}
+	.inputFile__label {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #fff;
+    color: #a3bdcc;
+    width: 85px;
+    height: 85px;
+    border-radius: 100px;
+    margin: auto;
+    padding: 4px;
+    font-size: 12px;
+		position: relative;
+		.inputFile__label--preview {
+			overflow: hidden;
+			border-radius: 100px;
+			min-height: 75px;
+			font-size: 28px;
+			.folder {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			img {
+					border-radius: 100px;
+					max-height: 75px;
+					min-width: 75px;
+			}
+		}
+		.inputFile__label--addDoc {
+			width: 24px;
+			height: 24px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #fff;
+			color: $secondary-color;
+			border-radius: 100px;
+			font-size: 24px;
+			position: absolute;
+			right: 12.5%;
+			bottom: -7.5%;
+		}
+	}
+	.inputFile__input {
+		width: 10px;
+		opacity: 0;
+		position: absolute;
+		z-index: -1;
+	}
+}
