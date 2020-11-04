@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import { FaCheckCircle } from 'react-icons/fa';
 
 export default function DeliveryProgressBar({ percent }) {
 	const [qty, setQty] = useState(20);
+	const { fullname_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[0]?.delivery);
 
 	useEffect(() => {
 		switch(percent) {
@@ -38,7 +40,7 @@ export default function DeliveryProgressBar({ percent }) {
 							<FaCheckCircle />
 							<div className='trackProgress__container--text'>
 								<h3>En camino</h3>
-								<p>El enfermero está en camino</p>
+								<p>El enfermero <span>{fullname_nurse ? fullname_nurse : ''}</span> está en camino</p>
 							</div>
 						</div>
 					)}
@@ -49,7 +51,7 @@ export default function DeliveryProgressBar({ percent }) {
 							<FaCheckCircle />
 							<div className='trackProgress__container--text'>
 								<h3>En domicilio</h3>
-								<p>El enfermero ha llegado al domicilio</p>
+								<p>El enfermero <span>{fullname_nurse ? fullname_nurse : ''}</span> ha llegado al domicilio</p>
 							</div>
 						</div>
 					)}
