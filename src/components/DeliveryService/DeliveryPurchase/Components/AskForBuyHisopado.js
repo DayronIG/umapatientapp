@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
+import NarrowContactInfo from "./NarrowContactInfo"
 import IllustrationHisopado from "../../../../assets/img/Illustration-Hisopado.png"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
@@ -12,6 +13,7 @@ import swal from 'sweetalert';
 export default function AskForBuyHisopado() {
     const [termsConditions, setTermsConditions] = useState(false)
     const [frequentQuestions, setFrequentQuestions] = useState(false)
+    const [narrowContactInfo, setNarrowContactInfo] = useState(false)
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.queries.patient)
     const dispatch = useDispatch()
@@ -60,6 +62,8 @@ export default function AskForBuyHisopado() {
             return <TermsConditions goBack={() => setTermsConditions(false)} />
         } else if (frequentQuestions) {
             return <FrequentQuestions goBack={() => setFrequentQuestions(false)}/>
+        } else if (narrowContactInfo) {
+            return <NarrowContactInfo goBack={() => setNarrowContactInfo(false)}/>
         } else {
             return (
             <div>
@@ -100,8 +104,10 @@ export default function AskForBuyHisopado() {
                     </ul>
                 </div>
                 <br/>
+                <p><u>Nota:</u> si compras el sábado o domingo, el hisopado se realizará el lunes</p>
                 <p className="info-title">Contacto cercano</p>
-                <p>Si sos contacto cercano... 5 días del contacto.</p>
+                <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
+                <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
             </div>
             <p className="terms-questions">
                 <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
