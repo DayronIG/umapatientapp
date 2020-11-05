@@ -27,6 +27,7 @@ const SearchingProfessional = ({ active }) => {
               <li className="tracking__indicacionesListItem"><span>No te automediques.</span></li>
               <li className="tracking__indicacionesListItem"><span>Recuerda colocarte el barbijo para recibir al enfermero.</span></li>
               <li className="tracking__indicacionesListItem"><span>Lávate las manos y evita el contacto con la cara.</span></li>
+              <li className="tracking__indicacionesListItem"><span>Mantén el ambiente ventilado.</span></li>
             </ul>
           </article>
     

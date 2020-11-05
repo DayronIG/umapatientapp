@@ -1,7 +1,7 @@
 import React from 'react'
 import narrowContact from "../../../../assets/img/narrow-contact.svg"
 
-export default function NegativeResult({goBack}) {
+export default function NarrowContactInfo({goBack}) {
 
     return (
         <div className="allwhite-hisopados-background" >

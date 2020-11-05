@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
 import SearchBox from '../GeneralComponents/SearchBox';
-import FooterBtn from '../GeneralComponents/FooterBtn';
 import { currentPositionHandler, errorHandler, mapConfig } from '../Utils/mapsApiHandlers';
 import { useDispatch } from 'react-redux';
 import { handleDeliveryForm, setAddressLatLongHisopado } from '../../store/actions/deliveryActions';

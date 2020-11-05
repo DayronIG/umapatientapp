@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
 import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
 import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
+import markerAddress from "../../../../assets/img/marker_address.svg"
 import axios from "axios"
 import {mobility_address} from "../../../../config/endpoints"
 
@@ -12,7 +13,8 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
     const [showCongrats, setShowCongrats] = useState(false);
     const delivery = useSelector(state => state.deliveryService.params)
     const { piso, depto, address, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm)
-    const {id, hisopadoUserAddress} = useSelector(state => state.deliveryService.current)
+    const {id} = useSelector(state => state.deliveryService.current)
+    const {hisopadoUserAddress} = useSelector(state => state.deliveryService)
 
     useEffect(() => {
         if (!isAddressValidForHisopado) {
@@ -61,8 +63,12 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                 <div className="instructions-container">
                     <img src={hisopadoTic} alt="delivery_check" className="delivery_check hisopados_check" />
                     <p className="delivery-title">¡Tu hisopado está cada vez mas cerca!</p>
-                    <p>Nuestro personal de salud estará en su domicilio en <b>{delivery.delay}</b></p>
-                    <p>Una vez confirmado el pago, le asignaremos un enfermero/a.</p>
+                    <p>Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <b>{delivery.delay}</b></p>
+                    <p>El domicilio seleccionado es:</p>
+                    <img src={markerAddress} alt="marker_address"/>
+                    <br />
+                    <p>{hisopadoUserAddress}</p>
+                    <p>¿Desea continuar con el pago?</p>
                     <div onClick={() => finalAction()} className="blue-button">
                         Continuar con el pago
                     </div>
