@@ -6,8 +6,8 @@ import Referred from "./Components/Referred"
 export default function ReferredIndex() {
     const [doneRegister, setDoneRegister] = useState(false)
     return (
-        <div className="hisopados-flux">
-            {!doneRegister? <ReferredRegister finalAction={() => setDoneRegister(true)} />: <Referred />}
+        <div>
+            {!doneRegister? <ReferredRegister finalAction={() => setDoneRegister(true)} />: <Referred className="hisopados-flux" />}
         </div>
     )
 }

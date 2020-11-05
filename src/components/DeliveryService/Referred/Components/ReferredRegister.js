@@ -38,6 +38,14 @@ const Register = props => {
     const monthRef = useRef()
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
+    const [state, setState] = useState('');
+
+    useEffect(() => {
+        if(window.innerWidth > 768){
+            setState('desktop');
+        }
+    },[])
+
 
     useEffect(() => {
         const promptListener = (e) => {
@@ -65,13 +73,14 @@ const Register = props => {
     async function getCountryCode() {
         if(urlWS){
             let code = await getCountry(urlWS)
-            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })}
+            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
+        }
     }
 
     const handleSignUp = async event => {
         event.preventDefault()
         window.scroll(0, 0)
-        let validDni = await validateInput('text', getId)
+        let validDni = validateInput('text', getId)
         let dniAlert = false
         if(validDni) {
             dniAlert = await swal({
@@ -82,16 +91,16 @@ const Register = props => {
                 dangerMode: true,
             })
         }
-        let validFullname = await validateInput('text', getFullname)
-        let validOs = await validateInput ('text', getOs)
-        let validDate = await validateInput ('number', getDate)
+        let validFullname = validateInput('text', getFullname)
+        let validOs = validateInput('text', getOs)
+        let validDate = validateInput('number', getDate)
         if (validDni && validFullname && dniAlert && termsSwitch && validOs && validDate) {
             dispatch({ type: 'LOADING', payload: true })
             let pwd = generatePassword()
             let user = `${getWs}@${pwd}.com`
             localStorage.setItem('codeRegistered', pwd)
             try {
-                await app.auth()
+                return await app.auth()
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {
@@ -100,24 +109,28 @@ const Register = props => {
                                 'Este teléfono ya está registrado para un usuario.',
                                 'warning')
                         }
-                        else swal('Error', err, 'warning')
+                        else { swal('Error', err, 'warning') }
                         dispatch({ type: 'LOADING', payload: false })
                     })
             } catch (error) {
-                swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
+                return swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
             }
-        } else if(!validDni) {
-            setErrors({dni: true})
-        } else if (!validFullname){
-            setErrors({nombre: true})
-        } else if(!validOs){
-            setErrors({cobertura: true})
-        } else if(!validDate){
-            setErrors({bday: true})
+        } 
+        const errors = {};
+        if(!validDni) {
+            errors.dni = true;
+        } 
+        if (!validFullname){
+            errors.nombre = true;
+        } 
+        if(!validOs){
+            errors.cobertura = true;
+        } 
+        if(!validDate){
+            errors.bday = true;
         }
-        else if (!dniAlert) {
-            return null
-        } else {
+        setErrors(errors);
+        if(!termsSwitch) {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
         }
     }
@@ -197,7 +210,6 @@ const Register = props => {
                 }, 2500)
             }
         }
-        props.finalAction()
     }
 
     const handleInput = (typeDispatch) => (event) => {
@@ -219,7 +231,7 @@ const Register = props => {
         <>
             {loading && <Loading />}
                 <>
-                    <GenericHeader profileDisabled={true}> Registro</GenericHeader>
+                    <GenericHeader profileDisabled={true}>Registro</GenericHeader>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
                             <div className='contentData'>¡Te registraste con éxito!</div>
@@ -232,16 +244,23 @@ const Register = props => {
                             </div>
                         </MobileModal>
                     )}
+                    {state === 'desktop' ? 
+                    <h3 className='register_form--title'>Formulario de registro</h3> 
+                    :
+                    <p></p>
+                    }
                     {urlWS !== 'undefined' ?
                     <div className="register__container">
                         <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
                             <div className='d-flex flex-wrap'>
+
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
                                     Nombre y apellido* 
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
                                 autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
+                                {console.log(errors)}
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -256,6 +275,8 @@ const Register = props => {
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
                             </div>
+                            
+                            
                             {!urlWS && 
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
@@ -367,7 +388,7 @@ const Register = props => {
                         </div>
                     }
                 </>
-                 <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? Ingresa</small>
+                 <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? <a className="ml-1" href="/login">Ingresa</a></small>
         </>
     )
 }
