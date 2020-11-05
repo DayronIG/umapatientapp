@@ -5,7 +5,7 @@ import { days } from '../Utils/transportUtils';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import TimePicker from '../GeneralComponents/TimePicker';
 import '../../styles/generalcomponents/daysSlider.scss'
-import Cleave from 'cleave.js';
+import Cleave from 'cleave.js/react';
 
 export default function DaysSlider({
 	title = '',

@@ -8,7 +8,7 @@ import { faPlusCircle, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import { transport } from '../../config/endpoints';
 import Alert from '../GeneralComponents/Alert/Alerts';
-import Cleave from 'cleave.js';
+import Cleave from 'cleave.js/react';
 import { transport_register } from '../../config/endpoints';
 import { fileToBlob } from '../Utils/fileToBlob';
 import InputFile from '../Inputs/InputFile';

@@ -12,6 +12,12 @@ const initialState = {
 	service: {},
 	notes: '',
 	hasReturn: false,
+	origin_translate_monday: false,
+    origin_translate_tuesday: false,
+    origin_translate_wednesday: false,
+    origin_translate_thursday: false,
+    origin_translate_friday: false,
+    origin_translate_saturday: false,
 };
 
 export default (state = initialState, { type, payload }) => {
