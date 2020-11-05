@@ -12,6 +12,10 @@ const InformationPage = ({
   imgProps = {
     styles: {},
     img: ''
+  },
+  optionalText = {
+    class: '',
+    text: ''
   }
 }) => {
     const [install, setInstall] = React.useState(true);
@@ -56,7 +60,11 @@ const InformationPage = ({
               <button className="button__instalar" onClick={callback} >Continuar</button>
             }
             <br/><br/>
-            
+            {optionalText.text &&
+              <div className={optionalText.class}>
+                {optionalText.text}
+              </div>
+            }
           </div>
         </div>
         {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}

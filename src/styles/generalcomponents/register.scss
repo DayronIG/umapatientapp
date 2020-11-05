@@ -1,4 +1,17 @@
 @import '../index.scss';
+.register_form--title{
+   position: absolute;
+   width: 883px;
+   height: 25px;
+   left: 233px;
+   top: 145px;
+   color: #008290;
+   font-weight: 900;
+   font-size: 24px;
+   line-height: 0.9%;
+   border-bottom: 0.2rem solid #008290;
+   margin-top: 30px;
+}
 .formulario__title{
    display: flex;
    justify-content: flex-end;
@@ -154,10 +167,17 @@
       text-align: left;
       margin-left: auto;
       margin-right: auto;
+      @media (min-width:768px) and (max-width: 1440px){
+         width: 35%;
+         
+      }
    }
    .text-right{
       display: flex;
       justify-content: center;
+   }
+      @media (min-width:768px) and (max-width: 1440px){
+      padding: 150px;
    }
 }
 .form__validation--error{

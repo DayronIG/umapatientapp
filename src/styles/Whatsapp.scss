@@ -120,3 +120,129 @@
         }
     }
 }
+@media (min-width:768px) and (max-width: 1440px){
+    .information__container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        .whatsapp {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            margin: auto;
+            text-align: center;
+            border: none;
+            box-shadow: 0px 4px 50px 0px rgba(126, 147, 163, 0.25);
+            padding: 5px 10px;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            border-radius: 6px;
+    
+            .titleContainer {
+                .titleContainer__title {
+                font-weight: 900;
+                font-size: 36px;
+                color: #008290;
+                line-height: 39.35px;
+                margin: auto;
+                margin-bottom: 20px;
+                width: 85%;
+                .hola{
+                    color: #36a853;
+                }
+            }
+        }
+            
+    
+      .textContainer {
+        .textContainer__message {
+            padding: 5px;
+            margin: auto;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            width: 60%;
+            height: auto;
+            left: auto;
+            top: auto;
+            display: flex;
+            justify-content: center;
+            color: #1E1E1E;
+            .link {
+                font-weight: bold;
+            }
+        }
+      }
+      .button__instalar{
+        width: 32%;
+        height: 47px;
+        margin: auto;
+        background-color: #36a853;
+        border-radius: 10px;
+        color: white;
+        border: none;
+        font-weight: normal;
+        
+      }
+      
+    }
+    
+    
+    .imgContainer__image{
+        width: 150px;
+        height: 160px;
+        margin-top: 30px;
+    }
+    .terminos__container{
+        width: 90%;
+        margin: auto;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        .landingSwitchContainer {
+            margin-top: 10px;
+        }
+        .termsText {
+            text-align: left;
+            color: #686464;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            width: 35%;
+        }
+    }
+    .phoneinputandbutton__container{
+        display: flex;
+        justify-content: space-around;
+        width: 85%;
+        margin: auto;
+        .phoneinput__cointainer{
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+            .react-tel-input {
+                input {
+                    width: 100%;
+                    padding-left: 50px;
+                    border: none;
+                    border-bottom: 1px solid #a5bacb;
+                    border-radius: 0;
+                    &:focus {
+                        outline: none !important;
+                        border: none !important;
+                        border-bottom: 1px solid #a5bacb !important;
+                    }
+                }
+            }
+        }
+    }
+    }
+}

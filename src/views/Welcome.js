@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {useHistory, useParams, withRouter} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,13 @@ const Welcome = props => {
   const [deferredPrompt, setDeferredPrompt] = React.useState()
   const { ws } = useParams();
   const history = useHistory();
+  const [state, setState] = useState('');
+
+    useEffect(() => {
+        if(window.innerWidth > 768){
+            setState('desktop');
+        }
+    },[])
 
   useEffect(() => {
     //console.log(DetectRTC.isWebsiteHasWebcamPermissions())
@@ -69,7 +76,7 @@ const Welcome = props => {
   }
 
   return (
-    
+    <>
         <InformationPage
             callback={installAction}
             title='¡Te damos la bienvenida a UMA! '                   
@@ -77,8 +84,13 @@ const Welcome = props => {
               'Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.'
             ]}
             button='Continuar'
+            optionalText={{
+              class: 'welcomeOptionsText',
+              text: state === 'desktop' ? '(Para una mejor experiencia, te sugerimos realizar este proceso a través del celular)' : ''
+            }}
         />
-    
+          
+    </>
   );
 };
 

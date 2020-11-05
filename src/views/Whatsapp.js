@@ -78,19 +78,21 @@ const InformationPage = ({
             Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.
             </p>          
           <br />
-          <div className='phoneinput__cointainer'>
-            <br/>
-            <PhoneInput
-                className='phoneinput' 
-                placeholder={''}
-                country='ar'
-                value={phone}
-                onChange={ (value) => setPhone(value) } 
-            />
-        </div>
-        <button className="button__instalar" disabled={!isChecked}
-            style={{minWidth: '200px'}}
-            onClick={() => sendPhoneCall(phone)}>{button}</button>
+          <div className='phoneinputandbutton__container'>
+            <div className='phoneinput__cointainer'>
+              <br/>
+              <PhoneInput
+                  className='phoneinput' 
+                  placeholder={''}
+                  country='ar'
+                  value={phone}
+                  onChange={ (value) => setPhone(value) } 
+              />
+          </div>
+          <button className="button__instalar" disabled={!isChecked}
+              style={{minWidth: '200px'}}
+              onClick={() => sendPhoneCall(phone)}>{button}</button>
+          </div>
         <div className='terminos__container'>
             <div className="landingSwitchContainer">
                 <Switch type="checkbox" 
