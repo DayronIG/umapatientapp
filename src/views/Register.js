@@ -234,7 +234,7 @@ const Register = props => {
                 <Welcome />
                 :
                 <>
-                    <GenericHeader profileDisabled={true}>Registro</GenericHeader>
+                    <GenericHeader profileDisabled={true}></GenericHeader>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
                             <div className='contentData'>¡Te registraste con éxito!</div>
@@ -247,16 +247,11 @@ const Register = props => {
                             </div>
                         </MobileModal>
                     )}
-                    {state === 'desktop' ? 
-                    <h3 className='register_form--title'>Formulario de registro</h3> 
-                    :
-                    <p></p>
-                    }
                     {urlWS !== 'undefined' ?
                     <div className="register__container">
+                        <h3 className='register_form--title'>Formulario de registro</h3> 
                         <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
                             <div className='d-flex flex-wrap'>
-
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
                                     Nombre y apellido* 
@@ -359,7 +354,7 @@ const Register = props => {
                                     </div>                                
                             </div>
                             </div><br />
-                            <div className='d-flex '>
+                            <div className='switch__container'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
                                     <h5 className="text__terminosYcondiciones ml-5">Acepto los términos y condiciones</h5>
                                 </a>
