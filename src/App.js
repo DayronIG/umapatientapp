@@ -147,7 +147,7 @@ function App(props) {
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				
-				<Route exact path='/:ws?/referred' component={Referred} />
+				<Route exact path='/referred/:ws?' component={Referred} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

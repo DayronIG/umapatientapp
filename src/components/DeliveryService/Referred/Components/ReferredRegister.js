@@ -13,7 +13,6 @@ import Loading from '../../../GeneralComponents/Loading';
 import { GenericHeader } from '../../../GeneralComponents/Headers';
 import MobileModal from '../../../GeneralComponents/Modal/MobileModal';
 import {getCountry} from '../../../Utils/getCountry.js';
-import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { validateInput } from '../../../Utils/stringUtils';
@@ -197,6 +196,7 @@ const Register = props => {
                 }, 2500)
             }
         }
+        props.finalAction()
     }
 
     const handleInput = (typeDispatch) => (event) => {
@@ -217,9 +217,6 @@ const Register = props => {
     return (
         <>
             {loading && <Loading />}
-            {registered ?
-                <Welcome />
-                :
                 <>
                     <GenericHeader profileDisabled={true}> Registro</GenericHeader>
                     {modalDisplay && (
@@ -369,7 +366,7 @@ const Register = props => {
                             </a>
                         </div>
                     }
-                </>}
+                </>
                  <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? Ingresa</small>
         </>
     )
