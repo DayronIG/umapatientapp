@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import swal from 'sweetalert';
 import axios from 'axios';
 import { feedback } from '../../../config/endpoints';

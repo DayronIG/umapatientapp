@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Camera, { FACING_MODES } from 'react-html5-camera-photo';
 import { Link, withRouter } from 'react-router-dom';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Axios from 'axios';
 import Loading from '../GeneralComponents/Loading';
 import b64ToBlob from '../Utils/base64ToBlob';
 import { putFileFB } from '../Utils/firebaseUtils';
 import { pol_selfie } from '../../config/endpoints';
-import 'moment-timezone';
+
 import 'react-html5-camera-photo/build/css/index.css';
 
 const PolRegisterDni = ({ goToStep }) => {

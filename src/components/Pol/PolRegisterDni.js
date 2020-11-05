@@ -6,9 +6,9 @@ import Axios from 'axios';
 import b64ToBlob from '../Utils/base64ToBlob';
 import Loading from '../GeneralComponents/Loading';
 import { putFileFB } from '../Utils/firebaseUtils';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { pol_dni_back, pol_dni_front } from '../../config/endpoints';
-import 'moment-timezone';
+
 import 'react-html5-camera-photo/build/css/index.css';
 
 const PolRegisterDni = ({ goToStep }) => {

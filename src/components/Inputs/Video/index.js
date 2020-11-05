@@ -5,7 +5,7 @@ import { FaCamera } from 'react-icons/fa';
 import { RiRecordCircleLine } from 'react-icons/ri';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import UmaLoader, { Loader } from '../../GeneralComponents/Loading';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { load } from '@teachablemachine/image';
 import '../../../styles/inputs/video/videoComponent.scss';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import UMA_LOGO from '../../assets/icons/icon-168.png';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const ConstanciaAlta = ({att, socialWork, docData}) => {
     return <> 

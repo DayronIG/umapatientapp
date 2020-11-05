@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import ReactMicRecord from 'react-mic-record';
 import axios from 'axios';
 import { sound_online, start_biomarker } from '../../../config/endpoints.js';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import stethoscope from '../../../assets/sthetoscop.jpeg';
 import stethoscopewav from '../../../assets/stethoscopewav.wav';
 import '../../../styles/onlinedoctor/Biomarkers.scss';

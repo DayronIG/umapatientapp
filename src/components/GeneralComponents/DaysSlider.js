@@ -9,33 +9,21 @@ import Cleave from 'cleave.js';
 
 export default function DaysSlider({
 	title = '',
-	handleChange = () => { },
-	values = {}
+	values,
+	handleChange
 }) {
-
-	// const [limiter, setLimiter] = useState(1);
-
-	const [hours, sethours] = useState({ monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' })
+	// const [hours, sethours] = useState({monday: '', tuesday: '', wednesday: '', thursday: '', friday: ''})
 	const transportData = useSelector(state => state.front);
 	const dispatch = useDispatch();
 
 	const handlerInputChange = (e) => {
 		const { name, value } = e.target
-		sethours({ ...hours, [name]: value })
-
-
+		handleChange(value, name)
 	}
-	const handlerInputClear = () => {
-		sethours({ monday: '' })
-	}
-
-	console.log(hours)
-
 
 
 	return (
 		<div className='daysSlider'>
-			<p>{hours.mondayMinutes}</p>
 			<h5 className='daysSlider__title'>{title}</h5>
 			<div className="modal-body">
 				<div className="switcher">
@@ -43,20 +31,19 @@ export default function DaysSlider({
 					{transportData.origin_translate_monday ?
 						<div className="inputers">
 							<div>
-								<Cleave placeholder="00:00" name="monday" value={hours.monday} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+								<Cleave placeholder="00:00" name="mon" value={values.mon} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
 
 								<span>Hs.</span>
 							</div>
-						</div> : console.log(hours)}
+						</div> : null}
 					<label id="switch" class="switch">
 						<input id="input" type="checkbox"
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_MONDAY', payload: !transportData.origin_translate_monday })
-								if (transportData.origin_translate_monday) { sethours({ ...hours, monday: '' }) }
-
-							}
-
-							}
+								if (transportData.origin_translate_monday) {
+									dispatch({ type: 'HANDLE_START_SCHEDULE', payload: { key: 'mon', value: '' } })
+								}
+							}}
 						/>
 						<span class="slider round">{transportData.origin_translate_monday ? "✓" : null}</span>
 					</label>
@@ -67,7 +54,7 @@ export default function DaysSlider({
 					{transportData.origin_translate_tuesday ?
 						<div className="inputers">
 							<div>
-								<Cleave placeholder="00:00" name="tuesday" value={hours.tuesday} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+								<Cleave placeholder="00:00" name="tue" value={values.tue} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
 
 								<span>Hs.</span>
 							</div>
@@ -76,7 +63,9 @@ export default function DaysSlider({
 						<input id="input" type="checkbox"
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_TUESDAY', payload: !transportData.origin_translate_tuesday })
-								if (transportData.origin_translate_tuesday) { sethours({ ...hours, tuesday: '' }) }
+								if (transportData.origin_translate_tuesday) {
+									dispatch({ type: 'HANDLE_START_SCHEDULE', payload: { key: 'tue', value: '' } })
+								}
 							}}
 						/>
 						<span class="slider round">{transportData.origin_translate_tuesday ? "✓" : null}</span>
@@ -89,7 +78,7 @@ export default function DaysSlider({
 					{transportData.origin_translate_wednesday ?
 						<div className="inputers">
 							<div>
-								<Cleave placeholder="00:00" name="wednesday" value={hours.wednesday} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+								<Cleave placeholder="00:00" name="wed" value={values.wed} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
 
 								<span>Hs.</span>
 							</div>
@@ -98,7 +87,9 @@ export default function DaysSlider({
 						<input id="input" type="checkbox"
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_WEDNESDAY', payload: !transportData.origin_translate_wednesday })
-								if (transportData.origin_translate_wednesday) { sethours({ ...hours, wednesday: '' }) }
+								if (transportData.origin_translate_wednesday) {
+									dispatch({ type: 'HANDLE_START_SCHEDULE', payload: { key: 'wed', value: '' } })
+								}
 							}}
 						/>
 						<span class="slider round">{transportData.origin_translate_wednesday ? "✓" : null}</span>
@@ -110,7 +101,7 @@ export default function DaysSlider({
 					{transportData.origin_translate_thursday ?
 						<div className="inputers">
 							<div>
-								<Cleave placeholder="00:00" name="thursday" value={hours.thursday} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+								<Cleave placeholder="00:00" name="thu" value={values.thu} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
 
 								<span>Hs.</span>
 							</div>
@@ -119,7 +110,9 @@ export default function DaysSlider({
 						<input id="input" type="checkbox"
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_THURSDAY', payload: !transportData.origin_translate_thursday })
-								if (transportData.origin_translate_thursday) { sethours({ ...hours, thursday: '' }) }
+								if (transportData.origin_translate_thursday) {
+									dispatch({ type: 'HANDLE_START_SCHEDULE', payload: { key: 'thu', value: '' } })
+								}
 							}}
 						/>
 						<span class="slider round">{transportData.origin_translate_thursday ? "✓" : null}</span>
@@ -131,7 +124,7 @@ export default function DaysSlider({
 					{transportData.origin_translate_friday ?
 						<div className="inputers">
 							<div>
-								<Cleave placeholder="00:00" name="friday" value={hours.friday} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+								<Cleave placeholder="00:00" name="fri" value={values.fri} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
 
 								<span>Hs.</span>
 							</div>
@@ -140,42 +133,15 @@ export default function DaysSlider({
 						<input id="input" type="checkbox"
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_FRIDAY', payload: !transportData.origin_translate_friday })
-								if (transportData.origin_translate_friday) { sethours({ ...hours, friday: '' }) }
+								if (transportData.origin_translate_friday) {
+									dispatch({ type: 'HANDLE_START_SCHEDULE', payload: { key: 'fri', value: '' } })
+								}
 							}}
 						/>
 						<span class="slider round">{transportData.origin_translate_friday ? "✓" : null}</span>
 					</label>
 				</div>
-
-
-
-
 			</div>
-
-
-
-
-			{/* <div className='daysSlider__slider'>
-				{days
-					.filter((day, index) => index < limiter)
-					.map((day, index) => (
-						<div key={day}>
-							<label>{getDay(index)}</label>
-							<TimePicker
-								value={values[day]}
-								onChange={(value) => handleChange(value, day)}
-							/>
-						</div>
-					))}
-				{limiter < 7 &&
-					<div className='plusIcon' onClick={() => setLimiter(limiter + 1)}>
-						<AiOutlinePlusCircle />
-					</div>}
-				{limiter > 1 &&
-					<div className='plusIcon' onClick={() => setLimiter(limiter - 1)}>
-						<AiOutlineMinusCircle />
-					</div>}
-			</div> */}
 		</div>
 	);
 }

@@ -7,7 +7,7 @@ import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
 import { Loader } from '../global/Spinner/Loaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { user_cancel } from '../../config/endpoints';
