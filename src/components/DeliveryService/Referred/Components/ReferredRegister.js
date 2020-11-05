@@ -10,17 +10,17 @@ import axios from 'axios';
 import { install_event } from '../config/endpoints';
 import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
-import Loading from '../components/GeneralComponents/Loading';
-import { GenericHeader } from '../components/GeneralComponents/Headers';
-import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
-import {getCountry} from '../components/Utils/getCountry.js';
+import Loading from '../../../GeneralComponents/Loading';
+import { GenericHeader } from '../../../GeneralComponents/Headers';
+import MobileModal from '../../../GeneralComponents/Modal/MobileModal';
+import {getCountry} from '../../../Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
-import { validateInput } from '../components/Utils/stringUtils';
-import { installPrompt } from '../components/Utils/installPrompt';
+import { validateInput } from '../../../Utils/stringUtils';
+import { installPrompt } from '../../../Utils/installPrompt';
 import 'moment-timezone';
-import '../../src/styles/generalcomponents/register.scss';
+import '../../../../styles/generalcomponents/register.scss';
 
 const Register = props => {
     const dispatch = useDispatch()
