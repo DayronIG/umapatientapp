@@ -65,6 +65,10 @@ export const handleHasReturn = (value) => ({
 	payload: value
 })
 
+export const handleReset = (value) => ({
+	type: transportTypes.HANDLE_RESET
+})
+
 export const setInitialOriginPoint = (patient = {}) => {
 	const pointData = {
 		lat: patient.lat,
@@ -130,7 +134,8 @@ export const createTransportSchedule = async (transportData, patient) => {
 			time_reference: transportData.timeReference.toUpperCase(),
 			tipo_asignacion: 'manual'
 		}
-		return await Axios.post(create_traslado, data);
+		await Axios.post(create_traslado, data);
+		return dispatch(handleReset());
 	} catch (error) {
 		console.error(error);
 		throw new Error(error.message || error);

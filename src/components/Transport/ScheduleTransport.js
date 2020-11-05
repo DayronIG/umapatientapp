@@ -5,7 +5,7 @@ import * as transportActions from '../../store/actions/transportActions';
 import { useHistory, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 import DaysSlider from '../GeneralComponents/DaysSlider';
-import DaysSlider2 from '../GeneralComponents/DaysSlider2';
+import DaysSliderReturn from '../GeneralComponents/DaysSliderReturn';
 import Loading from '../GeneralComponents/Loading';
 import moment from 'moment';
 import '../../styles/transport/scheduleTransport.scss';
@@ -19,6 +19,27 @@ function ScheduleTransport() {
 	const [tomorrow] = useState(moment().add(1, 'day').format('YYYY-MM-DD'));
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	
+
+	const resetReturnDays = () => {
+		// dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_TUESDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_WEDNESDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_THURSDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_FRIDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_SATURDAY', payload: false })
+		// dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: false })
+		
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'mon', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'tue', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'wed', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'thu', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sat', value: ''}})
+		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sun', value: ''}})
+
+	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -34,11 +55,7 @@ function ScheduleTransport() {
 			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
 		}
 	}
-	if(!transportData.hasReturn){
-		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
-	}
 
-	
 
 	return (
 		<form className='scheduleForm'>
@@ -74,6 +91,7 @@ function ScheduleTransport() {
 				<input
 					type='checkbox'
 					onChange={transportActions.setHasReturn}
+					onClick={resetReturnDays}
 					id='scheduleReturn'
 					name='scheduleReturn'
 					value={transportData.hasReturn}
@@ -84,9 +102,8 @@ function ScheduleTransport() {
 				values={transportData.startSchedules}
 				handleChange={transportActions.setStartSchedule}
 			/>
-
 			{transportData.hasReturn && (
-				<DaysSlider2
+				<DaysSliderReturn
 					title='Regreso a origen'
 					values={transportData.returnSchedules}
 					handleChange={transportActions.setReturnSchedule}
@@ -102,8 +119,8 @@ function ScheduleTransport() {
 						placeholder='Escribe tus comentarios aquí...'
 						name='notes'
 						id='notes'
-						// value={transportData.notes}
-						// onChange={transportActions.setNotes}
+						value={transportData.notes}
+						onChange={transportActions.setNotes}
 					/>
 				</div>
 			</div>

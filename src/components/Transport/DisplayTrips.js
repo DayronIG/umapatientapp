@@ -43,6 +43,7 @@ const TransportUserActive = () => {
 			)
 			setApprovedServices(response.data.filter(item => item.autorizado));
 			setPendingServices(response.data.filter(item => !item.autorizado));
+			console.log(response)
 		} catch (error) {
 			console.log(error);
 		} finally {

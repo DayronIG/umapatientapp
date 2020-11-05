@@ -38,6 +38,41 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, notes: payload };
 		case transportTypes.HANDLE_RETURN:
 			return { ...state, hasReturn: payload };
+		case transportTypes.HANDLE_RESET:
+			return { ...initialState };
+
+		case transportTypes.HANDLE_ORIGIN_DAY:
+			return {...state.originDay, [payload.key]: payload.value  }
+		
+			case 'SET_ORIGIN_TRANSLATE_MONDAY':
+				return { ...state, origin_translate_monday: payload };
+			case 'SET_ORIGIN_TRANSLATE_TUESDAY':
+				return { ...state, origin_translate_tuesday: payload };
+			case 'SET_ORIGIN_TRANSLATE_WEDNESDAY':
+				return { ...state, origin_translate_wednesday: payload };
+			case 'SET_ORIGIN_TRANSLATE_THURSDAY':
+				return { ...state, origin_translate_thursday: payload };
+			case 'SET_ORIGIN_TRANSLATE_FRIDAY':
+				return { ...state, origin_translate_friday: payload };
+			case 'SET_ORIGIN_TRANSLATE_SATURDAY':
+				return { ...state, origin_translate_saturday: payload };
+			case 'SET_ORIGIN_TRANSLATE_SUNDAY':
+				return { ...state, origin_translate_sunday: payload };
+
+			case 'SET_BACK_TRANSLATE_MONDAY':
+					return { ...state, back_translate_monday: payload };
+			case 'SET_BACK_TRANSLATE_TUESDAY':
+				return { ...state, back_translate_tuesday: payload };
+			case 'SET_BACK_TRANSLATE_WEDNESDAY':
+				return { ...state, back_translate_wednesday: payload };
+			case 'SET_BACK_TRANSLATE_THURSDAY':
+				return { ...state, back_translate_thursday: payload };
+			case 'SET_BACK_TRANSLATE_FRIDAY':
+				return { ...state, back_translate_friday: payload };
+				case 'SET_BACK_TRANSLATE_SATURDAY':
+				return { ...state, back_translate_saturday: payload };
+			case 'SET_BACK_TRANSLATE_SUNDAY':
+				return { ...state, back_translate_sunday: payload };
 		default:
 			return state;
 	}

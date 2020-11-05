@@ -12,8 +12,8 @@ export default function DaysSlider({
 	values,
 	handleChange
 }) {
-	// const [hours, sethours] = useState({monday: '', tuesday: '', wednesday: '', thursday: '', friday: ''})
-	const transportData = useSelector(state => state.front);
+	
+	const transportData = useSelector(state => state.transport);
 	const dispatch = useDispatch();
 	
 	const handlerInputChange = (e) => {
@@ -21,6 +21,15 @@ export default function DaysSlider({
 		handleChange(value, name)			
 	}
 
+	useEffect(() => {
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_MONDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_TUESDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_WEDNESDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_THURSDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_FRIDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SATURDAY', payload: false })
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SUNDAY', payload: false })
+	}, [])
 	
 	return (
 		<div className='daysSlider'>			
@@ -136,6 +145,53 @@ export default function DaysSlider({
 								<span class="slider round">{transportData.origin_translate_friday ? "✓" : null}</span>
 								</label>
 						</div>
+
+
+						{/* <div className="switcher">
+							<span>Sabado</span>
+							{transportData.origin_translate_saturday ? 
+							<div className="inputers"> 
+							<div> 
+							<Cleave placeholder="00:00" name="sat" value={values.sat} onChange = {handlerInputChange} className="CleaveInput" options={{time: true, timePattern: ['h', 'm']}} />
+									
+									<span>Hs.</span> 
+								</div> 
+							</div> : null }
+								<label id="switch" class="switch">
+								<input id="input" type="checkbox"
+								onClick={() =>{
+									dispatch({ type: 'SET_ORIGIN_TRANSLATE_SATURDAY', payload: !transportData.origin_translate_saturday })
+									if (transportData.origin_translate_saturday) { 
+										dispatch({type: 'HANDLE_START_SCHEDULE', payload: {key: 'sat', value: ''}})
+								}}} 
+								/> 
+								<span class="slider round">{transportData.origin_translate_saturday ? "✓" : null}</span>
+								</label>
+						</div>
+
+						<div className="switcher">
+							<span>Domingo</span>
+							{transportData.origin_translate_sunday ? 
+							<div className="inputers"> 
+							<div> 
+							<Cleave placeholder="00:00" name="sun" value={values.sun} onChange = {handlerInputChange} className="CleaveInput" options={{time: true, timePattern: ['h', 'm']}} />
+									
+									<span>Hs.</span> 
+								</div> 
+							</div> : null }
+								<label id="switch" class="switch">
+								<input id="input" type="checkbox"
+								onClick={() =>{
+									dispatch({ type: 'SET_ORIGIN_TRANSLATE_SUNDAY', payload: !transportData.origin_translate_sunday })
+									if (transportData.origin_translate_sunday) { 
+										dispatch({type: 'HANDLE_START_SCHEDULE', payload: {key: 'sun', value: ''}})
+								}}} 
+								/> 
+								<span class="slider round">{transportData.origin_translate_sunday ? "✓" : null}</span>
+								</label>
+						</div> */}
+
+						
 					</div>
 		</div>
 	);
