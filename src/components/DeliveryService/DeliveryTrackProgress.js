@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import PackageOnTheWay from './PackageOnTheWay';
-import SearchingProfessional from './SearchingProfessional';
 import Loading from '../GeneralComponents/Loading';
 import NotService from './NotService';
 import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Components/EndAssignationHisopado"
