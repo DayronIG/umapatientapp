@@ -343,7 +343,6 @@ class RecipePDFUP extends React.Component {
 				});
 		}
 	}
-
 	render() {
 		const { prescriptionNumber, prescriptionDate, patient, recipe, doctorInfo, mr } = this.props;
 		const replicate = recipe.some((med) => parseInt(med.duplicado) === 1);
@@ -627,6 +626,7 @@ const Recipe = ({ att, doc }) => {
 		prescriptionDate: prescripDate || '',
 		mr,
 	};
+	patient.n_afiliado && alert(patient.n_afiliado)
 
 	useEffect(() => {
 		if (mr?.receta[0]) {

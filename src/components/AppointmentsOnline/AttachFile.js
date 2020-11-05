@@ -18,6 +18,7 @@ const AttachFile = ({appoint, specialty}) => {
             setButtonText('Cargar constancia')
         }
     }, [])
+    
     const uploadImage = (e) => {
 		dispatch({ type: 'LOADING', payload: true });
 		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');

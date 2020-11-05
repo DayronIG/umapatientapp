@@ -2,6 +2,10 @@
     {
       "symptom": "Sospecha de covid",
       "questions": []
+		},
+		{
+      "symptom": "Justificación de ausencias",
+      "questions": []
     },
     {
       "symptom": "Hipertensión",

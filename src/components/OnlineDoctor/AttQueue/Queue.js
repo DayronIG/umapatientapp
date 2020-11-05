@@ -20,8 +20,7 @@ import DBConnection from '../../../config/DBConnection';
 import Slider from './Slider';
 import Loading from '../../GeneralComponents/Loading';
 import tone from '../../../assets/ring.mp3';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 import 'moment/locale/es';
 
 const Queue = (props) => {
@@ -213,14 +212,14 @@ const Queue = (props) => {
         function questionsForEachSymptom() {
             let selectedQuestions = []
             assessment.selectedSymptoms.forEach(symptom => {
-                let filterQuestions = questions.filter(t => {
+                let filterQuestions = questions?.filter(t => {
                     if (t.symptom === symptom) {
                         return t
                     } else {
                         return null
                     }
                 })
-                selectedQuestions.push(filterQuestions[0].questions)
+                selectedQuestions.push(filterQuestions[0]?.questions)
             })
             if (selectedQuestions.length === 0) {
                 dispatch({ type: 'SHOW_ASK_TEXT', payload: false })
