@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import ConfirmContent from './ConfirmContent';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import SelectSymptoms from '../SelectSymptoms';

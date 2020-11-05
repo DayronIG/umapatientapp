@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Camera from '../../GeneralComponents/Camera';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Loader } from '../../GeneralComponents/Loading';
 import '../../../styles/inputs/picture/PictureComponent.scss';
 

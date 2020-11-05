@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const Reserved = (props) => {
     const dispatch = useDispatch();

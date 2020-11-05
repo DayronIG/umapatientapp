@@ -5,14 +5,14 @@ import ForOther from './ForOther';
 import { capitalizeName } from '../../Utils/stringUtils';
 import BackButton from '../../GeneralComponents/Backbutton';
 import { PamiAffiliate } from '../../GeneralComponents/Affiliates/Affiliates';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { getUserParentsFirebase, getPendingTraslate } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import ImageFlow from '../../../assets/doctor-online.svg';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import 'moment/locale/es';
-import 'moment-timezone';
+
 import '../../../styles/whoScreen.scss';
 
 const WhenScreen = (props) => {

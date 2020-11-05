@@ -12,7 +12,7 @@ import * as DetectRTC from 'detectrtc';
 import Axios from "axios";
 import { node_patient } from './config/endpoints';
 import version from './config/version.json';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const Login = () => {
     const [delay, setDelay] = useState(false)

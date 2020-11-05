@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { Loader } from '../global/Spinner/Loaders';

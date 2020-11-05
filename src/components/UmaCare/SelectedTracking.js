@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { CovidSteps } from './CovidSteps';
 import Steper from './Steper';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const SelectedTracking = ({setTextDetail}) => {
     const history = useHistory()

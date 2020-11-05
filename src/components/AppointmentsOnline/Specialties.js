@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DB from '../../config/DBConnection';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import { Loader } from '../global/Spinner/Loaders';
 import { getUser } from '../../store/actions/firebaseQueries';
