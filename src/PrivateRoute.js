@@ -69,10 +69,12 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [patient, RouteComponent, firestore, callRejected, rest.path, dispatch])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (currentUser && currentUser.email && patient.dni && rest.path === "/:ws?") {
+		if (currentUser && currentUser.email && patient.dni) {
 			DetectRTC.load(function () {
-					const ios = isIos()
+                    const ios = isIos()
+                    console.log(ios)
 					if (!ios) {
+                        console.log(" entra ")
 						messaginTokenUpdate(currentUser, DetectRTC, true)
 					} else {
 						messaginTokenUpdate(currentUser, DetectRTC, false)
@@ -86,7 +88,8 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
-		let userToken = ''
+        let userToken = ''
+        console.log(deviceWithPush)
 		if(deviceWithPush) {
 			userToken = await askPermissionToRecieveNotifications()
 		}
