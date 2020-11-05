@@ -72,9 +72,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		if (currentUser && currentUser.email && patient.dni) {
 			DetectRTC.load(function () {
                     const ios = isIos()
-                    console.log(ios)
 					if (!ios) {
-                        console.log(" entra ")
 						messaginTokenUpdate(currentUser, DetectRTC, true)
 					} else {
 						messaginTokenUpdate(currentUser, DetectRTC, false)
@@ -84,12 +82,9 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentUser, patient, token])
 
-
-
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
         let userToken = ''
-        console.log(deviceWithPush)
 		if(deviceWithPush) {
 			userToken = await askPermissionToRecieveNotifications()
 		}
