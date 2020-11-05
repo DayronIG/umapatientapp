@@ -162,7 +162,7 @@ const DeliverySelectDestiny = () => {
 		};
 		try {
 			// Primera request
-			await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });
+			// await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });
 			// Segunda request
 			await Axios.post(mobility_address, data2, {headers});
 
