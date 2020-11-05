@@ -6,11 +6,10 @@ import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import SendComplain from '../AttQueue/SendComplain';
 import ImageFlow from '../../../assets/ambulance.svg';
 import swal from 'sweetalert';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import axios from 'axios';
 import { cx_action_create } from '../../../config/endpoints';
 import 'moment/locale/es';
-import 'moment-timezone';
 import '../../../styles/whoScreen.scss';
 
 const WhenScreen = props => {

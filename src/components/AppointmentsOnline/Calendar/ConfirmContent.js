@@ -12,9 +12,8 @@ import { writeOSData } from '../../../store/actions/UPActions';
 import { underscoreToSpaces } from '../../Utils/stringUtils';
 import { post } from 'axios';
 import AttachFile from '../AttachFile';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import swal from 'sweetalert';
-import 'moment-timezone';
 import '../../../styles/map/mapSidebar.scss';
 
 const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) => {

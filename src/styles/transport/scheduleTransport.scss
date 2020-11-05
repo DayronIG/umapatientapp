@@ -1,0 +1,76 @@
+@import '../index.scss';
+
+.scheduleForm {
+	width: 90%;
+	margin: 25px auto;
+	padding-bottom: 15vh;
+	.scheduleForm__container {
+		width: 100%;
+		background-color: #fff;
+		padding: 10px;
+		border-radius: $regular-borders;
+		margin-top: 25px;
+		.scheduleForm__container--inputSlider {
+			display:flex;
+			justify-content: flex-start;
+			overflow-x: scroll;
+			padding-bottom: 20px;
+			& > div {
+				min-width: 110px;
+				min-height: 75px;
+				border: 1px solid rgba($color: #000000, $alpha: .25);
+				padding: 3px 5px 5px 3px;
+				border-radius: $regular-borders;
+				&:not(:first-child) {
+					margin-left: 10px;
+				}
+			}
+			div.plusIcon {
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 40px;
+				color: $deep-blue-b;
+			}
+			label {
+				margin-left: 7px;
+			}
+			input {
+				width: 100px;
+				margin-left: 15px;
+			}
+		}
+		.scheduleForm__container--input {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			&:not(:first-child) {
+				margin-top: 15px;
+			}
+			input, select {
+				border-top: none;
+				border-right: none;
+				border-left: none;
+				border-bottom: 1px solid rgba($color: #000000, $alpha: .4) ;
+				background-color: transparent;
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+
+		.scheduleForm__observations{
+			display:flex;
+			flex-direction: column;
+			justify-content: center;
+			input{
+				line-height: 10em;
+			}
+			h5{
+				text-align: center;
+			}
+		}
+	}
+}

@@ -26,6 +26,7 @@ const LaboralMotive = ({ unsetScreen }) => {
                 <option value="Primera revisión">Primera revisión</option>
                 <option value="Seguimiento">Seguimiento</option>
                 <option value="Renovación de licencia">Renovación de licencia</option>
+                <option value="Justificación de ausencia">Justificación de ausencia</option>
               </select>
         </div>
         <button type='button' className='btn btn-blue-lg confirmConsultReason'

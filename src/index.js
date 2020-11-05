@@ -20,7 +20,7 @@ const PatientApp = () => {
 
   return (
     <>
-      <Provider store={store()}>
+      <Provider store={store}>
         <Router
           history={createBrowserHistory({ basename: process.env.PUBLIC_URL })}
         >

@@ -23,6 +23,10 @@
       visibility: hidden;
    }
    .sexContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
       select {
          width: -webkit-fill-available;
       }

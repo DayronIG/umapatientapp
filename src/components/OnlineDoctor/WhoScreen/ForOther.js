@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import moment from "moment";
-import 'moment-timezone';
+import moment from "moment-timezone";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { node_patient } from "../../../config/endpoints";

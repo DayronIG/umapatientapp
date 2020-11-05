@@ -9,8 +9,7 @@ import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { Loader } from '../../global/Spinner/Loaders';
 import swal from 'sweetalert';
 import axios from 'axios';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
@@ -98,8 +97,8 @@ const ConfirmAppointment = (props) => {
 				return history.replace(`/${userVerified.dni}/onlinedoctor/queue`);
 			}
 		} catch (err) {
-			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			console.log(err)
+			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 			return history.replace('/');
 		}

@@ -41,9 +41,9 @@ const SignIn = props => {
             axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                 .then((res) => {
                     if(res.data.redirect === 'register') {
-                        props.history.replace(`/${validPhone}/register`)
+                        props.history.replace(`/register/${validPhone}`)
                     } else {
-                        props.history.replace(`/${validPhone}/login`)
+                        props.history.replace(`/login/${validPhone}`)
                     }
                 })
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
@@ -99,7 +99,7 @@ const SignIn = props => {
                     }, 5000)
                 })
         } else if (!password) {
-            props.history.push(`/${validPhone}/login`)
+            props.history.push(`/login/${validPhone}`)
             setSendMsg(true)
             dispatch({ type: 'LOADING', payload: false })
         } else {
@@ -150,7 +150,7 @@ const SignIn = props => {
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        props.history.replace(`/${validPhone}/login`)
+        props.history.replace(`/login/${validPhone}`)
     }
 
     return (
