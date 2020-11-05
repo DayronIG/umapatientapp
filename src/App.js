@@ -77,6 +77,7 @@ function App(props) {
 				<Route exact path='/register/:ws/:ref?' component={Register} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
+				<Route exact path='/referred/:ws?/:ref?' component={Referred} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* General */}
@@ -147,7 +148,6 @@ function App(props) {
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				
-				<Route exact path='/referred/:ws?' component={Referred} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

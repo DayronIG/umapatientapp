@@ -188,6 +188,7 @@
 					.trackProgress__container--text {
 						position: relative;
 						left: 20px;
+						opacity: 0.4;
 
 						h3 {
 							font-size: 16px;
@@ -220,6 +221,9 @@
 					width: 100% !important;
 					height: 14%;
 				}	
+				.RSPBstep:first-child .trackProgress__container--text{
+					opacity: 1;
+				}
 			}
 
 			&.fill_50 {
@@ -232,6 +236,10 @@
 						height: 38%;
 					}
 				}	
+				.RSPBstep:first-child .trackProgress__container--text, 
+				.RSPBstep:nth-child(2) .trackProgress__container--text{
+					opacity: 1;
+				}
 			}
 
 			&.fill_75 {
@@ -244,6 +252,11 @@
 						height: 60%;
 					}
 				}	
+				.RSPBstep:first-child .trackProgress__container--text, 
+				.RSPBstep:nth-child(2) .trackProgress__container--text, 
+				.RSPBstep:nth-child(3) .trackProgress__container--text{
+					opacity: 1;
+				}
 			}
 
 			&.fill_100 {
@@ -252,6 +265,12 @@
 					width: 100% !important;
 					height: 100%;
 				}	
+				.RSPBstep:first-child .trackProgress__container--text, 
+				.RSPBstep:nth-child(2) .trackProgress__container--text, 
+				.RSPBstep:nth-child(3) .trackProgress__container--text, 
+				.RSPBstep:last-child .trackProgress__container--text{
+					opacity: 1;
+				}
 			}
 		}
 

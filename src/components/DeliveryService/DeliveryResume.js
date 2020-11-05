@@ -31,7 +31,7 @@ function DeliveryResume({ duration, active }) {
 		}
 	}, [toggle]);
 
-	if(status === 'DONE:RESULT' && notes && nurse_eval && uma_eval){
+	if(status === 'DONE:RESULT' && nurse_eval && uma_eval){
 		history.push(`/hisopadoResult/${ws}`);
 	} 
 
@@ -48,7 +48,7 @@ function DeliveryResume({ duration, active }) {
 	}
 
 	const sendRating = () => {	
-		if(surveyResponse.personal && surveyResponse.app && surveyResponse.comment){
+		if(surveyResponse.personal && surveyResponse.app){
 			let data =
 				{
 					"key": "delivery",
@@ -70,6 +70,12 @@ function DeliveryResume({ duration, active }) {
 		} else {
 			setError(true);
 		}
+	}
+
+	const handleEnter = (e) => {
+			if(e.keyCode === 13){
+			  e.target.blur(); 
+			}
 	}
 
 
@@ -99,6 +105,7 @@ function DeliveryResume({ duration, active }) {
 						<li className="tracking__indicationsListItem">No te automediques. </li>
 						<li className="tracking__indicationsListItem">Recuerda colocarte el barbijo para recibir al enfermero. </li>
 						<li className="tracking__indicationsListItem">Lávate las manos y evita el contacto con la cara.</li>
+						<li className="tracking__indicationsListItem">Mantén el ambiente ventilado.</li>
 					</ul>
 				</article>
 
@@ -157,7 +164,7 @@ function DeliveryResume({ duration, active }) {
 				<div className="surveyQuestion">
 					<h3>¿Qué podríamos mejorar?</h3>
 					<div className="surveyComment">
-						<textarea name="comment" onChange={handleChangeComment} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
+						<textarea name="comment" onChange={handleChangeComment} onKeyDown={(e) => handleEnter(e)} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
 					</div>
 				</div>
 				

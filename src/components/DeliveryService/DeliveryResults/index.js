@@ -12,7 +12,7 @@ export default function HisopadosPurchase() {
     const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("RESULT_REVEAL");
     const history = useHistory()
     const result = useSelector(state => state.deliveryService?.deliveryInfo[0]?.lab?.result_lab)
-    const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[0]?.eval?.notes) 
+    const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[0]?.eval?.uma_eval) 
 
     useEffect(()=>{
         if(survey){

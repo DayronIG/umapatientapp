@@ -85,8 +85,8 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                             <p>Te enviaremos una notificación cuando se habiliten nuevas zonas</p>
                             <div onClick={() => history.push("/")} className="blue-button">
                                 <FaHome className="icon" />
-                        Ir al inicio
-                    </div>
+                                    Ir al inicio
+                                </div>
                         </>
                         :
                         <>

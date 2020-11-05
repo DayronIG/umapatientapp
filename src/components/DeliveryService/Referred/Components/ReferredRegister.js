@@ -51,7 +51,7 @@ const Register = props => {
     }, [])
 
     useEffect(() => {
-        if(urlWS.length < 12) {
+        if(urlWS?.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/')
         } else {
@@ -63,8 +63,9 @@ const Register = props => {
     }, [dispatch])
     
     async function getCountryCode() {
-        let code = await getCountry(urlWS)
-        dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
+        if(urlWS){
+            let code = await getCountry(urlWS)
+            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })}
     }
 
     const handleSignUp = async event => {
@@ -241,7 +242,6 @@ const Register = props => {
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
                                 autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
-                                {console.log(errors)}
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -319,7 +319,7 @@ const Register = props => {
                                             placeholder={getSex}
                                             >
 
-                                            <option value=''>Género</option>
+                                            <option value=''>Sexo</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
                                         </select>                                        

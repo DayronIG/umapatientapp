@@ -60,6 +60,10 @@
   }
 }
 
+.modalContainer{
+  overflow: scroll;
+}
+
 .mobile-modal {
   position: fixed;
   top: 12vh;

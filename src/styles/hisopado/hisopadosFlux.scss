@@ -298,7 +298,8 @@
     }
     .blue-text{
 		color: $uma-primary;
-		margin-top: 3vh;
+        margin-top: 3vh;
+		margin-bottom: 5vh;
 		font-weight: 800;
 		font-size: 18px;
 		line-height: 25px;
@@ -372,6 +373,7 @@
     }
     .go__home{
         margin-top: 24px;
+        margin-bottom: 24px;
         border: none;
         background: none;
         color: $uma-primary;
