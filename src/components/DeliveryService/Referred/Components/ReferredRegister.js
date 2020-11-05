@@ -3,13 +3,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
-import { node_patient } from '../config/endpoints';
+import { node_patient } from '../../../../config/endpoints';
 import { useParams, useHistory } from 'react-router-dom';
-import DBConnection from '../config/DBConnection';
 import axios from 'axios';
-import { install_event } from '../config/endpoints';
+import { install_event } from '../../../../config/endpoints';
 import 'react-datepicker/dist/react-datepicker.css';
-import app from '../config/DBConnection';
+import app from '../../../../config/DBConnection';
 import Loading from '../../../GeneralComponents/Loading';
 import { GenericHeader } from '../../../GeneralComponents/Headers';
 import MobileModal from '../../../GeneralComponents/Modal/MobileModal';
