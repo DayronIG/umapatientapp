@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
-import Moment from 'moment';
+import moment from 'moment-timezone';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import StarRatings from 'react-star-ratings';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';

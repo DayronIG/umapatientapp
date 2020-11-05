@@ -9,8 +9,8 @@ import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { Loader } from '../../global/Spinner/Loaders';
 import swal from 'sweetalert';
 import axios from 'axios';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {

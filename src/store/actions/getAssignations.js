@@ -1,8 +1,8 @@
 import DBConnection from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 
 const d = new Date();
 const firestore = DBConnection.firestore();

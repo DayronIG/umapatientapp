@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { FaUserMd } from 'react-icons/fa';
 import { MdExpandLess, MdMenu } from 'react-icons/md';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const TrackingSelector = () => {
     const dispatch = useDispatch()

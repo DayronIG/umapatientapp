@@ -15,7 +15,7 @@ import InputFile from '../Inputs/InputFile';
 import CustomUmaLoader from '../GeneralComponents/Loading';
 import { putFileFB } from '../Utils/firebaseUtils';
 import '../../styles/generalcomponents/TransportOnboardingThirdStep.scss';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 
 const TransportOnboarding = () => {

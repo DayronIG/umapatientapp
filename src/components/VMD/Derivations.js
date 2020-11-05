@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import db from '../../config/DBConnection';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 // images
 import preassigned from '../../assets/derivations/preassigned.png'

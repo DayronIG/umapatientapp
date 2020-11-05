@@ -13,7 +13,7 @@ import { regexNumbers, regexWord } from '../../Utils/regex';
 import { modifyAppointsForCalendar } from '../../Utils/appointmentsUtils';
 import { spacesToUnderscore } from '../../Utils/stringUtils';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import ListTurns from './ListTurns';
 import swal from 'sweetalert';

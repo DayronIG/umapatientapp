@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 import DaysSlider from '../GeneralComponents/DaysSlider';
 import DaysSlider2 from '../GeneralComponents/DaysSlider2';
 import Loading from '../GeneralComponents/Loading';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import '../../styles/transport/scheduleTransport.scss';
 
 function ScheduleTransport() {

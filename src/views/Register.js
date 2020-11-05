@@ -14,8 +14,8 @@ import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
 import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../src/styles/generalcomponents/register.scss';
 

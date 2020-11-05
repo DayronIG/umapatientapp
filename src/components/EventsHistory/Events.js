@@ -1,7 +1,7 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { faBus, faUserNurse } from '@fortawesome/free-solid-svg-icons'
 
 

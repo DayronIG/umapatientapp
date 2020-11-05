@@ -7,7 +7,7 @@ import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { att_history } from '../../config/endpoints';
 import Cab from '../../assets/icons/taxi.png';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import '../../styles/generalcomponents/TransportUserActive.scss';
 
 const TransportUserActive = () => {
