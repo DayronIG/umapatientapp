@@ -28,10 +28,6 @@ export default function DaysSlider({
 	const handlerInputClear = () => {
 		sethours({monday: ''})
 	}
-	
-		console.log(hours)
-	
-	
 
 	return (
 		<div className='daysSlider'>
