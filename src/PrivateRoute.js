@@ -72,7 +72,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		if (currentUser && currentUser.email && patient.dni && rest.path === "/:ws?") {
 			DetectRTC.load(function () {
 					const ios = isIos()
-					if (!!window.chrome && !ios) {
+					if (!ios) {
 						messaginTokenUpdate(currentUser, DetectRTC, true)
 					} else {
 						messaginTokenUpdate(currentUser, DetectRTC, false)

@@ -1,22 +1,13 @@
 import DBConnection from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 const d = new Date();
 const firestore = DBConnection.firestore();
-const currentMonth = moment()
-	.tz('America/Argentina/Buenos_Aires')
-	.format('YYYYMM');
-const fulldt = moment()
-	.tz('America/Argentina/Buenos_Aires')
-	.format('YYYY-MM-DD');
+const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
 const currentDate = [d.getFullYear(), currentMonth].join('');
 const yearMonth = yearAndMonth();
-const currentDt = moment()
-	.tz('America/Argentina/Buenos_Aires')
-	.format('YYYY-MM-DD');
 
 export function listenAssigns(specialty) {
 	try {
