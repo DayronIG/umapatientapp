@@ -71,11 +71,11 @@ const CreateTransportRoute = () => {
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
-			<div className='selectDestiny__container'>
+			{/* <div className='selectDestiny__container'>
 				<h5 className='selectDestiny__container--title'>
 					Seleccione punto de partida
 				</h5>
-			</div>
+			</div> */}
 			<div className='selectDestiny__container'>
 				<div className='selectDestiny__container--row'>
 					{(mapInstance && mapApi) && (
@@ -83,11 +83,12 @@ const CreateTransportRoute = () => {
 							map={mapInstance}
 							mapApi={mapApi}
 							handleChangePlace={handleChangePlace}
+							placeholder={'Seleccione punto de partida...'}
 						/>
 					)}
 				</div>
 			</div>
-			<div className='selectDestiny__container map'>
+			<div className='selectDestiny__container map' style={{ zIndex: -1 }}>
 				<GoogleMapReact
 					{...mapConfig(
 						{ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
@@ -98,7 +99,7 @@ const CreateTransportRoute = () => {
 					{origin.lat && <Marker {...origin} />}
 				</GoogleMapReact>
 			</div>
-			<div className='selectDestiny__container'>
+			{/* <div className='selectDestiny__container'>
 				<input
 					placeholder='Dirección'
 					type='text'
@@ -107,7 +108,7 @@ const CreateTransportRoute = () => {
 					disabled
 					value={origin.address}
 				/>
-			</div>
+			</div> */}
 			<div className='selectDestiny__container'>
 				<div className='selectDestiny__container--row'>
 					<input

@@ -5,19 +5,43 @@
 	height: auto;
 	margin-left: auto;
 	margin-right: auto;
+	padding-bottom: 20vh;
+	.selectDestiny__header {
+		background-color: #fff;
+		margin-top: 10px;
+		border-radius: 5px;
+		padding: 5px;
+		color: $deep-blue;
+		font-size: 1.2rem;
+		font-weight: bold;
+		text-transform: uppercase;
+		text-align: center;
+	}
 	.selectDestiny__container.map {
-		height: 30vh;
+		height: -webkit-fill-available;
+		position: absolute;
+		left: 0;		
+		/* width: 100%; */
+		top: 0;
 	}
 	.selectDestiny__container {
 		width: 100%;
-		margin-top: 15px;
+		margin-top: 5px;
+		.selectDestiny__container--title {
+			margin-top: 10px;
+			background-color: $white-color;
+			padding: 10px 15px;
+			width: 100%;
+			border-radius: $regular-borders;
+		}
 		.selectDestiny__container--marker {
 			font-size: 22px;
 		}
 		input {
 			width: 100%;
-			border: 1px solid $deep-blue;
-			border-radius: $regular-borders;
+			border: none;
+			border-radius: 10px;
+			box-shadow: 0px 2px 6px 0px rgba(148,148,148,1);
 			padding: 5px 10px;
 		}
 		input:focus {
@@ -26,14 +50,18 @@
 		.selectDestiny__container--row {
 			width: inherit;
 			display: flex;
-			justify-content: space-between;
-
+			justify-content: space-between;			
 			input:first-child {
 				margin-right: 5px;
 			}
 			input:last-child {
 				margin-left: 5px;
 			}
+
+			.selectDestiny__input--address {
+				margin: 0 !important;
+			}
+
 			button {
 				outline: none;
 				border: none;

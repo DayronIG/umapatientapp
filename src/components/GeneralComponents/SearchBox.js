@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 
-const SearchBox = ({ map, mapApi, handleChangePlace }) => {
+const SearchBox = ({ map, mapApi, handleChangePlace, placeholder }) => {
 	const searchInput = useRef();
 	const [searchBox, setSearchBox] = useState(null);
 	const [inputValue, setInputValue] = useState('');
@@ -28,11 +28,12 @@ const SearchBox = ({ map, mapApi, handleChangePlace }) => {
 
 	return (
 		<input
+			className='selectDestiny__input--address'
 			ref={searchInput}
 			value={inputValue}
 			type='text'
 			onChange={(event) => setInputValue(event.target.value)}
-			placeholder='Buscar dirección aquí'
+			placeholder={placeholder}
 		/>
 	);
 };
