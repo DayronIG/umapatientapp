@@ -61,7 +61,7 @@ const HomePage = (props) => {
 	} else if (checkStatus === 99 && user.ws) {
 		return <ModulesMenu ws={user.ws} />;
 	} else {
-		return  <Loading />;
+		return <Loading />;
 	}
 };
 
