@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -108,7 +109,7 @@ const PaymentCardMP = () => {
       if(paymentMethodId.value !== "unknown"){
         setLoader(true)
         let paymentData = {
-            email: email.value, // hardcoded // CAMBIOSANTI
+            email: email.value,
             paymentMethodId: paymentMethodId.value, 
             token: token,
             dni: `${user.dni}`,
@@ -126,8 +127,20 @@ const PaymentCardMP = () => {
              .then(res => {
                 setLoader(false)
                  if (res.data.body.status === "approved") {
+                    window.gtag('event', 'purchase', {
+                      'affiliation': user?.corporate_norm,
+                      'coupon': '1',
+                      'currency': 'ARS',
+                      'items': 'Hisopado Antígeno',
+                      'transaction_id': current.id,
+                      'value': parseInt(totalPayment)
+                      });
                      setStatus("approved")
                 } else if (res.data.body.status === "rejected") {
+                  window.gtag('event', 'payment_failed', {
+                    'event_category' : 'warning',
+                    'event_label' : 'hisopado_payment'
+                  });
                   setStatusDetail(res.data.body.status_detail)
                   setStatus(res.data.body.status)
                      // alert(res.data.body.status)
@@ -303,13 +316,15 @@ const PaymentCardMP = () => {
                 <input 
                 autoComplete="off"
                 type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
-                    placeholder="Mes" autoComplete="off" className="mr-3" maxLength="2"
+                    placeholder="Mes" className="mr-3" maxLength="2"
                     onChange={handleChange}
                     onFocus={handleFocus}/>
                 <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
                     autoComplete="off"
-                    placeholder="Año" autoComplete="off" maxLength="2" onChange={e => expirationYearCheck(e.target.value)}
-                    onChange={handleChange}
+                    placeholder="Año" maxLength="2" onChange={e =>{ 
+                      expirationYearCheck(e.target.value)
+                      handleChange(e)
+                    }}
                     onFocus={handleFocus}/>
                 </div>
               </div>

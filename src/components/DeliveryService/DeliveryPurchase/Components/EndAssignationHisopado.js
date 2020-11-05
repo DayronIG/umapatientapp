@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
-import {useSelector} from "react-redux"
+import React from 'react'
 import hisopadosPay from "../../../../assets/img/hisopados_payment.svg"
-import { Loader } from '../../../GeneralComponents/Loading';
 import {useHistory} from "react-router-dom";
 import "../../../../styles/hisopado/hisopadosFlux.scss";
 
 export default function EndAssignationHisopado() {        
     const history = useHistory();
+
     return (
         <div className="allwhite-hisopados-background" >
             <div className="instructions-container">
