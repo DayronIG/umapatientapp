@@ -7,6 +7,7 @@ import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
+import { validateInput } from '../Utils/stringUtils';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
