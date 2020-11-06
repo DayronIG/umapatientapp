@@ -44,6 +44,8 @@ const TransportUserActive = () => {
 			setApprovedServices(response.data.filter(item => item.autorizado));
 			setPendingServices(response.data.filter(item => !item.autorizado));
 			console.log(response)
+			
+			
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -52,6 +54,11 @@ const TransportUserActive = () => {
 	}
 
 	function cancelTrip(e) {
+		if (getCancelComment === ""){
+			alert('Ingrese el motivo de cancelación')
+			return
+		}
+		
 		e.preventDefault();
 		setDisplayLoading(true);
 		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
@@ -76,10 +83,11 @@ const TransportUserActive = () => {
 		setSelectedService(item)
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
-
+	console.log(approvedServices)
+	console.log(pendingServices)
 	// 'autorizado': false,
 	// 'request.time_reference': document['request']['time_reference'],
-
+	
 	return (
 		<div className="transportList">
 			{toogleModal &&

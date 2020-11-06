@@ -23,21 +23,20 @@ function ScheduleTransport() {
 	
 
 	const resetReturnDays = () => {
-		// dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_TUESDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_WEDNESDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_THURSDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_FRIDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_SATURDAY', payload: false })
-		// dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_TUESDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_WEDNESDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_THURSDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_FRIDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_SATURDAY', payload: false })
+		dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: false })
 		
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'mon', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'tue', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'wed', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'thu', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sat', value: ''}})
-		// dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sun', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'mon', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'tue', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'wed', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'thu', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
+		
 
 	}
 
@@ -114,7 +113,8 @@ function ScheduleTransport() {
 			<div className='scheduleForm__container'>
 				<div className="scheduleForm__observations"> 
 					<h5>Observaciones</h5>
-					<input
+					<textarea
+					rows="10"
 						type='text'
 						placeholder='Escribe tus comentarios aquí...'
 						name='notes'

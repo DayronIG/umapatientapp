@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import '../../../styles/modal.scss';
 
+
+
 /* 
 <MobileModal hideCloseButton="" title="" children="" />
 */
@@ -18,7 +20,8 @@ const MobileModal = (props) => {
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
             if (props.callback) props.callback();
-            dispatch({ type: 'HANDLE_MODAL', payload: false })
+            // dispatch({ type: 'HANDLE_MODAL', payload: false })
+            dispatch({ type: 'TOGGLE_DETAIL', payload: false });
           }}>
             <FontAwesomeIcon icon={faTimesCircle} />
           </div>
