@@ -34,6 +34,7 @@ const Register = props => {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
      } = useSelector(state => state.register)
+    const dayRef = useRef()
     const monthRef = useRef()
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
@@ -68,27 +69,10 @@ const Register = props => {
             generatePassword()
         }
     }, [dispatch])
-    
-    async function getCountryCode() {
-        let code = await getCountry(ws)
-        dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
-    }
-
-    useEffect(() => {
-        if(ws?.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/')
-        } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
-        }
-    }, [dispatch])
 
     async function getCountryCode() {
-        if(ws){
-            let code = await getCountry(ws)
+        if(getWs){
+            let code = await getCountry(getWs)
             dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
         }
     }
@@ -205,12 +189,11 @@ const Register = props => {
                 dni: dni || '',
                 sex: getSex || '',
                 dob: dob || '',
-                ws: ws || '',
+                ws: getWs || '',
                 dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
-                documentPath: "",
                 subscription,
             }
         }
@@ -223,9 +206,10 @@ const Register = props => {
                         dispatch({ type: 'SET_STATUS', payload: 99 });
                         setRegistered(true)
                         dispatch({ type: 'LOADING', payload: false })
-                        history.push(`/${ws}/redirectws`)
+                        // history.push(`/${ws}/redirectws`)
                     }, 2000)
                 } 
+                props.finalAction()
             } catch (res) {
                 user.delete()
                 setTimeout(() => {
@@ -236,7 +220,6 @@ const Register = props => {
                 }, 2500)
             }
         }
-        props.finalAction()
     }
 
     const handleInput = (typeDispatch) => (event) => {
@@ -336,7 +319,8 @@ const Register = props => {
                                                 handleInput('REGISTER_FIRST_DAY')(e);
                                                 if(e.target.value.length === 2) monthRef.current.focus();
                                             }} type='number' min='1'
-                                            max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
+                                            max='31' name='bday' id='dateDay' placeholder={getDay}
+                                            ref={dayRef} maxLength='2'
                                              />
                                             
                                         <input
