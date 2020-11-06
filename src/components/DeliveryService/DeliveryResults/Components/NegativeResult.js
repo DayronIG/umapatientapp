@@ -13,7 +13,7 @@ export default function NegativeResult({finalAction}) {
         <div className="allwhite-hisopados-background" >
                 <div className="results-container">
                     <img src={hisopadosNeg} alt="hisopado_neg" className="hisopados_res"/>
-                    <p className="hisopados-title">El resultado de tu hisopado es negativo</p>
+                    <p className="hisopados-title">El resultado de tu hisopado es COVID-no detectable</p>
                     <p>¡Seguí cuidandote!</p>
                     <p>¿Deseas consultar con un médico?</p>
                 </div>
@@ -46,13 +46,13 @@ export default function NegativeResult({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>
-                    <div className="results-menu-map-item" onClick={()=>history.push("/")}>
+                    {/* <div className="results-menu-map-item" onClick={()=>history.push("/")}>
                         <div>
                             <FaHome className="icon" />
                             Ir al inicio
                         </div>
                         <FaArrowRight className="icon-arrow" />
-                    </div>
+                    </div> */}
                 </div>
         </div>
     )

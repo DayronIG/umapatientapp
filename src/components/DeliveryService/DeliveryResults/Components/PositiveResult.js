@@ -28,7 +28,7 @@ export default function PositiveResult({finalAction}) {
             :<div className="allwhite-hisopados-background" >
                     <div className="results-container">
                         <img src={hisopadoPos} alt="hisopado_pos" className="hisopados_res"/>
-                        <p className="hisopados-title">El resultado de tu hisopado es positivo</p>
+                        <p className="hisopados-title">El resultado de tu hisopado es COVID-detectable</p>
                         <p>¡Cuidá a los tuyos!</p>
                     </div>
                 <div className="hisopados-flux-results-container">
@@ -38,7 +38,7 @@ export default function PositiveResult({finalAction}) {
                             Informar a mis contactos
                         </a>
                     </div>
-                    <p>Ingresando el siguiente código, obtienen un descuento para realizarse el hisopado a domicilio:</p>
+                    <p>Ingresando el siguiente código, obtienen 10% de descuento para realizarse el hisopado a domicilio:</p>
                     <div className="hisopados-flux-results-code-container">
                     <p className="hisopados-code">{discount.code}</p>
                     </div>
@@ -72,13 +72,13 @@ export default function PositiveResult({finalAction}) {
                             </div>
                             <FaArrowRight className="icon-arrow" />
                         </div>
-                        <div className="results-menu-map-item" onClick={()=>history.push("/")}>
+                        {/* <div className="results-menu-map-item" onClick={()=>history.push("/")}>
                             <div>
                                 <FaHome className="icon" />
                                 Ir al inicio
                             </div>
                             <FaArrowRight className="icon-arrow" />
-                        </div>
+                        </div> */}
                     </div>
             </div>}
      </>)

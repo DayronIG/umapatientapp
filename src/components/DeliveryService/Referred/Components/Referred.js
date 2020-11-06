@@ -1,6 +1,6 @@
 import React from 'react'
 import hisopadosNeg from "../../../../assets/img/estamos_con_vos.svg"
-import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
+import { FaUserNurse, FaHome, FaListUl, FaPencilAlt, FaArrowRight } from "react-icons/fa"
 import { GiTransparentTubes } from "react-icons/gi"
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -10,7 +10,7 @@ export default function ReferredInvitation({finalAction}) {
     const patient = useSelector(state => state.queries.patient)
 
     return (
-        <div className="allwhite-hisopados-background" >
+        <div className="allwhite-hisopados-background hisopados-flux" >
                 <div className="results-container">
                     <img src={hisopadosNeg} alt="hisopado_neg" className="estamos_con_vos"/>
                     <p className="hisopados-title">Estamos con vos</p>
@@ -35,13 +35,20 @@ export default function ReferredInvitation({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>
-                    <div className="results-menu-map-item">
+                    {/* <div className="results-menu-map-item">
                         <div>
                             <FaListUl className="icon" />
                             Medidas de prevención
                         </div>
                         <FaArrowRight className="icon-arrow" />
-                    </div>
+                    </div> */}
+                    <div className="results-menu-map-item" onClick={()=>history.push("/")}>
+                        <div>
+                            <FaHome className="icon" />
+                                Ir al inicio
+                            </div>
+                            <FaArrowRight className="icon-arrow" />
+                        </div>
                     <div className="results-menu-map-item"
                     onClick={() => history.push(`/${patient.ws}/autonomous`)}
                     >
