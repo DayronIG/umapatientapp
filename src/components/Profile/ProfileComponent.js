@@ -76,7 +76,8 @@ const ProfileComponent = () => {
 		<>
 			{loading && !auth.fullname && <Loading />}
 			{modal && (
-				<MobileModal title='Editar datos'>
+				<MobileModal title='Editar datos'
+				callback={()=>{dispatch({type:"TOGGLE_DETAIL", payload:false})}}>
 					{
 						loading ? 
 						<div className="text-center" style={{minHeight: '200px', padding: '100px'}}>
