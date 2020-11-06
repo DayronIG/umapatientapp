@@ -26,12 +26,14 @@ const SignIn = props => {
     const [, setSendMsg] = useState(false)
     const [code, setCode] = useState('')
     const loading = useSelector(state => state.front.loading)
-    const [sentTimes, setSentTimes] = useState(0)
+    const [sentWs, setSentWs] = useState(true)
     const config =  { headers: { 'Content-Type': 'application/json'} }
     
     useEffect(() => {
+        let timeout = setTimeout(() => {
+            setSentWs(false)
+        }, 5000)
         if (ws) {
-            sendWsCode(ws)
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
@@ -46,6 +48,7 @@ const SignIn = props => {
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
                 .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
+        return () => clearTimeout(timeout)
     }, [])
     
     const handleLogin = async (event) => {
@@ -122,8 +125,7 @@ const SignIn = props => {
 
 
     const sendWsCode = useCallback((ws) => {
-        let newTimes = sentTimes + 1
-        setSentTimes(newTimes)
+        setSentWs(true)
         localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
         const data = { ws }
@@ -135,20 +137,12 @@ const SignIn = props => {
             .catch((err) => {
                 swal('Error al enviar el código', '', 'warning')
             })
-/*                 if (accessCode && code && accessCode === code) {
-                    db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
-                        .then(() => {
-                            db.auth()
-                                .signInWithEmailAndPassword(`${ws}@${code}.com`, code)
-                                .then((ok) => props.history.push(`/${ws}`))
-                        })
-                } else {
-        } */
-    }, [sentTimes])
+    }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
+        sendWsCode(validPhone)
         props.history.replace(`/login/${validPhone}`)
     }
 
@@ -218,15 +212,15 @@ const SignIn = props => {
                                         Ingresar
                                     </button>
                                     <small>Si no recibe el código puede  <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>hablarle a ÜMA por whatsapp</a> para acceder.</small>
+                                    {sentWs === false ?
+                                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
+                                            Enviar código
+                                        </button> :
+                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
+                                            Código enviado!
+                                        </button>}
                                 </>}
                         </form>
-                        {sentTimes <= 1 ?
-                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
-                            Re-enviar código
-                        </button> :
-                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
-                            Código enviado!
-                        </button>}
                         <small className='text-center'>
                             <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>Aún no estoy registrado</a>
                         </small><br />
