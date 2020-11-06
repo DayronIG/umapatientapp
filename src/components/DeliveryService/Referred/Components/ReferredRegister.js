@@ -29,8 +29,7 @@ const Register = props => {
     const [formSubmitted, setFormSubmitted] = useState(false)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const {ws: urlWS, ref} = useParams()
-    const { ws } = useParams();
+    const {ws, ref, affiliate} = useParams()
     const {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
@@ -59,11 +58,11 @@ const Register = props => {
     }, [])
 
     useEffect(() => {
-        if(urlWS?.length < 12) {
+        if(ws?.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/')
         } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
             dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
             getCountryCode()
             generatePassword()
@@ -71,16 +70,16 @@ const Register = props => {
     }, [dispatch])
     
     async function getCountryCode() {
-        let code = await getCountry(urlWS)
+        let code = await getCountry(ws)
         dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
     }
 
     useEffect(() => {
-        if(urlWS?.length < 12) {
+        if(ws?.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/')
         } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
             dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
             getCountryCode()
             generatePassword()
@@ -88,8 +87,8 @@ const Register = props => {
     }, [dispatch])
 
     async function getCountryCode() {
-        if(urlWS){
-            let code = await getCountry(urlWS)
+        if(ws){
+            let code = await getCountry(ws)
             dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
         }
     }
@@ -127,12 +126,13 @@ const Register = props => {
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {
+                        console.log(err)
                         if (err.code === 'auth/email-already-in-use') {
                             swal('Ya existe el usuario',
                                 'Este teléfono ya está registrado para un usuario.',
                                 'warning')
                         }
-                        else { swal('Error', err, 'warning') }
+                        else { swal('Error', JSON.stringify(err), 'warning') }
                         dispatch({ type: 'LOADING', payload: false })
                     })
             } catch (error) {
@@ -181,7 +181,7 @@ const Register = props => {
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
         let subscription
-        let source = props.match.params.affiliate // To do move to back
+        let source = affiliate // To do move to back
         if (source && source.toLowerCase().includes('rappi_peru')) {
             subscription = 'AUT'
         }
@@ -192,7 +192,7 @@ const Register = props => {
         }
         let data = {
             patient: {
-                affiliate: props.match.params.affiliate || '',
+                affiliate: affiliate || '',
                 geohash: '',
                 lat: '',
                 lon: '',
@@ -205,11 +205,12 @@ const Register = props => {
                 dni: dni || '',
                 sex: getSex || '',
                 dob: dob || '',
-                ws: urlWS || '',
+                ws: ws || '',
                 dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
+                documentPath: "",
                 subscription,
             }
         }
@@ -235,6 +236,7 @@ const Register = props => {
                 }, 2500)
             }
         }
+        props.finalAction()
     }
 
     const handleInput = (typeDispatch) => (event) => {
@@ -269,7 +271,7 @@ const Register = props => {
                             </div>
                         </MobileModal>
                     )}
-                    {urlWS !== 'undefined' ?
+                    {ws !== 'undefined' ?
                     <div className="register__container">
                         <h3 className='register_form--title'>Formulario de registro</h3> 
                         <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
@@ -297,7 +299,7 @@ const Register = props => {
                             </div>
                             
                             
-                            {!urlWS && 
+                            {!ws && 
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
@@ -360,7 +362,7 @@ const Register = props => {
                                             placeholder={getSex}
                                             >
 
-                                            <option value=''>Género</option>
+                                            <option value=''>Sexo</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
                                         </select>                                        
@@ -408,7 +410,7 @@ const Register = props => {
                         </div>
                     }
                 </>
-                 <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? Ingresa</small>
+                 <small className="d-flex justify-content-center mb-5">¿Ya tienes un usuario? <a className="link_to_login" href="/login">Ingresá</a></small>
         </>
     )
 }

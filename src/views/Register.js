@@ -37,6 +37,7 @@ const Register = props => {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
      } = useSelector(state => state.register)
+    const dayRef = useRef()
     const monthRef = useRef()
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
@@ -335,6 +336,7 @@ const Register = props => {
                                     </label>
                                     <div className='inputsContainer'>
                                         <input className='form-mid-input'
+                                        ref={dayRef}
                                             onChange={(e) => {
                                                 handleInput('REGISTER_FIRST_DAY')(e);
                                                 if(e.target.value.length === 2) monthRef.current.focus();
@@ -365,7 +367,7 @@ const Register = props => {
                                             placeholder={getSex}
                                             >
 
-                                            <option value=''>Género</option>
+                                            <option value=''>Sexo</option>
                                             <option value='M'>Masculino</option>
                                             <option value='F'>Femenino</option>
                                         </select>                                        

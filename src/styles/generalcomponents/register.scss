@@ -1,4 +1,5 @@
 @import '../index.scss';
+
 .formulario__title{
    display: flex;
    justify-content: flex-end;
@@ -10,7 +11,32 @@
 }
 .register__container {
    display: flex;
-   justify-content: center;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: center;
+   
+   h3 {
+      display: none;
+   }
+   @media (min-width:768px) and (max-width: 1440px){
+      width: 100%;
+      padding: 0 20%;
+      h3 {
+         display: block;
+         &.register_form--title{
+            width: 100%;
+            height: 25px;
+            left: 233px;
+            top: 145px;
+            color: #008290;
+            font-weight: 900;
+            font-size: 24px;
+            line-height: 0.9%;
+            border-bottom: 0.2rem solid #008290;
+            margin-top: 30px;
+         }
+      }
+   }
    .register-form {
       margin-top: 16px;
       width: 100%;
@@ -57,6 +83,9 @@
             box-shadow: 0px 4px 50px rgba(126, 147, 163, 0.25);
             border-radius: 6px;
          }
+         input:focus{
+            outline: none;
+         }
       }
       input,
       input::placeholder,
@@ -92,6 +121,7 @@
       .disabled {
          margin-left: 20px;
          height: 32px;
+         background-color: none !important;
          .react-switch-bg {
             background-color: $lighter-grey !important;
          }
@@ -126,6 +156,9 @@
          margin: 25px 0 15px 0;
          border: none;
       }
+      .sendButtonStyles:focus{
+         outline: none;
+      }
       .registerContainerProps {
          width: 90%;
          margin: 10px auto 20px auto;
@@ -154,11 +187,27 @@
       text-align: left;
       margin-left: auto;
       margin-right: auto;
+      @media (min-width:768px) and (max-width: 1440px){
+        margin: 0 1%;
+        width: 48%;
+      }
    }
    .text-right{
       display: flex;
       justify-content: center;
    }
+      
+   .switch__container {
+      display: flex;
+      @media (min-width:768px) and (max-width: 1440px){
+         justify-content: flex-end;
+         align-items: center;
+         .switchChangeWrapper {
+            width: 45px;
+            margin-left: -5px;
+         }
+      }
+   } 
 }
 .form__validation--error{
    color: #D80000;
@@ -168,4 +217,8 @@
 .label__absolute{
    position: absolute;
    margin-top: 65px;
+}
+
+.link_to_login{
+   margin-left: 1vw;
 }
