@@ -192,6 +192,8 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 		}
 	}, []);
 
+	console.log(appoint);
+
 	return (
 		<>
 			{!!loading && <CustomUmaLoader centered={true} />}
@@ -215,7 +217,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 				{renderUserData('ESPECIALIDAD', underscoreToSpaces(doctor.matricula_especialidad) || '')}
 			</div>
 			<div className='btn-confirm-container'>
-				<AttachFile assign={appoint} specialty={specialty} />
+				<AttachFile appoint={appoint} specialty={specialty} />
 				<button type='button' className='btn-container-confirmContent' onClick={confirmAppointment}>
 					Confirmar
 				</button>
