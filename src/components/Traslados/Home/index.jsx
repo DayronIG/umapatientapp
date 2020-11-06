@@ -7,7 +7,7 @@ import '../../../styles/home/traslados.scss';
 const TrasladosHome = () => (
     <section className="traslados__container">
         <div className="title__container">
-            <img src={iconTraslados} alt="UMA Care"/>
+            <img src={iconTraslados} alt="Traslados"/>
             <h2 className="title">Traslados</h2>        
         </div>
         <div className="content__container">

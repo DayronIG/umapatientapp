@@ -12,14 +12,14 @@ const HistoryHome = ({ user }) => {
 
    useEffect(() => {
         setLastMr(mr.filter(el=> {
-            return el.mr.destino_final === "" 
+            return el.mr.destino_final !== "" 
             && el.mr.destino_final !== "Paciente Ausente"
             && el.mr.destino_final !== "Anula por falla de conexión"
             && el.mr.destino_final !== "USER CANCEL"
             && el.mr.destino_final !== "Anula el paciente"
-        }).slice(0, 3))
+        }).slice(0, 5))
    }, [mr])
-
+    
     return (
         <section className="history__container">
             <h5 className="title">Mi historial</h5>
