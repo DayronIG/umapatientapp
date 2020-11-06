@@ -89,6 +89,7 @@ const Register = props => {
 
         let validFullname = validateInput('text', getFullname)
         let validOs = validateInput('text', getOs)
+        let validWs = validateInput('tel', ws)
         let validDate = validateInput('number', dt)
         if(validDni && validFullname && validOs && validDate) {
             dniAlert = await swal({
@@ -132,6 +133,9 @@ const Register = props => {
         } 
         if(!validOs){
             errors.cobertura = true;
+        }
+        if(!validWs){
+            errors.ws = true;
         } 
         if(!validDate){
             errors.bDay = true;
@@ -290,12 +294,12 @@ const Register = props => {
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
                                 onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs}  />
                                 {errors.ws && (
-                                    <p className="form__validation--error">x Debe ingresar su identificación</p>
+                                    <p className="form__validation--error">x Debe ingresar su número de celular</p>
                                 )}
                             </div>}
                             {!ref &&
                             <div className="form__spanWrapper">
-                            <label className='form-label' htmlFor='celular'>
+                            <label className='form-label' htmlFor='cobertura'>
                             Cobertura / Seguro de Salud
                                 </label>
                              <input
