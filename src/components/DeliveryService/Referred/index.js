@@ -7,7 +7,7 @@ export default function ReferredIndex() {
     const [doneRegister, setDoneRegister] = useState(false)
     return (
         <div>
-            {doneRegister? <ReferredRegister finalAction={() => setDoneRegister(true)} />: <Referred />}
+            {!doneRegister? <ReferredRegister finalAction={() => setDoneRegister(true)} />: <Referred />}
         </div>
     )
 }

@@ -59,7 +59,7 @@ const Register = props => {
     }, [])
 
     useEffect(() => {
-        if(urlWS.length < 12) {
+        if(urlWS?.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/')
         } else {

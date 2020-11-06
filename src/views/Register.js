@@ -2,12 +2,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
+import { useParams, useHistory } from 'react-router-dom';
+import DBConnection from '../config/DBConnection';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
-import { validateInput } from '../Utils/stringUtils';
+import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
@@ -15,8 +16,10 @@ import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
 import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
-import moment from 'moment-timezone';
-import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import { validateInput } from '../components/Utils/stringUtils';
+import { installPrompt } from '../components/Utils/installPrompt';
+import 'moment-timezone';
 import '../../src/styles/generalcomponents/register.scss';
 
 const Register = props => {
