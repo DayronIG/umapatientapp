@@ -76,7 +76,8 @@ const ProfileComponent = () => {
 		<>
 			{loading && <Loader />}
 			{modal && (
-				<MobileModal title='Editar datos'>
+				<MobileModal title='Editar datos'
+				callback={()=>{dispatch({type:"TOGGLE_DETAIL", payload:false})}}>
 					<EditSection />
 				</MobileModal>
 			)}
