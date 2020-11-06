@@ -12,8 +12,8 @@ class RecipePDF extends React.Component {
 		} = this.props;
 		for (let i = 0; i <= recipe.length; i++) {
 			const cvRecipe = document.getElementById(`barcodeRecipe_${i}`),
-			cvRecipe_rep = document.getElementById(`barcodeAffiliate_${i}`),
-			cvAff = document.getElementById(`barcodeRecipe_rep_${i}`),
+			cvRecipe_rep = document.getElementById(`barcodeRecipe_rep_${i}`),
+			cvAff = document.getElementById(`barcodeAffiliate_${i}`),
 			cvAff_rep = document.getElementById(`barcodeAffiliate_rep_${i}`);
 			if (!!prescriptionNumber) {
 				cvRecipe &&
@@ -623,8 +623,7 @@ const Recipe = ({ att, doc }) => {
 		prescriptionDate: prescripDate || '',
 		mr,
 	};
-	patient.n_afiliado && alert(patient.n_afiliado)
-
+	
 	useEffect(() => {
 		if (mr?.receta[0]) {
 			try {
