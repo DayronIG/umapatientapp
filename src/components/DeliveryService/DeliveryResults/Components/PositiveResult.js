@@ -34,7 +34,7 @@ export default function PositiveResult({finalAction}) {
                 <div className="hisopados-flux-results-container">
                     <p className="bold-text">Informale a tus contactos estrechos para que tomen medidas de prevención</p>
                     <div className="blue-button">
-                        <a href={`whatsapp://send?text=Hola, he dado positivo en COVID al realizarme un hisopado a domicilio. Te invito a que vos también te realices el hisopado con un 10% de descuento, utilizando el siguiente código: ${discount.code}. Podés además realizar un seguimiento preventivo de tus síntomas ingresando a UMA en el siguiente link https://umaonline-patient.firebaseapp.com/5491133682197/core/GvooNEhL0SbY2tsWd7UbEGOuWA83?text=[REF:${patient.ws}] Hola,%20quiero%20hisoparme%20con%20Uma`} className="link_whatsapp">
+                        <a href={`whatsapp://send?text=Hola, he dado positivo en COVID al realizarme un hisopado a domicilio. Te invito a que vos también te realices el hisopado con un 10% de descuento, utilizando el siguiente código: ${discount.code}. Podés además realizar un seguimiento preventivo de tus síntomas ingresando a UMA en el siguiente link https://umaonline-patient--preview-uma-tpznfy2q.web.app/referred`} className="link_whatsapp">
                             Informar a mis contactos
                         </a>
                     </div>
