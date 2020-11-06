@@ -3,6 +3,34 @@
 
 /* MODULES CONTAINER */
 .modules-container {
+   position: relative;
+
+   &::before{
+      content: '';
+        width: 8px;
+        height: 90%;
+        border-radius: 7px;
+        display: block;
+        position: absolute;
+        left: 4px;
+        bottom: 5%;
+        z-index: -1;
+        background: $uma-secondary;
+   }
+
+   &::after{
+      content: '';
+        width: 8px;
+        height: 90%;
+        border-radius: 7px;
+        display: block;
+        position: absolute;
+        right: 4px;
+        bottom: 5%;
+        z-index: -1;
+        background: $uma-secondary;
+   }
+
   @include wrapper(
       $margin: 20px auto,
       $width: 95%, 

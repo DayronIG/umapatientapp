@@ -64,7 +64,8 @@ const PackageOnTheWay = ({ active }) => {
 				<Marker
 					lat={delivery.lat_delivery}
 					lng={delivery.lon_delivery}
-					text='Ubicación del remis'
+					text='Ubicación del profesional'
+					type = 'remis'
 				/>
 				<Marker
 					lat={destination.user_lat}
