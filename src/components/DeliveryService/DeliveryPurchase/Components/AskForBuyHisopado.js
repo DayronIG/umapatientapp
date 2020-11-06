@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import { useHistory } from "react-router-dom"
 import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
@@ -9,6 +10,7 @@ import omsImg from "../../../../assets/img/oms.svg"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
 import db from "../../../../config/DBConnection";
+import { BackButton } from '../../../GeneralComponents/Headers';
 import swal from 'sweetalert';
 
 export default function AskForBuyHisopado() {
@@ -18,6 +20,7 @@ export default function AskForBuyHisopado() {
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.queries.patient)
     const dispatch = useDispatch()
+    const history = useHistory()
 
     useEffect(() => {
         if(patient.dni) {
@@ -69,7 +72,7 @@ export default function AskForBuyHisopado() {
             return (
             <div>
             <img className="hisopados-image" src={IllustrationHisopado}  alt="Hisopado" />
-            <p className="hisopados-title">¡Comprá tu hisopado a domicilio!</p>
+            <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>
             <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
             <div className="price-center-aligner">
                 <div className="price-container">
@@ -90,7 +93,7 @@ export default function AskForBuyHisopado() {
                 <p><FaClock className="icon"/>Resultado en 15´</p>
             </div>
             </div>
-            <p>Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
+            <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
             <div className="oms-container">
             <img className="hisopados-image" src={omsImg} alt="oms" />
             Avalado por la OMS
@@ -98,20 +101,20 @@ export default function AskForBuyHisopado() {
             
             <div className="hisopados-flux-container">
                 <p className="info-title">¿En qué consiste?</p>
-                <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en el domicilio del cliente. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En solo 15 minutos tenés el resultado!</p>
+                <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en tu domicilio. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En sólo 15 minutos tienes el resultado!</p>
                 <p className="info-title">Medios de pago</p>
-                <p>Podés pagarlo con tarjeta de débito, crédito o efectivo.</p>
+                <p>Puedes pagarlo con tarjeta de crédito y débito a través de MercadoPago.</p>
                 <div className="info-warning">
                     <p className="warning-title">Atención: </p>
                     <ul>
                         <li>No emite certificado oficial</li>
-                        <li>No sirve para viajar</li>
-                        <li>No lo cubre ninguna obra social</li>
+                        <li>No es válido para viajar</li>
+                        <li>No está cubierto por obras sociales</li>
                     </ul>
                 </div>
                 <br/>
                 <p><u>Nota:</u> si compras el sábado o domingo, el hisopado se realizará el lunes</p>
-                <p className="info-title">Contacto cercano</p>
+                <p className="info-title">Contacto estrecho</p>
                 <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                 <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
             </div>
@@ -122,11 +125,19 @@ export default function AskForBuyHisopado() {
                 <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
             </p>
             <div onClick={() => params?.price ? startBuying(): ""} className="hisopados-button">
-                <p className="button-text"><FaCartPlus className="icon"/>Comprar hisopado</p>
+                <p className="button-text"><FaCartPlus className="icon"/>Comprar mi hisopado</p>
 			</div>
         </div>)
         }
     }
+
+    const goBackButton = () => {
+        if (narrowContactInfo){return setNarrowContactInfo(false)}
+        else {return history.push("/")}
+    }
     
-    return renderContent()
+    return <>
+            {!termsConditions && !frequentQuestions && <BackButton inlineButton={true} customTarget={patient.ws} action={()=>goBackButton()} />}
+            {renderContent()}
+           </>
 }

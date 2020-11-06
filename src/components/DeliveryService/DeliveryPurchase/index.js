@@ -52,13 +52,11 @@ export default function HisopadosPurchase() {
                 history.push(`/delivery/progress/${ws}/${id}/`);
             break;
             default: 
-                console.log("ALGO")
+                console.log("DEFAULT")
     }}
 
     const goBackButton = () => {
         switch(step){
-            case "ASK_FOR_BUY":
-                return history.push("/")
             case "ADDRESS_PICKER":
                 return dispatch({type: 'SET_DELIVERY_STEP', payload: "ASK_FOR_BUY"})        
             case "ZONE_COVERED":
@@ -66,13 +64,16 @@ export default function HisopadosPurchase() {
             case "PAYMENT":
                 return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})           
             default: 
-                console.log("ALGO")
+                console.log("DEFAULT")
         }
     }
 
     return (
         <div className={`hisopados-flux ${(step === "ADDRESS_PICKER" )? "no-scroll-container": ""}`}>
-          {step !== "END_ASSIGNATION"? <BackButton inlineButton={true} customTarget={ws} action={()=>goBackButton()} />: <GenericHeader children="Hisopados" />}
+          {step !== "ASK_FOR_BUY" &&
+          (step !== "END_ASSIGNATION" ? 
+          <BackButton inlineButton={true} customTarget={ws} action={()=>goBackButton()} />: 
+          <GenericHeader children="Hisopados" />)}
           {renderContent()}
         </div>
     )

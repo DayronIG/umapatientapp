@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import Recomendations from "./Recomendations"
 import hisopadoPos from "../../../../assets/img/hisopado_pos.svg"
 import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
+import { BackButton } from '../../../GeneralComponents/Headers';
 
 export default function PositiveResult({finalAction}) {
     const history = useHistory(); 
@@ -11,7 +12,17 @@ export default function PositiveResult({finalAction}) {
     const discount = useSelector(state => state.deliveryService.params.discount)
     const [recomendations, setRecomendations] = useState(false)
 
+    const goBackButton = () => {
+        if(recomendations){
+            return setRecomendations(false)
+        } else {
+            return history.push("/")
+        }
+
+    }
+
     return (<>
+        <BackButton inlineButton={true} customTarget={patient.ws}  action={()=>goBackButton()} />
            { recomendations? 
             <Recomendations goBack={()=>setRecomendations(false)}/>
             :<div className="allwhite-hisopados-background" >

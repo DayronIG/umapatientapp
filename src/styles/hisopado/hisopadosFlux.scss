@@ -14,6 +14,11 @@
     font-family: Nunito;
     font-style: normal;
     font-size:calc(18px);
+
+    .limited-p{
+        font-size: 16px;
+    }
+
     .oms-container{
         img{
             margin-right: 2vw
@@ -86,7 +91,7 @@
         width: 60vw;
         height: fit-content;
         padding: 2vh;
-        background: #d5e2eb54;
+        background-color: #d5e2eb52;
         box-shadow: 0px -2px 20px rgba(126, 147, 163, 0.15);
         border-radius: 30px;
         .discount-container{
@@ -402,11 +407,20 @@
         margin-right: 2vw;
     }
 }
+.recommendations-ul{
+    width: 70vw;
+    font-size: 16px;
+    text-align: left;
+    li{list-style-type: circle;}
+}
 
 .backButtonContainer{
-    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1.6rem;
     padding-left: 4vw;
-    height: 10vh;
+    height: 6vh;
     width: 100vw;
     margin: 0;
     box-shadow: 0px 2px 5px rgba(199, 199, 199, 0.14);

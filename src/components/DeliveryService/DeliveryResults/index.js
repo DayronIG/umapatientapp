@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
-import { GenericHeader } from '../../GeneralComponents/Headers';
 import ResultReveal from "./Components/ResultReveal"
 import PositiveResult from "./Components/PositiveResult"
 import NegativeResult from "./Components/NegativeResult"
@@ -38,7 +37,6 @@ export default function HisopadosPurchase() {
 
     return (
         <div className={`hisopados-flux ${(fluxTrackerHisopado === "ADDRESS_PICKER" )? "no-scroll-container": ""}`}>
-          <GenericHeader children="Resultado Hisopado" />
           {renderContent()}
         </div>
     )

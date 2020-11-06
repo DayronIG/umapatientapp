@@ -10,7 +10,7 @@ export default function Recomendations({goBack}) {
             <div className="results-container">
                 <p className="hisopados-title">Sigue las siguientes recomendaciones</p>
             </div>
-            <ul>
+            <ul className="recommendations-ul">
                 <li>Resguardarse en casa y evitar estar en contacto con otras personas por al menos 14 días.</li>
                 <li>Procurar mantener el distanciamiento físico de familia y mascotas, y en lo posible usar un dormitorio y baño separados.</li>
                 <li>No compartir platos, vasos, cubiertos, toallas, almohadas u otros artículos con otras personas, y lavarlos minuciosamente después de usarlos.</li>
