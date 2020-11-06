@@ -28,7 +28,7 @@ const SignIn = props => {
     const loading = useSelector(state => state.front.loading)
     const [sentWs, setSentWs] = useState(true)
     const config =  { headers: { 'Content-Type': 'application/json'} }
-    
+     
     useEffect(() => {
         let timeout = setTimeout(() => {
             setSentWs(false)
@@ -42,6 +42,9 @@ const SignIn = props => {
                     if(res.data.redirect === 'register') {
                         props.history.replace(`/register/${validPhone}`)
                     } else {
+                        if(validPhone !== 'NaN' && validPhone.length > 10) {
+                            sendWsCode(validPhone)
+                        }
                         props.history.replace(`/login/${validPhone}`)
                     }
                 })
@@ -71,6 +74,10 @@ const SignIn = props => {
             db.auth()
                 .signInWithEmailAndPassword(email, password.value)
                 .then(async (reg) => {
+                    window.gtag('event', 'success_login', {
+                        'event_category' : 'login',
+                        'event_label' : 'login'
+                      });
                     history.push(`/${validPhone}`)
                     dispatch({ type: 'LOADING', payload: false })
                     localStorage.setItem('dbUser', true)
@@ -123,25 +130,32 @@ const SignIn = props => {
         return validPhone
     }
 
-
     const sendWsCode = useCallback((ws) => {
         setSentWs(true)
-        localStorage.getItem('accessCode')
+        let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
-        const data = { ws }
-        const headers = { 'Content-type': 'application/json'  }
-        axios.post(`${send_user_code}/${ws}`, data, { headers })
-            .then(() => {
-                swal('Código enviado! Revise su WhatsApp', '', 'success')
-            })
-            .catch((err) => {
-                swal('Error al enviar el código', '', 'warning')
-            })
+        if (accessCode && code && accessCode === code) {
+            db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
+                .then(() => {
+                    db.auth()
+                        .signInWithEmailAndPassword(`${ws}@${code}.com`, code)
+                        .then((ok) => props.history.push(`/${ws}`))
+                })
+        } else {
+            const data = { ws }
+            const headers = { 'Content-type': 'application/json'  }
+            axios.post(`${send_user_code}/${ws}`, data, { headers })
+                .then(() => {
+                    swal('Código enviado! Revise su WhatsApp', '', 'success')
+                })
+                .catch((err) => {
+                    swal('Error al enviar el código', '', 'warning')
+                })
+        }
     }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
-        sendWsCode(validPhone)
         setWs(validPhone)
         props.history.replace(`/login/${validPhone}`)
     }

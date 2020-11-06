@@ -62,7 +62,7 @@ function AuthProvider({ children }) {
 				// Este else if es el mas importante. 
 				// Un usuario puede tener multiples subscriptions
 				// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
-				user.coverage.forEach(async each => {
+				user && user.coverage && user.coverage.forEach(async each => {
 					if(each?.plan) {
 						let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
 						let coverageTemp = await getDocumentFB(path)

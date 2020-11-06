@@ -79,6 +79,7 @@ const Questions = () => {
 						input: data.input
 					});
 					let symptoms = [...new Set(data.symptom)]
+					console.log(symptoms)
 					symptoms.map(symptom => {
 						db.collection('parametros').doc('userapp').collection('assessment').doc(symptom).get()
 						.then(doc => {
@@ -99,14 +100,14 @@ const Questions = () => {
 						.catch(e => console.log(e));
 					})
 					let features = [...new Set(data.features)]
-
+					console.log(features)
 					features.map(question => {
 						db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
 						.then(doc => {
 							if(doc.exists) {
+								let result = selectedQuestions.filter(item => item.id === doc.id);
 								const docData = doc.data();
-
-								if(!docData.sex || docData.sex === patient.sex.toLowerCase()) {
+								if(result.length === 0 && (!docData.sex || docData.sex === patient.sex.toLowerCase())) {
 									selectedQuestions.push({
 										id: doc.id,
 										question: docData.question,
