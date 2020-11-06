@@ -141,8 +141,8 @@ const SignIn = props => {
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
-        setWs(validPhone)
         sendWsCode(validPhone)
+        setWs(validPhone)
         props.history.replace(`/login/${validPhone}`)
     }
 
