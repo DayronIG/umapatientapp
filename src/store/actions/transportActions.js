@@ -142,9 +142,9 @@ export const createTransportSchedule = async (transportData, patient) => {
 	}
 }
 
-export const getTransportService = (incidente_id, dni) => {
+export const getTransportService = ({ corporate, date, assignation_id }) => {
 	try {
-		const query = firestore.doc(`/events/requests/${dni}/${incidente_id}`);
+		const query = firestore.doc(`/assignations/${date}/${corporate}/${assignation_id}`);
 		const unsubscribe = query.onSnapshot(doc => {
 			const service = doc.data();
 			dispatch(handleTransportService(service));

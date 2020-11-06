@@ -120,7 +120,7 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
 				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
 				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
-				<PrivateRoute exact path='/:dni/transportDetails/:incidente_id' component={TransportDetailsView} />
+				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />

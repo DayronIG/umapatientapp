@@ -43,9 +43,6 @@ const TransportUserActive = () => {
 			)
 			setApprovedServices(response.data.filter(item => item.autorizado));
 			setPendingServices(response.data.filter(item => !item.autorizado));
-			console.log(response)
-			
-			
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -55,10 +52,8 @@ const TransportUserActive = () => {
 
 	function cancelTrip(e) {
 		if (getCancelComment === ""){
-			alert('Ingrese el motivo de cancelación')
-			return
+			return alert('Ingrese el motivo de cancelación');
 		}
-		
 		e.preventDefault();
 		setDisplayLoading(true);
 		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
@@ -80,14 +75,12 @@ const TransportUserActive = () => {
 	}
 
 	function displayModal(item) {
-		setSelectedService(item)
+		setSelectedService(item);
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
-	console.log(approvedServices)
-	console.log(pendingServices)
-	// 'autorizado': false,
-	// 'request.time_reference': document['request']['time_reference'],
 	
+	console.log(pendingServices, approvedServices);
+
 	return (
 		<div className="transportList">
 			{toogleModal &&
@@ -137,7 +130,10 @@ const TransportUserActive = () => {
 												<div className="contentContainer">
 													<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
 													<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-													<button className="checkStatus" onClick={() => history.push(`/${patient.dni}/transportDetails/${item.assignation_id}`)}>
+													<button 
+														className="checkStatus" 
+														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
+													>
 														Estado del Viaje
 													</button>
 													<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -174,7 +170,10 @@ const TransportUserActive = () => {
 													<div className="contentContainer">
 														<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
 														<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-														<button className="checkStatus" onClick={() => history.push(`/${patient.dni}/transportDetails/${item.assignation_id}`)}>
+														<button 
+															className="checkStatus" 
+															onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
+															>
 															Estado del Viaje
 														</button>
 														<button className="cancelBtn" onClick={() => displayModal(item)}>
