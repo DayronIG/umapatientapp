@@ -121,6 +121,7 @@
       .disabled {
          margin-left: 20px;
          height: 32px;
+         background-color: none !important;
          .react-switch-bg {
             background-color: $lighter-grey !important;
          }

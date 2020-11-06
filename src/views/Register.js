@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
@@ -77,12 +77,39 @@ const Register = props => {
         dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
     }
 
-    const handleSignUp = async event => {
+    useEffect(() => {
+        if(urlWS?.length < 12) {
+            swal('Error', 'Este no es un teléfono válido.', 'warning')
+            history.push('/')
+        } else {
+            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
+            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
+            getCountryCode()
+            generatePassword()
+        }
+    }, [dispatch])
+
+    async function getCountryCode() {
+        if(urlWS){
+            let code = await getCountry(urlWS)
+            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
+        }
+    }
+
+
+
+    const handleSignUp = useCallback(async event => {
         event.preventDefault()
         window.scroll(0, 0)
         let validDni = validateInput('text', getId)
         let dniAlert = false
-        if(validDni) {
+       
+        let dt = composeDate()
+
+        let validFullname = validateInput('text', getFullname)
+        let validOs = validateInput('text', getOs)
+        let validDate = validateInput('number', dt)
+        if(validDni && validFullname && validOs && validDate) {
             dniAlert = await swal({
                 title: `Confirma tu número de documento: ${getId}`,
                 text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
@@ -91,9 +118,7 @@ const Register = props => {
                 dangerMode: true,
             })
         }
-        let validFullname = validateInput('text', getFullname)
-        let validOs = validateInput('text', getOs)
-        let validDate = validateInput('number', getDate)
+        
         if (validDni && validFullname && dniAlert && termsSwitch && validOs && validDate) {
             dispatch({ type: 'LOADING', payload: true })
             let pwd = generatePassword()
@@ -127,13 +152,15 @@ const Register = props => {
             errors.cobertura = true;
         } 
         if(!validDate){
-            errors.bday = true;
+            errors.bDay = true;
+            errors.bMonth = true;
+            errors.bYear = true;
         }
         setErrors(errors);
         if(!termsSwitch) {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
         }
-    }
+    }, [errors])
 
     let composeDate = () => {
         let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
@@ -152,9 +179,9 @@ const Register = props => {
     }
 
     let handleSubmit = async (reg, user) => {
+        let dt = composeDate()
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
-        let dt = composeDate()
         let subscription
         let source = props.match.params.affiliate // To do move to back
         if (source && source.toLowerCase().includes('rappi_peru')) {
@@ -353,7 +380,7 @@ const Register = props => {
                                         </span>
                                     </div>                                
                             </div>
-                            </div><br />
+                            </div>
                             <div className='switch__container'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
                                     <h5 className="text__terminosYcondiciones ml-5">Acepto los términos y condiciones</h5>
