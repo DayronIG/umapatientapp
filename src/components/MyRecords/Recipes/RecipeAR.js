@@ -316,7 +316,6 @@ class RecipePDF extends React.Component {
 		}
 	}
 }
-
 class RecipePDFUP extends React.Component {
 	componentDidMount() {
 		const canvasAffiliate = document.getElementById('barcodeAffiliateUP');
