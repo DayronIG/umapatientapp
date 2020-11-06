@@ -152,6 +152,7 @@ export const getTransportService = ({ corporate, date, assignation_id }) => {
 		return unsubscribe;
 	} catch (error) {
 		console.error(error);
+		throw error;
 	}
 }
 

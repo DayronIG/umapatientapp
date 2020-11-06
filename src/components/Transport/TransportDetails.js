@@ -43,25 +43,9 @@ const TransportTracking = () => {
 	// 		lng: service.request?.geo_fin?.lon
 	// 	});
 	// }
-
-	useInterval(() => {
-		if (typeof drawRoute === 'function') {
-			drawRoute({
-				lng: service.request?.geo_inicio?.lon,
-				lat: service.request?.geo_inicio?.lat
-			},
-			{
-				lat: service.request?.geo_fin?.lat,
-				lng: service.request?.geo_fin?.lon
-			});
-		}
-	}, 4000);
-
-	console.log(service);
 	
 	useEffect(() => {
 		if (typeof mapBounder === 'function') {
-			console.log('IN FUNCTION', service);
 			mapBounder([
 				{
 					lng: service.request?.geo_inicio?.lon,
@@ -75,6 +59,19 @@ const TransportTracking = () => {
 		}
 	}, [mapBounder, service]);
 
+	useEffect(() => {
+		if (typeof drawRoute === 'function') {
+			drawRoute({
+				lng: service.request?.geo_inicio?.lon,
+				lat: service.request?.geo_inicio?.lat
+			},
+			{
+				lat: service.request?.geo_fin?.lat,
+				lng: service.request?.geo_fin?.lon
+			});
+		}
+	}, [drawRoute, service]);
+
 	return (
 		<div>
 			<div className='transportDetails__map'>
@@ -85,10 +82,10 @@ const TransportTracking = () => {
 			</div>
 			<div className='transportDetails__container'>
 				<ul>
-					<li><span>Origen:</span> {service.request?.geo_inicio.address}.</li>
-					<li><span>Destino:</span> {service.request?.geo_fin.address}.</li>
-					<li><span>Notas:</span> {service.request?.notas}.</li>
-					<li><span>Remis:</span>  {service.provider_fullname}.</li>
+					<li><span>Origen:</span> {service.request?.geo_inicio.address}</li>
+					<li><span>Destino:</span> {service.request?.geo_fin.address}</li>
+					<li><span>Notas:</span> {service.request?.notas}</li>
+					<li><span>Remis:</span>  {service.provider_fullname}</li>
 					<li><span>Estatus:</span> {service.current_state}</li>
 					<li><span>Tiempo estimado:</span> {service.request?.eta_tramo}</li>
 					<li><span>Hora de llegada a destino:</span> {service.hora}</li>
