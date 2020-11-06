@@ -98,7 +98,8 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						os: deviceInfo.browser.name,
 						last_login: dt,
 						uma_version: version.patients
-					}
+                    }
+                console.log(device, deviceWithPush)
 				await handleSubmit(device)
 			} catch (err) {
 				console.log(err)
