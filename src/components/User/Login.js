@@ -32,7 +32,7 @@ const SignIn = props => {
     useEffect(() => {
         let timeout = setTimeout(() => {
             setSentWs(false)
-        }, 5000)
+        }, 2000)
         if (ws) {
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
@@ -42,9 +42,6 @@ const SignIn = props => {
                     if(res.data.redirect === 'register') {
                         props.history.replace(`/register/${validPhone}`)
                     } else {
-                        if(validPhone !== 'NaN' && validPhone.length > 10) {
-                            sendWsCode(validPhone)
-                        }
                         props.history.replace(`/login/${validPhone}`)
                     }
                 })
@@ -157,7 +154,7 @@ const SignIn = props => {
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        props.history.replace(`/login/${validPhone}`)
+        props.history.push(`/login/${validPhone}`)
     }
 
     return (
