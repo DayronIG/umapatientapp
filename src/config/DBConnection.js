@@ -15,11 +15,8 @@ var config = {
     storageBucket: 'uma-v2.appspot.com',
     messagingSenderId: '320149797683',
     appId: '1:320149797683:web:6cb56009aaa69a3dc9dc46',
-    measurementId: "G-X3PCZVPML7"
+    measurementId: "G-EWL5H12JRG"
 };
-
-
-
 
 function DBConnection() {
     Firebase.initializeApp(config);
@@ -29,6 +26,10 @@ function DBConnection() {
         messaging.usePublicVapidKey(
             'BDpPH-rMBfK3XOpw_ZoGFkT0surd8f6NQeUlHjiumSHKBU0s0KxTKcFk8EHBm8sU4myk-SQ7ln1fXcWoejaRZYU'
         );
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            // ...
+          });
     }
     return Firebase;
 }
