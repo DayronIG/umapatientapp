@@ -73,7 +73,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 			DetectRTC.load(function () {
                     const ios = isIos()
                     let now = moment()
-                    console.log(moment(patient.device.last_login).diff(now, 'minutes'))
                     if(patient.device.uma_version !== version.patients
                         || moment(now).diff(patient.device.last_login, 'minutes') >= 1) {
                         if (!ios) {
