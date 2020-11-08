@@ -4,6 +4,8 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/messaging';
 import 'firebase/auth';
+import 'firebase/performance';
+
 import isIos from '../components/Utils/isIos'
 
 var messaging;
@@ -20,6 +22,8 @@ var config = {
 
 function DBConnection() {
     Firebase.initializeApp(config);
+    var perf = Firebase.performance();
+    console.log(perf)
     const ios = isIos()
     if (!ios) {
         messaging = Firebase.messaging();

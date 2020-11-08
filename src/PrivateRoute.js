@@ -72,11 +72,16 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		if (currentUser && currentUser.email && patient.dni) {
 			DetectRTC.load(function () {
                     const ios = isIos()
-					if (!ios) {
-						messaginTokenUpdate(currentUser, DetectRTC, true)
-					} else {
-						messaginTokenUpdate(currentUser, DetectRTC, false)
-					}
+                    let now = moment()
+                    console.log(moment(patient.device.last_login).diff(now, 'minutes'))
+                    if(patient.device.uma_version !== version.patients
+                        || moment(now).diff(patient.device.last_login, 'minutes') >= 1) {
+                        if (!ios) {
+                            messaginTokenUpdate(currentUser, DetectRTC, true)
+                        } else {
+                            messaginTokenUpdate(currentUser, DetectRTC, false)
+                        }
+                    }
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,8 +104,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						last_login: dt,
 						uma_version: version.patients
                     }
-                console.log(device, deviceWithPush)
-				await handleSubmit(device)
+                await handleSubmit(device)
 			} catch (err) {
 				console.log(err)
 			}
