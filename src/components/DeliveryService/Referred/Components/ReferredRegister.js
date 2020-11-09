@@ -91,6 +91,7 @@ const Register = props => {
         let validOs = validateInput('text', getOs)
         let validWs = validateInput('tel', ws)
         let validDate = validateInput('number', dt)
+        console.log(validDate)
         if(validDni && validFullname && validOs && validDate) {
             dniAlert = await swal({
                 title: `Confirma tu número de documento: ${getId}`,
@@ -149,12 +150,13 @@ const Register = props => {
     }, [errors])
 
     let composeDate = () => {
+        if(!!parseInt(getMonth) && !!parseInt(getDay) && !!parseInt(getYear)){
         let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
         let birth = moment(buildDate).format('YYYY-MM-DD')
         let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
         dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
         dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
-        return date
+        return date}
     }
 
     const generatePassword = () => {
@@ -245,6 +247,7 @@ const Register = props => {
         <>
             {loading && <Loading />}
                 <>
+                {console.log(errors)}
                     <GenericHeader profileDisabled={true}></GenericHeader>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
@@ -292,9 +295,9 @@ const Register = props => {
                                     N° de celular
                                 </label>
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
-                                onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs}  />
+                                onChange={handleInput('REGISTER_FIRST_WS')}  value={getWs}  />
                                 {errors.ws && (
-                                    <p className="form__validation--error">x Debe ingresar su número de celular</p>
+                                    <p className="form__validation--error">x Debe ingresar un número de celular válido</p>
                                 )}
                             </div>}
                             {!ref &&
@@ -355,13 +358,7 @@ const Register = props => {
                                             <option value='F'>Femenino</option>
                                         </select>                                        
                                         <span className="form__validation--error label__absolute">
-                                            {errors.bday ? 
-                                                'x Debe ingresar el día'
-                                            : errors.bMonth ?
-                                                'x Debe ingresar el mes'
-                                            : errors.bYear &&
-                                                'x Debe ingresar el año'
-                                            }
+                                            {(errors.bday || errors.bMonth || errors. bYear) && 'x Debe ingresar una fecha válida'}                                            
                                         </span>
                                     </div>                                
                             </div>
