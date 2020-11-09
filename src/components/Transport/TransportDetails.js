@@ -9,9 +9,10 @@ import useInterval from '../Hooks/useInterval';
 const TransportTracking = () => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const { service } = useSelector(state => state.transport);
+	const { patient } = useSelector(state => state.queries);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
-	const { dni, incidente_id } = useParams();
+	const params = useParams();
 
 	function setMapFunctions({ map, maps }) {
 		const dirServ = new maps.DirectionsService();
@@ -23,27 +24,26 @@ const TransportTracking = () => {
 	}
 
 	useEffect(() => {
-		const unsubscribe = getTransportService(incidente_id, dni);
+		let unsubscribe;
+		if(patient?.corporate_norm) {
+			unsubscribe = getTransportService({ ...params, corporate: patient.corporate_norm });
+		}
 		return () => {
 			if (typeof unsubscribe === 'function') unsubscribe();
 		}
-	}, []);
+	}, [patient]);
 
-	useInterval(() => {
-		if (typeof drawRoute === 'function') {
-			drawRoute(
-				{
-					lng: service.request?.geo_inicio?.lon,
-					lat: service.request?.geo_inicio?.lat
-				},
-				{
-					lat: service.request?.geo_fin?.lat,
-					lng: service.request?.geo_fin?.lon
-				}
-			);
-		}
-	}, 4000);
-
+	// function generateRoutePoints() {
+	// 	return ({
+	// 		lng: service.request?.geo_inicio?.lon,
+	// 		lat: service.request?.geo_inicio?.lat
+	// 	},
+	// 	{
+	// 		lat: service.request?.geo_fin?.lat,
+	// 		lng: service.request?.geo_fin?.lon
+	// 	});
+	// }
+	
 	useEffect(() => {
 		if (typeof mapBounder === 'function') {
 			mapBounder([
@@ -59,6 +59,19 @@ const TransportTracking = () => {
 		}
 	}, [mapBounder, service]);
 
+	useEffect(() => {
+		if (typeof drawRoute === 'function') {
+			drawRoute({
+				lng: service.request?.geo_inicio?.lon,
+				lat: service.request?.geo_inicio?.lat
+			},
+			{
+				lat: service.request?.geo_fin?.lat,
+				lng: service.request?.geo_fin?.lon
+			});
+		}
+	}, [drawRoute, service]);
+
 	return (
 		<div>
 			<div className='transportDetails__map'>
@@ -69,11 +82,13 @@ const TransportTracking = () => {
 			</div>
 			<div className='transportDetails__container'>
 				<ul>
-					<li><span>Origen:</span> {service.request?.geo_inicio.address}.</li>
-					<li><span>Destino:</span> {service.request?.geo_fin.address}.</li>
-					<li><span>Notas:</span> {service.request?.notas}.</li>
-					<li><span>Remis:</span>  {service.provider_fullname}.</li>
+					<li><span>Origen:</span> {service.request?.geo_inicio.address}</li>
+					<li><span>Destino:</span> {service.request?.geo_fin.address}</li>
+					<li><span>Notas:</span> {service.request?.notas}</li>
+					<li><span>Remis:</span>  {service.provider_fullname}</li>
 					<li><span>Estatus:</span> {service.current_state}</li>
+					<li><span>Tiempo estimado:</span> {service.request?.eta_tramo}</li>
+					<li><span>Hora de llegada a destino:</span> {service.hora}</li>
 				</ul>
 			</div>
 		</div>

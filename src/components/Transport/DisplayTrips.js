@@ -48,11 +48,6 @@ const TransportUserActive = () => {
 			)
 			setApprovedServices(response.data.filter(item => item.autorizado));
 			setPendingServices(response.data.filter(item => !item.autorizado));
-			console.log(response.data)
-			console.log(att_history)
-			
-			
-			
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -62,10 +57,8 @@ const TransportUserActive = () => {
 
 	function cancelTrip(e) {
 		if (getCancelComment === ""){
-			alert('Ingrese el motivo de cancelación')
-			return
+			return alert('Ingrese el motivo de cancelación');
 		}
-		
 		e.preventDefault();
 		setDisplayLoading(true);
 		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
@@ -87,7 +80,7 @@ const TransportUserActive = () => {
 	}
 
 	function displayModal(item) {
-		setSelectedService(item)
+		setSelectedService(item);
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
 	
@@ -99,6 +92,8 @@ const TransportUserActive = () => {
 			
 	
 	
+	console.log(pendingServices, approvedServices);
+
 	return (
 		<div className="transportList">
 			{toogleModal &&
@@ -371,7 +366,10 @@ const TransportUserActive = () => {
 												<div className="contentContainer">
 													<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
 													<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-													<button className="checkStatus" onClick={() => history.push(`/${patient.dni}/transportDetails/${item.assignation_id}`)}>
+													<button 
+														className="checkStatus" 
+														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
+													>
 														Estado del Viaje
 													</button>
 													<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -384,7 +382,50 @@ const TransportUserActive = () => {
 							</ul>
 						</div>
 					}
+<<<<<<< HEAD
 					
+=======
+					{pendingServices.length > 0 &&
+						<div>
+							<h5>Pendientes de aprobación:</h5>
+							<ul>
+								{pendingServices 
+									.map((item, index) => (
+											<li key={index}>
+												<div className="titleContainer d-flex">
+													<div className="transportTitle">
+														<div>{item.fecha} - {item.hora} hs.</div>
+														<div><span>Conductor:</span></div>
+														<div>{item.provider_fullname ? item.provider_fullname : 'Sin conductor asignado.' }</div>
+													</div>
+													<div className="openContent">
+														{openTravel.assignation_id === item.assignation_id ?
+															<button onClick={() => setOpenTravel({})}> - </button> :
+															<button onClick={() => setOpenTravel(item)}> + </button>
+														}
+													</div>
+												</div>
+												{openTravel.assignation_id === item.assignation_id &&
+													<div className="contentContainer">
+														<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
+														<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
+														<button 
+															className="checkStatus" 
+															onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
+															>
+															Estado del Viaje
+														</button>
+														<button className="cancelBtn" onClick={() => displayModal(item)}>
+															Cancelar Viaje
+														</button>
+													</div>
+												}
+											</li>
+									))}
+							</ul>
+						</div>
+					}
+>>>>>>> 5f36f40e21fa03f0a1a433ff000e4e9b4d8631a8
 				</>
 				:
 				<div className="noTransfers">

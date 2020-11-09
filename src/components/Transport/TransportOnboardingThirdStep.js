@@ -32,69 +32,47 @@ const TransportOnboarding = () => {
     const getQualificationPreview = useSelector((state) => state.onboardingThirdStep.qualification.filePreview);
     const getIdExpires = useSelector((state) => state.onboardingThirdStep.idExpires);
     const getCredentialExpires = useSelector((state) => state.onboardingThirdStep.credentialExpires);
-    const getDisabilityExpires = useSelector((state) => state.onboardingThirdStep.disabilityExpires)
-    const getDisability = useSelector((state) => state.onboardingThirdStep.disability)
-    const [displayAlert, setDisplayAlert] = useState(false)
+    const getDisabilityExpires = useSelector((state) => state.onboardingThirdStep.disabilityExpires);
     const { loading } = useSelector(state => state.front);
-    const [loader, setLoader] = useState(false)
-    const user = useSelector((state) => state.onboardingSecondStep)
-    const { ws } = useParams();
-    const getUserData = JSON.parse(localStorage.getItem('userData'));
-
-    function backToMainMenu() {
-        setTimeout(function () {
-            history.push(`/${getUserData.ws}/transportUserActive`)
-        }, 4000)
-        setTimeout(function () {
-            dispatch({ type: 'LOADING', payload: false })
-        }, 2000)
-    }
-
-    const t = moment().add(7, 'days')
-    const today = t.valueOf()
-    const date = getIdExpires.replace(/\//g, '-')
-    const idDate = moment(date).valueOf();
-
-    const t2 = moment().add(7, 'days')
-    const today2 = t2.valueOf()
-    const date2 = getCredentialExpires.replace(/\//g, '-')
-    const credDate = moment(date2).valueOf();
-
-    const t3 = moment().add(7, 'days')
-    const today3 = t3.valueOf()
-    const date3 = getDisabilityExpires.replace(/\//g, '-')
-    const disDate = moment(date3).valueOf();
-
+    const user = useSelector((state) => state.onboardingSecondStep);
+		const { ws } = useParams();
+		
     async function sendForm() {
-        setLoader(true)
+			dispatch({ type: 'LOADING', payload:true});
+			const t = moment().add(7, 'days');
+			const today = t.valueOf();
+			const date = getIdExpires.replace(/\//g, '-');
+			const idDate = moment(date).valueOf();;
+			const t2 = moment().add(7, 'days');
+			const today2 = t2.valueOf();
+			const date2 = getCredentialExpires.replace(/\//g, '-');
+			const credDate = moment(date2).valueOf();
+			const date3 = getDisabilityExpires.replace(/\//g, '-');
+			const disDate = moment(date3).valueOf();
         try {
             const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
             if (!date.test(getIdExpires) || !date.test(getCredentialExpires)) {
                 swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
-                return
+                return null;
             };
-
             if (user.disability !== "0-NINGUNA") {
                 if (!date.test(getDisabilityExpires)) {
                     swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
-                    return
+                    return null;
                 }
                 if (today >= disDate) {
                     swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
-                    return
+                    return null;
                 }
             }
-
             if (today >= idDate) {
                 swal('Aviso', 'La fecha de vencimiento de DNI es incorrecta', 'warning')
-                return
+                return null;
             }
-
             if (today2 >= credDate) {
                 swal('Aviso', 'La fecha de vencimiento de la credencial es incorrecta', 'warning')
-                return
+                return null;
             }
-
             const licenceBlob = await fileToBlob(getLicenceFile);
             const dniBlob = await fileToBlob(getIdFile);
             const getUserData = JSON.parse(localStorage.getItem('userData'));
@@ -121,18 +99,14 @@ const TransportOnboarding = () => {
             };
             const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
             await Axios.post(transport_register, data, config);
-            console.log(data);
-            setTimeout(() => {
-                history.push(`/${getUserData.ws}/transportUserActive`);
-            }, 4000)
-            setDisplayAlert(true)
             await swal({
                 title: "Formulario enviado",
                 text: "En breve será redireccionado a la página de inicio",
                 icon: "success",
                 buttons: true,
                 timer: 3000
-            });
+						});
+						history.push(`/${getUserData.ws}/transportUserActive`);
         } catch (error) {
             console.error(error);
             swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
@@ -140,7 +114,7 @@ const TransportOnboarding = () => {
                 history.push(`/${ws}/transportRegister`);
             }, 2000);
         } finally {
-            setLoader(false)
+            dispatch({ type: 'LOADING', payload:false})
         }
     }
 
@@ -160,7 +134,7 @@ const TransportOnboarding = () => {
     return (
         <>
             <GenericHeader>Registro</GenericHeader>
-            {loader && <CustomUmaLoader />}
+            {loading && <CustomUmaLoader />}
             <div className="TransportOnboardingThirdStep">
                 <div className="uploadDocumentationWrapper">
                     <div className="d-flex justify-content-center">

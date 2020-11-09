@@ -31,17 +31,20 @@ export const handleApiLoaded = (callback) => {
 
 export const routeDrawer = (mapsApi, directionsService, directionsDisplay) => (origin, destiny) => {
 	return new Promise((resolve, reject) => {
+		console.log(origin, destiny);
 		if (!origin?.lat || !destiny?.lat) reject('No hay datos disponibles');
 		const request = {
 			origin: new mapsApi.LatLng(origin.lat, origin.lng || origin.lon),
 			destination: new mapsApi.LatLng(destiny.lat, destiny.lng) || destiny.lon,
 			travelMode: mapsApi.DirectionsTravelMode.DRIVING,
 		};
-		directionsService.route(request, function (response, status) {
+		directionsService.route(
+			request, 
+			function (response, status) {
 			if (status == mapsApi.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);
+				directionsDisplay.setOptions({ preserveViewport: true });
 				resolve(response.routes[0].legs[0].duration.text);
-				resolve(directionsDisplay.setOptions({ suppressMarkers: true }));
-				// resolve(directionsDisplay.setDirections(response));
 			}
 		});
 	});

@@ -56,15 +56,15 @@ const TransportOnboarding = (props) => {
 								<option value='1'>SI</option>
 							</select>
 							<div className='titleSecondStep'>Diagnóstico</div>
-							<select className="form-control"
+							<select className='form-control'
 								value={diagnostic}
 								onChange={(e) => dispatch({ type: 'ADD_DIAGNOSTIC', payload: e.target.value })}>
-								<option value="">Sin informar</option>
-								<option value="1-DISCAPACIDAD FISICA">1-DISCAPACIDAD FISICA</option>
-								<option value="2-DISCAPACIDAD SENSORIAL">2-DISCAPACIDAD SENSORIAL</option>
-								<option value="4-DISCAPACIDAD PSIQUICA">4-DISCAPACIDAD PSIQUICA</option>
-								<option value="5-DISCAPACIDAD VISCERAL">5-DISCAPACIDAD VISCERAL</option>
-								<option value="6-DISCAPACIDAD MULTIPLE">6-DISCAPACIDAD MULTIPLE</option>
+								<option value=''>Sin informar</option>
+								<option value='1-DISCAPACIDAD FISICA'>DISCAPACIDAD FISICA</option>
+								<option value='2-DISCAPACIDAD SENSORIAL'>DISCAPACIDAD SENSORIAL</option>
+								<option value='4-DISCAPACIDAD PSIQUICA'>DISCAPACIDAD PSIQUICA</option>
+								<option value='5-DISCAPACIDAD VISCERAL'>DISCAPACIDAD VISCERAL</option>
+								<option value='6-DISCAPACIDAD MULTIPLE'>DISCAPACIDAD MULTIPLE</option>
 							</select>
 							<div className='titleSecondStep'>Amparo</div>
 							<select className='form-control'
@@ -77,9 +77,10 @@ const TransportOnboarding = (props) => {
 							<div className='titleSecondStep'>Acompañante</div>
 							<input type='text'
 								className='form-control'
-								placeholder={'Ingresar nombre del acompañante'}
+								placeholder='Ingresar nombre del acompañante'
 								value={companionName}
-								onChange={(e) => dispatch({ type: 'ADD_COMPANION', payload: e.target.value })} />
+								onChange={(e) => dispatch({ type: 'ADD_COMPANION', payload: e.target.value })} 
+							/>
 						</div>
 						: ''}
 					<div className='buttonsContainer'>

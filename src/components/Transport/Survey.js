@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
-import moment from 'moment-timezone';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import StarRatings from 'react-star-ratings';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
@@ -58,7 +57,7 @@ const SurveyComponent = (props) => {
 							className="btn btn-active buttonSuccess"
 							onClick={() => backToTransports()}>
 							Volver a listado de traslados
-                        </button>
+						</button>
 					</div>
 				</MobileModal>
 			}
