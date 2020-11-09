@@ -291,7 +291,7 @@ const Register = props => {
                                     N° de celular
                                 </label>
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
-                                onChange={handleInput('REGISTER_FIRST_WS')}  value={getWs}  />
+                                onChange={handleInput('REGISTER_FIRST_WS')}  value={getWs? getWs: ""}  />
                                 {errors.ws && (
                                     <p className="form__validation--error">x Debe ingresar un número de celular válido</p>
                                 )}
