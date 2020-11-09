@@ -36,6 +36,8 @@ function ScheduleTransport() {
 		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'wed', value: ''}})
 		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'thu', value: ''}})
 		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'fri', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sat', value: ''}})
+		dispatch({type: 'HANDLE_RETURN_SCHEDULE', payload: {key: 'sun', value: ''}})
 		
 
 	}

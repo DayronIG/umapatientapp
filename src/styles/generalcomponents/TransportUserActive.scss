@@ -24,14 +24,34 @@
     }
   }
   .transportUserActive {
-		padding-bottom: 25vh;
+    padding-bottom: 25vh;
+    
     .transportList {
-      width: 90%;
+      width: 98%;
       margin: 20px auto 15px;
       height: auto;
       top: 104px;
       bottom: 0;
-      overflow: scroll;
+      // overflow: scroll;
+      .buttonDisplay{
+        display:flex;
+        justify-content: space-around;
+        margin-bottom:5px;
+        .active{
+          background: rgb(95, 95, 226);
+          border:1px solid white;
+        }
+      button{
+        border:none;
+        outline: none;
+        background: blue;
+        border-radius: 10px;
+        color:white;
+       width: 6rem;
+       
+      }
+      }
+      
       .backButtonContainer {
         width: 100%;
         line-height: 0;
@@ -40,37 +60,26 @@
       li {
         margin-bottom: 10px;
         .titleContainer {
-          box-shadow: $main-shadow;
-          padding: 10px;
-          background-color: $secondary-color;
-          border-radius: $regular-borders;
-          margin-bottom: 10px;
+          // box-shadow: $main-shadow;
+          padding: 8px;
+          background-color: white;
+          border:1px solid rgba(128, 128, 128, 0.349);
+          border-left: 8px solid rgba(128, 128, 128, 0.349);
+          // border-radius: $regular-borders;
+          
           .transportTitle {
-            width: 80%;
-            color: $white-color;
-            padding-left: 2px;
-            padding-right: 10px;
-            span {
-              font-weight: bold;
-            }
+            width: 50%;
+            color: rgb(95, 95, 226);
+            // padding-left: 2px;
+            // padding-right: 10px;
+           margin:5px;
+           div{
+             margin:5px
+           }
+           
+            
           }
-          .openContent {
-            width: 20%;
-            button {
-              border-radius: 50%;
-              border: 0;
-              width: 40px;
-              height: 40px;
-              line-height: 1.2;
-              background-color: $white-color;
-              color: $secondary-color;
-              font-size: 30px;
-							float: right;
-							&:focus{
-								outline: none;
-							}
-            }
-          }
+          
         }
         .contentContainer {
           box-shadow: $main-shadow;
@@ -81,9 +90,29 @@
           .destiny,
           .origin {
             margin-bottom: 15px;
-            span {
+            .originTitle {
               font-weight: bold;
+              margin:0;
+              margin-bottom:5px;
+              color:black;
             }
+          .originContent{
+            border:1px solid rgba(128, 128, 128, 0.349);
+            padding:5px;
+          }
+          .destinyTitle{
+            font-weight: bold;
+            margin:0;
+            margin-bottom:5px;
+            color:black;
+          }
+          .destinyContent{
+            border:1px solid rgba(128, 128, 128, 0.349);
+            padding:5px;
+          }
+
+
+
           }
           button {
             width: 100%;
@@ -95,7 +124,7 @@
 						font-weight: bold;
 						border: none;
 						outline: none;
-						border-radius: $regular-borders;
+						border-radius: 40px;
 					}
 					.checkStatus {
 						background-color: $green-high;
@@ -180,5 +209,23 @@
     display: flex;
     justify-content: center;
 		align-items: center;
+  }
+}
+.openContent{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  button{
+    border:none;
+    outline: none;
+    background: none;
+    font-weight: bold;
+  }
+}
+.transportDriver{
+  width:50%;
+  text-align: start;
+  div{
+    margin:5px
   }
 }

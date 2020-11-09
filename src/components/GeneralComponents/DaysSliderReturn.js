@@ -142,6 +142,52 @@ export default function DaysSliderReturn({
 						<span class="slider round">{transportData.back_translate_friday ? "✓" : null}</span>
 					</label>
 				</div>
+
+				<div className="switcher">
+					<span>Sabado</span>
+					{transportData.back_translate_saturday ?
+						<div className="inputers">
+							<div>
+								<Cleave placeholder="00:00" name="sat" value={values.sat} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+
+								<span>Hs.</span>
+							</div>
+						</div> : null}
+					<label id="switch" class="switch">
+						<input id="input" type="checkbox"
+							onClick={() => {
+								dispatch({ type: 'SET_BACK_TRANSLATE_SATURDAY', payload: !transportData.back_translate_saturday })
+								if (transportData.back_translate_saturday) {
+									dispatch({ type: 'HANDLE_RETURN_SCHEDULE', payload: { key: 'sat', value: '' } })
+								}
+							}}
+						/>
+						<span class="slider round">{transportData.back_translate_saturday ? "✓" : null}</span>
+					</label>
+				</div>
+
+				<div className="switcher">
+					<span>Domingo</span>
+					{transportData.back_translate_sunday ?
+						<div className="inputers">
+							<div>
+								<Cleave placeholder="00:00" name="sun" value={values.sun} onChange={handlerInputChange} className="CleaveInput" options={{ time: true, timePattern: ['h', 'm'] }} />
+
+								<span>Hs.</span>
+							</div>
+						</div> : null}
+					<label id="switch" class="switch">
+						<input id="input" type="checkbox"
+							onClick={() => {
+								dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: !transportData.back_translate_sunday })
+								if (transportData.back_translate_sunday) {
+									dispatch({ type: 'HANDLE_RETURN_SCHEDULE', payload: { key: 'sun', value: '' } })
+								}
+							}}
+						/>
+						<span class="slider round">{transportData.back_translate_sunday ? "✓" : null}</span>
+					</label>
+				</div>
 			</div>
 		</div>
 	);
