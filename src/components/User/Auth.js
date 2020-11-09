@@ -133,6 +133,7 @@ function AuthProvider({ children }) {
 			plan = await getCoverage(userAuth)
 			// El siguiente código comentado quedaría en desuso
 			if (!!userAuth) {
+				console.log(userAuth)
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			}

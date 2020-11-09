@@ -74,12 +74,13 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/register/:ws/:ref?' component={Register} />
+				<Route exact path='/register/:ws?/:ref?' component={Register} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
-				<Route exact path='/referred/:ws?/:ref?' component={Referred} />
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
+				{/* Referred Register Index */}
+				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}
 				<Route exact path='/feedback/:aid?' component={Feedback} />
 				<Route exact path='/notfound/:error?' component={NotFound} />
