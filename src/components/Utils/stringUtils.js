@@ -30,7 +30,6 @@ export function validateInput(type, value) {
     let isValid = false;
     switch (type) {
         case 'tel':
-            console.log(value)
             if(!!value && /^\d+$/.test && value.length >= 10){              
                 isValid = true;
             } 
