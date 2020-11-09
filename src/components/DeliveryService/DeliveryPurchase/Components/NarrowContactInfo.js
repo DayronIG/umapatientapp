@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import narrowContact from "../../../../assets/img/narrow-contact.svg"
 
 export default function NarrowContactInfo({goBack}) {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="allwhite-hisopados-background" >
@@ -12,6 +16,9 @@ export default function NarrowContactInfo({goBack}) {
                     <p className="warning">Atención: </p>
                     <p>Es importante que te hagas el test a los <b>5 días</b> del contacto si aún no tienes síntomas</p>
                     <p>Si presentas síntomas y has tenido contacto con un paciente confirmado o sospechoso de COVID positivo, debes hisoparte inmediatamente.</p>               
+                </div>
+                <div onClick={() => goBack()} className="blue-text">
+                    Volver
                 </div>
         </div>
     )

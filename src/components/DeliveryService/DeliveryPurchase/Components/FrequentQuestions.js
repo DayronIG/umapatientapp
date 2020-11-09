@@ -5,6 +5,10 @@ import { MdKeyboardArrowLeft } from "react-icons/md"
 export default function FrequentQuestions({goBack}) {
     const qa = [
         {
+            question: "¿Me darán certificado?",
+            answer: "Recibirás una constancia del resultado de tu test de hisopado, pero no tiene validez para realizar trámites oficiales. EL SERVICIO NO INCLUYE: certificados laborales para licencia por enfermedad inculpable ley 20.744 y/o enfermedad profesional ley 24.557 por COVID-2019 y/o PCR NEGATIVO, certificado de atención primaria y/o farmacológica del profesional que acude al domicilio. No incluye diagnóstico presuntivo ni indicación de tratamiento y/o reposo."
+        },
+        {
             question: "¿Cuáles son las ventajas de hacer un test rápido de hisopado a domicilio?",
             answer: ["Es rápido. Con resultados en 15/20 minutos.",
             "Accesible." ,

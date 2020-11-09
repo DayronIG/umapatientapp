@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from "react-redux";
 
 export default function Recomendations({goBack}) {
     const patient = useSelector(state => state.queries.patient)
     const discount = useSelector(state => state.deliveryService.params.discount)
+
+    useEffect(() => {
+        window.scroll(0,0)
+    }, [])
 
     return (
         <div className="allwhite-hisopados-background" >

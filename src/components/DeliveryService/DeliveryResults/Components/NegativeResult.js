@@ -9,7 +9,13 @@ export default function NegativeResult({finalAction}) {
     const history = useHistory(); 
     const patient = useSelector(state => state.queries.patient)
 
+    const goBackButton = () => {
+            return history.push("/")
+    }
+
     return (
+        <>
+        <BackButton inlineButton={true} customTarget={patient.ws}  action={()=>goBackButton()} />
         <div className="allwhite-hisopados-background" >
                 <div className="results-container">
                     <img src={hisopadosNeg} alt="hisopado_neg" className="hisopados_res"/>
@@ -55,5 +61,6 @@ export default function NegativeResult({finalAction}) {
                     </div> */}
                 </div>
         </div>
+        </>
     )
 }
