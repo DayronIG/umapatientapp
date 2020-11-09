@@ -48,6 +48,7 @@ const TransportUserActive = () => {
 			)
 			setApprovedServices(response.data.filter(item => item.autorizado));
 			setPendingServices(response.data.filter(item => !item.autorizado));
+			console.log(response.data)
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -92,7 +93,7 @@ const TransportUserActive = () => {
 			
 	
 	
-	console.log(pendingServices, approvedServices);
+	
 
 	return (
 		<div className="transportList">

@@ -48,6 +48,7 @@
         border-radius: 10px;
         color:white;
        width: 6rem;
+       transition:none;
        
       }
       }
@@ -60,18 +61,16 @@
       li {
         margin-bottom: 10px;
         .titleContainer {
-          // box-shadow: $main-shadow;
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.514);
           padding: 8px;
           background-color: white;
           border:1px solid rgba(128, 128, 128, 0.349);
           border-left: 8px solid rgba(128, 128, 128, 0.349);
-          // border-radius: $regular-borders;
           
           .transportTitle {
             width: 50%;
             color: rgb(95, 95, 226);
-            // padding-left: 2px;
-            // padding-right: 10px;
+            padding:5px;
            margin:5px;
            div{
              margin:5px
@@ -87,6 +86,7 @@
           background-color: $white-color;
           color: $text-light;
           border-radius: $regular-borders;
+          color:black;
           .destiny,
           .origin {
             margin-bottom: 15px;
@@ -226,6 +226,6 @@
   width:50%;
   text-align: start;
   div{
-    margin:5px
+    margin:5px;
   }
 }
