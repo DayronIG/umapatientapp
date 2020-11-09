@@ -64,6 +64,8 @@ import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
+import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
+
 function App(props) {
 	return (
 		<div className='App'>
@@ -85,6 +87,7 @@ function App(props) {
 				<Route exact path='/feedback/:aid?' component={Feedback} />
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
+				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/:dni/onlinedoctor/when' component={When} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/who' component={Who} />

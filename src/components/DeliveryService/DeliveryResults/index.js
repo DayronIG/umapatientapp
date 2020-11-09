@@ -13,11 +13,11 @@ export default function HisopadosPurchase() {
     const result = useSelector(state => state.deliveryService?.deliveryInfo[0]?.lab?.result_lab)
     const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[0]?.eval?.uma_eval) 
 
-    useEffect(()=>{
-        if(survey){
-            setFluxTrackerHisopado(result)
-        }
-    }, [survey])
+    // useEffect(()=>{
+    //     if(survey){
+    //         setFluxTrackerHisopado(result)
+    //     }
+    // }, [survey])
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {
