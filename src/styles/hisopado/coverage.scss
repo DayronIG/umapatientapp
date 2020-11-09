@@ -2,6 +2,10 @@
 
 .coverage__container {
 
+    .backButtonContainer{
+        background-color: white;
+    }
+
     .coverage__map {
         & > div {
             height: calc(100vh - 52px) !important;

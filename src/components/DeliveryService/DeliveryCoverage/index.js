@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { GenericHeader } from '../../GeneralComponents/Headers';
+import { BackButton } from '../../GeneralComponents/Headers';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded } from '../../Utils/mapsApiHandlers';
 import { IoMdArrowRoundBack } from 'react-icons/io'
@@ -29,11 +29,11 @@ const HisopadosCoverage = () => {
     
     return (
         <div className="coverage__container">
-            <GenericHeader children="Hisopado" />
+             <BackButton inlineButton={true} customTarget={ws} action={()=>history.push(`/hisopado/${ws}`)} />
             <div className="coverage__map">
-                <button className="coverage__back" onClick={()=> history.push(`/hisopado/${ws}`)}>
+                {/* <button className="coverage__back" onClick={()=> history.push(`/hisopado/${ws}`)}>
                     <IoMdArrowRoundBack />
-                </button>
+                </button> */}
                 <GoogleMapReact 
                     {...mapConfig({lat: -34.663069, lng: -58.424647 }, () => {}, 11)}
                     onGoogleApiLoaded={({ map, maps }) => onGoogleApiLoaded(map, maps)}
