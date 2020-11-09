@@ -82,17 +82,15 @@ const Register = props => {
     const handleSignUp = useCallback(async event => {
         event.preventDefault()
         window.scroll(0, 0)
-        let validDni = validateInput('text', getId)
         let dniAlert = false
-       
         let dt = composeDate()
-
+        let validDni = validateInput('text', getId)
         let validFullname = validateInput('text', getFullname)
         let validOs = validateInput('text', getOs)
-        let validWs = validateInput('tel', ws)
+        let validWs = validateInput('tel', getWs)
         let validDate = validateInput('number', dt)
-        console.log(validDate)
-        if(validDni && validFullname && validOs && validDate) {
+
+        if(validDni && validFullname && validOs && validDate && validWs) {
             dniAlert = await swal({
                 title: `Confirma tu número de documento: ${getId}`,
                 text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
@@ -247,7 +245,6 @@ const Register = props => {
         <>
             {loading && <Loading />}
                 <>
-                {console.log(errors)}
                     <GenericHeader profileDisabled={true}></GenericHeader>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
@@ -272,7 +269,6 @@ const Register = props => {
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
                                 autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
-                                {console.log(errors)}
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -365,7 +361,7 @@ const Register = props => {
                             </div>
                             <div className='switch__container'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
-                                    <h5 className="text__terminosYcondiciones ml-5">Acepto los términos y condiciones</h5>
+                                    <h5 className="text__terminosYcondiciones ml-5 ">Acepto los términos y condiciones</h5>
                                 </a>
                                 <div className={termsSwitch ? 'enabled switchChangeWrapper' : 'disabled switchChangeWrapper'}>
                                     <Switch type='checkbox'
