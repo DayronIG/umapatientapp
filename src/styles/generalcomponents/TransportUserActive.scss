@@ -27,7 +27,7 @@
     padding-bottom: 25vh;
     
     .transportList {
-      width: 98%;
+      width: 100%;
       margin: 20px auto 15px;
       height: auto;
       top: 104px;
@@ -35,19 +35,27 @@
       // overflow: scroll;
       .buttonDisplay{
         display:flex;
-        justify-content: space-around;
+        background:white;
+        justify-content: space-evenly;
         margin-bottom:5px;
+        padding-bottom: 11px;
+        padding-top:11px;
+        font-size: 18px;
+        border-bottom: 1px solid black;
+        border-top:1px solid black;
         .active{
           background: rgb(95, 95, 226);
           border:1px solid white;
+          color:white;
+          font-weight: bold;
         }
       button{
         border:none;
         outline: none;
-        background: blue;
+        background:none;
         border-radius: 10px;
-        color:white;
-       width: 6rem;
+        color:black;
+      //  width: 6rem;
        transition:none;
        
       }
@@ -66,12 +74,15 @@
           background-color: white;
           border:1px solid rgba(128, 128, 128, 0.349);
           border-left: 8px solid rgba(128, 128, 128, 0.349);
+          border-radius: 10px;
+          margin:10px;
           
           .transportTitle {
             width: 50%;
             color: rgb(95, 95, 226);
             padding:5px;
            margin:5px;
+           border-right: 1px solid rgba(128, 128, 128, 0.349);
            div{
              margin:5px
            }
@@ -216,10 +227,15 @@
   align-items: center;
   justify-content: center;
   button{
+    margin-top:-10px;
     border:none;
     outline: none;
     background: none;
     font-weight: bold;
+    margin-bottom:5px;
+    &:focus{
+      outline: none;
+    }
   }
 }
 .transportDriver{
