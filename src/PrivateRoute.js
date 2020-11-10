@@ -66,7 +66,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 console.log(error)
             }
         }
-    }, [patient, RouteComponent, firestore, callRejected, rest.path, dispatch])
+    }, [patient, firestore, callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
 		if (currentUser && currentUser.email && patient.dni) {

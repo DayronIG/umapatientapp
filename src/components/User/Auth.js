@@ -10,16 +10,21 @@ function AuthProvider({ children }) {
 	const dispatch = useDispatch()
 	const [currentUser, setCurrentUser] = useState(() => db.auth().currentUser)
 	const patient = useSelector(state => state.queries.patient)
+	const {params} = useSelector(state => state.deliveryService)
 
 	useEffect(() => {  // Get authorization changes
 		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)
+		if(currentUser) {
+			getInitialData(currentUser)
+			if(!params || params === "") {
+				getDeliveryInfo()
+			}
+		}
 		return () => unsubscribe()
 	}, [currentUser])
 
 	useEffect(() => {
 		if (currentUser) {
-			getInitialData(currentUser)
-			getDeliveryInfo()
 			currentUser.getIdToken().then(token => {
 				localStorage.setItem(`token`, `Bearer ${token}`)
 				dispatch({ type: 'SET_LOGED_TOKEN', payload: token })
