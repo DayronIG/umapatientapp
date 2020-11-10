@@ -9,10 +9,10 @@ export default function EndAssignationHisopado() {
     return (
         <div className="allwhite-hisopados-background" >
             <div className="instructions-container">
-                <img src={hisopadosPay} alt="hisopados_tic" className="hisopados_pay"/>
-                <p className="hisopados-title">¡Hemos recibido el pago!</p>
+                <img src={hisopadosPay} alt="hisopados_tic" className="hisopados_cross"/>
+                <p className="hisopados-title">¡Hemos recibido su pago!</p>
                 <p>Estamos buscando al profesional más cercano para realizar el hisopado</p>
-                <p>¡Puedes cerrar esta ventaan! te enviaremos una notificación cuando un profesional le sea asignado</p>
+                <p>Aguarde unos instantes</p>
             <button className="go__home" onClick={() => history.push('/')}>
                 Ir a inicio
             </button>

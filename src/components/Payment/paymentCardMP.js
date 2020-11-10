@@ -320,11 +320,9 @@ const PaymentCardMP = () => {
                     onChange={handleChange}
                     onFocus={handleFocus}/>
                 <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
-                    autoComplete="off"
-                    placeholder="Año" maxLength="2" onChange={e =>{ 
-                      expirationYearCheck(e.target.value)
-                      handleChange(e)
-                    }}
+                    placeholder="Año" autoComplete="off" maxLength="2" onChange={e => { 
+                        handleChange(e.target.value) 
+                        expirationYearCheck(e.target.value)}}
                     onFocus={handleFocus}/>
                 </div>
               </div>

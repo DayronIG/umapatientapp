@@ -4,6 +4,8 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/messaging';
 import 'firebase/auth';
+import 'firebase/performance';
+
 import isIos from '../components/Utils/isIos'
 
 var messaging;
@@ -15,11 +17,12 @@ var config = {
     storageBucket: 'uma-v2.appspot.com',
     messagingSenderId: '320149797683',
     appId: '1:320149797683:web:6cb56009aaa69a3dc9dc46',
-    measurementId: "G-EWL5H12JRG"
+    measurementId: "G-9E186399VJ"
 };
 
 function DBConnection() {
     Firebase.initializeApp(config);
+    Firebase.performance();
     const ios = isIos()
     if (!ios) {
         messaging = Firebase.messaging();

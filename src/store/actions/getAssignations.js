@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 const d = new Date();
 const firestore = DBConnection.firestore();
 const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
+const currentDate = [d.getFullYear(), currentMonth].join('');
 const yearMonth = yearAndMonth();
 
 export function getAssignedAppointments(specialty, collectionName, doctors, userDni, date) {

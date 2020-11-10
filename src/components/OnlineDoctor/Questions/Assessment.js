@@ -95,6 +95,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
         return <VideoComponent key={index} isModal={true} finalAction={stopAndNext} />
       }
       case "photo": return <PictureComponent key={index} finalAction={stopAndNext} />
+      default: return ""
     }
   }
 

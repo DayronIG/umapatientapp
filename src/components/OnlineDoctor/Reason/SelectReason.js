@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-// import Autocomplete from '../../GeneralComponents/Autocomplete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';

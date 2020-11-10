@@ -29,8 +29,7 @@ const LifeJoy = () => {
 
 	return (
 		<section className='lifejoy-container'>
-			{/* route, fieldToValidate, definition, icon, text, isImg, btnColorClass*/}
-			{renderBtn(`/${patient.ws}/wellness`, 'wellness', faSmile, 'Estudios', false, 'btn-green')}
+			{renderBtn(`/${patient.ws}/wellness`, 'wellness', faSmile, 'Bienestar', false, 'btn-green')}
 			{renderBtn(`/${patient.ws}/umacare`, 'umacare', faUserNurse, 'UMA Care', false, 'btn-green')}
 		</section>
 	);

@@ -20,21 +20,26 @@
    }
    @media (min-width:768px) and (max-width: 1440px){
       width: 100%;
-      padding: 0 20%;
-      h3 {
-         display: block;
-         &.register_form--title{
-            width: 100%;
-            height: 25px;
-            left: 233px;
-            top: 145px;
-            color: #008290;
-            font-weight: 900;
-            font-size: 24px;
-            line-height: 0.9%;
-            border-bottom: 0.2rem solid #008290;
-            margin-top: 30px;
-         }
+   }
+   .addressLabel,
+   .sexLabel,
+   .birthLabel {
+      margin-top: 12px;
+   }
+   .sexLabel,
+   .birthLabel {
+      margin-bottom: 0px;
+   }
+   .sexLabel {
+      visibility: hidden;
+   }
+   .sexContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      select {
+         width: -webkit-fill-available;
       }
    }
    .register-form {

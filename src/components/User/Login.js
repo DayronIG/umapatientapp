@@ -26,10 +26,13 @@ const SignIn = props => {
     const [, setSendMsg] = useState(false)
     const [code, setCode] = useState('')
     const loading = useSelector(state => state.front.loading)
-    const [sentTimes, setSentTimes] = useState(0)
+    const [sentWs, setSentWs] = useState(true)
     const config =  { headers: { 'Content-Type': 'application/json'} }
-    
+     
     useEffect(() => {
+        let timeout = setTimeout(() => {
+            setSentWs(false)
+        }, 2000)
         if (ws) {
             sendWsCode(ws)
             dispatch({ type: 'LOADING', payload: true })
@@ -46,6 +49,7 @@ const SignIn = props => {
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
                 .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
+        return () => clearTimeout(timeout)
     }, [])
     
     const handleLogin = async (event) => {
@@ -68,6 +72,10 @@ const SignIn = props => {
             db.auth()
                 .signInWithEmailAndPassword(email, password.value)
                 .then(async (reg) => {
+                    window.gtag('event', 'success_login', {
+                        'event_category' : 'login',
+                        'event_label' : 'login'
+                      });
                     history.push(`/${validPhone}`)
                     dispatch({ type: 'LOADING', payload: false })
                     localStorage.setItem('dbUser', true)
@@ -120,36 +128,34 @@ const SignIn = props => {
         return validPhone
     }
 
-
     const sendWsCode = useCallback((ws) => {
-        let newTimes = sentTimes + 1
-        setSentTimes(newTimes)
-        localStorage.getItem('accessCode')
+        setSentWs(true)
+        let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
-        const data = { ws }
-        const headers = { 'Content-type': 'application/json'  }
-        axios.post(`${send_user_code}/${ws}`, data, { headers })
-            .then(() => {
-                swal('Código enviado! Revise su WhatsApp', '', 'success')
-            })
-            .catch((err) => {
-                swal('Error al enviar el código', '', 'warning')
-            })
-/*                 if (accessCode && code && accessCode === code) {
-                    db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
-                        .then(() => {
-                            db.auth()
-                                .signInWithEmailAndPassword(`${ws}@${code}.com`, code)
-                                .then((ok) => props.history.push(`/${ws}`))
-                        })
-                } else {
-        } */
-    }, [sentTimes])
+        if (accessCode && code && accessCode === code) {
+            db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
+                .then(() => {
+                    db.auth()
+                        .signInWithEmailAndPassword(`${ws}@${code}.com`, code)
+                        .then((ok) => props.history.push(`/${ws}`))
+                })
+        } else {
+            const data = { ws }
+            const headers = { 'Content-type': 'application/json'  }
+            axios.post(`${send_user_code}/${ws}`, data, { headers })
+                .then(() => {
+                    swal('Código enviado! Revise su WhatsApp', '', 'success')
+                })
+                .catch((err) => {
+                    swal('Error al enviar el código', '', 'warning')
+                })
+        }
+    }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        props.history.replace(`/login/${validPhone}`)
+        props.history.push(`/login/${validPhone}`)
     }
 
     return (
@@ -218,6 +224,13 @@ const SignIn = props => {
                                         Ingresar
                                     </button>
                                     <small>Si no recibe el código puede  <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>hablarle a ÜMA por whatsapp</a> para acceder.</small>
+                                    {sentWs === false ?
+                                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
+                                            Enviar código
+                                        </button> :
+                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
+                                            Código enviado!
+                                        </button>}
                                 </>}
                         </form>
                         {sentTimes <= 1 ?
