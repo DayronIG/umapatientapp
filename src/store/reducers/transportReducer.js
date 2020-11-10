@@ -12,6 +12,7 @@ const initialState = {
 	service: {},
 	notes: '',
 	hasReturn: false,
+	hasOrigin: false,
 	origin_translate_monday: false,
     origin_translate_tuesday: false,
     origin_translate_wednesday: false,
@@ -48,6 +49,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, notes: payload };
 		case transportTypes.HANDLE_RETURN:
 			return { ...state, hasReturn: payload };
+		case transportTypes.HANDLE_ORIGIN:
+			return { ...state, hasOrigin: payload };
 		case transportTypes.HANDLE_ORIGIN_DAY:
 			return {...state.originDay, [payload.key]: payload.value  }
 		case 'SET_ORIGIN_TRANSLATE_MONDAY':

@@ -67,10 +67,12 @@ function ScheduleTransport() {
 			{loading && <Loading />}
 			
 			<div className='scheduleForm__container'>
+				<h5>Duración del traslado</h5>
 				<div className='scheduleForm__container--input'>
 				
-					<label>Fecha desde:</label>
+					<label className="label">Fecha de inicio:</label>
 					<input
+					className="dateInput"
 						required
 						min={today}
 						type='date'
@@ -79,8 +81,9 @@ function ScheduleTransport() {
 					/>
 				</div>
 				<div className='scheduleForm__container--input'>
-					<label>Fecha hasta:</label>
+					<label className="label">Fecha de finalizacion:</label>
 					<input
+					className="dateInput"
 						required
 						min={tomorrow}
 						type='date'
@@ -91,22 +94,32 @@ function ScheduleTransport() {
 			</div>
 			<div className='scheduleForm__container'>
 				<div className='centeredElements'>
-				<h5 className='scheduleForm__container--title'>Horario</h5>
-				<label htmlFor='scheduleReturn'>Ida y vuelta:</label> {' '}
-				<input
+				<h5 className='scheduleForm__container--title'>Horario de llegada a destino</h5>
+				<button className="addButton" type="button" onClick={transportActions.setHasOrigin}>+ Agregar horarios</button>
+				 
+				
+				{transportData.hasOrigin && (<DaysSlider
+					title='Llegada a destino'
+					values={transportData.startSchedules}
+					handleChange={transportActions.setStartSchedule}
+				/>
+				)}
+					</div>
+				</div>
+				<div className="scheduleForm__container">
+				{/* <input
 					type='checkbox'
 					onChange={transportActions.setHasReturn}
 					onClick={resetReturnDays}
 					id='scheduleReturn'
 					name='scheduleReturn'
 					value={transportData.hasReturn}
-				/>
-				</div>
-				<DaysSlider
-					title='Llegada a destino'
-					values={transportData.startSchedules}
-					handleChange={transportActions.setStartSchedule}
-				/>
+				/> */}
+				<div className='centeredElements'>
+				<h5 className='scheduleForm__container--title'>Horario de regreso a origen</h5>
+				
+				{transportData.hasReturn ? <button className="addButton"  type="button" onClick={transportActions.setHasReturn}>- Borrar horarios</button> : <button className="addButton"  type="button" onClick={transportActions.setHasReturn}>+ Agregar horarios</button>}
+				
 				{transportData.hasReturn && (
 					<DaysSliderReturn
 						title='Regreso a origen'
@@ -114,7 +127,8 @@ function ScheduleTransport() {
 						handleChange={transportActions.setReturnSchedule}
 					/>
 				)}
-			</div>
+				</div>
+				</div>
 			<div className='scheduleForm__container'>
 				<div className='scheduleForm__container--observations'> 
 					<h5>Observaciones</h5>

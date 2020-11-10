@@ -60,9 +60,14 @@ export const handleTimeReference = (value) => ({
 	payload: value
 });
 
-export const handleHasReturn = (value) => ({
+export const handleHasReturn = () => ({
 	type: transportTypes.HANDLE_RETURN,
-	payload: value
+	payload: true
+})
+
+export const handleHasOrigin = () => ({
+	type: transportTypes.HANDLE_ORIGIN,
+	payload: true
 })
 
 export const handleReset = (value) => ({
@@ -165,4 +170,5 @@ export const setEndDate = ({ target: { value } }) => dispatch(handleEndDate(valu
 export const setNotes = ({ target: { value } }) => dispatch(handleNotes(value));
 export const setTimeReference = ({ target: { value } }) => dispatch(handleTimeReference(value));
 export const setNextPoint = () => dispatch(handlePointSelector());
-export const setHasReturn = (e) => dispatch(handleHasReturn(e.target.checked));
+export const setHasReturn = () => dispatch(handleHasReturn(true));
+export const setHasOrigin = () => dispatch(handleHasOrigin(true));
