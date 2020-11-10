@@ -5,31 +5,32 @@
 	.transportDetails__backBtn {
 		position: absolute;
 		z-index: 2;
-
 		a {
 			color: $primary-blue;
 		}
 	}
-
 	.transportDetails__map {
 		height: calc(100vh - 52px);
 	}
-	
+
 	.transportDetails__container {
 		width: 100%;
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		padding: 20px;
+		padding: 25px;
 		background: #fff;
-
+		.transportDetails__container--title {
+			color: $new_primary_color;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			font-weight: bold;
+		}
 		li {
 			font-size: 0.9rem;
-
 			@media screen and (max-width: 320px) {
 				font-size: 0.7rem;
 			} 
-			
 			span {
 				font-weight: 600;
 			}
