@@ -283,7 +283,6 @@ const TransportUserActive = () => {
 					))}
 			</ul>
 		</div>
-
 		<div>
 		{pendingServices.length > 0 ? <h5 className="pendingTitle">Pendientes:</h5> : null}
 				<ul>
@@ -304,7 +303,7 @@ const TransportUserActive = () => {
 										<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 										<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
 									}
-								</div>
+							</div>
 							{openTravel.assignation_id === item.assignation_id &&
 							<>
 								<div className="contentContainer">
@@ -313,13 +312,12 @@ const TransportUserActive = () => {
 									<div className="destiny"><p className="destinyTitle">Destino:</p>
 									<p className="destinyContent"> {item.geo_fin_address}</p></div>
 									<button className="checkStatus" onClick={() => {
-											
-											if(item.provider_fullname){
-											history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
-											else{
+											if(item.provider_fullname) {
+												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
+											} else {
 												setNoDriver(!noDriver)
 											}
-											}}>
+									}}>
 										<FaCar /> Seguir recorrido
 									</button>
 									<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -334,7 +332,7 @@ const TransportUserActive = () => {
 									</div>
 									</>
 								}
-							</li>
+						</li>
 					))}
 				</ul>
 		</div>

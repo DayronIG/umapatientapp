@@ -72,8 +72,7 @@ const CreateTransportRoute = () => {
 			{loading && <Loader />}
 			<div className='selectDestiny__container map' style={{ zIndex: -1 }}>
 				<GoogleMapReact
-					{...mapConfig(
-						{ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
+					{...mapConfig({ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
 						geocodeLatLng
 					)}
 					onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
@@ -122,7 +121,6 @@ const CreateTransportRoute = () => {
 					</button>
 				</div>
 			</div>
-			{/* <FooterBtn callback={handleSubmit} text='Continuar' /> */}
 		</form>
 	);
 };
