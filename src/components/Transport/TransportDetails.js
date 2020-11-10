@@ -81,7 +81,7 @@ const TransportTracking = () => {
 			</div>
 			<div className='transportDetails__container'>
 				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
-				<p>Llegará en {eta}.</p>
+				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className="transportDriver">
 					{/*
 						<div className="transportDriverImg">
