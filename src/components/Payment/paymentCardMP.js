@@ -33,7 +33,6 @@ const PaymentCardMP = () => {
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
         window.Mercadopago.getIdentificationTypes();
-        console.log(totalPayment)
       }, [])
 
     /**
@@ -88,7 +87,6 @@ const PaymentCardMP = () => {
     }
 
     function sdkResponseHandler(status, response) {
-        console.log(status, response)
         if (status !== 200 && status !== 201) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
@@ -244,7 +242,7 @@ const PaymentCardMP = () => {
               number={number}
               callback={(a, b) => {
                 setCreditCard(a.issuer)
-                console.log(a, b)}}
+              }}
               {...properties}
             />
           </div>
