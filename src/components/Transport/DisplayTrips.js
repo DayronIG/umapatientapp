@@ -249,10 +249,13 @@ const TransportUserActive = () => {
 {openAll ?
 <>
 	<div>
+		{approvedServices.length > 0 ? <h5 className="pendingTitle">Aprobados:</h5> : null}
 		<ul>
 			{approvedServices
 					.map((item, index) => (
+						
 							<li key={index}>
+								<h4>Aprobados</h4>
 								<div className="titleContainer d-flex  align-items-center">
 									<div className="transportTitle">
 										<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
@@ -294,10 +297,12 @@ const TransportUserActive = () => {
 		</div>
 
 <div>
+{pendingServices.length > 0 ? <h5 className="pendingTitle">Pendientes:</h5> : null}
 <ul>
 {pendingServices 
 	.map((item, index) => (
 			<li key={index}>
+				
 				<div className="titleContainer d-flex  align-items-center">
 					<div className="transportTitle">
 						<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
