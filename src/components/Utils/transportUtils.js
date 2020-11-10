@@ -116,3 +116,20 @@ export function renderTitle(service) {
 			return '';
 	}
 }
+
+export function renderStatus(status_tramo) {
+	switch (status_tramo) {
+		case 'FREE':
+			return 'PENDIENTE DE APROBACION';
+		case 'ASSIGN':
+			return 'CONDUCTOR ASIGNADO';
+		case 'AUTHORIZED':
+			return 'AUTORIZADO';
+		case 'DONE':
+			return 'FINALIZADO';
+		case 'CANCEL':
+			return 'CANCELADO';
+		default:
+			return '';
+	}
+}

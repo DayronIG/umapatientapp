@@ -9,6 +9,7 @@ import moment from 'moment-timezone';
 import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaSlideshare } from 'react-icons/fa'
 import '../../styles/generalcomponents/TransportUserActive.scss';
 import swal from 'sweetalert';
+import { renderStatus } from '../Utils/transportUtils';
 
 
 const TransportUserActive = () => {
@@ -33,7 +34,7 @@ const TransportUserActive = () => {
 	}, [patient]);
 
 	async function getServices() {
-		if(!patient?.dni) return null;
+		if (!patient?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			const response = await Axios.post(
@@ -47,6 +48,7 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
+			console.log(response.data);
 			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
 			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
 		} catch (error) {
@@ -137,7 +139,6 @@ const TransportUserActive = () => {
 			{/* SIN CONDUCTOR */}
 			{noDriver ?
 				history.push(`/${patient.ws}/transportNoDriver`)
-				
 				: null}
 			
 			{/* SIN TRASLADOS */}
@@ -148,9 +149,7 @@ const TransportUserActive = () => {
 			<p>Programa un nuevo traslado tocando el boton "+".</p>
 			</div>
 			}
-
 			{/* TRASLADOS PENDIENTES */}
-
 			{openPendingServices ?
 				<div>
 					<ul>
@@ -163,7 +162,7 @@ const TransportUserActive = () => {
 											<div><FaClock /> {item.hora} hs.</div>
 										</div>
 										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-											<div>Estado: {item.status_tramo}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
 									<div className="openContent">
@@ -203,7 +202,7 @@ const TransportUserActive = () => {
 										<div><FaClock /> {item.hora} hs.</div>
 									</div>
 									<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-									<div>Estado: {item.status_tramo}</div>
+									<div>Estado: {renderStatus(item.status_traslado)}</div>
 									</div>
 								</div>
 								<div className="openContent">
@@ -246,7 +245,7 @@ const TransportUserActive = () => {
 										<div><FaClock /> {item.hora} hs.</div>
 									</div>
 									<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-									<div>Estado: {item.status_tramo}</div>
+									<div>Estado: {renderStatus(item.status_traslado)}</div>
 									</div>
 								</div>
 								<div className="openContent">
@@ -295,7 +294,7 @@ const TransportUserActive = () => {
 									<div><FaClock /> {item.hora} hs.</div>
 								</div>
 								<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-								<div>Estado: {item.status_tramo}</div>
+								<div>Estado: {renderStatus(item.status_traslado)}</div>
 								</div>
 							</div>
 							<div className="openContent">
