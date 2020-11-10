@@ -55,7 +55,6 @@ export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
 // Payments
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
-export const payment_url_test = `${NODE_SERVER}/payments/mercadopago`;
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;
