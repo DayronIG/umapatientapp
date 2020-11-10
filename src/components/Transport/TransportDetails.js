@@ -6,6 +6,7 @@ import { getTransportService } from '../../store/actions/transportActions';
 import { useParams } from 'react-router-dom';
 import {AiOutlineArrowDown, AiOutlineArrowUp} from 'react-icons/ai';
 import useInterval from '../Hooks/useInterval';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
 const TransportTracking = () => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
@@ -13,7 +14,7 @@ const TransportTracking = () => {
 	const { patient } = useSelector(state => state.queries);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
-	const [detailsActive, setDetailsActive] = useState(false)
+	const [openTravel, setOpenTravel] = useState(false);
 	const params = useParams();
 
 	function setMapFunctions({ map, maps }) {
@@ -24,7 +25,7 @@ const TransportTracking = () => {
 		setMapBounder(() => mapBounds(map, maps));
 		handleApiLoaded(setUserLocation);
 	}
-
+	console.log(service)
 	useEffect(() => {
 		let unsubscribe;
 		if(patient?.corporate_norm) {
@@ -82,24 +83,42 @@ const TransportTracking = () => {
 					onGoogleApiLoaded={setMapFunctions}
 				/>
 			</div>
+
+			
 			<div className='transportDetails__container'>
-				<div className='transportDetails__container--title'>
-					<h5>Tu conductor está en camino</h5>
+			<h3>Tu conductor está en camino</h3>
+			<p>Llegará en {service.request?.eta_tramo}.</p>
+
+			<div className="transportDriver">
+			 
+				<div className="transportDriverImg">
+					<img src="https://www.iconbunny.com/icons/media/catalog/product/cache/2/thumbnail/600x/1b89f2fc96fc819c2a7e15c7e545e8a9/2/1/2125.9-cab-driver-icon-iconbunny.jpg"></img>
 				</div>
-				<div onClick={() => setDetailsActive(!detailsActive)}>
-					Detalles {detailsActive ? <AiOutlineArrowUp /> : <AiOutlineArrowDown /> }
+
+				<div className="transportDriverData">
+				<p>{service.provider_fullname || "Juan Rodríguez"}</p>
+				<p>DNI: {service.provider_id || "29550275" } </p></div>
 				</div>
-				<div className={detailsActive ? 'transportDetails__container--details active' : 'transportDetails__container--details'}>
-					<ul>
-						<li><span>Origen:</span> {service.request?.geo_inicio.address}</li>
-						<li><span>Destino:</span> {service.request?.geo_fin.address}</li>
-						<li><span>Notas:</span> {service.request?.notas}</li>
-						<li><span>Remis:</span>  {service.provider_fullname}</li>
-						<li><span>Estatus:</span> {service.current_state}</li>
-						<li><span>Tiempo estimado:</span> {service.request?.eta_tramo}</li>
-						<li><span>Hora de llegada a destino:</span> {service.hora}</li>
-					</ul>
-				</div>
+				<div className="openContent">
+										{openTravel ?
+											<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
+											<button onClick={() => setOpenTravel(!openTravel)}> Ver detalles <FaChevronDown /> </button>
+										}
+									</div>
+				{openTravel &&
+				<ul className="driverUl">
+					<li className="originLi"><p className="originP">Origen:</p> 
+					<p className="originText">{service.request?.geo_inicio.address}</p></li>
+
+					<li className="originLi"><p className="originP">Destino:</p> 
+					<p className="originText">{service.request?.geo_fin.address}</p></li>
+
+					<li className="originLi"><p className="originP">Hora de llegada:</p> 
+					<p className="originText">{service.hora}</p></li>
+
+					<li className="originLi"><p className="originP">Notas:</p> 
+					<p className="originText">{service.request?.notas || "No hay notas"}</p></li>
+				</ul>}
 			</div>
 		</div>
 	);
