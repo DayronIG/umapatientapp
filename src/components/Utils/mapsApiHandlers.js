@@ -43,7 +43,10 @@ export const routeDrawer = (mapsApi, directionsService, directionsDisplay) => (o
 			function (response, status) {
 			if (status == mapsApi.DirectionsStatus.OK) {
 				directionsDisplay.setDirections(response);
-				directionsDisplay.setOptions({ preserveViewport: true });
+				directionsDisplay.setOptions({ 
+					preserveViewport: true,
+					suppressMarkers: true
+				});
 				resolve(response.routes[0].legs[0].duration.text);
 			}
 		});

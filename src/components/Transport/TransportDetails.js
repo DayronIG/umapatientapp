@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
+import { renderMarker, calculateFirstPoint, renderTitle } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
 import { useParams } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
@@ -36,109 +37,6 @@ const TransportTracking = () => {
 			if (typeof unsubscribe === 'function') unsubscribe();
 		}
 	}, [patient]);
-
-	// function generateRoutePoints() {
-	// 	return ({
-	// 		lng: service.request?.geo_inicio?.lon,
-	// 		lat: service.request?.geo_inicio?.lat
-	// 	},
-	// 	{
-	// 		lat: service.request?.geo_fin?.lat,
-	// 		lng: service.request?.geo_fin?.lon
-	// 	});
-	// }
-
-	function renderMarker(service) {
-		switch (service?.status_tramo) {
-			case 'STANDBY':
-				return (
-					<Marker 
-						lat={service.request.geo_inicio.lat}
-						lng={service.request.geo_inicio.lon}					
-						text={service.request.address}
-					/>
-				);
-			case 'GOING-ORIGIN':
-				return (
-					<Marker 
-						lat={service.request.geo_inicio.lat}
-						lng={service.request.geo_inicio.lon}					
-						text={service.request.address}
-					/>
-				);
-			case 'ARRIVED-ORIGIN':
-				return (
-					<Marker 
-						lat={service.request.geo_inicio.lat}
-						lng={service.request.geo_inicio.lon}					
-						text={service.request.address}
-					/>
-				);
-			case 'GOING-DESTINY':
-				return (
-					<Marker 
-						lat={service.request.geo_fin.lat}
-						lng={service.request.geo_fin.lon}					
-						text={service.request.address}
-					/>
-				);
-			case 'FINISHED':
-				return (
-					<Marker 
-						lat={service.request.geo_fin.lat}
-						lng={service.request.geo_fin.lon}					
-						text={service.request.address}
-					/>
-				);
-			default:
-				return '';
-		}
-	}
-
-	function calculateFirstPoint(service) { 
-		switch (service?.status_tramo) {
-			case 'STANDBY':
-				return (
-					{
-						lng: service.request.geo_inicio.lon,	
-						lat: service.request.geo_inicio.lat
-					}
-				);
-			case 'GOING-ORIGIN':
-				return (
-					{
-						lat: service.request.geo_inicio.lat,
-						lng: service.request.geo_inicio.lon					
-					}
-				);
-			case 'ARRIVED-ORIGIN':
-				return (
-					{
-						lat: service.request.geo_inicio.lat,
-						lng: service.request.geo_inicio.lon					
-					}
-				);
-			case 'GOING-DESTINY':
-				return (
-					{
-						lat: service.request.geo_fin.lat,
-						lng: service.request.geo_fin.lon					
-					}
-				);
-			case 'FINISHED':
-				return (
-					{
-						lat: service.request.geo_fin.lat,
-						lng: service.request.geo_fin.lon					
-					}
-				);
-			default:
-				return {
-					lat: 0,
-					lng: 0 
-				};
-		}
-	}
 
 	useEffect(() => {
 		if (typeof mapBounder === 'function') {
@@ -176,16 +74,20 @@ const TransportTracking = () => {
 					lng={service.current_position_remis?.lon || 0}
 					text='Tú ubicación' type="remis" 
 				/>
-				{renderMarker(service)}
+				<Marker
+					{...renderMarker(service)}
+				/>
 				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<h4 className='transportDetails__container--title'>Tu conductor está en camino</h4>
+				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
 				<p>Llegará en {eta}.</p>
 				<div className="transportDriver">
-					{/* <div className="transportDriverImg">
-					<img src={}></img> 
-					</div> */}
+					{/*
+						<div className="transportDriverImg">
+							<img src={}></img> 
+						</div> 
+					*/}
 					<div className="transportDriverData">
 						<p>{service.provider_fullname || ''}</p>
 						<p>DNI: {service.provider_id || '' } </p>
