@@ -49,7 +49,6 @@ function ScheduleTransport() {
 			}
 		});
 		if(!isValid) return swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning');
-		debugger
 		try {
 			await transportActions.createTransportSchedule(transportData, patient);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');

@@ -4,14 +4,14 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import { att_history } from '../../config/endpoints';
+import { att_history, change_status_traslado } from '../../config/endpoints';
 import moment from 'moment-timezone';
 import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaSlideshare } from 'react-icons/fa'
 import '../../styles/generalcomponents/TransportUserActive.scss';
 
 const TransportUserActive = () => {
 	const toogleModal = useSelector((state) => state.front.openDetails);
-	const { patient } = useSelector(state => state.queries)
+	const { patient } = useSelector(state => state.queries);
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
@@ -42,10 +42,10 @@ const TransportUserActive = () => {
 				{
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
-			)
-			setApprovedServices(response.data.filter(item => item.autorizado));
-			setPendingServices(response.data.filter(item => !item.autorizado));
-			console.log(response.data)
+			);
+			console.log(response.data);
+			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
+			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -53,33 +53,33 @@ const TransportUserActive = () => {
 		}
 	}
 
-	function cancelTrip(e) {
-		if (getCancelComment === ""){
+	async function cancelTrip(e) {
+		e.preventDefault();
+		if (getCancelComment === "") {
 			return alert('Ingrese el motivo de cancelación');
 		}
-		e.preventDefault();
 		setDisplayLoading(true);
-		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
-			dni: patient.dni,
-			fecha_viaje: moment(selectedService.fecha).format('YYYY-MM-DD'),
-			dt: moment(selectedService.fecha).format('YYYY-MM-DD HH:mm:ss'),
-			assignation_id: selectedService.assignation_id,
-			motivo: getCancelComment || '-',
-			corporate: patient.corporate_norm
-		}).then(function (response) {
-			getServices();
-			dispatch({ type: 'TOGGLE_DETAIL' });
-		}).catch(function (error) {
-			console.log(error);
-		}).finally(function()  {
-			setDisplayLoading(false);
-			setSelectedService({});
-		});
+		try {
+			await Axios.post(change_status_traslado, {
+					dni: patient.dni,
+					tramo_id: selectedService.assignation_id,
+					notificationType: 'CANCEL',
+					date: selectedService.fecha,
+					corporate: patient.corporate_norm.toUpperCase()
+				}, {				
+					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ 
+				}
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	}
+
 	function displayModal(item) {
 		setSelectedService(item);
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
+
 	return (
 		<div className="transportList">
 			{toogleModal &&
