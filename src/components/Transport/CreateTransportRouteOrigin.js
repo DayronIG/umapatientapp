@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, errorHandler, currentPositionHandler } from '../Utils/mapsApiHandlers';
 import Loader from '../GeneralComponents/Loading';
+import FooterBtn from '../GeneralComponents/FooterBtn';
 import Marker from '../global/Marker';
 import SearchBox from '../GeneralComponents/SearchBox';
 import {
@@ -122,7 +123,6 @@ const CreateTransportRoute = () => {
 					</button>
 				</div>
 			</div>
-			{/* <FooterBtn callback={handleSubmit} text='Continuar' /> */}
 		</form>
 	);
 };

@@ -9,6 +9,7 @@ import moment from 'moment-timezone';
 import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaSlideshare } from 'react-icons/fa'
 import '../../styles/generalcomponents/TransportUserActive.scss';
 import swal from 'sweetalert';
+import { renderStatus } from '../Utils/transportUtils';
 
 
 const TransportUserActive = () => {
@@ -33,7 +34,7 @@ const TransportUserActive = () => {
 	}, [patient]);
 
 	async function getServices() {
-		if(!patient?.dni) return null;
+		if (!patient?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			const response = await Axios.post(
@@ -47,6 +48,7 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
+			console.log(response.data);
 			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
 			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
 			console.log(response.data)
@@ -138,7 +140,6 @@ const TransportUserActive = () => {
 			{/* SIN CONDUCTOR */}
 			{noDriver ?
 				history.push(`/${patient.ws}/transportNoDriver`)
-				
 				: null}
 			
 			{/* SIN TRASLADOS */}
@@ -149,9 +150,7 @@ const TransportUserActive = () => {
 			<p>Programa un nuevo traslado tocando el boton "+".</p>
 			</div>
 			}
-
 			{/* TRASLADOS PENDIENTES */}
-
 			{openPendingServices ?
 				<div>
 					<ul>
@@ -164,7 +163,7 @@ const TransportUserActive = () => {
 											<div><FaClock /> {item.hora} hs.</div>
 										</div>
 										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-											<div>Estado: {item.status_tramo}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
 									<div className="openContent">
@@ -204,7 +203,7 @@ const TransportUserActive = () => {
 										<div><FaClock /> {item.hora} hs.</div>
 									</div>
 									<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-									<div>Estado: {item.status_tramo}</div>
+									<div>Estado: {renderStatus(item.status_traslado)}</div>
 									</div>
 								</div>
 								<div className="openContent">
@@ -247,7 +246,7 @@ const TransportUserActive = () => {
 										<div><FaClock /> {item.hora} hs.</div>
 									</div>
 									<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-									<div>Estado: {item.status_tramo}</div>
+									<div>Estado: {renderStatus(item.status_traslado)}</div>
 									</div>
 								</div>
 								<div className="openContent">
@@ -284,7 +283,6 @@ const TransportUserActive = () => {
 					))}
 			</ul>
 		</div>
-
 		<div>
 		{pendingServices.length > 0 ? <h5 className="pendingTitle">Pendientes:</h5> : null}
 				<ul>
@@ -297,7 +295,7 @@ const TransportUserActive = () => {
 									<div><FaClock /> {item.hora} hs.</div>
 								</div>
 								<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar' }</div>
-								<div>Estado: {item.status_tramo}</div>
+								<div>Estado: {renderStatus(item.status_traslado)}</div>
 								</div>
 							</div>
 							<div className="openContent">
@@ -305,7 +303,7 @@ const TransportUserActive = () => {
 										<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 										<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
 									}
-								</div>
+							</div>
 							{openTravel.assignation_id === item.assignation_id &&
 							<>
 								<div className="contentContainer">
@@ -314,13 +312,12 @@ const TransportUserActive = () => {
 									<div className="destiny"><p className="destinyTitle">Destino:</p>
 									<p className="destinyContent"> {item.geo_fin_address}</p></div>
 									<button className="checkStatus" onClick={() => {
-											
-											if(item.provider_fullname){
-											history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
-											else{
+											if(item.provider_fullname) {
+												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
+											} else {
 												setNoDriver(!noDriver)
 											}
-											}}>
+									}}>
 										<FaCar /> Seguir recorrido
 									</button>
 									<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -335,7 +332,7 @@ const TransportUserActive = () => {
 									</div>
 									</>
 								}
-							</li>
+						</li>
 					))}
 				</ul>
 		</div>
