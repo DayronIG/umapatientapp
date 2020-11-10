@@ -4,9 +4,8 @@ import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
 import { getTransportService } from '../../store/actions/transportActions';
 import { useParams } from 'react-router-dom';
-import {AiOutlineArrowDown, AiOutlineArrowUp} from 'react-icons/ai';
-import useInterval from '../Hooks/useInterval';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import Marker from '../global/Marker';
 
 const TransportTracking = () => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
@@ -15,6 +14,8 @@ const TransportTracking = () => {
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [openTravel, setOpenTravel] = useState(false);
+	const [eta, setEta] = useState('No hay datos disponibles');
+	// const [remis, setRemis] = useState({});
 	const params = useParams();
 
 	function setMapFunctions({ map, maps }) {
@@ -25,6 +26,7 @@ const TransportTracking = () => {
 		setMapBounder(() => mapBounds(map, maps));
 		handleApiLoaded(setUserLocation);
 	}
+
 	useEffect(() => {
 		let unsubscribe;
 		if(patient?.corporate_norm) {
@@ -45,17 +47,106 @@ const TransportTracking = () => {
 	// 		lng: service.request?.geo_fin?.lon
 	// 	});
 	// }
-	
+
+	function renderMarker(service) {
+		switch (service?.status_tramo) {
+			case 'STANDBY':
+				return (
+					<Marker 
+						lat={service.request.geo_inicio.lat}
+						lng={service.request.geo_inicio.lon}					
+						text={service.request.address}
+					/>
+				);
+			case 'GOING-ORIGIN':
+				return (
+					<Marker 
+						lat={service.request.geo_inicio.lat}
+						lng={service.request.geo_inicio.lon}					
+						text={service.request.address}
+					/>
+				);
+			case 'ARRIVED-ORIGIN':
+				return (
+					<Marker 
+						lat={service.request.geo_inicio.lat}
+						lng={service.request.geo_inicio.lon}					
+						text={service.request.address}
+					/>
+				);
+			case 'GOING-DESTINY':
+				return (
+					<Marker 
+						lat={service.request.geo_fin.lat}
+						lng={service.request.geo_fin.lon}					
+						text={service.request.address}
+					/>
+				);
+			case 'FINISHED':
+				return (
+					<Marker 
+						lat={service.request.geo_fin.lat}
+						lng={service.request.geo_fin.lon}					
+						text={service.request.address}
+					/>
+				);
+			default:
+				return '';
+		}
+	}
+
+	function calculateFirstPoint(service) { 
+		switch (service?.status_tramo) {
+			case 'STANDBY':
+				return (
+					{
+						lng: service.request.geo_inicio.lon,	
+						lat: service.request.geo_inicio.lat
+					}
+				);
+			case 'GOING-ORIGIN':
+				return (
+					{
+						lat: service.request.geo_inicio.lat,
+						lng: service.request.geo_inicio.lon					
+					}
+				);
+			case 'ARRIVED-ORIGIN':
+				return (
+					{
+						lat: service.request.geo_inicio.lat,
+						lng: service.request.geo_inicio.lon					
+					}
+				);
+			case 'GOING-DESTINY':
+				return (
+					{
+						lat: service.request.geo_fin.lat,
+						lng: service.request.geo_fin.lon					
+					}
+				);
+			case 'FINISHED':
+				return (
+					{
+						lat: service.request.geo_fin.lat,
+						lng: service.request.geo_fin.lon					
+					}
+				);
+			default:
+				return {
+					lat: 0,
+					lng: 0 
+				};
+		}
+	}
+
 	useEffect(() => {
 		if (typeof mapBounder === 'function') {
 			mapBounder([
+				calculateFirstPoint(service),
 				{
-					lng: service.request?.geo_inicio?.lon,
-					lat: service.request?.geo_inicio?.lat
-				},
-				{
-					lat: service.request?.geo_fin?.lat,
-					lng: service.request?.geo_fin?.lon
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
 				}
 			]);
 		}
@@ -63,14 +154,13 @@ const TransportTracking = () => {
 
 	useEffect(() => {
 		if (typeof drawRoute === 'function') {
-			drawRoute({
-				lng: service.request?.geo_inicio?.lon,
-				lat: service.request?.geo_inicio?.lat
-			},
-			{
-				lat: service.request?.geo_fin?.lat,
-				lng: service.request?.geo_fin?.lon
-			});
+			drawRoute(
+				calculateFirstPoint(service),
+				{
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
+				}
+			).then(eta => setEta(eta));
 		}
 	}, [drawRoute, service]);
 
@@ -80,45 +170,53 @@ const TransportTracking = () => {
 				<GoogleMapReact
 					{...mapConfig({ lat: userLocation.lat, lng: userLocation.lng })}
 					onGoogleApiLoaded={setMapFunctions}
+				>
+				<Marker
+					lat={service.current_position_remis?.lat || 0}
+					lng={service.current_position_remis?.lon || 0}
+					text='Tú ubicación' type="remis" 
 				/>
+				{renderMarker(service)}
+				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<h5 className='transportDetails__container--title'>Tu conductor está en camino</h5>
-				<p>Llegará en {service.request?.eta_tramo}.</p>
+				<h4 className='transportDetails__container--title'>Tu conductor está en camino</h4>
+				<p>Llegará en {eta}.</p>
 				<div className="transportDriver">
-					<div className="transportDriverImg">
-						{/* <img src={}></img> */}
-					</div>
+					{/* <div className="transportDriverImg">
+					<img src={}></img> 
+					</div> */}
 					<div className="transportDriverData">
-					<p>{service.provider_fullname || ''}</p>
-					<p>DNI: {service.provider_id || '' } </p></div>
+						<p>{service.provider_fullname || ''}</p>
+						<p>DNI: {service.provider_id || '' } </p>
 					</div>
-					<div className="openContent">
-						{openTravel ?
-							<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
-							<button onClick={() => setOpenTravel(!openTravel)}> Ver detalles <FaChevronDown /> </button>
-						}
-					</div>
-					{openTravel &&
-						<ul className="driverUl">
-							<li className="originLi">
-								<p className="originP">Origen:</p> 
-								<p className="originText">{service.request?.geo_inicio.address}</p>
-							</li>
-							<li className="originLi">
-								<p className="originP">Destino:</p> 
-								<p className="originText">{service.request?.geo_fin.address}</p>
-							</li>
-							<li className="originLi">
-								<p className="originP">Hora de llegada:</p> 
-								<p className="originText">{service.hora}</p>
-							</li>
-							<li className="originLi">
-								<p className="originP">Notas:</p> 
-								<p className="originText">{service.request?.notas || "No hay notas"}</p>
-							</li>
-						</ul>
+				</div>
+				<div className="openContent">
+					{openTravel ?
+						<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
+						<button onClick={() => setOpenTravel(!openTravel)}>Ver detalles <FaChevronDown /></button>
 					}
+				</div>
+				{openTravel &&
+					<ul className="driverUl">
+						<li className="originLi">
+							<p className="originP">Origen:</p> 
+							<p className="originText">{service.request?.geo_inicio.address}</p>
+						</li>
+						<li className="originLi">
+							<p className="originP">Destino:</p> 
+							<p className="originText">{service.request?.geo_fin.address}</p>
+						</li>
+						<li className="originLi">
+							<p className="originP">Hora de llegada:</p> 
+							<p className="originText">{service.hora}</p>
+						</li>
+						<li className="originLi">
+							<p className="originP">Notas:</p> 
+							<p className="originText">{service.request?.notas || "No hay notas"}</p>
+						</li>
+					</ul>
+				}
 			</div>
 		</div>
 	);

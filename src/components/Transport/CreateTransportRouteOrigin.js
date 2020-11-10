@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, errorHandler, currentPositionHandler } from '../Utils/mapsApiHandlers';
 import Loader from '../GeneralComponents/Loading';
+import FooterBtn from '../GeneralComponents/FooterBtn';
 import Marker from '../global/Marker';
 import SearchBox from '../GeneralComponents/SearchBox';
 import {
@@ -72,7 +73,8 @@ const CreateTransportRoute = () => {
 			{loading && <Loader />}
 			<div className='selectDestiny__container map' style={{ zIndex: -1 }}>
 				<GoogleMapReact
-					{...mapConfig({ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
+					{...mapConfig(
+						{ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
 						geocodeLatLng
 					)}
 					onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
