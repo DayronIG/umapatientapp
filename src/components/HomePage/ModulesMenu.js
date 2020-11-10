@@ -74,10 +74,10 @@ const ModulesMenu = () => {
 					<EventsHistory />
 					<UmaCareHome />
 					{/* <TrasladosHome /> */}
-					<button className="needhelp__btn">
+{/* 					<button className="needhelp__btn">
 						<img src={iconBubbles} alt="Necesito ayuda"/>
 						Necesito ayuda
-					</button>
+					</button> */}
 				</>
 			) : (
 					<Loading />
