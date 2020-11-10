@@ -1,0 +1,22 @@
+.noDriverContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    img{
+        width:50%;
+    }
+    h2{
+        margin:50px 10px;
+        color:rgb(24, 119, 173);
+        font-weight: bold;
+    }
+    p{
+        margin:0 10px;
+        font-size: 18px;
+    }
+}
+.leftArrow{
+    color:gray;
+    margin:15px;
+}
