@@ -28,7 +28,6 @@
   }
   .transportUserActive {
     padding-bottom: 25vh;
-    
     .transportList {
       width: 100%;
       margin: 20px auto 15px;
@@ -44,19 +43,15 @@
         bottom:10px;
         .active{
           border-bottom: 3px solid purple;
-          color:rgb(24, 119, 173);
-          
+          color:$new_primary_color;
           font-weight: bold;
         }
       button{
         border:none;
         outline: none;
         background:none;
-        
         color: rgba(128, 128, 128, 0.349);
-      //  width: 6rem;
-       transition:none;
-       
+       	transition:none;
       }
       }
       
@@ -76,10 +71,9 @@
           border-radius: 10px;
           margin:10px;
           font-size:14px;
-          
           .transportTitle {
             width: 50%;
-            color: rgb(24, 119, 173);
+            color: $new_primary_color;
             padding:5px;
            margin:5px;
            border-right: 1px solid rgba(128, 128, 128, 0.349);
@@ -103,30 +97,27 @@
           transform: translateX(-50%);
           .destiny,
           .origin {
-            margin-bottom: 15px;
-            .originTitle {
-              font-weight: bold;
-              margin:0;
-              margin-bottom:5px;
-              color:black;
-            }
-          .originContent{
-            border:1px solid rgba(128, 128, 128, 0.349);
-            padding:5px;
-          }
-          .destinyTitle{
-            font-weight: bold;
-            margin:0;
-            margin-bottom:5px;
-            color:black;
-          }
-          .destinyContent{
-            border:1px solid rgba(128, 128, 128, 0.349);
-            padding:5px;
-          }
-
-
-
+						margin-bottom: 15px;
+						.originTitle {
+							font-weight: bold;
+							margin:0;
+							margin-bottom:5px;
+							color:black;
+						}
+						.originContent{
+							border:1px solid rgba(128, 128, 128, 0.349);
+							padding:5px;
+						}
+						.destinyTitle{
+							font-weight: bold;
+							margin:0;
+							margin-bottom:5px;
+							color:black;
+						}
+						.destinyContent{
+							border:1px solid rgba(128, 128, 128, 0.349);
+							padding:5px;
+						}
           }
           button {
             width: 100%;
@@ -141,7 +132,7 @@
 						border-radius: 40px;
 					}
 					.checkStatus {
-						background-color: rgb(24, 119, 173);
+						background-color: $new_primary_color;
 						margin-bottom: 10px;
 					}
         }
@@ -218,7 +209,7 @@
   .createNewService__icon {
     font-size: 5rem;
     color: white;
-    background: #1877ad;
+    background: $new_primary_color;
 		padding: 10px;
     width: 45px;
     height: 45px;
