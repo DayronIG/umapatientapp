@@ -12,15 +12,12 @@ export default function DaysSlider({
 	values,
 	handleChange
 }) {
-	
 	const transportData = useSelector(state => state.transport);
 	const dispatch = useDispatch();
-
 	const handlerInputChange = (e) => {
-		const { name, value } = e.target
-		handleChange(value, name)
+		const { name, value } = e.target;
+		handleChange(value, name);
 	}
-
 	return (
 		<div className='daysSlider'>
 			<h5 className='daysSlider__title'>{title}</h5>

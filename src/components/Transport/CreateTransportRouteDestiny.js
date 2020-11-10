@@ -74,23 +74,6 @@ const CreateTransportRoute = () => {
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
-			{/* <div className='selectDestiny__container'>
-				<h5 className='selectDestiny__container--title'>
-					{pointSelector === 'origin' ? 'Seleccione punto de partida' : 'Seleccione punto de llegada'}
-				</h5>
-			</div> */}
-			<div className='selectDestiny__container'>
-				<div className='selectDestiny__container--row'>
-					{(mapInstance && mapApi) && (
-						<SearchBox
-							map={mapInstance}
-							mapApi={mapApi}
-							handleChangePlace={handleChangePlace}
-							placeholder={'Seleccione punto de llegada...'}
-						/>
-					)}
-				</div>
-			</div>
 			<div className='selectDestiny__container map' style={{ zIndex: -1 }} >
 				<GoogleMapReact
 					{...mapConfig(
@@ -104,37 +87,47 @@ const CreateTransportRoute = () => {
 					)}
 				</GoogleMapReact>
 			</div>
-			{/* <div className='selectDestiny__container'>
-				<input
-					placeholder='Dirección'
-					type='text'
-					name='address'
-					id='address'
-					disabled
-					value={destiny.address}
-				/>
-			</div> */}
-			<div className='selectDestiny__container'>
+			<div className='selectDestiny__container formInputs'>
+				<div className='selectDestiny__container--title'>
+					<h5>¿A dónde vas?</h5>
+				</div>
+				<div className='selectDestiny__container--text'>
+					<p>Ingresa la dirección a la que deseas ir</p>
+				</div>
+				<div className='selectDestiny__container--row'>
+					{(mapInstance && mapApi) && (
+						<SearchBox
+							map={mapInstance}
+							mapApi={mapApi}
+							handleChangePlace={handleChangePlace}
+							placeholder='Ingresa el punto de destino'
+						/>
+					)}
+				</div>
 				<div className='selectDestiny__container--row'>
 					<input
 						onChange={handleInputs(pointSelector)}
 						placeholder='Piso'
 						type='number'
-						name='floor'
-						id='floor'
-						value={destiny.floor}
+						name='piso'
+						id='piso'
+						value={destiny.piso}
 					/>
 					<input
 						onChange={handleInputs(pointSelector)}
 						placeholder='Departamento'
 						type='text'
-						name='department'
-						id='department'
-						value={destiny.department}
+						name='depto'
+						id='depto'
+						value={destiny.depto}
 					/>
 				</div>
+				<div className='selectDestiny__container--row'>
+					<button type='button' onClick={handleSubmit}>
+						Continuar
+					</button>
+				</div>
 			</div>
-			<FooterBtn callback={handleSubmit} text='Continuar' />
 		</form>
 	);
 };

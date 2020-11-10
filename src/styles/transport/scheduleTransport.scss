@@ -60,15 +60,15 @@
 				}
 			}
 		}
-
-		.scheduleForm__observations{
-			display:flex;
-			flex-direction: column;
-			justify-content: center;
-			input{
-				// line-height: 10em;
+		.scheduleForm__container--observations {
+			width: 100%;
+			textarea {
+				width: 100%;
+				height: 200px;
+				border-radius: $regular-borders;
+				padding: 15px;
 			}
-			h5{
+			h5 {
 				text-align: center;
 			}
 		}
