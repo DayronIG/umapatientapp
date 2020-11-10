@@ -34,7 +34,6 @@ const SignIn = props => {
             setSentWs(false)
         }, 2000)
         if (ws) {
-            sendWsCode(ws)
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
@@ -155,6 +154,9 @@ const SignIn = props => {
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
+        if(validPhone.length > 10 && validPhone.length < 15) {
+            sendWsCode(validPhone)
+        }
         props.history.push(`/login/${validPhone}`)
     }
 
@@ -233,13 +235,6 @@ const SignIn = props => {
                                         </button>}
                                 </>}
                         </form>
-                        {sentTimes <= 1 ?
-                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
-                            Re-enviar código
-                        </button> :
-                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
-                            Código enviado!
-                        </button>}
                         <small className='text-center'>
                             <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>Aún no estoy registrado</a>
                         </small><br />

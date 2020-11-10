@@ -11,7 +11,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import { payment_url_test, payment_url, node_patient } from "../../config/endpoints"
+import { payment_url, node_patient } from "../../config/endpoints"
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -27,12 +27,13 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
         window.Mercadopago.getIdentificationTypes();
+        console.log(totalPayment)
       }, [])
 
     /**
@@ -123,7 +124,7 @@ const PaymentCardMP = () => {
          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
          .then(res => console.log(res))
          .catch(err => console.log(err))
-         axios.post(payment_url_test, paymentData, {headers})
+         axios.post(payment_url, paymentData, {headers})
              .then(res => {
                 setLoader(false)
                  if (res.data.body.status === "approved") {

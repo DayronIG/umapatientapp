@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function ButtonStyle({title, innerText, checkoutText, finalAction, showPrice = false}) {
-    const price = useSelector((state) => state.deliveryService.params.price);
+    const price = useSelector((state) => state.deliveryService.params?.price);
     
     return (
         <section className="hisopado__container" onClick={() => finalAction()}>

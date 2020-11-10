@@ -96,12 +96,14 @@ const Register = props => {
     }
 
     let composeDate = () => {
-        let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
-        let birth = moment(buildDate).format('YYYY-MM-DD')
-        let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-        dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
-        dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
-        return date
+        if(!!parseInt(getMonth) && !!parseInt(getDay) && !!parseInt(getYear)){
+            let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
+            let birth = moment(buildDate).format('YYYY-MM-DD')
+            let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
+            dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
+            dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+            return date
+        }
     }
 
     const generatePassword = () => {

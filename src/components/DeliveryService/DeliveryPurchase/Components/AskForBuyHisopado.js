@@ -70,15 +70,15 @@ export default function AskForBuyHisopado() {
             return <NarrowContactInfo goBack={() => setNarrowContactInfo(false)}/>
         } else {
             return (
-            <div>
+                <div>
             <img className="hisopados-image" src={IllustrationHisopado}  alt="Hisopado" />
             <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>
             <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
             <div className="price-center-aligner">
                 <div className="price-container">
                 <div className="discount-container">
-                    <p className="hisopados-previous-price">$5500</p>
-                    <p className="hisopados-discount">40% off</p>
+                    <p className="hisopados-previous-price">${params?.fake_price}</p>
+                    <p className="hisopados-discount">{params?.fake_discount}% off</p>
                 </div>
                 <p className="hisopados-price">${params?.price}</p>
                 </div>

@@ -107,7 +107,7 @@ const Register = props => {
 
 
   return (
-    <>
+    <div className="register__container">
     <GenericHeader/>
       {loading && <Loading />}
       {front.alert.active && (
@@ -180,7 +180,7 @@ const Register = props => {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
