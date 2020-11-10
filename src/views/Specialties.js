@@ -6,7 +6,7 @@ import '../styles/appointments/Office.scss'
 
 const Specialties = (props) => {
     return (
-        <>
+			<>
         <GenericHeader onClick={() => {props.history.go(`/${props.match.params.dni}/`)}}>Especialidades</GenericHeader>
         <BackButton />
         <div className="cal-fullheight">
@@ -16,7 +16,7 @@ const Specialties = (props) => {
           <div className="search-button">Buscar por médico</div>
         </Link>
         <div className="footer"></div>
-        </>
+			</>
     )
 }
 

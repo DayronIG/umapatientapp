@@ -6,9 +6,8 @@ import axios from "axios";
 import { FaMicrophone } from 'react-icons/fa'
 import { RiRecordCircleLine } from 'react-icons/ri';
 import { Loader } from '../../GeneralComponents/Loading';
-import swal from 'sweetalert';
 import AudioAnalyser from "./AudioWaveformAnalizer/AudioAnalyser.js"
-
+import ProgressBar from "../ProgressBar/ProgressBar"
 import {uploadFileToFirebase} from '../../Utils/postBlobFirebase';
 
 const AudioRecorder = ({ 
@@ -56,25 +55,29 @@ const AudioRecorder = ({
 	};
 
 	const getMicrophone = async () => {
+		// const constraints = {
+		// 	sampleRate: 16000
+		// }
 		const audio = await navigator.mediaDevices.getUserMedia({
 		  audio: true,
 		  video: false
 		});
+		// const track = audio.getAudioTracks()[0]
+		// await track.applyConstraints(constraints);
 		const options = {
-			mimeType: "audio/webm"
+			mimeType: "audio/webm;codecs=opus"
 		}
 		const recorder = new MediaRecorder(audio, options);
 		setMediaRecorder(recorder);
 		setAudioToPlot(recorder.stream);
 		recorder.start();
-
 		recorder.addEventListener("dataavailable", async event => {
 				try{
 					const blobDataInWebaFormat = event.data; 
 					const blobDataInWavFormat = new Blob([blobDataInWebaFormat], { type : 'audio/wav' });
 					// const dataUrl = URL.createObjectURL(blobDataInWavFormat);
 					// console.log(dataUrl); 
-					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_heartbeat_original.wav`);
+					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_##${id}##_heartbeat_original.wav`);
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
 					var headers = { 'Content-Type': 'Application/Json' }
@@ -99,8 +102,13 @@ const AudioRecorder = ({
 
 			{!finishedRecording  && 
 			<div className="heart-record-indications">
-				<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
-				{/* ACA PONER UN BUEN COUNTER */}
+				{!audioToPlot? 
+					<img className={autonomus? "margin-top-autonomous": ""} src={image}  alt="hb"/>
+				:
+				<>
+					<ProgressBar max={20} value={counter}/>
+					{/* <div className="counter--sthetoscope">{counter}</div> */}
+				</>}
 			</div>}
 
 			{finishedRecording && (
@@ -114,12 +122,13 @@ const AudioRecorder = ({
 					)}
 
 			{audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''}
-
+			
+			{/* 
 			{onRecord &&
             <div className="counter">
                 <p className="styleCounter">{counter}</p> 
                 <span className="sr-only">Loading...</span>
-            </div>}
+            </div>} */}
 
 			{!finishedRecording  && 
 			<> 			

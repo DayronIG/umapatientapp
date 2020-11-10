@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../../styles/affiliate.scss';
-import travelAce from '../../../assets/logos/travelAce.svg';
-import univAssist from '../../../assets/logos/univAssist.svg'
+// import travelAce from '../../../assets/logos/travelAce.svg';
+// import univAssist from '../../../assets/logos/univAssist.svg'
 import PAMI from '../../../assets/logos/pami.png';
 
 export const PamiAffiliate = (props) => {

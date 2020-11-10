@@ -17,9 +17,8 @@ const MyRecords = () => {
 
     function selectBeneficiarieMr(p) {
         if (p === "owner") {
-            console.log("owner")
             setTab(false)
-            dispatch(getMedicalRecord(beneficiaries[0].group, beneficiaries[0].ws))
+            dispatch(getMedicalRecord(beneficiaries?.[0]?.group, beneficiaries[0]?.ws))
         } else {
             console.log("no owner")
             setTab(p.fullname)

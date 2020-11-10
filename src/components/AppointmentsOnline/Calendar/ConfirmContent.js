@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,9 +12,8 @@ import { writeOSData } from '../../../store/actions/UPActions';
 import { underscoreToSpaces } from '../../Utils/stringUtils';
 import { post } from 'axios';
 import AttachFile from '../AttachFile';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import swal from 'sweetalert';
-import 'moment-timezone';
 import '../../../styles/map/mapSidebar.scss';
 
 const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) => {
@@ -193,6 +193,8 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 		}
 	}, []);
 
+	console.log(appoint);
+
 	return (
 		<>
 			{!!loading && <CustomUmaLoader centered={true} />}
@@ -216,7 +218,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 				{renderUserData('ESPECIALIDAD', underscoreToSpaces(doctor.matricula_especialidad) || '')}
 			</div>
 			<div className='btn-confirm-container'>
-				<AttachFile assign={appoint} specialty={specialty} />
+				<AttachFile appoint={appoint} specialty={specialty} />
 				<button type='button' className='btn-container-confirmContent' onClick={confirmAppointment}>
 					Confirmar
 				</button>

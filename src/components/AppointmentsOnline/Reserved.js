@@ -1,16 +1,17 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Moment from 'react-moment';
-import {GenericHeader} from '../GeneralComponents/Headers';
+import { GenericHeader } from '../GeneralComponents/Headers';
+import moment from 'moment';
 
 const Reserved = (props) => {
-    const dispatch = useDispatch()
-    const cart = useSelector(state => state.assignations.appointments)
-
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.assignations.appointments);
+		moment.locale('es');
+		
     const removeAppointment = (index) => {
-        let newList = cart
-        newList.splice(index, 1)
-        dispatch({type: 'REMOVE_APPOINT', payload: newList})
+        let newList = cart;
+        newList.splice(index, 1);
+        dispatch({ type: 'REMOVE_APPOINT', payload: newList });
     }
 
     return (
@@ -22,7 +23,7 @@ const Reserved = (props) => {
                 cart.length >= 1 ? cart.map((appoint, index) => {
                 return <li className="specialty-list  d-flex justify-content-between" key={index}>
                     <div className="appoint-detail">
-                        <p className="m-0"><Moment locale="es" format="DD-MM-YYYY">{appoint.dt}</Moment></p>
+                        <p className="m-0">{moment(appoint.dt).format('DD-MM-YYYY')}</p>
                         <p className="m-0">{appoint.specialty.replace(/_/g, " ")}</p>
                         <p className="m-0">{appoint.cm}</p>
                     </div>

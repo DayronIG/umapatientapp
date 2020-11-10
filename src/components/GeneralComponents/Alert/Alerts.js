@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
@@ -13,13 +13,6 @@ import "../../../styles/alert.scss";
 // <AlertComponent alertType="success" titleMessage="" customMessage="" customAction={cb} handleConfirm={cb} handleReject={cb} />
 //
 const AlertComponent = props => {
-  const dispatch = useDispatch();
-  const data = {
-    type: "",
-    title: "",
-    msg: ""
-  };
-
   let unsetModal = () => {
     // dispatch({ type: "ALERT", payload: data });
     if (props.customAction) {

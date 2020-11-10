@@ -38,6 +38,12 @@ const PictureCapture = ({innerText = "", quantity = 3, modal = false, finalActio
     for (var i = 0; i < quantity; i++) {
       urls[i] = await uploadFileToFirebase(files[i], `/${dni}/photo/dermatology/${date}_${i}.png`);
     };
+
+    let biomarker = {
+      photos: urls,
+    };
+    
+    dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: biomarker });
     dispatch({ type: 'SAVE_FILES', payload: urls });
   };
 

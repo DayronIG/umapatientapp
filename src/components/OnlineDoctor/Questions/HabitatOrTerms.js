@@ -39,7 +39,6 @@ function Index({ formHandler, activateDefault = false, mode = 'switch', ubicacio
 		}
 		helper = new Set(helper);
 		helper = Array.from(helper);
-		console.log(event, value, form)
 		return setFormState(helper);
 	};
 

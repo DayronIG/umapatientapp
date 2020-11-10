@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import JsBarcode from 'jsbarcode';
 import ReactToPrint from 'react-to-print';
@@ -12,8 +13,8 @@ class RecipePDF extends React.Component {
 		} = this.props;
 		for (let i = 0; i <= recipe.length; i++) {
 			const cvRecipe = document.getElementById(`barcodeRecipe_${i}`),
-			cvRecipe_rep = document.getElementById(`barcodeAffiliate_${i}`),
-			cvAff = document.getElementById(`barcodeRecipe_rep_${i}`),
+			cvRecipe_rep = document.getElementById(`barcodeRecipe_rep_${i}`),
+			cvAff = document.getElementById(`barcodeAffiliate_${i}`),
 			cvAff_rep = document.getElementById(`barcodeAffiliate_rep_${i}`);
 			if (!!prescriptionNumber) {
 				cvRecipe &&
@@ -252,6 +253,8 @@ class RecipePDF extends React.Component {
 																	<td>{medicine.drugName}</td>
 																</tr>
 															);
+														} else {
+															return null
 														}
 													})}
 												</tbody>
@@ -316,7 +319,6 @@ class RecipePDF extends React.Component {
 		}
 	}
 }
-
 class RecipePDFUP extends React.Component {
 	componentDidMount() {
 		const canvasAffiliate = document.getElementById('barcodeAffiliateUP');
@@ -340,7 +342,6 @@ class RecipePDFUP extends React.Component {
 				});
 		}
 	}
-
 	render() {
 		const { prescriptionNumber, prescriptionDate, patient, recipe, doctorInfo, mr } = this.props;
 		const replicate = recipe.some((med) => parseInt(med.duplicado) === 1);
@@ -358,7 +359,7 @@ class RecipePDFUP extends React.Component {
 				<div className='recipeToPrintUp'>
 					<div className='recipeToPrintUp__container'>
 						<div className='recipeToPrintUp__container--title'>
-							<img src={UMA} />
+							<img src={UMA} alt="uma" />
 						</div>
 						<div className='recipeToPrintUp__container--recipeData'>
 							{prescriptionNumber && (
@@ -473,7 +474,7 @@ class RecipePDFUP extends React.Component {
 						</div>
 						<div className='recipeToPrintUp__container'>
 							<div className='recipeToPrintUp__container--title'>
-								<img src={UMA} />
+								<img src={UMA} alt={"uma"} />
 							</div>
 							<div className='recipeToPrintUp__container--recipeData'>
 								{!!prescriptionNumber && (
@@ -530,7 +531,7 @@ class RecipePDFUP extends React.Component {
 								<h1>
 									<b>Rp/</b>
 								</h1>
-								{recipe.map((medicine, index) => {
+								{recipe.forEach((medicine, index) => {
 									if (parseInt(medicine.duplicado) === 1) {
 										return (
 											<p className='pl-4' key={index}>
@@ -548,7 +549,7 @@ class RecipePDFUP extends React.Component {
 										<h1 className='mt-5'>
 											<b>INDICACIONES</b>
 										</h1>
-										{recipe.map((medicine, index) => {
+										{recipe.forEach((medicine, index) => {
 											if (parseInt(medicine.duplicado) === 1) {
 												return (
 													<p className='pl-4' key={index}>
@@ -624,7 +625,7 @@ const Recipe = ({ att, doc }) => {
 		prescriptionDate: prescripDate || '',
 		mr,
 	};
-
+	
 	useEffect(() => {
 		if (mr?.receta[0]) {
 			try {

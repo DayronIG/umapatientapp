@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-// import Autocomplete from '../../GeneralComponents/Autocomplete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import swal from 'sweetalert';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import symptoms from '../../../config/symptoms.json';
 import useScrollPosition from '../../Utils/use-scroll-position';
@@ -37,7 +35,8 @@ const SelectReason = (props) => {
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
 	function redirect() {
-		dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
 		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
 	}
 

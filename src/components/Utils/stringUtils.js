@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
 export function replaceDiacritics(str) {
     var diacritics = [
@@ -26,7 +29,7 @@ export function validateInput(type, value) {
     let isValid = false;
     switch (type) {
         case 'tel':
-            if(!!value && /^\d+$/.test){              
+            if(!!value && /^\d+$/.test && value.length >= 10){              
                 isValid = true;
             } 
             return isValid;
@@ -108,6 +111,14 @@ export function underscoreToSpaces(str) {
     } catch (error) {
         console.error(error)
     }
+}
+
+export function genTransportId({ dni }) {
+	return `${moment().format('YYYYMMDDhhmm')}_${dni}`;
+}
+
+export function getDay(index) {
+	return days[index];
 }
 
 export function capitalizeFirstLetter(string) {

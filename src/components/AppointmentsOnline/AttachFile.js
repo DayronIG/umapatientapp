@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import {  useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
@@ -6,27 +6,29 @@ import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import swal from 'sweetalert';
 import { FaFileMedicalAlt } from 'react-icons/fa';
 
-const AttachFile = ({appoint, specialty}) => {
-	const [File, setFile] = useState([])
-    const [contador, setContador] = useState(0)
-    const [buttonText, setButtonText] = useState('Subir archivos')
-    const dispatch = useDispatch()
-    let { dni } = useParams();
-
-    useEffect(() => {
-        if(specialty === 'medicinalaboral') {
-            setButtonText('Cargar constancia')
-        }
-    }, [])
-    const uploadImage = (e) => {
+const AttachFile = ({ appoint, specialty }) => {
+	const [files, setFiles] = useState([]);
+	const [contador, setContador] = useState(0);
+	const dispatch = useDispatch();
+	let { dni } = useParams();
+		
+	function renderBtnText() {
+		if(specialty === 'medicinalaboral') {
+			return 'Cargar constancia';
+		} else {
+			return 'Subir archivos';
+		}
+	}
+    
+	const uploadImage = (e) => {
 		dispatch({ type: 'LOADING', payload: true });
-		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');
-		let file = e.target.files[0];
-		let fileName = e.target.files[0].name;
-		uploadFileToFirebase(file, `${dni}/attached/${appoint?.path?.split('/')?.[3]}/${dt}_${fileName}`)
+		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
+		const currentFile = e.target.files[0];
+		const fileName = e.target.files[0].name;
+		uploadFileToFirebase(currentFile, `${dni}/attached/${appoint?.path?.split('/')?.[3]}/${dt}_${fileName}`)
 			.then((imgLink) => {
 				setContador(contador + 1);
-				setFile([...File, imgLink]);
+				setFiles([ ...files, imgLink ]);
 				dispatch({ type: 'LOADING', payload: false });
 				swal('Éxito', 'Archivo cargado exitosamente', 'success');
 			})
@@ -37,17 +39,18 @@ const AttachFile = ({appoint, specialty}) => {
 	};
 
 
-    return <div className='input-file'>
-            <FaFileMedicalAlt size='1.5rem' />
-            <p>
-                {contador < 1
-                    ? buttonText
-                    : contador === 1
-                    ? `${contador} archivo adjunto`
-                    : `${contador} archivos adjuntos`}
-            </p>
-            <input type='file' onChange={uploadImage} />
-        </div>
+	return <div className='input-file'>
+					<FaFileMedicalAlt size='1.5rem' />
+					<p>
+						{contador < 1
+							? renderBtnText()
+							: contador === 1
+							? `${contador} archivo adjunto`
+							: `${contador} archivos adjuntos`
+						}
+					</p>
+					<input type='file' onChange={uploadImage} />
+			</div>
 }
 
 export default AttachFile;

@@ -199,6 +199,7 @@
       
    .switch__container {
       display: flex;
+      margin-top: 20px;
       @media (min-width:768px) and (max-width: 1440px){
          justify-content: flex-end;
          align-items: center;
@@ -217,4 +218,8 @@
 .label__absolute{
    position: absolute;
    margin-top: 65px;
+}
+
+.link_to_login{
+   margin-left: 1vw;
 }

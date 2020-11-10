@@ -25,7 +25,7 @@ const DossierContainer = (props) => {
 
     return (
         <>
-            {att.mr.destino_final !== 'Anula el paciente' &&
+            {att.mr.dt_cierre && att.mr.dt_cierre !== "" && att.mr.destino_final !== 'Anula el paciente' &&
                 att.mr.destino_final !== 'Anula por falla de conexión' &&
                 att.mr.destino_final !== 'Paciente ausente' &&
                 att.mr.destino_final !== 'USER CANCEL' &&
@@ -59,7 +59,7 @@ const DossierContainer = (props) => {
                 </>
                 :
                 <div className='dossier-container mt-5'>
-                    <p className='text-center mt-5 mb-5'>Esta atención no se realizó por {att.mr.destino_final}</p>
+                    <p className='text-center mt-5 mb-5'>Esta atención no se realizó o aún no fue cerrada por el médico</p>
                 </div>
             }
         </>

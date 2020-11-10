@@ -12,6 +12,7 @@ const initialState = {
   selectedQuestions: [],
   selectedSymptomsString: '',
   selectedOtherSymptoms: '',
+  symptomsForDoc: []
 }
 
 export default (state = initialState, action) => {
@@ -21,7 +22,13 @@ export default (state = initialState, action) => {
     case 'SET_SYMPTOM':
       return {
         ...state,
-        'selectedSymptoms': [...state.selectedSymptoms, action.payload]
+        'selectedSymptoms': [...state.selectedSymptoms, action.payload],
+        'symptomsForDoc': [...state.selectedSymptoms, action.payload]
+      }
+    case 'CLEAN_SYMPTOM':
+      return {
+        ...state,
+        'selectedSymptoms': []
       }
     case 'REMOVE_SYMPTOM_TAG': 
       return {

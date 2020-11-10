@@ -24,11 +24,14 @@ import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
 import Derivations from './components/VMD/Derivations';
-/* Survey and Transport */
+// Survey and Transport 
 import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
 import TransportRegister from './components/Transport/TransportRegister';
 import TransportUserActive from './components/Transport/TransportUserActive';
+import CreateTransportRouteView from './views/CreateTransportRouteView';
+import ScheduleTransportView from './views/ScheduleTransportView';
+import TransportDetailsView from './views/TransportDetailsView';
 // Appointments Online
 import OnlineSpecialist from './components/AppointmentsOnline/';
 import ListSpecialties from './components/AppointmentsOnline/ListSpecialties';
@@ -46,25 +49,26 @@ import Laboratorio from './components/Laboratorio';
 /* Wellness */
 import Wellness from './views/Wellness';
 import Chat from './views/Chat';
-/* POL */
-import Pol from './views/Pol.js';
-import PolProof from './components/Pol/PolProof';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
-import DeliverySelectDestiny from './components/DeliveryService/DeliverySelectDestiny.js';
 /* SymptomsTracking */
 import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
+import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
+import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
+import DeliveryResults from "./components/DeliveryService/DeliveryResults"
+import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
-import RedirectConsultation from './components/RedirectConsultation/';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 import Install from './views/Install.js';
 import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
+
+import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 
 function App(props) {
 	return (
@@ -75,18 +79,23 @@ function App(props) {
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
-				<Route exact path='/:ws?/login' component={Login} />
-				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/:ws/install' component={Install} />
-				<Route exact path='/:ws/register/:ref?' component={Register} />
 				<Route exact path='/:ws/registersuccess' component={Success} />
+				<Route exact path='/:ws/install' component={Install} />
 				<Route exact path='/:ws/redirectws' component={RedirectWs} />
+				<Route exact path='/login/:ws?' component={Login} />
+				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
+				<Route exact path='/register/:ws/:ref?' component={Register} />
+				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
+				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
+				{/* Referred Register Index */}
+				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}
 				<Route exact path='/feedback/:aid?' component={Feedback} />
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
+				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/:dni/onlinedoctor/when' component={When} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/who' component={Who} />
@@ -119,16 +128,16 @@ function App(props) {
 				<PrivateRoute exact path='/:dni/appointmentsonline/:condition/calendar' component={CalendarOnline} />
 				<PrivateRoute exact path='/:dni/appointmentsonline/:scheduled?/history' component={AppointmentsOnlineHistory} />
 				{/* TRASLADOS */}
-				<PrivateRoute exact path={'/survey/ws=:ws&:asid=:asid&dni=:dni'} component={Survey} />
-				<PrivateRoute exact path={'/:ws/transport'} component={TransportMain} />
-				<PrivateRoute exact path={'/:ws/TransportRegister'} component={TransportRegister} />
-				<PrivateRoute exact path={'/:ws/transportUserActive'} component={TransportUserActive} />
+				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
+				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />
+				<PrivateRoute exact path='/:ws/transportRegister' component={TransportRegister} />
+				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
+				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
+				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
+				<PrivateRoute exact path='/:dni/transportDetails/:incidente_id' component={TransportDetailsView} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
-				{/* POL */}
-				<PrivateRoute exact path='/:ws?/pol/' component={Pol} />
-				<PrivateRoute exact path='/:ws?/pol/proof' component={PolProof} />
 				{/* Wellness */}
 				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
 				{/* Patient tracking */}
@@ -136,22 +145,25 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute
 					exact
-					path='/:ws/consultationRedir/:finalDestination/:incidentId'
-					component={RedirectConsultation}
+					path='/hisopado/:ws?'
+					component={DeliveryPurchase}
 				/>
 				<PrivateRoute
 					exact
-					path='/:ws/deliveryService/selectDestiny/:service/:incidenteId'
-					component={DeliverySelectDestiny}
+					path='/hisopado/cobertura/:ws?'
+					component={DeliveryCoverage}
 				/>
 				<PrivateRoute
 					exact
-					path='/:ws/deliveryService/trackProgress/:service/:incidenteId'
-					component={DeliveryTrackProgress}
+					path='/hisopadoResult/:ws?'
+					component={DeliveryResults}
 				/>
+				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
+				
 				<Route component={NotFound} />
 			</Switch>
 		</div>

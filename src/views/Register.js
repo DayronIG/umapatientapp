@@ -2,13 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
-import { useParams, useHistory } from 'react-router-dom';
 import DBConnection from '../config/DBConnection';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
-import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
@@ -21,6 +20,8 @@ import { validateInput } from '../components/Utils/stringUtils';
 import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../../src/styles/generalcomponents/register.scss';
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 const Register = props => {
     const dispatch = useDispatch()
@@ -141,22 +142,22 @@ const Register = props => {
                 return swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
             }
         } 
-        const errors = {};
+        let tempErrors = {};
         if(!validDni) {
-            errors.dni = true;
+            tempErrors.dni = true;
         } 
         if (!validFullname){
-            errors.nombre = true;
+            tempErrors.nombre = true;
         } 
         if(!validOs){
-            errors.cobertura = true;
+            tempErrors.cobertura = true;
         } 
         if(!validDate){
-            errors.bDay = true;
-            errors.bMonth = true;
-            errors.bYear = true;
+            tempErrors.bDay = true;
+            tempErrors.bMonth = true;
+            tempErrors.bYear = true;
         }
-        setErrors(errors);
+        setErrors(tempErrors);
         if(!termsSwitch) {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
         }
@@ -191,7 +192,7 @@ const Register = props => {
         }
         let dob = `${getYear}-${getMonth}-${getDay}`
         let dni = getId 
-        if(country !== null) {
+        if(country !== null && country !== "AR") {
             dni = `${country}${getId}`
         }
         let data = {
@@ -204,7 +205,7 @@ const Register = props => {
                 address: '', // getAddress.concat(', ' + getCity) ||
                 referral: '',
                 group: dni,
-                country: country || '',
+                country: country || 'AR',
                 core_id: reg || '',
                 dni: dni || '',
                 sex: getSex || '',
@@ -231,6 +232,12 @@ const Register = props => {
                 } 
             } catch (res) {
                 user.delete()
+                if(res.response?.data?.message === "Ya existe un usuario con este documento") {
+                    window.gtag('event', 'repeated_document', {
+                        'event_category' : 'warning',
+                        'event_label' : 'register'
+                      });
+                }
                 setTimeout(() => {
                     swal('Error',
                     `No se pudo completar tu registro. ${res?.response?.data?.message}. Por favor comunícate a info@uma-health.com`,

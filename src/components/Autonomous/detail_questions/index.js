@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uid from '../api_uid';
@@ -11,10 +12,6 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
   const token = useSelector(state => state.userActive.token)
   const patient = useSelector(state => state.queries.patient)
   const dispatch = useDispatch();
-
-  const restartAll = () => {
-    dispatch({ type: 'AUTONOMOUS_SET_STEP', payload: { active: 'first_questions' } })
-  }
 
   const nextQuestion = (resx) => {
     const parsed_date = patient.dni !== '' ? patient.dni : uid.getUid();

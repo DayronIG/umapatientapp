@@ -1,6 +1,5 @@
 import DBConnection from '../../config/DBConnection';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 var d = new Date();
 var currentMonth = ('0' + (d.getMonth() + 1)).substr(-2);

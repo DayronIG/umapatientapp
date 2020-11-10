@@ -3,7 +3,6 @@ import DBConnection from '../../config/DBConnection';
 const firestore = DBConnection.firestore();
 const ref = DBConnection.storage().ref();
 
-
 export async function getDocumentFB(path) {
 	try {
 		return (await firestore.doc(path).get()).data();
@@ -32,24 +31,71 @@ export async function putFileFB(file, fileName) {
 	}
 }
 
-// export function autoClickUrlFB () {
-//   try {
-//     const path = `/${att.patient.dni}/recipes/${att.assignation_id}.pdf`
-//     // Find all the prefixes and items.
-//     storage.ref(path)
-//       .getDownloadURL()
-//       .then(function (url) {
-//         var link = document.createElement("a")
-//         if (link.download !== undefined) {
-//           link.setAttribute("href", url)
-//           link.setAttribute("target", "_blank")
-//           link.style.visibility = 'hidden'
-//           document.body.appendChild(link)
-//           link.click()
-//           document.body.removeChild(link)
-//         }
-//       })
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
+export async function getDocumentsByFilter(route, filters, limit = false, postFilters = false) {
+	/**
+   * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
+   * also take into account the fact that .where() querys are inefficient.
+   * @param {string} url - The route of the collection.
+   * @param {array} filters -  array of filter objects like so: [
+	  {field: 'specialty', value: 'psicologia', comparator: '=='},
+	  {field: 'domain', value: 'onboarding', comparator: '=='}
+	]
+   */
+	let result = [];
+	try {
+		let ref = await firestore.collection(route);
+		await filters.forEach((filter) => {
+			ref = ref.where(filter.field, filter.comparator, filter.value);
+		});
+		if (limit !== false) ref.limit(limit)
+		await ref.get().then((snapshot) => {
+			snapshot.forEach((doc) => {
+				let document = doc.data();
+				document.docId = doc.id;
+				result.push(document);
+			});
+		});
+	} catch (err) {
+		console.error('errror', err);
+	}
+	if (!postFilters) return result;
+	/* else {
+		console.log("CAYO AL ELSE")
+		return filter(result, postFilters)
+	} */
+}
+
+export async function snapDocumentsByFilter(route, filters, action = (data) => console.log(data),limit = false, postFilters = false) {
+	/**
+   * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
+   * also take into account the fact that .where() querys are inefficient.
+   * @param {string} url - The route of the collection.
+   * @param {array} filters -  array of filter objects like so: [
+	  {field: 'specialty', value: 'psicologia', comparator: '=='},
+	  {field: 'domain', value: 'onboarding', comparator: '=='}
+	]
+   */
+	let result = [];
+	try {
+		let ref = await firestore.collection(route);
+		await filters.forEach((filter) => {
+			ref = ref.where(filter.field, filter.comparator, filter.value);
+		});
+		if (limit !== false) ref.limit(limit)
+		ref.onSnapshot((snapshot) => {
+			snapshot.forEach((doc) => {
+				let document = doc.data();
+				action(document)
+				document.docId = doc.id;
+				result.push(document);
+			});
+		})
+	} catch (err) {
+		console.error('errror', err);
+	}
+	if (!postFilters) return result;
+	/* else {
+		console.log("CAYO AL ELSE")
+		return filter(result, postFilters)
+	} */
+}

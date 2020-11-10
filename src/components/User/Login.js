@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import db from '../../config/DBConnection';
@@ -27,14 +27,13 @@ const SignIn = props => {
     const [, setSendMsg] = useState(false)
     const [code, setCode] = useState('')
     const loading = useSelector(state => state.front.loading)
-    const [sendedTimes, setSendedTimes] = useState(0)
+    const [sentWs, setSentWs] = useState(true)
     const config =  { headers: { 'Content-Type': 'application/json'} }
-    
+     
     useEffect(() => {
-        navigator.serviceWorker.addEventListener('message', event => swal(event.data.msg, '', 'warning'))
-    }, [])
-
-    useEffect(() => {
+        let timeout = setTimeout(() => {
+            setSentWs(false)
+        }, 2000)
         if (ws) {
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
@@ -42,14 +41,15 @@ const SignIn = props => {
             axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                 .then((res) => {
                     if(res.data.redirect === 'register') {
-                        props.history.replace(`/${validPhone}/register`)
+                        props.history.replace(`/register/${validPhone}`)
                     } else {
-                        props.history.replace(`/${validPhone}/login`)
+                        props.history.replace(`/login/${validPhone}`)
                     }
                 })
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
                 .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
+        return () => clearTimeout(timeout)
     }, [])
     
     const handleLogin = async (event) => {
@@ -72,11 +72,19 @@ const SignIn = props => {
             db.auth()
                 .signInWithEmailAndPassword(email, password.value)
                 .then(async (reg) => {
+                    window.gtag('event', 'success_login', {
+                        'event_category' : 'login',
+                        'event_label' : 'login'
+                      });
                     history.push(`/${validPhone}`)
                     dispatch({ type: 'LOADING', payload: false })
                     localStorage.setItem('dbUser', true)
                 })
                 .catch((err) => {
+                    window.gtag('event', 'incorrect_code', {
+                        'event_category' : 'warning',
+                        'event_label' : 'login'
+                      });
                     // caso Usuario no encontrado
                     if (err.code === 'auth/user-not-found') {
                         swal('El código introducido no es válido o ya expiró.', '', 'warning')
@@ -97,7 +105,7 @@ const SignIn = props => {
                     }, 5000)
                 })
         } else if (!password) {
-            props.history.push(`/${validPhone}/login`)
+            props.history.push(`/login/${validPhone}`)
             setSendMsg(true)
             dispatch({ type: 'LOADING', payload: false })
         } else {
@@ -108,9 +116,8 @@ const SignIn = props => {
 
 
 
-
-    const sendWsCode = (ws, code) => {
-        setSendedTimes(1)
+    const sendWsCode = useCallback((ws) => {
+        setSentWs(true)
         let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
         if (accessCode && code && accessCode === code) {
@@ -131,12 +138,15 @@ const SignIn = props => {
                     swal('Error al enviar el código', '', 'warning')
                 })
         }
-    }
+    }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        props.history.replace(`/${validPhone}/login`)
+        if(validPhone.length > 10 && validPhone.length < 15) {
+            sendWsCode(validPhone)
+        }
+        props.history.push(`/login/${validPhone}`)
     }
 
     return (
@@ -184,13 +194,6 @@ const SignIn = props => {
                                             <small>Presione <strong>"Enviar código"</strong></small>
                                         </label>
                                     </div>
-                                    {sendedTimes === 0 ?
-                                        <button className='btn btn-blue-lg buttonSendCode' onClick={() => sendWsCode(ws)} type='button'>
-                                            Enviar código
-                                        </button> :
-                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
-                                            Código enviado!
-                                        </button>}
                                     <div className='passwordLabelWrapper'>
                                         <div className='imageContainer'>
                                             <img src={LoginCode} alt='mobile login helper' />
@@ -212,6 +215,13 @@ const SignIn = props => {
                                         Ingresar
                                     </button>
                                     <small>Si no recibe el código puede  <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>hablarle a ÜMA por whatsapp</a> para acceder.</small>
+                                    {sentWs === false ?
+                                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
+                                            Enviar código
+                                        </button> :
+                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
+                                            Código enviado!
+                                        </button>}
                                 </>}
                         </form>
                         <small className='text-center'>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {useSelector} from 'react-redux';
 import {withRouter, Link} from 'react-router-dom';
+import {ocr_labo} from '../../../config/endpoints';
 import axios from "axios";
 import HemoglobinaGlicosilada from "./HemoglobinaGlicosilada";
 import Creatinina from "./Creatinina";
@@ -14,8 +15,8 @@ import Error from "./Error";
 import Triglicerido from "./Trigliceridos";
 import { Loader } from "../../global/Spinner/Loaders";
 import moment from "moment";
+
 import "./Styles/Buttons.scss";
-// import 'time-zone'
 
 function LoadAnalysis(props) {
   const patient = useSelector(state => state.queries.patient)
@@ -34,8 +35,6 @@ function LoadAnalysis(props) {
   const [resTrigliceridos, SetresTrigliceridos] = useState("");
   const [resImagen, SetresImagen] = useState("");
 
-  const URL = "https://dev-ocr-dot-biomarkers-dot-uma-v2.appspot.com/ocr_labo";
-
   //const fecha = moment().tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
   let fecha = new Date();
   fecha = moment()
@@ -49,24 +48,17 @@ function LoadAnalysis(props) {
     reader.onloadend = function () {
       const imgB64 = reader.result;
       postImg(imgB64.split("base64,")[1]);
-      console.log(imgB64.split("base64,")[1]);
     };
   };
 
   function postImg(img) {
     setresspiner(true);
     const datos = {
-      assignation_id: "2019-04-23_12-04-17",
-      ws: "",
-      dni: "",
-      dt: "2019-04-23-12-04-17",
-      b64: img,
-      sex: "",
-      age: ""
+      labo_b64: img,
     };
     let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': token */ }
     axios
-      .post(URL, datos, headers)
+      .post(ocr_labo, datos, headers)
       .then(res => {
         setResPost(res.data);
         console.log(res);
@@ -147,12 +139,12 @@ function LoadAnalysis(props) {
 
   return (
     <>
-      <div className="carga-input">
+      <div className="load__input">
         <input type="file" id="files" accept="image/*"
           onChange={handleFileChange}
           placeholder="subir"
-          className="btn-blue-lg" class="hidden" />
-        <label for="files">Sacar foto o adjuntar documento</label>
+          className="btn-blue-lg" />
+        <label htmlFor="files">Sacar foto o adjuntar documento</label>
       </div>
       <br></br>
       {resCarga &&
@@ -258,10 +250,10 @@ function LoadAnalysis(props) {
                 </h5>
               )}
             </div>
+            <Link to={`/${patient.ws}/onlinedoctor/`}>
+            <div className="">Si desea puede consultar a un médico online haciendo click aquí</div>
+            </Link>
           </table>
-          <Link to={`/${patient.ws}/onlinedoctor/`}>
-            <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
-          </Link>
         </div>
       }
     </>

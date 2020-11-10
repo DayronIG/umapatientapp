@@ -1,30 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import moment from "moment";
-import 'moment-timezone';
+import { withRouter } from "react-router-dom";
+import moment from "moment-timezone";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
-import { afiliado } from "../../../config/endpoints";
-import DBConnection from "../../../config/DBConnection";
+import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
-// import { getPatientData } from "../../../store/actions/firebaseQueries";
-// import app from "../../../config/DBConnection";
-// import { GenericHeader } from "../../GeneralComponents/Headers";
-// import MobileModal from "../../GeneralComponents/Modal/MobileModal";
+import { GenericHeader } from "../../GeneralComponents/Headers";
 import "../../../styles/generalcomponents/register.scss";
 
 const Register = props => {
   const dispatch = useDispatch();
-  const token = useSelector(state => state.userActive.token)
   const user = useSelector(state => state.queries.patient);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
-  const isTransport =
-    props.history.location.pathname.split("/").pop() === "transport";
-  const { dni, dni_titular, email, day, month,
-    year, date, sex, address, city, piso, ws, os, fullname } = useSelector(state => state.register);
+  const { dni,  day, month,
+    year, sex, address, piso, os, fullname } = useSelector(state => state.register);
   const monthRef = useRef();
   const yearRef = useRef();
 
@@ -53,23 +45,20 @@ const Register = props => {
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
     let dob = `${year}-${month}-${day}`;
     let data = {
-      address: address || "", // getAddress.concat(", " + getCity) ||
-      core_id: "",
+      address: address || "", 
       corporate: os || "",
-      dni_titular: user.dni || "",
+      corporate_norm: os || "",
       dni: dni || "",
       dob: dob || "",
       dt: date || "",
-      email: user.email || "",
       fullname: fullname || "",
-      piso: piso || "", // getPiso ||
+      group: user.dni || "",
+      piso: piso || "", 
       sex: sex || "",
-      ws: user.ws || ""
+      ws: user.ws || "",
     }
-    console.log(data)
-    let headers = { ContentType: "Application/json"/*, 'Authorization': token */ };
     axios
-      .post(afiliado, data, headers)
+      .post(`${node_patient}/dependant`, {dependant: data})
       .then(res => {
         if (props.redirectToConsultory === 'true') {
           props.history.replace(`/${dni}/appointmentsonline/`)
@@ -87,7 +76,7 @@ const Register = props => {
             type: "warning",
             title: "No se pudo registrar",
             msg:
-              "No se pudo completar tu registro."
+              `No se pudo completar tu registro. ${error?.response?.data?.message}`
           }
         })
         dispatch({ type: "LOADING", payload: false })
@@ -118,7 +107,8 @@ const Register = props => {
 
 
   return (
-    <>
+    <div className="register__container">
+    <GenericHeader/>
       {loading && <Loading />}
       {front.alert.active && (
         <Alert
@@ -190,7 +180,7 @@ const Register = props => {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

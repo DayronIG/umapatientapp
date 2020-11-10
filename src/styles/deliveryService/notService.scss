@@ -1,0 +1,74 @@
+@import '../index.scss';
+
+.notService__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+
+    .notService__img {
+        max-width: 90%;
+        display: block;
+        margin: 2rem auto;
+    }
+
+    .notService__title {
+        color: $uma-primary;
+        font-weight: 900;
+        font-size: 28px;
+        line-height: 1.1;
+    }
+
+    .notService__text {
+        color: $uma-text;
+        font-size: 18px;
+        line-height: 1.3;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .notService__button {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 20px 15px;
+        box-shadow: 2px 3px 9px rgba(17, 17, 17, 0.14);
+        background: #F8F8F8;
+        border: none;
+        border-radius: 8px;
+
+        div {
+            img {
+                width: 25px;
+                margin-right: 16px;
+            }
+
+            p {
+                font-size: 16px;
+                color: $uma-text;
+                line-height: 1.3;
+            }
+        }
+
+        svg {
+            font-size: 1.1rem;
+            color: $uma-input;
+        }
+    }
+
+    .notService__link {
+        margin-top: 24px;
+        border: none;
+        background: none;
+        color: $uma-primary;
+        font-size: 18px;
+        line-height: 1.3;
+        width: 100%;
+        text-align: center;
+        font-weight: 800;
+    }
+}
