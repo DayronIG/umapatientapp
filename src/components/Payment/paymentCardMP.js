@@ -27,8 +27,8 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
@@ -219,8 +219,8 @@ const PaymentCardMP = () => {
       }
     
       const handleChange = e => {
-        const { name, value } = e.target;
-        setState({ ...state, [name]: value });
+        if(e.target){const { name, value } = e.target;
+        setState({ ...state, [name]: value });}
       }
     
       const properties = {
