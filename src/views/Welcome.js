@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {useHistory, useParams, withRouter} from 'react-router-dom';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import * as DetectRTC from 'detectrtc';
-import { getDocumentFB } from "../components/Utils/firebaseUtils";
-import logo from '../assets/icon.png'
+
 import { checkNum } from "../components/Utils/stringUtils";
 import Axios from "axios";
 import { node_patient } from "../config/endpoints";

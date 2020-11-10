@@ -11,6 +11,7 @@ import ResetPassword from './components/User/ResetPassword';
 import Login from './components/User/Login';
 import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
+import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
 /* Profile */
 import Profile from './views/Profile';
@@ -85,6 +86,7 @@ function App(props) {
 				<Route exact path='/login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				<Route exact path='/register/:ws/:ref?' component={Register} />
+				<Route exact path='/newregister/:ws/:ref?' component={RegisterNew} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
