@@ -16,9 +16,6 @@ function AuthProvider({ children }) {
 		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)
 		if(currentUser) {
 			getInitialData(currentUser)
-			if(!params || params === "") {
-				getDeliveryInfo()
-			}
 		}
 		return () => unsubscribe()
 	}, [currentUser])
@@ -32,12 +29,14 @@ function AuthProvider({ children }) {
 		}
 	})
 
-    const getDeliveryInfo = useCallback(async()=> {
-        const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
+    async function getDeliveryInfo(userAuth) {
+		const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
 		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
-		let filters =  [{field: 'status', value: ['ASSIGN:DELIVERY', "PREASSIGN", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.dni', value: patient.dni, comparator: '=='}]
-		await snapDocumentsByFilter('events/requests/delivery', filters, (data) => dispatch({type: 'SET_DELIVERY', payload: [data]}))
-    }, [patient])
+		if(userAuth.dni) {
+			let filters =  [{field: 'status', value: ['ASSIGN:DELIVERY', "PREASSIGN", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.dni', value: userAuth.dni, comparator: '=='}]
+			await snapDocumentsByFilter('events/requests/delivery', filters, (data) => dispatch({type: 'SET_DELIVERY', payload: [data]}))
+		}
+    }
 
 
 	async function getInitialData(user) {
@@ -48,6 +47,7 @@ function AuthProvider({ children }) {
 			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+				getDeliveryInfo(userAuth)
 			}
 		}
 	}	
