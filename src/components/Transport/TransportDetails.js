@@ -48,8 +48,8 @@ const TransportTracking = () => {
 			mapBounder([
 				calculateFirstPoint(service),
 				{
-					lat: service.current_position_remis?.lat,
-					lng: service.current_position_remis?.lon
+					lat: service?.current_position_remis?.lat,
+					lng: service?.current_position_remis?.lon
 				}
 			]);
 		}
@@ -60,8 +60,8 @@ const TransportTracking = () => {
 			drawRoute(
 				calculateFirstPoint(service),
 				{
-					lat: service.current_position_remis?.lat,
-					lng: service.current_position_remis?.lon
+					lat: service?.current_position_remis?.lat,
+					lng: service?.current_position_remis?.lon
 				}
 			).then(eta => setEta(eta));
 		}
@@ -75,22 +75,22 @@ const TransportTracking = () => {
 				<GoogleMapReact
 					{...mapConfig(
 						{ 
-							lat: service.current_position_remis?.lat || 0, 
-							lng: service.current_position_remis?.lon  || 0 
+							lat: service?.current_position_remis?.lat || 0, 
+							lng: service?.current_position_remis?.lon  || 0 
 						}
 					)}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					{service.current_position_remis?.lat && <Marker
-						lat={service.current_position_remis?.lat || 0}
-						lng={service.current_position_remis?.lon || 0}
+					{service?.current_position_remis?.lat && <Marker
+						lat={service?.current_position_remis?.lat || 0}
+						lng={service?.current_position_remis?.lon || 0}
 						text='Ubicacion del remis' type='remis' 
 					/>}
 					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
+				<h4 className='transportDetails__container--title'>{renderTitle(service?.status_tramo)}</h4>
 				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className='transportDriver'>
 					{/*
