@@ -10,42 +10,29 @@
 		padding: 10px;
 		border-radius: $regular-borders;
 		margin-top: 25px;
-		.scheduleForm__container--inputSlider {
-			display:flex;
-			justify-content: flex-start;
-			overflow-x: scroll;
-			padding-bottom: 20px;
-			& > div {
-				min-width: 110px;
-				min-height: 75px;
-				border: 1px solid rgba($color: #000000, $alpha: .25);
-				padding: 3px 5px 5px 3px;
-				border-radius: $regular-borders;
-				&:not(:first-child) {
-					margin-left: 10px;
-				}
-			}
-			div.plusIcon {
-				padding: 0;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 40px;
-				color: $deep-blue-b;
-			}
-			label {
-				margin-left: 7px;
-			}
-			input {
-				width: 100px;
-				margin-left: 15px;
-			}
+		// border:1px solid black;
+		box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.555), -1px -1px 1px rgba(128, 128, 128, 0.527);
+		h5 {
+			text-align: center;
+			color: $uma-primary; 
+			font-weight: bold;
 		}
 		.scheduleForm__container--input {
 			width: 100%;
+			// border:1px solid rgba(128, 128, 128, 0.479);
 			display: flex;
 			justify-content: space-between;
-			align-items: baseline;
+			align-items: center;
+			padding:5px;
+			.dateInput{
+				width:160px;
+				text-decoration: none;
+				color: gray;
+			}
+			.label{
+				margin:0;
+				width:300px;
+			}
 			&:not(:first-child) {
 				margin-top: 15px;
 			}
@@ -53,7 +40,7 @@
 				border-top: none;
 				border-right: none;
 				border-left: none;
-				border-bottom: 1px solid rgba($color: #000000, $alpha: .4) ;
+				// border-bottom: 1px solid rgba($color: #000000, $alpha: .4) ;
 				background-color: transparent;
 				&:focus {
 					outline: none;
@@ -73,4 +60,14 @@
 			}
 		}
 	}
+}
+.addButton{
+	background:none;
+	border:none;
+	background: $uma-primary;
+	border-radius: 8px;
+	padding:8px;
+	color:white;
+	cursor: pointer;
+
 }

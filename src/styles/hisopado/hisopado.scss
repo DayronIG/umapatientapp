@@ -1,0 +1,31 @@
+@import '../index.scss';
+
+.hisopado__container {
+    margin: 20px auto 0;
+    width: 90%;
+    align-items: center;
+    background: #D34600;
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+
+    .hisopado__title {
+        color: $white-color;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+
+    .hisopado__btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: $white-color;
+        padding: 0;
+        display: flex;
+        align-items: center;
+
+        svg {
+            margin-left: 8px;
+        }
+    }
+}

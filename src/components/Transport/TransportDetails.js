@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
-import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
+import { mapConfig, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
+import { renderMarker, calculateFirstPoint, renderTitle } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
-import { useParams } from 'react-router-dom';
-import useInterval from '../Hooks/useInterval';
+import { useParams, useHistory } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import Marker from '../global/Marker';
 
 const TransportTracking = () => {
-	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const { service } = useSelector(state => state.transport);
 	const { patient } = useSelector(state => state.queries);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [openTravel, setOpenTravel] = useState(false);
+	const [eta, setEta] = useState('No hay datos disponibles');
 	const params = useParams();
+	const history = useHistory();
+	// const [remis, setRemis] = useState({});
 
 	function setMapFunctions({ map, maps }) {
 		const dirServ = new maps.DirectionsService();
@@ -22,12 +25,17 @@ const TransportTracking = () => {
 		dirRenderer.setMap(map);
 		setDrawRoute(() => routeDrawer(maps, dirServ, dirRenderer));
 		setMapBounder(() => mapBounds(map, maps));
-		handleApiLoaded(setUserLocation);
 	}
-	console.log(service)
+
+	useEffect(() => {
+		if(service.status_tramo === 'FINISHED') {
+			history.replace(`/${patient.ws}/onlinedoctor/rating`);
+		}
+	}, [service]);
+	
 	useEffect(() => {
 		let unsubscribe;
-		if(patient?.corporate_norm) {
+		if (patient?.corporate_norm) {
 			unsubscribe = getTransportService({ ...params, corporate: patient.corporate_norm });
 		}
 		return () => {
@@ -35,27 +43,13 @@ const TransportTracking = () => {
 		}
 	}, [patient]);
 
-	// function generateRoutePoints() {
-	// 	return ({
-	// 		lng: service.request?.geo_inicio?.lon,
-	// 		lat: service.request?.geo_inicio?.lat
-	// 	},
-	// 	{
-	// 		lat: service.request?.geo_fin?.lat,
-	// 		lng: service.request?.geo_fin?.lon
-	// 	});
-	// }
-	
 	useEffect(() => {
 		if (typeof mapBounder === 'function') {
 			mapBounder([
+				calculateFirstPoint(service),
 				{
-					lng: service.request?.geo_inicio?.lon,
-					lat: service.request?.geo_inicio?.lat
-				},
-				{
-					lat: service.request?.geo_fin?.lat,
-					lng: service.request?.geo_fin?.lon
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
 				}
 			]);
 		}
@@ -63,66 +57,78 @@ const TransportTracking = () => {
 
 	useEffect(() => {
 		if (typeof drawRoute === 'function') {
-			drawRoute({
-				lng: service.request?.geo_inicio?.lon,
-				lat: service.request?.geo_inicio?.lat
-			},
-			{
-				lat: service.request?.geo_fin?.lat,
-				lng: service.request?.geo_fin?.lon
-			});
+			drawRoute(
+				calculateFirstPoint(service),
+				{
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
+				}
+			).then(eta => setEta(eta));
 		}
 	}, [drawRoute, service]);
+
+	console.log(service);
 
 	return (
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({ lat: userLocation.lat, lng: userLocation.lng })}
+					{...mapConfig(
+						{ 
+							lat: service.current_position_remis?.lat || 0, 
+							lng: service.current_position_remis?.lon  || 0 
+						}
+					)}
 					onGoogleApiLoaded={setMapFunctions}
-				/>
+				>
+					{service.current_position_remis?.lat && <Marker
+						lat={service.current_position_remis?.lat || 0}
+						lng={service.current_position_remis?.lon || 0}
+						text='Ubicacion del remis' type='remis' 
+					/>}
+					<Marker {...renderMarker(service)} />
+				</GoogleMapReact>
 			</div>
-
-			
 			<div className='transportDetails__container'>
-			<h3>Tu conductor está en camino</h3>
-			<p>Llegará en {service.request?.eta_tramo}.</p>
-
-			<div className="transportDriver">
-			 
-				<div className="transportDriverImg">
-					<img src="https://www.iconbunny.com/icons/media/catalog/product/cache/2/thumbnail/600x/1b89f2fc96fc819c2a7e15c7e545e8a9/2/1/2125.9-cab-driver-icon-iconbunny.jpg"></img>
+				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
+				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
+				<div className='transportDriver'>
+					{/*
+						<div className='transportDriverImg'>
+							<img src={}></img> 
+						</div> 
+					*/}
+					<div className='transportDriverData'>
+						<p>Conductor: {service.provider_fullname || ''}</p>
+						<p>CUIT: {service.provider_id || '' } </p>
+					</div>
 				</div>
-
-				<div className="transportDriverData">
-				<p>{service.provider_fullname || "Juan Rodríguez"}</p>
-				<p>DNI: {service.provider_id || "29550275" } </p></div>
+				<div className='openContent'>
+					{openTravel ?
+						<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
+						<button onClick={() => setOpenTravel(!openTravel)}>Ver detalles <FaChevronDown /></button>
+					}
 				</div>
-				<div className="openContent">
-										{openTravel ?
-											<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
-											<button onClick={() => setOpenTravel(!openTravel)}> Ver detalles <FaChevronDown /> </button>
-										}
-									</div>
 				{openTravel &&
-										
-									
-				<ul className="driverUl">
-					<li className="originLi"><p className="originP">Origen:</p> 
-					<p className="originText">{service.request?.geo_inicio.address}</p></li>
-
-					<li className="originLi"><p className="originP">Destino:</p> 
-					<p className="originText">{service.request?.geo_fin.address}</p></li>
-
-					<li className="originLi"><p className="originP">Hora de llegada:</p> 
-					<p className="originText">{service.hora}</p></li>
-
-					<li className="originLi"><p className="originP">Notas:</p> 
-					<p className="originText">{service.request?.notas || "No hay notas"}</p></li>
-
-					
-
-				</ul>}
+					<ul className='driverUl'>
+						<li className='originLi'>
+							<p className='originP'>Origen:</p> 
+							<p className='originText'>{service.request?.geo_inicio.address}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Destino:</p> 
+							<p className='originText'>{service.request?.geo_fin.address}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Hora de llegada:</p> 
+							<p className='originText'>{service.hora}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Notas:</p> 
+							<p className='originText'>{service.request?.notas || 'No hay notas'}</p>
+						</li>
+					</ul>
+				}
 			</div>
 		</div>
 	);

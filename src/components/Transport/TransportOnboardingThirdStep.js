@@ -200,12 +200,6 @@ const TransportOnboarding = () => {
                 <div className="dateDocumentExpiresWrapper">
                     <div className="titleThirdStep">Vencimiento de DNI</div>
                     {getIdExpires ? '' : <span className="mandatoryField">* Obligatorio</span>}
-                    {/* <input type="text" 
-                    options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
-                        placeholder={'dd/mm/aaaa'}
-                        value={getIdExpires} 
-                        className="form-control expireDate"
-                        onChange={(e) => dispatch({type: 'ADD_ID_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
                     <Cleave
 
                         placeholder="dd/mm/aaaa"
@@ -216,11 +210,6 @@ const TransportOnboarding = () => {
                     />
                     <div className="titleThirdStep">Vencimiento de Credencial</div>
                     {getCredentialExpires ? '' : <span className="mandatoryField">* Obligatorio</span>}
-                    {/* <input type="text" 
-                        placeholder={'dd/mm/aaaa'}
-                        value={getCredentialExpires} 
-                        className="form-control expireDate"
-                        onChange={(e) => dispatch({type: 'ADD_CREDENTIAL_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
                     <Cleave
                         placeholder="dd/mm/aaaa"
                         options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}
@@ -232,11 +221,6 @@ const TransportOnboarding = () => {
                         <div>
                             <div className="titleThirdStep">Vencimiento de Certificado de discapacidad</div>
                             {getDisabilityExpires ? '' : <span className="mandatoryField">* Obligatorio</span>}
-                            {/* <input type="text" 
-                                placeholder={'dd/mm/aaaa'}
-                                value={getDisabilityExpires} 
-                                className="form-control expireDate"
-                                onChange={(e) => dispatch({type: 'ADD_DISABILITY_EXPIRATION_THIRD_STEP', payload: e.target.value})}/> */}
                             <Cleave
                                 placeholder="dd/mm/aaaa"
                                 options={{ date: true, delimiter: '/', datePattern: ['d', 'm', 'Y'] }}

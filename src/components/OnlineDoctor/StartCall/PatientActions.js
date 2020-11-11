@@ -4,7 +4,6 @@ import {withRouter} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment-timezone';
-
 import Snackbar from '../../GeneralComponents/Snackbar/Snackbar';
 import Sthetoscope from '../Biomarkers/Sthethoscope';
 import DBConnection from '../../../config/DBConnection';

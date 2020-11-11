@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import SpeechRecognition from "react-speech-recognition";
 import { transcription } from '../../../config/endpoints' // etiqueta_match
 import moment from 'moment-timezone';
-
 import axios from 'axios';
 
 const propTypes = {

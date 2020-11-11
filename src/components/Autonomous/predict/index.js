@@ -1,10 +1,9 @@
 
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import StarRatings from 'react-star-ratings';
 import moment from 'moment-timezone';
-
 import axios from 'axios';
 import {feedback } from '../../../config/endpoints'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

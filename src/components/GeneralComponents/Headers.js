@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { IoIosArrowBack } from "react-icons/io"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLaptopMedical, faArrowLeft, faUserCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/logo.png';
@@ -103,7 +104,7 @@ export const BackButton = (props) => {
 	return (
 		<section className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'}>
 			<Link to={props.customTarget ? `${props.customTarget}` : '/'}>
-				<FontAwesomeIcon className='mt-2 pt-1' icon={faArrowLeft} />
+				<IoIosArrowBack onClick={props.action? () => props.action(): () => console.log("")} className='mt-2' icon={faArrowLeft} />
 			</Link>
 		</section>
 	);

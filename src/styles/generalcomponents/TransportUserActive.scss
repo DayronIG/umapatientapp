@@ -1,9 +1,5 @@
 
 @import '../index.scss';
-#root{
-  background: white;
-  height: 100vh;
-}
 .subheader-container {
   margin-bottom: 0 !important;
 }
@@ -43,7 +39,7 @@
         bottom:10px;
         .active{
           border-bottom: 3px solid purple;
-          color:$new_primary_color;
+          color:$uma-primary;
           font-weight: bold;
         }
       button{
@@ -73,7 +69,7 @@
           font-size:14px;
           .transportTitle {
             width: 50%;
-            color: $new_primary_color;
+            color: $uma-primary;
             padding:5px;
            margin:5px;
            border-right: 1px solid rgba(128, 128, 128, 0.349);
@@ -132,7 +128,7 @@
 						border-radius: 40px;
 					}
 					.checkStatus {
-						background-color: $new_primary_color;
+						background-color: $uma-primary;
 						margin-bottom: 10px;
 					}
         }
@@ -209,7 +205,7 @@
   .createNewService__icon {
     font-size: 5rem;
     color: white;
-    background: $new_primary_color;
+    background: $uma-primary;
 		padding: 10px;
     width: 45px;
     height: 45px;

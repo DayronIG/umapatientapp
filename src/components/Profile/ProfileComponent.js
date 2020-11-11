@@ -9,7 +9,8 @@ import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import moment from 'moment-timezone';
 import '../../styles/profile.scss';
-import Loader from '../GeneralComponents/Loading';
+import Loading from '../GeneralComponents/Loading';
+import {Loader} from '../GeneralComponents/Loading';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
@@ -37,7 +38,6 @@ const ProfileComponent = () => {
 					setLoading(false);
 				});
 		}
-
 		return () => unsubscribe;
 	}, [db, auth.dni]);
 
@@ -74,9 +74,10 @@ const ProfileComponent = () => {
 
 	return (
 		<>
-			{loading && <Loader />}
+			{loading && !auth.fullname && <Loading />}
 			{modal && (
-				<MobileModal title='Editar datos'>
+				<MobileModal title='Editar datos'
+				callback={()=>{dispatch({type:"TOGGLE_DETAIL", payload:false})}}>
 					<EditSection />
 				</MobileModal>
 			)}
@@ -105,20 +106,10 @@ const ProfileComponent = () => {
 					<div className='profile-section section'>
 						<EditButton section='contact' className='btn-edit' clase='contact' />
 						<p className='profile-section-title'>Datos de contacto</p>
-						<p>
-							<b>Teléfono: </b> <span>{auth.ws}</span>
-						</p>
-						<p>
-							<b>Dirección: </b> <span>{auth.address}</span>
-						</p>
-						{auth.piso && (
-						<p>
-							<b>Piso/Dpto: </b><span>{auth.piso}</span>
-						</p>
-						)}
-						<p>
-							<b>Suscripción: </b> <span>{auth.subscription}</span>
-						</p>
+						<p><b>Teléfono: </b> {auth.ws} </p>
+						<p><b>Dirección: </b> {auth.address} </p>
+						{auth.piso && <p> <b>Piso/Dpto: </b> {auth.piso} </p>}
+						<p><b>Suscripción: </b> {auth.subscription} </p>
 					</div>
 				</div>
 				<div className='profile-section section'>
@@ -128,7 +119,7 @@ const ProfileComponent = () => {
 						<b>Sexo:</b> {(auth.sex === 'M' && 'Hombre') || (auth.sex === 'F' && 'Mujer')}
 					</p>
 				</div>
-				<div className='umaVersion'>
+				<div className='umaVersion text-center'>
 					<Version />
 				</div>
 			</div>

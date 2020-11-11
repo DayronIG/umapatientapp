@@ -1,6 +1,6 @@
 //takes in an array of objects describing inputs, returns the rendered component
-import React, { useState, useEffect } from 'react';
-import {Audio, Text, Video, Chart, Example, Image, SlidingCards} from './components/Index';
+import React from 'react';
+import {Audio, Text, Video, Chart, Example, Image} from './components/Index';
 
 const Outputs = (props) => {
   const data = props.data
@@ -17,9 +17,7 @@ const Outputs = (props) => {
       return <Chart key={key} data={output} className={output.options.style}/>
     } else if (output.type === "image") {
       return <Image key={key} data={output} className={output.options.style}/>
-    } else if (output.type === "slidingCard") {
-      return <SlidingCards key={key} data={output} className={output.options.style}/>
-    } else return (
+    }  else return (
       <>
       <Example>dafault output</Example>
       </>

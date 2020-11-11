@@ -7,12 +7,22 @@ import db from '../../config/DBConnection';
 import ModulesMenu from './ModulesMenu';
 import Loading from '../GeneralComponents/Loading';
 import NotFound from '../GeneralComponents/NotFound';
+import {getDocumentFB} from "../Utils/firebaseUtils"
 
-const HomePage = (props) => {
+const HomePage = () => {
 	const dispatch = useDispatch();
 	const checkStatus = useSelector((state) => state.front.checkStatus);
 	const user = useSelector((state) => state.queries.patient);
 	const mr = useSelector((state) => state.queries.medicalRecord);
+
+	const getActive = async () => {
+		const data = await getDocumentFB("parametros/userapp/delivery/hisopados")
+		dispatch({type: "SET_HISOPADOS_ACTIVE", payload: data.active})
+    }
+
+    useEffect(() => {
+        getActive()
+    }, [])
 
 	useEffect(() => {
 		if (user && user.dni !== undefined) {
@@ -61,7 +71,7 @@ const HomePage = (props) => {
 	} else if (checkStatus === 99 && user.ws) {
 		return <ModulesMenu ws={user.ws} />;
 	} else {
-		return  <Loading />;
+		return <Loading />;
 	}
 };
 

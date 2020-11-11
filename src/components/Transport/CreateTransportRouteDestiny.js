@@ -82,9 +82,7 @@ const CreateTransportRoute = () => {
 					)}
 					onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 				>
-					{destiny.lat && (
-						<Marker {...destiny} />
-					)}
+					{destiny.lat && <Marker {...destiny} />}
 				</GoogleMapReact>
 			</div>
 			<div className='selectDestiny__container formInputs'>

@@ -123,7 +123,6 @@ const CreateTransportRoute = () => {
 					</button>
 				</div>
 			</div>
-			{/* <FooterBtn callback={handleSubmit} text='Continuar' /> */}
 		</form>
 	);
 };

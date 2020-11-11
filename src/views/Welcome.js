@@ -59,7 +59,7 @@ const Welcome = props => {
         {install ?
           <div className="btn btn-blue-lg" onClick={() => installAction()}>Instalar</div>
           :
-          <div className="btn btn-blue-lg" onClick={() => props.history.push('/')}>Continuar</div>
+          <div className="btn btn-blue-lg" onClick={() => props.history.push(`/home/${props.match.params.ws}`)}>Continuar</div>
         }
       </div>
       {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}
