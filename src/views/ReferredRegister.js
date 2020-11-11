@@ -223,8 +223,8 @@ const Register = props => {
     }
 
     const handleInput = (typeDispatch) => (event) => {
-        const { type, value, name } = event.target;
-
+        var { type, value, name } = event.target;
+        if(typeDispatch === "REGISTER_FIRST_YEAR"){type="number"}
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
@@ -333,8 +333,8 @@ const Register = props => {
                                             placeholder={getMonth}
                                              />
                                         <input
-                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
-                                            maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
+                                            maxLength='4' className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
+                                            ref={yearRef} type='text' inputMode="numeric" name='bYear'
                                             onChange={handleInput('REGISTER_FIRST_YEAR')}
                                             
                                         />

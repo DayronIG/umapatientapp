@@ -10,10 +10,6 @@
    margin-top: 20px;
 }
 .register__container {
-   display: flex;
-   flex-direction: column;
-   justify-content: flex-start;
-   align-items: center;
    
    h3 {
       display: none;
@@ -129,7 +125,9 @@
       .form-mid-input {
          border-radius: $regular-borders;
          padding: 0.5rem;
-         width: 150px;
+         margin: 2vw;
+         width: 30vw;
+         height: 8vh !important;
          background-color: $white-color;
          
          &::-webkit-outer-spin-button,
@@ -155,6 +153,9 @@
          height: 47px;
          margin: 25px 0 15px 0;
          border: none;
+         display: flex;
+         align-items: center;
+         justify-content: center;
       }
       .sendButtonStyles:focus{
          outline: none;
