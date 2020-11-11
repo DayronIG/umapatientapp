@@ -77,8 +77,6 @@ const Register = props => {
         }
     }
 
-
-
     const handleSignUp = useCallback(async event => {
         event.preventDefault()
         window.scroll(0, 0)
@@ -208,7 +206,7 @@ const Register = props => {
                     }, 2000)
                 } 
                 if(ref === "hisopado"){
-                    history.push("/referred")
+                    history.push(`/hisopado/${ws}`)
                 }
             } catch (res) {
                 user.delete()
