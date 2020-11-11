@@ -175,6 +175,7 @@ const DeliverySelectDestiny = () => {
 			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 	};
 
+
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
