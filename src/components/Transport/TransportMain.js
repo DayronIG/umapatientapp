@@ -32,7 +32,7 @@ const TransportWrapperComponent = () => {
 
 	useEffect(() => {
 		if (activated === true) {
-			history.push(`/${ws}/transportRegister`);
+			history.push(`/${ws}/transportUserActive`);
 		} else if (activated === false) {
 			history.push(`/${ws}/transportRegister`);
 		}
