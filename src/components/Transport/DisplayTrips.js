@@ -1,4 +1,3 @@
-import Car from '../../assets/car.svg'
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,10 +5,11 @@ import Axios from 'axios';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { att_history, change_status_traslado } from '../../config/endpoints';
 import moment from 'moment-timezone';
-import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaSlideshare } from 'react-icons/fa'
-import '../../styles/generalcomponents/TransportUserActive.scss';
-import swal from 'sweetalert';
+import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt } from 'react-icons/fa';
+import Car from '../../assets/car.svg';
 import { renderStatus } from '../Utils/transportUtils';
+import { Loader } from '../GeneralComponents/Loading';
+import '../../styles/generalcomponents/TransportUserActive.scss';
 
 
 const TransportUserActive = () => {
@@ -24,8 +24,6 @@ const TransportUserActive = () => {
 	const [pendingServices, setPendingServices] = useState([]);
 	const [approvedServices, setApprovedServices] = useState([]);
 	const [selectedService, setSelectedService] = useState({});
-	const [noDriver, setNoDriver] = useState(false);
-	
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -48,8 +46,10 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
-			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
-			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
+			const appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED');
+			const pendServicesTemp = response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+			setApprovedServices(appservicesTemp);
+			setPendingServices(pendServicesTemp);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -92,17 +92,14 @@ const TransportUserActive = () => {
 						placeholder="Ingrese el motivo de cancelación"
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
 					/>
-					<div className="buttonContainer">
+					<div className="d-flex align-items-center buttonContainer">
 						<button
 							className="cancelReason"
-							onClick={cancelTrip}>
-							{displayLoading &&
-								<div className="loading spinner-border text-info" role="initial">
-									<span className="sr-only">Loading...</span>
-								</div>
-							}
+							onClick={cancelTrip}
+						>
 							Cancelar viaje
 						</button>
+						{displayLoading && <Loader />}
 					</div>
 				</MobileModal>
 			}
@@ -134,11 +131,6 @@ const TransportUserActive = () => {
 					Pendientes
 				</button>
 			</div>
-
-			{/* SIN CONDUCTOR */}
-			{noDriver ?
-				history.push(`/${patient.ws}/transportNoDriver`)
-				: null}
 			
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 && 
@@ -231,7 +223,7 @@ const TransportUserActive = () => {
 		: null }
 
 {openAll ?
-<>
+	<>
 	<div>
 		{approvedServices.length > 0 ? <h5 className="pendingTitle">Aprobados:</h5> : null}
 		<ul>
@@ -257,19 +249,15 @@ const TransportUserActive = () => {
 									<div className="contentContainer">
 										<div className="origin"><p className="originTitle">Origen:</p>
 										<p className="originContent"> {item.geo_inicio_address}</p></div>
-
-
 										<div className="destiny"><p className="destinyTitle">Destino:</p>
 										<p className="destinyContent"> {item.geo_fin_address}</p></div>
-										
 										<button className="checkStatus" onClick={() => {
-											
-											if(item.provider_fullname){
-											history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
-											else{
-												alert('hey!')
+											if(item.provider_fullname) {
+												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
+											} else {
+												history.push('/transportNoDriver');									
 											}
-											}}>
+										}}>
 											<FaCar /> Seguir recorrido
 										</button>
 										<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -313,7 +301,7 @@ const TransportUserActive = () => {
 											if(item.provider_fullname) {
 												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
 											} else {
-												setNoDriver(!noDriver)
+												history.push('/transportNoDriver');	
 											}
 									}}>
 										<FaCar /> Seguir recorrido
@@ -335,9 +323,10 @@ const TransportUserActive = () => {
 				</ul>
 		</div>
 	</>
-		: null }
+		: null 
+		}
 		</div>
-		)
+	)
 }
 
 export default TransportUserActive;

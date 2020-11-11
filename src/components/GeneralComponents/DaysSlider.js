@@ -107,7 +107,6 @@ export default function DaysSlider({
 						<span class='slider round'>{transportData.origin_translate_wednesday ? '✓' : null}</span>
 					</label>
 				</div>
-
 				<div className='switcher'>
 					<span>Jueves</span>
 					{transportData.origin_translate_thursday ?
@@ -123,7 +122,8 @@ export default function DaysSlider({
 								/>
 								<span>Hs.</span>
 							</div>
-						</div> : null}
+						</div> : null
+					}
 					<label id='switch' class='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {

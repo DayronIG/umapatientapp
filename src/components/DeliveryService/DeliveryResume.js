@@ -22,7 +22,7 @@ function DeliveryResume({ duration, active }) {
 		personal: 0,
 		app: 0,
 		comment: ''
-	})
+	});
 	const [error, setError] = useState(false);
 
 	useEffect(() => {
@@ -129,8 +129,7 @@ function DeliveryResume({ duration, active }) {
 				</button>
 			}
 		</section>
-		{
-			surveyModal &&
+		{surveyModal &&
 			<MobileModal hideTitle hideCloseButton surveyHisopados>
 				<img src={surveyModalImg} alt="Encuesta" />
 				<div className="surveyQuestion">
@@ -167,9 +166,7 @@ function DeliveryResume({ duration, active }) {
 						<textarea name="comment" onChange={handleChangeComment} onKeyDown={(e) => handleEnter(e)} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
 					</div>
 				</div>
-				
 				{error && <p className="stepper__error">Todos los campos son obligatorios</p>}
-				
 				<button className="stepper__btn" onClick={sendRating}>
 					Enviar
 				</button>

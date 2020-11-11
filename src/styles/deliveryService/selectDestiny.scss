@@ -54,7 +54,8 @@
 			border-radius: $regular-borders;
 			color: $uma-primary;
 			h5 {
-				font-size: 24px;
+				font-size: $uma-font-size-title;
+				font-weight: bold;
 			}
 		}
 		.selectDestiny__container--text{
@@ -108,7 +109,7 @@
 				color: #fff;
 				width: 70%;
 				height: 45px;
-				border-radius: 15px;
+				border-radius: $uma-regular-borders;
 				font-weight: bold;
 				font-size: 18px;
 				margin-top: 5px;
