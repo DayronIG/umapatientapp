@@ -15,22 +15,35 @@
         margin-top: 15px;
         background-color: white;
         color: $primary-blue;
-        .h12 {
-            font-weight: 700;
-            color: $secondary-color;
-            font-size: 34px;
-            margin-top: 50px;
+        .transport-img{
+            margin-bottom: 8vh;
+        }
+        .h12 {            
+            color:#0A6DD7;
+            border-radius: nullpx;
+            font-family: Nunito;
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: 29px;
+            letter-spacing: 0em;
+            text-align: center;
         }
         .h32 {
-            font-size: 20px;
-            font-weight: 200;
-            color: $primary-blue;
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+            /* or 133% */
+
             text-align: center;
-            width: 100%;
+
+            color: #1E1E1E;
         }
     }
 
-    .search-button{
+    .search-button{ 
         display: flex;
         justify-content: center;
         position: fixed;
