@@ -12,14 +12,11 @@
 		margin-top: 25px;
 		// border:1px solid black;
 		box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.555), -1px -1px 1px rgba(128, 128, 128, 0.527);
-		h5{
+		h5 {
 			text-align: center;
-			color: $new_primary_color; 
+			color: $uma-primary; 
 			font-weight: bold;
 		}
-		
-	
-		
 		.scheduleForm__container--input {
 			width: 100%;
 			// border:1px solid rgba(128, 128, 128, 0.479);
@@ -67,7 +64,7 @@
 .addButton{
 	background:none;
 	border:none;
-	background: $new_primary_color;
+	background: $uma-primary;
 	border-radius: 8px;
 	padding:8px;
 	color:white;

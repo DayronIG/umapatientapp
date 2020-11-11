@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import db from '../../config/DBConnection';
@@ -10,6 +10,7 @@ import { GenericHeader } from '../GeneralComponents/Headers';
 import PhoneInput from 'react-phone-input-2';
 import MobileLogin from '../../assets/mobileLogin.svg';
 import LoginCode from '../../assets/loginCode.svg';
+import { checkNum } from '../Utils/stringUtils';
 import swal from 'sweetalert';
 import 'react-phone-input-2/lib/bootstrap.css';
 import '../../styles/generalcomponents/Login.scss';
@@ -26,29 +27,30 @@ const SignIn = props => {
     const [, setSendMsg] = useState(false)
     const [code, setCode] = useState('')
     const loading = useSelector(state => state.front.loading)
-    const [sendedTimes, setSendedTimes] = useState(0)
+    const [sentWs, setSentWs] = useState(true)
     const config =  { headers: { 'Content-Type': 'application/json'} }
-    
+     
     useEffect(() => {
-        navigator.serviceWorker.addEventListener('message', event => swal(event.data.msg, '', 'warning'))
-    }, [])
-
-    useEffect(() => {
-        if (ws) {
+        let timeout = setTimeout(() => {
+            setSentWs(false)
+        }, 2000)
+        if (ws && !props.history.location.pathname.includes("login")) {
+            console.log(ws)
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
             axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                 .then((res) => {
                     if(res.data.redirect === 'register') {
-                        props.history.replace(`/${validPhone}/register`)
+                        props.history.replace(`/register/${validPhone}`)
                     } else {
-                        props.history.replace(`/${validPhone}/login`)
+                        props.history.replace(`/login/${validPhone}`)
                     }
                 })
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
                 .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
+        return () => clearTimeout(timeout)
     }, [])
     
     const handleLogin = async (event) => {
@@ -71,11 +73,19 @@ const SignIn = props => {
             db.auth()
                 .signInWithEmailAndPassword(email, password.value)
                 .then(async (reg) => {
+                    window.gtag('event', 'success_login', {
+                        'event_category' : 'login',
+                        'event_label' : 'login'
+                      });
                     history.push(`/${validPhone}`)
                     dispatch({ type: 'LOADING', payload: false })
                     localStorage.setItem('dbUser', true)
                 })
                 .catch((err) => {
+                    window.gtag('event', 'incorrect_code', {
+                        'event_category' : 'warning',
+                        'event_label' : 'login'
+                      });
                     // caso Usuario no encontrado
                     if (err.code === 'auth/user-not-found') {
                         swal('El código introducido no es válido o ya expiró.', '', 'warning')
@@ -96,7 +106,7 @@ const SignIn = props => {
                     }, 5000)
                 })
         } else if (!password) {
-            props.history.push(`/${validPhone}/login`)
+            props.history.push(`/login/${validPhone}`)
             setSendMsg(true)
             dispatch({ type: 'LOADING', payload: false })
         } else {
@@ -105,23 +115,10 @@ const SignIn = props => {
         }
     }
 
-    function checkNum(phone) {
-        let validPhone = `${parseInt(phone)}`
-        if (validPhone.slice(0, 2) === '54') {
-            if (validPhone.slice(2, 4) === '15' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(4, validPhone.length)}`
-            } else if (validPhone.slice(2, 4) === '11' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
-            } else if (validPhone.slice(2, 4) !== '11' && validPhone.length < 13) {
-                validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(2, validPhone.length)}`
-            }
-        }
-        return validPhone
-    }
 
 
-    const sendWsCode = (ws, code) => {
-        setSendedTimes(1)
+    const sendWsCode = useCallback(async (ws) => {
+        setSentWs(true)
         let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
         if (accessCode && code && accessCode === code) {
@@ -134,20 +131,40 @@ const SignIn = props => {
         } else {
             const data = { ws }
             const headers = { 'Content-type': 'application/json'  }
-            axios.post(`${send_user_code}/${ws}`, data, { headers })
-                .then(() => {
-                    swal('Código enviado! Revise su WhatsApp', '', 'success')
+            await axios.get(`${node_patient}/exists/${ws}`, {}, config)
+                .then(async (res) => {
+                    if(res.data.redirect === 'register') {
+                        const confirmAction = await swal({
+                            title: 'Confirmación',
+                            text: `El número ${ws} no se encuentra registrado. Serás redireccionado al registro`,
+                            icon: 'warning',
+                            buttons: true,
+                        })
+                        if(confirmAction) props.history.replace(`/register/${ws}`)
+                    } else {
+                        axios.post(`${send_user_code}/${ws}`, data, { headers })
+                            .then(() => {
+                                swal('Código enviado! Revise su WhatsApp', '', 'success')
+                                props.history.push(`/login/${ws}`)
+                            })
+                            .catch((err) => {
+                                swal('Error al enviar el código', '', 'warning')
+                            })
+                    }
                 })
-                .catch((err) => {
-                    swal('Error al enviar el código', '', 'warning')
-                })
+                .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
+                .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
-    }
+    }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        props.history.replace(`/${validPhone}/login`)
+        if(validPhone.length > 10 && validPhone.length < 14) {
+            sendWsCode(validPhone)
+        } else {
+            swal('No es un número válido', 'Verifica el número introducido', 'warning')
+        }
     }
 
     return (
@@ -195,13 +212,6 @@ const SignIn = props => {
                                             <small>Presione <strong>"Enviar código"</strong></small>
                                         </label>
                                     </div>
-                                    {sendedTimes === 0 ?
-                                        <button className='btn btn-blue-lg buttonSendCode' onClick={() => sendWsCode(ws)} type='button'>
-                                            Enviar código
-                                        </button> :
-                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
-                                            Código enviado!
-                                        </button>}
                                     <div className='passwordLabelWrapper'>
                                         <div className='imageContainer'>
                                             <img src={LoginCode} alt='mobile login helper' />
@@ -213,16 +223,24 @@ const SignIn = props => {
                                     <input
                                         className='passwordInput form-control w-100'
                                         name='password'
-                                        type='text'
+                                        type='number'
                                         placeholder='Ingrese su código'
                                         value={code}
                                         onChange={e => setCode(e.target.value.toLowerCase())}
+                                        autocomplete="off"
                                         required
                                     />
                                     <button disabled={!code ? true : false} className='btn btn-blue-lg buttonSendLogin' type='submit'>
                                         Ingresar
                                     </button>
                                     <small>Si no recibe el código puede  <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>hablarle a ÜMA por whatsapp</a> para acceder.</small>
+                                    {sentWs === false ?
+                                        <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
+                                            Reenviar código
+                                        </button> :
+                                        <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
+                                            Código enviado!
+                                        </button>}
                                 </>}
                         </form>
                         <small className='text-center'>

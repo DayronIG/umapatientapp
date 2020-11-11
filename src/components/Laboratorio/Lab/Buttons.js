@@ -48,7 +48,6 @@ function LoadAnalysis(props) {
     reader.onloadend = function () {
       const imgB64 = reader.result;
       postImg(imgB64.split("base64,")[1]);
-      console.log(imgB64.split("base64,")[1]);
     };
   };
 

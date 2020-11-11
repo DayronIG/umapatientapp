@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import {Link} from 'react-router-dom';
@@ -113,9 +114,9 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
             {
                 showResults && wellness &&
                 <>
-                    <div className="wellness__results__img__container">
+                    {sthetoscopeGraph && <div className="wellness__results__img__container">
                         <img className="wellness__results__img" src={sthetoscopeGraph} alt="waveform" />
-                    </div>
+                    </div>}
                     <div className="wellness__results__title">
                         {parseInt(sthetoscopeBpm) > 50 && parseInt(sthetoscopeBpm) < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?

@@ -14,6 +14,7 @@ export default function DaysSlider({
 }) {
 	const transportData = useSelector(state => state.transport);
 	const dispatch = useDispatch();
+
 	const handlerInputChange = (e) => {
 		const { name, value } = e.target;
 		handleChange(value, name);

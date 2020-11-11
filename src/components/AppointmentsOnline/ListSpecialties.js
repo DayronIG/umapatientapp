@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { GenericHeader, BackButton } from '../GeneralComponents/Headers';
 import { FaUserMd } from 'react-icons/fa';
-import Specialties from './Specialties';
+import Specialties from './Specialties/Specialties';
 import '../../styles/appointmentsonline/listSpecialties.scss';
 
 const ListSpecialties = (props) => {

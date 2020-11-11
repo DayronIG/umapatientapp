@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ComingSoon from '../GeneralComponents/ComingSoon';
 import Loading from '../GeneralComponents/Loading';
 import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
-import { validateUPAff_byDocType, transcELG } from '../../store/actions/UPActions';
+import { validateUPAff_byDocType, /* transcELG */ } from '../../store/actions/UPActions';
 import { getDocumentFB } from '../Utils/firebaseUtils';
 
 const docTypesUP = [2, 3, 4, 5, 7, 1]; // Ordenados por prioridad: DNI, LE, LC, Passport, DNI EXT, CED.
@@ -29,7 +30,7 @@ const OnlineSpecialist = ({ match, history }) => {
 				const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
 				if (patient?.corporate_norm?.toLowerCase() === 'union personal') {
 					const credNum = await validateUPAff_byDocType(dni, docTypesUP).catch((e) => console.error(e));
-					const isValid = transcELG(credNum || '').catch((e) => console.error(e));
+					// const isValid = transcELG(credNum || '').catch((e) => console.error(e));
 					localStorage.setItem('up_affNum', credNum || '');
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
@@ -43,6 +44,8 @@ const OnlineSpecialist = ({ match, history }) => {
 						const scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === '') {
 							return true;
+						} else {
+							return false
 						}
 					});
 					if (hasAppoint) {

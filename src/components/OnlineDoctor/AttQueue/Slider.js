@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import Carousel from 'nuka-carousel';
-import sopaDeLetras from '../../../assets/SopaDeLetras.png'
-import memoTest from '../../../assets/MemoTest.png'
 import { withRouter } from 'react-router-dom';
 import SlideItem from './SlideItem';
 import '../../../styles/Slider.scss'
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
-import PlayGround from '../../Games/MemoTest/MemoTest';
-import AlphabetSoup from '../../Games/AlphabetSoup';
 import slides from '../../slider-content';
 
 const Slider = () => {

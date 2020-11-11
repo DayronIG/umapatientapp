@@ -1,29 +1,23 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faLaptopMedical,
-	faUserMd,
-	faClinicMedical,
-	faNotesMedical,
-	faBus,
-	faVrCardboard,
-} from '@fortawesome/free-solid-svg-icons';
 import { GenericHeader } from '../GeneralComponents/Headers';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
-import SliderHome from './SliderHome';
-import LifeJoy from './LifeJoy';
-import CoronavirusModal from './CoronavirusModal';
+import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
+import UmaCareHome from '../UmaCare/Home'
 import '../../styles/generalcomponents/ModulesMenu.scss';
+import iconGuardia from '../../assets/icons/icon-guardia.svg';
+import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
+import iconEstudios from '../../assets/icons/icon-estudios.svg';
+import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const { patient } = useSelector((state) => state.queries);
+	const { hisopadosActive } = useSelector((state) => state.front);
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -31,7 +25,7 @@ const ModulesMenu = () => {
 				<div className='module-button'>
 					<Link to={link} className='module-name'>
 							<div className='module-ico'>
-								<FontAwesomeIcon icon={icon} />
+								<img src={icon} alt={text} />
 							</div>
 						<p className='module-title'>{text}</p>
 					</Link>
@@ -42,60 +36,46 @@ const ModulesMenu = () => {
 
 	return (
 		<>
-			<CoronavirusModal />
 			{patient.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={patient.fullname} />
+					{hisopadosActive && <BuyHisopado />}
 					<section className='modules-container'>
-						<div className='card'>
+						<div className='card length4'>
 							{returnModule(
 								`/${patient.ws}/onlinedoctor/who`,
 								'onlinedoctor',
-								faLaptopMedical,
-								'Consulta Online (Guardia)'
+								iconGuardia,
+								'Guardia'
 							)}
-							{returnModule(`/${patient.ws}/transport`, 'translation', faBus, 'Traslados')}
-							{returnModule(
-								`/appointmentsonline/who?redirectConsultory=true`,
-								'my_specialist',
-								faNotesMedical,
-								'Mi especialista Online'
-							)}
-							{returnModule(`/${patient.ws}/vmd`, 'vmd', faUserMd, 'Visita médica Domiciliaria')}
 							{returnModule(
 								`/${patient.ws}/autonomous`,
 								'autonomous',
-								faVrCardboard,
-								'Consulta Autonomous'
+								iconAutodiagnostico,
+								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${patient.ws}/comingSoon`,
-								'consultory_turn',
-								faClinicMedical,
-								'Turno en consultorio'
+								`/${patient.ws}/wellness`,
+								'wellness',
+								iconEstudios,
+								'Estudios'
+							)}
+							{returnModule(
+								`/appointmentsonline/who?redirectConsultory=true`,
+								'my_specialist',
+								iconEspecialista,
+								'Mi especialista'
 							)}
 						</div>
 					</section>
-					<LifeJoy />
 					<EventsHistory />
-					<button className='promotions-button mx-auto' onClick={() => console.log('Send msg')}>
-						<a
-							href={`whatsapp://send?text=Hola, te recomiendo UMA. Mi plataforma de salud y bienestar. Haz clic en el enlace para usarla https://wa.me/5491123000066?text=[REF:${patient.ws}] Hola,%20quiero%20registrarme%20en%20Uma`}
-							data-action='share/whatsapp/share'>
-							<div className='d-flex'>
-								<div className='promotions-ico'>
-									<FontAwesomeIcon icon={faWhatsapp} />
-								</div>
-								<span className='promotions-text'>
-									Invita a un amigo y gana puntos canjeables por servicios médicos para utilizar
-									cuando quieras.
-								</span>
-							</div>
-							<div className='discount'>GIFT</div>
-						</a>
-					</button>
-					<SliderHome />
+					<UmaCareHome />
+					{/* <TrasladosHome /> */}
+{/* 					<button className="needhelp__btn">
+						<img src={iconBubbles} alt="Necesito ayuda"/>
+						Necesito ayuda
+					</button> */}
 				</>
 			) : (
 					<Loading />

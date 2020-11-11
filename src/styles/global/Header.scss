@@ -17,6 +17,9 @@
          height: 52px;
          padding: 5px 6px;
          box-shadow: 0 1px 0px #b0d4e4, 0 3px 6px rgba(173, 173, 173, 0.23);
+         @media (min-width:768px) and (max-width: 1440px){
+            height: 90px;
+         }
       }
       .displayNotifications {
          padding: 10px;
@@ -54,12 +57,16 @@
       }
       .logo-container {
          .logo {
-            height: 40px;
-            width: 40px;
+            height: 44px;
+            width: 44px;
             border-radius: 50px;
             margin-left: 6px;
             background-size: cover;
             background-color: $white-color;
+            @media (min-width:768px) and (max-width: 1440px){
+               height: 88px;
+               width: 88px;
+            }
          }
       }
       img {

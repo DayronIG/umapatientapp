@@ -1,11 +1,10 @@
 import React from 'react'
 import Query from '../components/Query/QueryContainer'
 import Message from '../components/Query/Message'
-import { SlidingCards } from '../components/Query/Outputs/components/Index';
 
 export class Chatbot {
     constructor(steps, data = {}) {
-        this.components = { Message, Query, SlidingCards };
+        this.components = { Message, Query };
         this.complete = false
         this.data = data
         this.done = false
@@ -1883,41 +1882,6 @@ export const jsonChatPSICOGABI = [{
     params: 'data',
     nextStep: 'choose_professional'
   } 
-},
-{
-  "id": "choose_professional",
-  "hideInput": true,
-  "delay": 2000,
-  "replace": true,
-  "component": 'SlidingCards',
-  "waitAction": true,
-  "metadata": {
-    "query": {
-      "style": {
-      },
-      "outputs": {
-        "style": {},
-        "outputs": [
-          {
-            "type": "slidingCard",
-            "style": {},
-            "options": {
-              "text": 'asdsadfdsa',
-              "option_id": "firebase id for this option",
-              "styles": {}
-            }
-          }
-        ]
-      },
-      "inputs": {
-        "style": "col-6",
-        "inputs": [
-
-        ]
-      }
-    }
-  },
-  "trigger": ""
 }
 ]
 

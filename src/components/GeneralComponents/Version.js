@@ -5,6 +5,7 @@ const Version = () => {
   function logout() {
     SignOut()
   }
+
   return (
     <div className="text-center" style={{background: "white"}}>
       <p onClick={() => logout()} className="mb-3 close-sesion">Cerrar sesión</p>

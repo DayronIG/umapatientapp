@@ -1,28 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-unresolved */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
 import swal from "sweetalert"
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
+import { payment_url, node_patient } from "../../config/endpoints"
 
-const PaymentCardMP = (props) => {
+const PaymentCardMP = () => {
+    const dispatch = useDispatch()
+    const {params, current} = useSelector(state => state.deliveryService)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
-    const totalPayment = 200
+    const hisopadoPrice = parseInt(params?.price);
+    const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
+    const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
+    const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
-    const payment_url_test = `http://localhost:8080/mercadopago/payment`;
-    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const discountParam = useSelector(state => state.deliveryService.params.discount)
+    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
@@ -75,17 +82,14 @@ const PaymentCardMP = (props) => {
 
     function handleSubmit(event) {
         event.preventDefault()
-        if (!submit) {
-            const form = document.getElementsByTagName('form')[0]
-            window.Mercadopago.createToken(form, sdkResponseHandler)
-        } else {
-            alert("Ya realizaste el pago")
-        }
+        const form = document.getElementsByTagName('form')[0]
+        window.Mercadopago.createToken(form, sdkResponseHandler)
+
     }
 
     function sdkResponseHandler(status, response) {
-        console.log(status, response)
-        if (status !== 200 && status !== 201) {
+      console.log(response)
+        if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
         } else {
@@ -97,46 +101,65 @@ const PaymentCardMP = (props) => {
             card.setAttribute('value', response.id)
             card.setAttribute('id', 'token')
             form.appendChild(card)
-            // console.log("Response", response)
             postData(form, response.id)
         }
     }
 
-    function postData(form, token) {
+    const postData = useCallback((form, token) => {
+      let { paymentMethodId, email } = form.elements
+      let cardId = paymentMethodId.value
+      if(paymentMethodId.value === "mastercard" || paymentMethodId.value === "unknown") cardId = "master"
         setLoader(true)
-        let { paymentMethodId } = form.elements
-        console.log(paymentMethodId, form.elements, token)
         let paymentData = {
-            email: `${user.email}`, // hardcoded
-            paymentMethodId: paymentMethodId.value, 
+            email: email.value || 'info@uma-health.com',
+            paymentMethodId: cardId, 
             token: token,
             dni: `${user.dni}`,
             fullname: `${user.fullname}`,
             amount: parseInt(totalPayment),
-            currency: 'ARS'
+            currency: 'ARS',
+            id: current.id,
+            type: 'delivery',
+            coupon
+
          }
-        console.log(paymentData) 
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-         axios.post(payment_url_test, paymentData, headers)
+         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+         .then(res => console.log(res))
+         .catch(err => console.log(err))
+         axios.post(payment_url, paymentData, {headers})
              .then(res => {
-                 setLoader(false)
-                 console.log(res.data.body)
+                setLoader(false)
                  if (res.data.body.status === "approved") {
+                    window.gtag('event', 'purchase', {
+                      'affiliation': user?.corporate_norm,
+                      'coupon': '1',
+                      'currency': 'ARS',
+                      'items': 'Hisopado Antígeno',
+                      'transaction_id': current.id,
+                      'value': parseInt(totalPayment)
+                      });
                      setStatus("approved")
-                 } else if (res.data.body.status === "rejected") {
-                     setStatus(res.data.body.status)
+                } else if (res.data.body.status === "rejected") {
+                  window.gtag('event', 'payment_failed', {
+                    'event_category' : 'warning',
+                    'event_label' : 'hisopado_payment'
+                  });
+                  setStatusDetail(res.data.body.status_detail)
+                  setStatus(res.data.body.status)
                      // alert(res.data.body.status)
-                 } else {
-                     setStatus(res.data.body.status)
-                     swal(res.data.body.status, "", "error")
-                 }
-             })
-             .catch(err => {
-                 setLoader(false)
-                 console.log(err)
-                 setStatus("failed")
-             })
-    }
+                }
+            })
+            .catch(err => {
+              setLoader(false)
+              if(paymentMethodId.value === "unknown"){ 
+                swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+              } else {
+                swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+              }
+              window.Mercadopago.clearSession();
+            })
+  }, [coupon])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
@@ -152,11 +175,31 @@ const PaymentCardMP = (props) => {
 
     useEffect(() => {
         if(paymentStatus === "approved"){
-            swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            .then(()=> history.push("/"))
+          console.log("Payment success")
+          setLoader(false)
+          dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
+            // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+            // .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
-            swal('Ocurrió un problema al ingresar el pago', 'Porfavor intente mas tarde.', 'error')
-            .then(()=> history.push("/"))
+            switch(statusDetail){
+              case("cc_rejected_insufficient_amount"):
+                swal('Fondos insuficientes!', 'Intente nuevamente con otra tarjeta.', 'error')
+                break;
+              case("cc_rejected_bad_filled_security_code"):
+                swal('Código de seguridad inválido!', 'Verifique el código ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_date"):
+                swal('Fecha de expiración inválida!', 'Verifique la fecha ingresado.', 'error')
+                break;
+              case("cc_rejected_bad_filled_other"):
+                swal('Datos inválidos!', 'Verifique los datos ingresados.', 'error')
+                break;
+              default: 
+                swal('No se pudo procesar el pago', 'Intente nuevamente.', 'error')
+                break;
+            }
+            window.Mercadopago.clearSession();
+            console.log("Payment failed")
         }
     }, [paymentStatus, history])
 
@@ -172,10 +215,19 @@ const PaymentCardMP = (props) => {
       const handleFocus = e => {
         setState({ ...state, focus: e.target.name });
       }
+
+      const validateDiscount = (e) => {
+        setCoupon(e.target.value)
+        if(e.target.value === discountParam.code){
+          setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
+        } else {
+          setTotalPayment(hisopadoPrice)
+        }
+      }
     
       const handleChange = e => {
-        const { name, value } = e.target;
-        setState({ ...state, [name]: value });
+        if(e.target){const { name, value } = e.target;
+        setState({ ...state, [name]: value });}
       }
     
       const properties = {
@@ -184,7 +236,7 @@ const PaymentCardMP = (props) => {
       }
     
       return (
-          <>
+          <div className="payment-arg">
           {loader && <CustomUmaLoader />}        
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
@@ -197,7 +249,7 @@ const PaymentCardMP = (props) => {
               number={number}
               callback={(a, b) => {
                 setCreditCard(a.issuer)
-                console.log(a, b)}}
+              }}
               {...properties}
             />
           </div>
@@ -211,13 +263,28 @@ const PaymentCardMP = (props) => {
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
               <input
+                autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"
                 type="text"
                 name="number"
-                placeholder="Número de tarjeta"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
                 onChange={(e) => {
                   handleChange(e)
                 }}
+                onFocus={handleFocus}
+              />
+            </div>
+
+            <div className="formulario-item">
+              <small>Email</small>
+              <input
+                autoComplete="on"
+                type="text"
+                name="email"
+                placeholder="nombre@email.com"
+                id="email"
+                data-checkout="email"
+                onChange={handleChange}
                 onFocus={handleFocus}
               />
             </div>
@@ -225,10 +292,11 @@ const PaymentCardMP = (props) => {
             <div className="formulario-item">
               <small>Nombre</small>
               <input
+                autoComplete="on"
                 type="text"
                 name="name"
                 maxLength="30"
-                placeholder="Nombre"
+                placeholder="María Hernandez"
                 id="cardholderName"
                 data-checkout="cardholderName"
                 onChange={handleChange}
@@ -239,7 +307,9 @@ const PaymentCardMP = (props) => {
             <div>
                 <div className="document">
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
-                <input type="text" id="docNumber" defaultValue={user.dni}
+                <input 
+                autoComplete="off"
+                type="text" id="docNumber" defaultValue={user.dni.length <= 8? user.dni: "12345678"}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>
@@ -249,8 +319,10 @@ const PaymentCardMP = (props) => {
               <div>
                 <small>Vencimiento</small>
                 <div className="cardExpiration">
-                <input type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
-                    placeholder="Mes" autoComplete="off" className="mr-3" maxLength="2"
+                <input 
+                autoComplete="off"
+                type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
+                    placeholder="Mes" className="mr-3" maxLength="2"
                     onChange={handleChange}
                     onFocus={handleFocus}/>
                 <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
@@ -262,22 +334,41 @@ const PaymentCardMP = (props) => {
               </div>
             </div>
               <div className="formulario-item">
-                <small>CVC</small>
+                <small>Código de seguridad</small>
                 <input
+                autoComplete="off"
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""
                   name="cvc"
                   maxLength="4"
-                  placeholder="CVC"
+                  placeholder="123"
                   onChange={handleChange}
                   onFocus={handleFocus}
                 />
               </div>
+              <div className="formulario-item last__input">
+                <small>Código de descuento</small>
+                <input
+                autoComplete="off"
+                  id="discount" data-checkout="discount"
+                  type="text"
+                  className=""
+                  name="discount"
+                  placeholder="CÓDIGO"
+                  onChange={
+                    (e) => {
+                      validateDiscount(e)
+                      handleChange(e)
+                    }
+                  }
+                  onFocus={handleFocus}
+                />
+              </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-            <button className="record__trigger--btn styleButton paymentButton" type="submit" form="pay">Pagar ${totalPayment}</button>
+            <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${totalPayment}</p></button>
           </form>
-        </>
+        </div>
       )
     }
 

@@ -1,12 +1,31 @@
+@import "../../styles/global/Vars.scss";
+
+.payment-container{
+  background-color: $white-color;
+  height: 100vh;
+  padding-bottom: 20vh;
+
+  .payment-arg{
+    background-color: $white-color;
+  }
+
+  /* Change the white to any color ;) */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active  {
+      -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
+
 .flecha-pay {
   font-size: 2rem;
-  color: #fff;
+  color: $white-color;
   position: absolute;
   margin: 20px 0 0 20px;
 }
 
 .tarjeta-credito {
-  margin-top: 25px;
+  margin-top: 3vh;
   
   // clase de la libreria
   .rccs__card--unknown > div {
@@ -24,26 +43,37 @@
 }
 
 .formulario-credito {
-  box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
-  margin: 15px 10px;
+  margin: 0px 10px;
   padding: 20px 20px 0 20px;
-  background: rgba(#fff, .9);
   border-radius: 6px;
   small {
     font-weight: bold;
     font-size: 15px;
-    color: #64D6D3;
+    color: grey;
+    background-color: $white-color;
+    width: fit-content;
+    margin-left: 5vw;
+    position: relative;
+    top: 2vh;
     display: block;
-    width: 100%;
+    padding: 0 1vw;
     margin-bottom: 3px;
   }
   input {
     outline: none;
     border: 2px solid rgba(138, 138, 138, 0.24);
-    height: 35px;
+    height: 6vh;
     border-radius: 5px;
     margin-bottom: 5px;
     padding: 10px;
+    background-color: $white-color !important;
+  }
+  input:focus{
+    background-color: $white-color !important;
+  }
+
+  .last__input{
+    padding-bottom: 10vh;
   }
 
   .formulario-item {
@@ -62,26 +92,6 @@
       width: 80%;
     }
   }
-
-  button {
-    display: block;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 5px 0;
-    margin: 0 auto 10px auto;
-    width: 80%;
-    border-radius: 6px;
-    color: #fff;
-    background: #64D6D3;
-    border: none;
-    box-shadow: 0px 7px 20px rgba(138, 138, 138, 0.24);
-    position: relative;
-    bottom: -20px;
-
-    &:focus {
-      outline: none;
-    }
-  }
 }
 
 .paypal--payment{
@@ -89,4 +99,22 @@
   .payment-title{
     text-align: center;
   }
+}
+.payment-button{
+  position: fixed;
+  width: 100vw;
+  height: 12vh;
+  left: 0;
+  border: none;
+  bottom: -3vh;
+  color: $white-color;
+  background: $uma-primary;
+  border-radius: 20px;
+  .button-text{
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 25px;
+    color: $white-color;
+  }
+}
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uid from '../api_uid';
@@ -11,7 +12,6 @@ import swal from 'sweetalert';
 
 export default ({ questions }) => {
   const patient = useSelector(state => state.queries.patient);
-  const token = useSelector(state => state.userActive.token);
   const autonomous = useSelector(state => state.autonomous);
   const [actualQuestion, setActualQuestion] = useState({});
   const [qList, setQlist] = useState([]);

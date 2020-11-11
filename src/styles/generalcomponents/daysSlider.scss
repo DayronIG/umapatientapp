@@ -69,7 +69,6 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: #ccc;
 	-webkit-transition: .4s;
 	transition: .4s;
   }
@@ -118,11 +117,10 @@
 	  align-items: center;
 	  width:100%;
 	  justify-content: space-between;
-	  margin-top: 5px;
+	  margin-top:5px;
 	  span{
 		  font-weight: bold;
 	  }
-
   }
   .inputers{
 	  display:flex;

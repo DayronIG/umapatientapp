@@ -3,7 +3,6 @@ import * as URLs from '../../config/endpoints';
 import { parseXMLResponse } from '../../components/Utils/xmlUtils';
 import moment from 'moment-timezone';
 
-
 const dateISO = moment()
 	.tz('America/Argentina/Buenos_Aires')
 	.toISOString()

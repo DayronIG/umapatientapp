@@ -1,11 +1,10 @@
-import { timeWoDate } from './dateUtils';
+/* eslint-disable array-callback-return */
 import convertTimeToMins from './convertTimeToMins';
 import { calcReaminingHrsMins } from './dateUtils';
 import { yearAndMonth } from './dateUtils';
 import { searchActiveProviders } from '../../store/actions/firebaseQueries';
 import moment from 'moment-timezone';
 import { getAssignedAppointments, getFreeAppointments } from '../../store/actions/getAssignations';
-
 import 'moment/locale/es';
 
 const fromTime = moment(new Date())

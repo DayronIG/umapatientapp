@@ -10,7 +10,6 @@ import { Loader } from '../../global/Spinner/Loaders';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment-timezone';
-
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
@@ -98,6 +97,7 @@ const ConfirmAppointment = (props) => {
 				return history.replace(`/${userVerified.dni}/onlinedoctor/queue`);
 			}
 		} catch (err) {
+			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 			return history.replace('/');
