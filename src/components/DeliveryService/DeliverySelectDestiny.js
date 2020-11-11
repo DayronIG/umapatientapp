@@ -25,16 +25,16 @@ const DeliverySelectDestiny = () => {
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const { patient } = useSelector(state => state.queries);
 	const { loading } = useSelector(state => state.front);
+	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: patient?.piso || '',
 		depto: patient?.depto || '',
 		address: patient?.address || '',
-		lat: patient?.lat || -34.6037389,
-		lng: patient?.lng || -58.3815704,
+		lat: patient?.lat || addressLatLongHisopado.lat || -34.6037389,
+		lng: patient?.lng || addressLatLongHisopado.lng || -58.3815704,
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
-	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
@@ -72,6 +72,7 @@ const DeliverySelectDestiny = () => {
             }
 			fetchData();
 		}
+		setFormState({...formState, lat: addressLatLongHisopado.lat, lng: addressLatLongHisopado.lng})
 	}, [mapApi, mapInstance, addressLatLongHisopado])
 
 	useEffect(() => {
@@ -174,6 +175,7 @@ const DeliverySelectDestiny = () => {
 		}
 			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 	};
+
 
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>

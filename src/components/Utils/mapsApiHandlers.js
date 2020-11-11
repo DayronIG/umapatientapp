@@ -81,7 +81,7 @@ export const mapConfig = (
 	},
 	bootstrapURLKeys = {
 		key: 'AIzaSyDLnpXWJx1qKAfHtTeYWa30b9jGH2GeXfs',
-		libraries: ['places'],
+		libraries: ['places', 'geometry', 'drawing', 'visualization'],
 		language: 'es',
 	}
 ) => ({
