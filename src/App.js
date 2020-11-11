@@ -13,6 +13,7 @@ import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
+import ReferredRegister from './views/ReferredRegister';
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -90,6 +91,7 @@ function App(props) {
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
+				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />

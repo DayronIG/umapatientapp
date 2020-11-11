@@ -15,6 +15,7 @@ import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { validateInput } from '../components/Utils/stringUtils';
+import {generatePassword} from '../components/Utils/generatePassword';
 import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../../src/styles/generalcomponents/registerNew.scss';
@@ -161,13 +162,6 @@ const Register = props => {
             dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
             return date
         }
-    }
-
-    const generatePassword = () => {
-        let num = Math.random()
-        let password = btoa(num * 100)
-        password = password.toLowerCase().slice(4, 10)
-        return password
     }
 
     let handleSubmit = async (reg, user) => {

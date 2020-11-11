@@ -223,7 +223,7 @@ const SignIn = props => {
                                     <input
                                         className='passwordInput form-control w-100'
                                         name='password'
-                                        type='number'
+                                        type='text'
                                         placeholder='Ingrese su código'
                                         value={code}
                                         onChange={e => setCode(e.target.value.toLowerCase())}

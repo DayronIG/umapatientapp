@@ -6,7 +6,7 @@ import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { install_event } from '../config/endpoints';
+import {generatePassword} from '../components/Utils/generatePassword';
 import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
@@ -156,13 +156,6 @@ const Register = props => {
             dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
             return date
         }
-    }
-
-    const generatePassword = () => {
-        let num = Math.random()
-        let password = btoa(num * 100)
-        password = password.toLowerCase().slice(4, 10)
-        return password
     }
 
     let handleSubmit = async (reg, user) => {

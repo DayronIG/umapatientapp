@@ -17,6 +17,7 @@ import swal from 'sweetalert';
 import moment from 'moment-timezone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../src/styles/generalcomponents/register.scss';
+import {generatePassword} from '../components/Utils/generatePassword';
 
 const Register = props => {
     const dispatch = useDispatch();
@@ -104,13 +105,6 @@ const Register = props => {
             dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
             return date
         }
-    }
-
-    const generatePassword = () => {
-        let num = Math.random()
-        let password = btoa(num * 100)
-        password = password.toLowerCase().slice(4, 10)
-        return password
     }
 
     let handleSubmit = async (reg, user, pwd) => {
