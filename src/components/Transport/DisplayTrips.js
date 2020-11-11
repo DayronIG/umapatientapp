@@ -1,4 +1,3 @@
-import Car from '../../assets/car.svg'
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,10 +5,11 @@ import Axios from 'axios';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { att_history, change_status_traslado } from '../../config/endpoints';
 import moment from 'moment-timezone';
-import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaSlideshare } from 'react-icons/fa'
-import '../../styles/generalcomponents/TransportUserActive.scss';
-import swal from 'sweetalert';
+import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt } from 'react-icons/fa';
+import Car from '../../assets/car.svg';
 import { renderStatus } from '../Utils/transportUtils';
+import { Loader } from '../GeneralComponents/Loading';
+import '../../styles/generalcomponents/TransportUserActive.scss';
 
 
 const TransportUserActive = () => {
@@ -46,8 +46,10 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
-			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
-			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
+			const appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED');
+			const pendServicesTemp = response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+			setApprovedServices(appservicesTemp);
+			setPendingServices(pendServicesTemp);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -90,17 +92,14 @@ const TransportUserActive = () => {
 						placeholder="Ingrese el motivo de cancelación"
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
 					/>
-					<div className="buttonContainer">
+					<div className="d-flex align-items-center buttonContainer">
 						<button
 							className="cancelReason"
-							onClick={cancelTrip}>
-							{displayLoading &&
-								<div className="loading spinner-border text-info" role="initial">
-									<span className="sr-only">Loading...</span>
-								</div>
-							}
+							onClick={cancelTrip}
+						>
 							Cancelar viaje
 						</button>
+						{displayLoading && <Loader />}
 					</div>
 				</MobileModal>
 			}

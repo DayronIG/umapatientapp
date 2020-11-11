@@ -64,14 +64,13 @@ import DeliveryResults from "./components/DeliveryService/DeliveryResults"
 import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
-import 'bootstrap/dist/css/bootstrap.css';
-import './styles/index.scss';
 import Install from './views/Install.js';
 import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
-
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/index.scss';
 
 function App(props) {
 	return (
