@@ -46,7 +46,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 			const isIos = () => {
 				const userAgent = window.navigator.userAgent.toLowerCase();
 				// console.log(userAgent)
-				return /iphone|ipad|ipod/.test(userAgent);
+				return /iphone|ipad|ipod|instagram|Instagram|opera/.test(userAgent);
 			};
 			if (!isIos) {
 				navigator.permissions

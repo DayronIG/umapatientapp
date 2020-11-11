@@ -33,13 +33,13 @@ function SearchBoxFunc({ map, mapApi, handleChangePlace, value }){
 
     return(
         <input 
-        value={selector}
-        ref={(ref) => { searchInput = ref; }}
-        onChange={(e) => handleAddressChange(e)}
-        onClick={() => dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload:  ""})}
-        type='text'
-		placeholder="Dirección"
-         />
+            value={selector}
+            ref={(ref) => { searchInput = ref; }}
+            onChange={(e) => handleAddressChange(e)}
+            onClick={() => dispatch({type: 'SET_HISOPADO_USER_ADDRESS', payload:  ""})}
+            type='text'
+            placeholder="Dirección"
+            />
         )
 };
 

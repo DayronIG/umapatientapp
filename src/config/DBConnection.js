@@ -40,7 +40,9 @@ function DBConnection() {
 
 export const askPermissionToRecieveNotifications = async () => {
     try {
-        await messaging.requestPermission();
+        await messaging.requestPermission().catch(err => {
+            console.log(err)
+        });
         const token = await messaging.getToken();
         localStorage.setItem('Notification_Token', token)
         return token

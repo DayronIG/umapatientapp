@@ -30,7 +30,7 @@ export default function register(onUpdate) {
         checkValidServiceWorker(swUrl);
         const isIos = () => {
           const userAgent = window.navigator.userAgent.toLowerCase()
-          return /iphone|ipad|ipod/.test(userAgent)
+          return /iphone|ipad|ipod|Instagram|opera|instagram/.test(userAgent)
         }
         !isIos && navigator.serviceWorker.ready.then(registration => {
                   firebase.messaging().useServiceWorker(registration)
