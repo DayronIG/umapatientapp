@@ -67,21 +67,26 @@ const TransportTracking = () => {
 		}
 	}, [drawRoute, service]);
 
+	console.log(service);
+
 	return (
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({ lat: service.current_position_remis?.lat || 0, lng: service.current_position_remis?.lon || 0 })}
+					{...mapConfig(
+						{ 
+							lat: service.current_position_remis?.lat || 0, 
+							lng: service.current_position_remis?.lon  || 0 
+						}
+					)}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					<Marker
+					{service.current_position_remis?.lat && <Marker
 						lat={service.current_position_remis?.lat || 0}
 						lng={service.current_position_remis?.lon || 0}
 						text='Ubicacion del remis' type='remis' 
-					/>
-					<Marker
-						{...renderMarker(service)}
-					/>
+					/>}
+					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
