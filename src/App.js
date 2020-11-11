@@ -57,7 +57,10 @@ import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
-import DeliveryResults from "./components/DeliveryService/DeliveryResults"
+import DeliveryResults from "./components/DeliveryService/DeliveryResults";
+import WhoScreenHisopados from './components/DeliveryService/WhoScreenHisopados/WhoScreenHisopados'
+import ForOtherHisopados from './components/DeliveryService/WhoScreenHisopados/ForOtherHisopados';
+import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart'
 import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
@@ -136,6 +139,21 @@ function App(props) {
 					exact
 					path='/hisopado/:ws?'
 					component={DeliveryPurchase}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/destinatario/:ws?'
+					component={WhoScreenHisopados}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/for-other/:ws?'
+					component={ForOtherHisopados}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/carrito/:ws?'
+					component={HisopadoCart}
 				/>
 				<PrivateRoute
 					exact

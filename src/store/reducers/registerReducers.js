@@ -14,6 +14,7 @@ const initialState = {
   year: "0000",
   dt: "",
   os: "",
+  phone:"",
   osNumber: 0,
   fullname: "",
   userToFill: {
@@ -63,6 +64,8 @@ export default function frontReducers(state = initialState, action) {
       return { ...state, osNumber: action.payload };
     case "REGISTER_FIRST_FULLNAME":
       return { ...state, fullname: action.payload };
+    case "REGISTER_PHONE_NUMBER":
+        return { ...state, phone: action.payload };
     case "FILL_REGISTER":
       if (action.payload) {
         return { ...state, userToFill: action.payload };
