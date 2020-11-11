@@ -21,6 +21,7 @@ function ScheduleTransport() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+
 	const resetReturnDays = () => {
 		dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false });
 		dispatch({ type: 'SET_BACK_TRANSLATE_TUESDAY', payload: false });
@@ -31,6 +32,16 @@ function ScheduleTransport() {
 		dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: false });
 		dispatch({ type: 'RESET_RETURN_SCHEDULE' });
 	}
+	const resetOriginDays = () => {
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_MONDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_TUESDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_WEDNESDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_THURSDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_FRIDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SATURDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SUNDAY', payload: false });
+		dispatch({ type: 'RESET_START_SCHEDULE' });
+	}
 
 	const handleSubmit = async (event) => {
 		// VALIDACIONES DE HORARIO
@@ -38,17 +49,37 @@ function ScheduleTransport() {
 		dispatch({ type: 'LOADING', payload: true });
 		console.log(transportData.startSchedules);
 		console.log(transportData.returnSchedules);
+
+		function isEmpty(obj) {
+			for(var key in obj) {
+				if(obj.hasOwnProperty(key))
+					return false;
+			}
+			return true;
+		}
+
 		const isValid = days.every(day => {
 			const originTime = Number(transportData.startSchedules[day]?.slice(0,2));
 			const destinyTime = Number(transportData.returnSchedules[day]?.slice(0,2));
+			
 			if(!originTime || !destinyTime) return true;
 			if (destinyTime > originTime) {
 				return true;
 			} else {
 				return false;
 			}
+			
 		});
-		if(!isValid) return swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning');
+		if(!isValid){
+			swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
+			dispatch({ type: 'LOADING', payload: false });
+			return
+		} 
+		if(isEmpty(transportData.startSchedules)){
+			swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
+			dispatch({ type: 'LOADING', payload: false });
+			return
+		}
 		try {
 			await transportActions.createTransportSchedule(transportData, patient);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
@@ -59,6 +90,8 @@ function ScheduleTransport() {
 			dispatch({ type: 'LOADING', payload: false });
 			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
 		}
+		
+
 	}
 
 
@@ -95,7 +128,8 @@ function ScheduleTransport() {
 			<div className='scheduleForm__container'>
 				<div className='centeredElements'>
 				<h5 className='scheduleForm__container--title'>Horario de llegada a destino</h5>
-				<button className="addButton" type="button" onClick={transportActions.setHasOrigin}>+ Agregar horarios</button>
+				{transportData.hasOrigin ? <button className="addButton"  type="button" onClick={function() {transportActions.setHasOrigin(true)
+				resetOriginDays()}}>- Borrar horarios</button> : <button className="addButton"  type="button" onClick={() => transportActions.setHasOrigin(false)}>+ Agregar horarios</button>}
 				 
 				
 				{transportData.hasOrigin && (<DaysSlider
@@ -107,19 +141,11 @@ function ScheduleTransport() {
 					</div>
 				</div>
 				<div className="scheduleForm__container">
-				{/* <input
-					type='checkbox'
-					onChange={transportActions.setHasReturn}
-					onClick={resetReturnDays}
-					id='scheduleReturn'
-					name='scheduleReturn'
-					value={transportData.hasReturn}
-				/> */}
 				<div className='centeredElements'>
 				<h5 className='scheduleForm__container--title'>Horario de regreso a origen</h5>
 				
-				{transportData.hasReturn ? <button className="addButton"  type="button" onClick={transportActions.setHasReturn}>- Borrar horarios</button> : <button className="addButton"  type="button" onClick={transportActions.setHasReturn}>+ Agregar horarios</button>}
-				
+				{transportData.hasReturn ? <button className="addButton"  type="button" onClick={function() {transportActions.setHasReturn(true)
+				resetReturnDays()}}>- Borrar horarios</button> : <button className="addButton"  type="button" onClick={() => transportActions.setHasReturn(false)}>+ Agregar horarios</button>}
 				{transportData.hasReturn && (
 					<DaysSliderReturn
 						title='Regreso a origen'
