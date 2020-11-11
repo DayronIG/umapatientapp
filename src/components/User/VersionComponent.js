@@ -41,7 +41,7 @@ export const HiddenCacheClearer = ({ platform }) => {
     }
 
     return (<>
-    {needUpdate && false && <Modal hideCloseButton={true}>
+    {needUpdate && <Modal hideCloseButton={true}>
         <div className='hiddenCache__container'>
             <p>Hay una nueva versión de la aplicación disponible. Actualiza para seguir usando UMA.</p>
             <button onClick={clearAll}>Actualizar ahora</button>

@@ -90,7 +90,11 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		//first we get the messaging token
         let userToken = ''
 		if(deviceWithPush) {
-			userToken = await askPermissionToRecieveNotifications()
+            try {
+                userToken = await askPermissionToRecieveNotifications()
+            } catch (err) {
+                console.log(err)
+            }
 		}
 		// now we get the current user
 		if (currentUser && currentUser.email) {
@@ -136,7 +140,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     audio={tone}
                 />
             </>}
-
             <Route
                 {...rest}
                 render={routeProps =>

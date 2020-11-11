@@ -223,10 +223,11 @@ const SignIn = props => {
                                     <input
                                         className='passwordInput form-control w-100'
                                         name='password'
-                                        type='text'
+                                        type='number'
                                         placeholder='Ingrese su código'
                                         value={code}
                                         onChange={e => setCode(e.target.value.toLowerCase())}
+                                        autocomplete="off"
                                         required
                                     />
                                     <button disabled={!code ? true : false} className='btn btn-blue-lg buttonSendLogin' type='submit'>

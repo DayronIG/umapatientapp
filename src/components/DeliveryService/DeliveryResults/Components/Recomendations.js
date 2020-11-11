@@ -28,7 +28,7 @@ export default function Recomendations({goBack}) {
             <div className="hisopados-flux-results-container">
                 <p className="bold-text">Informale a tus contactos estrechos para que tomen medidas de prevención</p>
                 <div className="blue-button">
-                    <a href={`whatsapp://send?text=Hola, he dado positivo en COVID al realizarme un hisopado a domicilio. Te invito a que vos también te realices el hisopado con un 10% de descuento, utilizando el siguiente código: ${discount.code}. Podés además realizar un seguimiento preventivo de tus síntomas ingresando a UMA en el siguiente link https://umaonline-patient--preview-uma-tpznfy2q.web.app/register`} className="link_whatsapp">
+                    <a href={`whatsapp://send?text=Hola, he dado positivo en COVID al realizarme un hisopado a domicilio. Te invito a que vos también te realices el hisopado con un 10% de descuento, utilizando el siguiente código: ${discount.code}. Podés además realizar un seguimiento preventivo de tus síntomas ingresando a UMA en el siguiente link https://app.uma-health.com`} className="link_whatsapp">
                         Informar a mis contactos
                     </a>
                 </div>

@@ -9,8 +9,6 @@ export const AuthContext = React.createContext()
 function AuthProvider({ children }) {
 	const dispatch = useDispatch()
 	const [currentUser, setCurrentUser] = useState(() => db.auth().currentUser)
-	const patient = useSelector(state => state.queries.patient)
-	const {params} = useSelector(state => state.deliveryService)
 
 	useEffect(() => {  // Get authorization changes
 		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)

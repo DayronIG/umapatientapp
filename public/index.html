@@ -51,7 +51,7 @@
       const isIos = () => {
         const userAgent = window.navigator.userAgent.toLowerCase();
         /* alert(userAgent) */
-        return /iphone|ipad|ipod/.test( userAgent );
+        return /iphone|ipad|ipod|/.test( userAgent );
       }
       // change manifest.json
       if (isIos()) {
