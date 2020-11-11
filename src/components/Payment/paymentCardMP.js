@@ -139,6 +139,10 @@ const PaymentCardMP = () => {
                       'transaction_id': current.id,
                       'value': parseInt(totalPayment)
                       });
+                      window.gtag('event', 'conversion', {
+                        'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
+                        'transaction_id': current.id
+                      });
                      setStatus("approved")
                 } else if (res.data.body.status === "rejected") {
                   window.gtag('event', 'payment_failed', {
