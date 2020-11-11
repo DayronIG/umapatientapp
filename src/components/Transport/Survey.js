@@ -43,7 +43,7 @@ const SurveyComponent = (props) => {
 	}
 
 	function backToTransports() {
-		props.history.push("/" + props.match.params.ws);
+		props.history.push(`/${props.match.params.ws}/transportUserActive`);
 	}
 
 	return (
@@ -55,7 +55,7 @@ const SurveyComponent = (props) => {
 					<div className="buttonContainer">
 						<button
 							className="btn btn-active buttonSuccess"
-							onClick={() => backToTransports()}>
+							onClick={backToTransports}>
 							Volver a listado de traslados
 						</button>
 					</div>

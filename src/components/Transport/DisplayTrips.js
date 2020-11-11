@@ -24,8 +24,6 @@ const TransportUserActive = () => {
 	const [pendingServices, setPendingServices] = useState([]);
 	const [approvedServices, setApprovedServices] = useState([]);
 	const [selectedService, setSelectedService] = useState({});
-	const [noDriver, setNoDriver] = useState(false);
-	
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -134,11 +132,6 @@ const TransportUserActive = () => {
 					Pendientes
 				</button>
 			</div>
-
-			{/* SIN CONDUCTOR */}
-			{noDriver ?
-				history.push(`/${patient.ws}/transportNoDriver`)
-				: null}
 			
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 && 
@@ -231,7 +224,7 @@ const TransportUserActive = () => {
 		: null }
 
 {openAll ?
-<>
+	<>
 	<div>
 		{approvedServices.length > 0 ? <h5 className="pendingTitle">Aprobados:</h5> : null}
 		<ul>
@@ -257,19 +250,15 @@ const TransportUserActive = () => {
 									<div className="contentContainer">
 										<div className="origin"><p className="originTitle">Origen:</p>
 										<p className="originContent"> {item.geo_inicio_address}</p></div>
-
-
 										<div className="destiny"><p className="destinyTitle">Destino:</p>
 										<p className="destinyContent"> {item.geo_fin_address}</p></div>
-										
 										<button className="checkStatus" onClick={() => {
-											
-											if(item.provider_fullname){
-											history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}
-											else{
-												alert('hey!')
+											if(item.provider_fullname) {
+												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
+											} else {
+												history.push('/transportNoDriver');									
 											}
-											}}>
+										}}>
 											<FaCar /> Seguir recorrido
 										</button>
 										<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -313,7 +302,7 @@ const TransportUserActive = () => {
 											if(item.provider_fullname) {
 												history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
 											} else {
-												setNoDriver(!noDriver)
+												history.push('/transportNoDriver');	
 											}
 									}}>
 										<FaCar /> Seguir recorrido
@@ -335,9 +324,10 @@ const TransportUserActive = () => {
 				</ul>
 		</div>
 	</>
-		: null }
+		: null 
+		}
 		</div>
-		)
+	)
 }
 
 export default TransportUserActive;

@@ -33,7 +33,8 @@ import TransportUserActive from './components/Transport/TransportUserActive';
 import CreateTransportRouteView from './views/CreateTransportRouteView';
 import ScheduleTransportView from './views/ScheduleTransportView';
 import TransportDetailsView from './views/TransportDetailsView';
-import TransportNoDriver from './components/Transport/TransportNoDriver'
+import TransportNoDriver from './components/Transport/TransportNoDriver';
+import ScheduledTransportSuccess from './components/Transport/ScheduledTransportSuccess.jsx';
 // Appointments Online
 import OnlineSpecialist from './components/AppointmentsOnline/';
 import ListSpecialties from './components/AppointmentsOnline/ListSpecialties';
@@ -139,7 +140,8 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
 				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
 				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
-				<PrivateRoute exact path='/:ws/transportNoDriver' component={TransportNoDriver} />
+				<PrivateRoute exact path='/:ws/scheduledTransportSuccess' component={ScheduledTransportSuccess} />
+				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />

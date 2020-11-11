@@ -44,7 +44,6 @@ function ScheduleTransport() {
 	}
 
 	const handleSubmit = async (event) => {
-		// VALIDACIONES DE HORARIO
 		event.preventDefault();
 		dispatch({ type: 'LOADING', payload: true });
 		function isEmpty(obj) {
@@ -77,13 +76,12 @@ function ScheduleTransport() {
 		}
 		try {
 			await transportActions.createTransportSchedule(transportData, patient);
-			await swal('Éxito', 'Traslado creado con éxito', 'success');
 			dispatch({ type: 'LOADING', payload: false });
-			history.push(`/${ws}/transportUserActive`);
+			return history.push(`/${ws}/scheduledTransportSuccess`);
 		} catch (error) {
 			console.error(error);
 			dispatch({ type: 'LOADING', payload: false });
-			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
+			return swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
 		}
 	}
 
