@@ -48,10 +48,8 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
-			console.log(response.data);
 			setApprovedServices(response.data.filter(item => item.status_traslado === 'AUTHORIZED'));
 			setPendingServices(response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN'));
-			console.log(response.data)
 		} catch (error) {
 			console.log(error);
 		} finally {

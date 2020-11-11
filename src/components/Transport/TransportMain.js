@@ -31,7 +31,6 @@ const TransportWrapperComponent = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(activated);
 		if (activated === true) {
 			history.push(`/${ws}/transportUserActive`);
 		} else if (activated === false) {

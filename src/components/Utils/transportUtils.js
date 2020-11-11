@@ -107,7 +107,7 @@ export function renderTitle(service) {
 		case 'GOING-ORIGIN':
 			return 'Tu conductor está en camino';
 		case 'ARRIVED-ORIGIN':
-			return 'Tu conductor está en el domicilio';
+			return 'El conductor llegó a tu domicilio';
 		case 'GOING-DESTINY':
 			return 'En camino al destino';
 		case 'FINISHED':
