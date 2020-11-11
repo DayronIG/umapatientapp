@@ -124,7 +124,7 @@ export function renderStatus(status_tramo) {
 		case 'ASSIGN':
 			return 'CONDUCTOR ASIGNADO';
 		case 'AUTHORIZED':
-			return 'AUTORIZADO';
+			return 'APROBADO';
 		case 'DONE':
 			return 'FINALIZADO';
 		case 'CANCEL':
