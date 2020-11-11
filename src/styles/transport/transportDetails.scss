@@ -2,6 +2,7 @@
 
 .transportDetails {
 	position: relative;
+	height: 100vh;
 	.transportDetails__backBtn {
 		position: absolute;
 		z-index: 2;
@@ -10,7 +11,7 @@
 		}
 	}
 	.transportDetails__map {
-		height: calc(100vh - 52px);
+		height: 72.5vh;
 	}
 	.transportDetails__container {
 		width: 100%;
