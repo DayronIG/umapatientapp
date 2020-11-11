@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from "react";
-import {useHistory, useParams, withRouter} from 'react-router-dom';
+import React, { useEffect } from "react";
+import {withRouter} from 'react-router-dom';
+import "../styles/welcome.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import * as DetectRTC from 'detectrtc';
-
-import { checkNum } from "../components/Utils/stringUtils";
-import Axios from "axios";
-import { node_patient } from "../config/endpoints";
-import swal from "sweetalert";
-import { installPrompt } from "../components/Utils/installPrompt";
 // import { useAddToHomescreenPrompt } from "../components/Utils/addToHomeHook";
 // import AddToHomescreen from 'react-add-to-homescreen';
-import InformationPage from '../components/GeneralComponents/InformationPage.js';
-import "../styles/welcome.scss";
+import logo from '../assets/icon.png'
+
 
 const Welcome = props => {
   const dispatch = useDispatch();
   const [install, setInstall] = React.useState(true)
-  const [deferredPrompt, setDeferredPrompt] = React.useState()
-  const { ws } = useParams();
-  const history = useHistory();
-  const [state, setState] = useState('');
-
-    useEffect(() => {
-        if(window.innerWidth > 768){
-            setState('desktop');
-        }
-    },[])
 
   useEffect(() => {
     //console.log(DetectRTC.isWebsiteHasWebcamPermissions())
@@ -37,57 +24,47 @@ const Welcome = props => {
     });
   }, []);
 
-  useEffect(() => {
-    const promptListener = (e) => {
-      e.preventDefault()
-      setDeferredPrompt(e)
-    }
-    window.addEventListener('beforeinstallprompt', promptListener)
-    return () => {
-      window.removeEventListener('beforeinstallprompt', promptListener);
-    }
-  }, [])
-
-  async function installAction() {
+  function installAction() {
     try {
-      if (ws) {
-        dispatch({ type: 'LOADING', payload: true })
-        try {
-          const validPhone = checkNum(ws);
-          const res = await Axios.get(`${node_patient}/exists/${validPhone}`);
-          if(res.data.redirect === 'register') {
-             history.replace(`/${validPhone}/register`)
-          } else {
-            await installPrompt(deferredPrompt, ws);
-            history.replace(`/${validPhone}/login`);
-          }
-        } catch (error) {
-          swal('Ocurrió un error en el Login', `${error}`, 'warning')
-        } finally {
-          dispatch({ type: 'LOADING', payload: false })
-        }
-     }
-    } catch (error) {
-      console.error(error);
+      props.showInstallPrompt()
+    } catch (err) {
+      props.history.push('/')
+    } finally {
+      setTimeout(() => props.history.push('/'), 1000)
     }
   }
 
   return (
-    <>
-        <InformationPage
-            callback={installAction}
-            title='¡Te damos la bienvenida a UMA! '                   
-            texts={[
-              'Uma es nuestra plataforma de consultas online, para que puedas acceder a todos tus médicos sin moverte de tu casa.'
-            ]}
-            button='Continuar'
-            optionalText={{
-              class: 'welcomeOptionsText',
-              text: state === 'desktop' ? '(Para una mejor experiencia, te sugerimos realizar este proceso a través del celular)' : ''
-            }}
-        />
-          
-    </>
+    <div className="welcome-container">
+    <section className="welcome">
+      <div className="welcome__iconContainer">
+        <FontAwesomeIcon icon={faCheckCircle} />
+      </div>
+      <div className="welcome__titleContainer">
+        <h2 className="welcome__titleContainer--title">Bienvenido a UMA</h2>
+      </div>
+      <div className="welcome__textContainer">
+        {/* <p className="welcome__textContainer--paragraph">
+          El registro fue exitoso. Ahora instala la aplicación para comenzar a utilizarla.
+        </p>
+        <br /> */}
+        <span className="welcome__textContainer--message">
+          Haga click en
+          <span onClick={() => props.showInstallPrompt()} className="link">
+            {" "}
+            instalar
+          </span>{" "}
+          y luego "Agregar UMA a la pantalla principal" para instalar la aplicación.
+        </span>
+        {install ?
+          <div className="btn btn-blue-lg" onClick={() => installAction()}>Instalar</div>
+          :
+          <div className="btn btn-blue-lg" onClick={() => props.history.push(`/home/${props.match.params.ws}`)}>Continuar</div>
+        }
+      </div>
+      {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}
+    </section>
+    </div>
   );
 };
 

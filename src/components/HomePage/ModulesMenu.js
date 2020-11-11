@@ -8,13 +8,11 @@ import EventsHistory from '../EventsHistory/';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home'
-import TrasladosHome from '../Traslados/Home'
 import '../../styles/generalcomponents/ModulesMenu.scss';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
 import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
-import iconBubbles from '../../assets/icons/icon-bubbles.svg';
 
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-unresolved */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
@@ -22,6 +22,7 @@ const PaymentCardMP = () => {
     const hisopadoPrice = parseInt(params?.price);
     const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
+    const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
     const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
@@ -87,7 +88,8 @@ const PaymentCardMP = () => {
     }
 
     function sdkResponseHandler(status, response) {
-        if (status !== 200 && status !== 201) {
+      console.log(response)
+        if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
         } else {
@@ -103,20 +105,23 @@ const PaymentCardMP = () => {
         }
     }
 
-    function postData(form, token) {
+    const postData = useCallback((form, token) => {
       let { paymentMethodId, email } = form.elements
-      if(paymentMethodId.value !== "unknown"){
+      let cardId = paymentMethodId.value
+      if(paymentMethodId.value === "mastercard" || paymentMethodId.value === "unknown") cardId = "master"
         setLoader(true)
         let paymentData = {
-            email: email.value,
-            paymentMethodId: paymentMethodId.value, 
+            email: email.value || 'info@uma-health.com',
+            paymentMethodId: cardId, 
             token: token,
             dni: `${user.dni}`,
             fullname: `${user.fullname}`,
             amount: parseInt(totalPayment),
             currency: 'ARS',
             id: current.id,
-            type: 'delivery'
+            type: 'delivery',
+            coupon
+
          }
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
@@ -147,13 +152,14 @@ const PaymentCardMP = () => {
             })
             .catch(err => {
               setLoader(false)
-              swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+              if(paymentMethodId.value === "unknown"){ 
+                swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+              } else {
+                swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+              }
               window.Mercadopago.clearSession();
             })
-      } else {
-        swal("Verifique el número de tarjeta ingresado", "" ,"warning")
-      }
-  }
+  }, [coupon])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
@@ -211,6 +217,7 @@ const PaymentCardMP = () => {
       }
 
       const validateDiscount = (e) => {
+        setCoupon(e.target.value)
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {

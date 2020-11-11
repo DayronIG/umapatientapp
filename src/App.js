@@ -97,6 +97,7 @@ function App(props) {
 				<Route exact path='/feedback/:aid?' component={Feedback} />
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
+				<PrivateRoute exact path='/home/:ws?' component={Home} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/:dni/onlinedoctor/when' component={When} />

@@ -34,7 +34,8 @@ const SignIn = props => {
         let timeout = setTimeout(() => {
             setSentWs(false)
         }, 2000)
-        if (ws) {
+        if (ws && !props.history.location.pathname.includes("login")) {
+            console.log(ws)
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
@@ -116,7 +117,7 @@ const SignIn = props => {
 
 
 
-    const sendWsCode = useCallback((ws) => {
+    const sendWsCode = useCallback(async (ws) => {
         setSentWs(true)
         let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
@@ -130,23 +131,40 @@ const SignIn = props => {
         } else {
             const data = { ws }
             const headers = { 'Content-type': 'application/json'  }
-            axios.post(`${send_user_code}/${ws}`, data, { headers })
-                .then(() => {
-                    swal('Código enviado! Revise su WhatsApp', '', 'success')
+            await axios.get(`${node_patient}/exists/${ws}`, {}, config)
+                .then(async (res) => {
+                    if(res.data.redirect === 'register') {
+                        const confirmAction = await swal({
+                            title: 'Confirmación',
+                            text: `El número ${ws} no se encuentra registrado. Serás redireccionado al registro`,
+                            icon: 'warning',
+                            buttons: true,
+                        })
+                        if(confirmAction) props.history.replace(`/register/${ws}`)
+                    } else {
+                        axios.post(`${send_user_code}/${ws}`, data, { headers })
+                            .then(() => {
+                                swal('Código enviado! Revise su WhatsApp', '', 'success')
+                                props.history.push(`/login/${ws}`)
+                            })
+                            .catch((err) => {
+                                swal('Error al enviar el código', '', 'warning')
+                            })
+                    }
                 })
-                .catch((err) => {
-                    swal('Error al enviar el código', '', 'warning')
-                })
+                .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
+                .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
         }
     }, [sentWs])
 
     function checkNumSend() {
         const validPhone = checkNum(ws)
         setWs(validPhone)
-        if(validPhone.length > 10 && validPhone.length < 15) {
+        if(validPhone.length > 10 && validPhone.length < 14) {
             sendWsCode(validPhone)
+        } else {
+            swal('No es un número válido', 'Verifica el número introducido', 'warning')
         }
-        props.history.push(`/login/${validPhone}`)
     }
 
     return (
@@ -217,7 +235,7 @@ const SignIn = props => {
                                     <small>Si no recibe el código puede  <a href='https://api.whatsapp.com/send?phone=5491123000066&text=Hola' className='register'>hablarle a ÜMA por whatsapp</a> para acceder.</small>
                                     {sentWs === false ?
                                         <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
-                                            Enviar código
+                                            Reenviar código
                                         </button> :
                                         <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
                                             Código enviado!

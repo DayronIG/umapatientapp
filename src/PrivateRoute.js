@@ -73,7 +73,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 			DetectRTC.load(function () {
                     const ios = isIos()
                     let now = moment()
-                    if(patient.device.uma_version !== version.patients
+                    if(patient.device?.uma_version !== version.patients
                         || moment(now).diff(patient.device.last_login, 'minutes') >= 1) {
                         if (!ios) {
                             messaginTokenUpdate(currentUser, DetectRTC, true)
