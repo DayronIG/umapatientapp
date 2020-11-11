@@ -1,7 +1,43 @@
 import React, { useState } from 'react'
 import BackButton from '../GeneralComponents/Backbutton'
+import { YesNoCheckbox, UploadImg, SelectRegister, InputRegister, ContinueButton } from './RegisterFormComponents'
+import '../../styles/transport/registerForm.scss'
+
+const fromInitialState = {
+    dniImg: '',
+    discapacity: true,
+    diagnostico: '',
+    gradoDiscapacidad: '',
+    NroCertificado: '',
+    VecCertificado: '',
+    certImg: '',
+    sillaRuedas: false,
+    acompañante: true,
+    acompañanteName: ''
+}
+
 const RegisterForm = () => {
-    const [dataForm, setForm] = useState({ dniImg: '', discapacity: true, acompañante: true })
+    const [dataForm, setForm] = useState(fromInitialState)
+
+    const uploadImg = (e) => {
+
+    }
+
+    const checkboxHandler = (e) => {
+
+    }
+
+    const selectHandler = (e) => {
+
+    }
+    const inputChange = (e) => {
+
+    }
+
+    const handlerSubmit = (e) => {
+
+    }
+
     return (
         <div className="RegisterFormWrapper">
             <BackButton />
@@ -9,71 +45,71 @@ const RegisterForm = () => {
             <hr />
             <h4>Completa el siguiente formulario con los datos de la persona a trasladar</h4>
             <form>
-                <label htmlFor="uploadImgDNI">
-                    Suba una foto del frente de su DNI
-                </label>
-                <input type="file" />
-                <label htmlFor="">
-                    ¿Posee alguna discapacidad?
-                </label>
-                <label htmlFor="DiscapacityYes">Si</label>
-                <input type="checkbox" id='DiscapacityYes' />
-                <label htmlFor="DiscapacityNo">No</label>
-                <input type="checkbox" id='DiscapacityNo' />
+                <UploadImg
+                    title='Suba una foto del frente de su DNI*'
+                    id='dni'
+                    cb={uploadImg}
+                />
+                <YesNoCheckbox
+                    title='¿Posee alguna discapacidad?*'
+                    id='discapaticy'
+                    cb={checkboxHandler}
+                />
                 {dataForm.discapacity && (
                     <>
-                        <label htmlFor="diagnosticoDisca">
-                            ¿Qué diagnóstico de discapacidad es?
-                        </label>
-                        <select name="" id="diagnosticoDisca">
-                            <option value="1">No sabe nada</option>
-                            <option value="2">Ayudaaa</option>
-                        </select>
-                        <label htmlFor="gradoDisca">
-                            ¿Qué grado de discapacidad es?
-                        </label>
-                        <select name="" id="gradoDisca">
-                            <option value="1">No sabe nada</option>
-                            <option value="2">Ayudaaa</option>
-                        </select>
+                        <SelectRegister
+                            title='¿Qué diagnóstico de discapacidad tiene?'
+                            id='diagnostico'
+                            cb={selectHandler}
+                            options={['obeso', 'total']}
+                        />
+                        <SelectRegister
+                            title='¿Qué grado de discapacidad tiene?'
+                            id='gradoDiscapacidad'
+                            cb={selectHandler}
+                            options={['obeso', 'total']}
+                        />
                         <div className="dataCertificado">
-                            <div className="nroCertificado">
-                                <label htmlFor="nroCertificado">N° certificado</label>
-                                <input type="number" id='nroCertificado' />
-                            </div>
-                            <div className="vencimientoCert">
-                                <label htmlFor="vencimiento">Fecha de venc.</label>
-                                <input type="number" id='vencimiento' />
-                            </div>
+                            <InputRegister
+                                title='N° certificado'
+                                id='NroCertificado'
+                                cb={inputChange}
+                            />
+                            <InputRegister
+                                title='Fecha de venc.'
+                                id='VecCertificado'
+                                cb={inputChange}
+                            />
                         </div>
-                        <label htmlFor="uploadImgCERT">
-                            Suba una foto del certificado de discapacidad
-                        </label>
-                        <input type="file" />
-                        <label htmlFor="">
-                            ¿Usa silla de ruedas?
-                        </label>
-                        <label htmlFor="sillaRuedasYes">Si</label>
-                        <input type="checkbox" id='sillaRuedasYes' />
-                        <label htmlFor="sillaRuedasNo">No</label>
-                        <input type="checkbox" id='sillaRuedasNo' />
-                        <label htmlFor="">
-                            ¿Viaja con un acompañante?
-                        </label>
-                        <label htmlFor="acompañanteYes">Si</label>
-                        <input type="checkbox" id='acompañanteYes' />
-                        <label htmlFor="acompañanteNo">No</label>
-                        <input type="checkbox" id='acompañanteNo' />
+                        <UploadImg
+                            title='Suba una foto del certificado de discapacidad'
+                            id='certImg'
+                            cb={uploadImg}
+                        />
+                        <YesNoCheckbox
+                            title='¿Usa silla de ruedas?'
+                            id='sillaRuedas'
+                            cb={checkboxHandler}
+                        />
+                        <YesNoCheckbox
+                            title='¿Viaja con un acompañante?'
+                            id='acompañante'
+                            cb={checkboxHandler}
+                        />
                         {dataForm.acompañante && (
-                            <>
-                                <label htmlFor="nroCertificado">Nombre del acompañante</label>
-                                <input type="number" id='nroCertificado' />
-                            </>
+                            <InputRegister
+                                title='Nombre del acompañante'
+                                id='acompañanteName'
+                                cb={inputChange}
+                            />
                         )}
                     </>
                 )}
-
-
+                <ContinueButton
+                    title='Finalizar'
+                    type='submit'
+                    cb={handlerSubmit}
+                />
             </form>
         </div>
     )
