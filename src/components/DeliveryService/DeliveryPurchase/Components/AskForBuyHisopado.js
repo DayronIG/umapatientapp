@@ -113,7 +113,7 @@ export default function AskForBuyHisopado() {
                     </ul>
                 </div>
                 <br/>
-                <p><u>Nota:</u> si compras el sábado o domingo, el hisopado se realizará el lunes</p>
+                <p><u>Nota:</u> si compras el sábado, domingo o feriados el hisopado se realizará el lunes o primer día hábil</p>
                 <p className="info-title">Contacto estrecho</p>
                 <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                 <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
