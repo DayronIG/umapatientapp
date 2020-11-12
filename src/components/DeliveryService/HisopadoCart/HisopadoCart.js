@@ -26,6 +26,7 @@ const HisopadoCart = (props) => {
           .get(`${node_patient}/dependant`)
           .then(res => {
             const dep=res.data;
+            // res.data devuelve un chiste, literal
             setDependants(dep)
             dispatch({ type: "LOADING", payload: false })
           })
@@ -42,7 +43,6 @@ const HisopadoCart = (props) => {
             dispatch({ type: "LOADING", payload: false })
           })
       
-    console.log(dependants);
     return(
         <>
         <div className="HisopadoCart">

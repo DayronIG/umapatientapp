@@ -61,6 +61,7 @@ const Register = props => {
     axios
       .post(`${node_patient}/dependant`, {dependant: data})
       .then(res => {
+        //en este momento, el dni que va al path es el del formulario, no el del paciente
           props.history.replace(`/hisopado/carrito/${dni}`)
         dispatch({ type: "LOADING", payload: false })
       })
