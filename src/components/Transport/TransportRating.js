@@ -32,7 +32,7 @@ const TransportRating = (props) => {
 				await axios.post(transport_feedback, data, headers);
 				history.push('/');
 		} catch (err) {
-				console.error(err)
+				console.error(err);
 				history.push('/');
 		}
 	}
@@ -62,7 +62,7 @@ const TransportRating = (props) => {
 				<textarea placeholder="Comentarios" onChange={(e) => setNotes(e.target.value)}></textarea>
 				<button className="btn btn-blue-lg mt-5" onClick={submitRating}>Enviar</button>
 		</div>
-	)
+	);
 }
 
 export default TransportRating;
