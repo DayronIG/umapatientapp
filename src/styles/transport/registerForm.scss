@@ -34,12 +34,26 @@
         .dataCertificado{
             display: flex;
             justify-content: space-between;
+
             div{
-                width: 50%;
-            }
+                width: 48%;
+                margin: 15px 0;
+                color: $black;
+                label{
+                    color: $black;
+                }
             input{
-                width: 90%;
+                text-align: center;
+                width: 80%;
     margin: 0 5px;  
+    padding: 10px;
+    border: none ;
+    border-radius: 6px;
+    box-shadow: $select-shadow;
+    width: 100%;
+    outline: none;
+            }
+            
             }
         }
     }

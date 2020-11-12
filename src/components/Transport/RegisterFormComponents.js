@@ -15,17 +15,20 @@ export const YesNoCheckbox = ({ title, id, cb }) => (
     </div>
 )
 
-export const UploadImg = ({ title, id, cb }) => (
+export const UploadImg = ({ title, id, cb, previewImage }) => (
     <div className="uploadImgContainer">
         <label htmlFor={`${id}img`}>
             {title}
         </label>
         <span className="uploadImgContainer_fileContainer">
+            { previewImage ? <img className="imagePreview" src={previewImage}/> : null}
         <div className="uploadImgContainer_uploadTextCont">
-        <i class="fas fa-file-upload"></i>
+        <i className="fas fa-file-upload"></i>
         <p>Subir Foto</p>
         </div>
-        <input type="file" id={`${id}img`} onChange={(e) => cb(e)} />
+       
+        
+        <input type="file" id={`${id}img`} onChange={(e) => cb(e.target.files[0], id)} />
         </span>
     </div>
 )
@@ -38,7 +41,7 @@ export const SelectRegister = ({ title, id, cb, options }) => (
         <select className="selectContainer_input" name={id} id={`${id}select`} onChange={(e) => cb(e)}>
             <option defaultValue="-">-</option>
             {options.length > 0 &&
-            options.map((op) => <option value={op}>{op}</option>)
+            options.map((op, i) => <option key={i} value={op}>{op}</option>)
             }
         </select>
     </div>
@@ -49,7 +52,7 @@ export const SelectRegister = ({ title, id, cb, options }) => (
 export const InputRegister = ({ title, id, cb }) => (
     <div className="inputContainer">
         <label className="inputContainer_label" htmlFor={id}>{title}</label>
-        <input className="inputContainer_input" name={id} type="number" id={id} onChange={(e) => cb(e)} />
+        <input className="inputContainer_input" name={id} type="text" id={id} onChange={(e) => cb(e)} />
     </div>
 )
 
