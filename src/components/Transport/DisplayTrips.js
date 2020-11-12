@@ -59,7 +59,7 @@ const TransportUserActive = () => {
 
 	async function cancelTrip(e) {
 		e.preventDefault();
-		if (getCancelComment === "") {
+		if (getCancelComment === '') {
 			return alert('Ingrese el motivo de cancelación');
 		}
 		setDisplayLoading(true);
@@ -90,27 +90,27 @@ const TransportUserActive = () => {
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
 	return (
-		<div className="transportList">
+		<div className='transportList'>
 			{toogleModal &&
-				<MobileModal title="Cancelar viaje">
+				<MobileModal title='Cancelar viaje'>
 					<textarea
-						className="form-control comments"
-						placeholder="Ingrese el motivo de cancelación"
+						className='form-control comments'
+						placeholder='Ingrese el motivo de cancelación'
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
 					/>
-					<div className="d-flex align-items-center buttonContainer">
+					<div className='d-flex align-items-center buttonContainer'>
 						<button
-							className="cancelReason"
+							className='cancelReason'
 							onClick={cancelTrip}
 						>
-							Cancelar viaje
+							Confirmar
 						</button>
 						{displayLoading && <Loader />}
 					</div>
 				</MobileModal>
 			}
-			<div className="buttonDisplay">
-				<button className={openAll === true ? "active" : ""}
+			<div className='buttonDisplay'>
+				<button className={openAll === true ? 'active' : ''}
 					onClick={function () {
 						setOpenAll(true)
 						setOpenApprovedServices(false)
@@ -118,7 +118,7 @@ const TransportUserActive = () => {
 					}}>
 					Todos
 				</button>
-				<button className={openApprovedServices === true ? "active" : ""}
+				<button className={openApprovedServices === true ? 'active' : ''}
 					onClick={function () {
 						setOpenApprovedServices(true)
 						setOpenPendingServices(false)
@@ -128,7 +128,7 @@ const TransportUserActive = () => {
 					Aprobados
 				</button>
 				<button
-					className={openPendingServices === true ? "active" : ""}
+					className={openPendingServices === true ? 'active' : ''}
 					onClick={function () {
 						setOpenPendingServices(true)
 						setOpenApprovedServices(false)
@@ -140,10 +140,10 @@ const TransportUserActive = () => {
 
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 &&
-				<div className="noTranslates">
-					<img className="carImage" src={Car}></img>
+				<div className='noTranslates'>
+					<img className='carImage' src={Car}></img>
 					<h2>Aún no tienes ningún traslado</h2>
-					<p>Programa un nuevo traslado tocando el boton "+".</p>
+					<p>Programa un nuevo traslado tocando el boton '+'.</p>
 				</div>
 			}
 			{/* TRASLADOS PENDIENTES */}
@@ -153,31 +153,31 @@ const TransportUserActive = () => {
 						{pendingServices
 							.map((item, index) => (
 								<li key={index}>
-									<div className="titleContainer d-flex  align-items-center">
-										<div className="transportTitle">
+									<div className='titleContainer d-flex align-items-center'>
+										<div className='transportTitle'>
 											<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
 											<div><FaClock /> {item.hora} hs.</div>
 										</div>
-										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
-									<div className="openContent">
+									<div className='openContent'>
 										{openTravel.assignation_id === item.assignation_id ?
 											<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 											<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
 										}
 									</div>
 									{openTravel.assignation_id === item.assignation_id &&
-										<div className="contentContainer">
-											<div className="origin"><p className="originTitle">Origen:</p>
-												<p className="originContent"> {item.geo_inicio_address}</p></div>
-											<div className="destiny"><p className="destinyTitle">Origen:</p>
-												<p className="destinyContent"> {item.geo_fin_address}</p></div>
-											<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+										<div className='contentContainer'>
+											<div className='origin'><p className='originTitle'>Origen:</p>
+												<p className='originContent'> {item.geo_inicio_address}</p></div>
+											<div className='destiny'><p className='destinyTitle'>Origen:</p>
+												<p className='destinyContent'> {item.geo_fin_address}</p></div>
+											<button className='checkStatus' onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 												<FaCar /> Seguir recorrido
 											</button>
-											<button className="cancelBtn" onClick={() => displayModal(item)}>
+											<button className='cancelBtn' onClick={() => displayModal(item)}>
 												<FaRegTrashAlt /> Cancelar Viaje
 											</button>
 										</div>
@@ -193,31 +193,31 @@ const TransportUserActive = () => {
 						{approvedServices
 							.map((item, index) => (
 								<li key={index}>
-									<div className="titleContainer d-flex  align-items-center">
-										<div className="transportTitle">
+									<div className='titleContainer d-flex  align-items-center'>
+										<div className='transportTitle'>
 											<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
 											<div><FaClock /> {item.hora} hs.</div>
 										</div>
-										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
-									<div className="openContent">
+									<div className='openContent'>
 										{openTravel.assignation_id === item.assignation_id ?
 											<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 											<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
 										}
 									</div>
 									{openTravel.assignation_id === item.assignation_id &&
-										<div className="contentContainer">
-											<div className="origin"><p className="originTitle">Origen:</p>
-												<p className="originContent"> {item.geo_inicio_address}</p></div>
-											<div className="destiny"><p className="destinyTitle">Destino:</p>
-												<p className="destinyContent"> {item.geo_fin_address}</p></div>
-											<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+										<div className='contentContainer'>
+											<div className='origin'><p className='originTitle'>Origen:</p>
+												<p className='originContent'> {item.geo_inicio_address}</p></div>
+											<div className='destiny'><p className='destinyTitle'>Destino:</p>
+												<p className='destinyContent'> {item.geo_fin_address}</p></div>
+											<button className='checkStatus' onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 												<FaCar /> Seguir recorrido
 										</button>
-											<button className="cancelBtn" onClick={() => displayModal(item)}>
+											<button className='cancelBtn' onClick={() => displayModal(item)}>
 												<FaRegTrashAlt /> Cancelar Viaje
 										</button>
 										</div>
@@ -231,33 +231,33 @@ const TransportUserActive = () => {
 			{openAll ?
 				<>
 					<div>
-						{approvedServices.length > 0 ? <h5 className="pendingTitle">Aprobados:</h5> : null}
+						{approvedServices.length > 0 ? <h5 className='pendingTitle'>Aprobados:</h5> : null}
 						<ul>
 							{approvedServices
 								.map((item, index) => (
 									<li key={index}>
-										<div className="titleContainer d-flex  align-items-center">
-											<div className="transportTitle">
+										<div className='titleContainer d-flex  align-items-center'>
+											<div className='transportTitle'>
 												<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
 												<div><FaClock /> {item.hora} hs.</div>
 											</div>
-											<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
-										<div className="openContent">
+										<div className='openContent'>
 											{openTravel.assignation_id === item.assignation_id ?
 												<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 												<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
 											}
 										</div>
 										{openTravel.assignation_id === item.assignation_id &&
-											<div className="contentContainer">
-												<div className="origin"><p className="originTitle">Origen:</p>
-													<p className="originContent"> {item.geo_inicio_address}</p></div>
-												<div className="destiny"><p className="destinyTitle">Destino:</p>
-													<p className="destinyContent"> {item.geo_fin_address}</p></div>
-												<button className="checkStatus" onClick={() => {
+											<div className='contentContainer'>
+												<div className='origin'><p className='originTitle'>Origen:</p>
+													<p className='originContent'> {item.geo_inicio_address}</p></div>
+												<div className='destiny'><p className='destinyTitle'>Destino:</p>
+													<p className='destinyContent'> {item.geo_fin_address}</p></div>
+												<button className='checkStatus' onClick={() => {
 													if (item.provider_fullname) {
 														history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
 													} else {
@@ -266,7 +266,7 @@ const TransportUserActive = () => {
 												}}>
 													<FaCar /> Seguir recorrido
 										</button>
-												<button className="cancelBtn" onClick={() => displayModal(item)}>
+												<button className='cancelBtn' onClick={() => displayModal(item)}>
 													<FaRegTrashAlt /> Cancelar Viaje
 										</button>
 											</div>
@@ -276,21 +276,21 @@ const TransportUserActive = () => {
 						</ul>
 					</div>
 					<div>
-						{pendingServices.length > 0 ? <h5 className="pendingTitle">Pendientes:</h5> : null}
+						{pendingServices.length > 0 ? <h5 className='pendingTitle'>Pendientes:</h5> : null}
 						<ul>
 							{pendingServices
 								.map((item, index) => (
 									<li key={index}>
-										<div className="titleContainer d-flex  align-items-center">
-											<div className="transportTitle">
+										<div className='titleContainer d-flex  align-items-center'>
+											<div className='transportTitle'>
 												<div><FaCalendarAlt /> {moment(item.fecha).format('ll')}</div>
 												<div><FaClock /> {item.hora} hs.</div>
 											</div>
-											<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
-										<div className="openContent">
+										<div className='openContent'>
 											{openTravel.assignation_id === item.assignation_id ?
 												<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 												<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>
@@ -298,12 +298,12 @@ const TransportUserActive = () => {
 										</div>
 										{openTravel.assignation_id === item.assignation_id &&
 											<>
-												<div className="contentContainer">
-													<div className="origin"><p className="originTitle">Origen:</p>
-														<p className="originContent"> {item.geo_inicio_address}</p></div>
-													<div className="destiny"><p className="destinyTitle">Destino:</p>
-														<p className="destinyContent"> {item.geo_fin_address}</p></div>
-													<button className="checkStatus" onClick={() => {
+												<div className='contentContainer'>
+													<div className='origin'><p className='originTitle'>Origen:</p>
+														<p className='originContent'> {item.geo_inicio_address}</p></div>
+													<div className='destiny'><p className='destinyTitle'>Destino:</p>
+														<p className='destinyContent'> {item.geo_fin_address}</p></div>
+													<button className='checkStatus' onClick={() => {
 														if (item.provider_fullname) {
 															history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
 														} else {
@@ -312,11 +312,11 @@ const TransportUserActive = () => {
 													}}>
 														<FaCar /> Seguir recorrido
 									</button>
-													<button className="cancelBtn" onClick={() => displayModal(item)}>
+													<button className='cancelBtn' onClick={() => displayModal(item)}>
 														<FaRegTrashAlt /> Cancelar Viaje
 									</button>
 												</div>
-												<div className="openContent">
+												<div className='openContent'>
 													{openTravel.assignation_id === item.assignation_id ?
 														<button onClick={() => setOpenTravel({})}><FaChevronUp /></button> :
 														<button onClick={() => setOpenTravel(item)}> Detalles <FaChevronDown /> </button>

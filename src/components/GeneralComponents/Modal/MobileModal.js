@@ -5,12 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import '../../../styles/modal.scss';
 
-
-
-/* 
-<MobileModal hideCloseButton="" title="" children="" />
-*/
-
 const MobileModal = (props) => {
   const dispatch = useDispatch()
   return (

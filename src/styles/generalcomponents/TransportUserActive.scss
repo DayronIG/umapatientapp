@@ -1,5 +1,7 @@
 
 @import '../index.scss';
+@import '../mixins/ButtonGeneral.scss';
+
 .subheader-container {
   margin-bottom: 0 !important;
 }
@@ -12,13 +14,7 @@
       width: 100%;
       margin-top: 20px;
       .cancelReason {
-        background-color: $secondary-color;
-        border: none;
-        color: $white-color;
-        font-weight: bold;
-        font-size: 18px;
-        width: 100%;
-        padding: 15px;
+				@include umaPrimaryButton();
       }
     }
   }
