@@ -89,6 +89,7 @@ export default function AskForBuyHisopado() {
                         <p className="hisopados-price">${params?.price}</p>
                         </div>
                     </div>
+                    <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
                     <div className="hisopados-bullets-container">
                     <div className="hisopados-bullets">
                         <p><FaMapMarker className="icon"/>A domicilio</p>
@@ -99,13 +100,13 @@ export default function AskForBuyHisopado() {
                         <p><FaClock className="icon"/>Resultado en 15´</p>
                     </div>
                     </div>
-                    <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
-                    <div className="oms-container">
-                    <img className="hisopados-image" src={omsImg} alt="oms" />
-                    Avalado por la OMS
-                    </div>
                     
                     <div className="hisopados-flux-container">
+                        <div className="oms-container">
+                            <img className="hisopados-image" src={omsImg} alt="oms" />
+                            Avalado por la OMS
+                        </div>
+                        
                         <p className="info-title">¿En qué consiste?</p>
                         <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en tu domicilio. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En sólo 15 minutos tienes el resultado!</p>
                         <p className="info-title">Medios de pago</p>
