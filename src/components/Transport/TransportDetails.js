@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
-import { renderMarker, calculateFirstPoint, renderTitle } from '../Utils/transportUtils';
+import { renderMarker, calculateFirstPoint, renderTitle, renderTimeMessage } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
 import { useParams, useHistory } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
@@ -71,19 +71,19 @@ const TransportTracking = () => {
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig(
-						{ 
-							lat: service?.current_position_remis?.lat || 0, 
-							lng: service?.current_position_remis?.lon  || 0 
-						}
-					)}
+					{...mapConfig({ 
+						lat: service?.current_position_remis?.lat || 0, 
+						lng: service?.current_position_remis?.lon  || 0 
+					})}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					{service?.current_position_remis?.lat && <Marker
-						lat={service?.current_position_remis?.lat || 0}
-						lng={service?.current_position_remis?.lon || 0}
-						text='Ubicacion del remis' type='remis' 
-					/>}
+					{service?.current_position_remis?.lat && 
+						<Marker
+							lat={service?.current_position_remis?.lat || 0}
+							lng={service?.current_position_remis?.lon || 0}
+							text='Ubicacion del remis' type='remis' 
+						/>
+					}
 					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
@@ -113,7 +113,7 @@ const TransportTracking = () => {
 							<p className='originText'>{service.request?.geo_fin.address}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>Hora de llegada:</p> 
+							<p className='originP'>{renderTimeMessage(service.trip_type)}:</p> 
 							<p className='originText'>{service.hora}</p>
 						</li>
 						<li className='originLi'>

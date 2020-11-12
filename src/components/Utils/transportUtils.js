@@ -138,3 +138,14 @@ export function renderStatus(status_tramo) {
 			return '';
 	}
 }
+
+export function renderTimeMessage(trip_type) {
+	switch (trip_type) {
+		case 'IDA':
+			return 'Horario de llegada';
+		case 'VUELTA':
+			return 'Horario de salida';
+		default:
+			return 'Hora';
+	}
+}
