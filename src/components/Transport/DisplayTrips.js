@@ -9,9 +9,8 @@ import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAl
 import Car from '../../assets/car.svg';
 import { renderStatus } from '../Utils/transportUtils';
 import { Loader } from '../GeneralComponents/Loading';
-import '../../styles/generalcomponents/TransportUserActive.scss';
 import swal from 'sweetalert';
-
+import '../../styles/generalcomponents/TransportUserActive.scss';
 
 const TransportUserActive = () => {
 	const toogleModal = useSelector((state) => state.front.openDetails);

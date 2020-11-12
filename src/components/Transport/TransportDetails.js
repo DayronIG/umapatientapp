@@ -29,7 +29,7 @@ const TransportTracking = () => {
 
 	useEffect(() => {
 		if(service.status_tramo === 'FINISHED') {
-			history.replace(`/${patient.ws}/onlinedoctor/rating`);
+			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
 	
@@ -44,7 +44,7 @@ const TransportTracking = () => {
 	}, [patient]);
 
 	useEffect(() => {
-		if (typeof mapBounder === 'function') {
+		if (typeof mapBounder === 'function' && service?.current_position_remis) {
 			mapBounder([
 				calculateFirstPoint(service),
 				{
@@ -56,7 +56,7 @@ const TransportTracking = () => {
 	}, [mapBounder, service]);
 
 	useEffect(() => {
-		if (typeof drawRoute === 'function') {
+		if (typeof drawRoute === 'function' && service?.current_position_remis) {
 			drawRoute(
 				calculateFirstPoint(service),
 				{
@@ -67,37 +67,30 @@ const TransportTracking = () => {
 		}
 	}, [drawRoute, service]);
 
-	console.log(service);
-
 	return (
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
 					{...mapConfig(
 						{ 
-							lat: service.current_position_remis?.lat || 0, 
-							lng: service.current_position_remis?.lon  || 0 
+							lat: service?.current_position_remis?.lat || 0, 
+							lng: service?.current_position_remis?.lon  || 0 
 						}
 					)}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					{service.current_position_remis?.lat && <Marker
-						lat={service.current_position_remis?.lat || 0}
-						lng={service.current_position_remis?.lon || 0}
+					{service?.current_position_remis?.lat && <Marker
+						lat={service?.current_position_remis?.lat || 0}
+						lng={service?.current_position_remis?.lon || 0}
 						text='Ubicacion del remis' type='remis' 
 					/>}
 					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
+				<h4 className='transportDetails__container--title'>{renderTitle(service?.status_tramo)}</h4>
 				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className='transportDriver'>
-					{/*
-						<div className='transportDriverImg'>
-							<img src={}></img> 
-						</div> 
-					*/}
 					<div className='transportDriverData'>
 						<p>Conductor: {service.provider_fullname || ''}</p>
 						<p>CUIT: {service.provider_id || '' } </p>

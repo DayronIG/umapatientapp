@@ -93,32 +93,31 @@ const Rating = (props) => {
     }
 
     return (
-        <>
-            <div className="ratings-container text-center p5">
-                <label>¿Cómo evaluaría la aplicación?</label>
-                <StarRatings
-                    rating={ratingApp}
-                    changeRating={setRatingApp}
-                    numberOfStars={5}
-                    name='rating'
-                    starDimension="40px"
-                    starRatedColor="#42A5F6"
-                    starHoverColor="#0071F2"
-                />
-                <label>¿Cómo evaluaría al médico?</label>
-                <StarRatings
-                    rating={ratingMed}
-                    changeRating={setRatingMed}
-                    numberOfStars={5}
-                    name='rating'
-                    starDimension="40px"
-                    starRatedColor="#42A5F6"
-                    starHoverColor="#0071F2"
-                />
-                <textarea placeholder="Comentarios sobre la atención" onChange={(e) => setNotes(e.target.value)}></textarea>
-                <button className="btn btn-blue-lg mt-5" onClick={() => submitRating()}>Enviar</button>
-            </div>
-        </>)
+			<div className="ratings-container text-center p5">
+				<label>¿Cómo evaluaría la aplicación?</label>
+					<StarRatings
+							rating={ratingApp}
+							changeRating={setRatingApp}
+							numberOfStars={5}
+							name='rating'
+							starDimension="40px"
+							starRatedColor="#42A5F6"
+							starHoverColor="#0071F2"
+					/>
+					<label>¿Cómo evaluaría al médico?</label>
+					<StarRatings
+							rating={ratingMed}
+							changeRating={setRatingMed}
+							numberOfStars={5}
+							name='rating'
+							starDimension="40px"
+							starRatedColor="#42A5F6"
+							starHoverColor="#0071F2"
+					/>
+					<textarea placeholder="Comentarios sobre la atención" onChange={(e) => setNotes(e.target.value)}></textarea>
+					<button className="btn btn-blue-lg mt-5" onClick={() => submitRating()}>Enviar</button>
+				</div>
+		)
 }
 
 export default withRouter(Rating);
