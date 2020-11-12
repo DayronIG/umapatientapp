@@ -113,8 +113,8 @@ export default function AskForBuyHisopado() {
                         <div className="info-warning">
                             <p className="warning-title">Atención: </p>
                             <ul>
+                                <li>Ciertos destinos aceptan el test de antígenos como válido.</li>
                                 <li>No emite certificado oficial</li>
-                                <li>No es válido para viajar</li>
                                 <li>No está cubierto por obras sociales</li>
                             </ul>
                         </div>

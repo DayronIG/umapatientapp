@@ -39,7 +39,7 @@ export default function FrequentQuestions({goBack}) {
         },
         {
             question: "¿Es válido para viajar?",
-            answer: ["No. El test rápido de antígenos no es válido para abordar vuelos nacionales e internacionales que exijan certificados pcr como parte de sus controles, incluso en conexiones. Recomendamos al usuario revisar las restricciones de entrada de cada país y/o región y verificar en los sitios web oficiales del país las políticas de ingreso y excepciones que apliquen al viaje. Los siguientes síntomas hacen referencia los casos sospechosos de Coronavirus:",
+            answer: ["El test rápido de antígenos no es válido para abordar vuelos nacionales e internacionales que exijan certificados PCR como parte de sus controles, incluso en conexiones. Ciertos destinos aceptan el test de antígenos como válido. Recomendamos al usuario revisar las restricciones de entrada de cada país y/o región y verificar en los sitios web oficiales del país las políticas de ingreso y excepciones que apliquen al viaje. Los siguientes síntomas hacen referencia los casos sospechosos de Coronavirus:",
             "Fiebre",
             "Tos seca",
             "Cansancio",
