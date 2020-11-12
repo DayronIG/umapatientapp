@@ -1,0 +1,46 @@
+@import './../global/Vars.scss' ;
+
+.RegisterFormWrapper{
+    margin: 15px 0;
+    width: 100vw;
+    background-color: white;
+    min-height: 100vh;
+    padding: 20px;
+    hr{
+        border: none;
+    }
+    .RegisterFormWrapper_title{
+        color: $uma-button;
+        font-size: 1.5rem;
+        margin: 40px auto 20px auto;
+        padding: 20px 0;
+        background-color: white;
+        font-weight: 900;
+        border-bottom: 1px solid #F2F2F2;
+    }
+    .RegisterFormWrapper_subtitle{
+        color: #000;
+        margin: 0 auto;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 21px;
+    }
+    .RegisterFormWrapper_form{
+        margin: 15px 0 ;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        .dataCertificado{
+            display: flex;
+            justify-content: space-between;
+            div{
+                width: 50%;
+            }
+            input{
+                width: 90%;
+    margin: 0 5px;  
+            }
+        }
+    }
+}

@@ -3,13 +3,15 @@ import '../../styles/transport/registerFormComponents.scss'
 import '../../styles/generalcomponents/ContinueButton.scss'
 export const YesNoCheckbox = ({ title, id, cb }) => (
     <div className="checkboxsContainer">
-        <label htmlFor="">
+        <label className="checkboxsContainer_label" htmlFor="label">
             {title}
         </label>
-        <label htmlFor={`${id}Yes`}>Si</label>
-        <input value='1' type="checkbox" id={`${id}Yes`} onChange={(e) => cb(e)} />
-        <label htmlFor={`${id}No`}>No</label>
-        <input value='0' type="checkbox" id={`${id}No`} onChange={(e) => cb(e)} />
+        <span className="checkboxsContainer_cheboxContainer">
+        <input value='1' name={id} type="radio" id={`${id}Yes`} onChange={(e) => cb(e)} />
+        <label htmlFor={`${id}Yes`}>Si</label></span>
+        <span className="checkboxsContainer_cheboxContainer">
+        <input value='0' name={id} type="radio" id={`${id}No`} onChange={(e) => cb(e)} />
+        <label htmlFor={`${id}No`}>No</label></span>
     </div>
 )
 
@@ -18,33 +20,42 @@ export const UploadImg = ({ title, id, cb }) => (
         <label htmlFor={`${id}img`}>
             {title}
         </label>
+        <span className="uploadImgContainer_fileContainer">
+        <div className="uploadImgContainer_uploadTextCont">
+        <i class="fas fa-file-upload"></i>
+        <p>Subir Foto</p>
+        </div>
         <input type="file" id={`${id}img`} onChange={(e) => cb(e)} />
+        </span>
     </div>
 )
 
 export const SelectRegister = ({ title, id, cb, options }) => (
     <div className="selectContainer">
-        <label htmlFor={`${id}select`}>
+        <label className="selectContainer_label" htmlFor={`${id}select`}>
             {title}
         </label>
-        <select name={id} id={`${id}select`} onChange={(e) => cb(e)}>
+        <select className="selectContainer_input" name={id} id={`${id}select`} onChange={(e) => cb(e)}>
+            <option defaultValue="-">-</option>
             {options.length > 0 &&
-                options.map((op) => <option value={op}>{op}</option>)
+            options.map((op) => <option value={op}>{op}</option>)
             }
         </select>
     </div>
 )
 
+
+
 export const InputRegister = ({ title, id, cb }) => (
     <div className="inputContainer">
-        <label htmlFor={id}>{title}</label>
-        <input name={id} type="number" id={id} onChange={(e) => cb(e)} />
+        <label className="inputContainer_label" htmlFor={id}>{title}</label>
+        <input className="inputContainer_input" name={id} type="number" id={id} onChange={(e) => cb(e)} />
     </div>
 )
 
 export const ContinueButton = ({ title, cb, type }) => {
     return (
-        <div className="buttonContainer">
+        <div className="buttonContainer buttonFinailzar">
             <button onClick={() => cb()} type={type || ''} >
                 {title}
             </button>
