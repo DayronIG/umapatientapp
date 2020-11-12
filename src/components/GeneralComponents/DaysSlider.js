@@ -39,7 +39,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_MONDAY', payload: !transportData.origin_translate_monday })
@@ -48,7 +48,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_monday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_monday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -67,7 +67,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_TUESDAY', payload: !transportData.origin_translate_tuesday })
@@ -76,7 +76,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_tuesday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_tuesday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -95,7 +95,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_WEDNESDAY', payload: !transportData.origin_translate_wednesday })
@@ -104,7 +104,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_wednesday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_wednesday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -124,7 +124,7 @@ export default function DaysSlider({
 							</div>
 						</div> : null
 					}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_THURSDAY', payload: !transportData.origin_translate_thursday })
@@ -133,7 +133,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_thursday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_thursday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -152,7 +152,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_FRIDAY', payload: !transportData.origin_translate_friday })
@@ -161,7 +161,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_friday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_friday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -180,7 +180,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_SATURDAY', payload: !transportData.origin_translate_saturday })
@@ -189,7 +189,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_saturday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_saturday ? '✓' : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -202,7 +202,7 @@ export default function DaysSlider({
 								<span>Hs.</span>
 							</div>
 						</div> : null}
-					<label id='switch' class='switch'>
+					<label id='switch' className='switch'>
 						<input id='input' type='checkbox'
 							onClick={() => {
 								dispatch({ type: 'SET_ORIGIN_TRANSLATE_SUNDAY', payload: !transportData.origin_translate_sunday })
@@ -211,7 +211,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span class='slider round'>{transportData.origin_translate_sunday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_sunday ? '✓' : null}</span>
 					</label>
 				</div>
 			</div>

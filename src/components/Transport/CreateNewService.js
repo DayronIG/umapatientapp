@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoPlus } from 'react-icons/go';
+import { TiPlus } from 'react-icons/ti';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ const CreateNewService = () => {
 	return (
 		<div className="createNewService__container" onClick={() => history.push(`/${patient.ws}/createTransportRoute`)}>
 			<div className="createNewService__icon">
-				<GoPlus />
+				<TiPlus />
 			</div>
 		</div>
 	);

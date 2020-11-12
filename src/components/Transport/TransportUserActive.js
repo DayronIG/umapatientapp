@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DisplayTrips from './DisplayTrips';
 import { GenericHeader } from '../GeneralComponents/Headers'

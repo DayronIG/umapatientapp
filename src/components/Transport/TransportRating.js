@@ -18,22 +18,21 @@ const TransportRating = (props) => {
 	async function submitRating() {
 		let headers = { 'Content-Type': 'Application/Json', 'Authorization': token };
 		try {
-				let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss');
+				let date = moment().tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD');
 				let data = {
-					ws,
-					assignation_id,
+					date,
+					tramo_id: assignation_id,
 					dni: patient.dni,
 					corporate: patient.corporate_norm,
-					dt: date,
 					uma_eval: ratingApp.toString(),
 					transport_eval: ratingTransport.toString(),
-					notes: notes.replace(/(\r\n|\n|\r)/gm, "").trim()
+					notes: notes.replace(/(\r\n|\n|\r)/gm, '').trim()
 				}
 				await axios.post(transport_feedback, data, headers);
-				history.push('/');
+				history.push(`/${patient.ws}/transportUserActive`);
 		} catch (err) {
 				console.error(err);
-				history.push('/');
+				history.push(`/${patient.ws}/transportUserActive`);
 		}
 	}
 
