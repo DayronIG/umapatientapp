@@ -19,7 +19,6 @@ export default function AskForBuyHisopado() {
     const [narrowContactInfo, setNarrowContactInfo] = useState(false)
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.queries.patient)
-    const { hisopadosActive } = useSelector((state) => state.front)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -73,7 +72,7 @@ export default function AskForBuyHisopado() {
             return (
                 <div>
                     {
-                        !hisopadosActive &&
+                        !params.active &&
                         <article className="hisopados-alert">
                             Los hisopados se realizan de lunes a viernes de 10hs a 18hs.
                         </article>

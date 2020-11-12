@@ -15,15 +15,6 @@ const HomePage = () => {
 	const user = useSelector((state) => state.queries.patient);
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
-	const getActive = async () => {
-		const data = await getDocumentFB("parametros/userapp/delivery/hisopados")
-		dispatch({type: "SET_HISOPADOS_ACTIVE", payload: data.active})
-    }
-
-    useEffect(() => {
-        getActive()
-    }, [])
-
 	useEffect(() => {
 		if (user && user.dni !== undefined) {
 			dispatch(getMedicalRecord(user.dni, user.ws))
