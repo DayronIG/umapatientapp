@@ -116,7 +116,6 @@ export const calculateDistance = ({origin, destiny}) => {
 				travelMode: window.google.maps.TravelMode.DRIVING
 		}, (result, status) => {
 				if (status === window.google.maps.DirectionsStatus.OK) {
-					console.log(status);
 					resolve(result);
 				} else {
 					console.error(`error fetching directions ${result}`);

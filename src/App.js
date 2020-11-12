@@ -69,6 +69,7 @@ import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
+import TransportRating from './components/Transport/TransportRating.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
@@ -141,6 +142,7 @@ function App(props) {
 				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
 				<PrivateRoute exact path='/:ws/scheduledTransportSuccess' component={ScheduledTransportSuccess} />
 				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
+				<PrivateRoute exact path='/:ws/transportRating/:assignation_id' component={TransportRating} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
