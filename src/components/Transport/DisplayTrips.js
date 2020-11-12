@@ -59,7 +59,7 @@ const TransportUserActive = () => {
 
 	async function cancelTrip(e) {
 		e.preventDefault();
-		if (getCancelComment === "") {
+		if (getCancelComment === '') {
 			return alert('Ingrese el motivo de cancelación');
 		}
 		setDisplayLoading(true);
@@ -90,27 +90,27 @@ const TransportUserActive = () => {
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
 	return (
-		<div className="transportList">
+		<div className='transportList'>
 			{toogleModal &&
-				<MobileModal title="Cancelar viaje">
+				<MobileModal title='Cancelar viaje'>
 					<textarea
-						className="form-control comments"
-						placeholder="Ingrese el motivo de cancelación"
+						className='form-control comments'
+						placeholder='Ingrese el motivo de cancelación'
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
 					/>
-					<div className="d-flex align-items-center buttonContainer">
+					<div className='d-flex align-items-center buttonContainer'>
 						<button
-							className="cancelReason"
+							className='cancelReason'
 							onClick={cancelTrip}
 						>
-							Cancelar viaje
+							Confirmar
 						</button>
 						{displayLoading && <Loader />}
 					</div>
 				</MobileModal>
 			}
-			<div className="buttonDisplay">
-				<button className={openAll === true ? "active" : ""}
+			<div className='buttonDisplay'>
+				<button className={openAll === true ? 'active' : ''}
 					onClick={function () {
 						setOpenAll(true)
 						setOpenApprovedServices(false)
@@ -118,7 +118,7 @@ const TransportUserActive = () => {
 					}}>
 					Todos
 				</button>
-				<button className={openApprovedServices === true ? "active" : ""}
+				<button className={openApprovedServices === true ? 'active' : ''}
 					onClick={function () {
 						setOpenApprovedServices(true)
 						setOpenPendingServices(false)
@@ -128,7 +128,7 @@ const TransportUserActive = () => {
 					Aprobados
 				</button>
 				<button
-					className={openPendingServices === true ? "active" : ""}
+					className={openPendingServices === true ? 'active' : ''}
 					onClick={function () {
 						setOpenPendingServices(true)
 						setOpenApprovedServices(false)
@@ -140,10 +140,10 @@ const TransportUserActive = () => {
 
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 &&
-				<div className="noTranslates">
-					<img className="carImage" src={Car}></img>
+				<div className='noTranslates'>
+					<img className='carImage' src={Car}></img>
 					<h2>Aún no tienes ningún traslado</h2>
-					<p>Programa un nuevo traslado tocando el boton "+".</p>
+					<p>Programa un nuevo traslado tocando el boton '+'.</p>
 				</div>
 			}
 			{/* TRASLADOS PENDIENTES */}
@@ -158,7 +158,7 @@ const TransportUserActive = () => {
 											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
 											<div><FaClock /> {item.hora}hs.</div>
 										</div>
-										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
@@ -206,7 +206,7 @@ const TransportUserActive = () => {
 											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
 											<div><FaClock /> {item.hora}hs.</div>
 										</div>
-										<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
@@ -256,7 +256,7 @@ const TransportUserActive = () => {
 												<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
 												<div><FaClock /> {item.hora}hs.</div>
 											</div>
-											<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
@@ -310,7 +310,7 @@ const TransportUserActive = () => {
 												<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
 												<div><FaClock /> {item.hora}hs.</div>
 											</div>
-											<div className="transportDriver"><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
