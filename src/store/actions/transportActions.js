@@ -106,12 +106,9 @@ export const handleInputs = (pointSelector) => ({ target = {} }) => {
 export const createTransportSchedule = async (transportData, patient) => {
 	const travelMetaData = await calculateDistance(transportData);
 	const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
-	console.log(transportData)
-	console.log(patient)
 	try {
 		const data = {
 			id_solicitud: genTransportId(patient),
-			autorizado: '0',
 			corporate: patient.corporate_norm,
 			dependencia: '0',
 			descrip: '0-PROGRAMADO',

@@ -29,7 +29,7 @@ const TransportTracking = () => {
 
 	useEffect(() => {
 		if(service.status_tramo === 'FINISHED') {
-			history.replace(`/${patient.ws}/onlinedoctor/rating`);
+			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
 	
@@ -44,30 +44,28 @@ const TransportTracking = () => {
 	}, [patient]);
 
 	useEffect(() => {
-		if (typeof mapBounder === 'function') {
+		if (typeof mapBounder === 'function' && service?.current_position_remis) {
 			mapBounder([
 				calculateFirstPoint(service),
 				{
-					lat: service?.current_position_remis?.lat,
-					lng: service?.current_position_remis?.lon
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
 				}
 			]);
 		}
 	}, [mapBounder, service]);
 
 	useEffect(() => {
-		if (typeof drawRoute === 'function') {
+		if (typeof drawRoute === 'function' && service?.current_position_remis) {
 			drawRoute(
 				calculateFirstPoint(service),
 				{
-					lat: service?.current_position_remis?.lat,
-					lng: service?.current_position_remis?.lon
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
 				}
 			).then(eta => setEta(eta));
 		}
 	}, [drawRoute, service]);
-
-	console.log(service);
 
 	return (
 		<div>
@@ -93,11 +91,6 @@ const TransportTracking = () => {
 				<h4 className='transportDetails__container--title'>{renderTitle(service?.status_tramo)}</h4>
 				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className='transportDriver'>
-					{/*
-						<div className='transportDriverImg'>
-							<img src={}></img> 
-						</div> 
-					*/}
 					<div className='transportDriverData'>
 						<p>Conductor: {service.provider_fullname || ''}</p>
 						<p>CUIT: {service.provider_id || '' } </p>
