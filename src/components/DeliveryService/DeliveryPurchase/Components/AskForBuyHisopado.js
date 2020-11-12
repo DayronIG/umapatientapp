@@ -77,7 +77,6 @@ export default function AskForBuyHisopado() {
                             Los hisopados se realizan de lunes a viernes de 10hs a 18hs.
                         </article>
                     }
-                    <img className="hisopados-image" src={IllustrationHisopado}  alt="Hisopado" />
                     <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>
                     <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
                     <div className="price-center-aligner">
