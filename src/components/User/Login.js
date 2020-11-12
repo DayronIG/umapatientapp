@@ -64,9 +64,10 @@ const SignIn = props => {
             } else if (validPhone.slice(2, 4) === '11' && validPhone.length < 13) {
                 validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
             } else if (validPhone.slice(2, 4) !== '11' && validPhone.slice(2, 4) !== '15' && validPhone.length >= 10 && validPhone.length <= 12) {
-                validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(2, validPhone.length)}`
+                validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
             }
         }
+
         if (password) {
             localStorage.setItem('accessCode', password.value)
             let email = `${validPhone}@${password.value}.com`;

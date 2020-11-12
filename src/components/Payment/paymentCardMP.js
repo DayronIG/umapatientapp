@@ -137,7 +137,7 @@ const PaymentCardMP = () => {
                       'currency': 'ARS',
                       'items': 'Hisopado Antígeno',
                       'transaction_id': current.id,
-                      'value': parseInt(totalPayment)
+                      'value': totalPayment
                       });
                       window.gtag('event', 'conversion', {
                         'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
