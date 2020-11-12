@@ -1,0 +1,147 @@
+@import './../global/Vars.scss';
+
+.HisopadoCart{
+    background-color: white;
+    min-height: 100vh;
+    width: 100wv;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .HisopadoCart__title{
+        width: 90%;
+        text-align: left;
+        color: $shiny-blue;
+        font-size: 1.5rem;
+        line-height: 25px;
+        font-weight: 900;
+        padding: 15px;
+    }
+    p{
+        color: $uma-text;
+        padding: 15px;
+    }
+    .HisopadoCart__userSection{
+        width: 100%;
+        padding: 15px;
+        .HisopadoCart__userContainer{
+            .HisopadoCart__user{
+                padding: 10px;
+                text-align: left;
+                font-size: 1rem;
+            }
+        }
+        .HisopadoCart__addContainer{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            .HisopadoCart__btnContainer{
+             display: flex;
+             flex-direction: column;
+             width: 85px;
+                .HisopadoCart__addBTn{
+                    border-radius: 50%;
+                font-size: 3.5rem;
+                text-align: center;
+                padding: 15px;
+                color: $shiny-blue;
+                background-color: white;
+                border: none;
+                box-shadow: 0px 9px 20px -3px rgba(126, 147, 163, 0.25);
+                font-style: normal;
+font-weight: 900;
+line-height: 46px;
+            }
+            .HisopadoCart__addMsg{
+                color: $shiny-blue; 
+                font-size: 0.9rem;
+                text-align: center;
+            }
+            }
+            
+        
+    }
+}
+.HisopadoCart__payment{
+    box-shadow: 0px -9px 20px -3px rgba(126, 147, 163, 0.25);
+border-radius: 50px 50px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100% !important;
+    .HisopadoCart__payDetails{
+        padding: 25px 45px;
+        display: flex;
+        flex-direction: column;
+        .HisopadoCart__payDetail{
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        
+    }
+    .HisopadoCart__payBtn{
+            background-color: $shiny-blue;
+            color: white;
+            width: 100%;
+            border: none;
+            outline: none;
+            height:55px;
+            font-style: normal;
+            text-align: center;
+font-weight: 800;
+font-size: 18px;
+line-height: 25px;
+padding: 15px 25px;
+border-radius: 25px 25px 0 0;
+cursor: pointer;
+     i{
+        margin: 3px;
+    }
+        }
+}
+}
+
+@media (min-width: 500px){
+    .HisopadoCart{
+
+        .HisopadoCart__title{
+            font-size: 2.4rem;
+        }
+        p{
+            font-size: 1.5rem;
+        } 
+        .HisopadoCart__userSection{
+            .HisopadoCart__addContainer{
+                .HisopadoCart__btnContainer{
+                    width: 110px;
+                    .HisopadoCart__addBTn{
+                        font-size: 4rem;
+                        text-align: center;
+                        padding: 18px 0px;
+                    }
+                    .HisopadoCart__addMsg{
+                    font-size: 1.1rem;
+                }
+                }
+                
+            }
+        }
+
+    }
+}
+
+@media (min-width: 800px){
+    .HisopadoCart{
+
+        .HisopadoCart__title{
+            font-size: 2.4rem;
+            margin-left: 40px;
+        }
+        p{
+            font-size: 1.5rem;
+            margin-left: 40px;
+        } 
+    }
+}

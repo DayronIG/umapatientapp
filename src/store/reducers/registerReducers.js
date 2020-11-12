@@ -8,12 +8,14 @@ const initialState = {
   address: "",
   city: "",
   piso: "",
+  depto: "",
   ws: "",
-  day: "00",
-  month: "00",
-  year: "0000",
+  day: "",
+  month: "",
+  year: "",
   dt: "",
   os: "",
+  phone:"",
   osNumber: 0,
   fullname: "",
   userToFill: {
@@ -47,6 +49,8 @@ export default function frontReducers(state = initialState, action) {
       return { ...state, country: action.payload };
     case "REGISTER_FIRST_PISO":
       return { ...state, piso: action.payload };
+    case "REGISTER_FIRST_DEPTO":
+        return { ...state, depto: action.payload };
     case "REGISTER_FIRST_WS":
       return { ...state, ws: action.payload };
     case "REGISTER_FIRST_DAY":
@@ -63,6 +67,8 @@ export default function frontReducers(state = initialState, action) {
       return { ...state, osNumber: action.payload };
     case "REGISTER_FIRST_FULLNAME":
       return { ...state, fullname: action.payload };
+    case "REGISTER_PHONE_NUMBER":
+        return { ...state, phone: action.payload };
     case "FILL_REGISTER":
       if (action.payload) {
         return { ...state, userToFill: action.payload };
