@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment-timezone";
@@ -11,7 +11,38 @@ import BackButton from './../../GeneralComponents/Backbutton';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 
 const HisopadoCart = (props) => {
+    const dispatch = useDispatch();
+    const [dependants, setDependants] = useState(null);
+    useEffect(() => {
+        localStorage.setItem("userRegistered", props.match.params.ws);
+        let ws = localStorage.getItem("userRegistered");
+        let dni = localStorage.getItem("userId");
+        dispatch({ type: "REGISTER_FIRST_DNI", payload: dni });
+        dispatch({ type: "REGISTER_FIRST_WS", payload: ws });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
     
+        axios
+          .get(`${node_patient}/dependant`)
+          .then(res => {
+            const dep=res.data;
+            setDependants(dep)
+            dispatch({ type: "LOADING", payload: false })
+          })
+          .catch(function (error) {
+            dispatch({
+              type: "ALERT",
+              payload: {
+                type: "warning",
+                title: "No se pudo incluir a su dependiente",
+                msg:
+                  `No se pudo incluir a su dependiente. ${error?.response?.data?.message}`
+              }
+            })
+            dispatch({ type: "LOADING", payload: false })
+          })
+      
+    console.log(dependants);
     return(
         <>
         <div className="HisopadoCart">
@@ -20,7 +51,9 @@ const HisopadoCart = (props) => {
         <p>Datos del Usuario</p>
         <section className="HisopadoCart__userSection">
         <div className="HisopadoCart__userContainer">
-            {}
+            {dependants > 0 ? dependants.map( dep =>{
+                return <div className="HisopadoCart__user">{dep}</div>
+            }) : null}
         </div>
         <div className="HisopadoCart__addContainer">
             <span 

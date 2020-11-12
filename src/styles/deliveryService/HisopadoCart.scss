@@ -25,7 +25,11 @@
         width: 100%;
         padding: 15px;
         .HisopadoCart__userContainer{
-
+            .HisopadoCart__user{
+                padding: 10px;
+                text-align: left;
+                font-size: 1rem;
+            }
         }
         .HisopadoCart__addContainer{
             display: flex;

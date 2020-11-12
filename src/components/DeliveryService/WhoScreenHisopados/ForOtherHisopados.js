@@ -17,10 +17,10 @@ const Register = props => {
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
   const { dni,  day, month, phone,
-    year, sex, address, piso, os, fullname } = useSelector(state => state.register);
+    year, sex, address, piso, depto, os, fullname } = useSelector(state => state.register);
   const monthRef = useRef();
   const yearRef = useRef();
-
+  const generoRef = useRef();
   useEffect(() => {
     localStorage.setItem("userRegistered", props.match.params.ws);
     let ws = localStorage.getItem("userRegistered");
@@ -57,17 +57,11 @@ const Register = props => {
       piso: piso || "", 
       sex: sex || "",
       ws: user.ws || "",
-    }
+    } 
     axios
       .post(`${node_patient}/dependant`, {dependant: data})
       .then(res => {
-        if (props.redirectToConsultory === 'true') {
-          props.history.replace(`/${dni}/appointmentsonline/`)
-        } else {
-          let userData = { ...user, dni, dob, sex, fullname }
-          localStorage.setItem('appointmentUserData', JSON.stringify(userData))
-          props.history.replace(`/${data.dni}/onlinedoctor/when`)
-        }
+          props.history.replace(`/hisopado/carrito/${dni}`)
         dispatch({ type: "LOADING", payload: false })
       })
       .catch(function (error) {
@@ -100,6 +94,9 @@ const Register = props => {
 
   const onChangeYear = e => {
     dispatch({ type: "REGISTER_FIRST_YEAR", payload: e.target.value });
+    if (e.target.value.length === 4) {
+      generoRef.current.focus()
+    }
   }
 
   const handleDni = (dni) => {
@@ -114,6 +111,13 @@ const Register = props => {
     dispatch({ type: 'REGISTER_PHONE_NUMBER', payload: e.target.value})
   }
 
+  const handlePiso = e =>{
+    dispatch({ type: 'REGISTER_FIRST_PISO', payload: e.target.value})
+  }
+
+  const handleDepto = e =>{
+    dispatch({ type: 'REGISTER_FIRST_DEPTO', payload: e.target.value})
+  }
 
   return (
     <>
@@ -160,18 +164,18 @@ const Register = props => {
                 Fecha de nacimiento
               </label>
               <div className="birthInputContainer">
-                <input type="number"   onChange={(e) => onChangeDay(e)} value={day}  required className='form-input birth' id='birthDate'
+                <input type="number" placeholder="00"   onChange={(e) => onChangeDay(e)} value={day}  required className='form-input birth' id='birthDate'
                required />
-              <input type="number"  ref={monthRef} onChange={(e) => onChangeMonth(e)} value={month} min="1" max="12" required className='form-input birth' id='birthDate'
+              <input type="number" placeholder="00"  ref={monthRef} onChange={(e) => onChangeMonth(e)} value={month} min="1" max="12" required className='form-input birth' id='birthDate'
                required />
-              <input type="number" ref={yearRef} onChange={(e) => onChangeYear(e)} value={year} required className='form-input birth' id='birthDate'
+              <input type="number" placeholder="0000" ref={yearRef} onChange={(e) => onChangeYear(e)} value={year} required className='form-input birth' id='birthDate'
                required />
               </div>
               
             </div>
             <div className="inputContainer genero">
               <label className="form-label">Género</label>
-              <select className="form-input genero"
+              <select ref={generoRef} className="form-input genero"
                 id="gender" required
                 value={sex}
                 onChange={e => dispatch({ type: "REGISTER_FIRST_SEX", payload: e.target.value })} >
@@ -196,11 +200,11 @@ const Register = props => {
         <div className="mid-inputs-container">
         <div className="inputContainer">
           <label className='form-label'>Piso</label>
-          <input className="form-input mid-input" type="number" id="piso"/>
+          <input onChange={e => handlePiso(e)} value={piso} className="form-input mid-input" type="text" id="piso"/>
         </div>
         <div className="inputContainer mid">
           <label className='form-label'>Depto</label>
-          <input className="form-input mid-input" type="text" id="depto"/>
+          <input onChange={e => handleDepto(e)} value={depto} className="form-input mid-input" type="text" id="depto"/>
         </div>
         </div>
 
