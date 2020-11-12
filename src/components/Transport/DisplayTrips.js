@@ -137,6 +137,24 @@ const TransportUserActive = () => {
 					}}>
 					Pendientes
 				</button>
+				<button
+					className={openPendingServices === true ? "active" : ""}
+					onClick={function () {
+						setOpenPendingServices(true)
+						setOpenApprovedServices(false)
+						setOpenAll(false)
+					}}>
+					Pendientes
+				</button>
+				<button
+					className={openPendingServices === true ? "active" : ""}
+					onClick={function () {
+						setOpenPendingServices(true)
+						setOpenApprovedServices(false)
+						setOpenAll(false)
+					}}>
+					Pendientes
+				</button>
 			</div>
 
 			{/* SIN TRASLADOS */}
