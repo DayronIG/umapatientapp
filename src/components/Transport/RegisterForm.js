@@ -31,66 +31,6 @@ const RegisterForm = () => {
     const history = useHistory();
     const { ws } = useParams();
 
-<<<<<<< HEAD
-
-function buildImages(fileValue, id) {
-    let imagePreview = '';
-    if (typeof fileValue === 'string') {
-        imagePreview = fileValue;
-    } else {
-        imagePreview = URL.createObjectURL(fileValue);
-    }
-    switch (id) {
-        case 'dni':
-         setForm({...dataForm, dni: fileValue,  dniPreview: imagePreview})   
-            break;
-       case 'certImg':
-         setForm({...dataForm, certImg: fileValue,  certImgPreview: imagePreview})   
-             break;
-        default:
-            break;
-    }
-
-    
-}
-
-
-    const [dataForm, setForm] = useState(fromInitialState)
-    
-
-    const checkboxHandlerDiscapacity = (e) => {
-        setForm({...dataForm, discapacity: e.target.value === 'true' ? true : false})
-    }
-
-    const checkboxHandlerSillaRuedas = (e) => {
-        setForm({...dataForm, sillaRuedas: e.target.value === 'true' ? true : false})
-    }
-    
-    const  checkboxHandlerAcompañante= (e) => {
-        setForm({...dataForm, acompañante: e.target.value === 'true' ? true : false})
-    }
-
-    const selectHandlerTypeDiscapacity = (e) => {
-        setForm({...dataForm, diagnostico: e.target.value})
-    }
-
-    const selectHandlerGradoDiscapacidad = (e) => {
-        setForm({...dataForm, gradoDiscapacidad: e.target.value})
-    }
-
-    const inputChangeDataCertificado = (e) => {
-        setForm({...dataForm, NroCertificado: e.target.value})
-    }
-
-    const inputChangeVencCertificado = (e) => {
-        setForm({...dataForm, VencCertificado: e.target.value})
-    }
-
-    const inputChangeNameAcompañante = (e) => {
-        setForm({...dataForm, acompañanteName: e.target.value})
-    }
-
-=======
 		function buildImages(fileValue, id) {
 				let imagePreview = '';
 				if (typeof fileValue === 'string') {
@@ -120,7 +60,6 @@ function buildImages(fileValue, id) {
 			return setForm({ ...dataForm, [name]: value === 'true' ? true : false })
 		}
 		
->>>>>>> 3c2058ecc113daece1db7f743235120def8b9644
     const handlerSubmit = async (e) => {
 			e.preventDefault();
 			const user = JSON.parse(localStorage.getItem('userData'));
