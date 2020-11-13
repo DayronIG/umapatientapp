@@ -28,7 +28,7 @@ const TransportTracking = () => {
 	}
 
 	useEffect(() => {
-		if(service.status_tramo === 'FINISHED') {
+		if(service?.status_tramo === 'FINISHED') {
 			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
@@ -77,13 +77,13 @@ const TransportTracking = () => {
 					})}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					{service?.current_position_remis?.lat && 
+					{service?.current_position_remis?.lat && (
 						<Marker
 							lat={service?.current_position_remis?.lat || 0}
 							lng={service?.current_position_remis?.lon || 0}
 							text='Ubicacion del remis' type='remis' 
 						/>
-					}
+					)}
 					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
@@ -92,8 +92,8 @@ const TransportTracking = () => {
 				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className='transportDriver'>
 					<div className='transportDriverData'>
-						<p>Conductor: {service.provider_fullname || ''}</p>
-						<p>CUIT: {service.provider_id || '' } </p>
+						<p>Conductor: {service?.provider_fullname || ''}</p>
+						<p>CUIT: {service?.provider_id || '' } </p>
 					</div>
 				</div>
 				<div className='openContent'>
@@ -106,19 +106,19 @@ const TransportTracking = () => {
 					<ul className='driverUl'>
 						<li className='originLi'>
 							<p className='originP'>Origen:</p> 
-							<p className='originText'>{service.request?.geo_inicio.address}</p>
+							<p className='originText'>{service?.request?.geo_inicio.address}</p>
 						</li>
 						<li className='originLi'>
 							<p className='originP'>Destino:</p> 
-							<p className='originText'>{service.request?.geo_fin.address}</p>
+							<p className='originText'>{service?.request?.geo_fin.address}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>{renderTimeMessage(service.trip_type)}:</p> 
-							<p className='originText'>{service.hora}</p>
+							<p className='originP'>{renderTimeMessage(service?.trip_type)}:</p> 
+							<p className='originText'>{service?.hora}</p>
 						</li>
 						<li className='originLi'>
 							<p className='originP'>Notas:</p> 
-							<p className='originText'>{service.request?.notas || 'No hay notas'}</p>
+							<p className='originText'>{service?.request?.notas || 'No hay notas'}</p>
 						</li>
 					</ul>
 				}

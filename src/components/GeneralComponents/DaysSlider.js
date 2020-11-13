@@ -6,9 +6,9 @@ import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import TimePicker from '../GeneralComponents/TimePicker';
 import '../../styles/generalcomponents/daysSlider.scss'
 import Cleave from 'cleave.js/react';
+import { FaCheck } from 'react-icons/fa';
 
 export default function DaysSlider({
-	title = '',
 	values,
 	handleChange
 }) {
@@ -21,7 +21,6 @@ export default function DaysSlider({
 	}
 	return (
 		<div className='daysSlider'>
-			<h5 className='daysSlider__title'>{title}</h5>
 			<div className='modal-body'>
 				<div className='switcher'>
 					<span>Lunes</span>
@@ -36,7 +35,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }} 
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -48,7 +46,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_monday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_monday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -64,7 +62,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }} 
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -76,7 +73,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_tuesday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_tuesday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -92,7 +89,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }}
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -104,7 +100,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_wednesday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_wednesday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -120,7 +116,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }}
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null
 					}
@@ -133,7 +128,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_thursday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_thursday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -149,7 +144,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }}
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -161,7 +155,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_friday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_friday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -177,7 +171,6 @@ export default function DaysSlider({
 									className='CleaveInput' 
 									options={{ time: true, timePattern: ['h', 'm'] }}
 								/>
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -189,7 +182,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_saturday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_saturday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 				<div className='switcher'>
@@ -199,7 +192,6 @@ export default function DaysSlider({
 							<div>
 								<Cleave placeholder='00:00' name='sun' value={values.sun} onChange={handlerInputChange} className='CleaveInput' options={{ time: true, timePattern: ['h', 'm'] }} />
 
-								<span>Hs.</span>
 							</div>
 						</div> : null}
 					<label id='switch' className='switch'>
@@ -211,7 +203,7 @@ export default function DaysSlider({
 								}
 							}}
 						/>
-						<span className='slider round'>{transportData.origin_translate_sunday ? '✓' : null}</span>
+						<span className='slider round'>{transportData.origin_translate_sunday ? <FaCheck /> : null}</span>
 					</label>
 				</div>
 			</div>

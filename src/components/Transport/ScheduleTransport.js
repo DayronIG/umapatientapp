@@ -92,7 +92,7 @@ function ScheduleTransport() {
 			<div className='scheduleForm__container'>
 				<h5>Duración del traslado</h5>
 				<div className='scheduleForm__container--input'>
-					<label className="label">Fecha de inicio:</label>
+					<label className="label">Fecha de inicio</label>
 					<input
 					className="dateInput"
 						required
@@ -103,7 +103,7 @@ function ScheduleTransport() {
 					/>
 				</div>
 				<div className='scheduleForm__container--input'>
-					<label className="label">Fecha de finalizacion:</label>
+					<label className="label">Fecha de finalizacion</label>
 					<input
 					className="dateInput"
 						required
@@ -116,71 +116,49 @@ function ScheduleTransport() {
 			</div>
 			<div className='scheduleForm__container'>
 				<div className='centeredElements'>
-				<h5 className='scheduleForm__container--title'>Horario de llegada a destino</h5>
-				{transportData.hasOrigin ? 
-					<button
-						className="addButton" 
-						type="button"
-						onClick={function() {
-							transportActions.setHasOrigin(true);
-							resetOriginDays();
-						}}
-					>
-							- Borrar horarios
-					</button> 
-					:
-					<button 
-						className="addButton"
-						type="button"
-						onClick={() => transportActions.setHasOrigin(false)}
-					>
-						+ Agregar horarios
-					</button>
-					}
-					{transportData.hasOrigin && (
-						<DaysSlider
-							title='Llegada a destino'
-							values={transportData.startSchedules}
-							handleChange={transportActions.setStartSchedule}
-						/>
-					)}
+					<h5 className='scheduleForm__container--title'>Horario de llegada a destino</h5>
+					<DaysSlider
+						values={transportData.startSchedules}
+						handleChange={transportActions.setStartSchedule}
+					/>
 					</div>
 				</div>
 				<div className="scheduleForm__container">
 				<div className='centeredElements'>
 				<h5 className='scheduleForm__container--title'>Horario de regreso a origen</h5>
-				{transportData.hasReturn ? 
-					<button 
-						className="addButton"
-						type="button"
-						onClick={function() {
-							transportActions.setHasReturn(true)
-							resetReturnDays()
-						}}
-					>
-						- Borrar horarios
-					</button> 
-				:
-					<button 
-						className="addButton"
-						type="button"
-						onClick={() => transportActions.setHasReturn(false)}
-					>
-						+ Agregar horarios
-					</button>
+				{!transportData.hasReturn && (
+						<button 
+							className="addButton"
+							type="button"
+							onClick={() => transportActions.setHasReturn(false)}
+						>
+							+ Agregar horarios
+						</button>
+					)
 				}
 				{transportData.hasReturn && (
-					<DaysSliderReturn
-						title='Regreso a origen'
-						values={transportData.returnSchedules}
-						handleChange={transportActions.setReturnSchedule}
-					/>
+					<>
+						<DaysSliderReturn
+							values={transportData.returnSchedules}
+							handleChange={transportActions.setReturnSchedule}
+						/>
+						<button 
+							className="addButton closeDays"
+							type="button"
+							onClick={function() {
+								transportActions.setHasReturn(true)
+								resetReturnDays()
+							}}
+						>
+							- Borrar horarios
+						</button>
+					</>
 				)}
 				</div>
 				</div>
 			<div className='scheduleForm__container'>
 				<div className='scheduleForm__container--observations'> 
-					<h5>Observaciones</h5>
+					<h5 className="scheduleForm__observationsTitle">Observaciones</h5>
 					<textarea
 					 	rows='10'
 						type='text'
@@ -192,12 +170,8 @@ function ScheduleTransport() {
 					/>
 				</div>
 			</div>
-			<div className='centeredElements'>
-			<FooterBtn
-				callback={handleSubmit}
-				text='Confirmar'
-				type='submit'
-			/>
+			<div className="FooterBtn">
+				<button onClick={handleSubmit}>Crear traslado</button>
 			</div>
 		</form>
 	);
