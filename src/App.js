@@ -158,16 +158,6 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/hisopado/destinatario/:ws?'
-					component={WhoScreenHisopados}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/for-other/:ws?'
-					component={ForOtherHisopados}
-				/>
-				<PrivateRoute
-					exact
 					path='/hisopado/carrito/:ws?'
 					component={HisopadoCart}
 				/>
