@@ -22,10 +22,11 @@ export const UploadImg = ({ title, id, cb, previewImage }) => (
         </label>
         <span className="uploadImgContainer_fileContainer">
             { previewImage ? <img className="imagePreview" src={previewImage}/> : null}
-        <div className="uploadImgContainer_uploadTextCont">
+        
+             <div className="uploadImgContainer_uploadTextCont">
         <i className="fas fa-file-upload"></i>
-        <p>Subir Foto</p>
-        </div>
+        <p>{ previewImage ? 'Cambiar Foto ': 'Subir Foto' }</p>
+</div> 
        
         
         <input type="file" id={`${id}img`} onChange={(e) => cb(e.target.files[0], id)} />
