@@ -58,6 +58,7 @@ function buildImages(fileValue, id) {
 
 
     const [dataForm, setForm] = useState(fromInitialState)
+    
 
     const checkboxHandlerDiscapacity = (e) => {
         setForm({...dataForm, discapacity: e.target.value === 'true' ? true : false})
