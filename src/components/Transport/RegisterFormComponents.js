@@ -59,8 +59,8 @@ export const InputRegister = ({ title, id, cb }) => (
 
 export const ContinueButton = ({ title, cb, type }) => {
     return (
-        <div className="buttonContainer buttonFinailzar">
-            <button onClick={() => cb()} type={type || ''} >
+        <div className="buttonContainer">
+            <button onClick={cb} type={type || ''} >
                 {title}
             </button>
         </div>

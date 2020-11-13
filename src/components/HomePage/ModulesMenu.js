@@ -58,16 +58,16 @@ const ModulesMenu = () => {
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${patient.ws}/transport`,
-								'translation',
-								iconTraslados,
-								'Traslados'
-							)}
-							{returnModule(
 								`/${patient.ws}/wellness`,
 								'wellness',
 								iconEstudios,
 								'Estudios'
+							)}
+							{returnModule(
+								`/${patient.ws}/transport`,
+								'translation',
+								iconTraslados,
+								'Traslados'
 							)}
 							{returnModule(
 								`/appointmentsonline/who?redirectConsultory=true`,
