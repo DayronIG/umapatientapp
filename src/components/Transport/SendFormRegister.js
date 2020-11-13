@@ -30,7 +30,7 @@ export async function sendForm(dataForm, user) {
 				'acompanante': dataForm.acompañanteName,
 				'credencial_foto': dataForm.getLicenceFile,
 				'certificado_foto': url_credential,
-				'certificado_discapacidad_vencimiento': dataForm.VencCertificado
+				'certificado_discapacidad_vencimiento': dataForm.vencCertificado
 			};
 			data = { ...data, ...dataDiscapacityTrue };
 		}
@@ -46,11 +46,12 @@ export async function sendForm(dataForm, user) {
 const validation = (dataForm) =>{
     const t = moment().add(7, 'days');
     const today = t.valueOf();
-    const date3 = dataForm.VencCertificado.replace(/\//g, '-');
+    const date3 = dataForm.vencCertificado.replace(/\//g, '-');
     const disDate = moment(date3).valueOf();
     const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
     if (dataForm.discapacity === true) {
-			if (!date.test(dataForm.VencCertificado)) {
+		console.log(dataForm.vencCertificado);
+			if (!date.test(dataForm.vencCertificado)) {
 					swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
 					return false;
 			}
