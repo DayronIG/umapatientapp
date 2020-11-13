@@ -8,7 +8,6 @@ import '../../styles/generalcomponents/daysSlider.scss'
 import Cleave from 'cleave.js/react';
 
 export default function DaysSlider({
-	title = '',
 	values,
 	handleChange
 }) {
@@ -21,7 +20,6 @@ export default function DaysSlider({
 	}
 	return (
 		<div className='daysSlider'>
-			<h5 className='daysSlider__title'>{title}</h5>
 			<div className='modal-body'>
 				<div className='switcher'>
 					<span>Lunes</span>
