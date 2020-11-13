@@ -43,21 +43,21 @@ export async function sendForm(dataForm, user) {
 	} 
 }
 
-const validation = (dataForm) =>{
-    const t = moment().add(7, 'days');
-    const today = t.valueOf();
-    const date3 = dataForm.vencCertificado.replace(/\//g, '-');
-    const disDate = moment(date3).valueOf();
-    const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
-    if (dataForm.discapacity === true) {
-			if (!date.test(dataForm.vencCertificado)) {
-					swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
-					return false;
-			}
-			if (today >= disDate) {
-					swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
-					return false;
-			}
+const validation = (dataForm) => {
+	const nextWeek = moment().add(7, 'days');
+	const today = nextWeek.valueOf();
+	const date3 = dataForm.vencCertificado.replace(/\//g, '-');
+	const disDate = moment(date3).valueOf();
+	const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
+	if (dataForm.discapacity === true) {
+		if (!date.test(dataForm.vencCertificado)) {
+			swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+			return false;
 		}
-		return true;
+		if (today >= disDate) {
+			swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
+			return false;
+		}
+	}
+	return true;
 }
