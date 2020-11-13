@@ -148,27 +148,13 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				<PrivateRoute
-					exact
-					path='/hisopado/:ws?'
-					component={DeliveryPurchase}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/cobertura/:ws?'
-					component={DeliveryCoverage}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopadoResult/:ws?'
-					component={DeliveryResults}
-				/>
+				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
+				<PrivateRoute exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
-				
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
-				
 				<Route component={NotFound} />
 			</Switch>
 		</div>

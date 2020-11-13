@@ -50,7 +50,7 @@ const Queue = (props) => {
                 if (assigned) {
                     dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
                 } else {
-                    return props.history.replace(`/${dni}`)
+                    return props.history.replace(`/home`)
                 }
             }
         })()
@@ -161,7 +161,7 @@ const Queue = (props) => {
                     queryUser.onSnapshot(async function (doc) {
                         let data = doc.data()._start_date
                         if (data !== '' && data !== "geo") {
-                            let callRoom = data.split('///')
+                            let callRoom = data?.split('///')
                             if(callRoom) {
                                 dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
                             }
@@ -326,7 +326,7 @@ const Queue = (props) => {
             }
             if (type === 'cancel') {
                 dispatch({ type: 'RESET_ALL' })
-                return props.history.push('/')
+                return props.history.push('/home')
             }
             return dispatch({ type: 'LOADING', payload: false })
         } catch (err) {
@@ -335,7 +335,7 @@ const Queue = (props) => {
             dispatch({ type: 'RESET_ALL' })
             dispatch({ type: 'LOADING', payload: false })
             if (type === 'cancel') {
-                return props.history.push('/')
+                return props.history.push('/home')
             }
         }
     }
@@ -418,7 +418,7 @@ const Queue = (props) => {
                 :
                 <>
                     <div className='dinamic-time mb-3'>
-                        <Link to='/'>
+                        <Link to='/home'>
                             <FaArrowLeft color='#fff' fontSize='2rem' />
                         </Link>
                         <div className='question-title'>
