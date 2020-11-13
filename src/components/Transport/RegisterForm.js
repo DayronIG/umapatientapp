@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import BackButton from '../GeneralComponents/Backbutton';
-import { YesNoCheckbox, UploadImg, SelectRegister, InputRegister, ContinueButton } from './RegisterFormComponents'
+import { YesNoCheckbox, UploadImg, SelectRegister, InputRegister, ContinueButton } from './RegisterFormComponents';
 import Cleave from 'cleave.js/react';
 import swal from 'sweetalert';
 import { useHistory, useParams } from 'react-router-dom';
@@ -10,44 +10,42 @@ import { sendForm } from './SendFormRegister';
 import '../../styles/transport/registerForm.scss';
 
 const fromInitialState = {
-    dni: '',
-    dniPreview: '',
-    discapacity: false,
-    diagnostico: '',
-    gradoDiscapacidad: '',
-    nroCertificado: '',
-    vencCertificado: '',
-    certImg: '',
-    certImgPreview: '',
-    sillaRuedas: false,
-    acompañante: false,
-    acompañanteName: '',
+	dni: '',
+	dniPreview: '',
+	discapacity: false,
+	diagnostico: '',
+	gradoDiscapacidad: '',
+	nroCertificado: '',
+	vencCertificado: '',
+	certImg: '',
+	certImgPreview: '',
+	sillaRuedas: false,
+	acompañante: false,
+	acompañanteName: ''
 }
 
 const RegisterForm = () => {
     const dispatch = useDispatch();
     const { loading } = useSelector(state => state.front);
-		const [dataForm, setForm] = useState(fromInitialState)
+		const [dataForm, setForm] = useState(fromInitialState);
     const history = useHistory();
     const { ws } = useParams();
 
 		function buildImages(fileValue, id) {
-				let imagePreview = '';
-				if (typeof fileValue === 'string') {
-						imagePreview = fileValue;
-				} else {
-						imagePreview = URL.createObjectURL(fileValue);
-				}
-				switch (id) {
-						case 'dni':
-						setForm({...dataForm, dni: fileValue,  dniPreview: imagePreview})   
-								break;
-					case 'certImg':
-						setForm({...dataForm, certImg: fileValue,  certImgPreview: imagePreview})   
-								break;
-						default:
-								break;
-				}
+			let imagePreview = '';
+			if (typeof fileValue === 'string') {
+				imagePreview = fileValue;
+			} else {
+				imagePreview = URL.createObjectURL(fileValue);
+			}
+			switch (id) {
+				case 'dni':
+					return setForm({ ...dataForm, dni: fileValue,  dniPreview: imagePreview });
+				case 'certImg':
+					return setForm({ ...dataForm, certImg: fileValue,  certImgPreview: imagePreview });
+				default:
+					break;
+			}
 		}
 	
 		const handleChange = (event) => {
@@ -55,9 +53,9 @@ const RegisterForm = () => {
 			return setForm({...dataForm, [name]: value });
 		}
 
-		const handleRadioCHange = (event) => {
+		const handleRadioChange = (event) => {
 			const { name, value } = event.target;
-			return setForm({ ...dataForm, [name]: value === 'true' ? true : false })
+			return setForm({ ...dataForm, [name]: value === 'true' ? true : false });
 		}
 		
     const handlerSubmit = async (e) => {
@@ -98,7 +96,7 @@ const RegisterForm = () => {
 							<YesNoCheckbox
 								title='¿Posee alguna discapacidad?*'
 								id='discapacity'
-								cb={handleRadioCHange}
+								cb={handleRadioChange}
 							/>
 							{dataForm.discapacity && (
 								<>
@@ -150,12 +148,12 @@ const RegisterForm = () => {
 									<YesNoCheckbox
 										title='¿Usa silla de ruedas?'
 										id='sillaRuedas'
-										cb={handleRadioCHange}
+										cb={handleRadioChange}
 									/>
 									<YesNoCheckbox
 										title='¿Viaja con un acompañante?'
 										id='acompañante'
-										cb={handleRadioCHange}
+										cb={handleRadioChange}
 									/>
 									{dataForm.acompañante && (
 										<InputRegister

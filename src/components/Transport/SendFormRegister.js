@@ -44,6 +44,7 @@ export async function sendForm(dataForm, user) {
 }
 
 const validation = (dataForm) =>{
+		console.log(dataForm);
     const t = moment().add(7, 'days');
     const today = t.valueOf();
     const date3 = dataForm.VencCertificado.replace(/\//g, '-');
