@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Draw from '../../assets/draw.svg'
 import { useSelector } from 'react-redux';
 import { FaChevronLeft } from 'react-icons/fa'
@@ -7,7 +7,10 @@ import '../../styles/generalcomponents/TransportNoDriver.scss';
 
 function TransportNoDriver() {
 	const { patient } = useSelector(state => state.queries)
-	const history = useHistory();
+    const history = useHistory();
+    useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "TRANSPORT_NO_DRIVER", item: ['TRANSPORT_NO_DRIVER']})
+	},[])
 	return (
 		<>
 			<FaChevronLeft
