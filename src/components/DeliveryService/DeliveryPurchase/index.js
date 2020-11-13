@@ -21,7 +21,6 @@ export default function HisopadosPurchase() {
     const dispatch = useDispatch()
 
     const renderContent = () => {
-        if (status !== undefined){
         if(!["PREASSING", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"].includes(status) ){
             switch (step) {
                 case "ASK_FOR_BUY":
@@ -64,8 +63,6 @@ export default function HisopadosPurchase() {
                 'item_id': 'Hisopado Antígeno',
               });
             history.push(`/delivery/progress/${ws}/${id}/`);
-        }} else {
-            return <Loading />
         }
     }
 
