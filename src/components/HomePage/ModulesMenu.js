@@ -8,11 +8,13 @@ import EventsHistory from '../EventsHistory/';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home'
-import '../../styles/generalcomponents/ModulesMenu.scss';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
 import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
+import iconTraslados from '../../assets/icons/icon-traslados.svg';
+import iconUmacare from '../../assets/icons/icon-umaCare.svg'
+import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
@@ -42,7 +44,7 @@ const ModulesMenu = () => {
 					<GenericHeader children={patient.fullname} />
 					{hisopadosActive && <BuyHisopado />}
 					<section className='modules-container'>
-						<div className='card length4'>
+						<div className='card length3'>
 							{returnModule(
 								`/${patient.ws}/onlinedoctor/who`,
 								'onlinedoctor',
@@ -56,6 +58,12 @@ const ModulesMenu = () => {
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
+								`/${patient.ws}/transport`,
+								'translation',
+								iconTraslados,
+								'Traslados'
+							)}
+							{returnModule(
 								`/${patient.ws}/wellness`,
 								'wellness',
 								iconEstudios,
@@ -67,6 +75,12 @@ const ModulesMenu = () => {
 								iconEspecialista,
 								'Mi especialista'
 							)}
+							{/* {returnModule(
+								`/${patient.ws}/transport`,
+								'umacare',
+								iconUmacare,
+								'UMA Care'
+							)} */}
 						</div>
 					</section>
 					<EventsHistory />

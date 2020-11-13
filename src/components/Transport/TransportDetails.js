@@ -77,13 +77,13 @@ const TransportTracking = () => {
 					})}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					{service?.current_position_remis?.lat && 
+					{service?.current_position_remis?.lat && (
 						<Marker
 							lat={service?.current_position_remis?.lat || 0}
 							lng={service?.current_position_remis?.lon || 0}
 							text='Ubicacion del remis' type='remis' 
 						/>
-					}
+					)}
 					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
