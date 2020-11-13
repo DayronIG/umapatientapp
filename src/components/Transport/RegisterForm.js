@@ -77,9 +77,7 @@ const RegisterForm = () => {
 				history.push(`/${ws}/transportUserActive`);
 			} catch (error) {
 				dispatch({ type: 'LOADING', payload: false });
-				console.error(error);
-				swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
-				history.push(`/${ws}/transportRegister`);
+				swal('Error', 'Hubo un error en el envío del formulario.', 'warning');
 			}
     }
 
