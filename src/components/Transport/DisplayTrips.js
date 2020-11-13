@@ -25,9 +25,12 @@ const TransportUserActive = () => {
 	const [approvedServices, setApprovedServices] = useState([]);
 	const [selectedService, setSelectedService] = useState({});
 	const [noDriver, setNoDriver] = useState(false);
-	
 	const dispatch = useDispatch();
 	const history = useHistory();
+	
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "DISPLAY_TRIPS", item: ['DISPLAY_TRIPS']})
+	},[])
 
 	useEffect(() => {
 		getServices();

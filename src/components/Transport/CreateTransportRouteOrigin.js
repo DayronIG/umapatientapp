@@ -21,6 +21,10 @@ const CreateTransportRoute = () => {
 	const [mapInstance, setMapInstance] = useState(undefined);
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
+	
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "CREATE_TRANSPORT_ROUTE_ORIGIN", item: ['CREATE_TRANSPORT_ROUTE_ORIGIN']})
+	},[])
 
 	useEffect(() => {
 		setInitialOriginPoint(patient);

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import TrasladosWelcome from './TrasladosWelcome';
 // import FirstStep from '../../views/Register';
@@ -7,10 +7,15 @@ import SecondStep from './TransportOnboardingSecondStep';
 import ThirdStep from './TransportOnboardingThirdStep';
 import '../../styles/generalcomponents/TransportMain.scss';
 
+
 const TransportWrapperComponent = (props) => {
     const dispatch = useDispatch();
     const [welcome, setWelcome] = useState(true)
-    const stepPosition = useSelector((state) => state.front.paginationTransport);
+	const stepPosition = useSelector((state) => state.front.paginationTransport);
+	
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "TRANSPORT_REGISTER", item: ['TRANSPORT_REGISTER']})
+	},[])
 
     function showStep() {
         return (

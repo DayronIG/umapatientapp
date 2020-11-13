@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import Backbutton from '../../components/GeneralComponents/Backbutton';
@@ -13,6 +13,11 @@ const TransportOnboarding = (props) => {
 		dispatch({ type: 'SET_PAGINATION_TRANSPORT', payload: 2 });
 	}
 
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "TRANSPORT_REGISTER_SECOND_STEP", item: ['TRANSPORT_REGISTER_SECOND_STEP']})
+	},[])
+
+	
 	return (
 		<>
 			<GenericHeader>Registro</GenericHeader>

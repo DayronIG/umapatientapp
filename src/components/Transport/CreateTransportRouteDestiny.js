@@ -24,6 +24,10 @@ const CreateTransportRoute = () => {
 	const { ws } = useParams();
 	const history = useHistory();
 
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "CREATE_TRANSPORT_ROUTE_DESTINY", item: ['CREATE_TRANSPORT_ROUTE_DESTINY']})
+	},[])
+
 	useEffect(() => {
 		setInitialOriginPoint(patient);
 	}, [patient]);
