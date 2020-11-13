@@ -23,9 +23,7 @@
 
   .transportUserActive {
     padding-bottom: 25vh;
-
     .transportList {
-
       .buttonDisplay{
       display: flex;
       font-size: 1rem;
@@ -42,7 +40,6 @@
         &.active{
         color:$uma-primary;
         font-weight: bold;
-
           &::after {
             content: '';
             display: block;
@@ -52,7 +49,6 @@
           }
         }
       }
-
       button{
         border:none;
         outline: none;
@@ -60,25 +56,21 @@
         color: rgba(128, 128, 128, 0.349);
         transition:none;
       }
-
       & + div {
         margin-top: 1.5rem;
         }
       }
-
       .backButtonContainer {
         width: 100%;
         line-height: 0;
         padding: 0 10px;
       }
-
       li {
         border-top: 4px solid #c4c4cc;
         background-color: $white-color;
         margin: 2rem auto;
         width: 90%;
         box-shadow: 1px 3px 10px rgba(173, 186, 197, 0.25);
-
         .transportContainer {
           font-size: 14px;
           display: flex;
@@ -86,7 +78,6 @@
           border-bottom: 1px solid #f2f2f2;
           padding: 0;
           margin-bottom: 0.8rem;
-
           .transportTime {
             width: 40%;
             color: $uma-primary;
@@ -109,13 +100,11 @@
               right: 0;
               background: #f2f2f2;
             }
-
             & svg {
               margin-right: 0.5rem;
               font-size: 1rem;
             }
           }
-
           .transportDriver {
             padding: 0.8rem 0.8rem 0.8rem 1rem;
             width: 65%;
@@ -139,8 +128,7 @@
         .openContent {
           padding: 0 0.8rem 1rem;
           display: flex;
-          justify-content: center;
-
+					justify-content: center;
           button {
             border: none;
             background: none;

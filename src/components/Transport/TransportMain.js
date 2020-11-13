@@ -20,7 +20,10 @@ const TransportWrapperComponent = () => {
 		Axios.post(check_exist, {
 			'ws': userData.ws,
 			'dni': userData.dni
-		}, { headers: { 'Content-Type': 'application/json;charset=UTF-8', 'Authorization': token } })
+		}, { 
+			headers: { 
+			'Content-Type': 'application/json;charset=UTF-8', 'Authorization': token 
+		} })
 			.then(function (response) {
 				setActivated(response.data);
 			}).catch(function (error) {
@@ -32,7 +35,7 @@ const TransportWrapperComponent = () => {
 
 	useEffect(() => {
 		if (activated === true) {
-			history.push(`/${ws}/transportRegister`);
+			history.push(`/${ws}/transportUserActive`);
 		} else if (activated === false) {
 			history.push(`/${ws}/transportRegister`);
 		}
