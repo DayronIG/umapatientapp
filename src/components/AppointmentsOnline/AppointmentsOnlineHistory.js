@@ -107,12 +107,12 @@ const AppointmentsOnlineHistory = (props) => {
 				let headers =
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
-				return props.history.push('/')
+				return props.history.push('/home')
 			} catch (err) {
 				dispatch({ type: 'ERROR', payload: err })
 				dispatch({ type: 'LOADING', payload: false })
 				dispatch({ type: 'RESET_ALL' })
-				return props.history.push('/')
+				return props.history.push('/home')
 			}
 		}
 	}
@@ -160,7 +160,7 @@ const AppointmentsOnlineHistory = (props) => {
 					{incomingCall && <audio src={tone} id='toneAudio' autoPlay />}
 				</>
 			}
-			<button className="btn btn-blue-lg btn-back" onClick={() => props.history.push('/')}>Volver al inicio</button>
+			<button className="btn btn-blue-lg btn-back" onClick={() => props.history.push('/home')}>Volver al inicio</button>
 			{loading &&
 				<div className="text-center mt-5">
 					<Loader />

@@ -64,7 +64,7 @@ const Hta = ({ history }) => {
         <Modal title='Hipertensión' hideCloseButton>
           <form className='symptoms' onSubmit={submitSymptoms}>
             <p className="subtitulo-modal">Ingrese preferentemente un registro de las últimas 6hs</p>
-            <div className="calamardoKempes">
+            <div className="symptomsmodal__record">
               <div>
                 <p>Sistólica <br />(“la máxima”)<br /> mmHg</p>
               </div>
@@ -76,7 +76,7 @@ const Hta = ({ history }) => {
                 className="input-hta" type="number" placeholder="120" value={TAS}
               />
             </div>
-            <div className="calamardoKempes">
+            <div className="symptomsmodal__record">
               <div>
                 <p>Diastólica<br />(“la mínima”)<br />mmHg</p>
               </div>
@@ -103,7 +103,7 @@ const Hta = ({ history }) => {
             }
 
             <button type='submit' className='btnVolver'>Confirmar síntomas</button>
-            <button type="button" className='btnVolver' onClick={() => history.push('/')}>Cancelar</button>
+            <button type="button" className='btnVolver' onClick={() => history.push('/home')}>Cancelar</button>
           </form>
         </Modal>
       </div>

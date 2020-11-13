@@ -26,7 +26,7 @@ const NotFound = (props) => {
                     }
                     <br />
                     <small>{props.match ? props.match.params.error : props.error}</small>
-                    <button className="btn btn-blue-lg" onClick={() => props.history.push('/')}>Ir a la página inicial</button>
+                    <button className="btn btn-blue-lg" onClick={() => props.history.push('/home')}>Ir a la página inicial</button>
                 </div>
             </div>
         </>

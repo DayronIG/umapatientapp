@@ -35,7 +35,7 @@ const NotService = () => {
         <FaArrowRight />
       </button>
 
-      <button className="notService__link" onClick={() => history.push('/')}>
+      <button className="notService__link" onClick={() => history.push('/home')}>
         Ir a inicio
       </button>
     </div>

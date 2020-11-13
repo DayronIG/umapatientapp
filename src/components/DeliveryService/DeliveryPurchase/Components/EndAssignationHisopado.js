@@ -13,7 +13,7 @@ export default function EndAssignationHisopado() {
                 <p className="hisopados-title">¡Hemos recibido su pago!</p>
                 <p>Estamos buscando al profesional más cercano para realizar el hisopado</p>
                 <p>Aguarde unos instantes</p>
-            <button className="go__home" onClick={() => history.push('/')}>
+            <button className="go__home" onClick={() => history.push('/home')}>
                 Ir a inicio
             </button>
             </div>

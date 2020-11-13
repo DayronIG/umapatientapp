@@ -100,7 +100,7 @@ const ComingSoon = (props) => {
                 <FooterBtn
                     mode="single"
                     text="Volver"
-                    callback={() => props.history.push('/')}
+                    callback={() => props.history.push('/home')}
                 />
             </div>
         </>
