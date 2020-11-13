@@ -24,8 +24,13 @@ const TransportUserActive = () => {
 	const [pendingServices, setPendingServices] = useState([]);
 	const [approvedServices, setApprovedServices] = useState([]);
 	const [selectedService, setSelectedService] = useState({});
+	const [noDriver, setNoDriver] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
+	
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "DISPLAY_TRIPS", item: ['DISPLAY_TRIPS']})
+	},[])
 
 	useEffect(() => {
 		getServices();
@@ -89,6 +94,7 @@ const TransportUserActive = () => {
 		setSelectedService(item);
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
+	
 	return (
 		<div className='transportList'>
 			{toogleModal &&
@@ -260,8 +266,7 @@ const TransportUserActive = () => {
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
-										{	
-											openTravel.assignation_id !== item.assignation_id &&
+										{openTravel.assignation_id !== item.assignation_id &&
 											<div className="openContent">
 												<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
 											</div>

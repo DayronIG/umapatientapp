@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { useSelector, useDispatch } from 'react-redux';
 import * as transportActions from '../../store/actions/transportActions';
@@ -20,6 +20,10 @@ function ScheduleTransport() {
 	const [tomorrow] = useState(moment().add(1, 'day').format('YYYY-MM-DD'));
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	useEffect(() =>{
+		window.gtag('event', 'select_content', {content_type: "SCHEDULE_TRANSPORT", item: ['SCHEDULE_TRANSPORT']})
+	},[])
 
 	const resetReturnDays = () => {
 		dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false });
@@ -76,15 +80,17 @@ function ScheduleTransport() {
 		}
 		try {
 			await transportActions.createTransportSchedule(transportData, patient);
+			await swal('Éxito', 'Traslado creado con éxito', 'success');
+			window.gtag('event', 'select_content', {content_type: "NEW_TRANSPORT_CREATED", item: ['NEW_TRANSPORT_CREATED']})
 			dispatch({ type: 'LOADING', payload: false });
 			return history.push(`/${ws}/scheduledTransportSuccess`);
 		} catch (error) {
 			console.error(error);
+			window.gtag('event', 'select_content', {content_type: "NEW_TRANSPORT_FAIL", item: ['NEW_TRANSPORT_FAIL']})
 			dispatch({ type: 'LOADING', payload: false });
 			return swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
 		}
 	}
-
 
 	return (
 		<form className='scheduleForm'>

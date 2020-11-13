@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
@@ -36,7 +36,11 @@ const TransportOnboarding = () => {
     const { loading } = useSelector(state => state.front);
     const user = useSelector((state) => state.onboardingSecondStep);
 		const { ws } = useParams();
-		
+        
+    useEffect(() =>{
+            window.gtag('event', 'select_content', {content_type: "TRANSPORT_REGISTER_THIRD_STEP", item: ['TRANSPORT_REGISTER_THIRD_STEP']})
+        },[])
+    
     async function sendForm() {
 			dispatch({ type: 'LOADING', payload:true });
 			const t = moment().add(7, 'days');
@@ -110,6 +114,7 @@ const TransportOnboarding = () => {
         } catch (error) {
             console.error(error);
             swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
+            window.gtag('event', 'select_content', {content_type: 'REGISTER_TRANSPORT_USER_FAIL', item: ['REGISTER_TRANSPORT_USER_FAIL']})
             setTimeout(function () {
                 history.push(`/${ws}/transportRegister`);
             }, 2000);
