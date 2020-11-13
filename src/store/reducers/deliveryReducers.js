@@ -3,12 +3,12 @@ import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LON
 const initialState = {
 	addressLatLongHisopado: "",
 	coverage: [],
-	current: "",
+	current: {},
 	deliveryType: '',
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
-	deliveryInfo: {},
+	deliveryInfo: [],
 	selectHomeForm: {
 		piso: '',
 		depto: '',
