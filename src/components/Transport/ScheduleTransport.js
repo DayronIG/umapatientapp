@@ -143,7 +143,7 @@ function ScheduleTransport() {
 							handleChange={transportActions.setReturnSchedule}
 						/>
 						<button 
-							className="addButton"
+							className="addButton closeDays"
 							type="button"
 							onClick={function() {
 								transportActions.setHasReturn(true)
@@ -158,7 +158,7 @@ function ScheduleTransport() {
 				</div>
 			<div className='scheduleForm__container'>
 				<div className='scheduleForm__container--observations'> 
-					<h5>Observaciones</h5>
+					<h5 className="scheduleForm__observationsTitle">Observaciones</h5>
 					<textarea
 					 	rows='10'
 						type='text'
@@ -170,12 +170,8 @@ function ScheduleTransport() {
 					/>
 				</div>
 			</div>
-			<div className='centeredElements'>
-			<FooterBtn
-				callback={handleSubmit}
-				text='Confirmar'
-				type='submit'
-			/>
+			<div className="FooterBtn">
+				<button onClick={handleSubmit}>Crear traslado</button>
 			</div>
 		</form>
 	);
