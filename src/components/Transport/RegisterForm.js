@@ -54,17 +54,10 @@ const RegisterForm = () => {
 			const { name, value } = event.target;
 			return setForm({...dataForm, [name]: value });
 		}
-    
-    const checkboxHandlerDiscapacity = (e) => {
-			setForm({ ...dataForm, discapacity: e.target.value === 'true' ? true : false })
-    }
 
-    const checkboxHandlerSillaRuedas = (e) => {
-			setForm({ ...dataForm, sillaRuedas: e.target.value === 'true' ? true : false })
-    }
-    
-    const checkboxHandlerAcompañante = (e) => {
-			setForm({ ...dataForm, acompañante: e.target.value === 'true' ? true : false })
+		const handleRadioCHange = (event) => {
+			const { name, value } = event.target;
+			return setForm({ ...dataForm, [name]: value === 'true' ? true : false })
 		}
 		
     const handlerSubmit = async (e) => {
@@ -83,6 +76,7 @@ const RegisterForm = () => {
 				dispatch({ type: 'LOADING', payload: false });
 				history.push(`/${ws}/transportUserActive`);
 			} catch (error) {
+				dispatch({ type: 'LOADING', payload: false });
 				console.error(error);
 				swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
 				history.push(`/${ws}/transportRegister`);
@@ -106,7 +100,7 @@ const RegisterForm = () => {
 							<YesNoCheckbox
 								title='¿Posee alguna discapacidad?*'
 								id='discapacity'
-								cb={checkboxHandlerDiscapacity}
+								cb={handleRadioCHange}
 							/>
 							{dataForm.discapacity && (
 								<>
@@ -158,12 +152,12 @@ const RegisterForm = () => {
 									<YesNoCheckbox
 										title='¿Usa silla de ruedas?'
 										id='sillaRuedas'
-										cb={checkboxHandlerSillaRuedas}
+										cb={handleRadioCHange}
 									/>
 									<YesNoCheckbox
 										title='¿Viaja con un acompañante?'
 										id='acompañante'
-										cb={checkboxHandlerAcompañante}
+										cb={handleRadioCHange}
 									/>
 									{dataForm.acompañante && (
 										<InputRegister

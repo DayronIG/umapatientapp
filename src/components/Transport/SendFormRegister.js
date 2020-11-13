@@ -35,7 +35,7 @@ export async function sendForm(dataForm, user) {
 			}
 			const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
 			await Axios.post(transport_register, data, config);
-
+			console.log(data);
 			return true;
 	} catch (error) {
 		console.error(error);
