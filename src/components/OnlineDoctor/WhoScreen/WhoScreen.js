@@ -12,7 +12,6 @@ import ImageFlow from '../../../assets/doctor-online.svg';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import 'moment/locale/es';
-
 import '../../../styles/whoScreen.scss';
 
 const WhenScreen = (props) => {

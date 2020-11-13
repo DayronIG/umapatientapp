@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { GenericHeader, BackButton } from '../GeneralComponents/Headers';
@@ -22,11 +23,13 @@ const SearchDoctor = (props) => {
 			try {
 				getDoctors('especialista_online')
 					.then(docs => {
-						const always = patient.always && patient.always[0]
+						// const always = patient.always && patient.always[0]
 						const filteredDocs = docs.filter((doc, index) => {
 							// console.log(doc)
 							if (doc.firstname.toLowerCase() !== 'test' && (doc.social_work && doc.social_work.includes(patient.corporate_norm))) {
 								return doc
+							} else { 
+								return null
 							}
 						})
 						setDoctors(filteredDocs)

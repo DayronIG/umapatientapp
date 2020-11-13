@@ -4,11 +4,9 @@ import ReactMicRecord from 'react-mic-record';
 import axios from 'axios';
 import { sound_online, start_biomarker } from '../../../config/endpoints.js';
 import moment from 'moment-timezone';
-
 import stethoscope from '../../../assets/sthetoscop.jpeg';
-import stethoscopewav from '../../../assets/stethoscopewav.wav';
-import '../../../styles/onlinedoctor/Biomarkers.scss';
 import DBConnection from '../../../config/DBConnection';
+import '../../../styles/onlinedoctor/Biomarkers.scss';
 
 const Sthetoscope = (props) => {
     const dispatch = useDispatch()

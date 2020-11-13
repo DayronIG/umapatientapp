@@ -25,6 +25,31 @@ export function replaceDiacritics(str) {
     return str;
 };
 
+export function validateInput(type, value) {
+    let isValid = false;
+    switch (type) {
+        case 'tel':
+            if(!!value && /^\d+$/.test && value.length >= 10){              
+                isValid = true;
+            } 
+            return isValid;
+        case 'text':
+            if(!!value && value.length > 2) {
+                isValid  = true;
+            }
+            return isValid;
+        case 'number':
+            if(!!value && value.length >= 2 && /^\d+$/.test){
+                isValid = true
+            }
+            return isValid;
+        // case 'password':
+        //     break;
+        default:
+            break;
+    }
+}
+
 export function capitalizeName(name) {
     const length = name.length
     const firstLetter = name.slice(0, 1).toUpperCase()
@@ -32,6 +57,19 @@ export function capitalizeName(name) {
     return `${firstLetter}${restOfTheLetters}`
 }
 
+export function checkNum(phone) {
+    let validPhone = `${parseInt(phone)}`
+    if (validPhone.slice(0, 2) === '54') {
+        if (validPhone.slice(2, 4) === '15' && validPhone.length < 13) {
+            validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(4, validPhone.length)}`
+        } else if (validPhone.slice(2, 4) === '11' && validPhone.length < 13) {
+            validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
+        } else if (validPhone.slice(2, 4) !== '11' && validPhone.length < 13) {
+            validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(2, validPhone.length)}`
+        }
+    }
+    return validPhone
+}
 
 export function spacesToUnderscore(str) {
     try {

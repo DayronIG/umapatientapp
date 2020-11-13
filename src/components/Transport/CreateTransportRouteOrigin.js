@@ -15,6 +15,7 @@ import {
 import '../../styles/deliveryService/selectDestiny.scss';
 
 const CreateTransportRoute = () => {
+	const dispatch = useDispatch()
 	const { patient } = useSelector(state => state.queries);
 	const { loading } = useSelector(state => state.front);
 	const { origin, pointSelector } = useSelector(state => state.transport);
@@ -70,6 +71,7 @@ const CreateTransportRoute = () => {
 	async function handleSubmit(e) {
 		e.preventDefault();
 		setNextPoint();
+		dispatch({ type: 'SET_HISOPADO_USER_ADDRESS', payload: "" })
 	};
 
 	return (

@@ -21,7 +21,6 @@ import Slider from './Slider';
 import Loading from '../../GeneralComponents/Loading';
 import tone from '../../../assets/ring.mp3';
 import moment from 'moment-timezone';
-
 import 'moment/locale/es';
 
 const Queue = (props) => {
@@ -160,10 +159,11 @@ const Queue = (props) => {
                     }
                     let queryUser = firestore.collection('auth').doc(patient.ws)
                     queryUser.onSnapshot(async function (doc) {
-                        if (doc.data()._start_date !== '') {
-                            let data = doc.data()._start_date?.split('///')
-                            if(data) {
-                                dispatch({ type: 'SET_CALL_ROOM', payload: { room: data?.[0], token: data?.[1] } })
+                        let data = doc.data()._start_date
+                        if (data !== '' && data !== "geo") {
+                            let callRoom = data.split('///')
+                            if(callRoom) {
+                                dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
                             }
                         } else {
                             dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
@@ -215,6 +215,8 @@ const Queue = (props) => {
                 let filterQuestions = questions?.filter(t => {
                     if (t.symptom === symptom) {
                         return t
+                    } else {
+                        return null
                     }
                 })
                 selectedQuestions.push(filterQuestions[0]?.questions)
@@ -269,7 +271,7 @@ const Queue = (props) => {
 
     async function cancelAppointment(type, claim = '') {
         dispatch({ type: 'LOADING', payload: true })
-        let event = await getEvent()
+        // let event = await getEvent()
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         let yearAndMonth = moment(new Date()).format('YYYYMM')
         let documentBuild, aid = assignation, ws = patient.ws
@@ -317,7 +319,7 @@ const Queue = (props) => {
                     `La atención ya fue iniciada por el médico.`, 
                     'warning')
             } else {
-                await axios.post(user_cancel, data, headers)
+                await axios.post(user_cancel, data, {headers})
                 swal(`Consulta cancelada`, 
                 `Será redireccionado/a al inicio`, 
                 'success')

@@ -2,9 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import TrasladosWelcome from './TrasladosWelcome';
-// import FirstStep from '../../views/Register';
-import SecondStep from './TransportOnboardingSecondStep';
-import ThirdStep from './TransportOnboardingThirdStep';
+import RegisterForm from './RegisterForm'
 import '../../styles/generalcomponents/TransportMain.scss';
 
 
@@ -28,22 +26,20 @@ const TransportWrapperComponent = (props) => {
         );
     }        
 
-	function goToStepForm() {
-		if (stepPosition === 1) {
-			return <SecondStep />;
-		} else if (stepPosition === 2) {
-			return <ThirdStep props={props.props} />;
-		}
-	}
+	// function goToStepForm() {
+	// 	if (stepPosition === 1) {
+	// 		return <SecondStep />;
+	// 	} else if (stepPosition === 2) {
+	// 		return <ThirdStep props={props.props} />;
+	// 	}
+	// }
 
 	return (
 		<>
-			{welcome ? 
-				<TrasladosWelcome startTraslados={() => setWelcome(false)} /> :
-				<div className="transportWrapper">
-					{showStep()}
-					{goToStepForm()}
-				</div>
+			{welcome ?
+				<TrasladosWelcome startTraslados={() => setWelcome(false)} />
+				:
+				<RegisterForm />
 			}
 		</>
 	);

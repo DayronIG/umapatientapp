@@ -3,14 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
-import moment from 'moment-timezone';
-import { device_info } from '../../../config/endpoints';
+import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
 import { getUser } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import { Loader } from '../../GeneralComponents/Loading';
-import Axios from 'axios';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import Backbutton from '../../GeneralComponents/Backbutton';
@@ -18,7 +16,6 @@ import { findAllAssignedAppointment, findAllFreeAppointments } from '../../Utils
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
-	const token = useSelector((state) => state.userActive.token);
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const { feedback, patient } = useSelector((state) => state.queries);
@@ -55,17 +52,8 @@ const WhenScreen = (props) => {
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
 		DetectRTC.load(function() {
-			let headers = { 'Content-Type': 'Application/Json', Authorization: token };
 			hasWebcam = DetectRTC.isWebsiteHasWebcamPermissions;
 			hasMicrophone = DetectRTC.isWebsiteHasMicrophonePermissions;
-			Axios.post(
-				device_info,
-				{
-					ws: `[${props.match.params.dni}]`,
-					data: DetectRTC,
-				},
-				headers
-			);
 			if (hasWebcam && hasMicrophone) dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: 'enabled' });
 			else dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: 'disabled' });
 		});

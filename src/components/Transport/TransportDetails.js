@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
-import { renderMarker, calculateFirstPoint, renderTitle } from '../Utils/transportUtils';
+import { renderMarker, calculateFirstPoint, renderTitle, renderTimeMessage } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
 import { useParams, useHistory } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
@@ -28,8 +28,8 @@ const TransportTracking = () => {
 	}
 
 	useEffect(() => {
-		if(service.status_tramo === 'FINISHED') {
-			history.replace(`/${patient.ws}/onlinedoctor/rating`);
+		if(service?.status_tramo === 'FINISHED') {
+			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
 	
@@ -44,7 +44,7 @@ const TransportTracking = () => {
 	}, [patient]);
 
 	useEffect(() => {
-		if (typeof mapBounder === 'function') {
+		if (typeof mapBounder === 'function' && service?.current_position_remis) {
 			mapBounder([
 				calculateFirstPoint(service),
 				{
@@ -56,7 +56,7 @@ const TransportTracking = () => {
 	}, [mapBounder, service]);
 
 	useEffect(() => {
-		if (typeof drawRoute === 'function') {
+		if (typeof drawRoute === 'function' && service?.current_position_remis) {
 			drawRoute(
 				calculateFirstPoint(service),
 				{
@@ -71,31 +71,29 @@ const TransportTracking = () => {
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({ lat: service.current_position_remis?.lat || 0, lng: service.current_position_remis?.lon || 0 })}
+					{...mapConfig({ 
+						lat: service?.current_position_remis?.lat || 0, 
+						lng: service?.current_position_remis?.lon  || 0 
+					})}
 					onGoogleApiLoaded={setMapFunctions}
 				>
-					<Marker
-						lat={service.current_position_remis?.lat || 0}
-						lng={service.current_position_remis?.lon || 0}
-						text='Ubicacion del remis' type='remis' 
-					/>
-					<Marker
-						{...renderMarker(service)}
-					/>
+					{service?.current_position_remis?.lat && (
+						<Marker
+							lat={service?.current_position_remis?.lat || 0}
+							lng={service?.current_position_remis?.lon || 0}
+							text='Ubicacion del remis' type='remis' 
+						/>
+					)}
+					<Marker {...renderMarker(service)} />
 				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<h4 className='transportDetails__container--title'>{renderTitle(service)}</h4>
+				<h4 className='transportDetails__container--title'>{renderTitle(service?.status_tramo)}</h4>
 				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
 				<div className='transportDriver'>
-					{/*
-						<div className='transportDriverImg'>
-							<img src={}></img> 
-						</div> 
-					*/}
 					<div className='transportDriverData'>
-						<p>Conductor: {service.provider_fullname || ''}</p>
-						<p>CUIT: {service.provider_id || '' } </p>
+						<p>Conductor: {service?.provider_fullname || ''}</p>
+						<p>CUIT: {service?.provider_id || '' } </p>
 					</div>
 				</div>
 				<div className='openContent'>
@@ -108,19 +106,19 @@ const TransportTracking = () => {
 					<ul className='driverUl'>
 						<li className='originLi'>
 							<p className='originP'>Origen:</p> 
-							<p className='originText'>{service.request?.geo_inicio.address}</p>
+							<p className='originText'>{service?.request?.geo_inicio.address}</p>
 						</li>
 						<li className='originLi'>
 							<p className='originP'>Destino:</p> 
-							<p className='originText'>{service.request?.geo_fin.address}</p>
+							<p className='originText'>{service?.request?.geo_fin.address}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>Hora de llegada:</p> 
-							<p className='originText'>{service.hora}</p>
+							<p className='originP'>{renderTimeMessage(service?.trip_type)}:</p> 
+							<p className='originText'>{service?.hora}</p>
 						</li>
 						<li className='originLi'>
 							<p className='originP'>Notas:</p> 
-							<p className='originText'>{service.request?.notas || 'No hay notas'}</p>
+							<p className='originText'>{service?.request?.notas || 'No hay notas'}</p>
 						</li>
 					</ul>
 				}

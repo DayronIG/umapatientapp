@@ -42,76 +42,75 @@ const TransportOnboarding = () => {
         },[])
     
     async function sendForm() {
-			dispatch({ type: 'LOADING', payload:true});
+			dispatch({ type: 'LOADING', payload:true });
 			const t = moment().add(7, 'days');
 			const today = t.valueOf();
 			const date = getIdExpires.replace(/\//g, '-');
-			const idDate = moment(date).valueOf();;
+			const idDate = moment(date).valueOf();
 			const t2 = moment().add(7, 'days');
 			const today2 = t2.valueOf();
 			const date2 = getCredentialExpires.replace(/\//g, '-');
 			const credDate = moment(date2).valueOf();
 			const date3 = getDisabilityExpires.replace(/\//g, '-');
 			const disDate = moment(date3).valueOf();
-        try {
-            const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
-            if (!date.test(getIdExpires) || !date.test(getCredentialExpires)) {
-                swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
-                return null;
-            };
-            if (user.disability !== "0-NINGUNA") {
-                if (!date.test(getDisabilityExpires)) {
-                    swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
-                    return null;
-                }
-                if (today >= disDate) {
-                    swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
-                    return null;
-                }
-            }
-            if (today >= idDate) {
-                swal('Aviso', 'La fecha de vencimiento de DNI es incorrecta', 'warning')
-                return null;
-            }
-            if (today2 >= credDate) {
-                swal('Aviso', 'La fecha de vencimiento de la credencial es incorrecta', 'warning')
-                return null;
-            }
-            const licenceBlob = await fileToBlob(getLicenceFile);
-            const dniBlob = await fileToBlob(getIdFile);
-            const getUserData = JSON.parse(localStorage.getItem('userData'));
-            const [url_credential, url_dni] = await Promise.all([
-                putFileFB(dniBlob, `/${getUserData.dni}/dni_photo`),
-                putFileFB(licenceBlob, `/${getUserData.dni}/licence_photo`)
-            ]);
-            const data = {
-                'ws': getUserData.ws,
-                'dni': getUserData.dni,
-                'dt': '',
-                'discapacidad': disability,
-                'credencial': certificateNumber,
-                'silla_ruedas': wheelChair,
-                'diagnostico': diagnostic,
-                'amparo': protection,
-                'acompanante': companionName,
-                'dni_foto': url_dni,
-                'credencial_foto': getLicenceFile,
-                'certificado_foto': url_credential,
-                'dni_vencimiento': getIdExpires,
-                'credencial_vencimiento': credentialExpires,
-                'certificado_discapacidad_vencimiento': disabilityExpires
-            };
-            const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
-            await Axios.post(transport_register, data, config);
-            await swal({
-                title: "Formulario enviado",
-                text: "En breve será redireccionado a la página de inicio",
-                icon: "success",
-                buttons: true,
-                timer: 3000
-						});
-                        history.push(`/${getUserData.ws}/transportUserActive`);
-                window.gtag('event', 'select_content', {content_type: 'REGISTER_TRANSPORT_USER_CREATED', item: ['REGISTER_TRANSPORT_USER_CREATED']})
+			try {
+					const date = new RegExp("^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$");
+					if (!date.test(getIdExpires) || !date.test(getCredentialExpires)) {
+							swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+							return null;
+					};
+					if (user.disability !== "0-NINGUNA") {
+							if (!date.test(getDisabilityExpires)) {
+									swal('Aviso', 'La fecha que ingresaste es inválida', 'warning');
+									return null;
+							}
+							if (today >= disDate) {
+									swal('Aviso', 'La fecha de vencimiento del certificado es incorrecta', 'warning')
+									return null;
+							}
+					}
+					if (today >= idDate) {
+							swal('Aviso', 'La fecha de vencimiento de DNI es incorrecta', 'warning')
+							return null;
+					}
+					if (today2 >= credDate) {
+							swal('Aviso', 'La fecha de vencimiento de la credencial es incorrecta', 'warning')
+							return null;
+					}
+					const licenceBlob = await fileToBlob(getLicenceFile);
+					const dniBlob = await fileToBlob(getIdFile);
+					const getUserData = JSON.parse(localStorage.getItem('userData'));
+					const [url_credential, url_dni] = await Promise.all([
+							putFileFB(dniBlob, `/${getUserData.dni}/dni_photo`),
+							putFileFB(licenceBlob, `/${getUserData.dni}/licence_photo`)
+					]);
+					const data = {
+							'ws': getUserData.ws,
+							'dni': getUserData.dni,
+							'dt': '',
+							'discapacidad': disability,
+							'credencial': certificateNumber,
+							'silla_ruedas': wheelChair,
+							'diagnostico': diagnostic,
+							'amparo': protection,
+							'acompanante': companionName,
+							'dni_foto': url_dni,
+							'credencial_foto': getLicenceFile,
+							'certificado_foto': url_credential,
+							'dni_vencimiento': getIdExpires,
+							'credencial_vencimiento': credentialExpires,
+							'certificado_discapacidad_vencimiento': disabilityExpires
+					};
+					const config = { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } };
+					await Axios.post(transport_register, data, config);
+					await swal({
+							title: "Formulario enviado",
+							text: "En breve será redireccionado a la página de inicio",
+							icon: "success",
+							buttons: true,
+							timer: 3000
+					});
+					history.push(`/${getUserData.ws}/transportUserActive`);
         } catch (error) {
             console.error(error);
             swal('Error', 'Hubo un error en el envío del Formulario, será redireccionado al registro nuevamente...', 'warning');
@@ -124,8 +123,6 @@ const TransportOnboarding = () => {
         }
     }
 
-
-
     function buildImages(typeAction, fileValue) {
         let imagePreview = '';
         if (typeof fileValue === 'string') {
@@ -134,7 +131,8 @@ const TransportOnboarding = () => {
             imagePreview = URL.createObjectURL(fileValue);
         }
         dispatch({ type: typeAction, payload: { filePreview: imagePreview, file: fileValue } })
-    }
+		}
+		
     const validateForm = !getIdPreview || !getLicencePreview || !getIdExpires || !getCredentialExpires;
 
     return (

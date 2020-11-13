@@ -116,13 +116,8 @@ const PaymentCard = (props) => {
         dispatch({ type: 'LOADING', payload: true })
         let { paymentMethodId } = form.elements
         console.log(paymentMethodId, form.elements, token)
-/*         let paymentData = {
-            email: "faridmurzone@gmail.com", // hardcoded
-            paymentMethodId: paymentMethodId.value,
-            token: token
-        } */
         let paymentData = {
-            email: `${patient.email}`, // hardcoded
+            email: `${patient.email}`, 
             paymentMethodId: paymentMethodId.value, 
             token: token,
             ws: `${patient.ws}`,

@@ -1,0 +1,30 @@
+.displayNone{
+    display: none !important;
+}
+
+.constancyContainer{
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20vh 10vw;
+    .logo-uma{
+        max-width: 20vw;
+        position: fixed;
+        top: 0;
+        left: 8vw;
+    }
+    .patient-data{
+        align-self: flex-start;
+    }
+    .constancy-div{
+        display: flex;
+        justify-content: center;
+        width: 80vw;
+        .constancy-subtitle{
+            margin-right: 2vw;
+            justify-self: flex-start;
+    }}
+}

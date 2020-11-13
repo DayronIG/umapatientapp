@@ -1,28 +1,19 @@
 import React from 'react';
-import { GenericHeader } from '../GeneralComponents/Headers';
-import taxi from '../../assets/icons/taxi.png'
+import RegisterIcon from '../../assets/icons/Analysis-Illustration.png'
 import Backbutton from '../GeneralComponents/Backbutton';
-import FooterBtn from '../GeneralComponents/FooterBtn';
+import { ContinueButton } from './RegisterFormComponents'
 import '../../styles/TrasladosWelcome.scss';
 
-const TrasladosWelcome = (props) => {
-	return (
-		<div className='traslados-welcome-container'>
-			<GenericHeader />
-			<Backbutton />
-			<div className='traslados-content'>
-				<div className='transport-img'>
-					<img src={taxi} alt="Traslados sanitarios" />
-				</div>
-				<h1 className='h12'>Traslados sanitarios</h1>
-				<h4 className='h32'>Haga click en comenzar para registrarse en el servicio.</h4>
-			</div>
-			<FooterBtn
-				mode="single"
-				text="Comenzar"
-				callback={() => props.startTraslados()}
-			/>
-		</div >
-	)
-}
+const TrasladosWelcome = (props) => (
+	<div className='traslados-welcome-container'>
+		<Backbutton />
+		<div className='transport-img'>
+			<img src={RegisterIcon} alt="Traslados sanitarios" />
+		</div>
+		<h1 className='h12'>Vamos a darte de alta</h1>
+		<h4 className='h32'>Necesitamos algunos datos para darte el alta en nuestro servicio de traslados.</h4>
+		<ContinueButton title='Continuar' cb={props.startTraslados} />
+	</div >
+);
+
 export default TrasladosWelcome;

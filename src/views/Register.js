@@ -15,7 +15,6 @@ import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
 import moment from 'moment-timezone';
-
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../src/styles/generalcomponents/register.scss';
 
@@ -56,6 +55,7 @@ const Register = props => {
     }
 
     const handleSignUp = async event => {
+        window.gtag('event', 'sign_up');
         event.preventDefault()
         window.scroll(0, 0)
         let dniAlert = await swal({
@@ -96,11 +96,14 @@ const Register = props => {
     }
 
     let composeDate = () => {
-        let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
-        let birth = moment(buildDate).format('YYYY-MM-DD')
-        let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-        dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
-        dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+        if(!!parseInt(getMonth) && !!parseInt(getDay) && !!parseInt(getYear)){
+            let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
+            let birth = moment(buildDate).format('YYYY-MM-DD')
+            let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
+            dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
+            dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+            return date
+        }
     }
 
     const generatePassword = () => {
@@ -113,7 +116,7 @@ const Register = props => {
     let handleSubmit = async (reg, user, pwd) => {
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
-        composeDate()
+        let dt = composeDate()
         let subscription
         if (ref && ref.toLowerCase().includes('rappi_peru')) {
             subscription = 'AUT'
@@ -139,7 +142,7 @@ const Register = props => {
                 sex: getSex || '',
                 dob: dob || '',
                 ws: urlWS || '',
-                dt: getDate || '',
+                dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
@@ -166,6 +169,12 @@ const Register = props => {
                 }
             } catch (res) {
                 user.delete()
+                if(res.response?.data?.message === "Ya existe un usuario con este documento") {
+                    window.gtag('event', 'repeated_document', {
+                        'event_category' : 'warning',
+                        'event_label' : 'register'
+                      });
+                }
                 setTimeout(() => {
                     swal('Error',
                     `No se pudo completar tu registro. ${res?.response?.data?.message}. Por favor comunícate a info@uma-health.com`,
@@ -228,7 +237,7 @@ const Register = props => {
             {registered ?
                 <Welcome showInstallPrompt={() => showInstallPrompt()} />
                 :
-                <>
+                <div className="register__container">
                     <GenericHeader profileDisabled={true}>Registro</GenericHeader>
                     {modalDisplay && (
                         <MobileModal title='¡Registro exitoso!' hideCloseButton={true}>
@@ -335,7 +344,7 @@ const Register = props => {
                                 Para iniciar el registro por favor dígale 'Hola' a UMA por whatsapp (<a href='tel:5491123000066'>5491123000066</a>)  y recibirá su link de registro.
                             </p>
                         </div>}
-                </>}
+                </div>}
         </>
     )
 }

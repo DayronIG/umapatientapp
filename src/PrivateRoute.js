@@ -66,29 +66,35 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 console.log(error)
             }
         }
-    }, [patient, RouteComponent, firestore, callRejected, rest.path, dispatch])
+    }, [patient, firestore, callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (currentUser && currentUser.email && patient.dni && rest.path === "/:ws?") {
+		if (currentUser && currentUser.email && patient.dni) {
 			DetectRTC.load(function () {
-					const ios = isIos()
-					if (!!window.chrome && !ios) {
-						messaginTokenUpdate(currentUser, DetectRTC, true)
-					} else {
-						messaginTokenUpdate(currentUser, DetectRTC, false)
-					}
+                    const ios = isIos()
+                    let now = moment()
+                    if(patient.device?.uma_version !== version.patients
+                        || moment(now).diff(patient.device.last_login, 'minutes') >= 1) {
+                        if (!ios) {
+                            messaginTokenUpdate(currentUser, DetectRTC, true)
+                        } else {
+                            messaginTokenUpdate(currentUser, DetectRTC, false)
+                        }
+                    }
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentUser, patient, token])
 
-
-
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
-		let userToken = ''
+        let userToken = ''
 		if(deviceWithPush) {
-			userToken = await askPermissionToRecieveNotifications()
+            try {
+                userToken = await askPermissionToRecieveNotifications()
+            } catch (err) {
+                console.log(err)
+            }
 		}
 		// now we get the current user
 		if (currentUser && currentUser.email) {
@@ -100,8 +106,8 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						os: deviceInfo.browser.name,
 						last_login: dt,
 						uma_version: version.patients
-					}
-				await handleSubmit(device)
+                    }
+                await handleSubmit(device)
 			} catch (err) {
 				console.log(err)
 			}
@@ -134,7 +140,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     audio={tone}
                 />
             </>}
-
             <Route
                 {...rest}
                 render={routeProps =>

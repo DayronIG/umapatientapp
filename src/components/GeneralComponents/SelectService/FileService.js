@@ -1,8 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStethoscope, faHeartbeat, faDeaf, faFileMedicalAlt, faInfo, faAllergies, faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons';
-import lungs from '../../../assets/icons/lungs.svg';
+import { faStethoscope, faHeartbeat, faFileMedicalAlt, faAllergies, faBriefcaseMedical } from '@fortawesome/free-solid-svg-icons';
 import AudioInput from '../../Inputs/Audio';
 import Audiometry from "../../Audiometry"
 

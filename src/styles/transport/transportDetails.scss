@@ -13,6 +13,7 @@
 	.transportDetails__map {
 		height: 72.5vh;
 	}
+	
 	.transportDetails__container {
 		width: 100%;
 		position: absolute;
@@ -22,7 +23,7 @@
 		border-radius: 50px 50px 0 0;
 		height: 25vh;
 		background: #fff;
-		h3{
+		h3 {
 			color:rgb(24, 119, 173);
 		}
 		li {
@@ -35,7 +36,7 @@
 			}
 		}
 		.transportDetails__container--title {
-			color: $new_primary_color;
+			color: $uma-primary;
 			font-size: 24px;
 			font-weight: bold;
 		}
@@ -46,10 +47,10 @@
 			margin-bottom:10px;
 			padding: 5px;
 			.transportDriverData{
-				p:nth-child(1){
+				p:nth-child(1) {
 					font-weight: bold;
 				}
-				p{
+				p {
 					margin:0;
 				}
 			}
@@ -59,8 +60,24 @@
 					width:100%;
 					border-radius: 200%;
 				}
+			}
 		}
-		
+		.openContent {
+			padding: 0 0.8rem 1rem;
+			display: flex;
+			justify-content: center;
+			button {
+				border: none;
+				background: none;
+				color: $uma-text-secondary;
+				display: flex;
+				align-items: center;
+				font-weight: 800;
+
+				svg {
+					margin-left: 0.4rem;
+				}
+			}
 		}
 	}
 }

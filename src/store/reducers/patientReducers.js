@@ -6,6 +6,7 @@ const initialState = {
     beneficiaries: [],
     bills: [],
     callSettings: { room: '', token: '' },
+    country: "",
     dniFront: '',
     dniBack: '',
     feedback: [],
@@ -72,6 +73,10 @@ export default (state = initialState, action) => {
         case 'SET_PLAN_DATA':
             return Object.assign({}, state, {
                 plan: action.payload
+            })
+        case 'SET_USER_COUNTRY':
+            return Object.assign({}, state, {
+                country: action.payload
             })
         case 'GET_BILLS':
             return Object.assign({}, state, {
