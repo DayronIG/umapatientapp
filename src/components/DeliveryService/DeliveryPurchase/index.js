@@ -5,6 +5,7 @@ import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
 import Payment from "../../Payment"
+import Loading from "../../GeneralComponents/Loading"
 import DeliveryTrackProgress from '../DeliveryTrackProgress';
 import { useHistory } from "react-router-dom"
 import "../../../styles/hisopado/hisopadosFlux.scss";
@@ -14,46 +15,59 @@ export default function HisopadosPurchase() {
     const {step, params} = useSelector((state) => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient);
     const { id } = useSelector(state => state.deliveryService.current);
+    const status = useSelector(state => state.deliveryService.deliveryInfo[0]?.status);
 
     const history = useHistory()
     const dispatch = useDispatch()
 
     const renderContent = () => {
-        switch (step) {
-            case "ASK_FOR_BUY":
-                window.gtag('event', 'select_content', {
-                    'content_type': 'ASK_FOR_BUY',
-                    'item_id': 'Hisopado Antígeno',
-                  });
-                return <AskForBuyHisopado />
-            case "ADDRESS_PICKER":
-                window.gtag('event', 'select_content', {
-                    'content_type': 'ADDRESS_PICKER',
-                    'item_id': 'Hisopado Antígeno',
-                  });
-                return <AddressPickerHisopado />
-            case "ZONE_COVERED":
-                return <ZoneCoveredHisopado 
-                history={history}
-                goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
-                finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
-            case "PAYMENT":
-                window.gtag('event', 'begin_checkout', {
-                    'items': 'Hisopado Antígeno',
-                    'currency': 'ARS',
-                    'value': params?.price
-                  });
-                return <Payment />
-            case "END_ASSIGNATION":
-                window.gtag('event', 'select_content', {
-                    'content_type': 'END_ASSIGNATION',
-                    'item_id': 'Hisopado Antígeno',
-                  });
-                history.push(`/delivery/progress/${ws}/${id}/`);
-            break;
-            default: 
-                console.log("DEFAULT")
-    }}
+        if (status !== undefined){
+        if(!["PREASSING", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"].includes(status) ){
+            switch (step) {
+                case "ASK_FOR_BUY":
+                    window.gtag('event', 'select_content', {
+                        'content_type': 'ASK_FOR_BUY',
+                        'item_id': 'Hisopado Antígeno',
+                    });
+                    return <AskForBuyHisopado />
+                case "ADDRESS_PICKER":
+                    window.gtag('event', 'select_content', {
+                        'content_type': 'ADDRESS_PICKER',
+                        'item_id': 'Hisopado Antígeno',
+                    });
+                    return <AddressPickerHisopado />
+                case "ZONE_COVERED":
+                    return <ZoneCoveredHisopado 
+                    history={history}
+                    goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
+                    finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
+                case "PAYMENT":
+                    window.gtag('event', 'begin_checkout', {
+                        'items': 'Hisopado Antígeno',
+                        'currency': 'ARS',
+                        'value': params?.price
+                    });
+                    return <Payment />
+                case "END_ASSIGNATION":
+                    window.gtag('event', 'select_content', {
+                        'content_type': 'END_ASSIGNATION',
+                        'item_id': 'Hisopado Antígeno',
+                    });
+                    history.push(`/delivery/progress/${ws}/${id}/`);
+                break;
+                default: 
+                    console.log("DEFAULT")
+        }
+        } else {
+            window.gtag('event', 'select_content', {
+                'content_type': 'END_ASSIGNATION',
+                'item_id': 'Hisopado Antígeno',
+              });
+            history.push(`/delivery/progress/${ws}/${id}/`);
+        }} else {
+            return <Loading />
+        }
+    }
 
     const goBackButton = () => {
         switch(step){
