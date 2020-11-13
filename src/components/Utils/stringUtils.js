@@ -39,7 +39,13 @@ export function validateInput(type, value) {
             }
             return isValid;
         case 'number':
-            if(!!value && value.length >= 2 && /^\d+$/.test){
+            value = parseInt(value)
+            console.log(typeof value)
+            if(value.toString().length === 4){
+                if(!!value && /^\d+$/.test && value > 1900 && value < moment().format("YYYY")){
+                    isValid = true
+                }
+            } else if(!!value && value.toString().length === 2 && /^\d+$/.test){
                 isValid = true
             }
             return isValid;
@@ -64,7 +70,7 @@ export function checkNum(phone) {
             validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(4, validPhone.length)}`
         } else if (validPhone.slice(2, 4) === '11' && validPhone.length < 13) {
             validPhone = `${validPhone.slice(0, 2)}9${validPhone.slice(2, validPhone.length)}`
-        } else if (validPhone.slice(2, 4) !== '11' && validPhone.length < 13) {
+        } else if (validPhone.slice(2, 4) !== '11' && validPhone.slice(2, 4) !== '15' && validPhone.length >= 10 && validPhone.length <= 12) {
             validPhone = `${validPhone.slice(0, 2)}911${validPhone.slice(2, validPhone.length)}`
         }
     }

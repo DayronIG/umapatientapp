@@ -20,20 +20,19 @@
     }
 
     .oms-container{
-        img{
+       
+        img {
             margin-right: 2vw
         }
-        margin-left: auto;
-        margin-right: auto;
+
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 90vw;
+        width: 100%;
         height: 10vh;
-        background: $white-color;
-        box-shadow: 0px 2px 20px rgba(126, 147, 163, 0.15);
-        border-radius: 6px;
+        font-size: 1rem;
+        margin-bottom: 2rem;
     }
     .narrow__contact__container{
         padding: 10vw;
@@ -60,6 +59,19 @@
         margin-top: 2vh;
         text-align: left;
         width: 90vw;
+    }
+    .hisopados-alert {
+        background: $uma-secondary;
+        padding: 1rem 10%;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0px 4px 50px rgba(126, 147, 163, 0.25);
+        color: $white-color;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
     .hisopados-image{
         max-width: 80vw;

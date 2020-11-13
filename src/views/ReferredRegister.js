@@ -6,7 +6,7 @@ import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { install_event } from '../config/endpoints';
+import {generatePassword} from '../components/Utils/generatePassword';
 import 'react-datepicker/dist/react-datepicker.css';
 import app from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
@@ -76,8 +76,6 @@ const Register = props => {
             dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
         }
     }
-
-
 
     const handleSignUp = useCallback(async event => {
         event.preventDefault()
@@ -158,13 +156,6 @@ const Register = props => {
         }
     }
 
-    const generatePassword = () => {
-        let num = Math.random()
-        let password = btoa(num * 100)
-        password = password.toLowerCase().slice(4, 10)
-        return password
-    }
-
     let handleSubmit = async (reg, user) => {
         let dt = composeDate()
         dispatch({ type: 'LOADING', payload: true })
@@ -215,7 +206,7 @@ const Register = props => {
                     }, 2000)
                 } 
                 if(ref === "hisopado"){
-                    history.push("/referred")
+                    history.push(`/hisopado/${ws}`)
                 }
             } catch (res) {
                 user.delete()
@@ -230,8 +221,8 @@ const Register = props => {
     }
 
     const handleInput = (typeDispatch) => (event) => {
-        const { type, value, name } = event.target;
-
+        var { type, value, name } = event.target;
+        if(typeDispatch === "REGISTER_FIRST_YEAR"){type="number"}
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
@@ -340,8 +331,8 @@ const Register = props => {
                                             placeholder={getMonth}
                                              />
                                         <input
-                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
-                                            maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
+                                            maxLength='4' className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
+                                            ref={yearRef} type='text' inputMode="numeric" name='bYear'
                                             onChange={handleInput('REGISTER_FIRST_YEAR')}
                                             
                                         />

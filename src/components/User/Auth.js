@@ -57,7 +57,7 @@ function AuthProvider({ children }) {
 		if(plan && free) {
 			plan["onlinedoctor"] = free.onlinedoctor
 		}
-		if (!!user.coverage && Array.isArray(user.coverage) && plan) { 
+		if (!!user?.coverage && Array.isArray(user?.coverage) && plan) { 
 			// Este else if es el mas importante. 
 			// Un usuario puede tener multiples subscriptions
 			// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)

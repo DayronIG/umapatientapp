@@ -7,7 +7,6 @@ const initialState = {
     },
     biomarker: { open: true, status: 0 },
     error: '',
-    hisopadosActive: false,
     loading: false,
     checkStatus: false,
     dinamic: { whenDinamic: false, queueDinamic: true },
@@ -78,8 +77,6 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, paginationTransport: action.payload };
         case 'SHOW_ASK_TEXT':
             return { ...state, showAskText: action.payload };
-        case 'SET_HISOPADOS_ACTIVE':
-            return { ...state, hisopadosActive: action.payload };
         case 'TOGGLE_DETAIL':
             return { ...state, openDetails: !state.openDetails };
         case 'TOGGLE_MODAL_ACTION':
