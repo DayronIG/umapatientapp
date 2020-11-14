@@ -60,6 +60,7 @@ import UmaCare from './components/UmaCare/index.js';
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
+import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
 import WhoScreenHisopados from './components/DeliveryService/WhoScreenHisopados/WhoScreenHisopados'
 import ForOtherHisopados from './components/DeliveryService/WhoScreenHisopados/ForOtherHisopados';
 import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart'
@@ -153,18 +154,13 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute
 					exact
+					path='/hisopadoListTracker/:ws?'
+					component={DeliveryListTracker}
+				/>
+				<PrivateRoute
+					exact
 					path='/hisopado/:ws?'
 					component={DeliveryPurchase}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/destinatario/:ws?'
-					component={WhoScreenHisopados}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/for-other/:ws?'
-					component={ForOtherHisopados}
 				/>
 				<PrivateRoute
 					exact
