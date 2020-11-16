@@ -27,6 +27,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                 'content_type': 'IN_RANGE',
                 'item_id': 'Hisopado Antígeno',
             });
+            history.push(`/hisopado/carrito/${patient.ws}`)
         }
         if (showCongrats) {
             notifyUserEndpoint()
@@ -36,7 +37,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                 'currency': 'ARS'
             });
         }
-    }, [showCongrats])
+    }, [showCongrats, isAddressValidForHisopado])
 
     const notifyUserEndpoint = () => {
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
@@ -58,23 +59,6 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
 
     return (
         <div className="allwhite-hisopados-background">
-            {isAddressValidForHisopado ?
-                <div className="instructions-container">
-                    <img src={hisopadoTic} alt="delivery_check" className="delivery_check hisopados_check" />
-                    <p className="delivery-title">¡Tu hisopado está cada vez mas cerca!</p>
-                    <p>Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <b>{delivery.delay}</b></p>
-                    <p>El domicilio seleccionado es:</p>
-                    <img src={markerAddress} alt="marker_address"/>
-                    <br />
-                    <p>{hisopadoUserAddress}</p>
-                    <p>¿Desea continuar con el pago?</p>
-                    <div onClick={() => finalAction()} className="blue-button">
-                        Continuar con el pago
-                    </div>
-                    <div onClick={() => goPrevious()} className="blue-text">
-                        Cambiar domicilio
-                    </div>
-                </div> :
                 <div className="instructions-container">
                     {showCongrats ?
                         <>
@@ -102,7 +86,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                     </div>
                         </>
                     }
-                </div>}
+                </div>
         </div>
     )
 }
