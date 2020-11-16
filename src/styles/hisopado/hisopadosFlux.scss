@@ -15,6 +15,14 @@
     font-style: normal;
     font-size:calc(18px);
 
+    .hisopados-bulletsContainer {
+        box-shadow: 0px -2px 20px rgba(126, 147, 163, 0.15);
+        border-radius: 0.5rem;
+        padding: 1.7rem 1rem;
+        width: 90%;
+        margin: 2.5rem auto 0;
+    }
+
     .limited-p{
         font-size: 16px;
     }
@@ -139,17 +147,14 @@
     .hisopados-bullets-container{
         display: flex;
         padding: 12px;
-        margin-left: 2vw;
         .hisopados-bullets{
+            flex: 1;
             display: flex;
             align-content: center;
             flex-wrap: wrap;
             font-size: 16px;
             line-height: 16px;
             color: $uma-text;
-            p{
-                margin: 5vw
-            }
             .icon{
                 color: $uma-primary;
                 opacity: 0.7;
@@ -175,6 +180,10 @@
             font-size: $uma-font-size-regular;
             line-height: 22px;
             color: $uma-text;
+        }
+        .info-destacado {
+            color: $uma-secondary;
+            font-weight: 600;
         }
         .link__to__narrow__contact{
             text-decoration: underline;
@@ -442,4 +451,31 @@
 
 .hisopado-results-contancy-dowloader{
 display: none;
+}
+
+.hisopados-atentionContainer {
+    margin: auto;
+    width: 90%;
+    box-shadow: 0px -2px 20px rgba(126, 147, 163, 0.15);
+    border-radius: 0.5rem;
+    margin-top: 5vh;
+    padding: 2rem;
+
+    h2 {
+        color: $uma-primary;
+        font-weight: 800;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        text-align: left;
+        color: $uma-primary;
+        font-size: 1rem;
+        line-height: 1.4rem;
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+    }
 }

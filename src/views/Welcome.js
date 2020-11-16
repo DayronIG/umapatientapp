@@ -28,9 +28,9 @@ const Welcome = props => {
     try {
       props.showInstallPrompt()
     } catch (err) {
-      props.history.push('/')
+      props.history.push('/home')
     } finally {
-      setTimeout(() => props.history.push('/'), 1000)
+      setTimeout(() => props.history.push('/home'), 1000)
     }
   }
 

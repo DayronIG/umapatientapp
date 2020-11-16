@@ -25,7 +25,6 @@ import AttQueue from './components/OnlineDoctor/AttQueue';
 import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
-import Derivations from './components/VMD/Derivations';
 // Survey and Transport 
 import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
@@ -44,8 +43,6 @@ import SelectSymptoms from './components/AppointmentsOnline/SelectSymptoms';
 import CalendarOnline from './components/AppointmentsOnline/Calendar';
 import AppointmentsOnlineHistory from './components/AppointmentsOnline/AppointmentsOnlineHistory';
 import Questions from './components/OnlineDoctor/Questions/';
-/* Survey and Transport */
-import AmbulanceComponent from './components/Ambulance/AmbulanceComponent';
 /* Autonomous */
 import Autonomous from './components/Autonomous/';
 /* Laboratorio */
@@ -112,12 +109,6 @@ function App(props) {
 				<PrivateRoute exact path='/:dni/onlinedoctor/derived' component={Derived} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/attention/:token?' component={CallContainer} />
 				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
-				{/* VMD and DERIVATIONS*/}
-				<PrivateRoute exact path='/:ws/vmd' component={ComingSoon} />
-				<PrivateRoute exact path='/:ws/derivations' component={Derivations} />
-				{/* AMBULANCE */}
-				<PrivateRoute exact path='/:ws/ambulance' component={ComingSoon} />
-				<PrivateRoute exact path='/:ws/ambulancetime' component={AmbulanceComponent} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/:ws?/homeCare' component={ComingSoon} />
 				{/* MY HISTORY */}
@@ -153,27 +144,13 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				<PrivateRoute
-					exact
-					path='/hisopado/:ws?'
-					component={DeliveryPurchase}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/cobertura/:ws?'
-					component={DeliveryCoverage}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopadoResult/:ws?'
-					component={DeliveryResults}
-				/>
+				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
+				<PrivateRoute exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
-				
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
-				
 				<Route component={NotFound} />
 			</Switch>
 		</div>

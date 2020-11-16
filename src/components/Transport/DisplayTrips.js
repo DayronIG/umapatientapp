@@ -216,8 +216,7 @@ const TransportUserActive = () => {
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
-									{	
-										openTravel.assignation_id !== item.assignation_id &&
+									{openTravel.assignation_id !== item.assignation_id &&
 										<div className="openContent">
 											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
 										</div>

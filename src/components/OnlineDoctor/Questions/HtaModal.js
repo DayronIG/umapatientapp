@@ -43,7 +43,7 @@ const HtaModal = ({ history, unsetModal, setResponseIA }) => {
   return (
   <form className='symptoms' onSubmit={submitSymptoms}>
     <p className="subtitulo-modal">Ingrese preferentemente un registro de las últimas 6hs</p>
-    <div className="calamardoKempes">
+    <div className="symptomsmodal__record">
       <div>
         <p>Sistólica</p>
         <p>(“la máxima”)</p>
@@ -57,7 +57,7 @@ const HtaModal = ({ history, unsetModal, setResponseIA }) => {
         className="input-hta" type="number" placeholder="120" value={TAS}
       />
     </div>
-    <div className="calamardoKempes">
+    <div className="symptomsmodal__record">
       <div>
         <p>Diastólica</p>
         <p>(“la mínima”)</p>
@@ -89,7 +89,7 @@ const HtaModal = ({ history, unsetModal, setResponseIA }) => {
     </button>
     <button type="button" className='btnVolver' onClick={() => {
       unsetModal();
-      history.push('/');
+      history.push('/home');
     }}
     >Cancelar</button>
   </form>

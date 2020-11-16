@@ -32,7 +32,7 @@ const WhenScreen = props => {
             if (res === true) {
                 props.history.push(`/${patient.dni}/onlinedoctor/when/`)
             } else {
-                props.history.push('/')
+                props.history.push('/home')
             }
         })
     }

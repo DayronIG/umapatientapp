@@ -37,7 +37,7 @@ const Rating = (props) => {
 				mr[0].mr.destino_final === 'Anula por falla de conexión')
 		) {
 			dispatch({ type: 'RESET_ALL' });
-			props.history.push('/');
+			props.history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Paciente ausente') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -45,7 +45,7 @@ const Rating = (props) => {
 				'Motivo: Paciente ausente. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/');
+			props.history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Anula el paciente') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -53,7 +53,7 @@ const Rating = (props) => {
 				'Motivo: Anula el paciente. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/');
+			props.history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Anula por falla de conexión') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -61,7 +61,7 @@ const Rating = (props) => {
 				'Motivo: Anula por falla de conexión. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/');
+			props.history.push('/home');
 		}
 	}, [mr]);
 
@@ -85,10 +85,10 @@ const Rating = (props) => {
                 data = { ...data, 'assignation_id': mr[0].assignation_id, }
             }
             await axios.post(feedback, data, headers)
-            props.history.push('/')
+            props.history.push('/home')
         } catch (err) {
             console.error(err)
-            props.history.push('/')
+            props.history.push('/home')
         }
     }
 

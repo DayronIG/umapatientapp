@@ -17,7 +17,7 @@ const Reset = (props) => {
     const handleReset = () => {
         localStorage.removeItem('userRegistered')
         localStorage.clear()
-        props.history.push('/')
+        props.history.push('/home')
     }
 
     return(

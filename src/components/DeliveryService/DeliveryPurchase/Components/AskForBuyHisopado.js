@@ -55,7 +55,7 @@ export default function AskForBuyHisopado() {
                     await getCurrentService()
                     dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
                 })
-                .catch(err => swal("Error", `No pudimos acceder al servicio en este momento. ${JSON.stringify(err.message)}`, "warning"))
+                .catch(err => swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error"))
         } else {
             dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
         }
@@ -88,16 +88,28 @@ export default function AskForBuyHisopado() {
                         <p className="hisopados-price">${params?.price}</p>
                         </div>
                     </div>
-                    <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
-                    <div className="hisopados-bullets-container">
-                    <div className="hisopados-bullets">
-                        <p><FaMapMarker className="icon"/>A domicilio</p>
-                        <p><FaBriefcaseMedical className="icon"/>No invasivo</p>
+                    <div className="hisopados-bulletsContainer">
+                        <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
+                        <div className="hisopados-bullets-container">
+                            <div className="hisopados-bullets">
+                                <p><FaMapMarker className="icon"/>A domicilio</p>
+                                <p><FaBriefcaseMedical className="icon"/>No invasivo</p>
+                            </div>
+                            <div className="hisopados-bullets">
+                                <p><FaCheckCircle className="icon"/>100% efectivo</p>
+                                <p><FaClock className="icon"/>Resultado en 15´</p>
+                            </div>
+                        </div>
                     </div>
-                    <div className="hisopados-bullets">
-                        <p><FaCheckCircle className="icon"/>100% efectivo</p>
-                        <p><FaClock className="icon"/>Resultado en 15´</p>
-                    </div>
+
+                    <div className="hisopados-atentionContainer">
+                        <h2>¡Atención!</h2>
+                        <ul>
+                            <li>• No lo cubren las obras sociales</li>
+                            <li>• No emite certificado oficial</li>
+                            <li>• Sólo en determinados destinos tiene validez para viajar</li>
+                            <li>• Si compras fuera de nuestro horario de atención, el hisopado se realizará cuando reanudemos la atención.</li>
+                        </ul>
                     </div>
                     
                     <div className="hisopados-flux-container">
@@ -107,19 +119,17 @@ export default function AskForBuyHisopado() {
                         </div>
                         
                         <p className="info-title">¿En qué consiste?</p>
-                        <p>Es un test rápido de detección del COVID-19, realizado por nuestro personal de salud en tu domicilio. Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz,<br/>¡En sólo 15 minutos tienes el resultado!</p>
+                        <p>Es un test rápido de detección del Covid-19, realizado por nuestro personal de salud en tu domicilio.
+                        Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz, <br />¡en sólo 15 minutos tienes el resultado!</p>
+
+                        <p>Además te brindamos <span className="info-destacado">atención médica</span> una vez realizado el hisopado a través de nuestra plataforma.</p>
+                        
                         <p className="info-title">Medios de pago</p>
                         <p>Puedes pagarlo con tarjeta de crédito y débito a través de MercadoPago.</p>
-                        <div className="info-warning">
-                            <p className="warning-title">Atención: </p>
-                            <ul>
-                                <li>Ciertos destinos aceptan el test de antígenos como válido.</li>
-                                <li>No emite certificado oficial</li>
-                                <li>No está cubierto por obras sociales</li>
-                            </ul>
-                        </div>
-                        <br/>
-                        <p><u>Nota:</u> si compras el sábado, domingo o feriados el hisopado se realizará el lunes o primer día hábil</p>
+
+                        <br />
+                        <br />
+
                         <p className="info-title">Contacto estrecho</p>
                         <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>

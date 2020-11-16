@@ -66,7 +66,7 @@ function CovidModal({ history, setResponseIA }) {
                 Confirmar síntomas
             </button>
             <button type="button" className='btnVolver' onClick={() => {
-                history.push('/');
+                history.push('/home');
             }}>
                 Cancelar
             </button>

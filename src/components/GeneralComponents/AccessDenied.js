@@ -25,7 +25,7 @@ const AccessDenied = (props) => {
                     </p>
                 </div>
             </div>
-            <FooterBtn mode='single' text='Volver' callback={() => props.history.push('/')} />
+            <FooterBtn mode='single' text='Volver' callback={() => props.history.push('/home')} />
         </>
     )
 }

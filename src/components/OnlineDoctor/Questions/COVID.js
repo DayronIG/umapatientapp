@@ -68,7 +68,7 @@ const Covid = ({ history }) => {
               ))
             }
             <button type='submit' className='btnVolver'>Confirmar síntomas</button>
-            <button type="button" className='btnVolver' onClick={() => history.push('/')}>Cancelar</button>
+            <button type="button" className='btnVolver' onClick={() => history.push('/home')}>Cancelar</button>
           </form>
         </Modal>
       </div>
