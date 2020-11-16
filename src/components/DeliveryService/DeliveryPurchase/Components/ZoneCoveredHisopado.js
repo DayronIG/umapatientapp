@@ -7,7 +7,7 @@ import markerAddress from "../../../../assets/img/marker_address.svg"
 import axios from "axios"
 import {mobility_address} from "../../../../config/endpoints"
 
-export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }) {
+export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, isModal=false }) {
     const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
     const patient = useSelector(state => state.queries.patient);
     const [showCongrats, setShowCongrats] = useState(false);

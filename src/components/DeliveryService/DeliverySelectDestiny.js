@@ -176,12 +176,12 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
+		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 		} else {
 			e.preventDefault();
-			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState}})
+			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
 			dispatch({ type: 'LOADING', payload: false });
 		}
-		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 		// history.push(`/hisopado/carrito/${ws}`)
 	};
 
