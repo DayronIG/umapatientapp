@@ -12,6 +12,7 @@ const HisopadoCartItem = ({patient, id}) => {
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
+    const [showBtn, setShowBtn] = useState(true);
     const [data, setData] = useState({
         title: patient.title,
         fullname: patient.fullname,
@@ -40,15 +41,8 @@ const HisopadoCartItem = ({patient, id}) => {
     }, [dependantInfo])
 
     const handleConfirm = () => {
-        if(!localStorage.getItem("hisopadosPatients")) {
-            const arr_patients = [];
-            arr_patients.push(data);
-            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
-        } else {
-            const arr_patients = JSON.parse(localStorage.getItem("hisopadosPatients"))
-            arr_patients.push(data);
-            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
-        }
+        setShowBtn(false);
+        setOpenUser(false);
 
         let sendData = {
             dni,
@@ -87,7 +81,6 @@ const HisopadoCartItem = ({patient, id}) => {
                 !openUser ?
                 <FaChevronDown /> :
                 <FaChevronUp />
-
                 }
             </div>
             <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
@@ -100,7 +93,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, title: e.target.value, fullname: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>
 
                 <div>
@@ -112,7 +104,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, dni: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>
                 
                 <div>
@@ -124,7 +115,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, ws: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div> 
 
                 <div className="columns">
@@ -164,7 +154,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, obs: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>  
 
                 <div>
@@ -205,12 +194,17 @@ const HisopadoCartItem = ({patient, id}) => {
                 </div>
 
                 {
-                    id !== 0 ?
+                    id !== 0 && showBtn ?
                     <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button> :
                     null
                 }
+
+                {
+                    id !== 0 && showBtn ?
+                    <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button> :
+                    null
+                }
                 
-                <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Aceptar</button>
                 <button className="HisopadoCart__btnDelete"><FaTrashAlt /></button>
             </div>
 
