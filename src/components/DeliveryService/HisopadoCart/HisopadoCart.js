@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
+import db from "../../../config/DBConnection";
 
 const HisopadoCart = (props) => {
   const dispatch = useDispatch();
@@ -13,21 +14,35 @@ const HisopadoCart = (props) => {
   const { selectHomeForm, params } = useSelector(store => store.deliveryService);
 
   useEffect(() => {
-    if(patient.fullname) {
-      setItems([...items, {
-        title: patient.fullname,
-        fullname: patient.fullname,
-        dni: patient.dni,
-        ws: patient.ws,
-        dob: patient.dob,
-        sex: patient.sex,
-        address: selectHomeForm.address,
-        piso: selectHomeForm.piso,
-        depto: selectHomeForm.depto,
-        isOpen: false
-      }])
+    if(patient.dni) {
+      db.firestore().collection('events/requests/delivery')
+      .where('patient.uid', '==', patient.core_id)
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT'])
+      .get()
+      .then(res => {
+          res.forEach(services => {
+            setFirstPatient(services.data().destination);
+          })
+      })
     }
   }, [patient])
+
+  const setFirstPatient = (info) => {
+    setItems([...items, {
+      title: patient.fullname,
+      fullname: patient.fullname,
+      dni: patient.dni,
+      ws: patient.ws,
+      dob: patient.dob,
+      sex: patient.sex,
+      address: info.user_address,
+      piso: info.user_floor,
+      depto: info.user_number,
+      lat: info.user_lat,
+      lng: info.user_lon,
+      isOpen: false
+    }])
+  }
 
   const handleAddHisopado = () => {
     setItems([...items, {
