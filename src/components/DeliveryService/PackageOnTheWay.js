@@ -8,7 +8,8 @@ import useInterval from '../Hooks/useInterval';
 
 const PackageOnTheWay = ({ active }) => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
-	const { delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[0]);
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const { delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);

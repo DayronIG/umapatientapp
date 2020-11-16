@@ -10,8 +10,9 @@ export default function ResultReveal({finalAction}) {
     const history = useHistory();
     const constRef = useRef()
     const { patient } = useSelector(state => state.queries)
-    const date = useSelector(state => state.deliveryService?.deliveryInfo[0]?.docId)?.split("_")[1].slice(0,8)
-    const result = useSelector(state => state.deliveryService?.deliveryInfo[0]?.lab?.result_lab)
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+    const date = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)?.split("_")[1].slice(0,8)
+    const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab)
 
     return (
         <>

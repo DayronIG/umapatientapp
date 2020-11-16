@@ -73,6 +73,7 @@ import Install from './views/Install.js';
 import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
+import Payment from "./components/Payment"
 
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 
@@ -176,6 +177,11 @@ function App(props) {
 					exact
 					path='/hisopadoResult/:ws?'
 					component={DeliveryResults}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/payment/:ws?'
+					component={Payment}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				

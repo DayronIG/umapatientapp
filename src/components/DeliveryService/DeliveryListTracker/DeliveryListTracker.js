@@ -11,8 +11,24 @@ import db from "../../../config/DBConnection";
 export default function ListTracker({finalAction}) {
     const history = useHistory(); 
     const patient = useSelector(state => state.queries.patient)
+    const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
     const purchases = useSelector(state => state.deliveryService.deliveryInfo)
-    const dispatch = useDispatch()
+    const id = useSelector((state) => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)
+    const dispatch = useDispatch();
+
+    const handleDerivation = (index) => {
+        dispatch({type: "SET_HISOPADO_INDEX", payload: index})
+        switch(purchases[index].status){
+            case("PREASSIGN"):
+            case("ASSIGN:DELIVERY"):
+            case("ASSIGN:ARRIVED"):
+                return history.push(`/delivery/progress/${patient.ws}/${id}/`);
+            case("DONE:RESULT"):
+                return history.push(`/hisopadoResult/${patient.ws}/`);
+            default:
+                history.push(`/hisopado/${patient.ws}`)
+        }
+    }
 
     return (
         <div className="allwhite-hisopados-background hisopados-flux delivery-list-tracker" >
@@ -24,21 +40,20 @@ export default function ListTracker({finalAction}) {
                     <p className="hisopados-title">Sigue tu hisopado</p>
                 </div>
                 <div className="results-menu-map-container">
-                    {purchases.map( purchase => {
+                    {purchases.map( (purchase, index) => {
                     let state;  
-                    // let action;
                     if (purchase.status === "PREASSIGN"){state="En preparación"}
                     if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
                     if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
                     if (purchase.status === "DONE:RESULT"){state="Ver resultado"}
                     return <div key={purchase.patient.dni} className="results-menu-map-item fit_content_item"
-                    onClick={() => console.log("ASD")}>
+                    onClick={() => handleDerivation(index)}>
                         <div>
                             <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>
                             <p className="item_status">{state}</p>
                             <p className="item_time"><FaClock className="clock_icon" />Entrega estimada: 1 hora</p>
                         </div>
-                        <FaArrowRight className="icon-arrow" />
+                        {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
                     </div>})}
                     
                     <div className="results-menu-map-item highlighted-color"
