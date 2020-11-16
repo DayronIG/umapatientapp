@@ -30,8 +30,8 @@ export default function AskForBuyHisopado() {
 
     const getCurrentService = () => {
         db.firestore().collection('events/requests/delivery')
-        .where('patient.dni', '==', patient.dni)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER'])
+        .where('patient.uid', '==', patient.core_id)
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT'])
         .get()
         .then(res => {
             res.forEach(services => {
