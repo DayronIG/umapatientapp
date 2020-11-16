@@ -154,7 +154,7 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute
 					exact
-					path='/hisopadoListTracker/:ws?'
+					path='/hisopado/listTracker/:ws?'
 					component={DeliveryListTracker}
 				/>
 				<PrivateRoute
