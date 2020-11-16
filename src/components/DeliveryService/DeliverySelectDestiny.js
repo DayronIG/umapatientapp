@@ -17,7 +17,7 @@ import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
 import { type } from 'jquery';
 
-const DeliverySelectDestiny = ({isModal=true}) => {
+const DeliverySelectDestiny = ({isModal=false}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -61,15 +61,16 @@ const DeliverySelectDestiny = ({isModal=true}) => {
 				  });
 
 				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
-				  
+
 				let resultPath;
 				setTimeout(()=>{
 					resultPath = mapApi.geometry?.poly.containsLocation(
 						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
 						coverage
 					)
+					console.log("DISPATCHING ADD: ", resultPath)
 					dispatch(handleAddressValidForHisopado(resultPath))
-				}, 1000)
+				}, 500)
 
             }
 			fetchData();
@@ -99,7 +100,7 @@ const DeliverySelectDestiny = ({isModal=true}) => {
                 setUserGeoguessedAddress(apiData.results[0].formatted_address)
             })
 			handleForm(currentPositionHandler(pos), true)}, errorHandler);
-	
+
 	};
 
 	const handleForm = (event, isCoords = false) => {
@@ -147,6 +148,7 @@ const DeliverySelectDestiny = ({isModal=true}) => {
 		}
 		dispatch({ type: 'LOADING', payload: true });
 		dispatch(handleDeliveryForm(formState));
+		if(!isModal){
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 		const data = { newValues: formState };
 		const data2 = {
@@ -175,14 +177,19 @@ const DeliverySelectDestiny = ({isModal=true}) => {
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
-		// dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
-		history.push(`/hisopado/carrito/${ws}`)
+		} else {
+			e.preventDefault();
+			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState}})
+			dispatch({ type: 'LOADING', payload: false });
+		}
+		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		// history.push(`/hisopado/carrito/${ws}`)
 	};
 
 
 	return (
 		<div className="container-map-component">
-		<MobileModal hideTitle hideCloseButton surveyHisopados noScroll>
+		{/* <MobileModal hideTitle hideCloseButton surveyHisopados noScroll> */}
 		<form className={`${isModal? "modalMap": "selectDestiny "}`} onSubmit={handleSubmit}>
 			{loading && <Loader />}
 			<div className='selectDestiny__container map'>
@@ -230,11 +237,11 @@ const DeliverySelectDestiny = ({isModal=true}) => {
 			</div>
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
-                Enviar
+                Seleccionar
             </div>
 			</div>
 		</form>
-		</MobileModal>
+		{/* </MobileModal> */}
 		</div>
 	);
 };
