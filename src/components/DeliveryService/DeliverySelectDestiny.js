@@ -14,7 +14,6 @@ import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
 import '../../styles/deliveryService/selectDestiny.scss';
-import { type } from 'jquery';
 
 const DeliverySelectDestiny = () => {
 	const dispatch = useDispatch();
