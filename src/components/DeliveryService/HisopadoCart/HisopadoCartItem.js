@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {useHistory} from "react-router-dom"
 import { FaChevronDown, FaChevronUp, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
 import axios from 'axios';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DeliverySelectDestiny from '../DeliverySelectDestiny';
+import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
 
 const HisopadoCartItem = ({patient, id}) => {
     const { dni } = useSelector(store => store.queries.patient);
@@ -27,6 +29,8 @@ const HisopadoCartItem = ({patient, id}) => {
         lat: lat,
         lng: lng
     });
+    const [isAddressValid, setIsAddressValid] = useState(true)
+    const history = useHistory()
 
     useEffect(() => {
         setData({...data,
@@ -36,8 +40,12 @@ const HisopadoCartItem = ({patient, id}) => {
           lat: dependantInfo.lat,
           lng: dependantInfo.lng
         });
-
-        setOpenModal(false);
+        if(dependantInfo.isAddressValidForHisopado !== undefined){
+            setIsAddressValid(dependantInfo.isAddressValidForHisopado)
+        } 
+        if(dependantInfo.isAddressValidForHisopado){
+            setOpenModal(false);
+        }
     }, [dependantInfo])
 
     const handleConfirm = () => {
@@ -208,7 +216,7 @@ const HisopadoCartItem = ({patient, id}) => {
             {
                 openModal &&
                 <MobileModal callback={()=>setOpenModal(false)} surveyHisopados noScroll>
-                    <DeliverySelectDestiny isModal />
+                    {isAddressValid? <DeliverySelectDestiny isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{setIsAddressValid(true)}} history={history} />}
                 </MobileModal>
             }
         </article>
