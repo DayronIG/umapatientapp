@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
 
 const HisopadoCart = (props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [items, setItems] = useState([]);
   const { patient } = useSelector(store => store.queries);
-  const { selectHomeForm } = useSelector(store => store.deliveryService);
+  const { selectHomeForm, params } = useSelector(store => store.deliveryService);
 
   useEffect(() => {
     if(patient.fullname) {
@@ -30,7 +31,7 @@ const HisopadoCart = (props) => {
 
   const handleAddHisopado = () => {
     setItems([...items, {
-      title: 'Nuevo',
+      title: 'Completar información',
       fullname: '',
       dni: '',
       ws: '',
@@ -41,6 +42,8 @@ const HisopadoCart = (props) => {
       depto: '',
       isOpen: true
     }])
+
+    dispatch({type: 'SET_DELIVERY_PARAMS', payload: {...params, price: Number(params.price) + 3499}})
   }
 
   return(
@@ -81,24 +84,24 @@ const HisopadoCart = (props) => {
           <div className="HisopadoCart__payDetails">
             <div className="HisopadoCart__payDetail">
               <span>Subtotal</span>
-              <span>$3499</span>
+              <span>${params.price}</span>
             </div>
-            <div className="HisopadoCart__payDetail">
+            {/* <div className="HisopadoCart__payDetail">
               <span>Descuento</span>
               <span>$0</span>
-            </div>
+            </div> */}
             <div className="HisopadoCart__payDetail">
               <span>
                 <strong>Total</strong>
               </span>
               <span>
-                <strong>$3499</strong>
+                <strong>${params.price}</strong>
               </span>
             </div>
           </div>
 
           <div className="HisopadoCart__payBtn">
-            <i className="fas fa-credit-card"></i> Pagar $3499
+            <i className="fas fa-credit-card"></i> Pagar ${params.price}
           </div>
         </div>
       </div>
