@@ -11,6 +11,7 @@ const HisopadoCart = (props) => {
   const [items, setItems] = useState([]);
   const { patient } = useSelector(store => store.queries);
   const { params, selectHomeForm } = useSelector(store => store.deliveryService);
+  const [price, setPrice] = useState(params.price);
 
   useEffect(() => {
     if(patient.dni) {
@@ -26,8 +27,17 @@ const HisopadoCart = (props) => {
     }
   }, [patient])
 
+  useEffect(() => {
+    setPrice(params.price);
+  }, [params])
+
+  useEffect(() => {
+    if(items.length) {
+      setPrice(Number(params.price) * items.length);
+    }
+  }, [items])
+
   const setFirstPatient = (info) => {
-    console.log(info);
     setItems([...items, {
       title: patient.fullname,
       fullname: patient.fullname,
@@ -69,7 +79,14 @@ const HisopadoCart = (props) => {
           <div className="HisopadoCart__header">
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <span>4 horas.</span></p>
-            <p className="HisopadoCart__text">Datos del usuario</p>
+            {
+              items.length > 0 ? 
+              <p className="HisopadoCart__text">Datos del usuario</p> :
+              <div className="HisopadosCart__empty">
+                <h2>Carrito vacío</h2>
+                <p>Comienza a agregar tus hisopados</p>
+              </div>
+            }
           </div>
           
           <section className="HisopadoCart__userSection">
@@ -92,30 +109,34 @@ const HisopadoCart = (props) => {
           </section>
         </div>
 
-        <div className="HisopadoCart__payment">
-          <div className="HisopadoCart__payDetails">
-            <div className="HisopadoCart__payDetail">
-              <span>Subtotal</span>
-              <span>${params.price}</span>
+        {
+          items.length > 0 &&
+          <div className="HisopadoCart__payment">
+            <div className="HisopadoCart__payDetails">
+              <div className="HisopadoCart__payDetail">
+                <span>Subtotal</span>
+                <span>${price}</span>
+              </div>
+              {/* <div className="HisopadoCart__payDetail">
+                <span>Descuento</span>
+                <span>$0</span>
+              </div> */}
+              <div className="HisopadoCart__payDetail">
+                <span>
+                  <strong>Total</strong>
+                </span>
+                <span>
+                  <strong>${price}</strong>
+                </span>
+              </div>
             </div>
-            {/* <div className="HisopadoCart__payDetail">
-              <span>Descuento</span>
-              <span>$0</span>
-            </div> */}
-            <div className="HisopadoCart__payDetail">
-              <span>
-                <strong>Total</strong>
-              </span>
-              <span>
-                <strong>${params.price}</strong>
-              </span>
-            </div>
-          </div>
 
-          <div className="HisopadoCart__payBtn">
-            <i className="fas fa-credit-card"></i> Pagar ${params.price}
+            <div className="HisopadoCart__payBtn">
+              <i className="fas fa-credit-card"></i> Pagar ${price}
+            </div>
           </div>
-        </div>
+        }
+
       </div>
     </>
   )

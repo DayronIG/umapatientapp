@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom"
-import { FaChevronDown, FaChevronUp, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
 import axios from 'axios';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
@@ -9,10 +9,8 @@ import DeliverySelectDestiny from '../DeliverySelectDestiny';
 import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
 
 const HisopadoCartItem = ({patient, id}) => {
-    const dispatch = useDispatch();
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
-    const { params } = useSelector(store => store.deliveryService);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
@@ -81,8 +79,6 @@ const HisopadoCartItem = ({patient, id}) => {
         axios.post(create_delivery, sendData, headers)
             .then(res => console.log(res))
             .catch(err => console.log(err))
-
-        dispatch({type: 'SET_DELIVERY_PARAMS', payload: {...params, price: Number(params.price) + 3499}})
     }
 
     return (
