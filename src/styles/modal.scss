@@ -105,11 +105,11 @@
     padding: 15px;
   }
   .modaTitle {
-    color: $white-color;
+    color: $uma-text;
     font-weight: bold;
     font-size: 20px;
     height: 10vh;
-    background-color: $secondary-color;
+    background-color: $white-color;
     border-top-left-radius: $regular-borders;
     border-top-right-radius: $regular-borders;
   }
@@ -117,7 +117,7 @@
     position: absolute;
     right: 15px;
     top: 10px;
-    color: $white-color;
+    color: $uma-text-secondary;
     font-size: 1.5rem;
   }
   textarea {

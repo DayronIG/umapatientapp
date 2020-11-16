@@ -21,6 +21,7 @@ const QueueActions = (props) => {
 					customAction={() => setAlert(false)}
 				/>
 			}
+			{/* Adjuntar archivo */}
 			{ 
 				props.calling &&
 				<Link to={`/${props.dni}/onlinedoctor/attention/`} replace={true}>

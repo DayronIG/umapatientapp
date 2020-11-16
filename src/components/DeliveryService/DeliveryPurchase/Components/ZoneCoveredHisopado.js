@@ -31,8 +31,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
         }
         if (showCongrats) {
             notifyUserEndpoint()
-            window.gtag('event', 'select_content', {
-                'content_type': 'add_to_wishlist',
+            window.gtag('event', 'add_to_wishlist', {
                 'items': 'Hisopado Antígeno',
                 'value': params?.price || '0',
                 'currency': 'ARS'
@@ -67,7 +66,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious }
                             <p className="delivery-title">¡Felicitaciones!</p>
                             <p>Hemos recibido su solicitud</p>
                             <p>Te enviaremos una notificación cuando se habiliten nuevas zonas</p>
-                            <div onClick={() => history.push("/")} className="blue-button">
+                            <div onClick={() => history.push("/home")} className="blue-button">
                                 <FaHome className="icon" />
                                     Ir al inicio
                                 </div>

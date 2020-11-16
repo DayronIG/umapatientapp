@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { MdClose } from 'react-icons/md'
 import '../../../styles/modal.scss';
 
 /* 
@@ -20,7 +19,7 @@ const MobileModal = (props) => {
             if (props.callback) props.callback();
             dispatch({ type: 'HANDLE_MODAL', payload: false })
           }}>
-            <FontAwesomeIcon icon={faTimesCircle} />
+            <MdClose />
           </div>
         }
         {
