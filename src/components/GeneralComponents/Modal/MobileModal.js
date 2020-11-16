@@ -14,7 +14,7 @@ const MobileModal = (props) => {
   return (
     <div className="modalContainer">
       <div className="modal-back"></div>
-      <div className={`mobile-modal ${props.surveyHisopados ? 'hisopados' : ''}`}>
+      <div className={`mobile-modal ${props.noScroll? "no-scroll": ""} ${props.surveyHisopados ? 'hisopados' : ''}`}>
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
             if (props.callback) props.callback();
