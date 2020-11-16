@@ -68,7 +68,6 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
 						coverage
 					)
-					console.log("DISPATCHING ADD: ", resultPath)
 					dispatch(handleAddressValidForHisopado(resultPath))
 				}, 500)
 

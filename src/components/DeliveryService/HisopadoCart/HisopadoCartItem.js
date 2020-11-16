@@ -199,7 +199,7 @@ const HisopadoCartItem = ({patient, id}) => {
 
             {
                 openModal &&
-                <MobileModal hideTitle hideCloseButton surveyHisopados noScroll>
+                <MobileModal callback={()=>setOpenModal(false)} surveyHisopados noScroll>
                     <DeliverySelectDestiny isModal />
                 </MobileModal>
             }
