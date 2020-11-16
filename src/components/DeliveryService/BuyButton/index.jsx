@@ -24,8 +24,11 @@ const BuyHisopado = () => {
 
     const renderButtonContentFromState = () => {
             switch (deliveryStatus){
-                case("PREASSIGN" || "ASSIGN:DELIVERY" || "ASSIGN:ARRIVED" || "DONE:RESULT"):
-                    return <ButtonAllHisopados />
+                case("PREASSIGN"):
+                case("ASSIGN:DELIVERY"):
+                case("ASSIGN:ARRIVED"):
+                case("RESULT:DONE"):
+                    return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 default:
                     return <ButtonStyle 
                     title="¡Hisópate hoy!" 
