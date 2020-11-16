@@ -40,13 +40,13 @@ export default function ListTracker({finalAction}) {
                     <p className="hisopados-title">Sigue tu hisopado</p>
                 </div>
                 <div className="results-menu-map-container">
-                    {purchases.map( (purchase, index) => {
+                    {purchases.map((purchase, index) => {
                     let state;  
                     if (purchase.status === "PREASSIGN"){state="En preparación"}
                     if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
                     if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
                     if (purchase.status === "DONE:RESULT"){state="Ver resultado"}
-                    return <div key={purchase.patient.dni} className="results-menu-map-item fit_content_item"
+                    return <div key={purchase.patient?.dni} className="results-menu-map-item fit_content_item"
                     onClick={() => handleDerivation(index)}>
                         <div>
                             <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>

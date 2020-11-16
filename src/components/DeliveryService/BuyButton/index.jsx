@@ -9,8 +9,16 @@ const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
 	const currentHisopadoIndex = useSelector(state => state.deliveryService)
-    const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
-    const deliveryStatus = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.status) || ""
+    // const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
+    const deliveryInfo = useSelector((state) => state.deliveryService?.deliveryInfo) || ""
+    const [deliveryStatus, setDeliveryStatus] = useState(false);
+
+    useEffect(() => {
+        deliveryInfo.map(el => {
+        if( el.status === "PREASSIGN" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
+            setDeliveryStatus(true)
+        }})
+    }, [deliveryInfo])
 
     const buyHisopado = () => {
 		window.gtag('event', 'view_promotion', {
@@ -23,20 +31,18 @@ const BuyHisopado = () => {
     }
 
     const renderButtonContentFromState = () => {
-            switch (deliveryStatus){
-                case("PREASSIGN"):
-                case("ASSIGN:DELIVERY"):
-                case("ASSIGN:ARRIVED"):
-                case("DONE:RESULT"):
+                if(deliveryStatus){
                     return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
-                default:
+                } else {
                     return <ButtonStyle 
                     title="¡Hisópate hoy!" 
                     innerText="Hazte tu testeo a domicilio." 
                     checkoutText="Conocer más " 
                     finalAction={() => buyHisopado()} 
                     showPrice={true}/>
-    }}
+                }
+
+    }
     
     return renderButtonContentFromState()
 }
