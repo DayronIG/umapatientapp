@@ -1,13 +1,38 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import hisopadosNeg from "../../../assets/img/estamos_con_vos.svg"
 import { FaClock, FaArrowRight } from "react-icons/fa"
 import { GiTransparentTubes } from "react-icons/gi"
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import db from "../../../config/DBConnection";
+
 
 export default function ReferredInvitation({finalAction}) {
     const history = useHistory(); 
     const patient = useSelector(state => state.queries.patient)
+    const dispatch = useDispatch()
+    const [purchases, setPurchases] = useState([])
+
+    const getCurrentService = () => {
+        console.log(patient.core_id)
+        db.firestore().collection('events/requests/delivery')
+        .where('patient.uid', '==', patient?.core_id)
+        .where('status', 'in', ['PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT'])
+        .get()
+        .then(res => {
+            res.forEach(services => {
+                let document = {...services.data(), id: services.id}
+                setPurchases([...purchases, document])
+            })
+        })
+    }
+
+    useEffect(() => {
+        if(patient.core_id){
+            getCurrentService()
+        }
+        console.log(purchases)
+    }, [patient.core_id])
 
     return (
         <div className="allwhite-hisopados-background hisopados-flux" >
