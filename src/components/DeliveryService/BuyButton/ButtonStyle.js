@@ -9,7 +9,6 @@ export default function ButtonStyle({title, innerText, checkoutText, finalAction
     
     return (
         <section className="hisopado__container" onClick={() => finalAction()}>
-        {showPrice && <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>}
         <div className="hisopado__content">
             <div className={`hisopado__info ${showPrice && "active__hisopado"}`}>
             <h2 className="hisopado__title">{title}</h2>
@@ -20,6 +19,7 @@ export default function ButtonStyle({title, innerText, checkoutText, finalAction
                 <p>A sólo <span>${price}</span></p>
             </div>}
         </div>
+        {showPrice && <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>}
     </section>
     )
 }

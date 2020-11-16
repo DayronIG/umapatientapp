@@ -14,6 +14,7 @@ const HisopadoCartItem = ({patient, id}) => {
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
+    const [showBtn, setShowBtn] = useState(true);
     const [data, setData] = useState({
         title: patient.title,
         fullname: patient.fullname,
@@ -25,8 +26,8 @@ const HisopadoCartItem = ({patient, id}) => {
         address: patient.address || address,
         piso: patient.piso || piso,
         depto: patient.depto || depto,
-        lat: null,
-        lng: null
+        lat: lat,
+        lng: lng
     });
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
@@ -48,15 +49,8 @@ const HisopadoCartItem = ({patient, id}) => {
     }, [dependantInfo])
 
     const handleConfirm = () => {
-        if(!localStorage.getItem("hisopadosPatients")) {
-            const arr_patients = [];
-            arr_patients.push(data);
-            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
-        } else {
-            const arr_patients = JSON.parse(localStorage.getItem("hisopadosPatients"))
-            arr_patients.push(data);
-            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
-        }
+        setShowBtn(false);
+        setOpenUser(false);
 
         let sendData = {
             dni,
@@ -73,18 +67,16 @@ const HisopadoCartItem = ({patient, id}) => {
                 user_address: data.address,
                 user_floor: data.piso,
                 user_number: data.depto,
-                // user_lat: lat,
-                // user_lon: lng
+                user_lat: data.lat,
+                user_lon: data.lng
             }
         }
-          
-        console.log(sendData);
 
-        //   let headers = { 'Content-Type': 'Application/Json' }
+        let headers = { 'Content-Type': 'Application/Json' }
 
-        //   axios.post(cobertura, data, headers)
-        //     .then(res => setAlert({ display: true, type: 'success', title: 'Aviso registrado!', customMessage: 'Te notificaremos cuando haya cobertura en tu zona' }))
-        //     .catch(err => setAlert({ display: true, type: 'danger', title: 'No pudimos registrar su pedido', customMessage: 'Ocurrió un error inesperado. Intentelo más tarde.' }))
+        axios.post(create_delivery, sendData, headers)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     return (
@@ -97,7 +89,6 @@ const HisopadoCartItem = ({patient, id}) => {
                 !openUser ?
                 <FaChevronDown /> :
                 <FaChevronUp />
-
                 }
             </div>
             <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
@@ -110,7 +101,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, title: e.target.value, fullname: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>
 
                 <div>
@@ -122,7 +112,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, dni: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>
                 
                 <div>
@@ -134,7 +123,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, ws: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div> 
 
                 <div className="columns">
@@ -174,7 +162,6 @@ const HisopadoCartItem = ({patient, id}) => {
                             setData({...data, obs: e.target.value});
                         }}
                     />
-                    <FaPencilAlt />
                 </div>  
 
                 <div>
@@ -185,8 +172,8 @@ const HisopadoCartItem = ({patient, id}) => {
                         onChange={(e) => {
                             setData({...data, address: e.target.value});
                         }}
+                        readOnly
                     />
-                    <FaPencilAlt />
                 </div> 
 
                 <div className="columns">
@@ -198,8 +185,8 @@ const HisopadoCartItem = ({patient, id}) => {
                             onChange={(e) => {
                                 setData({...data, piso: e.target.value});
                             }}
-                        />
-                        <FaPencilAlt /> 
+                            readOnly
+                        /> 
                     </div>
                     <div>
                         <label>Departamento</label>
@@ -209,18 +196,20 @@ const HisopadoCartItem = ({patient, id}) => {
                             onChange={(e) => {
                                 setData({...data, depto: e.target.value});
                             }}
-                        />
-                        <FaPencilAlt /> 
+                            readOnly
+                        /> 
                     </div>
                 </div>
 
                 {
-                    id !== 0 ?
-                    <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button> :
+                    id !== 0 && showBtn ?
+                    <>
+                        <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
+                        <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
+                    </> :
                     null
                 }
                 
-                <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Aceptar</button>
                 <button className="HisopadoCart__btnDelete"><FaTrashAlt /></button>
             </div>
 

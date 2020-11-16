@@ -15,7 +15,6 @@ import { mobility_address, node_patient } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
 import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
-import { type } from 'jquery';
 
 const DeliverySelectDestiny = ({isModal=false}) => {
 	const dispatch = useDispatch();

@@ -51,9 +51,8 @@ const HisopadoCart = (props) => {
       <div className="HisopadoCart">
         <div className="HisopadoCart__container">
           <div className="HisopadoCart__goBack">
-            <FaChevronLeft onClick={() => history.goBack()} />
+            <FaChevronLeft onClick={() => history.push(`/home/${patient.ws}`)} />
           </div>
-          
           <div className="HisopadoCart__header">
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <span>4 horas.</span></p>
