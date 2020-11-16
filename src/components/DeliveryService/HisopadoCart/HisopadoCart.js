@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import "react-datepicker/dist/react-datepicker.css";
-import { FaChevronLeft, FaChevronDown, FaChevronUp, FaPencilAlt } from 'react-icons/fa';
+import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
+import HisopadoCartItem from './HisopadoCartItem';
 
 const HisopadoCart = (props) => {
   const history = useHistory();
-  const [openUser, setOpenUser] = useState(false);
+  const [items, setItems] = useState([]);
+  const { patient } = useSelector(store => store.queries);
+  const { selectHomeForm } = useSelector(store => store.deliveryService);
+
+  useEffect(() => {
+    if(patient.fullname) {
+      setItems([...items, {
+        fullname: patient.fullname,
+        dni: patient.dni,
+        ws: patient.ws,
+        dob: patient.dob,
+        sex: patient.sex,
+        address: selectHomeForm.address,
+        piso: selectHomeForm.piso,
+        depto: selectHomeForm.depto
+      }])
+    }
+  }, [patient])
 
   return(
     <>
@@ -24,78 +42,9 @@ const HisopadoCart = (props) => {
           
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              <article className="HisopadoCart__user">
-                <div className="HisopadoCart__userTitle" onClick={() => {
-                  setOpenUser(!openUser);
-                }}>
-                 <p className="HisopadoCart__userName">Fernando Díaz</p>
-                 {
-                   !openUser ?
-                   <FaChevronDown /> :
-                   <FaChevronUp />
-
-                 }
-                </div>
-                <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
-                  <div>
-                    <label>Nombre y apellido</label>
-                    <input type="text" />
-                    <FaPencilAlt />
-                  </div>
-
-                  <div>
-                    <label>Identificación, cédula o DNI</label>
-                    <input type="text" />
-                    <FaPencilAlt />
-                  </div>
-                  
-                  <div>
-                    <label>N° de celular</label>
-                    <input type="text" />
-                    <FaPencilAlt />
-                  </div> 
-
-                  <div>
-                    <div>
-                      <label>Fecha de nacimiento</label>
-                      <input type="date" />
-                    </div>
-                    <div>
-                      <label>Sexo</label>
-                      <input type="text" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label>Domicilio</label>
-                    <input type="text" />
-                    <FaPencilAlt />
-                  </div> 
-
-                  <div>
-                    <div>
-                      <label>Piso</label>
-                      <input type="text" />
-                      <FaPencilAlt /> 
-                    </div>
-                    <div>
-                      <label>Departamento</label>
-                      <input type="text" />
-                      <FaPencilAlt /> 
-                    </div>
-                  </div>
-
-                  <div>
-                    <label>Observaciones</label>
-                    <input type="text" />
-                    <FaPencilAlt />
-                  </div>  
-                  
-                  <button className="HisopadoCart__btnConfirm">Continuar</button>
-                  <button className="HisopadoCart__btnDelete">Eliminar hisopado</button>
-                </div>
-
-              </article>
+              {items.map((item, index) => (
+                <HisopadoCartItem key={index} patient={item} id={index} />
+              ))}
             </div>
 
             <div className="HisopadoCart__addContainer">
