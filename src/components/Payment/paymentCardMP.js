@@ -12,10 +12,11 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
+import db from "../../config/DBConnection"
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
-    const {params, current} = useSelector(state => state.deliveryService)
+    const {params, current, deliveryInfo} = useSelector(state => state.deliveryService)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.queries.patient);
@@ -30,6 +31,33 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const [allPurchases, setAllPurchases] = useState([])
+
+
+    const getCurrentService = () => {
+      db.firestore().collection('events/requests/delivery')
+      .where('patient.uid', '==', user.core_id)
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT'])
+      .get()
+      .then(res => {
+        let arr = [];
+          res.forEach(services => {
+              let document = {...services.data(), id: services.id}
+              arr.push(document)
+          })
+
+          setAllPurchases(arr);
+      })
+  }
+
+  useEffect(() => {
+    if(!!user.core_id){getCurrentService()}
+  }, [user])
+
+    useEffect(() => {
+      console.log(allPurchases)
+      setTotalPayment(parseInt(hisopadoPrice) * allPurchases.length) 
+    }, [allPurchases, hisopadoPrice])
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);

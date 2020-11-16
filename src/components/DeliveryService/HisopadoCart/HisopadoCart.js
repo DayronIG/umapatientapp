@@ -131,7 +131,7 @@ const HisopadoCart = (props) => {
               </div>
             </div>
 
-            <div className="HisopadoCart__payBtn">
+            <div className="HisopadoCart__payBtn" onClick={()=>history.push(`/hisopado/payment/${patient.ws}`)}>
               <i className="fas fa-credit-card"></i> Pagar ${price}
             </div>
           </div>
