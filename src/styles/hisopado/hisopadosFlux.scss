@@ -4,6 +4,14 @@
 	position: fixed;
 }
 
+.delivery-list-tracker{
+    min-height:100vh;
+    .back-button{
+        position: absolute;
+        top: 0px;
+    }
+}
+
 .hisopados-flux{
     display: flex;
     align-items: center;
