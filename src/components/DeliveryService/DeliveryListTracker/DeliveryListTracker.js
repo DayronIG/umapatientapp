@@ -51,7 +51,7 @@ export default function ListTracker({finalAction}) {
                         <div>
                             <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>
                             <p className="item_status">{state}</p>
-                            <p className="item_time"><FaClock className="clock_icon" />Entrega estimada: 1 hora</p>
+                            {/* <p className="item_time"><FaClock className="clock_icon" />Entrega estimada: 1 hora</p> */}
                         </div>
                         {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
                     </div>})}
