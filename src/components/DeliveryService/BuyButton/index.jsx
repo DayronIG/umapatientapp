@@ -3,10 +3,12 @@ import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import '../../../styles/hisopado/delivery.scss';
 import ButtonStyle from "./ButtonStyle"
+import ButtonAllHisopados from "./ButtonAllHisopados"
 
 const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
+    const {deliveryInfo} = useSelector((state) => state.deliveryService)
     const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
     const deliveryStatus = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.status) || ""
 
@@ -23,33 +25,10 @@ const BuyHisopado = () => {
     const renderButtonContentFromState = () => {
             switch (deliveryStatus){
                 case("PREASSIGN"):
-                return <ButtonStyle 
-                    title="¡Sigue tu hisopado!" 
-                    innerText="Tu profesional se esta preparando." 
-                    checkoutText="Ver estado " 
-                    finalAction={() => history.push(`/delivery/progress/${patient.ws}/${id}/`)}
-                    /> 
                 case("ASSIGN:DELIVERY"):
-                    return <ButtonStyle 
-                    title="¡Sigue tu hisopado!" 
-                    innerText="En camino." 
-                    checkoutText="Ver estado " 
-                    finalAction={() => history.push(`/delivery/progress/${patient.ws}/${id}/`)}
-                    /> 
                 case("ASSIGN:ARRIVED"):
-                    return <ButtonStyle 
-                    title="¡Sigue tu hisopado!" 
-                    innerText="Tu profesional ha llegado al domicilio." 
-                    checkoutText="En domicilio " 
-                    finalAction={() => history.push(`/delivery/progress/${patient.ws}/${id}/`)}
-                    /> 
-                case("DONE:RESULT"):
-                    return <ButtonStyle 
-                    title="¡Están tus resultados!" 
-                    innerText="Mirá el resultado de tu hisopado." 
-                    checkoutText="Ver resultado " 
-                    finalAction={() => history.push(`/delivery/progress/${patient.ws}/${id}/`)}
-                    /> 
+                case("RESULT:DONE"):
+                    return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 default:
                     return <ButtonStyle 
                     title="¡Hisópate hoy!" 

@@ -104,3 +104,35 @@
     }
 
 }
+
+@import '../index.scss';
+
+.all_hisopado__container {
+    margin: 20px auto;
+    width: 90%;
+    align-items: center;
+    background: $uma-pink;
+    border-radius: 15px;
+    box-shadow: 0px 4px 50px rgba(126, 147, 163, 0.25);
+    position: relative;
+
+    font-style: normal;
+    font-weight: bold;
+    font-size: $uma-font-size-regular;
+    line-height: 22px;
+    /* identical to box height */
+
+
+    color: $white-color;
+
+    .icon{
+        margin-left: 20vw;
+    }
+
+    .all_hisopado__content {
+        display: flex;
+        align-items: center;
+        padding: 20px 20px;
+    }
+
+}
