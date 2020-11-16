@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
@@ -7,11 +7,10 @@ import HisopadoCartItem from './HisopadoCartItem';
 import db from "../../../config/DBConnection";
 
 const HisopadoCart = (props) => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const [items, setItems] = useState([]);
   const { patient } = useSelector(store => store.queries);
-  const { selectHomeForm, params } = useSelector(store => store.deliveryService);
+  const { params, selectHomeForm } = useSelector(store => store.deliveryService);
 
   useEffect(() => {
     if(patient.dni) {
@@ -28,6 +27,7 @@ const HisopadoCart = (props) => {
   }, [patient])
 
   const setFirstPatient = (info) => {
+    console.log(info);
     setItems([...items, {
       title: patient.fullname,
       fullname: patient.fullname,
@@ -35,11 +35,11 @@ const HisopadoCart = (props) => {
       ws: patient.ws,
       dob: patient.dob,
       sex: patient.sex,
-      address: info.user_address,
-      piso: info.user_floor,
-      depto: info.user_number,
-      lat: info.user_lat,
-      lng: info.user_lon,
+      address: info.user_address || selectHomeForm.address,
+      piso: info.user_floor || selectHomeForm.piso,
+      depto: info.user_number || selectHomeForm.depto,
+      lat: info.user_lat || selectHomeForm.lat,
+      lng: info.user_lon || selectHomeForm.lng,
       isOpen: false
     }])
   }
@@ -57,8 +57,6 @@ const HisopadoCart = (props) => {
       depto: '',
       isOpen: true
     }])
-
-    dispatch({type: 'SET_DELIVERY_PARAMS', payload: {...params, price: Number(params.price) + 3499}})
   }
 
   return(
