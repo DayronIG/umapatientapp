@@ -68,6 +68,10 @@
   overflow: hidden !important;
 }
 
+.pac-container {
+  z-index: 9999;
+}
+
 .mobile-modal {
   position: fixed;
   top: 12vh;

@@ -23,8 +23,8 @@ const HisopadoCartItem = ({patient, id}) => {
         address: patient.address || address,
         piso: patient.piso || piso,
         depto: patient.depto || depto,
-        lat: null,
-        lng: null
+        lat: lat,
+        lng: lng
     });
 
     useEffect(() => {
@@ -65,18 +65,16 @@ const HisopadoCartItem = ({patient, id}) => {
                 user_address: data.address,
                 user_floor: data.piso,
                 user_number: data.depto,
-                // user_lat: lat,
-                // user_lon: lng
+                user_lat: data.lat,
+                user_lon: data.lng
             }
         }
-          
-        console.log(sendData);
 
-        //   let headers = { 'Content-Type': 'Application/Json' }
+        let headers = { 'Content-Type': 'Application/Json' }
 
-        //   axios.post(cobertura, data, headers)
-        //     .then(res => setAlert({ display: true, type: 'success', title: 'Aviso registrado!', customMessage: 'Te notificaremos cuando haya cobertura en tu zona' }))
-        //     .catch(err => setAlert({ display: true, type: 'danger', title: 'No pudimos registrar su pedido', customMessage: 'Ocurrió un error inesperado. Intentelo más tarde.' }))
+        axios.post(create_delivery, sendData, headers)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     return (
@@ -177,8 +175,8 @@ const HisopadoCartItem = ({patient, id}) => {
                         onChange={(e) => {
                             setData({...data, address: e.target.value});
                         }}
+                        readOnly
                     />
-                    <FaPencilAlt />
                 </div> 
 
                 <div className="columns">
@@ -190,8 +188,8 @@ const HisopadoCartItem = ({patient, id}) => {
                             onChange={(e) => {
                                 setData({...data, piso: e.target.value});
                             }}
-                        />
-                        <FaPencilAlt /> 
+                            readOnly
+                        /> 
                     </div>
                     <div>
                         <label>Departamento</label>
@@ -201,8 +199,8 @@ const HisopadoCartItem = ({patient, id}) => {
                             onChange={(e) => {
                                 setData({...data, depto: e.target.value});
                             }}
-                        />
-                        <FaPencilAlt /> 
+                            readOnly
+                        /> 
                     </div>
                 </div>
 
