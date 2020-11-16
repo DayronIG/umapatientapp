@@ -52,34 +52,39 @@ const HisopadoCartItem = ({patient, id}) => {
     }, [dependantInfo])
 
     const handleConfirm = () => {
-        setShowBtn(false);
-        setOpenUser(false);
-
-        let sendData = {
-            dni,
-            service: 'HISOPADO',
-            dependant: true,
-            dependantData: {
-                sex: data.sex,
-                dob: data.dob,
-                dni: data.dni,
-                ws: data.ws,
-                user: data.fullname
-            },
-            dependantDestination: {
-                user_address: data.address,
-                user_floor: data.piso,
-                user_number: data.depto,
-                user_lat: data.lat,
-                user_lon: data.lng
+        if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng) {
+            setShowBtn(false);
+            setOpenUser(false);
+    
+            let sendData = {
+                dni,
+                service: 'HISOPADO',
+                dependant: true,
+                dependantData: {
+                    sex: data.sex,
+                    dob: data.dob,
+                    dni: data.dni,
+                    ws: data.ws,
+                    user: data.fullname
+                },
+                dependantDestination: {
+                    user_address: data.address,
+                    user_floor: data.piso,
+                    user_number: data.depto,
+                    user_lat: data.lat,
+                    user_lon: data.lng
+                }
             }
+    
+            let headers = { 'Content-Type': 'Application/Json' }
+    
+            axios.post(create_delivery, sendData, headers)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        } else {
+            console.log('Campos vacíos');
+            return false;
         }
-
-        let headers = { 'Content-Type': 'Application/Json' }
-
-        axios.post(create_delivery, sendData, headers)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
     }
 
     return (
