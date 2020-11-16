@@ -227,7 +227,7 @@ const SignIn = props => {
                                         placeholder='Ingrese su código'
                                         value={code}
                                         onChange={e => setCode(e.target.value.toLowerCase())}
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         required
                                     />
                                     <button disabled={!code ? true : false} className='btn btn-blue-lg buttonSendLogin' type='submit'>
