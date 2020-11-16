@@ -37,7 +37,7 @@ const PaymentCardMP = () => {
     const getCurrentService = () => {
       db.firestore().collection('events/requests/delivery')
       .where('patient.uid', '==', user.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', "DEPENDANT"])
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
       .get()
       .then(res => {
         let arr = [];

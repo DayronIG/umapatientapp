@@ -8,8 +8,7 @@ import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DeliverySelectDestiny from '../DeliverySelectDestiny';
 import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
 
-const HisopadoCartItem = ({patient, id}) => {
-    console.log(patient)
+const HisopadoCartItem = ({patient}) => {
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
@@ -82,7 +81,6 @@ const HisopadoCartItem = ({patient, id}) => {
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
         } else {
-            console.log('Campos vacíos');
             return false;
         }
     }
@@ -218,7 +216,7 @@ const HisopadoCartItem = ({patient, id}) => {
                 </div>
 
                 {
-                    id !== 0 && showBtn ?
+                    !patient.id && showBtn ?
                     <>
                         <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                         <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
