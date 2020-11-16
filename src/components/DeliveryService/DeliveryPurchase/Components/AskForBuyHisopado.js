@@ -34,10 +34,15 @@ export default function AskForBuyHisopado() {
         .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT'])
         .get()
         .then(res => {
+            let deliveryInfo = []
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
-                dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                deliveryInfo.push(document)
+                if(document.status.includes("FREE")) {
+                    dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                }
             })
+            dispatch({type: 'SET_DELIVERY', payload: deliveryInfo})
         })
     }
 

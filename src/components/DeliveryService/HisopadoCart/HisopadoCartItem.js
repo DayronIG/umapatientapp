@@ -9,6 +9,7 @@ import DeliverySelectDestiny from '../DeliverySelectDestiny';
 import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
 
 const HisopadoCartItem = ({patient, id}) => {
+    console.log(patient)
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
@@ -16,18 +17,18 @@ const HisopadoCartItem = ({patient, id}) => {
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
     const [data, setData] = useState({
-        title: patient.title,
-        fullname: patient.fullname,
-        dni: patient.dni,
-        ws: patient.ws,
-        dob: patient.dob,
-        sex: patient.sex,
+        title: patient.patient.user,
+        fullname: patient.patient.user,
+        dni: patient.patient.dni,
+        ws: patient.patient.ws,
+        dob: patient.patient.dob,
+        sex: patient.patient.sex,
         obs: '',
-        address: patient.address || address,
-        piso: patient.piso || piso,
-        depto: patient.depto || depto,
-        lat: patient.lat || lat,
-        lng: patient.lng || lng
+        address: patient.destination.user_address || address,
+        piso: patient.destination.user_floor || piso,
+        depto: patient.destination.user_number || depto,
+        lat: patient.destination.user_lat || lat,
+        lng: patient.destination.user_lon || lng
     });
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
@@ -91,7 +92,7 @@ const HisopadoCartItem = ({patient, id}) => {
             <div className="HisopadoCart__userTitle" onClick={() => {
                 setOpenUser(!openUser);
             }}>
-                <p className="HisopadoCart__userName">{data.fullname || data.title}</p>
+                <p className="HisopadoCart__userName">{data.user || data.title}</p>
                 {
                 !openUser ?
                 <FaChevronDown /> :

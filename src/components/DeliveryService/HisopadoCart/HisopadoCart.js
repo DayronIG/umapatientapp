@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
@@ -8,9 +8,10 @@ import db from "../../../config/DBConnection";
 
 const HisopadoCart = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch()
   const [items, setItems] = useState([]);
   const { patient } = useSelector(store => store.queries);
-  const { params, selectHomeForm } = useSelector(store => store.deliveryService);
+  const { params, selectHomeForm, deliveryInfo } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
 
   useEffect(() => {
@@ -20,9 +21,12 @@ const HisopadoCart = (props) => {
       .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
       .get()
       .then(res => {
+         let all_services = []
           res.forEach(services => {
-            setFirstPatient(services.data().destination);
+            // setFirstPatient(services.data().destination);
+            all_services.push(services.data())
           })
+          dispatch({type: 'SET_DELIVERY_ALL', payload: all_services})
       })
     }
   }, [patient])
@@ -88,10 +92,9 @@ const HisopadoCart = (props) => {
               </div>
             }
           </div>
-          
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {items.map((item, index) => (
+              {deliveryInfo?.map((item, index) => (
                 <HisopadoCartItem key={index} patient={item} id={index} />
               ))}
             </div>
@@ -99,9 +102,7 @@ const HisopadoCart = (props) => {
             <div className="HisopadoCart__addContainer">
               <span 
                 onClick={handleAddHisopado}
-                className="HisopadoCart__btnContainer"
-              >
-              
+                className="HisopadoCart__btnContainer">
                 <button className="HisopadoCart__addBTn">+</button>
                 <span className="HisopadoCart__addMsg">Agregar otro hisopado</span>
               </span>
@@ -110,7 +111,7 @@ const HisopadoCart = (props) => {
         </div>
 
         {
-          items.length > 0 &&
+          deliveryInfo.length > 0 &&
           <div className="HisopadoCart__payment">
             <div className="HisopadoCart__payDetails">
               <div className="HisopadoCart__payDetail">
