@@ -13,8 +13,9 @@ import axios from 'axios';
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
 	const { ws, dni,  } = useSelector(store => store.queries.patient)
-	const { status, delivery, docId } = useSelector(state => state.deliveryService.deliveryInfo[0]);
-	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[0].eval);
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const { status, delivery, docId } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]);
+	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex].eval);
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);

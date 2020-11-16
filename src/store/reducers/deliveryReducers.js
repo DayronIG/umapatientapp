@@ -4,6 +4,7 @@ const initialState = {
 	addressLatLongHisopado: "",
 	coverage: [],
 	current: {},
+	currentHisopadoIndex: 0,
 	deliveryInfo: [],
 	deliveryType: '',
 	dependantInfo: {},
@@ -38,10 +39,14 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, current: payload}
 		case "SET_DELIVERY":
 			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
+		case "CLEAN_DELIVERY":
+			return {...state, deliveryInfo: []}
 		case "SET_DELIVERY_COVERAGE":
 			return {...state, coverage: payload}
 		case "SET_DEPENDANT_INFO":
 			return {...state, dependantInfo: payload}
+		case "SET_HISOPADO_INDEX":
+			return {...state, currentHisopadoIndex: payload}
 		default:
 			return state;
 	}

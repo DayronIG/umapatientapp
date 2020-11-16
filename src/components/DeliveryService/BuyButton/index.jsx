@@ -8,7 +8,7 @@ import ButtonAllHisopados from "./ButtonAllHisopados"
 const BuyHisopado = () => {
     const history = useHistory()
     const patient = useSelector((state) => state.queries.patient)
-    const {deliveryInfo} = useSelector((state) => state.deliveryService)
+	const currentHisopadoIndex = useSelector(state => state.deliveryService)
     const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
     const deliveryStatus = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.status) || ""
 
@@ -27,7 +27,7 @@ const BuyHisopado = () => {
                 case("PREASSIGN"):
                 case("ASSIGN:DELIVERY"):
                 case("ASSIGN:ARRIVED"):
-                case("RESULT:DONE"):
+                case("DONE:RESULT"):
                     return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 default:
                     return <ButtonStyle 

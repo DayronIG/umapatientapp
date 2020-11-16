@@ -32,6 +32,7 @@ function AuthProvider({ children }) {
 		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
 		if(userAuth.dni) {
 			let filters =  [{field: 'status', value: ["PREASSIGN", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.uid', value: userAuth.core_id, comparator: '=='}]
+			dispatch({type: 'CLEAN_DELIVERY'})
 			await snapDocumentsByFilter('events/requests/delivery', filters, (data) => dispatch({type: 'SET_DELIVERY', payload: data}))
 		}
     }

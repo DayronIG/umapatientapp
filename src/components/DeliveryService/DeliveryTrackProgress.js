@@ -8,7 +8,8 @@ import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Componen
 import '../../styles/deliveryService/trackProgress.scss';
 
 const DeliveryTrackProgress = () => {
-	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]) || "NOT:SERVICE";
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const { status } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]) || "NOT:SERVICE";
 	const { loading } = useSelector(state => state.front);
 
 	const renderComponentByTrackProgress = (step) => {

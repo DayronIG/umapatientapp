@@ -10,8 +10,9 @@ import "../../../styles/hisopado/hisopadosFlux.scss"
 export default function HisopadosPurchase() {
     const [fluxTrackerHisopado, setFluxTrackerHisopado] = useState("RESULT_REVEAL");
     const history = useHistory()
-    const result = useSelector(state => state.deliveryService?.deliveryInfo[0]?.lab?.result_lab)
-    const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[0]?.eval?.uma_eval) 
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+    const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab)
+    const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.eval?.uma_eval) 
 
     // useEffect(()=>{
     //     if(survey){
