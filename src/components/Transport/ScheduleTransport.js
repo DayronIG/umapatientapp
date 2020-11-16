@@ -131,7 +131,7 @@ function ScheduleTransport() {
 				</div>
 				<div className="scheduleForm__container">
 				<div className='centeredElements'>
-				<h5 className='scheduleForm__container--title'>Horario de regreso a origen</h5>
+				<h5 className='scheduleForm__container--title'>Horario de salida</h5>
 				{!transportData.hasReturn && (
 						<button 
 							className="addButton"
