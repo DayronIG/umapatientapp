@@ -56,7 +56,7 @@ export default function FrequentQuestions({goBack}) {
         },
         {
             question: "Ya pedí el servicio, ¿qué hago?",
-            answer: "La aplicación te mantendrá informado sobre el estado del servicio. Mientras esperas, te acercamos las siguientes recomendaciones de prevención: no te automediques, recuerda colocarte el barbijo para recibir al enfermero, lávate las manos y evita el contacto con la cara. Al llegar a tu domicilio, el profesional de la salud tendrá colocado su equipo de protección personal y te guiará durante todo lo que dure el proceso. Vas a recibir una constancia de atención. Tener en cuenta que EL SERVICIO NO INCLUYE certificado por COVID-2019, en especial no incluye PCR NEGATIVO, atención primaria y/o farmacológica del profesional que acude al domicilio ni diagnóstico presuntivo ni indicación de tratamiento y/o reposo."
+            answer: "La aplicación te mantendrá informado sobre el estado del servicio. Ten en cuenta que nuestro servicio funciona de lunes a viernes de 10hs a 18hs. Mientras esperas, te acercamos las siguientes recomendaciones de prevención: no te automediques, recuerda colocarte el barbijo para recibir al enfermero, lávate las manos y evita el contacto con la cara. Al llegar a tu domicilio, el profesional de la salud tendrá colocado su equipo de protección personal y te guiará durante todo lo que dure el proceso. Vas a recibir una constancia de atención. Tener en cuenta que EL SERVICIO NO INCLUYE certificado por COVID-2019, en especial no incluye PCR NEGATIVO, atención primaria y/o farmacológica del profesional que acude al domicilio ni diagnóstico presuntivo ni indicación de tratamiento y/o reposo."
         },
         {
             question: "¿Puedo quedarme con el test?",
