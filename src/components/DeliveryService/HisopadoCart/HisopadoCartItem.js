@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { FaChevronDown, FaChevronUp, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
@@ -9,6 +9,7 @@ import DeliverySelectDestiny from '../DeliverySelectDestiny';
 const HisopadoCartItem = ({patient, id}) => {
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
+    const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
     const [data, setData] = useState({
@@ -22,7 +23,21 @@ const HisopadoCartItem = ({patient, id}) => {
         address: patient.address || address,
         piso: patient.piso || piso,
         depto: patient.depto || depto,
+        lat: null,
+        lng: null
     });
+
+    useEffect(() => {
+        setData({...data,
+          address: dependantInfo.address,
+          piso: dependantInfo.piso,
+          depto: dependantInfo.depto,
+          lat: dependantInfo.lat,
+          lng: dependantInfo.lng
+        });
+
+        setOpenModal(false);
+    }, [dependantInfo])
 
     const handleConfirm = () => {
         if(!localStorage.getItem("hisopadosPatients")) {
@@ -191,7 +206,11 @@ const HisopadoCartItem = ({patient, id}) => {
                     </div>
                 </div>
 
-                <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
+                {
+                    id !== 0 ?
+                    <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button> :
+                    null
+                }
                 
                 <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Aceptar</button>
                 <button className="HisopadoCart__btnDelete"><FaTrashAlt /></button>
