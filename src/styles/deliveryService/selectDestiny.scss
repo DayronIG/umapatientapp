@@ -100,9 +100,15 @@
 	}
 }
 
-.container-map-component{
-	.mobile-modal.hisopados {
-		padding: 0px !important;
+.mobile-modal.hisopados {
+	padding: 0px !important;
+	top: 5vh;
+
+		.container-map-component{
+
+			.selectDestiny__allcontainer {
+				position: absolute;
+			} 
 	}
 }
 

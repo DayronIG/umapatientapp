@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux';
 import { FaChevronDown, FaChevronUp, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
 import axios from 'axios';
+import MobileModal from '../../GeneralComponents/Modal/MobileModal';
+import DeliverySelectDestiny from '../DeliverySelectDestiny';
 
 const HisopadoCartItem = ({patient, id}) => {
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const [openUser, setOpenUser] = useState(patient.isOpen);
+    const [openModal, setOpenModal] = useState(false);
     const [data, setData] = useState({
         title: patient.title,
         fullname: patient.fullname,
@@ -188,11 +191,18 @@ const HisopadoCartItem = ({patient, id}) => {
                     </div>
                 </div>
 
-                <button className="HisopadoCart__btnAddress">Cambiar domicilio</button>
+                <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                 
                 <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Aceptar</button>
                 <button className="HisopadoCart__btnDelete"><FaTrashAlt /></button>
             </div>
+
+            {
+                openModal &&
+                <MobileModal hideTitle hideCloseButton surveyHisopados noScroll>
+                    <DeliverySelectDestiny isModal />
+                </MobileModal>
+            }
         </article>
     )
 }
