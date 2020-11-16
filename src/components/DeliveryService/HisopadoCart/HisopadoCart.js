@@ -14,6 +14,7 @@ const HisopadoCart = (props) => {
   useEffect(() => {
     if(patient.fullname) {
       setItems([...items, {
+        title: patient.fullname,
         fullname: patient.fullname,
         dni: patient.dni,
         ws: patient.ws,
@@ -21,10 +22,26 @@ const HisopadoCart = (props) => {
         sex: patient.sex,
         address: selectHomeForm.address,
         piso: selectHomeForm.piso,
-        depto: selectHomeForm.depto
+        depto: selectHomeForm.depto,
+        isOpen: false
       }])
     }
   }, [patient])
+
+  const handleAddHisopado = () => {
+    setItems([...items, {
+      title: 'Nuevo',
+      fullname: '',
+      dni: '',
+      ws: '',
+      dob: '',
+      sex: '',
+      address: '',
+      piso: '',
+      depto: '',
+      isOpen: true
+    }])
+  }
 
   return(
     <>
@@ -49,7 +66,7 @@ const HisopadoCart = (props) => {
 
             <div className="HisopadoCart__addContainer">
               <span 
-                onClick={()=> props.history.push('/hisopado/destinatario/:ws?')}
+                onClick={handleAddHisopado}
                 className="HisopadoCart__btnContainer"
               >
               
