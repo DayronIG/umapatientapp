@@ -354,19 +354,19 @@ const PaymentCardMP = () => {
               <div className="formulario-item last__input">
                 <small>Código de descuento</small>
                 <input
-                autoComplete="off"
-                  id="discount" data-checkout="discount"
-                  type="text"
-                  className=""
-                  name="discount"
-                  placeholder="CÓDIGO"
-                  onChange={
-                    (e) => {
-                      validateDiscount(e)
-                      handleChange(e)
+                    autoComplete="off"
+                    id="discount" data-checkout="discount"
+                    type="text"
+                    className=""
+                    name="discount"
+                    placeholder="CÓDIGO"
+                    onChange={
+                      (e) => {
+                        validateDiscount(e)
+                        handleChange(e)
+                      }
                     }
-                  }
-                  onFocus={handleFocus}
+                    onFocus={handleFocus}
                 />
               </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />

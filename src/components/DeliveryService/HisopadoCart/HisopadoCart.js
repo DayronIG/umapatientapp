@@ -10,9 +10,9 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const [items, setItems] = useState([]);
   const { patient } = useSelector(store => store.queries);
-  const { selectHomeForm, params } = useSelector(store => store.deliveryService);
+  const { selectHomeForm, params, current } = useSelector(store => store.deliveryService);
 
-  useEffect(() => {
+ useEffect(() => {
     if(patient.fullname) {
       setItems([...items, {
         title: patient.fullname,
@@ -25,7 +25,7 @@ const HisopadoCart = (props) => {
         piso: selectHomeForm.piso,
         depto: selectHomeForm.depto,
         isOpen: false
-      }])
+      }]) 
     }
   }, [patient])
 
@@ -58,10 +58,9 @@ const HisopadoCart = (props) => {
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <span>4 horas.</span></p>
             <p className="HisopadoCart__text">Datos del usuario</p>
           </div>
-          
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {items.map((item, index) => (
+              {current?.map((item, index) => (
                 <HisopadoCartItem key={index} patient={item} id={index} />
               ))}
             </div>
@@ -69,9 +68,7 @@ const HisopadoCart = (props) => {
             <div className="HisopadoCart__addContainer">
               <span 
                 onClick={handleAddHisopado}
-                className="HisopadoCart__btnContainer"
-              >
-              
+                className="HisopadoCart__btnContainer">
                 <button className="HisopadoCart__addBTn">+</button>
                 <span className="HisopadoCart__addMsg">Agregar otro hisopado</span>
               </span>
