@@ -13,10 +13,11 @@ import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
+import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
 import { type } from 'jquery';
 
-const DeliverySelectDestiny = () => {
+const DeliverySelectDestiny = ({isModal=true}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -35,6 +36,7 @@ const DeliverySelectDestiny = () => {
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
+	const history = useHistory()
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
@@ -173,14 +175,16 @@ const DeliverySelectDestiny = () => {
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
-			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		// dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		history.push(`/hisopado/carrito/${ws}`)
 	};
 
 
 	return (
-		<form className='selectDestiny' onSubmit={handleSubmit}>
+		<div className="container-map-component">
+		<MobileModal hideTitle hideCloseButton surveyHisopados noScroll>
+		<form className={`${isModal? "modalMap": "selectDestiny "}`} onSubmit={handleSubmit}>
 			{loading && <Loader />}
-
 			<div className='selectDestiny__container map'>
 				<GoogleMapReact
 					{...mapConfig(
@@ -230,6 +234,8 @@ const DeliverySelectDestiny = () => {
             </div>
 			</div>
 		</form>
+		</MobileModal>
+		</div>
 	);
 };
 

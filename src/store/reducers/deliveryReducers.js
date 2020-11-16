@@ -4,11 +4,12 @@ const initialState = {
 	addressLatLongHisopado: "",
 	coverage: [],
 	current: {},
+	deliveryInfo: [],
 	deliveryType: '',
+	dependantInfo: {},
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
-	deliveryInfo: [],
 	selectHomeForm: {
 		piso: '',
 		depto: '',
@@ -39,6 +40,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
 		case "SET_DELIVERY_COVERAGE":
 			return {...state, coverage: payload}
+		case "SET_DEPENDANT_INFO":
+			return {...state, dependantInfo: payload}
 		default:
 			return state;
 	}
