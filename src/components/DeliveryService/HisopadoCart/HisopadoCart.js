@@ -24,7 +24,8 @@ const HisopadoCart = (props) => {
          let all_services = []
           res.forEach(services => {
             // setFirstPatient(services.data().destination);
-            all_services.push(services.data())
+            let document = {...services.data(), id: services.id}
+            all_services.push(document)
           })
           dispatch({type: 'SET_DELIVERY_ALL', payload: all_services})
       })
@@ -36,27 +37,27 @@ const HisopadoCart = (props) => {
   }, [params])
 
   useEffect(() => {
-    if(items.length) {
-      setPrice(Number(params.price) * items.length);
+    if(deliveryInfo.length) {
+      setPrice(Number(params.price) * deliveryInfo.length);
     }
-  }, [items])
+  }, [deliveryInfo, params.price])
 
-  const setFirstPatient = (info) => {
-    setItems([...items, {
-      title: patient.fullname,
-      fullname: patient.fullname,
-      dni: patient.dni,
-      ws: patient.ws,
-      dob: patient.dob,
-      sex: patient.sex,
-      address: info.user_address || selectHomeForm.address,
-      piso: info.user_floor || selectHomeForm.piso,
-      depto: info.user_number || selectHomeForm.depto,
-      lat: info.user_lat || selectHomeForm.lat,
-      lng: info.user_lon || selectHomeForm.lng,
-      isOpen: false
-    }])
-  }
+  // const setFirstPatient = (info) => {
+  //   setItems([...items, {
+  //     title: patient.fullname,
+  //     fullname: patient.fullname,
+  //     dni: patient.dni,
+  //     ws: patient.ws,
+  //     dob: patient.dob,
+  //     sex: patient.sex,
+  //     address: info.user_address || selectHomeForm.address,
+  //     piso: info.user_floor || selectHomeForm.piso,
+  //     depto: info.user_number || selectHomeForm.depto,
+  //     lat: info.user_lat || selectHomeForm.lat,
+  //     lng: info.user_lon || selectHomeForm.lng,
+  //     isOpen: false
+  //   }])
+  // }
 
   const handleAddHisopado = () => {
     setItems([...items, {
@@ -84,7 +85,7 @@ const HisopadoCart = (props) => {
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <span>4 horas.</span></p>
             {
-              items.length > 0 ? 
+              deliveryInfo.length > 0 ? 
               <p className="HisopadoCart__text">Datos del usuario</p> :
               <div className="HisopadosCart__empty">
                 <h2>Carrito vacío</h2>
@@ -95,7 +96,7 @@ const HisopadoCart = (props) => {
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
               {deliveryInfo?.map((item, index) => (
-                <HisopadoCartItem key={index} patient={item} id={index} />
+                <HisopadoCartItem key={index} patient={item} />
               ))}
             </div>
 

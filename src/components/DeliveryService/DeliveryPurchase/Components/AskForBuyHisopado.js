@@ -42,7 +42,7 @@ export default function AskForBuyHisopado() {
                     dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
                 }
             })
-            dispatch({type: 'SET_DELIVERY', payload: deliveryInfo})
+            dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
         })
     }
 
