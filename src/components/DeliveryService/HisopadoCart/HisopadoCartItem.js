@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const HisopadoCartItem = ({patient, id}) => {
     const { dni } = useSelector(store => store.queries.patient);
+    const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [data, setData] = useState({
         title: patient.title,
@@ -15,12 +16,22 @@ const HisopadoCartItem = ({patient, id}) => {
         dob: patient.dob,
         sex: patient.sex,
         obs: '',
-        address: patient.address,
-        piso: patient.piso,
-        depto: patient.depto
+        address: patient.address || address,
+        piso: patient.piso || piso,
+        depto: patient.depto || depto,
     });
 
     const handleConfirm = () => {
+        if(!localStorage.getItem("hisopadosPatients")) {
+            const arr_patients = [];
+            arr_patients.push(data);
+            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
+        } else {
+            const arr_patients = JSON.parse(localStorage.getItem("hisopadosPatients"))
+            arr_patients.push(data);
+            localStorage.setItem('hisopadosPatients', JSON.stringify(arr_patients));
+        }
+
         let sendData = {
             dni,
             service: 'HISOPADO',
@@ -36,7 +47,8 @@ const HisopadoCartItem = ({patient, id}) => {
                 user_address: data.address,
                 user_floor: data.piso,
                 user_number: data.depto,
-
+                // user_lat: lat,
+                // user_lon: lng
             }
         }
           
