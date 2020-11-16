@@ -74,7 +74,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan de lunes a viernes de 10hs a 18hs.
+                            Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
                     <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>
@@ -107,7 +107,7 @@ export default function AskForBuyHisopado() {
                         <ul>
                             <li>• No lo cubren las obras sociales</li>
                             <li>• No emite certificado oficial</li>
-                            <li>• Sólo en determinados destinos tiene validez para viajar</li>
+                            <li>• Consulte con su destino la validez del test rápido para viajar</li>
                             <li>• Si compras fuera de nuestro horario de atención, el hisopado se realizará cuando reanudemos la atención.</li>
                         </ul>
                     </div>
