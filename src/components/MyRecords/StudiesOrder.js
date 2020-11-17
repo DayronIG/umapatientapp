@@ -7,45 +7,45 @@ class OrderPDF extends React.Component {
     render() {
         const { patient, doctorInfo, mr } = this.props
         return (
-            <div className='orderToPrint'>
-                <div className='orderToPrint__container'>
-                    <img src={UMA_LOGO} className='orderToPrint__container--logo' alt='' />
-                </div>
-                <div className='orderToPrint__container'>
-                    <h1 className='orderToPrint__container--title'>Órdenes de estudio</h1>
-                </div>
-                <div className='orderToPrint__container'>
-                    <ul className='orderToPrint__container--list'>
-                        <li>Nombre completo: {patient && patient.fullname}</li>
-                        {patient && patient.obra_social && <li>Obra Social: {patient.obra_social}</li>}
-                        {patient && patient.n_afiliado && <li>Número de afiliado: {patient.n_afiliado}</li>}
-                        {mr && mr.dt_cierre && <li>Fecha: {mr.dt_cierre.split(' ')[0]}</li>}
-                        {mr && mr.diagnostico && <li>Diagnóstico: {mr.diagnostico} </li>}
-                    </ul>
-                </div>
-                <div className="orderToPrint__container mt-5">
-                    <h2>Estudios:</h2>
-                    <ul className="orderToPrint__container--list mt-2">
-                        {mr.ordenes.map((item, index) => <li key={index}>{item.nombre}</li>)}
-                    </ul>
-                </div>
-                <div className='orderToPrint__bottomContainer'>
-                    <h6 className='orderToPrint__bottomContainer--doctorData'>
-                        Médico: {doctorInfo && doctorInfo.fullname}
-                    </h6>
-                    <h6 className='orderToPrint__bottomContainer--doctorData'>
-                        Matrícula número: {doctorInfo && doctorInfo.matricula}
-                    </h6>
-                    {doctorInfo.signature && doctorInfo.signature !== "" &&
-                        <div className='orderToPrint__bottomContainer--firm'>
-                            <img src={doctorInfo.signature} alt='' />
-                        </div>}
-                    <div className='orderToPrint__bottomContainer--mail mt-2'>
-                        info@uma-health.com <br/>
-												ORDEN DE ESTUDIOS DE EMERGENCIA COVID-19
-                    </div>
-                </div>
-            </div>
+					<div className='orderToPrint'>
+							<div className='orderToPrint__container'>
+									<img src={UMA_LOGO} className='orderToPrint__container--logo' alt='' />
+							</div>
+							<div className='orderToPrint__container'>
+									<h1 className='orderToPrint__container--title'>Órdenes de estudio</h1>
+							</div>
+							<div className='orderToPrint__container'>
+									<ul className='orderToPrint__container--list'>
+											<li>Nombre completo: {patient && patient.fullname}</li>
+											{patient && patient.obra_social && <li>Obra Social: {patient.obra_social}</li>}
+											{patient && patient.n_afiliado && <li>Número de afiliado: {patient.n_afiliado}</li>}
+											{mr && mr.dt_cierre && <li>Fecha: {mr.dt_cierre.split(' ')[0]}</li>}
+											{mr && mr.diagnostico && <li>Diagnóstico: {mr.diagnostico} </li>}
+									</ul>
+							</div>
+							<div className="orderToPrint__container mt-5">
+									<h2>Estudios:</h2>
+									<ul className="orderToPrint__container--list mt-2">
+											{mr.ordenes.map((item, index) => <li key={index}>{item.nombre}</li>)}
+									</ul>
+							</div>
+							<div className='orderToPrint__bottomContainer'>
+									<h6 className='orderToPrint__bottomContainer--doctorData'>
+											Médico: {doctorInfo && doctorInfo.fullname}
+									</h6>
+									<h6 className='orderToPrint__bottomContainer--doctorData'>
+											Matrícula número: {doctorInfo && doctorInfo.matricula}
+									</h6>
+									{doctorInfo.signature && doctorInfo.signature !== "" &&
+											<div className='orderToPrint__bottomContainer--firm'>
+													<img src={doctorInfo.signature} alt='' />
+											</div>}
+									<div className='orderToPrint__bottomContainer--mail mt-2'>
+											info@uma-health.com <br/>
+											ORDEN DE ESTUDIOS DE EMERGENCIA COVID-19
+									</div>
+							</div>
+					</div>
         )
     }
 }
