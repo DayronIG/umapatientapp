@@ -12,6 +12,11 @@
     background: $white-color;
     display: flex;
     align-items: center;
+    .arrow__icon{
+        font-size: 1.2rem;
+        margin-left: 2vw;
+        color: $uma-text-secondary;
+    }
     .nursedata__picname{
         display: flex;
         flex-direction: row;
@@ -27,6 +32,7 @@
             flex-direction: column;
             justify-content: center;
             height: 4vh;
+            width: 40vw;
             p{
                 margin: 0;
                 margin-left: 2vw;
@@ -38,7 +44,7 @@
         }
     }
     .icons__container{
-        width: 60vw;
+        width: 30vw;
         height: 10vh;
         display: flex;
         align-items: center;

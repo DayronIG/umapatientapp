@@ -1,8 +1,10 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
+import {useSelector} from "react-redux"
+import { useParams, useHistory } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPaperclip, faCommentAlt, faLocationArrow, faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 import './bubbleChatComponent.scss';
-import { FaUserNurse } from "react-icons/fa"
+import { FaUserNurse, FaArrowLeft } from "react-icons/fa"
 import { BsChatFill } from "react-icons/bs"
 
 const BubbleChat = ({ 
@@ -15,6 +17,12 @@ const BubbleChat = ({
     const [chatWindow, setChatWindow] = useState({ state: true, open: true });
     const [handlerInputChange, setChangeInputChange] = useState('');
     const chatScrollRef = useRef();
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const { fullname_nurse, cuit_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.delivery) || {fullname_nurse: "Profesional", cuit_nurse: "-"};
+    const {patient} = useSelector(state => state.queries) 
+	const {incidente_id} = useParams()
+	const docId = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]?.docId) || incidente_id
+    const history = useHistory();
 
     const chatContent = useMemo(() => (
         <>
@@ -26,9 +34,9 @@ const BubbleChat = ({
                                 <div className='messageContainer me'>
                                     <div className="messageMeContainer">
                                         {data.text.includes('http') ? (
-																					<a href={data.text}>{data.text}</a>
+                                            <a href={data.text}>{data.text}</a>
                                         ) : (
-																					<span>{data.text}</span>
+                                            <span>{data.text}</span>
                                         )}
                                     </div>
                                 </div>
@@ -79,24 +87,6 @@ const BubbleChat = ({
         setChangeInputChange('')
     }
 
-    const openChat = (e) => {
-        e.stopPropagation();
-        notification.setNot(0);
-        if (chatWindow.state === false) {
-            setChatWindow({ state: true, open: false })
-            setTimeout(() => (
-                setChatWindow({ state: true, open: true })
-            ), 500)
-        } else {
-            setChatWindow({ state: true, open: false })
-            setTimeout(() => (
-                setChatWindow({ state: false, open: false })
-            ), 500)
-        }
-    }
-
-
-
     const bubbleChatComponent = () => {
         return (
             <div className={`componentWrapper no-cursor ${!bubble && 'notBubbleChat'} ${"patient" !== 'uma-admin' && 'notSelector'}`}>
@@ -113,15 +103,18 @@ const BubbleChat = ({
                             )}
                         </div> */}
                         <div className="nursedata__container">
+                            <div className="arrow__icon" onClick={()=>history.push(`/delivery/progress/${patient.ws}/${docId}/`)}>
+                            <FaArrowLeft />
+                            </div>
                             <div className="nursedata__picname" >
                                 <FaUserNurse className="nurse__icon" />
                             <div className="data__container">
-                                <p><b>{"CARLOS"}</b></p>
-                                <p className="cuit">CUIT {"123"}</p>
+                                <p><b>{fullname_nurse}</b></p>
+                                <p className="cuit">CUIT {cuit_nurse}</p>
                             </div>
 					    </div>
 					    <div className="icons__container">
-						    <p className="chat__icon" onClick={()=>openChat()}>
+						    <p className="chat__icon">
 							    <BsChatFill/>
 						    </p>
 					    </div>
@@ -150,8 +143,6 @@ const BubbleChat = ({
                 )}
                 <div className="bubbleContainer">
                     <div className={` bubble ${notification.not && bubble && !chatWindow.open && 'notificationBubble'}`}>
-                        {!bubble && <small className={`${notification.not && !bubble && !chatWindow.open && 'notification'} ${chatWindow.state && 'disable'}`} onClick={openChat}>Habla con soporte</small>}
-                        <FontAwesomeIcon className={`${notification.not && !bubble && !chatWindow.open && 'notification'}`} onClick={openChat} icon={faCommentAlt} />
                         {bubble && (
                             <div className="moveItem">
                                 <strong><FontAwesomeIcon className='cursor' icon={faArrowsAlt} /></strong>

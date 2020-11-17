@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import DeliveryProgressBar from './DeliveryProgressBar';
 import {user_feedback, config} from '../../config/endpoints';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -83,7 +83,7 @@ function DeliveryResume({ duration, active }) {
 	}
 
 	const openChat = () => {
-		console.log("OPEN")
+		history.push(`/hisopado/deliveryChat/${ws}/${docId}`);
 	}
 
 
@@ -121,8 +121,8 @@ function DeliveryResume({ duration, active }) {
 					<div className="nursedata__picname" >
 						<FaUserNurse className="nurse__icon" />
 						<div className="data__container">
-							<p><b>{fullname_nurse}</b></p>
-							<p className="cuit">CUIT {cuit_nurse}</p>
+							<p><b>{fullname_nurse ? fullname_nurse: "Profesional"}</b></p>
+							<p className="cuit">CUIT {cuit_nurse? cuit_nurse: "-"}</p>
 						</div>
 					</div>
 					<div className="icons__container">
