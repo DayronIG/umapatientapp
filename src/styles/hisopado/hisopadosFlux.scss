@@ -4,6 +4,14 @@
 	position: fixed;
 }
 
+.delivery-list-tracker{
+    min-height:100vh;
+    .back-button{
+        position: absolute;
+        top: 0px;
+    }
+}
+
 .hisopados-flux{
     display: flex;
     align-items: center;
@@ -257,7 +265,6 @@
             font-size: 1.7rem !important;
         }
     }
-
     .results-menu-map-item{
         width: 90vw;
         height: 10vh;
@@ -269,6 +276,10 @@
         align-items: center;
         justify-content: space-between;
         padding: 5vw;
+        p{
+            margin: 0;
+            text-align: left;
+        }
         .icon{
             color: $uma-primary;
             font-size: 1.5rem;
@@ -279,6 +290,23 @@
             font-size: 1.2rem;
             
         }
+        .item_address{
+            font-weight: bold;
+        }
+        .item_status{
+            color: $uma-primary;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .item_time{
+            font-size: 1rem;
+        }
+        .clock_icon{
+            margin-right: 2vw;
+        }
+    }
+    .fit_content_item{
+        height: fit-content;
     }
 
     .hisopados-button {
@@ -478,4 +506,13 @@ display: none;
             margin-bottom: 0.4rem;
         }
     }
+}
+
+.blue-text{
+    color: $uma-primary;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+    font-weight: 800;
+    font-size: $uma-font-size-regular;
+    line-height: 25px;
 }

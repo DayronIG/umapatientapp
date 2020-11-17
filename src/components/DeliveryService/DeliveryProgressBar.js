@@ -5,7 +5,8 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 export default function DeliveryProgressBar({ percent }) {
 	const [qty, setQty] = useState(20);
-	const { fullname_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[0]?.delivery);
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const { fullname_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.delivery);
 
 	useEffect(() => {
 		switch(percent) {

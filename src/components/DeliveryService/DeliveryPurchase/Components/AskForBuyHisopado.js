@@ -30,14 +30,19 @@ export default function AskForBuyHisopado() {
 
     const getCurrentService = () => {
         db.firestore().collection('events/requests/delivery')
-        .where('patient.dni', '==', patient.dni)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
+        .where('patient.uid', '==', patient.core_id)
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
         .get()
         .then(res => {
+            let deliveryInfo = []
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
-                dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                deliveryInfo.push(document)
+                if(document.status.includes("FREE")) {
+                    dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                }
             })
+            dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
         })
     }
 
@@ -48,6 +53,7 @@ export default function AskForBuyHisopado() {
         if(!current?.status) {
             let data = {
                 dni: patient.dni,
+                dependant: false,
                 service: 'HISOPADO'
             }
             await axios.post(create_delivery, data, config)

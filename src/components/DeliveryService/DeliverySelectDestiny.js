@@ -13,10 +13,10 @@ import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
+import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
-import { type } from 'jquery';
 
-const DeliverySelectDestiny = () => {
+const DeliverySelectDestiny = ({isModal=false}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -25,7 +25,7 @@ const DeliverySelectDestiny = () => {
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const { patient } = useSelector(state => state.queries);
 	const { loading } = useSelector(state => state.front);
-	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: patient?.piso || '',
 		depto: patient?.depto || '',
@@ -35,6 +35,7 @@ const DeliverySelectDestiny = () => {
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
+	const history = useHistory()
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
@@ -59,7 +60,7 @@ const DeliverySelectDestiny = () => {
 				  });
 
 				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
-				  
+
 				let resultPath;
 				setTimeout(()=>{
 					resultPath = mapApi.geometry?.poly.containsLocation(
@@ -67,7 +68,7 @@ const DeliverySelectDestiny = () => {
 						coverage
 					)
 					dispatch(handleAddressValidForHisopado(resultPath))
-				}, 1000)
+				}, 500)
 
             }
 			fetchData();
@@ -97,7 +98,7 @@ const DeliverySelectDestiny = () => {
                 setUserGeoguessedAddress(apiData.results[0].formatted_address)
             })
 			handleForm(currentPositionHandler(pos), true)}, errorHandler);
-	
+
 	};
 
 	const handleForm = (event, isCoords = false) => {
@@ -145,6 +146,7 @@ const DeliverySelectDestiny = () => {
 		}
 		dispatch({ type: 'LOADING', payload: true });
 		dispatch(handleDeliveryForm(formState));
+		if(!isModal){
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 		const data = { newValues: formState };
 		const data2 = {
@@ -157,7 +159,7 @@ const DeliverySelectDestiny = () => {
 			'lon': formState.lng,
 			'floor': `${formState.piso}`,
 			'number': `${formState.depto}`,
-			'incidente_id': current?.id,
+			'incidente_id': deliveryInfo?.[0]?.id || current.id,
 			'range': isAddressValidForHisopado || false
 		};
 		try {
@@ -173,14 +175,21 @@ const DeliverySelectDestiny = () => {
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
-			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		} else {
+			e.preventDefault();
+			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
+			dispatch({ type: 'LOADING', payload: false });
+		}
+		// history.push(`/hisopado/carrito/${ws}`)
 	};
 
 
 	return (
-		<form className='selectDestiny' onSubmit={handleSubmit}>
+		<div className="container-map-component">
+		{/* <MobileModal hideTitle hideCloseButton surveyHisopados noScroll> */}
+		<form className={`${isModal? "modalMap": "selectDestiny "}`} onSubmit={handleSubmit}>
 			{loading && <Loader />}
-
 			<div className='selectDestiny__container map'>
 				<GoogleMapReact
 					{...mapConfig(
@@ -226,10 +235,12 @@ const DeliverySelectDestiny = () => {
 			</div>
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
-                Enviar
+                Seleccionar
             </div>
 			</div>
 		</form>
+		{/* </MobileModal> */}
+		</div>
 	);
 };
 
