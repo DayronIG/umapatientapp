@@ -1,0 +1,264 @@
+@import "../../../../styles/global/Vars.scss";
+
+.componentWrapper{
+    z-index: 1105;
+    max-width: 500px;  
+    .chatWindowContainer{
+        height: 100vh;
+        margin-right: 60px;
+        width: 100vw; 
+        overflow-y: auto;
+        transition: max-height ease-in-out 0.2s;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+        // &.open{            
+        //     box-shadow: 0px 0px 5px 1px rgba(122, 122, 122, 0.75);
+        //     margin-bottom: 20px;
+        //     transition: max-height ease-in-out 0.2s;
+        // }
+        .messagesContainer{
+            max-height: calc(100vh - 113px - 54px);
+            height: 100vh;
+            overflow-y: auto;            
+            padding: 0px 7px;
+            background-color: $white-color;
+            &::-webkit-scrollbar{
+                width: 5px;
+            }
+            .messageContainer{
+                margin: 10px 0;
+                width: 100%;
+                padding: 5px;               
+                &.me{
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                .messageMeContainer{
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                    background-color: $uma-primary;
+                    padding: 0.8rem 1rem;
+                    border-radius: 1rem;
+                    color: $white-color;
+                    font-size: 1rem;
+                    width: 50%;
+                }
+                .messageThemContainer{
+                    display: flex;
+                    flex-wrap: wrap;                                        
+                    max-width: 75%;
+                    width: auto;
+                    overflow-wrap: anywhere;
+                    flex-direction: column;                    
+                    .answerContainer{
+                        background-color: #f9f7ff;
+                        color: rgb(160, 159, 159);
+                        padding: 20px;
+                        border-radius: 10px;
+                        border: 2px solid rgb(218, 224, 241);
+                        margin-bottom: -15px;
+                        max-width: 95%;
+                       width: fit-content;
+                    }
+                    .conversation{
+                        padding: 20px;
+                        width: fit-content;                        
+                        background-color: #91b3fd;
+                        color: #ffffff;
+                        border-radius: 10px;
+                        box-shadow: 0px 5px 6px -5px rgba(133,133,133,1);
+
+                    }
+                }
+            }
+        }
+        .bottomContainer{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: $white-color;
+            width: 90%;
+            margin: auto;
+            padding: 0 0.5rem;
+            box-shadow: 0px 4px 11px 3px rgba(199, 199, 199, 0.4);
+            border-radius: 0.5rem;
+
+            input{
+                width: 78%;                
+                height: 40px;
+                border: none;
+                text-align: start;
+                outline: none;
+            }
+            .optionsContainer{
+                
+                svg {
+                    font-size: 1.5rem;
+                    color: $uma-primary;
+                }
+                // .labelFile{
+                //     display: flex;
+                //     justify-content: center;
+                //     align-items: center;
+                //     cursor: pointer;
+                //     margin: 0;
+                //     color: #686868;
+                //     width: 50%;
+                //     height: 40px;
+                //     border-radius: 6px;
+                //     &:hover{
+                //         background-color:#dadada ;
+                //     }
+                // }
+                // .inputFile{
+                //     display: none;
+                // }                
+            }
+        }
+    }
+    .bubbleContainer{
+        width: 100%;
+        font-size: 30px;
+        color: #ffffff;
+        justify-content: flex-end;
+        align-items: center;
+        display: flex;        
+        padding: 50px;
+        padding-top: 0;
+        &:hover{
+            .bubble{
+                .moveItem{
+                    display: flex;
+                }
+            }
+        }
+        .bubble{
+            position: relative;
+            cursor: pointer;                   
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            width: 60px;
+            height: 60px;
+            background-color: royalblue;
+            border-radius: 100%;      
+            &.notificationBubble{
+                animation-name: parpadeoBubble;
+                animation-duration: 2.5s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+
+                -webkit-animation-name:parpadeoBubble;
+                -webkit-animation-duration: 2.5s;
+                -webkit-animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+
+                @-moz-keyframes parpadeoBubble{  
+                0% { opacity: 1.0; }
+                50% { background-color:rgb(53, 180, 223) }
+                100% { opacity: 1.0; }
+                }
+
+                @-webkit-keyframes parpadeoBubble {  
+                0% { opacity: 1.0; }
+                50% { background-color: rgb(53, 180, 223) }
+                100% { opacity: 1.0; }
+                }
+
+                @keyframes parpadeoBubble {  
+                0% { opacity: 1.0; }
+                50% { background-color: rgb(53, 180, 223) }
+                100% { opacity: 1.0; }
+                }
+
+            }         
+            span{
+                margin: 0px 18px;
+                width: 100%;
+                height: 100%;
+                padding: 15px;
+                
+            }      
+                                    
+            .moveItem{
+                display: none;
+                position: absolute;
+                cursor: pointer;
+                top: 60px;
+                left: 46px;
+                color: rgb(105, 105, 105);
+                background-color: rgb(224, 224, 224);
+                padding: 2px 5px;
+                border-radius: 100%;
+                font-size: 20px;                                          
+            }     
+        }
+    }
+    &.notBubbleChat{                
+        top: 20px;
+        right: 350px;
+        &.notSelector{
+            right: 100px;
+        }    
+        height: 5%;    
+        .headerContainer{
+            background-color: transparent;           
+            height: 60px;
+        }
+        .bubbleContainer{
+            font-size: 25px;
+            padding: 0;
+            .bubble{
+                width: auto;
+                height: auto;
+                background-color: transparent;
+                .notification{
+                    animation-name: parpadeo;
+                    animation-duration: 2s;
+                    animation-timing-function: linear;
+                    animation-iteration-count: infinite;
+                    -webkit-animation-name:parpadeo;
+                    -webkit-animation-duration: 2s;
+                    -webkit-animation-timing-function: linear;
+                    -webkit-animation-iteration-count: infinite;
+
+                    @-moz-keyframes parpadeo{  
+                    0% { opacity: 1.0; }
+                    50% { opacity: 0.0;}
+                    100% { opacity: 1.0; }
+                    }
+
+                    @-webkit-keyframes parpadeo {  
+                    0% { opacity: 1.0; }
+                    50% { opacity: 0.0;}
+                    100% { opacity: 1.0; }
+                    }
+
+                    @keyframes parpadeo {  
+                    0% { opacity: 1.0; }
+                    50% { opacity: 0.0;}
+                    100% { opacity: 1.0; }
+                    }
+                }                      
+                small{
+                    width: 160px;
+                    font-size: 1rem;
+                    transition: all ease-in-out 0.4s;  
+                    margin-bottom: 3px;
+                    margin-right: 5px;                  
+                    &.disable{                        
+                        transform: translateX(-11em);
+                        margin-right: 0px;
+                        transition: all ease-in-out 0.4s;
+                    }
+                }
+            }
+        }
+        .chatWindowContainer{
+            position: absolute;
+            bottom: 0vh;
+        }
+    }
+}

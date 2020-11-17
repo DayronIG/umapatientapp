@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import DeliveryProgressBarVertical from './DeliveryProgressBarVertical';
 import DeliveryProgressBarHorizontal from './DeliveryProgressBarHorizontal';
+import { useHistory, useParams } from 'react-router-dom';
 import {user_feedback, config} from '../../config/endpoints';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -10,8 +10,8 @@ import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
 import axios from 'axios';
-import { FaBriefcaseMedical, FaAmbulance, FaFileAlt } from 'react-icons/fa';
-import { BsFillHouseDoorFill } from 'react-icons/bs';
+import { FaBriefcaseMedical, FaAmbulance, FaFileAlt, FaUserNurse } from 'react-icons/fa';
+import { BsFillHouseDoorFill, BsChatFill } from 'react-icons/bs';
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
@@ -55,6 +55,7 @@ function DeliveryResume({ duration, active }) {
 			active: 0
 		}
 	])
+	const { fullname_nurse, cuit_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.delivery);
 
 	useEffect(() => {
 		if(!toggle) {
@@ -147,6 +148,9 @@ function DeliveryResume({ duration, active }) {
 			break;
 		}
 	}, [active])
+	const openChat = () => {
+		history.push(`/hisopado/deliveryChat/${ws}/${docId}`);
+	}
 
 
 	return (
@@ -191,6 +195,23 @@ function DeliveryResume({ duration, active }) {
 							</button>
 						</>
 					}
+				</div>
+
+				<div className="nursedata__container">
+					<div className="nursedata__picname">
+						<span className="nurse__icon">
+							<FaUserNurse />
+						</span>
+						<div className="data__container">
+							<p className="profesional">{fullname_nurse ? fullname_nurse: "Profesional"}</p>
+							<p className="cuit">CUIT {cuit_nurse? cuit_nurse: "-"}</p>
+						</div>
+					</div>
+					<div className="icons__container">
+						<p className="chat__icon" onClick={()=>openChat()}>
+							<BsChatFill/>
+						</p>
+					</div>
 				</div>
 
 				<article className="tracking__indications">
