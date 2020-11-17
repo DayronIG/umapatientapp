@@ -34,7 +34,8 @@ function AuthProvider({ children }) {
 			let filters =  [{field: 'status', value: ["PREASSIGN", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.uid', value: userAuth.core_id, comparator: '=='}]
 			await snapDocumentsByFilter('events/requests/delivery', filters, (data) => {
 				dispatch({type: 'CLEAN_DELIVERY', payload: "CLEAN"})
-				dispatch({type: 'SET_DELIVERY', payload: data})})
+				console.log(data)
+				dispatch({type: 'SET_DELIVERY_ALL', payload: data})})
 		}
     }
 

@@ -75,25 +75,26 @@ export async function snapDocumentsByFilter(route, filters, action = (data) => c
 	  {field: 'domain', value: 'onboarding', comparator: '=='}
 	]
    */
-	let result = [];
 	try {
 		let ref = await firestore.collection(route);
 		await filters.forEach((filter) => {
 			ref = ref.where(filter.field, filter.comparator, filter.value);
 		});
 		if (limit !== false) ref.limit(limit)
-		ref.onSnapshot((snapshot) => {
+		ref.onSnapshot(async (snapshot) => {
+			console.log("Esto")
+			let result = [];
 			snapshot.forEach((doc) => {
-				let document = doc.data();
-				action(document)
-				document.docId = doc.id;
+				let document = {...doc.data(), docId: doc.id};
 				result.push(document);
+				console.log(result)
+				return result
 			});
+			if (!postFilters) action(result);
 		})
 	} catch (err) {
 		console.error('errror', err);
 	}
-	if (!postFilters) return result;
 	/* else {
 		console.log("CAYO AL ELSE")
 		return filter(result, postFilters)

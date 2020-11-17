@@ -60,18 +60,28 @@ const HisopadoCart = (props) => {
   // }
 
   const handleAddHisopado = () => {
-    setItems([...items, {
-      title: 'Completar información',
-      fullname: '',
-      dni: '',
-      ws: '',
-      dob: '',
-      sex: '',
-      address: '',
-      piso: '',
-      depto: '',
+    dispatch({type: 'SET_DELIVERY', payload: {
+      patient: {
+        title: 'Completar información',
+        user: '',
+        dni: '',
+        ws: '',
+        dob: '',
+        sex: '',
+        address: '',
+        piso: '',
+        depto: '',
+      },
+      destination: {
+        user_address: '',
+        user_floor: '',
+        user_number: '',
+        user_lat: '',
+        user_lon: ''
+      },
       isOpen: true
-    }])
+      }
+    })
   }
 
   return(

@@ -16,7 +16,7 @@ const HisopadoCartItem = ({patient}) => {
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
     const [data, setData] = useState({
-        title: patient.patient.user,
+        title: patient.patient.title || patient.patient.user,
         fullname: patient.patient.user,
         dni: patient.patient.dni,
         ws: patient.patient.ws,
