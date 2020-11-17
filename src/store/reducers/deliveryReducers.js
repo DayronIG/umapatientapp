@@ -3,12 +3,14 @@ import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LON
 const initialState = {
 	addressLatLongHisopado: "",
 	coverage: [],
-	current: "",
+	current: {},
+	currentHisopadoIndex: 0,
+	deliveryInfo: [],
 	deliveryType: '',
+	dependantInfo: {},
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
-	deliveryInfo: {},
 	selectHomeForm: {
 		piso: '',
 		depto: '',
@@ -36,9 +38,19 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_DELIVERY_CURRENT":
 			return { ...state, current: payload}
 		case "SET_DELIVERY":
-			return { ...state, deliveryInfo: payload}
+			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
+		case "REMOVE_DELIVERY":
+			return { ...state, deliveryInfo: state.deliveryInfo.splice(payload, 1) }
+		case "SET_DELIVERY_ALL":
+			return { ...state, deliveryInfo: [...payload]}
+		case "CLEAN_DELIVERY":
+			return {...state, deliveryInfo: []}
 		case "SET_DELIVERY_COVERAGE":
 			return {...state, coverage: payload}
+		case "SET_DEPENDANT_INFO":
+			return {...state, dependantInfo: payload}
+		case "SET_HISOPADO_INDEX":
+			return {...state, currentHisopadoIndex: payload}
 		default:
 			return state;
 	}

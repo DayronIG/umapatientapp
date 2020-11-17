@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { GenericHeader } from '../GeneralComponents/Headers';
+import {BackButton} from "../GeneralComponents/Headers"
 import PackageOnTheWay from './PackageOnTheWay';
 import Loading from '../GeneralComponents/Loading';
 import NotService from './NotService';
@@ -8,7 +10,10 @@ import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Componen
 import '../../styles/deliveryService/trackProgress.scss';
 
 const DeliveryTrackProgress = () => {
-	const { status } = useSelector(state => state.deliveryService.deliveryInfo[0]) || "NOT:SERVICE";
+	const history = useHistory();
+	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const {patient} = useSelector(state => state.queries)
+	const { status } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]) || "NOT:SERVICE";
 	const { loading } = useSelector(state => state.front);
 
 	const renderComponentByTrackProgress = (step) => {
@@ -27,7 +32,9 @@ const DeliveryTrackProgress = () => {
 
 	return (
 		<div className="trackProgress">
-			<GenericHeader children="Hisopado" />
+			<div className="back-button">
+				<BackButton inlineButton={true} customTarget={patient.ws} action={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
+			</div>
 			<section className='trackProgress__container'>
 				{loading && <Loading />}
 				<div className='trackProgress__content'>

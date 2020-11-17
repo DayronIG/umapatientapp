@@ -56,7 +56,11 @@ import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
-import DeliveryResults from "./components/DeliveryService/DeliveryResults"
+import DeliveryResults from "./components/DeliveryService/DeliveryResults";
+import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
+import WhoScreenHisopados from './components/DeliveryService/WhoScreenHisopados/WhoScreenHisopados'
+import ForOtherHisopados from './components/DeliveryService/WhoScreenHisopados/ForOtherHisopados';
+import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart'
 import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
@@ -66,6 +70,7 @@ import Install from './views/Install.js';
 import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
+import Payment from "./components/Payment"
 
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 
@@ -139,9 +144,36 @@ function App(props) {
 				{/* Patient tracking */}
 				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
-				<PrivateRoute exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
-				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
+				<PrivateRoute
+					exact
+					path='/hisopado/listTracker/:ws?'
+					component={DeliveryListTracker}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/:ws?'
+					component={DeliveryPurchase}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/carrito/:ws?'
+					component={HisopadoCart}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/cobertura/:ws?'
+					component={DeliveryCoverage}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopadoResult/:ws?'
+					component={DeliveryResults}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/payment/:ws?'
+					component={Payment}
+				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />

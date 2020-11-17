@@ -2,10 +2,11 @@
 @import '../index.scss';
 
 .backButtonContainer {
+   background: $white-color;
    left: 0px;
    width: 90%;
    margin: 0 auto 0 31px;
-   padding: 5px 10px;
+   padding: 5px 10px;   
    height: 45px;
    font-size: 33px;
    position: relative;
