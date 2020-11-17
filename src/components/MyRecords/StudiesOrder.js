@@ -41,7 +41,8 @@ class OrderPDF extends React.Component {
                             <img src={doctorInfo.signature} alt='' />
                         </div>}
                     <div className='orderToPrint__bottomContainer--mail mt-2'>
-                        info@uma-health.com
+                        info@uma-health.com <br/>
+												ORDEN DE ESTUDIOS DE EMERGENCIA COVID-19
                     </div>
                 </div>
             </div>
