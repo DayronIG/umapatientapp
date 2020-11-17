@@ -230,7 +230,7 @@ const HisopadoCartItem = ({patient}) => {
 
             {
                 openModal &&
-                <MobileModal callback={()=>setOpenModal(false)} surveyHisopados noScroll>
+                <MobileModal hideTitle callback={()=>setOpenModal(false)} surveyHisopados noScroll>
                     {isAddressValid? <DeliverySelectDestiny isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{setIsAddressValid(true)}} history={history} />}
                 </MobileModal>
             }

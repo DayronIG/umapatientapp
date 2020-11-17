@@ -226,14 +226,14 @@ function DeliveryResume({ duration, active }) {
 		{
 			surveyModal &&
 			<MobileModal hideTitle hideCloseButton surveyHisopados>
-				<img src={surveyModalImg} alt="Encuesta" />
+				<h2 className="surveyQuestion__title">Completa la encuesta y descarga tu constancia</h2>
 				<div className="surveyQuestion">
 					<h3>¿Cómo evaluaría la atención de nuestro personal de salud?</h3>
 					<div className="surveyStars">
 						<StarRatings
 							rating={surveyResponse.personal}
-							starRatedColor="#A13DDF"
-							starHoverColor="#A13DDF"
+							starRatedColor="#0a6dd6"
+							starHoverColor="#0a6dd6"
 							changeRating={changePersonalRating}
 							numberOfStars={5}
 							name='personal'
@@ -246,8 +246,8 @@ function DeliveryResume({ duration, active }) {
 					<div className="surveyStars">
 						<StarRatings
 							rating={surveyResponse.app}
-							starRatedColor="#A13DDF"
-							starHoverColor="#A13DDF"
+							starRatedColor="#0a6dd6"
+							starHoverColor="#0a6dd6"
 							changeRating={changeAppRating}
 							numberOfStars={5}
 							name='app'
