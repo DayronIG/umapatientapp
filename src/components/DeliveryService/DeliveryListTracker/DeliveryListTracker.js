@@ -56,15 +56,15 @@ export default function ListTracker({finalAction}) {
                         {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
                     </div>}})}
                     
-{/*                     <div className="results-menu-map-item highlighted-color"
-                        onClick={() => history.push(`/hisopado/${patient.ws}`)}
+                    <div className="results-menu-map-item highlighted-color"
+                        onClick={() => history.push(`/hisopado/carrito/${patient.ws}`)}
                         >
                         <div>
                             <GiTransparentTubes className="icon" />
                             Comprar hisopado
                         </div>
                         <FaArrowRight className="icon-arrow" />
-                    </div> */}
+                    </div>
                 </div>
         </div>
     )

@@ -15,6 +15,7 @@ const HisopadoCartItem = ({patient}) => {
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
+    console.log(patient);
     const [data, setData] = useState({
         title: patient.patient.title || patient.patient.user,
         fullname: patient.patient.user,
@@ -216,7 +217,7 @@ const HisopadoCartItem = ({patient}) => {
                 </div>
 
                 {
-                    !patient.id && showBtn ?
+                    !patient.docId && showBtn ?
                     <>
                         <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                         <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
