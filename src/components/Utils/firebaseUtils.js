@@ -82,7 +82,6 @@ export async function snapDocumentsByFilter(route, filters, action = (data) => c
 		});
 		if (limit !== false) ref.limit(limit)
 		ref.onSnapshot(async (snapshot) => {
-			console.log("Esto")
 			let result = [];
 			snapshot.forEach((doc) => {
 				let document = {...doc.data(), docId: doc.id};
