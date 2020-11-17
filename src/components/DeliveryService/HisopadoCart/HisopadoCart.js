@@ -106,7 +106,7 @@ const HisopadoCart = (props) => {
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
               {deliveryInfo?.map((item, index) => (
-                <HisopadoCartItem key={index} patient={item} />
+                <HisopadoCartItem key={index} patient={item} index={index}/>
               ))}
             </div>
 

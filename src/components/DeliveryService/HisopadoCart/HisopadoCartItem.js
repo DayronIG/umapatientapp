@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {useHistory} from "react-router-dom"
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
@@ -8,7 +8,8 @@ import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DeliverySelectDestiny from '../DeliverySelectDestiny';
 import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
 
-const HisopadoCartItem = ({patient}) => {
+const HisopadoCartItem = ({patient, index}) => {
+    const dispatch = useDispatch()
     const { dni } = useSelector(store => store.queries.patient);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
@@ -54,7 +55,6 @@ const HisopadoCartItem = ({patient}) => {
         if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng) {
             setShowBtn(false);
             setOpenUser(false);
-    
             let sendData = {
                 dni,
                 service: 'HISOPADO',
@@ -76,12 +76,22 @@ const HisopadoCartItem = ({patient}) => {
             }
     
             let headers = { 'Content-Type': 'Application/Json' }
-    
             axios.post(create_delivery, sendData, headers)
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
         } else {
             return false;
+        }
+    }
+
+    const removeItem = () => {
+        if(patient.id && patient.id !== "") {
+            let headers = { 'Content-Type': 'Application/Json' }
+            axios.delete(`${create_delivery}/remove`, { id: patient.id }, headers)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        } else {
+            dispatch({type: 'REMOVE_DELIVERY', payload: index})
         }
     }
 
@@ -223,8 +233,7 @@ const HisopadoCartItem = ({patient}) => {
                     </> :
                     null
                 }
-                
-                <button className="HisopadoCart__btnDelete"><FaTrashAlt /></button>
+                <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
 
             {
