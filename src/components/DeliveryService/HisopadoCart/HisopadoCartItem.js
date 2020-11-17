@@ -4,6 +4,7 @@ import {useHistory} from "react-router-dom"
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from 'react-icons/fa';
 import { create_delivery } from '../../../config/endpoints';
 import axios from 'axios';
+import swal from 'sweetalert';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DeliverySelectDestiny from '../DeliverySelectDestiny';
 import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisopado"
@@ -53,6 +54,7 @@ const HisopadoCartItem = ({patient, index}) => {
 
     const handleConfirm = () => {
         if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng) {
+            console.log("GUARDAR")
             setShowBtn(false);
             setOpenUser(false);
             let sendData = {
@@ -80,6 +82,7 @@ const HisopadoCartItem = ({patient, index}) => {
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
         } else {
+            swal("Faltan completar datos", "Verifique los datos ingresados", "warning")
             return false;
         }
     }
