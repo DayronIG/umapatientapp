@@ -15,7 +15,7 @@ const HisopadoCart = (props) => {
   const [price, setPrice] = useState(params.price);
 
   useEffect(() => {
-    if(patient.dni) {
+    if(patient.core_id) {
       db.firestore().collection('events/requests/delivery')
       .where('patient.uid', '==', patient.core_id)
       .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
@@ -93,7 +93,7 @@ const HisopadoCart = (props) => {
           </div>
           <div className="HisopadoCart__header">
             <h1 className="HisopadoCart__title">Tu compra</h1>
-            <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en las próximas <span>4 horas.</span></p>
+            <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en <span>{params?.delay}.</span></p>
             {
               deliveryInfo.length > 0 ? 
               <p className="HisopadoCart__text">Datos del usuario</p> :

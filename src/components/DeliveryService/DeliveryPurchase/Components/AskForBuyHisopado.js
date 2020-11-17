@@ -80,7 +80,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan de lunes a viernes de 10hs a 18hs.
+                            Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
                     <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>

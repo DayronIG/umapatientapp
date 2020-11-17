@@ -86,7 +86,6 @@ export async function snapDocumentsByFilter(route, filters, action = (data) => c
 			snapshot.forEach((doc) => {
 				let document = {...doc.data(), docId: doc.id};
 				result.push(document);
-				console.log(result)
 				return result
 			});
 			if (!postFilters) action(result);
