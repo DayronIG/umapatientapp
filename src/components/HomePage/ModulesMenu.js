@@ -74,16 +74,16 @@ const ModulesMenu = () => {
 								iconEspecialista,
 								'Mi especialista'
 							)}
-							{/* {returnModule(
-								`/${patient.ws}/transport`,
+							{returnModule(
+								`/${patient.ws}/umacare`,
 								'umacare',
 								iconUmacare,
 								'UMA Care'
-							)} */}
+							)}
 						</div>
 					</section>
 					<EventsHistory />
-					<UmaCareHome />
+					{/* <UmaCareHome /> */}
 					{/* <TrasladosHome /> */}
 {/* 					<button className="needhelp__btn">
 						<img src={iconBubbles} alt="Necesito ayuda"/>
