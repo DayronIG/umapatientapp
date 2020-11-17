@@ -1,0 +1,95 @@
+@import '../index.scss';
+
+.ProgressHorizotal__container {
+    padding: 0 0 0.5rem 0;
+    border-bottom: 1px solid #f2f2f2;
+
+    .ProgressHorizotal__list {
+        display: flex;
+        justify-content: center;
+
+        .ProgressHorizotal__listItems {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            span {
+                line-height: 0;
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+                border: 0.15rem solid $uma-input;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.5s, border-color 0.5s;
+
+                @media (min-width: 375px) {
+                    width: 2.3rem;
+                    height: 2.3rem;
+                }
+
+                @media (min-width: 400px) {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                }
+
+                svg {
+                    font-size: 1rem;
+                    margin: 0 0.2rem;
+                    color: $uma-input;
+                    transition: color 0.5s;
+
+                    @media (min-width: 375px) {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+
+            &:nth-child(-n+3) {
+                &::after {
+                    content: '';
+                    display: block;
+                    width: 1.6rem;
+                    height: 2px;
+                    background: $uma-input;
+                    margin: 0 0.5rem;
+                    transition: background 0.5s;
+
+                    @media (min-width: 375px) {
+                        width: 1.8rem;
+                    }
+
+                    @media (min-width: 400px) {
+                        width: 2.1rem;
+                    }
+                }
+            }
+
+            &.active {
+                span {
+                    border-color: $uma-accent-color;
+                    background: $uma-accent-color;
+
+                    svg {
+                        color: $white-color;
+                    }
+                }
+
+                &::after {
+                    background: $uma-accent-color;
+                }
+            }
+
+        }
+    }
+
+    .ProgressHorizotal__message {
+        margin-top: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #000;
+        text-align: left;
+        margin-left: 5%;
+    }
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import DeliveryProgressBarVertical from './DeliveryProgressBarVertical';
+import DeliveryProgressBarHorizontal from './DeliveryProgressBarHorizontal';
 import {user_feedback, config} from '../../config/endpoints';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +10,8 @@ import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
 import axios from 'axios';
+import { FaBriefcaseMedical, FaAmbulance, FaFileAlt } from 'react-icons/fa';
+import { BsFillHouseDoorFill } from 'react-icons/bs';
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
@@ -18,6 +21,7 @@ function DeliveryResume({ duration, active }) {
 	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex].eval);
 	const [toggle, setToggle] = useState(true);
 	const [toggleIndications, setToggleIndications] = useState(false);
+	const [toggleStepper, setToggleStepper] = useState(false);
 	const [surveyModal, setSurveyModal] = useState(false);
 	const [surveyResponse, setSurveyResponse] = useState({
 		personal: 0,
@@ -25,6 +29,32 @@ function DeliveryResume({ duration, active }) {
 		comment: ''
 	})
 	const [error, setError] = useState(false);
+	const [steps, setSteps] = useState([
+		{
+			title: 'En preparación',
+			msg: "El personal de salud está preparando su equipo",
+			icon: <FaBriefcaseMedical />,
+			active: 0
+		},
+		{
+			title: 'En camino',
+			msg: "Tu profesional está en camino",
+			icon: <FaAmbulance />,
+			active: 0
+		},
+		{
+			title: 'En domicilio',
+			msg: "Tu profesional ha llegado al domicilio",
+			icon: <BsFillHouseDoorFill />,
+			active: 0
+		},
+		{
+			title: 'Resultado',
+			msg: "Ya está tu resultado",
+			icon: <FaFileAlt />,
+			active: 0
+		}
+	])
 
 	useEffect(() => {
 		if(!toggle) {
@@ -79,6 +109,45 @@ function DeliveryResume({ duration, active }) {
 			}
 	}
 
+	useEffect(() => {
+		switch(active) {
+			case 0: { 
+				let newArr = [...steps];
+				newArr[0].active = 1;
+
+				setSteps(newArr);
+			}
+			break;
+			case 1: { 
+				let newArr = [...steps];
+				newArr[0].active = 1;
+				newArr[1].active = 1;
+
+				setSteps(newArr);
+			}
+			break;
+			case 2: { 
+				let newArr = [...steps];
+				newArr[0].active = 1;
+				newArr[1].active = 1;
+				newArr[2].active = 1;
+
+				setSteps(newArr);
+			}
+			break;
+			case 3: { 
+				let newArr = [...steps];
+				newArr[0].active = 1;
+				newArr[1].active = 1;
+				newArr[2].active = 1;
+				newArr[3].active = 1;
+
+				setSteps(newArr);
+			}
+			break;
+		}
+	}, [active])
+
 
 	return (
 		<>
@@ -90,9 +159,43 @@ function DeliveryResume({ duration, active }) {
 			${active === 3 ? 'showBtn' : ''} 
 		`}>
 			<div className="stepper__containerContent">
+
+				<div 
+					className={`steppersContainer ${toggleStepper ? 'openStepper' : 'closeStepper'}`} 
+					onClick={() => setToggleStepper(!toggleStepper)}
+				>
+					<DeliveryProgressBarHorizontal steps={steps} />
+
+					{
+						active === 3 &&
+						<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
+							Ir a resultado
+						</button>
+					}
+
+					{
+						active !== 3 &&
+						<>
+							<DeliveryProgressBarVertical percent={active} />
+
+							<button className="steppersContainerCollapse">
+								{
+									!toggleStepper ?
+									<>
+										Ver más <FontAwesomeIcon icon={faChevronDown} />
+									</> :
+									<>
+										Ver menos <FontAwesomeIcon icon={faChevronUp} /> 
+									</>
+								}
+							</button>
+						</>
+					}
+				</div>
+
 				<article className="tracking__indications">
 					<button className="tracking__indicationsToggle" onClick={() => setToggleIndications(!toggleIndications)}>
-						Ver indicaciones
+						Indicaciones para esperar
 					{
 						toggleIndications ? 
 						<FontAwesomeIcon icon={faChevronUp} /> :
@@ -107,17 +210,9 @@ function DeliveryResume({ duration, active }) {
 						<li className="tracking__indicationsListItem">Mantén el ambiente ventilado.</li>
 					</ul>
 				</article>
-				
-				<DeliveryProgressBarVertical percent={active} />
-				{
-					active === 3 &&
-					<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
-						Continuar
-					</button>
-				}
 			</div>
 
-			{
+			{/* {
 				active !== 3 &&
 				<button className="stepper__toggle" onClick={() => setToggle(!toggle)}>
 					{
@@ -126,7 +221,7 @@ function DeliveryResume({ duration, active }) {
 						<FontAwesomeIcon icon={faChevronDown} />
 					}
 				</button>
-			}
+			} */}
 		</section>
 		{
 			surveyModal &&
