@@ -111,11 +111,14 @@ const HisopadoCartItem = ({patient, index}) => {
     }
 
     const removeItem = () => {
-        if(patient.id && patient.id !== "") {
+        if(patient.docId && patient.docId !== "") {
             let headers = { 'Content-Type': 'Application/Json' }
-            axios.delete(`${create_delivery}/remove`, { id: patient.id }, headers)
+            axios.post(`${create_delivery}/remove`, { id: patient.docId }, headers)
                 .then(res => console.log(res))
-                .catch(err => console.log(err))
+                .catch(err => {
+                    dispatch({type: 'REMOVE_DELIVERY', payload: index})
+                    console.log(err)
+                })
         } else {
             dispatch({type: 'REMOVE_DELIVERY', payload: index})
         }
