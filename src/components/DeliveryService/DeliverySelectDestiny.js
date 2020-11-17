@@ -92,11 +92,12 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		setGeocoder(new maps.Geocoder());
 		if (!navigator.geolocation) return null;
 		navigator.geolocation.getCurrentPosition((pos) => {
+			console.log(pos)
 			fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.coords.latitude},${pos.coords.longitude}&key=AIzaSyDLnpXWJx1qKAfHtTeYWa30b9jGH2GeXfs`)
-            .then(response => response.json())
-            .then(apiData => {
-                setUserGeoguessedAddress(apiData.results[0].formatted_address)
-            })
+				.then(response => response.json())
+				.then(apiData => {
+					setUserGeoguessedAddress(apiData.results[0].formatted_address)
+				})
 			handleForm(currentPositionHandler(pos), true)}, errorHandler);
 
 	};
@@ -125,8 +126,8 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		if (!geocoder) return null;
 		let result;
 		const latlng = {
-			lat: parseFloat(lat),
-			lng: parseFloat(lng),
+			lat: parseFloat(lat) || -31.374420,
+			lng: parseFloat(lng) || -64.132140,
 		};
 		dispatch(setAddressLatLongHisopado(latlng))
 		geocoder.geocode({ location: latlng }, (results, status) => {
@@ -171,7 +172,6 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			dispatch({ type: 'LOADING', payload: false });
 		} catch (error) {
 			dispatch({ type: 'LOADING', payload: false });
-			console.error(error.message);
 			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
 			return;
 		}
@@ -197,7 +197,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 						geocodeLatLng
 					)}
 					onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-				>
+					>
 					<Marker  {...marker} />
 				</GoogleMapReact>
 			</div>
