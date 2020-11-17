@@ -179,7 +179,7 @@ const TransportUserActive = () => {
 											<div className="contentContainer">
 												<div className="origin"><p className="originTitle">Origen:</p>
 													<p className="originContent"> {item.geo_inicio_address}</p></div>
-												<div className="destiny"><p className="destinyTitle">Origen:</p>
+												<div className="destiny"><p className="destinyTitle">Destino:</p>
 													<p className="destinyContent"> {item.geo_fin_address}</p></div>
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
@@ -284,11 +284,11 @@ const TransportUserActive = () => {
 													<button 
 														className="checkStatus" 
 														onClick={() => {
-															if (item.provider_fullname) {
+															// if (item.provider_fullname) {
 																history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
-															} else {
-																history.push('/transportNoDriver');
-															}
+															// } else {
+															// 	history.push('/transportNoDriver');
+															// }
 														}}>
 														<FaCar /> Seguir recorrido
 													</button>
@@ -336,11 +336,7 @@ const TransportUserActive = () => {
 														<p className="destinyContent">{item.geo_fin_address}</p>
 													</div>
 													<button className="checkStatus" onClick={() => {
-														if (item.provider_fullname) {
 															history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
-														} else {
-															history.push('/transportNoDriver');
-														}
 													}}>
 														<FaCar /> Seguir recorrido
 													</button>

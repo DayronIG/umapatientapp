@@ -238,8 +238,7 @@ const SignIn = props => {
                                     {sentWs === false ?
                                         <button className='btn btn-blue-lg buttonSendCode mt-5' onClick={() => sendWsCode(ws)} type='button'>
                                             Reenviar código
-																				</button> 
-																				:
+                                        </button> :
                                         <button className='btn btn-blue-lg disabled buttonSentCode' type='button'>
                                             Código enviado!
                                         </button>}
