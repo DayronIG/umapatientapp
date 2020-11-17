@@ -18,7 +18,7 @@ const HisopadoCart = (props) => {
     if(patient.dni) {
       db.firestore().collection('events/requests/delivery')
       .where('patient.uid', '==', patient.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
       .get()
       .then(res => {
          let all_services = []
