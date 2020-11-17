@@ -53,6 +53,7 @@ export default function AskForBuyHisopado() {
         if(!current?.status) {
             let data = {
                 dni: patient.dni,
+                dependant: false,
                 service: 'HISOPADO'
             }
             await axios.post(create_delivery, data, config)

@@ -37,7 +37,7 @@ export default function ListTracker({finalAction}) {
                 </div>
                 <div className="results-container">
                     <img src={hisopadosNeg} alt="hisopado_neg" className="estamos_con_vos"/>
-                    <p className="hisopados-title">Sigue tu hisopado</p>
+                    <p className="hisopados-title">Sigue tus hisopados</p>
                 </div>
                 <div className="results-menu-map-container">
                     {purchases.map((purchase, index) => {
@@ -56,7 +56,7 @@ export default function ListTracker({finalAction}) {
                         {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
                     </div>})}
                     
-                    <div className="results-menu-map-item highlighted-color"
+{/*                     <div className="results-menu-map-item highlighted-color"
                         onClick={() => history.push(`/hisopado/${patient.ws}`)}
                         >
                         <div>
@@ -64,7 +64,7 @@ export default function ListTracker({finalAction}) {
                             Comprar hisopado
                         </div>
                         <FaArrowRight className="icon-arrow" />
-                    </div>
+                    </div> */}
                 </div>
         </div>
     )

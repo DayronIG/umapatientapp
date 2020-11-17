@@ -41,30 +41,9 @@ export default function HisopadosPurchase() {
                     history={history}
                     goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
                     finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
-                // case "PAYMENT":
-                //     window.gtag('event', 'begin_checkout', {
-                //         'items': 'Hisopado Antígeno',
-                //         'currency': 'ARS',
-                //         'value': params?.price
-                //     });
-                //     return <Payment />
-                // case "END_ASSIGNATION":
-                //     window.gtag('event', 'select_content', {
-                //         'content_type': 'END_ASSIGNATION',
-                //         'item_id': 'Hisopado Antígeno',
-                //     });
-                //     history.push(`/delivery/progress/${ws}/${id}/`);
-                // break;
                 default: 
                     console.log("DEFAULT")
         }
-    //     } else {
-    //         window.gtag('event', 'select_content', {
-    //             'content_type': 'END_ASSIGNATION',
-    //             'item_id': 'Hisopado Antígeno',
-    //           });
-    //         // history.push(`/delivery/progress/${ws}/${id}/`);
-
     }
 
     const goBackButton = () => {
