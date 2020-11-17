@@ -105,6 +105,22 @@ export function calculateFirstPoint(service) {
 	}
 }
 
+export 	function calculateCenter(service = {}) {
+	console.log(service);
+	switch (service.status_tramo) {
+		case 'STANDBY':
+			return  {
+				lat: service.request?.geo_inicio.lat,
+				lng: service.request?.geo_inicio.lon,
+			};
+		default:
+			return { 
+				lat: service.current_position_remis?.lat || 0, 
+				lng: service.current_position_remis?.lon  || 0 
+			};
+	}
+}
+
 export function renderTitle(status_tramo) {
 	switch (status_tramo) {
 		case 'STANDBY':

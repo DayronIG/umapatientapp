@@ -7,13 +7,13 @@ import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
-import UmaCareHome from '../UmaCare/Home'
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
 import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 import iconTraslados from '../../assets/icons/icon-traslados.svg';
 import iconUmacare from '../../assets/icons/icon-umaCare.svg'
+// import UmaCareHome from '../UmaCare/Home';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = () => {

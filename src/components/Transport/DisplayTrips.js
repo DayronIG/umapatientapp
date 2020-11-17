@@ -79,12 +79,10 @@ const TransportUserActive = () => {
 					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
 				}
 			});
-			swal('exito!', 'viaje cancelado', 'success')
-				.then(() => {
-					setDisplayLoading(false)
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					getServices()
-				})
+			await swal('exito!', 'viaje cancelado', 'success')
+			setDisplayLoading(false)
+			dispatch({ type: 'TOGGLE_DETAIL' });
+			getServices()
 		} catch (error) {
 			console.error(error);
 		}
@@ -143,7 +141,6 @@ const TransportUserActive = () => {
 					Pendientes
 				</button>
 			</div>
-
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 &&
 				<div className='noTranslates'>
@@ -283,13 +280,7 @@ const TransportUserActive = () => {
 													</div>
 													<button 
 														className="checkStatus" 
-														onClick={() => {
-															// if (item.provider_fullname) {
-																history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
-															// } else {
-															// 	history.push('/transportNoDriver');
-															// }
-														}}>
+														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 														<FaCar /> Seguir recorrido
 													</button>
 													<button className="cancelBtn" onClick={() => displayModal(item)}>

@@ -66,7 +66,6 @@ function ScheduleTransport() {
 			} else {
 				return false;
 			}
-			
 		});
 		if(!isValid){
 			swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
