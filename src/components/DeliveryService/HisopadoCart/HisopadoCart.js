@@ -5,6 +5,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
 import db from "../../../config/DBConnection";
+import swal from 'sweetalert';
 
 const HisopadoCart = (props) => {
   const history = useHistory();
@@ -52,22 +53,16 @@ const HisopadoCart = (props) => {
     }
   }, [data, params.price])
 
-  // const setFirstPatient = (info) => {
-  //   setItems([...items, {
-  //     title: patient.fullname,
-  //     fullname: patient.fullname,
-  //     dni: patient.dni,
-  //     ws: patient.ws,
-  //     dob: patient.dob,
-  //     sex: patient.sex,
-  //     address: info.user_address || selectHomeForm.address,
-  //     piso: info.user_floor || selectHomeForm.piso,
-  //     depto: info.user_number || selectHomeForm.depto,
-  //     lat: info.user_lat || selectHomeForm.lat,
-  //     lng: info.user_lon || selectHomeForm.lng,
-  //     isOpen: false
-  //   }])
-  // }
+  const handlePay = () => {
+    for(let i = 0; i < data.length; i++) {
+      if(!!!data[i].status) {
+        swal("Un momento", "Es necesario que guarde todos los hisopados antes de continuar", "warning");
+        return;
+      }
+    }
+    
+    history.push(`/hisopado/payment/${patient.ws}`)
+  }
 
   const handleAddHisopado = () => {
     dispatch({type: 'SET_DELIVERY', payload: {
@@ -115,7 +110,7 @@ const HisopadoCart = (props) => {
           </div>
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {deliveryInfo?.map((item, index) => (
+              {data?.map((item, index) => (
                 <HisopadoCartItem key={index} patient={item} index={index}/>
               ))}
             </div>
@@ -153,7 +148,7 @@ const HisopadoCart = (props) => {
               </div>
             </div>
 
-            <div className="HisopadoCart__payBtn" onClick={()=>history.push(`/hisopado/payment/${patient.ws}`)}>
+            <div className="HisopadoCart__payBtn" onClick={handlePay}>
               <i className="fas fa-credit-card"></i> Pagar ${price}
             </div>
           </div>

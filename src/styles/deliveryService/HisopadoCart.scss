@@ -103,6 +103,23 @@
                             display: flex;
                         }
 
+                        div.error {
+                            
+                            label {
+                                color: $uma-error;
+                            }
+
+                            input {
+                                border-color: $uma-error;
+                                color: $uma-error;
+                            }
+
+                            select {
+                                color: $uma-error;
+                                border-color: $uma-error;
+                            }
+                        }
+
                         & > div {
                             position: relative;
                             margin-bottom: 1rem;

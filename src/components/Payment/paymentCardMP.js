@@ -55,7 +55,6 @@ const PaymentCardMP = () => {
   }, [user])
 
     useEffect(() => {
-      console.log(allPurchases)
       setTotalPayment(parseInt(hisopadoPrice) * allPurchases.length) 
     }, [allPurchases, hisopadoPrice])
 

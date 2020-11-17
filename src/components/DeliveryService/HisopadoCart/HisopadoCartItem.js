@@ -17,6 +17,8 @@ const HisopadoCartItem = ({patient, index}) => {
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
+    const [isAddressValid, setIsAddressValid] = useState(true)
+    const history = useHistory()
     const [data, setData] = useState({
         title: patient.patient.title || patient.patient.user,
         fullname: patient.patient.user,
@@ -31,8 +33,12 @@ const HisopadoCartItem = ({patient, index}) => {
         lat: patient.destination.user_lat || lat,
         lng: patient.destination.user_lon || lng
     });
-    const [isAddressValid, setIsAddressValid] = useState(true)
-    const history = useHistory()
+    const [fullnameError, setFullnameError] = useState(false);
+    const [dniError, setDniError] = useState(false);
+    const [wsError, setWsError] = useState(false);
+    const [dobError, setDobError] = useState(false);
+    const [sexError, setSexError] = useState(false);
+    const [addressError, setAddressError] = useState(false);
 
     useEffect(() => {
         if(Object.entries(dependantInfo).length !== 0) {
@@ -82,7 +88,24 @@ const HisopadoCartItem = ({patient, index}) => {
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
         } else {
-            swal("Faltan completar datos", "Verifique los datos ingresados", "warning")
+            if(!!!data.fullname) {
+                setFullnameError(true);
+            }
+            if(!!!data.dni) {
+                setDniError(true);
+            }
+            if(!!!data.ws) {
+                setWsError(true);
+            }
+            if(!!!data.dob) {
+                setDobError(true);
+            }
+            if(!!!data.sex) {
+                setSexError(true);
+            }
+            if(!!data.fullname && !!data.dni && !!data.ws && !!data.dob && !!data.sex && !!!data.address) {
+                swal("Faltan completar datos", "Debe completar el domicilio para continuar", "warning")
+            }
             return false;
         }
     }
@@ -111,7 +134,7 @@ const HisopadoCartItem = ({patient, index}) => {
                 }
             </div>
             <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
-                <div>
+                <div className={`${fullnameError ? 'error' : ''}`}>
                     <label>Nombre y apellido</label>
                     <input 
                         type="text"
@@ -119,12 +142,13 @@ const HisopadoCartItem = ({patient, index}) => {
                         inputMode="text" 
                         value={data.fullname || ''} 
                         onChange={(e) => {
+                            setFullnameError(false);
                             setData({...data, title: e.target.value, fullname: e.target.value});
                         }}
                     />
                 </div>
 
-                <div>
+                <div className={`${dniError ? 'error' : ''}`}>
                     <label>Identificación, cédula o DNI</label>
                     <input 
                         type="text"
@@ -132,12 +156,13 @@ const HisopadoCartItem = ({patient, index}) => {
                         inputMode="numeric"
                         value={data.dni || ''} 
                         onChange={(e) => {
+                            setDniError(false);
                             setData({...data, dni: e.target.value});
                         }}
                     />
                 </div>
                 
-                <div>
+                <div className={`${wsError ? 'error' : ''}`}>
                     <label>N° de celular</label>
                     <input 
                         type="text"
@@ -145,29 +170,32 @@ const HisopadoCartItem = ({patient, index}) => {
                         inputMode="tel"
                         value={data.ws || ''} 
                         onChange={(e) => {
+                            setWsError(false)
                             setData({...data, ws: e.target.value});
                         }}
                     />
                 </div> 
 
                 <div className="columns">
-                    <div>
+                    <div className={`${dobError ? 'error' : ''}`}>
                         <label>Fecha de nacimiento</label>
                         <input 
                             type="date"
                             required     
                             value={data.dob || ''} 
                             onChange={(e) => {
+                                setDobError(false);
                                 setData({...data, dob: e.target.value});
                             }}
                         />
                     </div>
-                    <div>
+                    <div className={`${sexError ? 'error' : ''}`}>
                         <label>Sexo</label>
                         <select
                             value={data.sex || 'none'} 
                             name="sexo"
                             onChange={(e) => {
+                                setSexError(false);
                                 setData({...data, sex: e.target.value});
                             }}
                         >
@@ -191,7 +219,7 @@ const HisopadoCartItem = ({patient, index}) => {
                     />
                 </div>  
 
-                <div>
+                <div onClick={() => setOpenModal(true)}>
                     <label>Domicilio</label>
                     <input 
                         type="text" 
