@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import DeliveryProgressBar from './DeliveryProgressBar';
+import DeliveryProgressBarVertical from './DeliveryProgressBarVertical';
 import {user_feedback, config} from '../../config/endpoints';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -90,8 +90,6 @@ function DeliveryResume({ duration, active }) {
 			${active === 3 ? 'showBtn' : ''} 
 		`}>
 			<div className="stepper__containerContent">
-				<h2 className="tracking__stepperTitle">Detalle del pedido</h2>
-
 				<article className="tracking__indications">
 					<button className="tracking__indicationsToggle" onClick={() => setToggleIndications(!toggleIndications)}>
 						Ver indicaciones
@@ -109,8 +107,8 @@ function DeliveryResume({ duration, active }) {
 						<li className="tracking__indicationsListItem">Mantén el ambiente ventilado.</li>
 					</ul>
 				</article>
-
-				<DeliveryProgressBar percent={active} />
+				
+				<DeliveryProgressBarVertical percent={active} />
 				{
 					active === 3 &&
 					<button className="stepper__btn" onClick={() => setSurveyModal(true)}>
