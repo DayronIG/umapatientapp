@@ -13,6 +13,16 @@ const HisopadoCart = (props) => {
   const { patient } = useSelector(store => store.queries);
   const { params, selectHomeForm, deliveryInfo } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if(deliveryInfo.length) {
+      const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
+      const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
+
+      setData(filterData);
+    }
+  }, [deliveryInfo])
 
   useEffect(() => {
     if(patient.core_id) {
@@ -37,10 +47,10 @@ const HisopadoCart = (props) => {
   }, [params])
 
   useEffect(() => {
-    if(deliveryInfo.length) {
-      setPrice(Number(params.price) * deliveryInfo.length);
+    if(data.length) {
+      setPrice(Number(params.price) * data.length);
     }
-  }, [deliveryInfo, params.price])
+  }, [data, params.price])
 
   // const setFirstPatient = (info) => {
   //   setItems([...items, {
@@ -95,7 +105,7 @@ const HisopadoCart = (props) => {
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en <span>{params?.delay}.</span></p>
             {
-              deliveryInfo.length > 0 ? 
+              data.length > 0 ? 
               <p className="HisopadoCart__text">Datos del usuario</p> :
               <div className="HisopadosCart__empty">
                 <h2>Carrito vacío</h2>
@@ -114,7 +124,7 @@ const HisopadoCart = (props) => {
               <span 
                 onClick={handleAddHisopado}
                 className="HisopadoCart__btnContainer">
-                <button className="HisopadoCart__addBTn">+</button>
+                <button className="HisopadoCart__addBtn">+</button>
                 <span className="HisopadoCart__addMsg">Agregar otro hisopado</span>
               </span>
             </div>
@@ -122,7 +132,7 @@ const HisopadoCart = (props) => {
         </div>
 
         {
-          deliveryInfo.length > 0 &&
+          data.length > 0 &&
           <div className="HisopadoCart__payment">
             <div className="HisopadoCart__payDetails">
               <div className="HisopadoCart__payDetail">
