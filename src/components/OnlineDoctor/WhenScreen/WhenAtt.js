@@ -116,7 +116,7 @@ const WhenScreen = (props) => {
 						}>
 						Habilitar permisos
 					</div>
-					<div className='btn btn-blue-lg' onClick={() => props.history.push('/')}>
+					<div className='btn btn-blue-lg' onClick={() => props.history.push('/home')}>
 						Volver
 					</div>
 				</MobileModal>
@@ -197,7 +197,7 @@ const WhenScreen = (props) => {
 							Aún no hemos encontrado turnos, por favor espere o seleccione médico de guardia.
 						</div>
 					)}
-					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/')}>
+					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/home')}>
 						Volver
 					</div>
 				</div>

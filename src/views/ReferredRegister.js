@@ -61,7 +61,7 @@ const Register = props => {
     useEffect(() => {
         if(ws?.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/')
+            history.push('/home')
         } else {
             dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
             dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })

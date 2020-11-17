@@ -41,7 +41,7 @@ const Register = props => {
         })
         if(urlWS.length < 12) {
             swal('Error', 'Este no es un teléfono válido.', 'warning');
-            history.push('/');
+            history.push('/home');
         } else {
             dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS });
             dispatch({ type: 'REGISTER_FIRST_OS', payload: ref });
@@ -156,7 +156,7 @@ const Register = props => {
                 } else if (res.creates === true) {
                     setTimeout(() => {
                         dispatch({ type: 'LOADING', payload: false })
-                        history.push('/')
+                        history.push('/home')
                     }, 2000)
                 } else {
                     dispatch({ type: 'LOADING', payload: false })
@@ -206,13 +206,13 @@ const Register = props => {
                     let headers = { 'Content-Type': 'Application/Json' }
                     if (choiceResult.outcome === 'accepted') {
                         axios.post(install_event, data, headers)
-                        history.push('/')
+                        history.push('/home')
                     } else {
-                        history.push('/')
+                        history.push('/home')
                     }
                 })
                 .catch(err => {
-                    history.push('/')
+                    history.push('/home')
                 })
         }
     }

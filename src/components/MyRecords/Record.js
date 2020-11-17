@@ -60,7 +60,7 @@ const Record = (props) => {
                 <div className='p-3 text-center mt-5'>
                     El Médico aún no completó la ficha de su consulta o se está cargando. Estará disponible en breve.
                 </div>}
-            <div className='btn btn-blue-lg mt-3' onClick={() => props.history.push('/')}>
+            <div className='btn btn-blue-lg mt-3' onClick={() => props.history.push('/home')}>
                 Inicio
             </div>
         </>

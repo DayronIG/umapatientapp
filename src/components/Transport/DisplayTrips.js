@@ -192,7 +192,7 @@ const TransportUserActive = () => {
 					</div>
 					<FooterBtn
 						text='Volver'
-						callback={() => history.push('/')}
+						callback={() => history.push('/home')}
 					/>
 				</div>
 			}

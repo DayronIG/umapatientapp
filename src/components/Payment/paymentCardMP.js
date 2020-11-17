@@ -149,8 +149,8 @@ const PaymentCardMP = () => {
             id: current.id,
             type: 'delivery',
             coupon
-
          }
+         
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
          .then(res => console.log(res))

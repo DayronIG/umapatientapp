@@ -25,7 +25,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const { patient } = useSelector(state => state.queries);
 	const { loading } = useSelector(state => state.front);
-	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: patient?.piso || '',
 		depto: patient?.depto || '',
@@ -159,7 +159,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			'lon': formState.lng,
 			'floor': `${formState.piso}`,
 			'number': `${formState.depto}`,
-			'incidente_id': current?.id,
+			'incidente_id': deliveryInfo?.[0]?.id,
 			'range': isAddressValidForHisopado || false
 		};
 		try {

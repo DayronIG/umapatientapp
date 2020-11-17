@@ -62,7 +62,7 @@ const Chat = (props) => {
       })
       .catch(() => {
         swal('Hubo un error', 'Error al buscar especialista, intente nuevamente', 'error')
-        .then(() => props.history.push('/'));
+        .then(() => props.history.push('/home'));
       })
 
     } else {
@@ -116,7 +116,7 @@ const Chat = (props) => {
       <GenericHeader children="Chat" logo={logoUma} />
       { chatbot.done ?
         <ThemeProvider theme={otherFontTheme}>
-          <div className="calamardo">
+          <div className="chatbot__container">
             <ChatBot {...chatProperties} />
           </div>
         </ThemeProvider>
