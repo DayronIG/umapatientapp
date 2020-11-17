@@ -9,6 +9,8 @@ import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
 import axios from 'axios';
+import { FaUserNurse } from "react-icons/fa"
+import { BsChatFill } from "react-icons/bs"
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
@@ -25,6 +27,7 @@ function DeliveryResume({ duration, active }) {
 		comment: ''
 	})
 	const [error, setError] = useState(false);
+	const { fullname_nurse, cuit_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.delivery);
 
 	useEffect(() => {
 		if(!toggle) {
@@ -79,6 +82,10 @@ function DeliveryResume({ duration, active }) {
 			}
 	}
 
+	const openChat = () => {
+		console.log("OPEN")
+	}
+
 
 	return (
 		<>
@@ -109,6 +116,21 @@ function DeliveryResume({ duration, active }) {
 						<li className="tracking__indicationsListItem">Mantén el ambiente ventilado.</li>
 					</ul>
 				</article>
+
+				<div className="nursedata__container">
+					<div className="nursedata__picname" >
+						<FaUserNurse className="nurse__icon" />
+						<div className="data__container">
+							<p><b>{fullname_nurse}</b></p>
+							<p className="cuit">CUIT {cuit_nurse}</p>
+						</div>
+					</div>
+					<div className="icons__container">
+						<p className="chat__icon" onClick={()=>openChat()}>
+							<BsChatFill/>
+						</p>
+					</div>
+				</div>
 
 				<DeliveryProgressBar percent={active} />
 				{

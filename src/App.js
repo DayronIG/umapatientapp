@@ -71,6 +71,7 @@ import Success from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
 import Payment from "./components/Payment"
+import DeliveryChat from "./components/DeliveryService/DeliveryChat"
 
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 
@@ -173,6 +174,11 @@ function App(props) {
 					exact
 					path='/hisopado/payment/:ws?'
 					component={Payment}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/deliveryChat/:ws?'
+					component={DeliveryChat}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* ACCESS DENIED */}

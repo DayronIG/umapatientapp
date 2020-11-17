@@ -1,0 +1,41 @@
+.chat__container--bubble {
+	.sc-message--content.sent .sc-message--text {
+		background: #7bbff7 !important;
+		max-width: calc(100% - 120px);
+		word-wrap: break-word;		
+	}
+
+	.sc-message--content.received .sc-message--text {
+		color: #263238;
+		background-color: #f4f7f9;
+		margin-right: 40px;
+	}
+
+	.sc-launcher {
+		background-color: #1565c0;
+		z-index: 2;
+		bottom: 90px;
+
+		.sc-closed-icon {
+			bottom: 92px;
+		}
+		.sc-open-icon {
+			bottom: 90px;
+		}
+	}
+
+	.sc-header {
+		background-color: #1565c0;
+	}
+
+	form.sc-user-input div.sc-user-input--text {
+		text-align: left;
+		cursor: text;
+	}
+
+	.sc-chat-window {
+		height: 65vh;
+		z-index: 11;
+		bottom: 160px;
+	}
+}
