@@ -41,7 +41,7 @@ export default function ListTracker({finalAction}) {
                 </div>
                 <div className="results-menu-map-container">
                     {purchases.map((purchase, index) => {
-                    let state;  
+                    if(!["FREE", "FREE:IN_RANGE", "DEPENDANT"].includes(purchase.status)){let state;  
                     if (purchase.status === "PREASSIGN"){state="En preparación"}
                     if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
                     if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
@@ -54,7 +54,7 @@ export default function ListTracker({finalAction}) {
                             {/* <p className="item_time"><FaClock className="clock_icon" />Entrega estimada: 1 hora</p> */}
                         </div>
                         {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
-                    </div>})}
+                    </div>}})}
                     
 {/*                     <div className="results-menu-map-item highlighted-color"
                         onClick={() => history.push(`/hisopado/${patient.ws}`)}
