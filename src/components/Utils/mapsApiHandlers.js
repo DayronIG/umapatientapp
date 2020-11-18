@@ -109,7 +109,6 @@ export const calculateDistance = ({origin, destiny}) => {
 			lat: parseFloat(destiny?.lat),
 			lng: parseFloat(destiny?.lng)
 		};
-		console.log(originPoint, destinyPoint);
 		const DirectionsService = new window.google.maps.DirectionsService();
 		DirectionsService.route({
 				origin: originPoint,

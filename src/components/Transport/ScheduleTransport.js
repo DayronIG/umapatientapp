@@ -68,32 +68,20 @@ function ScheduleTransport() {
 					return false;
 				}
 			});
-			console.log('isvalid');
 			if(!isValid){
 				swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
 				dispatch({ type: 'LOADING', payload: false });
 				return false
 			} 
-			console.log('checks 1');
-
 			if(isEmpty(transportData.startSchedules)){
 				swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
 				dispatch({ type: 'LOADING', payload: false });
 				return false
 			}
-			console.log('checks 2');
-
 			await transportActions.createTransportSchedule(transportData, patient);
-			
-
-			console.log('checks 3');
-
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
 			window.gtag('event', 'select_content', {content_type: "NEW_TRANSPORT_CREATED", item: ['NEW_TRANSPORT_CREATED']})
 			dispatch({ type: 'LOADING', payload: false });
-			
-			console.log('checks 4');
-
 			history.push(`/${ws}/scheduledTransportSuccess`);
 			return true
 		} catch (error) {
