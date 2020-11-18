@@ -11,7 +11,8 @@ import surveyModalImg from '../../assets/img/surveyModal.svg';
 import StarRatings from 'react-star-ratings';
 import axios from 'axios';
 import { FaBriefcaseMedical, FaAmbulance, FaFileAlt, FaUserNurse } from 'react-icons/fa';
-import { BsFillHouseDoorFill, BsChatFill } from 'react-icons/bs';
+import { BsFillHouseDoorFill } from 'react-icons/bs';
+import { MdChatBubble } from 'react-icons/md'
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
@@ -209,7 +210,7 @@ function DeliveryResume({ duration, active }) {
 					</div>
 					<div className="icons__container">
 						<p className="chat__icon" onClick={()=>openChat()}>
-							<BsChatFill/>
+							<MdChatBubble />
 						</p>
 					</div>
 				</div>

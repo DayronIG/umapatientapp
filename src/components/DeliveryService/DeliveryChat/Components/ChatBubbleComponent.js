@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import {useSelector} from "react-redux"
 import { useParams, useHistory } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPaperclip, faCommentAlt, faLocationArrow, faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 import './bubbleChatComponent.scss';
 import { FaUserNurse, FaChevronLeft } from "react-icons/fa"
 import { IoIosSend } from "react-icons/io"
@@ -112,8 +112,8 @@ const BubbleChat = ({
                                 </span>
 
                                 <div className="data__container">
-                                    <p className="profesional">{fullname_nurse || 'Federico Miranda'}</p>
-                                    <p className="cuit">CUIT {cuit_nurse}</p>
+                                    <p className="profesional">{fullname_nurse || 'Profesional'}</p>
+                                    <p className="cuit">{cuit_nurse ? `CUIT ${cuit_nurse}` : ''}</p>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ const BubbleChat = ({
                         </div>
                         <div className="bottomContainer">
                             <input
-                                placeholder='Chatea con tu enfermero'
+                                placeholder='Chatea con tu profesional'
                                 type="text"
                                 value={handlerInputChange}
                                 onChange={(e) => setChangeInputChange(e.target.value)}
