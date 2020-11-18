@@ -40,12 +40,11 @@ export function validateInput(type, value) {
             return isValid;
         case 'number':
             value = parseInt(value)
-            console.log(typeof value)
             if(value.toString().length === 4){
-                if(!!value && /^\d+$/.test && value > 1900 && value < moment().format("YYYY")){
+                if(!!value && /^\d+$/.test && value > 1900 && value <= moment().format("YYYY")){
                     isValid = true
                 }
-            } else if(!!value && value.toString().length === 2 && /^\d+$/.test){
+            } else if(!!value && /^\d+$/.test){
                 isValid = true
             }
             return isValid;

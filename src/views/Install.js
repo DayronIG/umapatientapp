@@ -24,8 +24,24 @@ const Install = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if(showInstall === true) {
+                window.gtag('event', 'register', {
+                    'register_step': 'install',
+                    'action': 'page_view',
+                });
+        } else {
+            window.gtag('event', 'register', {
+                'register_step': 'go_to_register',
+                'action': 'page_view',
+            });
+        }
+    }, [showInstall])
 
     async function redirect() {
+        window.gtag('event', 'select_content', {
+            'content_type': 'button_install_app',
+          });
         await installPrompt(deferredPrompt, ws);
         setShowInstall(false);
     }
@@ -55,7 +71,6 @@ const Install = (props) => {
                 </div>
                 :
                 <div className="welcome-container">
-                    <GenericHeader profileDisabled={true}>Registro</GenericHeader> 
                     <InformationPage
                         callback={redirectToRegister}
                         title='¡Felicitaciones!'                    

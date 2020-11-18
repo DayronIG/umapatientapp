@@ -107,7 +107,7 @@ const Register = props => {
         }
     }
 
-    let handleSubmit = async (reg, user, pwd) => {
+    const handleSubmit = async (reg, user, pwd) => {
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
         let dt = composeDate()

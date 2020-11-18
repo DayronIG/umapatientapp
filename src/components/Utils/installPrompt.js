@@ -20,7 +20,13 @@ export const installPrompt = async (deferredPrompt, ws, dni = '') => {
             let headers = { 'Content-Type': 'Application/Json' }
             if (choiceResult.outcome === 'accepted') {
                 Axios.post(install_event, data, headers)
-            }
+                console.log('User accepted the install prompt');
+                window.gtag('event', 'select_content', {
+                  'content_type': 'install_app',
+                });
+              } else {
+                console.log('User dismissed the install prompt');
+              }
             return true;
         } catch (error) {
             console.error(error);

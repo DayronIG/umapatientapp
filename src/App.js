@@ -65,7 +65,7 @@ import AccessDenied from './components/GeneralComponents/AccessDenied';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 import Install from './views/Install.js';
-import Success from './views/RegisterSuccess.js';
+import RegisterSuccess from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
 import Payment from "./components/Payment"
@@ -82,7 +82,6 @@ function App(props) {
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
-				<Route exact path='/:ws/registersuccess' component={Success} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
@@ -95,6 +94,7 @@ function App(props) {
 				<Route exact path='/install/:ref?' component={Install} />
 				<Route exact path='/newregister/:ref?' component={RegisterNew} />
 				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
+				<Route exact path='/registersuccess' component={RegisterSuccess} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}

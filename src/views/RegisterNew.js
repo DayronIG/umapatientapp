@@ -38,41 +38,31 @@ const Register = props => {
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
 
-    async function getCountryCode() {
+    useEffect(()=> {
         if(ws){
-            let code = await getCountry(ws)
+            let code = getCountry(ws)
             dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
         }
-    }
+    }, [ws])
 
-    const handleSignUp = useCallback(async event => {
+    const handleSignUp = async event => {
+        window.gtag('event', 'sign_up');
         event.preventDefault()
         window.scroll(0, 0)
-        let validDni = validateInput('text', getId)
-        let dniAlert = false
-       
-        let dt = composeDate()
-
-        let validFullname = validateInput('text', getFullname)
-        let validOs = validateInput('text', getOs)
-        let validDate = validateInput('number', dt)
-        if(validDni && validFullname && validOs && validDate) {
-            dniAlert = await swal({
-                title: `Confirma tu número de documento: ${getId}`,
-                text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
-                icon: 'warning',
-                buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
-                dangerMode: true,
-            })
-        }
-        
-        if (validDni && validFullname && dniAlert && termsSwitch && validOs && validDate) {
+        let dniAlert = await swal({
+            title: `Confirma tu número de documento: ${getId}`,
+            text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
+            icon: 'warning',
+            buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
+            dangerMode: true,
+        })
+        if (dniAlert && termsSwitch && getFullname.length >= 7) {
             dispatch({ type: 'LOADING', payload: true })
             let pwd = generatePassword()
             let user = `${getWs}@${pwd}.com`
             localStorage.setItem('codeRegistered', pwd)
             try {
-                return await app.auth()
+                await app.auth()
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {
@@ -81,33 +71,20 @@ const Register = props => {
                                 'Este teléfono ya está registrado para un usuario.',
                                 'warning')
                         }
-                        else { swal('Error', err, 'warning') }
+                        else swal('Error', err, 'warning')
                         dispatch({ type: 'LOADING', payload: false })
                     })
             } catch (error) {
-                return swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
+                swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
             }
-        } 
-        let tempErrors = {};
-        if(!validDni) {
-            tempErrors.dni = true;
-        } 
-        if (!validFullname){
-            tempErrors.nombre = true;
-        } 
-        if(!validOs){
-            tempErrors.cobertura = true;
-        } 
-        if(!validDate){
-            tempErrors.bDay = true;
-            tempErrors.bMonth = true;
-            tempErrors.bYear = true;
-        }
-        setErrors(tempErrors);
-        if(!termsSwitch) {
+        } else if (getFullname.length <= 8){
+            swal('Aviso', 'Debes completar tu nombre y apellido completos', 'warning')
+        } else if (!dniAlert) {
+            return null
+        } else {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
         }
-    }, [errors])
+    }
 
     let composeDate = () => {
         if(!!parseInt(getMonth) && !!parseInt(getDay) && !!parseInt(getYear)){
@@ -120,15 +97,10 @@ const Register = props => {
         }
     }
 
-    let handleSubmit = async (reg, user) => {
-        let dt = composeDate()
+    const handleSubmit = async (reg, user, pwd) => {
         dispatch({ type: 'LOADING', payload: true })
         dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
-        let subscription
-        let source = props.match.params.affiliate // To do move to back
-        if (source && source.toLowerCase().includes('rappi_peru')) {
-            subscription = 'AUT'
-        }
+        let dt = composeDate()
         let dob = `${getYear}-${getMonth}-${getDay}`
         let dni = getId 
         if(country !== null && country !== "AR") {
@@ -136,7 +108,7 @@ const Register = props => {
         }
         let data = {
             patient: {
-                affiliate: props.match.params.affiliate || '',
+                affiliate: ref,
                 geohash: '',
                 lat: '',
                 lon: '',
@@ -149,26 +121,19 @@ const Register = props => {
                 dni: dni || '',
                 sex: getSex || '',
                 dob: dob || '',
-                ws: ws || '',
+                ws: getWs || '',
                 dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
-                subscription,
             }
         }
         if (data.sex != '') {
             let headers = { ContentType: 'Application/json' }
             try {
-                const res = await axios.post(`${node_patient}`, data, headers)
-                if (res && res.affiliate !== 'rappi') {
-                    setTimeout(() => {
-                        dispatch({ type: 'SET_STATUS', payload: 99 });
-                        setRegistered(true)
-                        dispatch({ type: 'LOADING', payload: false })
-                        history.push(`/redirectws/${ws}`)
-                    }, 2000)
-                } 
+                await axios.post(`${node_patient}`, data, headers)
+                dispatch({ type: 'LOADING', payload: false })
+                history.push('/registersuccess')
             } catch (res) {
                 user.delete()
                 if(res.response?.data?.message === "Ya existe un usuario con este documento") {
@@ -285,7 +250,7 @@ const Register = props => {
                                                 handleInput('REGISTER_FIRST_DAY')(e);
                                                 if(e.target.value.length === 2) monthRef.current.focus();
                                             }} type='number' min='1'
-                                            max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
+                                            max='31' name='bday' id='dateDay' placeholder={getDay || "01"} maxLength='2'
                                              />
                                             
                                         <input
@@ -296,10 +261,10 @@ const Register = props => {
                                             }}
                                             type='number' min='1' max='12'
                                             name='bMonth' id='dateMonth'
-                                            placeholder={getMonth}
+                                            placeholder={getMonth || "01"}
                                              />
                                         <input
-                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
+                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear || "2000"}
                                             maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
                                             onChange={handleInput('REGISTER_FIRST_YEAR')}
                                             
@@ -316,7 +281,7 @@ const Register = props => {
                                             <option value='F'>Femenino</option>
                                         </select>                                        
                                         <span className="form__validation--error label__absolute">
-                                        {(errors.bday || errors.bMonth || errors.bYear) && 'x Debe ingresar una fecha válida'}  
+                                            {(errors.bday || errors.bMonth || errors.bYear) && 'x Debe ingresar una fecha válida'}  
                                         </span>
                                     </div>                                
                             </div>
@@ -338,7 +303,6 @@ const Register = props => {
                                 <button className='sendButtonStyles' type='submit'>
                                     Enviar
                                 </button>          
-                               
                             </div>
                         </form>
                     </div>
