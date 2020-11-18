@@ -58,8 +58,6 @@ import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
 import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
-import WhoScreenHisopados from './components/DeliveryService/WhoScreenHisopados/WhoScreenHisopados'
-import ForOtherHisopados from './components/DeliveryService/WhoScreenHisopados/ForOtherHisopados';
 import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart'
 import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
@@ -84,17 +82,18 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/:ws/registersuccess' component={Success} />
-				<Route exact path='/:ws/install' component={Install} />
 				<Route exact path='/:ws/redirectws' component={RedirectWs} />
 				<Route exact path='/login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				<Route exact path='/register/:ws/:ref?' component={Register} />
-				<Route exact path='/newregister/:ws/:ref?' component={RegisterNew} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
-				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
+				{/* New Register */}
+				<Route exact path='/install/:ws?' component={Install} />
+				<Route exact path='/newregister/:ws/:ref?' component={RegisterNew} />
+				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}

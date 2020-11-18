@@ -28,18 +28,5 @@
                 "value": "idky"
             }
         ]
-    },
-    {
-        "question": "¿Actualmente se encuentra internado en algún hospital, clínica o sanatorio?",
-        "responses": [
-            {
-                "label": "si",
-                "value": "hospitalized"
-            },
-            {
-                "label": "no",
-                "value": "home"
-            }
-        ]
     }
 ]

@@ -143,7 +143,7 @@ const PaymentCardMP = () => {
             token: token,
             dni: `${user.dni}`,
             fullname: `${user.fullname}`,
-            amount: parseInt(totalPayment),
+            amount: parseInt(totalPayment) || 3499,
             currency: 'ARS',
             id: current.id,
             type: 'delivery',
@@ -164,7 +164,7 @@ const PaymentCardMP = () => {
                       'currency': 'ARS',
                       'items': 'Hisopado Antígeno',
                       'transaction_id': current.id,
-                      'value': totalPayment
+                      'value': totalPayment || 3499
                       });
                       window.gtag('event', 'conversion', {
                         'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
@@ -183,10 +183,14 @@ const PaymentCardMP = () => {
             })
             .catch(err => {
               setLoader(false)
+              window.gtag('event', 'payment_failed', {
+                'event_category' : 'warning',
+                'event_label' : 'hisopado_payment'
+              });
               if(paymentMethodId.value === "unknown"){ 
                 swal("Verifique el número de tarjeta ingresado", "" ,"warning")
               } else {
-                swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+                swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
               }
               window.Mercadopago.clearSession();
             })
