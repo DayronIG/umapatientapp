@@ -17,7 +17,7 @@ const Result = () => {
     }, [currentService])
 
     return (
-        <div className="trackProgress__module">
+        <div className="trackProgressVertical__module">
             <div className="laboratory__container">
                 <h3 className="laboratory__header">Resultado disponible: {result}</h3>
                 <div className="laboratory__description">

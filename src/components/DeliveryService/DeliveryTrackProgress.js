@@ -35,9 +35,9 @@ const DeliveryTrackProgress = () => {
 			<div className="back-button">
 				<BackButton inlineButton={true} customTarget={patient.ws} action={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
 			</div>
-			<section className='trackProgress__container'>
+			<section className='trackProgressVertical__container'>
 				{loading && <Loading />}
-				<div className='trackProgress__content'>
+				<div className='trackProgressVertical__content'>
 					{renderComponentByTrackProgress(status)}
 				</div>
 			</section>
