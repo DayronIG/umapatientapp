@@ -102,13 +102,14 @@ export const mapConfig = (
 export const calculateDistance = ({origin, destiny}) => {
 	return new Promise((resolve, reject) => {
 		const originPoint = {
-			lat: origin?.lat,
-			lng: origin?.lng
+			lat: parseFloat(origin?.lat),
+			lng: parseFloat(origin?.lng)
 		};
 		const destinyPoint = {
-			lat: destiny?.lat,
-			lng: destiny?.lng
+			lat: parseFloat(destiny?.lat),
+			lng: parseFloat(destiny?.lng)
 		};
+		console.log(originPoint, destinyPoint);
 		const DirectionsService = new window.google.maps.DirectionsService();
 		DirectionsService.route({
 				origin: originPoint,
@@ -118,8 +119,7 @@ export const calculateDistance = ({origin, destiny}) => {
 				if (status === window.google.maps.DirectionsStatus.OK) {
 					resolve(result);
 				} else {
-					console.error(`error fetching directions ${result}`);
-					reject(result);
+					reject(`error fetching directions ${result}`);
 				}
 		});
 	})

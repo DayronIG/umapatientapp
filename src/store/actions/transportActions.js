@@ -104,9 +104,9 @@ export const handleInputs = (pointSelector) => ({ target = {} }) => {
 }
 
 export const createTransportSchedule = async (transportData, patient) => {
-	const travelMetaData = await calculateDistance(transportData);
-	const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
 	try {
+		const travelMetaData = await calculateDistance(transportData);
+		const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
 		const data = {
 			id_solicitud: genTransportId(patient),
 			corporate: patient.corporate_norm,
@@ -139,10 +139,10 @@ export const createTransportSchedule = async (transportData, patient) => {
 			tipo_asignacion: 'manual'
 		}
 		await Axios.post(create_traslado, data);
-		return dispatch(handleReset());
+		dispatch(handleReset());
+		return true;
 	} catch (error) {
-		console.error(error);
-		throw new Error(error.message || error);
+		throw error;
 	}
 }
 
