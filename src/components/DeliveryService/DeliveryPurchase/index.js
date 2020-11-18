@@ -4,20 +4,13 @@ import { BackButton, GenericHeader } from '../../GeneralComponents/Headers';
 import AskForBuyHisopado from "./Components/AskForBuyHisopado"
 import AddressPickerHisopado from "./Components/AddressPickerHisopado"
 import ZoneCoveredHisopado from "./Components/ZoneCoveredHisopado"
-import Payment from "../../Payment"
-import Loading from "../../GeneralComponents/Loading"
-import DeliveryTrackProgress from '../DeliveryTrackProgress';
 import { useHistory } from "react-router-dom"
 import "../../../styles/hisopado/hisopadosFlux.scss";
 import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
-    const {step, params} = useSelector((state) => state.deliveryService);
+    const {step} = useSelector((state) => state.deliveryService);
     const { ws } = useSelector(state => state.queries.patient);
-    const { id } = useSelector(state => state.deliveryService.current);
-	const currentHisopadoIndex = useSelector(state => state.deliveryService)
-    const status = useSelector(state => state.deliveryService.deliveryInfo[0]?.status);
-
     const history = useHistory()
     const dispatch = useDispatch()
 

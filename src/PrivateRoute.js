@@ -121,7 +121,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		Axios
 			.patch(`${node_patient}/${patient.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
-				console.log("Device ok");
+				console.log("UMA");
 			})
 			.catch((err) => {
 				console.log(err);

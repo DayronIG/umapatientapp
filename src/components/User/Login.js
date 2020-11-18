@@ -35,7 +35,6 @@ const SignIn = props => {
             setSentWs(false)
         }, 2000)
         if (ws && !props.history.location.pathname.includes("login")) {
-            console.log(ws)
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
