@@ -162,17 +162,40 @@
 .mobile-modal.hisopados {
   border-radius: 15px;
   padding: 20px;
+  height: 90vh;
+  top: 5vh;
   max-height: 90vh;
 
   .modalContent {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 0;
+    height: 100%;
 
     & > img {
       max-width: 80%;
       margin-bottom: 20px;
+    }
+
+    .surveyQuestion__title {
+      color: $uma-primary;
+      text-align: center;
+      font-size: 1.5rem;
+      line-height: 1.8rem;
+      font-weight: 900;
+      width: 100%;
+      margin-bottom: 1.5rem;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 25%;
+        height: 2px;
+        background: $uma-primary;
+        margin: 0.8rem auto 0;
+      }
     }
 
     .surveyQuestion {
@@ -186,7 +209,7 @@
       h3 {
         color: $uma-text;
         text-align: center;
-        font-size: 18px;
+        font-size: 1.1rem;
         line-height: 1.5;
         font-weight: 600;
 

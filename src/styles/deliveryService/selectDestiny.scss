@@ -100,16 +100,53 @@
 	}
 }
 
-.mobile-modal.hisopados {
-	padding: 0px !important;
+.mobile-modal.hisopados.no-scroll {
+	height: 90vh;
 	top: 5vh;
+	padding: 0;
 
+	.modal-close {
+		z-index: 2;
+		font-size: 2rem;
+		top: 0.2rem;
+		right: 0.5rem;
+	}
+
+	.modalContent {
+		height: 100%;
+		
 		.container-map-component{
+			height: 100%;
+
+			.modalMap {
+				padding: 0;
+				height: 100%;
+				justify-content: space-between;
+
+				.selectDestiny__container.map {
+					height: 70vh;
+				}
+			}
 
 			.selectDestiny__allcontainer {
-				position: absolute;
+				bottom: 0;
+				height: 35vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				padding: 1rem 0;
+
+				.map-button {
+					display: block;
+					text-align: center;
+					height: auto;
+					width: 60%;
+					padding: 0.5rem 0;
+				}
 			} 
+		}
 	}
+	
 }
 
 .modalMap{
