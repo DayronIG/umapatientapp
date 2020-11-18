@@ -16,7 +16,6 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import { validateInput } from '../components/Utils/stringUtils';
 import {generatePassword} from '../components/Utils/generatePassword';
-import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../../src/styles/generalcomponents/registerNew.scss';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,11 +25,10 @@ const Register = props => {
     const dispatch = useDispatch()
     const history = useHistory()
     const [registered, setRegistered] = useState(false)
-    const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const {ws: urlWS, ref} = useParams()
+    const { ref } = useParams()
     const { ws } = useParams();
     const {
         dni: getId, day: getDay, month: getMonth, year: getYear,
@@ -40,54 +38,12 @@ const Register = props => {
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        const promptListener = (e) => {
-          e.preventDefault()
-          setDeferredPrompt(e)
-        }
-        window.addEventListener('beforeinstallprompt', promptListener)
-        return () => {
-          window.removeEventListener('beforeinstallprompt', promptListener);
-        }
-    }, [])
-
-    useEffect(() => {
-        if(urlWS.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/home')
-        } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
-        }
-    }, [dispatch])
-    
     async function getCountryCode() {
-        let code = await getCountry(urlWS)
-        dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
-    }
-
-    useEffect(() => {
-        if(urlWS?.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/home')
-        } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
-        }
-    }, [dispatch])
-
-    async function getCountryCode() {
-        if(urlWS){
-            let code = await getCountry(urlWS)
+        if(ws){
+            let code = await getCountry(ws)
             dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
         }
     }
-
-
 
     const handleSignUp = useCallback(async event => {
         event.preventDefault()
@@ -193,7 +149,7 @@ const Register = props => {
                 dni: dni || '',
                 sex: getSex || '',
                 dob: dob || '',
-                ws: urlWS || '',
+                ws: ws || '',
                 dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
@@ -210,7 +166,7 @@ const Register = props => {
                         dispatch({ type: 'SET_STATUS', payload: 99 });
                         setRegistered(true)
                         dispatch({ type: 'LOADING', payload: false })
-                        history.push(`/${ws}/redirectws`)
+                        history.push(`/redirectws/${ws}`)
                     }, 2000)
                 } 
             } catch (res) {
@@ -233,7 +189,6 @@ const Register = props => {
 
     const handleInput = (typeDispatch) => (event) => {
         const { type, value, name } = event.target;
-
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
@@ -266,7 +221,7 @@ const Register = props => {
                             </div>
                         </MobileModal>
                     )}
-                    {urlWS !== 'undefined' ?
+                    {ws !== 'undefined' ?
                     <div className="newregister__container">
                         <h3 className='register_form--title'>Formulario de registro</h3> 
                         <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
@@ -277,7 +232,6 @@ const Register = props => {
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
                                 autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
-                                {console.log(errors)}
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -294,7 +248,7 @@ const Register = props => {
                             </div>
                             
                             
-                            {!urlWS && 
+                            {!ws && 
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
@@ -362,7 +316,7 @@ const Register = props => {
                                             <option value='F'>Femenino</option>
                                         </select>                                        
                                         <span className="form__validation--error label__absolute">
-                                        {(errors.bday || errors.bMonth || errors. bYear) && 'x Debe ingresar una fecha válida'}  
+                                        {(errors.bday || errors.bMonth || errors.bYear) && 'x Debe ingresar una fecha válida'}  
                                         </span>
                                     </div>                                
                             </div>

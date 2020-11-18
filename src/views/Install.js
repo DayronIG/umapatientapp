@@ -4,13 +4,13 @@ import image from '../assets/icons/waiting.png';
 import imageFelicitaciones from '../assets/doctor-online.svg';
 import { installPrompt } from '../components/Utils/installPrompt.js';
 import { useHistory, useParams } from 'react-router-dom';
-import "../styles/generalcomponents/Install.scss";
+import "../styles/generalcomponents/install.scss";
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 
 const Install = (props) => {
     const [deferredPrompt, setDeferredPrompt] = useState();
     const [showInstall, setShowInstall] = useState(true)
-    const { ws } = useParams();
+    const { ws, ref } = useParams();
     const history = useHistory();
     
     useEffect(() => {
@@ -32,7 +32,7 @@ const Install = (props) => {
 
     const redirectToRegister = async () => {
         await installPrompt(deferredPrompt, ws);
-        history.push(`/${ws}/register`);
+        history.push(`/newregister/${ref}`);
     }
 
     return (

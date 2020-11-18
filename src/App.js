@@ -83,7 +83,7 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/:ws/registersuccess' component={Success} />
-				<Route exact path='/:ws/redirectws' component={RedirectWs} />
+				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				<Route exact path='/register/:ws/:ref?' component={Register} />
@@ -92,8 +92,8 @@ function App(props) {
 				<Route exact path='/:ws?/recovery' component={ResetPassword} />
 				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
 				{/* New Register */}
-				<Route exact path='/install/:ws?' component={Install} />
-				<Route exact path='/newregister/:ws/:ref?' component={RegisterNew} />
+				<Route exact path='/install/:ref?' component={Install} />
+				<Route exact path='/newregister/:ref?' component={RegisterNew} />
 				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
