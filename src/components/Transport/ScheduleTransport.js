@@ -71,25 +71,25 @@ function ScheduleTransport() {
 			if(!isValid){
 				swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
 				dispatch({ type: 'LOADING', payload: false });
-				return false
+				return false;
 			} 
 			if(isEmpty(transportData.startSchedules)){
 				swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
 				dispatch({ type: 'LOADING', payload: false });
-				return false
+				return false;
 			}
 			await transportActions.createTransportSchedule(transportData, patient);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
 			window.gtag('event', 'select_content', {content_type: "NEW_TRANSPORT_CREATED", item: ['NEW_TRANSPORT_CREATED']})
 			dispatch({ type: 'LOADING', payload: false });
 			history.push(`/${ws}/scheduledTransportSuccess`);
-			return true
+			return true;
 		} catch (error) {
 			console.error(error);
 			dispatch({ type: 'LOADING', payload: false });
 			window.gtag('event', 'select_content', {content_type: "NEW_TRANSPORT_FAIL", item: ['NEW_TRANSPORT_FAIL']})
 			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
-			return false
+			return false;
 		}
 	}
 
