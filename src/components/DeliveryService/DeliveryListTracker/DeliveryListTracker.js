@@ -13,7 +13,10 @@ export default function ListTracker({finalAction}) {
     const patient = useSelector(state => state.queries.patient)
     const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
     const purchases = useSelector(state => state.deliveryService.deliveryInfo)
-    const id = useSelector((state) => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)
+    const id = useSelector((state) => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId);
+    const status = useSelector((state) => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.status);
+    const nurse_eval = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.eval?.nurse_eval);
+    const uma_eval = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.eval?.uma_eval);
     const dispatch = useDispatch();
 
     const handleDerivation = (index) => {
@@ -23,8 +26,13 @@ export default function ListTracker({finalAction}) {
             case("ASSIGN:DELIVERY"):
             case("ASSIGN:ARRIVED"):
                 return history.push(`/delivery/progress/${patient.ws}/${id}/`);
-            case("DONE:RESULT"):
-                return history.push(`/hisopadoResult/${patient.ws}/`);
+            case("DONE:RESULT"): {
+                if(status === 'DONE:RESULT' && nurse_eval && uma_eval){
+                    return history.push(`/hisopadoResult/${patient.ws}/`);
+                } else {
+                    return history.push(`/delivery/progress/${patient.ws}/${id}/`);
+                }
+            }
             default:
                 history.push(`/hisopado/${patient.ws}`)
         }
