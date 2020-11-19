@@ -158,12 +158,16 @@ const PaymentCardMP = () => {
                 setLoader(false)
                  if (res.data.body.status === "approved") {
                     window.gtag('event', 'purchase', {
+                      'transaction_id': current.id,
                       'affiliation': user?.corporate_norm,
+                      'value': parseInt(totalPayment) || 3499,
                       'coupon': '1',
                       'currency': 'ARS',
-                      'items': 'Hisopado Antígeno',
-                      'transaction_id': current.id,
-                      'value': totalPayment || 3499
+                      'items': [{
+                        "id": 'Hisopado Antígeno',
+                        "name": 'Hisopado Antígeno',
+                        "price": parseInt(totalPayment) || 3499
+                      }],
                       });
                       window.gtag('event', 'conversion', {
                         'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
@@ -212,8 +216,8 @@ const PaymentCardMP = () => {
           console.log("Payment success")
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
-            // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            // .then(()=> history.push("/"))
+          swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+            .then(()=> history.push("/"))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             switch(statusDetail){
               case("cc_rejected_insufficient_amount"):
