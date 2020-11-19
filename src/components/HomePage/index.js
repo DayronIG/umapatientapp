@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import db from '../../config/DBConnection';
 import ModulesMenu from './ModulesMenu';
 import Loading from '../GeneralComponents/Loading';
 import NotFound from '../GeneralComponents/NotFound';
-import {getDocumentFB} from "../Utils/firebaseUtils"
 
 const HomePage = () => {
 	const dispatch = useDispatch();
@@ -42,7 +40,6 @@ const HomePage = () => {
 				dispatch({ type: 'SET_STATUS', payload: 99 });
 				// caso core_id y user_id no coinciden PERO core_id existe
 			} else if (user && user.core_id !== userId && user.core_id !== '' && user.core_id !== undefined) {
-				db.auth().signOut()
 				dispatch({ type: 'SET_STATUS', payload: 404 });
 				// caso core_id no existe pero usuario sí
 			} else if (user && user.fullname && user.core_id === undefined && user.fullname.length >= 4) {
@@ -55,9 +52,7 @@ const HomePage = () => {
 		}
 	}, [user])
 
-	if (!checkStatus) {
-		return <Loading />;
-	} else if (checkStatus === 404) {
+	if (checkStatus === 404) {
 		return <NotFound error='Usted no tiene permiso para ingresar a esta página' />;
 	} else if (checkStatus === 99 && user.ws) {
 		return <ModulesMenu ws={user.ws} />;
@@ -66,4 +61,4 @@ const HomePage = () => {
 	}
 };
 
-export default withRouter(HomePage);
+export default HomePage;
