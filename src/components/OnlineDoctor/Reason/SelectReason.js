@@ -43,7 +43,7 @@ const SelectReason = (props) => {
 	return (
 		<>
 			<div className='dinamic-question'>
-				<Backbutton inlineButton={true} />
+				<Backbutton inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>

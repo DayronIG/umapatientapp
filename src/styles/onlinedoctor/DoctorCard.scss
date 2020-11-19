@@ -162,6 +162,7 @@
     min-height: 100px;
     overflow: scroll;
     max-height: 500px;
+    font-family: Nunito;
     .feedback-subtitle {
         color: #000;
         font-weight: 700;
@@ -169,7 +170,7 @@
     .feedback-stars {
         margin-bottom: 5px;
         path {
-            fill: $yellow-opaque !important;
+            fill: $uma-primary !important;
         }
     }
     .feedback-no-comments {
@@ -181,9 +182,11 @@
     .feedback-comment {
         position: relative;
         background: $inactive-primary;
-        color: $text-light;
+        color: $uma-text;
         padding: 8px 15px 20px 15px;
         margin-bottom: 10px;
+        text-align: center;
+        font-size: 1.3rem;
     }
     .feedback-date {
         font-size: 0.7rem;
