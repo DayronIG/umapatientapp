@@ -53,13 +53,13 @@ const WhenScreen = props => {
 
     return (
         <div className='dinamic-template'>
+            <BackButton />
             {openDetails &&
                 <MobileModal title='Enviar un reclamo'>
                     <SendComplain sendComplain={claim => makeComplain('derived-complain', claim)} />
                 </MobileModal>
                 }
                 <div className='dinamic-content-container whoAttention'>
-                    <BackButton />
                     <div className='image-helper'>
                         <img src={ImageFlow} alt='medical' />
                     </div>

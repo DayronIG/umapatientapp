@@ -118,9 +118,7 @@ const WhenScreen = (props) => {
 				</MobileModal>
 			)}
 			<DinamicScreen>
-				<div className='mt-3'>
-					<Backbutton />
-				</div>
+				<Backbutton />
 				<div className='when__container'>
 					{action === 'Loading' && (
 						<div

@@ -395,8 +395,10 @@ const Queue = (props) => {
                 </div>
             }
             {openDetails &&
-                <MobileModal title='Enviar un reclamo'>
-                    <SendComplain sendComplain={claim => handleAppointment('complain', claim)} />
+                <MobileModal title='Enviar un reclamo'
+                    callback={() => dispatch({type: 'TOGGLE_DETAIL', payload: false})}>
+                    <SendComplain 
+                        sendComplain={claim => handleAppointment('complain', claim)} />
                 </MobileModal>
             }
             {modalAction &&
@@ -419,7 +421,7 @@ const Queue = (props) => {
                 <>
                     <div className='dinamic-time mb-3'>
                         <Link to='/home'>
-                            <FaArrowLeft color='#fff' fontSize='2rem' />
+                            <FaArrowLeft color='#97c1d3' fontSize='2rem' />
                         </Link>
                         <div className='question-title'>
                             {!!remainingText ? remainingText : 'Será atendido pronto'}

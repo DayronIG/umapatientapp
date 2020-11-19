@@ -75,15 +75,15 @@
 .mobile-modal {
   position: fixed;
   top: 12vh;
-  left: 4vh;
-  right: 4vh;
   height: auto;
   overflow: scroll;
   max-height: 80vh;
   box-shadow: $blured-box-shadow;
   background: $white-color;
   border-radius: $regular-borders;
-  z-index: 9999;
+  z-index: 4;
+  width: 90%;
+  margin-left: 5%;
   .contentData {
     margin-top: 20px;
     color: $text-dark;
@@ -157,7 +157,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 3;
 }
 
 .mobile-modal.hisopados {

@@ -30,6 +30,7 @@
 		min-height: auto;
 	}
 	.App {
+		max-height: 100%;
 		height: auto;
 		// background: $reduced-back-gradient;
 		background-repeat: no-repeat;
@@ -728,10 +729,6 @@
 			font-size: 20px;
 			color: $special-grey;
 		}
-		.backButtonContainer {
-			top: 0;
-			margin-left: 12px;
-		}
 		.myhistory-consultation {
 			&.history-bg-autonomous {
 				background: #2d7fc1;
@@ -907,6 +904,7 @@
 	.symptom-list {
 		.symptom-text {
 			font-size: 1.8rem;
+			color: $uma-text-secondary;
 		}
 		svg {
 			font-size: 2rem !important;

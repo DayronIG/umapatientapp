@@ -7,6 +7,7 @@ import { genAppointmentID } from '../../Utils/appointmentsUtils';
 import { FaFileMedicalAlt } from 'react-icons/fa';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { Loader } from '../../global/Spinner/Loaders';
+import {FaUserMd} from  'react-icons/fa'
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment-timezone';
@@ -132,25 +133,29 @@ const ConfirmAppointment = (props) => {
 
 	return (
 		<>
-			{selectedAppointment && (
+			{selectedAppointment ? 
 				<div className='appointment'>
 					<h5>Información del turno</h5>
-					<ul>
-						<li>
+					<div>
+						<div className="appointment__doctorIcon">
 							<img src={selectedAppointment.path_profile_pic} alt="Doctor" />
-						</li>
-						<li>Doctor: <b>{selectedAppointment.fullname}</b>
-						</li>
-						<li>
-							Hora: <b>{selectedAppointment.time}</b>
-						</li>
-						<li>
-							Fecha: <b>{selectedAppointment.date}</b>
-						</li>
-					</ul>
-					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
+						</div>
+						<div className="appointment__detail">Doctor: <b>{selectedAppointment.fullname}</b></div>
+						<div className="appointment__detail">Hora: <b>{selectedAppointment.time}</b></div>
+						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
+					</div>
+					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar. <br /> También puede adjuntar análisis de laboratorio o fotos de su credencial, fármaco o lesiones que puedan ayudar al médico en su consulta.</p>
 				</div>
-			)}
+				: 
+				<div className='appointment'>
+					<h5>Información del turno</h5>
+					<div className="appointment__doctorIcon">
+						<FaUserMd />
+					</div>
+					<div className="appointment__detail">Médico de guardia</div>
+					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.<br /> También puede adjuntar análisis de laboratorio o fotos de su credencial, fármaco o lesiones que puedan ayudar al médico en su consulta.</p>
+				</div>
+			}
 			<div className="questionsContainer">
 				{
 					loading ? <div className="text-center"><Loader /></div> 
