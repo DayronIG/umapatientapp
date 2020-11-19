@@ -46,7 +46,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     let data = doc.data()
                     if (data && data?._start_date !== '' && data._start_date) {
                         let calldata = data?._start_date?.split('///')
-                        if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/'){
+                        if (!callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
                             dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1] } })
                         }
