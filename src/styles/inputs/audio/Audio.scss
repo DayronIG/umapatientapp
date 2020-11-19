@@ -1,7 +1,8 @@
 @import '../../index.scss';
 
 .record__trigger--btn {
-  bottom: 0px;
+  position: fixed;
+  left: 10%;
   width: 80%;
   background-color: $primary-color;
   color: $white-color;

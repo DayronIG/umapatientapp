@@ -59,7 +59,9 @@ const AudioRecorder = ({
 		// 	sampleRate: 16000
 		// }
 		const audio = await navigator.mediaDevices.getUserMedia({
-		  audio: true,
+		  audio: {
+			noiseSuppression: false
+		  },
 		  video: false
 		});
 		// const track = audio.getAudioTracks()[0]
@@ -122,7 +124,7 @@ const AudioRecorder = ({
 						</div>
 					)}
 
-			{audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''}
+			{/* {audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''} */}
 			
 			{/* 
 			{onRecord &&
