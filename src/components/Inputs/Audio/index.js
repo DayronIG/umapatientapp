@@ -120,11 +120,11 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                     <div className="wellness__results__title">
                         {parseInt(sthetoscopeBpm) > 50 && parseInt(sthetoscopeBpm) < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?
-                        <div onClick={play}  className = "record__trigger--btn styleButton">
+                        <div onClick={play}  className = "styleButton">
                             <FaPlay className="icon" />
                         </div>
                         :
-                        <div onClick={pause} className = "record__trigger--btn styleButton">
+                        <div onClick={pause} className = "styleButton">
                             <FaPause className="icon" />
                         </div>}
                         <small>Éste escaneo se encuentra en etapa experimental y no constituye ni reemplaza un análisis médico.</small>
