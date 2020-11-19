@@ -65,7 +65,8 @@ const AudioRecorder = ({
 		// const track = audio.getAudioTracks()[0]
 		// await track.applyConstraints(constraints);
 		const options = {
-			mimeType: "audio/webm;codecs=opus"
+			mimeType: "audio/webm;codecs=opus",
+			audioBitsPerSecond : 128000,
 		}
 		const recorder = new MediaRecorder(audio, options);
 		setMediaRecorder(recorder);
