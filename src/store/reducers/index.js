@@ -39,7 +39,11 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
 	if (action.type === 'RESET_ALL') {
-		state = undefined;
+		state = { 
+			queries: state.queries, 
+			deliveryService: state.deliveryService,
+			userActive: state.userActive
+		};
 	}
 	return appReducer(state, action);
 };
