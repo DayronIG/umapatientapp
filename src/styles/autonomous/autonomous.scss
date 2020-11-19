@@ -92,7 +92,7 @@
             .sugested-action {
                 padding: 10px;
                 width: 100%;
-                color: #fff;
+                color: $uma-text;
                 border-radius: 15px;
                 overflow: hidden;
                 cursor: pointer;
@@ -117,10 +117,10 @@
                     font-size: 1.5rem;
                     padding: 7% 10px;
                 }
-                p {
+                .suggested-title {
                     margin: 0 !important;
                     line-height: 1rem;
-                    padding: 5px;
+                    padding: 20px;
                 }
             }
             .predict-advisor {
