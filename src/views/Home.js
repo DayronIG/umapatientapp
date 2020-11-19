@@ -16,11 +16,21 @@ const HomePage = () => {
 	}, [dispatch, user])
 
 	useEffect(() => {
-		localStorage.setItem('userMr', JSON.stringify(mr));
+		try {
+			localStorage.setItem('userMr', JSON.stringify(mr));
+		} catch (err) {
+			console.error(err)
+		}
 	}, [mr])
 
 	useEffect(() => {
-		localStorage.setItem('userData', JSON.stringify(user));
+		try {
+			let u = user 
+			delete u['current_events']
+			localStorage.setItem('userData', JSON.stringify(u));
+		} catch (err) {
+			console.error(err)
+		}
 	}, [user])
 
 	return <ModulesMenu ws={user.ws} />;
