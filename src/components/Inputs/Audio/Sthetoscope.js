@@ -59,13 +59,16 @@ const AudioRecorder = ({
 		// 	sampleRate: 16000
 		// }
 		const audio = await navigator.mediaDevices.getUserMedia({
-		  audio: true,
+		  audio: {
+			noiseSuppression: false
+		  },
 		  video: false
 		});
 		// const track = audio.getAudioTracks()[0]
 		// await track.applyConstraints(constraints);
 		const options = {
-			mimeType: "audio/webm;codecs=opus"
+			mimeType: "audio/webm;codecs=opus",
+			audioBitsPerSecond : 128000,
 		}
 		const recorder = new MediaRecorder(audio, options);
 		setMediaRecorder(recorder);
@@ -121,7 +124,7 @@ const AudioRecorder = ({
 						</div>
 					)}
 
-			{audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''}
+			{/* {audioToPlot ? <AudioAnalyser className="analizer" audio={audioToPlot} modal={modal} /> : ''} */}
 			
 			{/* 
 			{onRecord &&
