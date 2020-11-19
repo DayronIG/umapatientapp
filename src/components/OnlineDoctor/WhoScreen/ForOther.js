@@ -108,7 +108,6 @@ const Register = props => {
 
   return (
     <div className="register__container">
-    <GenericHeader/>
       {loading && <Loading />}
       {front.alert.active && (
         <Alert
@@ -136,18 +135,18 @@ const Register = props => {
               <div className="d-flex birthInputContainer">
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="31" name="bday" required="required"
-                  id="dateDay" placeholder={day}
+                  id="dateDay" placeholder={day || "01"}
                   onChange={e => onChangeDay(e)}
                 />
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="12" name="bMonth"
                   required="required" id="dateMonth"
-                  ref={monthRef} placeholder={month}
+                  ref={monthRef} placeholder={month || "01"}
                   onChange={e => onChangeMonth(e)} />
                 <input
                   className="form-mid-input mr-2" maxLength="4"
                   ref={yearRef}
-                  placeholder={year}
+                  placeholder={year || "2000"}
                   type="number"
                   min="1900" max="2020"
                   name="bYear" required="required" id="dateYear"

@@ -18,10 +18,8 @@ import '../../styles/TurnoConsultorio.scss';
 
 
 const AppointmentsOnlineHistory = (props) => {
-	const firestore = db.firestore()
 	const dispatch = useDispatch()
 	const token = useSelector(state => state.userActive.token)
-	const patient = useSelector(state => state.queries.patient)
 	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
