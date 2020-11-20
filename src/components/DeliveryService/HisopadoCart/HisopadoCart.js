@@ -11,7 +11,7 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const [items, setItems] = useState([]);
-  const { patient } = useSelector(store => store.queries);
+  const user = useSelector(store => store.user);
   const { params, selectHomeForm, deliveryInfo } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
@@ -26,9 +26,9 @@ const HisopadoCart = (props) => {
   }, [deliveryInfo])
 
   useEffect(() => {
-    if(patient.core_id) {
+    if(user.core_id) {
       db.firestore().collection('events/requests/delivery')
-      .where('patient.uid', '==', patient.core_id)
+      .where('patient.uid', '==', user.core_id)
       .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
       .get()
       .then(res => {
@@ -41,7 +41,7 @@ const HisopadoCart = (props) => {
           dispatch({type: 'SET_DELIVERY_ALL', payload: all_services})
       })
     }
-  }, [patient])
+  }, [user])
 
   useEffect(() => {
     setPrice(params.price);
@@ -55,13 +55,16 @@ const HisopadoCart = (props) => {
 
   const handlePay = () => {
     for(let i = 0; i < data.length; i++) {
+      console.log("pagar")
+
       if(!!!data[i].status) {
+        console.log("pagar")
+
         swal("Un momento", "Es necesario que guarde todos los hisopados antes de continuar", "warning");
         return;
       }
     }
-    
-    history.push(`/hisopado/payment/${patient.ws}`)
+    history.push(`/hisopado/payment/${user.ws}`)
   }
 
   const handleAddHisopado = () => {
@@ -94,7 +97,7 @@ const HisopadoCart = (props) => {
       <div className="HisopadoCart">
         <div className="HisopadoCart__container">
           <div className="HisopadoCart__goBack">
-            <FaChevronLeft onClick={() => history.push(`/home/${patient.ws}`)} />
+            <FaChevronLeft onClick={() => history.push(`/home/${user.ws}`)} />
           </div>
           <div className="HisopadoCart__header">
             <h1 className="HisopadoCart__title">Tu compra</h1>
