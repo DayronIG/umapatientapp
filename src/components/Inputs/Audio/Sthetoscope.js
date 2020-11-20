@@ -55,9 +55,9 @@ const AudioRecorder = ({
 	};
 
 	const getMicrophone = async () => {
-		// const constraints = {
-		// 	sampleRate: 16000
-		// }
+
+		console.log(navigator.mediaDevices.getSupportedConstraints())
+
 		const audio = await navigator.mediaDevices.getUserMedia({
 		  audio: {
 			noiseSuppression: false
@@ -68,6 +68,7 @@ const AudioRecorder = ({
 		// await track.applyConstraints(constraints);
 		const options = {
 			mimeType: "audio/webm;codecs=opus",
+			noiseSuppression: false,
 			audioBitsPerSecond : 128000,
 		}
 		const recorder = new MediaRecorder(audio, options);
@@ -98,6 +99,7 @@ const AudioRecorder = ({
 					console.error(error);
 				}
 			})};
+
 
 	return (
 		<div className= "audio-container">
