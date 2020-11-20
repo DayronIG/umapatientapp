@@ -4,14 +4,14 @@ import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import moment from "moment";
 
 export default function RecipeInput({callback}) {
-    const { datetime, cuit } = useSelector(state => state.selectedAppointment)
-    const { corporate_norm } = useSelector(state => state.user)
+    const { datetime, cuit } = useSelector(state => state.assignations.selectedAppointment)
+    const { corporate_norm, dni } = useSelector(state => state.user)
 
     const uploadImage = (e, reference) => {
 		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		const currentFile = e.target?.files[0];
         if(currentFile) {
-            uploadFileToFirebase(currentFile, `${"12332112"}/prescription/${datetime}_${cuit}/${reference}`)
+            uploadFileToFirebase(currentFile, `${dni}/prescription/${datetime}_${cuit}/${reference}`)
 			.then((imgLink) => {
 				console.log(imgLink)
 			})

@@ -38,7 +38,7 @@ const SelectReason = (props) => {
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
 	function filterIfRecipeIsSelected(){
-		if (selectedSymptoms.includes("Receta")){
+		if (false && selectedSymptoms.includes("Receta")){
 			setRecipeInputModal(true)
 		} else {
 			redirect()
