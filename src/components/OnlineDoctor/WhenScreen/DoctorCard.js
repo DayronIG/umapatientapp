@@ -33,9 +33,9 @@ const DoctorCard = (props) => {
 	}
 
 	function selectDoctor(selected) {
-		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
+		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
 	}
 
 	return (
@@ -106,10 +106,12 @@ export default withRouter(DoctorCard);
 
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
+
 	const selectGuard = () => {
-		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
+		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
 	};
+
 	return (
 		<div className='doctorCard-container'>
 			<div className='doctorCard-firstRow guardDoctor' onClick={selectGuard}>
@@ -140,8 +142,8 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 	});
 
 	function selectDoctor(selected) {
-		history.replace(`/${dni}/onlinedoctor/reason`);
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
+		history.replace(`/${dni}/onlinedoctor/reason`);
 	}
 
 	return (

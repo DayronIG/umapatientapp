@@ -6,6 +6,8 @@ import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import symptoms from '../../../config/symptoms.json';
 import useScrollPosition from '../../Utils/use-scroll-position';
+import Modal from "../../GeneralComponents/Modal/MobileModal"
+import RecipeInput from "./RecipeInput"
 
 const SelectReason = (props) => {
 	const dispatch = useDispatch();
@@ -14,6 +16,7 @@ const SelectReason = (props) => {
 	const selectedSymptoms = useSelector((state) => state.assessment.selectedSymptoms);
 	// const coords = useSelector(state => state.queries.geolocation)
 	const [otherSymptoms, setOtherSymptoms] = useState('');
+	const [recipeInputModal, setRecipeInputModal] = useState(false);
 	let scrollPosition = useScrollPosition();
 
 	useEffect(() => {
@@ -34,8 +37,20 @@ const SelectReason = (props) => {
 		const newTags = selectedSymptoms.filter((tags) => tags !== symptom);
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
+	function filterIfRecipeIsSelected(){
+		if (false && selectedSymptoms.includes("Receta")){
+			setRecipeInputModal(true)
+		} else {
+			redirect()
+		}
+	}
+	function recipeModalCheckout(){
+		setRecipeInputModal(false)
+		redirect()
+	}
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
 		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
 	}
@@ -43,6 +58,12 @@ const SelectReason = (props) => {
 	return (
 		<>
 			<div className='dinamic-question'>
+				{
+					recipeInputModal &&
+					<Modal callback={()=>recipeModalCheckout()}> 
+						<RecipeInput callback={()=>recipeModalCheckout()}/>
+					</Modal>
+				}
 				<Backbutton inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
@@ -83,7 +104,7 @@ const SelectReason = (props) => {
 						placeholder='Otros síntomas'
 					/>
 				</div>
-				<button className='btn btn-blue-lg confirmConsultReason' onClick={redirect}>
+				<button className='btn btn-blue-lg confirmConsultReason' onClick={filterIfRecipeIsSelected}>
 					Siguiente
 				</button>
 			</div>
