@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import queries from './patientReducers';
+import queries from './queriesReducers';
 import front from './frontReducers';
 import assignations from './assignReducers';
 import assessment from './assessmentReducers';
@@ -9,8 +9,7 @@ import survey from './surveyReducers';
 import userActive from './userActiveReducers';
 import onboardingSecondStep from './onboardingSecondStepReducers';
 import onboardingThirdStep from './onboardingThirdStepReducers';
-import register from './registerReducers';
-import pol from './polReducers';
+import user from './userReducers';
 import autonomous from './autonomousReducers';
 import umacare from './umacareReducers';
 import deliveryService from './deliveryReducers';
@@ -29,8 +28,7 @@ const appReducer = combineReducers({
 	queries,
 	onboardingSecondStep,
 	onboardingThirdStep,
-	pol,
-	register,
+	user,
 	survey,
 	umacare,
 	transport,
@@ -42,6 +40,7 @@ const rootReducer = (state, action) => {
 		state = { 
 			queries: state.queries, 
 			deliveryService: state.deliveryService,
+			user: state.user,
 			userActive: state.userActive
 		};
 	}

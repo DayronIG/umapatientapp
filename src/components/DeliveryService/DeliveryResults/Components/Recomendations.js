@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from "react-redux";
 
 export default function Recomendations({goBack}) {
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const discount = useSelector(state => state.deliveryService.params.discount)
 
     useEffect(() => {

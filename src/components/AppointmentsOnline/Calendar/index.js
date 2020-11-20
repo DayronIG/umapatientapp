@@ -20,7 +20,7 @@ import swal from 'sweetalert';
 import './styles.scss';
 
 const MyCalendar = () => {
-	const patient = useSelector((state) => state.queries.patient);
+	const patient = useSelector((state) => state.user);
 	const [appointmentsOnline, setAppointmentsOnline] = useState([]);
 	const [date, setDate] = useState(moment()
 			.tz('America/Argentina/Buenos_Aires')

@@ -10,7 +10,7 @@ import { shuffleArr } from '../Utils/appointmentsUtils';
 import '../../styles/appointmentsonline/searchDoctor.scss';
 
 const SearchDoctor = (props) => {
-	const patient = useSelector(state => state.queries.patient)
+	const patient = useSelector(state => state.user)
 	const [doctors, setDoctors] = useState([])
 	const [filteredDocs, setFilteredDocs] = useState([])
 	const [loading, setLoading] = useState(false)

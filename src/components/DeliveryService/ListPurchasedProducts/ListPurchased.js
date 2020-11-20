@@ -8,7 +8,7 @@ import db from "../../../config/DBConnection";
 
 export default function ReferredInvitation({finalAction}) {
     const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const purchases = useSelector(state => state.deliveryService.deliveryInfo)
     const dispatch = useDispatch()
 

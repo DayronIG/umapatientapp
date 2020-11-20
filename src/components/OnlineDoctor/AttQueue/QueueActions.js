@@ -14,7 +14,7 @@ const QueueActions = (props) => {
 	const [contador, setContador] = useState(0);
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [File, setFile] = useState([]);
-	const auth = useSelector((state) => state.queries.patient);
+	const auth = useSelector((state) => state.user);
 
 	useEffect(() => {
 		const data = JSON.parse(localStorage.getItem('selectedAppointment'));

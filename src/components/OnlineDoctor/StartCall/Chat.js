@@ -15,7 +15,7 @@ import '../../../styles/onlinedoctor/Chat.scss';
 const Chat = (props) => {
     const dispatch = useDispatch()
     const { dni } = useParams()
-    const { ws } = useSelector((state) => state.queries.patient)
+    const { ws } = useSelector((state) => state.user)
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
     const [, setMedicalRecord] = useState([])

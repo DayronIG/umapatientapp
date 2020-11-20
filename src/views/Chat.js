@@ -32,7 +32,7 @@ const data = {
 const Chat = (props) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.userActive.token)
-  const user = useSelector(state => state.queries.patient)
+  const user = useSelector(state => state.user)
   let { specialty } = props.match.params;
   const [chatbotkey, ] = useState('a');
   const headers = { "Content-Type": "application/json"/* , 'Authorization': token */ }

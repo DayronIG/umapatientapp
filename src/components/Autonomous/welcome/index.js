@@ -13,7 +13,7 @@ export default (props)=>{
     const [ loading , setLoading ] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector(state => state.userActive.token)
-    const patient = useSelector(state => state.queries.patient);
+    const patient = useSelector(state => state.user);
     const [tags, ] = useState([
         {label: "Tos"},
         {label: "Resfrío"},

@@ -13,7 +13,7 @@ const Specialties = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { dni } = useParams();
-	const user = useSelector((state) => state.queries.patient);
+	const user = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);

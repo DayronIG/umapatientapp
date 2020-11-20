@@ -19,7 +19,7 @@ import "../../styles/wellness/wellness.scss";
 
 
 const Wellness = props => {
-  const { dni } = useSelector(state => state.queries.patient);
+  const { dni } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [modalFile, setModalFile] = React.useState({
     state: false,

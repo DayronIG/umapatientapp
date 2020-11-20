@@ -14,7 +14,7 @@ const ChartAudiometry = ({
     compensation = 115,
     linkConsulta = "/"
     }) => {
-    const { dni, ws } = useSelector(state => state.queries.patient) 
+    const { dni, ws } = useSelector(state => state.user) 
     const token = localStorage.getItem('token');
     const dBHL = [-13.5/20, -7.5/20, -9/20, -12/20];
 

@@ -8,7 +8,7 @@ import { BackButton } from '../../../GeneralComponents/Headers';
 
 export default function PositiveResult({finalAction}) {
     const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const discount = useSelector(state => state.deliveryService.params.discount)
     const [recomendations, setRecomendations] = useState(false)
 

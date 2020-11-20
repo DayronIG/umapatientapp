@@ -7,7 +7,7 @@ import ButtonAllHisopados from "./ButtonAllHisopados"
 
 const BuyHisopado = () => {
     const history = useHistory()
-    const patient = useSelector((state) => state.queries.patient)
+    const patient = useSelector((state) => state.user)
 	const currentHisopadoIndex = useSelector(state => state.deliveryService)
     // const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
     const deliveryInfo = useSelector((state) => state.deliveryService?.deliveryInfo) || ""

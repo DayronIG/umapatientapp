@@ -9,7 +9,7 @@ import {mobility_address} from "../../../../config/endpoints"
 
 export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, isModal=false }) {
     const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
-    const patient = useSelector(state => state.queries.patient);
+    const patient = useSelector(state => state.user);
     const [showCongrats, setShowCongrats] = useState(false);
     const delivery = useSelector(state => state.deliveryService.params)
     const { piso, depto, address, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm)

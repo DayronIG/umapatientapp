@@ -13,7 +13,7 @@ const Sthetoscope = (props) => {
     const token = useSelector(state => state.userActive.token)
     const [started, setStarted] = useState(false)
     const [record, setRecord] = useState()
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
 
     const startRecording = () => {
         console.log("Empezar a grabar")

@@ -8,7 +8,7 @@ import "../../styles/wellness/ocr.scss";
 
 export default () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.queries.patient)
+  const user = useSelector(state => state.user)
 
   useEffect(() => {
     if (!user.dni) {

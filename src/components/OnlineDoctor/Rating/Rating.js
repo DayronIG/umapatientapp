@@ -14,7 +14,7 @@ const Rating = (props) => {
 	const [ratingMed, setRatingMed] = useState(0);
 	const [notes, setNotes] = useState('');
 	const token = useSelector((state) => state.userActive.token);
-	const patient = useSelector((state) => state.queries.patient);
+	const patient = useSelector((state) => state.user);
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
     React.useEffect(() => {

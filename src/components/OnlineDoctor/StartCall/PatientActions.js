@@ -9,7 +9,7 @@ import Sthetoscope from '../Biomarkers/Sthethoscope';
 import DBConnection from '../../../config/DBConnection';
 
 const PatientActions = (props) => {
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const biomarker = useSelector(state => state.front.biomarker.open)
     const dispatch = useDispatch()
     const call = useSelector(state => state.queries.callSettings)

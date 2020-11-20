@@ -6,7 +6,7 @@ import ModulesMenu from '../components/HomePage/ModulesMenu';
 
 const HomePage = () => {
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.queries.patient);
+	const user = useSelector((state) => state.user);
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
 	useEffect(() => {

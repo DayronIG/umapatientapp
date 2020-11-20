@@ -19,7 +19,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const [sthetoscopeAudio, setSthetoscopeAudio] = useState("");
     const [sthetoscopeBpm, setSthetoscopeBpm] = useState("")
     const timeID = useSelector(state => state.biomarkers.sthetoscopeID)
-    const {ws} = useSelector(state => state.queries.patient)
+    const {ws} = useSelector(state => state.user)
     const [onPlay, setOnPlay] = useState(false);
     const audioElement = useSelector(state => state.biomarkers.audioData);
     const dispatch = useDispatch()
