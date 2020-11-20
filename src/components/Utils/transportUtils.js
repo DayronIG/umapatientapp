@@ -13,41 +13,41 @@ export function renderMarker(service) {
 		case 'STANDBY':
 			return (
 				{
-					lat:service?.request?.geo_inicio.lat,
-					lng:service?.request?.geo_inicio.lon,					
-					text:service?.request?.address
+					lat: service?.request?.geo_inicio.lat,
+					lng: service?.request?.geo_inicio.lon,
+					text: service?.request?.address
 				}
 			);
 		case 'GOING-ORIGIN':
 			return (
 				{
-					lat:service?.request?.geo_inicio.lat,
-					lng:service?.request?.geo_inicio.lon,					
-					text:service?.request?.address
+					lat: service?.request?.geo_inicio.lat,
+					lng: service?.request?.geo_inicio.lon,
+					text: service?.request?.address
 				}
 			);
 		case 'ARRIVED-ORIGIN':
 			return (
 				{
-					lat:service?.request?.geo_inicio.lat,
-					lng:service?.request?.geo_inicio.lon,					
-					text:service?.request?.address
+					lat: service?.request?.geo_inicio.lat,
+					lng: service?.request?.geo_inicio.lon,
+					text: service?.request?.address
 				}
 			);
 		case 'GOING-DESTINY':
 			return (
 				{
-					lat:service?.request?.geo_fin.lat,
-					lng:service?.request?.geo_fin.lon,					
-					text:service?.request?.address
+					lat: service?.request?.geo_fin.lat,
+					lng: service?.request?.geo_fin.lon,
+					text: service?.request?.address
 				}
 			);
 		case 'FINISHED':
 			return (
 				{
-					lat:service?.request?.geo_fin.lat,
-					lng:service?.request?.geo_fin.lon,					
-					text:service?.request?.address
+					lat: service?.request?.geo_fin.lat,
+					lng: service?.request?.geo_fin.lon,
+					text: service?.request?.address
 				}
 			);
 		default:
@@ -55,14 +55,14 @@ export function renderMarker(service) {
 	}
 }
 
-export function calculateFirstPoint(service) { 
+export function calculateFirstPoint(service) {
 	switch (service?.status_tramo) {
 		case 'STANDBY':
 			return (
 				{
 					lat: service?.request?.geo_inicio.lat,
 					lng: service?.request?.geo_inicio.lon,
-					text:	service?.request?.geo_inicio.address
+					text: service?.request?.geo_inicio.address
 				}
 			);
 		case 'GOING-ORIGIN':
@@ -70,7 +70,7 @@ export function calculateFirstPoint(service) {
 				{
 					lat: service?.request?.geo_inicio.lat,
 					lng: service?.request?.geo_inicio.lon,
-					text:	service?.request?.geo_inicio.address				
+					text: service?.request?.geo_inicio.address
 				}
 			);
 		case 'ARRIVED-ORIGIN':
@@ -78,14 +78,14 @@ export function calculateFirstPoint(service) {
 				{
 					lat: service?.request?.geo_inicio.lat,
 					lng: service?.request?.geo_inicio.lon,
-					text:	service?.request?.geo_inicio.address				
+					text: service?.request?.geo_inicio.address
 				}
 			);
 		case 'GOING-DESTINY':
 			return (
 				{
 					lat: service?.request?.geo_fin.lat,
-					lng: service?.request?.geo_fin.lon,				
+					lng: service?.request?.geo_fin.lon,
 					text: service?.request?.geo_fin.address
 				}
 			);
@@ -100,7 +100,22 @@ export function calculateFirstPoint(service) {
 		default:
 			return {
 				lat: 0,
-				lng: 0 
+				lng: 0
+			};
+	}
+}
+
+export function calculateCenter(service = {}) {
+	switch (service.status_tramo) {
+		case 'STANDBY':
+			return {
+				lat: parseFloat(service.request?.geo_inicio.lat),
+				lng: parseFloat(service.request?.geo_inicio.lon),
+			};
+		default:
+			return {
+				lat: parseInt(service.current_position_remis?.lat) || 0,
+				lng: parseInt(service.current_position_remis?.lon) || 0
 			};
 	}
 }

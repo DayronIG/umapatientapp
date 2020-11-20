@@ -48,50 +48,48 @@ function ScheduleTransport() {
 	}
 
 	const handleSubmit = async (event) => {
-		event.preventDefault();
-		dispatch({ type: 'LOADING', payload: true });
-		function isEmpty(obj) {
-			for (var key in obj) {
-				if (obj.hasOwnProperty(key))
-					return false;
-			}
-			return true;
-		}
-		const isValid = days.every(day => {
-			const originTime = Number(transportData.startSchedules[day]?.slice(0, 2));
-			const destinyTime = Number(transportData.returnSchedules[day]?.slice(0, 2));
-			if (!originTime || !destinyTime) return true;
-			if (destinyTime > originTime) {
+		try {
+			event.preventDefault();
+			dispatch({ type: 'LOADING', payload: true });
+			function isEmpty(obj) {
+				for (var key in obj) {
+					if (obj.hasOwnProperty(key))
+						return false;
+				}
 				return true;
-			} else {
+			}
+			const isValid = days.every(day => {
+				const originTime = Number(transportData.startSchedules[day]?.slice(0, 2));
+				const destinyTime = Number(transportData.returnSchedules[day]?.slice(0, 2));
+				if (!originTime || !destinyTime) return true;
+				if (destinyTime > originTime) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			if (!isValid) {
+				swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
+				dispatch({ type: 'LOADING', payload: false });
 				return false;
 			}
-
-		});
-		if (!isValid) {
-			swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
-			dispatch({ type: 'LOADING', payload: false });
-			return
-		}
-		if (isEmpty(transportData.startSchedules)) {
-			swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
-			dispatch({ type: 'LOADING', payload: false });
-			return
-		}
-		try {
+			if (isEmpty(transportData.startSchedules)) {
+				swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
+				dispatch({ type: 'LOADING', payload: false });
+				return false;
+			}
 			await transportActions.createTransportSchedule(transportData, patient);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
 			window.gtag('event', 'select_content', { content_type: "NEW_TRANSPORT_CREATED", item: ['NEW_TRANSPORT_CREATED'] })
 			dispatch({ type: 'LOADING', payload: false });
-			dispatch({ type: 'HANDLE_RESET' })
-			dispatch({ type: 'CLEAN_DELIVERYDATA' })
-
-			return history.push(`/${ws}/scheduledTransportSuccess`);
+			history.push(`/${ws}/scheduledTransportSuccess`);
+			return true;
 		} catch (error) {
 			console.error(error);
-			window.gtag('event', 'select_content', { content_type: "NEW_TRANSPORT_FAIL", item: ['NEW_TRANSPORT_FAIL'] })
 			dispatch({ type: 'LOADING', payload: false });
-			return swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
+			window.gtag('event', 'select_content', { content_type: "NEW_TRANSPORT_FAIL", item: ['NEW_TRANSPORT_FAIL'] })
+			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
+			return false;
 		}
 	}
 
@@ -134,7 +132,7 @@ function ScheduleTransport() {
 			</div>
 			<div className="scheduleForm__container">
 				<div className='centeredElements'>
-					<h5 className='scheduleForm__container--title'>Horario de regreso a origen</h5>
+					<h5 className='scheduleForm__container--title'>Horario de salida</h5>
 					{!transportData.hasReturn && (
 						<button
 							className="addButton"
@@ -182,7 +180,7 @@ function ScheduleTransport() {
 			<div className="FooterBtn">
 				<button onClick={handleSubmit}>Crear traslado</button>
 			</div>
-		</form>
+		</form >
 	);
 }
 

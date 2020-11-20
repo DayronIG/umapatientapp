@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
-import { renderMarker, calculateFirstPoint, renderTitle, renderTimeMessage } from '../Utils/transportUtils';
+import { renderMarker, calculateFirstPoint, renderTitle, renderTimeMessage, calculateCenter } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
 import { useParams, useHistory } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
@@ -26,6 +26,8 @@ const TransportTracking = () => {
 		setDrawRoute(() => routeDrawer(maps, dirServ, dirRenderer));
 		setMapBounder(() => mapBounds(map, maps));
 	}
+
+
 
 	useEffect(() => {
 		if (service?.status_tramo === 'FINISHED') {
@@ -71,10 +73,7 @@ const TransportTracking = () => {
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({
-						lat: service?.current_position_remis?.lat || 0,
-						lng: service?.current_position_remis?.lon || 0
-					})}
+					{...mapConfig(calculateCenter(service))}
 					onGoogleApiLoaded={setMapFunctions}
 				>
 					{service?.current_position_remis?.lat && (

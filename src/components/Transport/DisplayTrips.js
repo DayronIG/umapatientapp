@@ -11,10 +11,10 @@ import { renderStatus } from '../Utils/transportUtils';
 import { Loader } from '../GeneralComponents/Loading';
 import swal from 'sweetalert';
 import '../../styles/generalcomponents/TransportUserActive.scss';
-
 const TransportUserActive = () => {
 	const toogleModal = useSelector((state) => state.front.openDetails);
-	const { patient } = useSelector(state => state.queries);
+	const { patient } = useSelector(state => state.queries)
+	const { date_filter } = useSelector(state => state.transport);;
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
@@ -27,14 +27,14 @@ const TransportUserActive = () => {
 	const [noDriver, setNoDriver] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
-	
-	useEffect(() =>{
-		window.gtag('event', 'select_content', {content_type: "DISPLAY_TRIPS", item: ['DISPLAY_TRIPS']})
-	},[])
+
+	useEffect(() => {
+		window.gtag('event', 'select_content', { content_type: "DISPLAY_TRIPS", item: ['DISPLAY_TRIPS'] })
+	}, [])
 
 	useEffect(() => {
 		getServices();
-	}, [patient]);
+	}, [patient, date_filter]);
 
 	async function getServices() {
 		if (!patient?.dni) return null;
@@ -51,8 +51,18 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
-			const appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED');
-			const pendServicesTemp = response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+			let appservicesTemp;
+			let pendServicesTemp;
+
+			if (date_filter) {
+				let date = moment(date_filter).format('YYYY-MM-DD')
+				appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
+				pendServicesTemp = response.data.filter(item => (item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN') && item.fecha === date);
+			} else {
+				appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED');
+				pendServicesTemp = response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+			}
+
 			setApprovedServices(appservicesTemp);
 			setPendingServices(pendServicesTemp);
 		} catch (error) {
@@ -79,12 +89,10 @@ const TransportUserActive = () => {
 					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
 				}
 			});
-			swal('exito!', 'viaje cancelado', 'success')
-				.then(() => {
-					setDisplayLoading(false)
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					getServices()
-				})
+			await swal('exito!', 'viaje cancelado', 'success')
+			setDisplayLoading(false)
+			dispatch({ type: 'TOGGLE_DETAIL' });
+			getServices()
 		} catch (error) {
 			console.error(error);
 		}
@@ -94,7 +102,9 @@ const TransportUserActive = () => {
 		setSelectedService(item);
 		dispatch({ type: 'TOGGLE_DETAIL' });
 	}
-	
+
+
+
 	return (
 		<div className='transportList'>
 			{toogleModal &&
@@ -143,7 +153,6 @@ const TransportUserActive = () => {
 					Pendientes
 				</button>
 			</div>
-
 			{/* SIN TRASLADOS */}
 			{pendingServices.length == 0 && approvedServices.length == 0 &&
 				<div className='noTranslates'>
@@ -168,7 +177,7 @@ const TransportUserActive = () => {
 											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
 									</div>
-									{	
+									{
 										openTravel.assignation_id !== item.assignation_id &&
 										<div className="openContent">
 											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
@@ -179,7 +188,7 @@ const TransportUserActive = () => {
 											<div className="contentContainer">
 												<div className="origin"><p className="originTitle">Origen:</p>
 													<p className="originContent"> {item.geo_inicio_address}</p></div>
-												<div className="destiny"><p className="destinyTitle">Origen:</p>
+												<div className="destiny"><p className="destinyTitle">Destino:</p>
 													<p className="destinyContent"> {item.geo_fin_address}</p></div>
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
@@ -281,15 +290,9 @@ const TransportUserActive = () => {
 														<p className="destinyTitle">Destino:</p>
 														<p className="destinyContent">{item.geo_fin_address}</p>
 													</div>
-													<button 
-														className="checkStatus" 
-														onClick={() => {
-															if (item.provider_fullname) {
-																history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`);
-															} else {
-																history.push('/transportNoDriver');
-															}
-														}}>
+													<button
+														className="checkStatus"
+														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 														<FaCar /> Seguir recorrido
 													</button>
 													<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -318,7 +321,7 @@ const TransportUserActive = () => {
 												<div>Estado: {renderStatus(item.status_traslado)}</div>
 											</div>
 										</div>
-										{	
+										{
 											openTravel.assignation_id !== item.assignation_id &&
 											<div className="openContent">
 												<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
@@ -336,11 +339,7 @@ const TransportUserActive = () => {
 														<p className="destinyContent">{item.geo_fin_address}</p>
 													</div>
 													<button className="checkStatus" onClick={() => {
-														if (item.provider_fullname) {
-															history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
-														} else {
-															history.push('/transportNoDriver');
-														}
+														history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
 													}}>
 														<FaCar /> Seguir recorrido
 													</button>
@@ -357,7 +356,7 @@ const TransportUserActive = () => {
 											</>
 										}
 									</li>
-							))}
+								))}
 						</ul>
 					</div>
 				</>

@@ -15,7 +15,7 @@ const Register = props => {
   const user = useSelector(state => state.queries.patient);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
-  const { dni,  day, month,
+  const { dni, day, month,
     year, sex, address, piso, os, fullname } = useSelector(state => state.register);
   const monthRef = useRef();
   const yearRef = useRef();
@@ -45,7 +45,7 @@ const Register = props => {
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
     let dob = `${year}-${month}-${day}`;
     let data = {
-      address: address || "", 
+      address: address || "",
       corporate: os || "",
       corporate_norm: os || "",
       dni: dni || "",
@@ -53,12 +53,12 @@ const Register = props => {
       dt: date || "",
       fullname: fullname || "",
       group: user.dni || "",
-      piso: piso || "", 
+      piso: piso || "",
       sex: sex || "",
       ws: user.ws || "",
     }
     axios
-      .post(`${node_patient}/dependant`, {dependant: data})
+      .post(`${node_patient}/dependant`, { dependant: data })
       .then(res => {
         if (props.redirectToConsultory === 'true') {
           props.history.replace(`/${dni}/appointmentsonline/`)
@@ -108,7 +108,7 @@ const Register = props => {
 
   return (
     <div className="register__container">
-    <GenericHeader/>
+      <GenericHeader />
       {loading && <Loading />}
       {front.alert.active && (
         <Alert
@@ -123,12 +123,12 @@ const Register = props => {
             autoComplete="on" type="text"
             onChange={e => dispatch({ type: "REGISTER_FIRST_FULLNAME", payload: e.target.value })} />
           <label className='form-label' htmlFor='dni'>
-              Identificación, cédula o DNI
+            Identificación, cédula o DNI
           </label>
           <input
-              className='form-input' id='dni' placeholder='e.g. 34111111' autoComplete='on'
-              onChange={e => handleDni(e.target.value)} value={dni} required />
-         <div className="d-flex justify-content-start">
+            className='form-input' id='dni' placeholder='e.g. 34111111' autoComplete='on'
+            onChange={e => handleDni(e.target.value)} value={dni} required />
+          <div className="d-flex justify-content-start">
             <div className="birthContainer w-50">
               <label className="form-label birthLabel">
                 Fecha de nacimiento

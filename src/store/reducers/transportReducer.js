@@ -19,6 +19,7 @@ const initialState = {
 	origin_translate_thursday: false,
 	origin_translate_friday: false,
 	origin_translate_saturday: false,
+	date_filter: null
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -83,6 +84,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, back_translate_sunday: payload };
 		case transportTypes.HANDLE_RESET:
 			return { ...initialState, origin: { lat: 0, lng: 0 }, destiny: { lat: 0, lng: 0 } };
+		case 'SET_DATE_FILTER':
+			return { ...state, date_filter: payload }
 		default:
 			return state;
 	}
