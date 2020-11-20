@@ -616,14 +616,14 @@ const Recipe = ({ att, doc }) => {
 	const [fromUP] = useState(prescripNum?.length > 13 ? true : false);
 	const [prescripDate] = useState(mr?.receta[0]?.prescriptionDate ? mr.receta[0].prescriptionDate : '');
 	const dataToPrint = {
-		patient: patient,
+		patient,
+		mr,
 		recipe: mr.receta,
 		logo: mr.receta?.[0]?.selected_logo,
 		doctorInfo: doc,
 		ref: compRef,
 		prescriptionNumber: prescripNum || '',
 		prescriptionDate: prescripDate || '',
-		mr,
 	};
 	
 	useEffect(() => {
