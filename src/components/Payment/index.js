@@ -8,12 +8,12 @@ import PaymentCardPP from './paymentCardPP';
 import Loader from "../GeneralComponents/Loading"
 
 export default function Payment({finalAction}) {
-    const { ws } = useSelector(state => state.queries.patient)
+    const { ws } = useSelector(state => state.user)
     const history = useHistory();
     //DESCOMENTAR CUANDO PAYMENT SEA INTERNACIONAL
 
-    // const {lat, lon} = useSelector(state => state.queries.patient)
-    // const { country } = useSelector(state => state.queries.patient)
+    // const {lat, lon} = useSelector(state => state.user)
+    // const { country } = useSelector(state => state.user)
     // const dispatch = useDispatch()
 
     // useEffect(()=>{

@@ -24,7 +24,7 @@ const MobileModal = (props) => {
         }
         {
           props.hideTitle ? '' : 
-          <div className="modaTitle">{props.title}</div>
+          <div className="modalTitle">{props.title}</div>
         }
         <div className="modalContent">{props.children}</div>
       </div>

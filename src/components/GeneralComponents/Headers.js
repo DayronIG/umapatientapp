@@ -23,7 +23,7 @@ export const OnlineDoctorHeader = () => {
 };
 
 export const GenericHeader = (props) => {
-	const { ws, profile_pic } = useSelector((state) => state.queries.patient);
+	const { ws, profile_pic } = useSelector((state) => state.user);
 	const [displayNews] = useState(false);
 	return (
 		<section className='header-container'>

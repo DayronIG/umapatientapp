@@ -10,7 +10,7 @@ import db from "../../../config/DBConnection";
 
 export default function ListTracker({finalAction}) {
     const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
     const purchases = useSelector(state => state.deliveryService.deliveryInfo)
     const id = useSelector((state) => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId);

@@ -11,7 +11,7 @@ import Loading from '../../GeneralComponents/Loading';
 import swal from 'sweetalert';
 
 export default ({ questions }) => {
-  const patient = useSelector(state => state.queries.patient);
+  const patient = useSelector(state => state.user);
   const autonomous = useSelector(state => state.autonomous);
   const [actualQuestion, setActualQuestion] = useState({});
   const [qList, setQlist] = useState([]);

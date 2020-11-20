@@ -32,10 +32,6 @@
       top: 104px;
       bottom: 0;
       overflow: scroll;
-      .backButtonContainer {
-        width: 100%;
-        line-height: 0;
-        padding: 0 10px;
       }
       li {
         margin-bottom: 10px;
@@ -159,7 +155,6 @@
         left: 0;
       }
     }
-  }
 }
 
 .createNewService__container { 

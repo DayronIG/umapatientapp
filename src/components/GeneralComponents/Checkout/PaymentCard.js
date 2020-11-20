@@ -15,7 +15,7 @@ import '../../../styles/Payment.scss';
 const PaymentCard = (props) => {
     const dispatch = useDispatch()
     const loading = useSelector(state => state.front.loading)
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const [submit, setSubmit] = useState(false)
     const [wizard, setWizard] = useState(1)
     const [paymentStatus, setStatus] = useState(false)

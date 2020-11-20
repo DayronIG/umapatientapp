@@ -19,7 +19,7 @@ const PaymentCardMP = () => {
     const {params, current, deliveryInfo} = useSelector(state => state.deliveryService)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
-    const user = useSelector(state => state.queries.patient);
+    const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
     const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
     const [submit, setSubmit] = useState(false);

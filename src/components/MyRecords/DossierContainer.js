@@ -13,7 +13,7 @@ import '../../styles/orders.scss';
 const DossierContainer = (props) => {
     const voucherRef = useRef()
     const [docData, setDocData] = useState()
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const [socialWork] = useState(patient.obra_social ? patient.obra_social.toLowerCase() : '')
     let { att, tab } = props
 

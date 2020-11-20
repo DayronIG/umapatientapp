@@ -33,7 +33,7 @@ const Register = props => {
     const {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
-     } = useSelector(state => state.register)
+     } = useSelector(state => state.user)
     const dayRef = useRef()
     const monthRef = useRef()
     const yearRef = useRef()
@@ -63,8 +63,8 @@ const Register = props => {
             swal('Error', 'Este no es un teléfono válido.', 'warning')
             history.push('/home')
         } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: ws })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
+            dispatch({ type: 'USER_FIRST_WS', payload: ws })
+            dispatch({ type: 'USER_FIRST_OS', payload: ref })
             getCountryCode()
             generatePassword()
         }
@@ -73,7 +73,7 @@ const Register = props => {
     async function getCountryCode() {
         if(getWs){
             let code = await getCountry(getWs)
-            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
+            dispatch({ type: 'USER_FIRST_COUNTRY', payload: code })
         }
     }
 
@@ -150,8 +150,8 @@ const Register = props => {
             let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
             let birth = moment(buildDate).format('YYYY-MM-DD')
             let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-            dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
-            dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+            dispatch({ type: 'USER_FIRST_DOB', payload: birth })
+            dispatch({ type: 'USER_FIRST_DT', payload: date })
             return date
         }
     }
@@ -159,7 +159,7 @@ const Register = props => {
     let handleSubmit = async (reg, user) => {
         let dt = composeDate()
         dispatch({ type: 'LOADING', payload: true })
-        dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
+        dispatch({ type: 'USER_FIRST_CORE', payload: reg })
         let subscription
         let source = affiliate // To do move to back
         if (source && source.toLowerCase().includes('rappi_peru')) {
@@ -222,7 +222,7 @@ const Register = props => {
 
     const handleInput = (typeDispatch) => (event) => {
         var { type, value, name } = event.target;
-        if(typeDispatch === "REGISTER_FIRST_YEAR"){type="number"}
+        if(typeDispatch === "USER_FIRST_YEAR"){type="number"}
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
@@ -262,7 +262,7 @@ const Register = props => {
                                     Nombre y apellido* 
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
-                                autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
+                                autoComplete='off' name='nombre' type='text'onChange={handleInput('USER_FIRST_FULLNAME')} />
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -272,7 +272,7 @@ const Register = props => {
                                     Identificación, cédula o DNI*
                                 </label>
                                 <input className='form-input' id='dni' name='dni' type='text' placeholder='e.g. 99899899' autoComplete='off'
-                                onChange={handleInput('REGISTER_FIRST_DNI')} value={getId} />
+                                onChange={handleInput('USER_FIRST_DNI')} value={getId} />
                                 {errors.dni && (
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
@@ -285,7 +285,7 @@ const Register = props => {
                                     N° de celular
                                 </label>
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
-                                onChange={handleInput('REGISTER_FIRST_WS')}  value={getWs? getWs: ""}  />
+                                onChange={handleInput('USER_FIRST_WS')}  value={getWs? getWs: ""}  />
                                 {errors.ws && (
                                     <p className="form__validation--error">x Debe ingresar un número de celular válido</p>
                                 )}
@@ -298,7 +298,7 @@ const Register = props => {
                              <input
                                 className='form-input' id='os' placeholder='ej: Unión Personal'
                                 autoComplete='off' type='text'
-                                onChange={handleInput('REGISTER_FIRST_OS')}
+                                onChange={handleInput('USER_FIRST_OS')}
                                 name='cobertura'
                                 
                             />
@@ -313,7 +313,7 @@ const Register = props => {
                                     <div className='inputsContainer'>
                                         <input className='form-mid-input'
                                             onChange={(e) => {
-                                                handleInput('REGISTER_FIRST_DAY')(e);
+                                                handleInput('USER_FIRST_DAY')(e);
                                                 if(e.target.value.length === 2) monthRef.current.focus();
                                             }} type='number' min='1'
                                             max='31' name='bday' id='dateDay' placeholder={getDay}
@@ -323,7 +323,7 @@ const Register = props => {
                                         <input
                                             className='form-mid-input' maxLength='2' ref={monthRef}
                                             onChange={(e) => {
-                                                handleInput('REGISTER_FIRST_MONTH')(e);
+                                                handleInput('USER_FIRST_MONTH')(e);
                                                 if(e.target.value.length === 2) yearRef.current.focus();
                                             }}
                                             type='number' min='1' max='12'
@@ -333,13 +333,13 @@ const Register = props => {
                                         <input
                                             maxLength='4' className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
                                             ref={yearRef} type='text' inputMode="numeric" name='bYear'
-                                            onChange={handleInput('REGISTER_FIRST_YEAR')}
+                                            onChange={handleInput('USER_FIRST_YEAR')}
                                             
                                         />
                                         <select
                                             className='form-mid-input'
                                             id='gender'
-                                            onChange={e => dispatch({ type: 'REGISTER_FIRST_SEX', payload: e.target.value })}
+                                            onChange={e => dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value })}
                                             placeholder={getSex}
                                             >
 

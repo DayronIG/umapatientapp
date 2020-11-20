@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
-import { jsonChat, stepsChat, Chatbot } from '../models/Chatbot';
+import { Chatbot } from '../models/Chatbot';
 import { useDispatch, useSelector } from "react-redux";
 import Axios from 'axios';
 import { flow_tree } from '../config/endpoints';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
-// import Query from '../components/Query/QueryContainer';
 import '../styles/chat/chatPeaceOfMind.scss';
 import logoUma from '../assets/icons/icon-168.png';
 import { CustomUmaLoader } from '../components/global/Spinner/Loaders';
@@ -33,7 +32,7 @@ const data = {
 const Chat = (props) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.userActive.token)
-  const user = useSelector(state => state.queries.patient)
+  const user = useSelector(state => state.user)
   let { specialty } = props.match.params;
   const [chatbotkey, ] = useState('a');
   const headers = { "Content-Type": "application/json"/* , 'Authorization': token */ }

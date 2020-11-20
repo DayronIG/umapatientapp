@@ -12,11 +12,11 @@ import "../../../styles/generalcomponents/register.scss";
 
 const Register = props => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.queries.patient);
+  const user = useSelector(state => state.user);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
   const { dni,  day, month,
-    year, sex, address, piso, os, fullname } = useSelector(state => state.register);
+    year, sex, address, piso, os, fullname } = useSelector(state => state.user);
   const monthRef = useRef();
   const yearRef = useRef();
 
@@ -24,8 +24,8 @@ const Register = props => {
     localStorage.setItem("userRegistered", props.match.params.ws);
     let ws = localStorage.getItem("userRegistered");
     let dni = localStorage.getItem("userId");
-    dispatch({ type: "REGISTER_FIRST_DNI", payload: dni });
-    dispatch({ type: "REGISTER_FIRST_WS", payload: ws });
+    dispatch({ type: "USER_FIRST_DNI", payload: dni });
+    dispatch({ type: "USER_FIRST_WS", payload: ws });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -33,8 +33,8 @@ const Register = props => {
     let buildDate = new Date(month + "/" + day + "/" + year);
     let birth = moment(buildDate).format("YYYY-MM-DD");
     let date = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
-    dispatch({ type: "REGISTER_FIRST_DOB", payload: birth });
-    dispatch({ type: "REGISTER_FIRST_DT", payload: date });
+    dispatch({ type: "USER_FIRST_DOB", payload: birth });
+    dispatch({ type: "USER_FIRST_DT", payload: date });
   };
 
   let handleSignUp = (event) => {
@@ -84,14 +84,14 @@ const Register = props => {
   }
 
   const onChangeDay = e => {
-    dispatch({ type: "REGISTER_FIRST_DAY", payload: e.target.value });
+    dispatch({ type: "USER_FIRST_DAY", payload: e.target.value });
     if (e.target.value.length === 2) {
       monthRef.current.focus()
     }
   }
 
   const onChangeMonth = e => {
-    dispatch({ type: "REGISTER_FIRST_MONTH", payload: e.target.value });
+    dispatch({ type: "USER_FIRST_MONTH", payload: e.target.value });
     if (e.target.value.length === 2) {
       yearRef.current.focus()
     }
@@ -101,14 +101,13 @@ const Register = props => {
     const reg = /^\d+$/
     const str = dni.toString()
     const isNumber = reg.test(str)
-    if (isNumber) dispatch({ type: 'REGISTER_FIRST_DNI', payload: dni })
-    else if (!dni) dispatch({ type: 'REGISTER_FIRST_DNI', payload: '' })
+    if (isNumber) dispatch({ type: 'USER_FIRST_DNI', payload: dni })
+    else if (!dni) dispatch({ type: 'USER_FIRST_DNI', payload: '' })
   }
 
 
   return (
     <div className="register__container">
-    <GenericHeader/>
       {loading && <Loading />}
       {front.alert.active && (
         <Alert
@@ -121,7 +120,7 @@ const Register = props => {
         <div className="registerContainerProps">
           <input className="form-input" id="name" placeholder="Nombre y apellido" required
             autoComplete="on" type="text"
-            onChange={e => dispatch({ type: "REGISTER_FIRST_FULLNAME", payload: e.target.value })} />
+            onChange={e => dispatch({ type: "USER_FIRST_FULLNAME", payload: e.target.value })} />
           <label className='form-label' htmlFor='dni'>
               Identificación, cédula o DNI
           </label>
@@ -136,23 +135,23 @@ const Register = props => {
               <div className="d-flex birthInputContainer">
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="31" name="bday" required="required"
-                  id="dateDay" placeholder={day}
+                  id="dateDay" placeholder={day || "01"}
                   onChange={e => onChangeDay(e)}
                 />
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="12" name="bMonth"
                   required="required" id="dateMonth"
-                  ref={monthRef} placeholder={month}
+                  ref={monthRef} placeholder={month || "01"}
                   onChange={e => onChangeMonth(e)} />
                 <input
                   className="form-mid-input mr-2" maxLength="4"
                   ref={yearRef}
-                  placeholder={year}
+                  placeholder={year || "2000"}
                   type="number"
                   min="1900" max="2020"
                   name="bYear" required="required" id="dateYear"
                   onChange={e => {
-                    dispatch({ type: "REGISTER_FIRST_YEAR", payload: e.target.value })
+                    dispatch({ type: "USER_FIRST_YEAR", payload: e.target.value })
                   }}
                 />
               </div>
@@ -161,7 +160,7 @@ const Register = props => {
               <label className="form-label gender">Género</label>
               <select className="form-mid-input" style={{ height: "65%" }}
                 id="gender" required
-                onChange={e => dispatch({ type: "REGISTER_FIRST_SEX", payload: e.target.value })} >
+                onChange={e => dispatch({ type: "USER_FIRST_SEX", payload: e.target.value })} >
                 <option defaultValue>Sexo</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
@@ -171,7 +170,7 @@ const Register = props => {
           <input
             className="form-input" id="os" placeholder="Obra social/Prepaga/Seguro"
             autoComplete="off" type="text" required
-            onChange={e => dispatch({ type: "REGISTER_FIRST_OS", payload: e.target.value })}
+            onChange={e => dispatch({ type: "USER_FIRST_OS", payload: e.target.value })}
           />
         </div>
         <div className="col-sm-12 text-right">

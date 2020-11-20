@@ -10,7 +10,7 @@ import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
     const {step} = useSelector((state) => state.deliveryService);
-    const { ws } = useSelector(state => state.queries.patient);
+    const { ws } = useSelector(state => state.user);
     const history = useHistory()
     const dispatch = useDispatch()
 

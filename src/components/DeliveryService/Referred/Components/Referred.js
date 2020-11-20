@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 
 export default function ReferredInvitation({finalAction}) {
     const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
 
     return (
         <div className="allwhite-hisopados-background hisopados-flux" >

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { user_cancel, cx_action_create } from '../../../config/endpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -340,12 +340,27 @@ const Queue = (props) => {
         }
     }
 
+    const cancelAppointmentWithReasons = useCallback(
+        () => {
+                let claim = ''
+                if (cancelOptions === 'otro') {
+                    claim = cancelDescription
+                } else {
+                    claim = cancelOptions
+                }
+                handleAppointment('cancel', claim)
+                setShowModalCancelOptions(false)
+                setCancelOptions('')
+                setCancelDescription('')
+        },[cancelDescription, cancelOptions])
+
     return (
         <>
             {loading && <Loading />}
             {showModalCancelOptions &&
                 <div className='text-center'>
-                    <MobileModal title='Motivo de canelación' hideCloseButton>
+                    <MobileModal title='Motivo de canelación'
+                        callback={() => setShowModalCancelOptions(false)}>
                         <div className='detail-modal-content'>
                             <div className='mb-2 d-flex flex-wrap flex-column align-items-start'>
                                 <div className='custom-control custom-radio'>
@@ -376,18 +391,7 @@ const Queue = (props) => {
                             {cancelOptions === 'otro' &&
                                 <textarea onChange={e => setCancelDescription(e.target.value)} value={cancelDescription}></textarea>
                             }
-                            <button className='btn btn-blue mt-3' onClick={() => {
-                                let claim = ''
-                                if (cancelOptions === 'otro') {
-                                    claim = cancelDescription
-                                } else {
-                                    claim = cancelOptions
-                                }
-                                handleAppointment('cancel', claim)
-                                setShowModalCancelOptions(false)
-                                setCancelOptions('')
-                                setCancelDescription('')
-                            }}>
+                            <button className='btn btn-blue mt-3' onClick={() => cancelAppointmentWithReasons()}>
                                 Confirmar
                             </button>
                         </div>
@@ -395,8 +399,10 @@ const Queue = (props) => {
                 </div>
             }
             {openDetails &&
-                <MobileModal title='Enviar un reclamo'>
-                    <SendComplain sendComplain={claim => handleAppointment('complain', claim)} />
+                <MobileModal title='Enviar un reclamo'
+                    callback={() => dispatch({type: 'TOGGLE_DETAIL', payload: false})}>
+                    <SendComplain 
+                        sendComplain={claim => handleAppointment('complain', claim)} />
                 </MobileModal>
             }
             {modalAction &&
@@ -419,7 +425,7 @@ const Queue = (props) => {
                 <>
                     <div className='dinamic-time mb-3'>
                         <Link to='/home'>
-                            <FaArrowLeft color='#fff' fontSize='2rem' />
+                            <FaArrowLeft color='#97c1d3' fontSize='2rem' />
                         </Link>
                         <div className='question-title'>
                             {!!remainingText ? remainingText : 'Será atendido pronto'}

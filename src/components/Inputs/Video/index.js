@@ -20,7 +20,7 @@ const VideoComponent = (props) => {
 	const [iniciado, setIniciado] = useState(false);
 	const [terminado, setTerminado] = useState(false);
 	const [instrucciones, setInstrucciones] = useState(true);
-	const { dni, ws } = useSelector((state) => state.queries.patient);
+	const { dni, ws } = useSelector((state) => state.user);
 	const [modelPrediction, setmodelPrediction] = useState('red');
 	const dispatch = useDispatch();
 	const token = localStorage.getItem('token');

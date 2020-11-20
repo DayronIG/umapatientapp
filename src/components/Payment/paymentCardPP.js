@@ -12,7 +12,7 @@ const PaymentCardPP = (props) => {
     const history = useHistory();
     const paypal = useRef();
     const [loader, setLoader] = useState(false)
-    const user = useSelector(state => state.queries.patient);
+    const user = useSelector(state => state.user);
     const totalPayment = 200
 
     useEffect(() => {

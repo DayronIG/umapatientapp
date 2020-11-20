@@ -78,13 +78,13 @@ const WhenScreen = (props) => {
 
 	return (
 		<div className='dinamic-template'>
+			<BackButton />
 			{affiliate && loading && <PamiAffiliate welcome={false} />}
 			{!affiliate && loading && <Loading centered={true} />}
 			{registerParent ? (
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
 				<div className='dinamic-content-container whoAttention'>
-					<BackButton />
 					<div className='when-question'>¿Para quién desea la atención?</div>
 					<div className='image-helper'>
 						<img src={ImageFlow} alt='medical' />

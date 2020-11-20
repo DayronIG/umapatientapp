@@ -3,11 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import  { useParams } from 'react-router-dom';
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { transcription } from '../../../config/endpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import Loading from '../../GeneralComponents/Loading';
+import { Loader } from '../../GeneralComponents/Loading';
 import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
 import db from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
@@ -15,7 +15,7 @@ import '../../../styles/onlinedoctor/Chat.scss';
 const Chat = (props) => {
     const dispatch = useDispatch()
     const { dni } = useParams()
-    const { ws } = useSelector((state) => state.queries.patient)
+    const { ws } = useSelector((state) => state.user)
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
     const [, setMedicalRecord] = useState([])
@@ -34,13 +34,11 @@ const Chat = (props) => {
     useEffect(() => {
         if (dni) {
             getAppointmentByDni(dni).then((appoint) => {
-                console.log("APPOINT:", appoint, dni)
                 if (appoint) {
                     dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: appoint })
                 } else {
                     let mr = findMR()
                     mr.then(mr => {
-                        console.log(mr)
                         firestore.doc(`assignations/${mr[0]?.path}`).get().then(res => {
                             dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: res.data() })
                         })
@@ -51,7 +49,6 @@ const Chat = (props) => {
     }, [dni])
 
     useEffect(() => {
-        console.log(current)
         if (current?.appointments) {
             let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", current.appointments[0]["14"])
             query.onSnapshot({
@@ -95,7 +92,6 @@ const Chat = (props) => {
                 })
                 setMedicalRecord(filteredRecords)
             }
-            console.log(filteredRecords)
             return filteredRecords
         } catch (error) {
             // console.error(error)
@@ -161,7 +157,6 @@ const Chat = (props) => {
                 'rol': 'patient',
                 'text': inputValue || ''
             }
-            console.log(data)
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
             axios.post(transcription, data, { headers })
                 .then((res) => {
@@ -187,7 +182,6 @@ const Chat = (props) => {
 
     return (
         <>
-            {loading && <Loading />}
             <div className="chatWrapper">
                 {dataChat.length >= 1 ? dataChat.map((content, index) =>
                     <div className="listContainer" key={index} ref={chatRef}>
@@ -216,6 +210,7 @@ const Chat = (props) => {
                         <br />
                         Describa sus síntomas para iniciar el diálogo con su médico
                     </span>}
+                    {loading && <Loader className="ml-5" />}
                 <div className="postDataWrapper">
                     <input className="inputChat" placeholder="Enviarle un mensaje al médico" value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}

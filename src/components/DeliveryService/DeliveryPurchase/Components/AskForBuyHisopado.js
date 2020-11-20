@@ -18,7 +18,7 @@ export default function AskForBuyHisopado() {
     const [frequentQuestions, setFrequentQuestions] = useState(false)
     const [narrowContactInfo, setNarrowContactInfo] = useState(false)
     const {params, current} = useSelector(state => state.deliveryService)
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const dispatch = useDispatch()
     const history = useHistory()
 

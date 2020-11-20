@@ -13,16 +13,8 @@
 	}
 
 	.question-title {
-		color: $white-color !important;
+		color: $uma-text !important;
 		font-size: 20px;
 		font-weight: 600;
-	}
-	.backButtonContainer {
-		a {
-			svg {
-				position: absolute;
-				left: 0;
-			}
-		}
 	}
 }

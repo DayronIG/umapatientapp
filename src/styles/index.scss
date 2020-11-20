@@ -30,6 +30,7 @@
 		min-height: auto;
 	}
 	.App {
+		max-height: 100%;
 		height: auto;
 		// background: $reduced-back-gradient;
 		background-repeat: no-repeat;
@@ -548,10 +549,11 @@
 		display: flex;
 		height: auto;
 		direction: ltr;
+		padding: 0 20px;
 		z-index: 10;
 		.tag {
 			color: $white-color;
-			background: $secondary-color;
+			background: $uma-primary;
 			height: 25px;
 			min-width: 100px;
 			max-width: 150px;
@@ -582,7 +584,7 @@
 			}
 		}
 		.tag-empty {
-			color: $white-color;
+			color: $uma-text;
 			padding: 5px;
 			width: 100%;
 			line-height: 3;
@@ -644,7 +646,7 @@
 			}
 		}
 		.tag-empty {
-			color: black;
+			color: $uma-text;
 			padding: 5px;
 			width: 100%;
 			line-height: 3;
@@ -726,10 +728,6 @@
 			margin-top: 10px;
 			font-size: 20px;
 			color: $special-grey;
-		}
-		.backButtonContainer {
-			top: 0;
-			margin-left: 12px;
 		}
 		.myhistory-consultation {
 			&.history-bg-autonomous {
@@ -884,11 +882,13 @@
 		}
 	}
 	.question-title {
+		color: $uma-text !important;
 		font-size: 2rem;
 	}
 	.tag-empty {
 		font-size: 1.5rem !important;
 		max-width: 350px !important;
+		color: $uma-text;
 	}
 	.tag {
 		min-width: 250px !important;
@@ -904,6 +904,7 @@
 	.symptom-list {
 		.symptom-text {
 			font-size: 1.8rem;
+			color: $uma-text-secondary;
 		}
 		svg {
 			font-size: 2rem !important;

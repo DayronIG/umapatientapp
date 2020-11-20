@@ -11,7 +11,7 @@ const HisopadosCoverage = () => {
     const history = useHistory();
     const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
     const allCoords = useSelector(state => state.deliveryService.coverage)
-    const { ws } = useSelector(state => state.queries.patient)
+    const { ws } = useSelector(state => state.user)
 
     const onGoogleApiLoaded = async (map, maps) => {
         handleApiLoaded(setUserLocation);

@@ -13,7 +13,7 @@ import Alert from '../../GeneralComponents/Alert/Alerts';
     const Predict = ({predicted, history})=>{
     const dispatch = useDispatch();
     const token = useSelector(state => state.userActive.token)
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const autonomous = useSelector(state => state.autonomous)
     const [top, setTop] = useState(predicted.respuesta.replace(/"/g,' ').split("#", 6)); // .replace(/'"'])
     const [redirecting, setRedirecting] = useState(false)

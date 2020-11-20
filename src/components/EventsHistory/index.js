@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const HistoryHome = ({ user }) => {
     const [lastMr, setLastMr] = useState([{created_dt: ''}])
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord)
 
    useEffect(() => {

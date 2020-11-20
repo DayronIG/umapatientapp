@@ -19,7 +19,7 @@ import TrackingSelector from './TrackingSelector';
 const UmaCare = _ => {
   const dispatch = useDispatch();
   let db = DBConnection.firestore();
-  const { dni, ws } = useSelector(state => state.queries.patient);
+  const { dni, ws } = useSelector(state => state.user);
   const umacare = useSelector(state => state.umacare)
   const {loading, modal} = useSelector(state => state.front)
   const [textDetail, setTextDetail] = useState('');
