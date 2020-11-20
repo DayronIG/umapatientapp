@@ -28,11 +28,11 @@ const TransportTracking = () => {
 	}
 
 	useEffect(() => {
-		if(service?.status_tramo === 'FINISHED') {
+		if (service?.status_tramo === 'FINISHED') {
 			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
-	
+
 	useEffect(() => {
 		let unsubscribe;
 		if (patient?.corporate_norm) {
@@ -71,9 +71,9 @@ const TransportTracking = () => {
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({ 
-						lat: service?.current_position_remis?.lat || 0, 
-						lng: service?.current_position_remis?.lon  || 0 
+					{...mapConfig({
+						lat: service?.current_position_remis?.lat || 0,
+						lng: service?.current_position_remis?.lon || 0
 					})}
 					onGoogleApiLoaded={setMapFunctions}
 				>
@@ -81,7 +81,7 @@ const TransportTracking = () => {
 						<Marker
 							lat={service?.current_position_remis?.lat || 0}
 							lng={service?.current_position_remis?.lon || 0}
-							text='Ubicacion del remis' type='remis' 
+							text='Ubicacion del remis' type='remis'
 						/>
 					)}
 					<Marker {...renderMarker(service)} />
@@ -93,7 +93,7 @@ const TransportTracking = () => {
 				<div className='transportDriver'>
 					<div className='transportDriverData'>
 						<p>Conductor: {service?.provider_fullname || ''}</p>
-						<p>CUIT: {service?.provider_id || '' } </p>
+						<p>CUIT: {service?.provider_id || ''} </p>
 					</div>
 				</div>
 				<div className='openContent'>
@@ -105,19 +105,19 @@ const TransportTracking = () => {
 				{openTravel &&
 					<ul className='driverUl'>
 						<li className='originLi'>
-							<p className='originP'>Origen:</p> 
+							<p className='originP'>Origen:</p>
 							<p className='originText'>{service?.request?.geo_inicio.address}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>Destino:</p> 
+							<p className='originP'>Destino:</p>
 							<p className='originText'>{service?.request?.geo_fin.address}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>{renderTimeMessage(service?.trip_type)}:</p> 
+							<p className='originP'>{renderTimeMessage(service?.trip_type)}:</p>
 							<p className='originText'>{service?.hora}</p>
 						</li>
 						<li className='originLi'>
-							<p className='originP'>Notas:</p> 
+							<p className='originP'>Notas:</p>
 							<p className='originText'>{service?.request?.notas || 'No hay notas'}</p>
 						</li>
 					</ul>

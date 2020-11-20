@@ -32,13 +32,15 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_DELIVERY_PARAMS":
 			return { ...state, params: payload }
 		case "SET_DELIVERY_STEP":
-			return { ...state, step: payload}
+			return { ...state, step: payload }
 		case "SET_DELIVERY_CURRENT":
-			return { ...state, current: payload}
+			return { ...state, current: payload }
 		case "SET_DELIVERY":
-			return { ...state, deliveryInfo: payload}
+			return { ...state, deliveryInfo: payload }
 		case "SET_DELIVERY_COVERAGE":
-			return {...state, coverage: payload}
+			return { ...state, coverage: payload }
+		case 'CLEAN_DELIVERYDATA':
+			return { ...initialState, selectHomeForm: initialState.selectHomeForm }
 		default:
 			return state;
 	}

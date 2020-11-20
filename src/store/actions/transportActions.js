@@ -104,6 +104,7 @@ export const handleInputs = (pointSelector) => ({ target = {} }) => {
 }
 
 export const createTransportSchedule = async (transportData, patient) => {
+	debugger
 	const travelMetaData = await calculateDistance(transportData);
 	const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
 	try {
@@ -113,7 +114,7 @@ export const createTransportSchedule = async (transportData, patient) => {
 			dependencia: '0',
 			descrip: '0-PROGRAMADO',
 			dni: patient.dni,
-			eta_tramo: duration.text , // buscar en portal.
+			eta_tramo: duration.text, // buscar en portal.
 			km_tramo: distance.text, // buscar en portal.
 			f_inicio: transportData.start_date,
 			f_fin: transportData.end_date,

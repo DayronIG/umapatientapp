@@ -14,11 +14,11 @@ const initialState = {
 	hasReturn: false,
 	hasOrigin: false,
 	origin_translate_monday: false,
-    origin_translate_tuesday: false,
-    origin_translate_wednesday: false,
-    origin_translate_thursday: false,
-    origin_translate_friday: false,
-    origin_translate_saturday: false,
+	origin_translate_tuesday: false,
+	origin_translate_wednesday: false,
+	origin_translate_thursday: false,
+	origin_translate_friday: false,
+	origin_translate_saturday: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -52,7 +52,7 @@ export default (state = initialState, { type, payload }) => {
 		case transportTypes.HANDLE_ORIGIN:
 			return { ...state, hasOrigin: payload };
 		case transportTypes.HANDLE_ORIGIN_DAY:
-			return {...state.originDay, [payload.key]: payload.value  }
+			return { ...state.originDay, [payload.key]: payload.value }
 		case 'SET_ORIGIN_TRANSLATE_MONDAY':
 			return { ...state, origin_translate_monday: payload };
 		case 'SET_ORIGIN_TRANSLATE_TUESDAY':
@@ -68,7 +68,7 @@ export default (state = initialState, { type, payload }) => {
 		case 'SET_ORIGIN_TRANSLATE_SUNDAY':
 			return { ...state, origin_translate_sunday: payload };
 		case 'SET_BACK_TRANSLATE_MONDAY':
-				return { ...state, back_translate_monday: payload };
+			return { ...state, back_translate_monday: payload };
 		case 'SET_BACK_TRANSLATE_TUESDAY':
 			return { ...state, back_translate_tuesday: payload };
 		case 'SET_BACK_TRANSLATE_WEDNESDAY':
@@ -77,12 +77,12 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, back_translate_thursday: payload };
 		case 'SET_BACK_TRANSLATE_FRIDAY':
 			return { ...state, back_translate_friday: payload };
-			case 'SET_BACK_TRANSLATE_SATURDAY':
+		case 'SET_BACK_TRANSLATE_SATURDAY':
 			return { ...state, back_translate_saturday: payload };
 		case 'SET_BACK_TRANSLATE_SUNDAY':
 			return { ...state, back_translate_sunday: payload };
 		case transportTypes.HANDLE_RESET:
-			return { ...initialState };
+			return { ...initialState, origin: { lat: 0, lng: 0 }, destiny: { lat: 0, lng: 0 } };
 		default:
 			return state;
 	}

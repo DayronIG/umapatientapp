@@ -39,17 +39,17 @@ export const routeDrawer = (mapsApi, directionsService, directionsDisplay) => (o
 			travelMode: mapsApi.DirectionsTravelMode.DRIVING,
 		};
 		directionsService.route(
-			request, 
+			request,
 			function (response, status) {
-			if (status == mapsApi.DirectionsStatus.OK) {
-				directionsDisplay.setDirections(response);
-				directionsDisplay.setOptions({ 
-					preserveViewport: true,
-					suppressMarkers: true
-				});
-				resolve(response.routes[0].legs[0].duration.text);
-			}
-		});
+				if (status == mapsApi.DirectionsStatus.OK) {
+					directionsDisplay.setDirections(response);
+					directionsDisplay.setOptions({
+						preserveViewport: true,
+						suppressMarkers: true
+					});
+					resolve(response.routes[0].legs[0].duration.text);
+				}
+			});
 	});
 };
 
@@ -99,7 +99,8 @@ export const mapConfig = (
 	onClick
 });
 
-export const calculateDistance = ({origin, destiny}) => {
+export const calculateDistance = ({ origin, destiny }) => {
+	debugger
 	return new Promise((resolve, reject) => {
 		const originPoint = {
 			lat: origin?.lat,
@@ -111,16 +112,16 @@ export const calculateDistance = ({origin, destiny}) => {
 		};
 		const DirectionsService = new window.google.maps.DirectionsService();
 		DirectionsService.route({
-				origin: originPoint,
-				destination: destinyPoint,
-				travelMode: window.google.maps.TravelMode.DRIVING
+			origin: originPoint,
+			destination: destinyPoint,
+			travelMode: window.google.maps.TravelMode.DRIVING
 		}, (result, status) => {
-				if (status === window.google.maps.DirectionsStatus.OK) {
-					resolve(result);
-				} else {
-					console.error(`error fetching directions ${result}`);
-					reject(result);
-				}
+			if (status === window.google.maps.DirectionsStatus.OK) {
+				resolve(result);
+			} else {
+				console.error(`error fetching directions ${result}`);
+				reject(result);
+			}
 		});
 	})
 }
