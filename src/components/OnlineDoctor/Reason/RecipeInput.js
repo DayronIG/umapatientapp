@@ -11,7 +11,7 @@ export default function RecipeInput({callback}) {
 		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		const currentFile = e.target?.files[0];
         if(currentFile) {
-            uploadFileToFirebase(currentFile, `${"12332112"}/prescription/${datetime}_${cuit}/${dt}_${reference}`)
+            uploadFileToFirebase(currentFile, `${"12332112"}/prescription/${datetime}_${cuit}/${reference}`)
 			.then((imgLink) => {
 				console.log(imgLink)
 			})
