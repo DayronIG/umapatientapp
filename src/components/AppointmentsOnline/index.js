@@ -11,31 +11,31 @@ import { getDocumentFB } from '../Utils/firebaseUtils';
 const docTypesUP = [2, 3, 4, 5, 7, 1]; // Ordenados por prioridad: DNI, LE, LC, Passport, DNI EXT, CED.
 
 const OnlineSpecialist = ({ match, history }) => {
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 	const { loading } = useSelector((state) => state.front);
 	const { dni } = match.params;
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		checkPatientPermission();
-	}, [patient]);
+	}, [user]);
 
 	const checkPatientPermission = useCallback(
 		async () => {
-			if (!(Object.keys(patient).length > 0)) return;
+			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
 			try {
-				const medicRecs = await getUserMedicalRecord(dni, patient.ws);
+				const medicRecs = await getUserMedicalRecord(dni, user.ws);
 				let redirect = false;
 				const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
-				if (patient?.corporate_norm?.toLowerCase() === 'union personal') {
+				if (user?.corporate_norm?.toLowerCase() === 'union personal') {
 					const credNum = await validateUPAff_byDocType(dni, docTypesUP).catch((e) => console.error(e));
 					// const isValid = transcELG(credNum || '').catch((e) => console.error(e));
 					localStorage.setItem('up_affNum', credNum || '');
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
-				} else if (social_work.includes(patient.corporate_norm) ||
-						social_work.includes(patient.corporate?.toUpperCase())
+				} else if (social_work.includes(user.corporate_norm) ||
+						social_work.includes(user.corporate?.toUpperCase())
 				) {
 					redirect = true;
 				}
@@ -59,11 +59,11 @@ const OnlineSpecialist = ({ match, history }) => {
 				return history.replace('/');
 			}
 		}
-	,[patient]) 
+	,[user]) 
 
 	const render = (redirect) => {
-		if (patient.first_time && patient.first_time.length >= 1) {
-			history.push(`/${dni}/appointmentsonline/${patient.first_time}/calendar`);
+		if (user.first_time && user.first_time.length >= 1) {
+			history.push(`/${dni}/appointmentsonline/${user.first_time}/calendar`);
 		} else if (redirect) {
 			history.push(`/${dni}/appointmentsonline/specialty`);
 		} else {

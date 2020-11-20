@@ -5,10 +5,10 @@ import { useHistory } from 'react-router-dom';
 
 const CreateNewService = () => {
 	const history = useHistory();
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 
 	return (
-		<div className="createNewService__container" onClick={() => history.push(`/${patient.ws}/createTransportRoute`)}>
+		<div className="createNewService__container" onClick={() => history.push(`/${user.ws}/createTransportRoute`)}>
 			<div className="createNewService__icon">
 				<BsPlusCircleFill />
 			</div>

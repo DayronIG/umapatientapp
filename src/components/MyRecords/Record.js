@@ -11,7 +11,7 @@ const Record = (props) => {
     const dispatch = useDispatch()
     const att = useSelector((state) => state.queries.voucher)
     const [tab, setTab] = useState('resumen')
-    const { patient } = useSelector(state => state.queries)
+    const user = useSelector(state => state.user)
 
     useEffect(() => {
         dispatch(getVoucherById(props.dni, props.aid))
@@ -29,7 +29,7 @@ const Record = (props) => {
         <>
             <div>
                 <GenericHeader >Datos de su consulta</GenericHeader>
-                <BackButton customTarget={`/${patient.ws}/history`} />
+                <BackButton customTarget={`/${user.ws}/history`} />
             </div>
             <div className='text-center tab-container mt-3'>
                 <button className={tab === 'resumen' ? 'active btn btn-secondary' : 'btn btn-secondary'}

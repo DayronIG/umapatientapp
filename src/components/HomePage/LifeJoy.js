@@ -8,7 +8,7 @@ import '../../styles/generalcomponents/LifeJoy.scss';
 
 const LifeJoy = () => {
 	const history = useHistory()
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 
 	function renderBtn(link, field, icon, text, isImg, btnColor) {
 		return (
@@ -29,8 +29,8 @@ const LifeJoy = () => {
 
 	return (
 		<section className='lifejoy-container'>
-			{renderBtn(`/${patient.ws}/wellness`, 'wellness', faSmile, 'Bienestar', false, 'btn-green')}
-			{renderBtn(`/${patient.ws}/umacare`, 'umacare', faUserNurse, 'UMA Care', false, 'btn-green')}
+			{renderBtn(`/${user.ws}/wellness`, 'wellness', faSmile, 'Bienestar', false, 'btn-green')}
+			{renderBtn(`/${user.ws}/umacare`, 'umacare', faUserNurse, 'UMA Care', false, 'btn-green')}
 		</section>
 	);
 };

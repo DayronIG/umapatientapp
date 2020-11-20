@@ -18,7 +18,7 @@ import 'moment/locale/es';
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
 	const [dni] = useState(props.match.params.dni);
@@ -103,7 +103,7 @@ const WhenScreen = (props) => {
 					<div
 						className='btn btn-blue-lg'
 						onClick={() =>
-							dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: enablePermissions(patient.dni) })
+							dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: enablePermissions(user.dni) })
 						}>
 						Habilitar permisos
 					</div>

@@ -27,7 +27,7 @@ const AudioRecorder = ({
 	const [finishedRecording, setFinishedRecording] = useState(false);
 	const [audioToPlot, setAudioToPlot] = useState(null);
 	const appoint = useSelector((state) => state.assignations.selectedAppointment);
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -55,9 +55,9 @@ const AudioRecorder = ({
 	};
 
 	const getMicrophone = async () => {
-		// const constraints = {
-		// 	sampleRate: 16000
-		// }
+
+		console.log(navigator.mediaDevices.getSupportedConstraints())
+
 		const audio = await navigator.mediaDevices.getUserMedia({
 		  audio: {
 			noiseSuppression: false
@@ -68,6 +68,7 @@ const AudioRecorder = ({
 		// await track.applyConstraints(constraints);
 		const options = {
 			mimeType: "audio/webm;codecs=opus",
+			noiseSuppression: false,
 			audioBitsPerSecond : 128000,
 		}
 		const recorder = new MediaRecorder(audio, options);
@@ -80,7 +81,7 @@ const AudioRecorder = ({
 					const blobDataInWavFormat = new Blob([blobDataInWebaFormat], { type : 'audio/wav' });
 					// const dataUrl = URL.createObjectURL(blobDataInWavFormat);
 					// console.log(dataUrl); 
-					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${patient.dni}/heartbeat/${patient.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_##${id}##_heartbeat_original.wav`);
+					const fileLink = await uploadFileToFirebase(blobDataInWavFormat, `${user.dni}/heartbeat/${user.dni}_${moment().format('YYYY-MM-DD_HH:mm:ss')}_##${id}##_heartbeat_original.wav`);
 					dispatch({ type: 'SET_ASSESSMENT_BIOMARKER', payload: {sthetoscope: fileLink} });
 					var heartbeatEndpoint = "https://computer-vision-dot-uma-v2.uc.r.appspot.com/process_heartbeat"
 					var headers = { 'Content-Type': 'Application/Json' }
@@ -89,7 +90,7 @@ const AudioRecorder = ({
 					var data = {
 						"url": fileLink, 
 						"id": `${timeID}##${id}##`,
-						"upload_url": upload_url_prop? upload_url_prop:`${patient.dni}/attached/${appoint?.path?.split('/')?.[3]}`
+						"upload_url": upload_url_prop? upload_url_prop:`${user.dni}/attached/${appoint?.path?.split('/')?.[3]}`
 					}
 					await axios.post(heartbeatEndpoint, data, headers)
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: fileLink}): finalAction()
@@ -98,6 +99,7 @@ const AudioRecorder = ({
 					console.error(error);
 				}
 			})};
+
 
 	return (
 		<div className= "audio-container">

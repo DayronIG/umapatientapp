@@ -23,15 +23,15 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
 	const { addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
-		piso: patient?.piso || '',
-		depto: patient?.depto || '',
-		address: patient?.address || '',
-		lat: patient?.lat || addressLatLongHisopado.lat || -34.6037389,
-		lng: patient?.lng || addressLatLongHisopado.lng || -58.3815704,
+		piso: user?.piso || '',
+		depto: user?.depto || '',
+		address: user?.address || '',
+		lat: user?.lat || addressLatLongHisopado.lat || -34.6037389,
+		lng: user?.lng || addressLatLongHisopado.lng || -58.3815704,
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
@@ -153,7 +153,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		const data2 = {
 			'key': deliveryType || 'HISOPADO',
 			'ws': ws,
-			'dni': patient.dni,
+			'dni': user.dni,
 			'format_address': formState.address,
 			'user_address': formState.address,
 			'lat': formState.lat,
