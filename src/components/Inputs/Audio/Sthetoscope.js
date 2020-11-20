@@ -98,7 +98,6 @@ const AudioRecorder = ({
 					autonomus? finalAction({[`audio_sthetocope_${id}`]: ""}): finalAction()
 					console.error(error);
 				}
-				console.log(audio.MediaTrackSupportedConstraints)
 			})};
 
 
