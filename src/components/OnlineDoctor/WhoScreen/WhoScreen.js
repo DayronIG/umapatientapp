@@ -16,29 +16,29 @@ import '../../../styles/whoScreen.scss';
 
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
-	const { patient = {} } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 	const [affiliate, setAffiliate] = useState();
 	const [registerParent, setRegisterParent] = useState(false);
 	const [parents, setParents] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [userDataToJson] = useState(JSON.parse(localStorage.getItem('userData')));
-	const [userDni] = useState(patient.dni ? patient.dni : userDataToJson.dni);
+	const [userDni] = useState(user.dni ? user.dni : userDataToJson.dni);
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
 
 	useEffect(() => {
-		if (patient.corporate_norm && patient.corporate_norm === 'PAMI') {
-			setAffiliate(patient.corporate_norm);
+		if (user.corporate_norm && user.corporate_norm === 'PAMI') {
+			setAffiliate(user.corporate_norm);
 		}
-	}, [patient]);
+	}, [user]);
 
 	useEffect(() => {
 		(async function checkAssignations() {
-			if ('dni' in patient) {
+			if ('dni' in user) {
 				localStorage.removeItem('selectedAppointment');
 				enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
 					dispatch({ type: 'LOADING', payload: true });
-					const type = moment().diff(patient.dob, 'years') <= 16 ? 'pediatria' : '';
+					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 					const assigned = await findAllAssignedAppointment(userDni, type);
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
@@ -48,16 +48,16 @@ const WhenScreen = (props) => {
 				}
 			}
 		})();
-	}, [patient]);
+	}, [user]);
 
 	useEffect(() => {
-		if (patient.dni) {
-			getUserParentsFirebase(patient.dni)
+		if (user.dni) {
+			getUserParentsFirebase(user.dni)
 				.then(function(userParents) {
 					setParents(userParents);
 				})
 				.catch(() => setParents([]));
-			getPendingTraslate(patient.dni)
+			getPendingTraslate(user.dni)
 				.then((res) => {
 					if (res === true) {
 						props.history.push('./derived');
@@ -65,7 +65,7 @@ const WhenScreen = (props) => {
 				})
 				.catch();
 		}
-	}, [patient]);
+	}, [user]);
 
 	function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
@@ -93,7 +93,7 @@ const WhenScreen = (props) => {
 			)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
-					<div className='btn btn-blue-lg' onClick={() => selectWho(patient)}>
+					<div className='btn btn-blue-lg' onClick={() => selectWho(user)}>
 						Para mi
 					</div>
 					{parents.map((p, index) => (

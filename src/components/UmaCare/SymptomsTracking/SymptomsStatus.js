@@ -72,7 +72,7 @@ export const Disclaimer = ({ history }) => {
 }
 
 export const SymptomsWarning = ({ history }) => {
-    const { patient } = useSelector(state => state.queries)
+    const user = useSelector(state => state.user)
     return (
         <>
             <div className='symptomsStatus'>
@@ -88,7 +88,7 @@ export const SymptomsWarning = ({ history }) => {
                 </div>
                 <div className='symptomsStatus__container'>
                     <button className='symptomsStatus__container--btn'
-                        onClick={() => history.replace(`/${patient.dni}/onlinedoctor/when`)}
+                        onClick={() => history.replace(`/${user.dni}/onlinedoctor/when`)}
                     >
                         realizar consulta online
                     </button>
@@ -96,7 +96,7 @@ export const SymptomsWarning = ({ history }) => {
                 <NotifyFriends />
             </div>
             <FooterBtn text='Volver a inicio'
-                callback={() => history.push(`/${patient.dni}/core/${patient.core_id}`)} />
+                callback={() => history.push(`/${user.dni}/core/${user.core_id}`)} />
         </>
     )
 }

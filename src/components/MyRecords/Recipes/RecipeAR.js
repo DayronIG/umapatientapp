@@ -71,7 +71,7 @@ class RecipePDF extends React.Component {
 		for (let i = 1; i <= printTimes; i++) {
 			printArr.push(i);
 		}
-		if (printArr.length > 0 && recipe[0]) {
+		if (printArr.length > 0 && recipe?.[0]) {
 			return (
 				<div>
 					{printArr.map((item, i) => {
@@ -97,7 +97,7 @@ class RecipePDF extends React.Component {
 								mapMeds.push(recipe[i + 3]);
 							}
 						}
-						if (mapMeds[0]) {
+						if (mapMeds?.[0]) {
 							replicate = mapMeds.some((med) => parseInt(med.duplicado) === 1);
 						}
 						return (
@@ -420,7 +420,7 @@ class RecipePDFUP extends React.Component {
 									<span> Cantidad del envase:{medicine.cantidad}</span> <br />
 								</p>
 							))}
-							{recipe[0] && recipe[0].indicaciones && (
+							{recipe?.[0] && recipe[0].indicaciones && (
 								<>
 									<h1 className='mt-5'>
 										<b>INDICACIONES</b>
@@ -544,7 +544,7 @@ class RecipePDFUP extends React.Component {
 										);
 									}
 								})}
-								{recipe[0] && recipe[0].indicaciones && (
+								{recipe?.[0] && recipe[0].indicaciones && (
 									<>
 										<h1 className='mt-5'>
 											<b>INDICACIONES</b>
@@ -605,16 +605,16 @@ const Recipe = ({ att, doc }) => {
 	const { mr, patient } = att;
 	const compRef = useRef();
 	const [prescripNum] = useState(() => {
-		if (mr?.receta[0]?.prescriptionNumber) {
-			return mr.receta[0].prescriptionNumber;
-		} else if (mr?.receta[0]?.prescripNumber) {
+		if (mr?.receta?.[0]?.prescriptionNumber) {
+			return mr.receta?.[0].prescriptionNumber;
+		} else if (mr?.receta?.[0]?.prescripNumber) {
 			return mr.receta[0].prescripNumber;
 		} else {
 			return '';
 		}
 	});
 	const [fromUP] = useState(prescripNum?.length > 13 ? true : false);
-	const [prescripDate] = useState(mr?.receta[0]?.prescriptionDate ? mr.receta[0].prescriptionDate : '');
+	const [prescripDate] = useState(mr?.receta?.[0]?.prescriptionDate ? mr.receta[0].prescriptionDate : '');
 	const dataToPrint = {
 		patient: patient,
 		recipe: mr.receta,
@@ -627,7 +627,7 @@ const Recipe = ({ att, doc }) => {
 	};
 	
 	useEffect(() => {
-		if (mr?.receta[0]) {
+		if (mr?.receta?.[0]) {
 			try {
 				const cvRecipe = document.getElementById('barcodeRecipe');
 				const canvasAffiliate = document.getElementById('barcodeAffiliate');
@@ -665,7 +665,7 @@ const Recipe = ({ att, doc }) => {
 
 	return (
 		<>
-			{mr?.receta[0] ? (
+			{mr?.receta?.[0] ? (
 				<div className='d-flex flex-column justify-content-between p-2' id='receta'>
 					<h3 className='text-center'>Receta médica</h3>
 					<div className='dossier-att-info'>
@@ -684,12 +684,12 @@ const Recipe = ({ att, doc }) => {
 							{mr.dt_cierre}
 						</p>
 						<hr />
-						{patient && 'obra_social' in patient && patient.obra_social && (
+						{patient && 'obra_social' in patient && patient?.obra_social && (
 							<p>
 								<b>Obra social</b> {patient.obra_social}
 							</p>
 						)}
-						{patient && 'n_afiliado' in patient && patient.n_afiliado && (
+						{patient && 'n_afiliado' in patient && patient?.n_afiliado && (
 							<p>
 								<b>Número de afiliado</b> {patient.n_afiliado}
 							</p>

@@ -12,7 +12,7 @@ import '../../styles/generalcomponents/TransportUserActive.scss';
 
 const TransportUserActive = () => {
 	const toogleModal = useSelector((state) => state.front.openDetails);
-	const { patient } = useSelector(state => state.queries)
+	const user = useSelector(state => state.user)
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
@@ -24,17 +24,17 @@ const TransportUserActive = () => {
 
 	useEffect(() => {
 		getServices();
-	}, [patient]);
+	}, [user]);
 
 	async function getServices() {
-		if(!patient?.dni) return null;
+		if(!user?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			const response = await Axios.post(
 				att_history,
 				{
-					ws: patient.ws,
-					dni: patient.dni,
+					ws: user.ws,
+					dni: user.dni,
 					getUnauthorized: true
 				},
 				{
@@ -54,12 +54,12 @@ const TransportUserActive = () => {
 		e.preventDefault();
 		setDisplayLoading(true);
 		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
-			dni: patient.dni,
+			dni: user.dni,
 			fecha_viaje: moment(selectedService.fecha).format('YYYY-MM-DD'),
 			dt: moment(selectedService.fecha).format('YYYY-MM-DD HH:mm:ss'),
 			assignation_id: selectedService.assignation_id,
 			motivo: getCancelComment || '-',
-			corporate: patient.corporate_norm
+			corporate: user.corporate_norm
 		}).then(function (response) {
 			getServices();
 			dispatch({ type: 'TOGGLE_DETAIL' });
@@ -128,7 +128,7 @@ const TransportUserActive = () => {
 												<div className="contentContainer">
 													<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
 													<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-													<button className="checkStatus" onClick={() => history.push(`/${patient.dni}/transportDetails/${item.assignation_id}`)}>
+													<button className="checkStatus" onClick={() => history.push(`/${user.dni}/transportDetails/${item.assignation_id}`)}>
 														Estado del Viaje
 													</button>
 													<button className="cancelBtn" onClick={() => displayModal(item)}>
@@ -165,7 +165,7 @@ const TransportUserActive = () => {
 													<div className="contentContainer">
 														<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
 														<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-														<button className="checkStatus" onClick={() => history.push(`/${patient.dni}/transportDetails/${item.assignation_id}`)}>
+														<button className="checkStatus" onClick={() => history.push(`/${user.dni}/transportDetails/${item.assignation_id}`)}>
 															Estado del Viaje
 														</button>
 														<button className="cancelBtn" onClick={() => displayModal(item)}>

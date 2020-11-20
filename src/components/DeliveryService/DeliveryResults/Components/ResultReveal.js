@@ -8,7 +8,7 @@ import ReactToPrint from 'react-to-print';
 
 export default function ResultReveal({finalAction}) {
     const constRef = useRef()
-    const { patient } = useSelector(state => state.queries)
+    const user = useSelector(state => state.user)
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
     const docId = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)
     const date = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)?.split("_")[1].slice(0,8)
@@ -44,7 +44,7 @@ export default function ResultReveal({finalAction}) {
                     {
                         constancy && docId && 
                         <div className="hisopado-results-contancy-dowloader">
-                            <ConstancyHisopado id={docId} patient={patient} date={date} result={result} ref={constRef}/>
+                            <ConstancyHisopado id={docId} patient={user} date={date} result={result} ref={constRef}/>
                         </div>
                     }
                 </div>

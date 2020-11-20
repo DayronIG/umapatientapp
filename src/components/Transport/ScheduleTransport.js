@@ -13,7 +13,7 @@ import '../../styles/transport/scheduleTransport.scss';
 function ScheduleTransport() {
 	const { loading } = useSelector(state => state.front)
 	const transportData = useSelector(state => state.transport);
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { ws } = useParams();
 	const [today] = useState(moment().format('YYYY-MM-DD'));
 	const [tomorrow] = useState(moment().add(1, 'day').format('YYYY-MM-DD'));
@@ -24,7 +24,7 @@ function ScheduleTransport() {
 		event.preventDefault();
 		try {
 			dispatch({ type: 'LOADING', payload: true });
-			await transportActions.createTransportSchedule(transportData, patient);
+			await transportActions.createTransportSchedule(transportData, user);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
 			dispatch({ type: 'LOADING', payload: false });
 			history.push(`/${ws}/transportUserActive`);

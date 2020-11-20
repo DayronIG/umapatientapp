@@ -251,7 +251,6 @@ export function getUser(dni) {
 }
 
 export function getAuth(ws) {
-	console.log("WS:", ws)
 	return new Promise((resolve, reject) => {
 		try {
 			const authQuery = firestore.collection('auth').doc(ws);
