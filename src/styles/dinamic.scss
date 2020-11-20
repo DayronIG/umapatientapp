@@ -118,6 +118,19 @@
                 margin: 10px;
                 color: $uma-text !important;
             }
+            .recipe_input_container{
+                display: flex;
+                flex-direction: column;
+                .title{
+                    margin-top: 2vh;
+                }
+                .file_input{
+                    background-color: $primary-color;
+                }
+                .button{
+                    margin-top: 4vh;
+                }
+            }
         }
         .when-question {
             text-align: center;
