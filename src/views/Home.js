@@ -10,7 +10,7 @@ const HomePage = () => {
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
 	useEffect(() => {
-		if (user && user.dni !== undefined) {
+		if (user && user.dni !== "") {
 			dispatch(getMedicalRecord(user.dni, user.ws))
 		}
 	}, [dispatch, user])

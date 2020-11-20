@@ -16,7 +16,7 @@ import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -35,27 +35,27 @@ const ModulesMenu = () => {
 
 	return (
 		<>
-			{patient.ws ? (
+			{user.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
-					<GenericHeader children={patient.fullname} />
+					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
-								`/${patient.ws}/onlinedoctor/who`,
+								`/${user.ws}/onlinedoctor/who`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
 							)}
 							{returnModule(
-								`/${patient.ws}/autonomous`,
+								`/${user.ws}/autonomous`,
 								'autonomous',
 								iconAutodiagnostico,
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${patient.ws}/wellness`,
+								`/${user.ws}/wellness`,
 								'wellness',
 								iconEstudios,
 								'Estudios'

@@ -50,6 +50,7 @@ const Register = props => {
         }
     }, [dispatch, props.match]);
 
+
     async function getCountryCode() {
         let code = await getCountry(urlWS)
         dispatch({ type: 'USER_FIRST_COUNTRY', payload: code })
@@ -147,10 +148,10 @@ const Register = props => {
             let headers = { ContentType: 'Application/json' }
             try {
                 const res = await axios.post(`${node_patient}`, data, headers)
+                setRegistered(true)
                 if (res && res.affiliate !== 'rappi') {
                     setTimeout(() => {
                         dispatch({ type: 'SET_STATUS', payload: 99 });
-                        setRegistered(true)
                         dispatch({ type: 'LOADING', payload: false })
                     }, 2000)
                 } else if (res.creates === true) {
