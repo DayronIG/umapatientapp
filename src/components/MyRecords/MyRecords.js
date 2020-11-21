@@ -11,7 +11,8 @@ const MyRecords = () => {
     const dispatch = useDispatch()
     const records = useSelector(state => state.queries.medicalRecord)
     const [tab, setTab] = React.useState(false)
-    const {beneficiaries, patient} = useSelector(state => state.queries)
+    const {beneficiaries} = useSelector(state => state.queries)
+    const patient = useSelector(state => state.user)
 
     useEffect(() => { window.scroll(0, 0); }, [])
 

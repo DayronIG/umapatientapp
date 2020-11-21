@@ -12,7 +12,7 @@ export const useChat = (isInternal) => {
     // const date = moment();
     // const [corporation] = useState("uma");
     // const [user] = useState("patient")
-    const {patient} = useSelector(state => state.queries)
+    const patient = useSelector(state => state.user)
     const firestore = db.firestore();
     const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
 	const {incidente_id} = useParams()

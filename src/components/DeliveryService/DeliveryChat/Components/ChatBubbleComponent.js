@@ -19,7 +19,7 @@ const BubbleChat = ({
     const chatScrollRef = useRef();
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
 	const { fullname_nurse, cuit_nurse } = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.delivery) || {fullname_nurse: "Profesional", cuit_nurse: "-"};
-    const {patient} = useSelector(state => state.queries) 
+    const patient = useSelector(state => state.user) 
 	const {incidente_id} = useParams()
 	const docId = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]?.docId) || incidente_id
     const history = useHistory();
