@@ -30,6 +30,16 @@ const SelectReason = (props) => {
 		if (symptoms.length > 0) dispatch({ type: 'GET_SYMPTOMS', payload: symptoms });
 	}, [questionsList, dispatch]);
 
+	function disableScrolling(){
+		var x=window.scrollX;
+		var y=window.scrollY;
+		window.onscroll=function(){window.scrollTo(x, y);};
+	}
+	
+	function enableScrolling(){
+		window.onscroll=function(){};
+	}
+
 	function addReason(reason) {
 		if (!selectedSymptoms.includes(reason)) dispatch({ type: 'SET_SYMPTOM', payload: reason });
 	}
@@ -38,7 +48,9 @@ const SelectReason = (props) => {
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
 	function filterIfRecipeIsSelected(){
-		if (false && selectedSymptoms.includes("Receta")){
+		if (selectedSymptoms.includes("Receta")){
+			window.scroll(0, 100)
+			disableScrolling()
 			setRecipeInputModal(true)
 		} else {
 			redirect()
@@ -46,6 +58,7 @@ const SelectReason = (props) => {
 	}
 	function recipeModalCheckout(){
 		setRecipeInputModal(false)
+		enableScrolling()
 		redirect()
 	}
 	function redirect() {
@@ -57,7 +70,7 @@ const SelectReason = (props) => {
 
 	return (
 		<>
-			<div className='dinamic-question'>
+			<div className={`dinamic-question`}>
 				{
 					recipeInputModal &&
 					<Modal callback={()=>recipeModalCheckout()}> 
