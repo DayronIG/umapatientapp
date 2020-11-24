@@ -3,7 +3,7 @@
 .button__container{
     display: flex;
     justify-content: space-between;
-    width: 80vw;
+    width: 84vw;
     margin-top: -18vh;
     .y {
         background-color: green;
@@ -62,6 +62,7 @@
 }
 
 .confirm--audiometry{
+    bottom: 15%;
     margin-bottom: 0%;
 }
 
