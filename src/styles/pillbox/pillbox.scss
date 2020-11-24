@@ -1,0 +1,13 @@
+@import '../index.scss';
+
+.pillbox{
+    background-color: $white-color;
+    height: 100vh;
+    .pillboxList__container{
+        // background-color: red;
+        padding: 30px;
+    }
+    .pillbox__title{
+        text-align: center;
+    }
+}
