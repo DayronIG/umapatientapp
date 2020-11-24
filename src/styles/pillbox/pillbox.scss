@@ -4,13 +4,16 @@
     background-color: $white-color;
     height: 100vh;
     .pillboxList__container{
-        // background-color: red;
         padding: 30px;
         .pillboxReminder__header{
             display: flex;
             justify-content: space-between;
+            padding: 0vh 2vw;
+            font-weight: bold;
         }
         .recipesList__container{
+            display: flex;
+            justify-content: space-between;
             padding: 2vw;
             .recipesListIndicator__container{
                 display: flex;
@@ -20,5 +23,64 @@
     }
     .pillbox__title{
         text-align: center;
+        padding-top: 4vh;
+    }
+    .pillbox__addContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        margin-top: 1rem;
+
+            .pillbox__btnContainer {
+                display: flex;
+                flex-direction: column;
+                width: 85px;
+            
+            .pillbox__addBtn {
+                outline: none;
+                border-radius: 50%;
+                font-size: 3.5rem;
+                text-align: center;
+                padding: 15px;
+                color: $shiny-blue;
+                background-color: white;
+                border: none;
+                box-shadow: 0px 9px 20px -3px rgba(126, 147, 163, 0.25);
+                font-style: normal;
+                font-weight: 900;
+                line-height: 46px;
+            }
+            
+            .pillbox__addMsg {
+                color: $shiny-blue; 
+                font-size: 0.9rem;
+                text-align: center;
+            }
+        }
+    }
+
+    .modalContent__container{
+        width: 80vw;
+        .modal__title{
+            text-align: center;
+        }
+        .inputDate__container{
+            margin: 2vh;
+            display: flex;
+            justify-content: space-evenly;
+            input{
+                width: 30vw;
+            }
+        }
+        .inputTime__container{
+            margin: 2vh;
+
+            display: flex;
+            justify-content: space-evenly;
+            input{
+                width: 30vw;
+            }
+        }
     }
 }

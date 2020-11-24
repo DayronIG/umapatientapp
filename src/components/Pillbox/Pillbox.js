@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-// import { div, Row, Button } from 'react-bootstrap';
-// import { input, TimePicker } from 'antd';
+import { useHistory } from "react-router-dom"
 import Modal from "../GeneralComponents/Modal/MobileModal"
 import "../../styles/pillbox/pillbox.scss"
+import Switch from "react-switch"
+import { BackButton } from '../GeneralComponents/Headers';
 
 // import 'features/monitoring/style.scss';
 
@@ -14,6 +14,7 @@ const Pillbox = props => {
     // const recipe = useSelector(state => state.pillbox.recipe) 
     const [dates, setDates] = useState([]);
     const [modal, setModal] = useState(false);
+    const history = useHistory()
 
     const recipes = [{
         uid: "",
@@ -25,7 +26,8 @@ const Pillbox = props => {
         medicine: "AMOXIDAL",
         notify: true,
         initial_date: "2020-12-12",
-        final_date: "2020-05-12"
+        final_date: "2020-05-12",
+        active: true
     },
     {
         uid: "",
@@ -34,10 +36,11 @@ const Pillbox = props => {
             frequency_hours: 3,
             quantity_days: 5,
         },
-        medicine: "AMOXIDAL",
+        medicine: "IBUPIRAC",
         notify: true,
         initial_date: "2020-12-12",
-        final_date: "2020-05-12"
+        final_date: "2020-05-12",
+        active: false
     }]
 
     const disabledDate = current => {
@@ -60,15 +63,14 @@ const Pillbox = props => {
                 <div className='recipesList__container' key={i}>
                     <div className='recipesListIndicator__container'>
                         <span className=''>{recipes[i].medicine}</span>
-                        <span className=''>{recipes[i].treatment.dose} cada {recipes[i].treatment.frecuency_hours} horas por {recipes[i].treatment.quantity_days} días</span>
+                        <span className=''>{recipes[i].treatment.dose} cada {recipes[i].treatment.frequency_hours} horas por {recipes[i].treatment.quantity_days} días</span>
                     </div>
-                    <div className='recipesListSwitch__container'>
-                    {/* <Switch
-                        checkedChildren={<CheckOutlined />}
-                        unCheckedChildren={<CloseOutlined />}
-                        onClick={(checked) => handleReminder(recipe, checked, index)}
-                        checked = {recipe.reminder.active}
-                        /> */}
+                        
+                    <div className='recipesListSwitch__container' onClick={() => setModal(true)}>
+                    <Switch
+                        checked={recipes[i].active}
+                        onChange={() => "asd"}
+                        />
                     </div>
                 </div>
             )
@@ -78,58 +80,30 @@ const Pillbox = props => {
 
     return (
         <div className="pillbox">
+        <BackButton inlineButton={true} action={()=>history.push(`/`)} />
         {modal && <Modal
-          title="Monitoreo"
-          callback={setModal(true)}>
-              <div className=''>
-                    <h2 className=''>Recordatorio</h2>
-                    <div className=''>
-                        <input
-                        disabledDate={disabledDate}
-                        className="range-picker"
-                        placeholder="Start date"
-                        onCalendarChange = { value => {
-                        setDates(value);
-                        }}
-                        />
-                        <input
-                        disabledDate={disabledDate}
-                        className="range-picker"
-                        placeholder="End date"
-                        onCalendarChange = { value => {
-                        setDates(value);
-                        }}
-                        />
+          callback={() => setModal(false)}>
+              <div className='modalContent__container'>
+                    <h4 className='modal__title'>Recordatorio</h4>
+                    <div className='inputDate__container'>
+                        <input type="date" name="" id=""/>
+                        <input type="date" name="" id=""/>
                     </div>
-                    <input
-                        className=''
-                        format={format}
-                        placeholder="Start time"
-                    />
-                    <div className="">
-                        <button
-                            variant='primary'
-                            className=''
-                            // onClick={() => props.hide(recipe?.index, true)} 
-                            >
-                            Añadir Recordatorio
-                        </button>
-                        <button
-                            variant='primary' 
-                            className='' 
-                            // onClick={() => props.hide(recipe?.index, false)} 
-                            >
-                            Cancelar
-                        </button>
+                    <div className='inputTime__container'>
+                        <input type="datetime" name="" id=""/>
+                        <input type="number" name="" id=""/>
                     </div>
+                    <button
+                        className='save__button btn-blue-lg btn'
+                        onClick={() => console.log("añadir")} 
+                        >
+                        Guardar
+                    </button>
                 </div>
             </Modal>}
             <div className=''>
-                <h2 className="pillbox__title">Pastillero Uma</h2>
+                <h2 className="pillbox__title">Monitoreo</h2>
                 <div className='pillboxList__container'>
-                    <div className="">
-                        <h2 className='pillbox__title'>Monitoreo</h2>
-                    </div>
                     <div className='pillboxReminder__header'>
                         <div className=''>
                             Receta
@@ -141,6 +115,14 @@ const Pillbox = props => {
                     {recipesList()}
                 </div>
                 </div>
+                <div className="pillbox__addContainer"
+                onClick={() => setModal(true)}>
+              <span 
+                className="pillbox__btnContainer">
+                <button className="pillbox__addBtn">+</button>
+                <span className="pillbox__addMsg">Agregar recordatorio</span>
+              </span>
+            </div>
             </div>
     )
 
