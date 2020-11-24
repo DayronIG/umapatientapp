@@ -5,11 +5,12 @@ import moment from "moment";
 import { FaUpload } from "react-icons/fa"
 
 export default function RecipeInput({callback}) {
-    const { datetime, cuit } = useSelector(state => state.assignations.selectedAppointment)
+    const { path } = useSelector(state => state.assignations.selectedAppointment)
     const { corporate_norm, dni } = useSelector(state => state.user)
     const medPicRef = useRef();
     const corporateCarnetRef = useRef();
-
+    const assignation_id = path?.split("/")[3]
+    
     const handleClickInputFile = (event, ref) => {
         ref.current.click();
       };
@@ -18,7 +19,7 @@ export default function RecipeInput({callback}) {
 		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		const currentFile = e.target?.files[0];
         if(currentFile) {
-            uploadFileToFirebase(currentFile, `${dni}/prescription/${datetime}_${cuit}/${reference}`)
+            uploadFileToFirebase(currentFile, `${dni}/prescription/${assignation_id}/${reference}`)
 			.then((imgLink) => {
 				console.log(imgLink)
 			})
