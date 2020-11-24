@@ -6,6 +6,17 @@
     .pillboxList__container{
         // background-color: red;
         padding: 30px;
+        .pillboxReminder__header{
+            display: flex;
+            justify-content: space-between;
+        }
+        .recipesList__container{
+            padding: 2vw;
+            .recipesListIndicator__container{
+                display: flex;
+                flex-direction: column;
+            }
+        }
     }
     .pillbox__title{
         text-align: center;
