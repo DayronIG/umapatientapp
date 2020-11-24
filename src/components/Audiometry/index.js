@@ -113,13 +113,13 @@ const Audiometry = ({modal = true}) => {
 			innerTextToRender="Marque si escucha para continuar el estudio"
 			canPause={false}
 			modal={modal}/>
-			<div>
-            <div onClick={()=>handleYes()} className = "record__trigger--btn y styleButton">
-                Si
-			</div>
-			<div onClick={()=>handleNo()} className = "record__trigger--btn n styleButton">
-                No
-			</div>
+			<div className="button__container">
+				<div onClick={()=>handleYes()} className = "y styleButton">
+					Si
+				</div>
+				<div onClick={()=>handleNo()} className = "n styleButton">
+					No
+				</div>
 			</div>
 			</>:
 			""}
