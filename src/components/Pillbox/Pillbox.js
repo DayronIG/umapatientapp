@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom"
 import Modal from "../GeneralComponents/Modal/MobileModal"
 import "../../styles/pillbox/pillbox.scss"
-import Switch from "react-switch"
+import { FiTrash, FiEdit3 } from "react-icons/fi"
+import { BsClock } from "react-icons/bs"
+import { FaPills } from "react-icons/fa"
+import { MdToday } from "react-icons/md"
 import { BackButton } from '../GeneralComponents/Headers';
+import DB from '../../config/DBConnection';
 
 // import 'features/monitoring/style.scss';
 
 const format = 'HH:mm';
 
 const Pillbox = props => {
-    // const recipe = useSelector(state => state.pillbox.recipe) 
-    const [dates, setDates] = useState([]);
-    const [modal, setModal] = useState(false);
+    const [reminderModal, setReminderModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [reminderToEdit, setReminderToEdit] = useState({});
     const history = useHistory()
+    const uid = "MEpoyB2Ct9TTwmIjLrUEZmsSqKA3"
+    // const [recipes, setRecipes] = useState([])
+    const [newReminder, setNewReminder] = useState(
+        {
+            uid: "",
+            treatment: {
+                dose: 0,
+                frequency_hours: 0,
+                quantity_days: 0,
+            },
+            medicine: "",
+            notify: true,
+            initial_date: "",
+            final_date: "",
+            active: false
+        }
+    )
 
-    const recipes = [{
+    const [recipes, setRecipes] = useState([{
         uid: "",
         treatment: {
             dose: 1,
@@ -41,36 +62,62 @@ const Pillbox = props => {
         initial_date: "2020-12-12",
         final_date: "2020-05-12",
         active: false
-    }]
+    }])
 
-    const disabledDate = current => {
-    //   if (!dates || dates.length === 0) {
-    //     return false;
-    //   }
-    //   const tooLate = dates[0] && current.diff(dates[0], 'days') > recipe.treatment.days;
-    //   const tooEarly = dates[1] && dates[1].diff(current, 'days') > recipe.treatment.days;
-    //   return tooEarly || tooLate;
-    };
+    // const setRecipesFromFirebase = async () => {
+    //     const recipesQuery = await DB
+    //     .firestore()
+    //     .collection(`/services/reminders/${uid}`)
+    //     .get();
 
-    const handleOk = () => {
-        // TO DO
+    //     console.log(recipesQuery)
+
+    //     setRecipes(recipesQuery)
+    // }
+
+    // useEffect(() => {
+    //     setRecipesFromFirebase()
+    // }, [])
+
+
+    const handleSaveReminder = () => {
+        deleteReminder(reminderToEdit)
+        setRecipes([...recipes, newReminder])
+        setReminderModal(false)
+        setEditModal(false)
+        setReminderToEdit({})
+        setNewReminder({})
+    }
+
+    const deleteReminder = (recipe) => {
+        var filteredRecipes = recipes.filter((el)=> el !== recipe)
+        setRecipes(filteredRecipes)
+    }
+
+    const editReminder = (field, value) => {
+        setNewReminder({...reminderToEdit, [field]: value})
     }
 
     const recipesList = () => {
         const recipeList = [];
-        for(var i = 0; i < recipes.length; i++) {
+        for(let recipe of recipes.sort((a, b) => a.medicine[0] > b.medicine[0])) {
             recipeList.push(
-                <div className='recipesList__container' key={i}>
+                <div className='recipesList__container' key={recipe.medicine}>
                     <div className='recipesListIndicator__container'>
-                        <span className=''>{recipes[i].medicine}</span>
-                        <span className=''>{recipes[i].treatment.dose} cada {recipes[i].treatment.frequency_hours} horas por {recipes[i].treatment.quantity_days} días</span>
+                        <span className='item_medicine'>{recipe.medicine}</span>
+                        <span className='item'><BsClock className="element_icon" />9:00 todos los dias</span>
+                        <span className='item'><MdToday className="element_icon" />{recipe.treatment?.quantity_days} días restantes</span>
+                        <span className='item'><FaPills className="element_icon" />Quedan 3 / Reponer</span>
                     </div>
-                        
-                    <div className='recipesListSwitch__container' onClick={() => setModal(true)}>
-                    <Switch
-                        checked={recipes[i].active}
-                        onChange={() => "asd"}
-                        />
+                    <div className='recipesListEditDelete__container'
+                    onClick={() => deleteReminder(recipe)}>
+                    <FiEdit3 className="edit__icon" 
+                    onClick={() => {
+                            setEditModal(true)
+                            setReminderToEdit(recipe)
+                            setNewReminder(recipe)
+                    }}/>
+                    <FiTrash className="delete__icon"/>
                     </div>
                 </div>
             )
@@ -81,42 +128,87 @@ const Pillbox = props => {
     return (
         <div className="pillbox">
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
-        {modal && <Modal
-          callback={() => setModal(false)}>
-              <div className='modalContent__container'>
-                    <h4 className='modal__title'>Recordatorio</h4>
-                    <div className='inputDate__container'>
-                        <input type="date" name="" id=""/>
-                        <input type="date" name="" id=""/>
+        {reminderModal && <Modal
+          callback={() => {
+              setReminderModal(false)
+              setNewReminder({})
+            }}>
+            <div className='modalContent__container'>
+                        <h4 className='modal__title'>Recordatorio</h4>
+                        <div className='inputText__container'>
+                            <p>Medicina: </p>
+                            <input type="text" name="" id="" onChange={(e) => setNewReminder({...newReminder, medicine: e.target.value})}/>
+                        </div>
+                        <hr className="separator"/>
+                        <div className='inputDate__container'>
+                            <span>Fecha inicial:</span>
+                            <input type="date" name="" id="" onChange={(e) => setNewReminder({...newReminder, initial_date: e.target.value})}/>
+                        </div>
+                        <div className='inputTime__container'>
+                            <span>Hora inicial:</span>
+                            <input type="datetime" name="" id="" />
+                        </div>
+                        <div className='inputNumber__container'>
+                            <span>Cantidad:</span>
+                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, treatment: {quantity: e.target.value}})}/>
+                        </div>
+                        <button
+                            className='save__button btn-blue-lg btn'
+                            onClick={() => handleSaveReminder()} 
+                            >
+                            Guardar
+                        </button>
                     </div>
-                    <div className='inputTime__container'>
-                        <input type="datetime" name="" id=""/>
-                        <input type="number" name="" id=""/>
+            </Modal>}
+            {editModal && <Modal
+          callback={() => {
+              setEditModal(false)
+              setReminderToEdit("")
+              setNewReminder({})
+              }}>
+            <div className='modalContent__container'>
+                        <h4 className='modal__title'>Recordatorio</h4>
+                        <div className='inputText__container'>
+                            <p>Medicina: </p>
+                            <input type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                        </div>
+                        <hr className="separator"/>
+                        <div className='inputDate__container'>
+                            <span>Fecha inicial:</span>
+                            <input type="date" name="" id="" onChange={(e) => editReminder("initial_date", e.target.value)}/>
+                        </div>
+                        <div className='inputTime__container'>
+                            <span>Hora inicial:</span>
+                            <input type="datetime" name="" id="" />
+                        </div>
+                        <div className='inputNumber__container'>
+                            <span>Cantidad:</span>
+                            <input type="number" name="" id="" onChange={(e) => editReminder("treatment", e.target.value)}/>
+                        </div>
+                        <button
+                            className='save__button btn-blue-lg btn'
+                            onClick={() => handleSaveReminder()} 
+                            >
+                            Guardar
+                        </button>
                     </div>
-                    <button
-                        className='save__button btn-blue-lg btn'
-                        onClick={() => console.log("añadir")} 
-                        >
-                        Guardar
-                    </button>
-                </div>
             </Modal>}
             <div className=''>
-                <h2 className="pillbox__title">Monitoreo</h2>
+                <h2 className="pillbox__title">Pillbox</h2>
                 <div className='pillboxList__container'>
                     <div className='pillboxReminder__header'>
                         <div className=''>
-                            Receta
+                            Recordatorios
                         </div>
-                        <div className=''>
+                        {/* <div className=''>
                             Recordatorio
-                        </div>
+                        </div> */}
                     </div>
                     {recipesList()}
                 </div>
                 </div>
                 <div className="pillbox__addContainer"
-                onClick={() => setModal(true)}>
+                onClick={() => setReminderModal(true)}>
               <span 
                 className="pillbox__btnContainer">
                 <button className="pillbox__addBtn">+</button>
