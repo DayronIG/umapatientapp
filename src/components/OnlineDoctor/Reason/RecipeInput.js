@@ -16,7 +16,6 @@ export default function RecipeInput({callback}) {
       };
 
     const uploadImage = (e, reference) => {
-		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		const currentFile = e.target?.files[0];
         if(currentFile) {
             uploadFileToFirebase(currentFile, `${dni}/prescription/${assignation_id}/${reference}`)
