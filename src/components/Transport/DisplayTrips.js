@@ -3,18 +3,19 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import { att_history, cancel_tramo } from '../../config/endpoints';
+import { att_history, cancel_tramo, reclamo_tramo } from '../../config/endpoints';
 import moment from 'moment-timezone';
-import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaRegHandPaper } from 'react-icons/fa';
 import Car from '../../assets/car.svg';
-import { renderStatus } from '../Utils/transportUtils';
+import { renderStatus, optionsReclamos } from '../Utils/transportUtils';
 import { Loader } from '../GeneralComponents/Loading';
 import swal from 'sweetalert';
 import '../../styles/generalcomponents/TransportUserActive.scss';
 const TransportUserActive = () => {
-	const toogleModal = useSelector((state) => state.front.openDetails);
+	const [reclamoModal, setReclamoModal] = useState(false)
+	const [cancelModal, setCancelModal] = useState(false)
 	const { patient } = useSelector(state => state.queries)
-	const { date_filter } = useSelector(state => state.transport);;
+	const { date_filter } = useSelector(state => state.transport);
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
@@ -77,43 +78,87 @@ const TransportUserActive = () => {
 		if (getCancelComment === '') {
 			return alert('Ingrese el motivo de cancelación');
 		}
+		console.log(selectedService);
 		setDisplayLoading(true);
 		try {
 			await Axios.post(cancel_tramo, {
 				dni: patient.dni,
 				tramo_id: selectedService.assignation_id,
 				date: selectedService.fecha,
-				corporate: patient.corporate_norm.toUpperCase()
+				corporate: patient.corporate_norm.toUpperCase(),
+				details: getCancelComment,
+				traslado_id: selectedService.request_id
 			}, {
 				headers: {
 					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
 				}
 			});
-			await swal('exito!', 'viaje cancelado', 'success')
+			await swal('Éxito!', 'Viaje cancelado', 'success')
 			setDisplayLoading(false)
-			dispatch({ type: 'TOGGLE_DETAIL' });
+			setCancelModal(false)
 			getServices()
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	function displayModal(item) {
+	async function sendReclamo(e) {
+		e.preventDefault();
+		if (getCancelComment === '' || getCancelComment === '-') {
+			return alert('Ingrese el motivo del reclamo');
+		}
+		setDisplayLoading(true);
+		try {
+			await Axios.post(reclamo_tramo, {
+				dni: patient.dni,
+				tramo_id: selectedService.assignation_id,
+				date: selectedService.fecha,
+				corporate: patient.corporate_norm.toUpperCase(),
+				details: getCancelComment,
+				traslado_id: selectedService.request_id
+			}, {
+				headers: {
+					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
+				}
+			});
+			await swal('Éxito!', 'Reclamo registrado', 'success')
+			setDisplayLoading(false)
+			setReclamoModal(false)
+			getServices()
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	function displayModal(item, type) {
 		setSelectedService(item);
-		dispatch({ type: 'TOGGLE_DETAIL' });
+		if (type === 'cancel') {
+			setCancelModal(true)
+		} else if (type === 'reclamo') {
+			setReclamoModal(true)
+		}
 	}
 
 
 
 	return (
 		<div className='transportList'>
-			{toogleModal &&
-				<MobileModal title='Cancelar viaje'>
-					<textarea
-						className='form-control comments'
-						placeholder='Ingrese el motivo de cancelación'
+			{cancelModal &&
+				<MobileModal callback={() => setCancelModal(false)} title='Cancelar viaje'>
+					<h6>Seleccione el motivo de la cancelación</h6>
+					<select
+						className='form-control'
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
-					/>
+					>
+						{optionsReclamos.map((op) => <option value={op} >{op}</option>)}
+					</select>
+					{getCancelComment === 'Otro' && (
+						<textarea
+							className='form-control comments'
+							onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+							placeholder='ingrese motivo de la cancelación'
+						/>
+					)}
 					<div className='d-flex align-items-center buttonContainer'>
 						<button
 							className='cancelReason'
@@ -125,6 +170,33 @@ const TransportUserActive = () => {
 					</div>
 				</MobileModal>
 			}
+			{reclamoModal && (
+				<MobileModal callback={() => setReclamoModal(false)} title='Reclamo'>
+					<h6>Seleccione el motivo del reclamo</h6>
+					<select
+						className='form-control'
+						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+					>
+						{optionsReclamos.map((op) => <option value={op} >{op}</option>)}
+					</select>
+					{getCancelComment === 'Otro' && (
+						<textarea
+							className='form-control'
+							onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+							placeholder='ingrese motivo del reclamo'
+						/>
+					)}
+					<div className='d-flex align-items-center buttonContainer'>
+						<button
+							className='cancelReason'
+							onClick={sendReclamo}
+						>
+							Confirmar
+						</button>
+						{displayLoading && <Loader />}
+					</div>
+				</MobileModal>
+			)}
 			<div className='buttonDisplay'>
 				<button className={openAll === true ? 'active' : ''}
 					onClick={function () {
@@ -193,7 +265,10 @@ const TransportUserActive = () => {
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
-												<button className="cancelBtn" onClick={() => displayModal(item)}>
+												<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+												</button>
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 													<FaRegTrashAlt /> Cancelar Viaje
 												</button>
 											</div>
@@ -240,7 +315,10 @@ const TransportUserActive = () => {
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
-												<button className="cancelBtn" onClick={() => displayModal(item)}>
+												<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+												</button>
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 													<FaRegTrashAlt /> Cancelar Viaje
 												</button>
 											</div>
@@ -295,7 +373,10 @@ const TransportUserActive = () => {
 														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 														<FaCar /> Seguir recorrido
 													</button>
-													<button className="cancelBtn" onClick={() => displayModal(item)}>
+													<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+														<FaRegHandPaper /> Hacer un reclamo
+													</button>
+													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 														<FaRegTrashAlt /> Cancelar Viaje
 													</button>
 												</div>
@@ -343,7 +424,10 @@ const TransportUserActive = () => {
 													}}>
 														<FaCar /> Seguir recorrido
 													</button>
-													<button className="cancelBtn" onClick={() => displayModal(item)}>
+													<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+														<FaRegHandPaper /> Hacer un reclamo
+													</button>
+													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 														<FaRegTrashAlt /> Cancelar Viaje
 													</button>
 												</div>

@@ -66,6 +66,7 @@ export const att_history = `${NODE_SERVER}/transportistas/v1/att_history`;
 export const create_traslado = `${NODE_SERVER}/transportistas/v1/create_traslado`;
 export const change_status_traslado = `${NODE_SERVER}/transportistas/v1/changeStatusTraslado`;
 export const cancel_tramo = `${NODE_SERVER}/transportistas/v1/cancel_tramo`;
+export const reclamo_tramo = `${NODE_SERVER}/transportistas/v1/reclamo_tramo`;
 export const transport_register = `${NODE_SERVER}/transportistas/v1/user_traslados_app`;
 export const check_exist = `${NODE_SERVER}/transportistas/v1/check_exist`;
 export const transport_feedback = `${NODE_SERVER}/transportistas/v1/feedback`;

@@ -164,3 +164,13 @@ export function renderTimeMessage(trip_type) {
 			return 'Hora';
 	}
 }
+
+export const optionsReclamos =
+	[
+		'-',
+		'Me arrepentí',
+		'Demasiada espera',
+		'El vehículo no es el indicado para mi',
+		'No es el vehículo que esperaba',
+		'Otro'
+	]

@@ -119,6 +119,24 @@ const TransportTracking = () => {
 							<p className='originP'>Notas:</p>
 							<p className='originText'>{service?.request?.notas || 'No hay notas'}</p>
 						</li>
+						<li className='originLi'>
+							<p className='originP'>Datos del vehíulo</p>
+							{service?.vehicle ? (
+								<>
+									<p className='originText'>Modelo: {service?.vehicle?.model || '-'}</p>
+									<p className='originText'>Patente: {service?.vehicle?.patente || '-'}</p>
+									<p className='originText'>Color: {service?.vehicle?.color_vehiculo || '-'}</p>
+									<p className='originText'>Año: {service?.request?.fecha_vehiculo || '-'}</p>
+
+
+								</>
+							) : (
+									<>
+										<p className='originText'>{'No hay datos'}</p>
+									</>
+
+								)}
+						</li>
 					</ul>
 				}
 			</div>
