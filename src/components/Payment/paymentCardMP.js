@@ -269,7 +269,7 @@ const PaymentCardMP = () => {
     
       const handleChange = e => {
         if(e.target){const { name, value } = e.target;
-        setState({ ...state, [name]: value });}
+        setState({ ...state, [name]: value?.trim() });}
       }
     
       const properties = {
@@ -321,7 +321,7 @@ const PaymentCardMP = () => {
               <small>Email</small>
               <input
                 autoComplete="on"
-                type="text"
+                type="email"
                 name="email"
                 placeholder="nombre@email.com"
                 id="email"
