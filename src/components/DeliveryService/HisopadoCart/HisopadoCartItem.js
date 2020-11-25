@@ -11,7 +11,7 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
-    const { dni } = useSelector(store => store.queries.patient);
+    const { dni } = useSelector(store => store.user);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);

@@ -17,7 +17,7 @@ function jsUcfirst(string = '') {
 export default ({ bubble }) => {
 	const [corporation] = useState("uma")
 	const [user] = useState("patient")
-	const {patient} = useSelector(state => state.queries) 
+	const patient = useSelector(state => state.user) 
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService) 
 	const {incidente_id} = useParams()
 	const docId = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]?.docId) || incidente_id

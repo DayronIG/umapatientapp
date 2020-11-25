@@ -36,7 +36,8 @@ const Queue = (props) => {
     const { openDetails, modalAction, remainingText, loading } = useSelector(state => state.front)
     const assessment = useSelector(state => state.assessment)
     const [dni] = useState(props.match.params.dni)
-    const { questions, appointments: appointment, callSettings, patient, assignedAppointment } = useSelector(state => state.queries)
+    const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
+    const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord[0])
 
     useEffect(() => {

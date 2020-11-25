@@ -22,7 +22,8 @@ const Questions = () => {
 	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
 	const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
 	const { assessment } = useSelector((state) => state);
-	const { questions, patient } = useSelector((state) => state.queries);
+	const { questions } = useSelector((state) => state.queries);
+	const patient = useSelector(state => state.user)
 	const { loading } = useSelector((state) => state.front);
 	const propsContainerAssessmentAppointment = { seti, setj, i, j, responseIA, coordinates, alerta };
 

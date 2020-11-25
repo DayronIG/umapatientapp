@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Recomendations from "./Recomendations"
 import hisopadoPos from "../../../../assets/img/hisopado_pos.svg"
-import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
+import { FaUserNurse, FaListUl, FaArrowRight, FaStethoscope } from "react-icons/fa"
 import { BackButton } from '../../../GeneralComponents/Headers';
 
 export default function PositiveResult({finalAction}) {

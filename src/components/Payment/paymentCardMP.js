@@ -29,8 +29,8 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
     const [allPurchases, setAllPurchases] = useState([])
 
 
@@ -147,6 +147,7 @@ const PaymentCardMP = () => {
             id: current.id,
             type: 'delivery',
             coupon
+            // mpaccount: 'sandbox'
          }
          
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
@@ -156,7 +157,7 @@ const PaymentCardMP = () => {
          axios.post(payment_url, paymentData, {headers})
              .then(res => {
                 setLoader(false)
-                 if (res.data.body.status === "approved") {
+                 if (res.data.body?.status === "approved") {
                     window.gtag('event', 'purchase', {
                       'transaction_id': current.id,
                       'affiliation': user?.corporate_norm,
@@ -174,7 +175,9 @@ const PaymentCardMP = () => {
                         'transaction_id': current.id
                       });
                      setStatus("approved")
-                } else if (res.data.body.status === "rejected") {
+                  } else if (res.data.body.status === "free") {
+                    setStatus("approved")
+                  } else if (res.data.body.status === "rejected") {
                   window.gtag('event', 'payment_failed', {
                     'event_category' : 'warning',
                     'event_label' : 'hisopado_payment'
@@ -186,6 +189,7 @@ const PaymentCardMP = () => {
             })
             .catch(err => {
               setLoader(false)
+              console.error(err)
               window.gtag('event', 'payment_failed', {
                 'event_category' : 'warning',
                 'event_label' : 'hisopado_payment'
@@ -217,7 +221,7 @@ const PaymentCardMP = () => {
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
           swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            .then(()=> history.push("/"))
+            .then(()=> history.push(`/hisopado/listTracker/${user.ws}`))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             switch(statusDetail){
               case("cc_rejected_insufficient_amount"):
@@ -265,7 +269,7 @@ const PaymentCardMP = () => {
     
       const handleChange = e => {
         if(e.target){const { name, value } = e.target;
-        setState({ ...state, [name]: value });}
+        setState({ ...state, [name]: value?.trim() });}
       }
     
       const properties = {
@@ -317,7 +321,7 @@ const PaymentCardMP = () => {
               <small>Email</small>
               <input
                 autoComplete="on"
-                type="text"
+                type="email"
                 name="email"
                 placeholder="nombre@email.com"
                 id="email"

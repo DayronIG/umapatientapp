@@ -12,7 +12,7 @@ import '../../styles/deliveryService/trackProgress.scss';
 const DeliveryTrackProgress = () => {
 	const history = useHistory();
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
-	const {patient} = useSelector(state => state.queries)
+	const patient = useSelector(state => state.user)
 	const { status } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]) || "NOT:SERVICE";
 	const { loading } = useSelector(state => state.front);
 
