@@ -63,7 +63,7 @@ const WhenScreen = (props) => {
 						props.history.push('./derived');
 					}
 				})
-				.catch();
+				.catch((err) => console.log(err));
 		}
 	}, [user]);
 

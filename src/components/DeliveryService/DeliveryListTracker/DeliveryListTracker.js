@@ -1,12 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {BackButton} from "../../GeneralComponents/Headers"
 import hisopadosNeg from "../../../assets/img/estamos_con_vos.svg"
-import { FaClock, FaArrowRight } from "react-icons/fa"
+import { FaArrowRight } from "react-icons/fa"
 import { GiTransparentTubes } from "react-icons/gi"
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import db from "../../../config/DBConnection";
-
 
 export default function ListTracker({finalAction}) {
     const history = useHistory(); 
@@ -59,7 +57,6 @@ export default function ListTracker({finalAction}) {
                         <div>
                             <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>
                             <p className="item_status">{state}</p>
-                            {/* <p className="item_time"><FaClock className="clock_icon" />Entrega estimada: 1 hora</p> */}
                         </div>
                         {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
                     </div>}})}

@@ -34,16 +34,19 @@ const SignIn = props => {
         let timeout = setTimeout(() => {
             setSentWs(false)
         }, 2000)
-        if (ws && !props.history.location.pathname.includes("login")) {
+        if(ws === "undefined") {
+            history.push('/login')
+        }
+        if (ws && !history.location.pathname.includes("login")) {
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
             setWs(validPhone)
             axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                 .then((res) => {
                     if(res.data.redirect === 'register') {
-                        props.history.replace(`/register/${validPhone}`)
+                        history.replace(`/register/${validPhone}`)
                     } else {
-                        props.history.replace(`/login/${validPhone}`)
+                        history.replace(`/login/${validPhone}`)
                     }
                 })
                 .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
@@ -131,6 +134,9 @@ const SignIn = props => {
         } else {
             const data = { ws }
             const headers = { 'Content-type': 'application/json'  }
+            if(ws === "NaN" || ws === "undefined") {
+                props.history.push(`/login`)
+            }
             await axios.get(`${node_patient}/exists/${ws}`, {}, config)
                 .then(async (res) => {
                     if(res.data.redirect === 'register') {

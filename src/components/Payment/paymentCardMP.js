@@ -146,8 +146,8 @@ const PaymentCardMP = () => {
             currency: 'ARS',
             id: current.id,
             type: 'delivery',
-            coupon,
-            mpaccount: 'sandbox'
+            coupon
+            // mpaccount: 'sandbox'
          }
          
          let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
