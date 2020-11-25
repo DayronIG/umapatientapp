@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -14,11 +15,12 @@ import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, symptomsForDoc, answers, responseIA, patient, biomarkers, coordinates, alerta } = props;
+	const { dispatch, history, symptomsForDoc, answers, responseIA, patient, coordinates, alerta } = props;
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
 	const [contador, setContador] = useState(0);
+	const biomarkers = useSelector(state => state.biomarkers)
 
 	useEffect(() => {
 		const data = JSON.parse(localStorage.getItem('selectedAppointment'));
