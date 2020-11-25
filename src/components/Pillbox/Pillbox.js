@@ -63,9 +63,7 @@ const Pillbox = props => {
     //     .firestore()
     //     .collection(`/services/reminders/${uid}`)
     //     .get();
-
     //     console.log(recipesQuery)
-
     //     setRecipes(recipesQuery)
     // }
 
@@ -94,7 +92,8 @@ const Pillbox = props => {
 
     const recipesList = () => {
         const recipeList = [];
-        for(let recipe of recipes.sort((a, b) => a.medicine?.[0] > b.medicine?.[0])) {
+        let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
+        for(let recipe of sortedRecipes) {
             recipeList.push(
                 <div className='recipesList__container' key={recipe.medicine}>
                     <div className='recipesListIndicator__container'>
@@ -155,11 +154,12 @@ const Pillbox = props => {
                     </div>
             </Modal>}
             {editModal && <Modal
-          callback={() => {
-              setEditModal(false)
-              setReminderToEdit("")
-              setNewReminder({})
-              }}>
+                callback={() => {
+                    setEditModal(false)
+                    setReminderToEdit("")
+                    setNewReminder({})
+                    handleSaveReminder()
+                    }}>
             <div className='modalContent__container'>
                         <h4 className='modal__title'>Recordatorio</h4>
                         <div className='inputText__container'>
@@ -194,9 +194,6 @@ const Pillbox = props => {
                         <div className=''>
                             Recordatorios
                         </div>
-                        {/* <div className=''>
-                            Recordatorio
-                        </div> */}
                     </div>
                     {recipesList()}
                 </div>
