@@ -81,6 +81,6 @@ export default [
 	},
 	{
 		label: 'Reumatología',
-		name: 'online_Reumatología',
+		name: 'online_reumatologia',
 	},
 ];
