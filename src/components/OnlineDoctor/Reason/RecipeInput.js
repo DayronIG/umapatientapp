@@ -13,6 +13,8 @@ export default function RecipeInput({callback}) {
     const medPicRef = useRef();
     const corporateCarnetRef = useRef();
     const assignation_id = path?.split("/")[3]
+    const [errorUploading, setErrorUploading] = useState(false)
+    const [uploadingFile, setUploadingFile] = useState(false)
     
     const handleClickInputFile = (event, ref) => {
         ref.current.click();
@@ -20,6 +22,8 @@ export default function RecipeInput({callback}) {
 
     const uploadImage = (e, reference) => {
         const currentFile = e.target?.files[0];
+        setUploadingFile(true)
+        setErrorUploading(false)
         if(currentFile) {
             uploadFileToFirebase(currentFile, `${dni}/prescription/${assignation_id}/${reference}`)
 			.then((imgLink) => {
@@ -30,9 +34,12 @@ export default function RecipeInput({callback}) {
                     setCarnet(true)
                 }
                 dispatch({type: 'SET_BIOMARKER', payload: {[reference]: imgLink} })
+                setUploadingFile(false)
 			})
-			.catch(() => {
-				console.log("ERROR")
+			.catch((err) => {
+                console.log(err)
+                setErrorUploading(true)
+                setUploadingFile(false)
 			});
         }
 	};
@@ -48,6 +55,10 @@ export default function RecipeInput({callback}) {
             {carnet && <small>Foto subida</small>}
             <input ref={corporateCarnetRef} type="file" className="file_input" onChange={(e) => uploadImage(e, `${corporate_norm}-carnet`)} />
             <div className="file-selector" onClick={(e) => handleClickInputFile(e, corporateCarnetRef)}>Selecciona un archivo <FaUpload className="icon" /></div>
+            {uploadingFile && <div class="spinner-border text-primary mt-4" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>}
+            {errorUploading && <small className="error-uploading">Falló la subida</small>}
             <button className="btn btn-blue-lg button" onClick={callback}>Aceptar</button>
         </div>
     )
