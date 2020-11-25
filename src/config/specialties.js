@@ -79,4 +79,8 @@ export default [
 		label: 'Oftalmología',
 		name: 'online_oftalmologia',
 	},
+	{
+		label: 'Reumatología',
+		name: 'online_Reumatología',
+	},
 ];
