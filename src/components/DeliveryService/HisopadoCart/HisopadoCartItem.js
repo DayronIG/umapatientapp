@@ -258,9 +258,9 @@ const HisopadoCartItem = ({patient, index}) => {
                         /> 
                     </div>
                 </div>
-
+                {console.log(index)}
                 {
-                    !patient.docId && showBtn ?
+                    !patient.docId && index !== 0 && showBtn ?
                     <>
                         <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                         <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
