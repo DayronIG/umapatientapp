@@ -60,7 +60,6 @@ const HisopadoCartItem = ({patient, index}) => {
 
     const handleConfirm = () => {
         if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng) {
-            console.log("GUARDAR")
             setShowBtn(false);
             setOpenUser(false);
             let sendData = {
@@ -258,7 +257,6 @@ const HisopadoCartItem = ({patient, index}) => {
                         /> 
                     </div>
                 </div>
-                {console.log(index)}
                 {
                     !patient.docId && index !== 0 && showBtn ?
                     <>

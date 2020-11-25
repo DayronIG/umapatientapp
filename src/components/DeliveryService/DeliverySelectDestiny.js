@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
@@ -25,7 +25,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: user?.piso || '',
 		depto: user?.depto || '',
@@ -112,6 +112,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 	};
 
 	const handleChangePlace = (place) => {
+		console.log(place)
 		const pos = {
 			lat: place?.lat || place?.geometry?.location?.lat() || "",
 			lng: place?.lng || place?.geometry?.location?.lng() || "",
@@ -140,7 +141,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		});
 	}
 
-	async function handleSubmit(e) {
+	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
 		if (['lat', 'lng', 'address'].some((key) => !formState[key] || formState[key] === "")) {
 			return swal('Error', 'Por favor, seleccione una dirección', 'warning');
@@ -154,8 +155,8 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			'key': deliveryType || 'HISOPADO',
 			'ws': ws,
 			'dni': user.dni,
-			'format_address': formState.address,
-			'user_address': formState.address,
+			'format_address': hisopadoUserAddress,
+			'user_address': hisopadoUserAddress,
 			'lat': formState.lat,
 			'lon': formState.lng,
 			'floor': `${formState.piso}`,
@@ -172,7 +173,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			dispatch({ type: 'LOADING', payload: false });
 		} catch (error) {
 			dispatch({ type: 'LOADING', payload: false });
-			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
+			swal('Error', 'Hubo un error al confirmar su domicilio, por favor intente nuevamente', 'error');
 			return;
 		}
 		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
@@ -182,7 +183,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			dispatch({ type: 'LOADING', payload: false });
 		}
 		// history.push(`/hisopado/carrito/${ws}`)
-	};
+	}, [hisopadoUserAddress]);
 
 
 	return (
@@ -239,7 +240,6 @@ const DeliverySelectDestiny = ({isModal=false}) => {
             </div>
 			</div>
 		</form>
-		{/* </MobileModal> */}
 		</div>
 	);
 };
