@@ -14,7 +14,7 @@ import BilirubinaIndirecta from "./BilirubinaIndirecta";
 import Error from "./Error";
 import Triglicerido from "./Trigliceridos";
 import { Loader } from "../../global/Spinner/Loaders";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import "./Styles/Buttons.scss";
 
