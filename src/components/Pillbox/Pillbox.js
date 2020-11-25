@@ -24,11 +24,9 @@ const Pillbox = props => {
     const [newReminder, setNewReminder] = useState(
         {
             uid: "",
-            treatment: {
-                dose: 0,
-                frequency_hours: 0,
-                quantity_days: 0,
-            },
+            dose: 0,
+            frequency_hours: 0,
+            quantity_days: 0,
             medicine: "",
             notify: true,
             initial_date: "",
@@ -39,11 +37,9 @@ const Pillbox = props => {
 
     const [recipes, setRecipes] = useState([{
         uid: "",
-        treatment: {
-            dose: 1,
-            frequency_hours: 3,
-            quantity_days: 5,
-        },
+        dose: 1,
+        frequency_hours: 3,
+        quantity_days: 5,
         medicine: "AMOXIDAL",
         notify: true,
         initial_date: "2020-12-12",
@@ -52,11 +48,9 @@ const Pillbox = props => {
     },
     {
         uid: "",
-        treatment: {
-            dose: 1,
-            frequency_hours: 3,
-            quantity_days: 5,
-        },
+        dose: 1,
+        frequency_hours: 3,
+        quantity_days: 5,
         medicine: "IBUPIRAC",
         notify: true,
         initial_date: "2020-12-12",
@@ -100,13 +94,13 @@ const Pillbox = props => {
 
     const recipesList = () => {
         const recipeList = [];
-        for(let recipe of recipes.sort((a, b) => a.medicine[0] > b.medicine[0])) {
+        for(let recipe of recipes.sort((a, b) => a.medicine?.[0] > b.medicine?.[0])) {
             recipeList.push(
                 <div className='recipesList__container' key={recipe.medicine}>
                     <div className='recipesListIndicator__container'>
                         <span className='item_medicine'>{recipe.medicine}</span>
                         <span className='item'><BsClock className="element_icon" />9:00 todos los dias</span>
-                        <span className='item'><MdToday className="element_icon" />{recipe.treatment?.quantity_days} días restantes</span>
+                        <span className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</span>
                         <span className='item'><FaPills className="element_icon" />Quedan 3 / Reponer</span>
                     </div>
                     <div className='recipesListEditDelete__container'
@@ -183,7 +177,7 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <span>Cantidad:</span>
-                            <input type="number" name="" id="" onChange={(e) => editReminder("treatment", e.target.value)}/>
+                            <input type="number" name="" id="" onChange={(e) => editReminder("quantity_days", e.target.value)}/>
                         </div>
                         <button
                             className='save__button btn-blue-lg btn'
