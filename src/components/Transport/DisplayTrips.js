@@ -265,9 +265,9 @@ const TransportUserActive = () => {
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
-												<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
 													<FaRegHandPaper /> Hacer un reclamo
-												</button>
+												</button> */}
 												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 													<FaRegTrashAlt /> Cancelar Viaje
 												</button>
@@ -315,9 +315,9 @@ const TransportUserActive = () => {
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
-												<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
 													<FaRegHandPaper /> Hacer un reclamo
-												</button>
+												</button> */}
 												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 													<FaRegTrashAlt /> Cancelar Viaje
 												</button>
@@ -373,9 +373,9 @@ const TransportUserActive = () => {
 														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 														<FaCar /> Seguir recorrido
 													</button>
-													<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
 														<FaRegHandPaper /> Hacer un reclamo
-													</button>
+													</button> */}
 													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 														<FaRegTrashAlt /> Cancelar Viaje
 													</button>
@@ -424,9 +424,9 @@ const TransportUserActive = () => {
 													}}>
 														<FaCar /> Seguir recorrido
 													</button>
-													<button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
 														<FaRegHandPaper /> Hacer un reclamo
-													</button>
+													</button> */}
 													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
 														<FaRegTrashAlt /> Cancelar Viaje
 													</button>
