@@ -22,12 +22,16 @@ export default function DayTimeSelector({quantity, defaultValues = false, modify
     }, [shiftsToSave])
 
     const addShift = () => {
-        setShiftsToSave({...shiftsToSave, mon:[...shiftsToSave.mon, "00:00"]})
+        if(shiftsToSave.mon?.length > 0){
+            setShiftsToSave({...shiftsToSave, mon:[...shiftsToSave.mon, "00:00"]})
+        } else {
+            setShiftsToSave({...shiftsToSave, mon:["00:00"]})
+        }
     }
 
     const removeShift = () => {
         let shifts = shiftsToSave
-        delete shifts.mon
+        delete shiftsToSave[Object.keys(shifts)[Object.keys(shifts)?.length - 1]]
         setShiftsToSave(shifts)
     }
 
