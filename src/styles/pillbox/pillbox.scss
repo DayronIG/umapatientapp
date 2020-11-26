@@ -137,8 +137,45 @@
                 width: 30vw;
             }
         }
+        .inputFreq__container{
+            margin: 2vh;
+            display: flex;
+            justify-content: space-evenly;
+            label{
+                width: 30vw;
+            }
+            select{
+                width: 30vw;
+            }
+        }
+        .add-pill-shift-icon{
+            margin: 2vh;
+            display: flex;
+            justify-content: center;
+            .add-icon{
+                color: $uma-primary;
+                font-size: 1.3rem;
+                margin-right: 3vw;
+            }
+            .minus-icon{
+                color: red;
+                font-size: 1.3rem;
+                margin-left: 3vw;
+            }
+        }
         .save__button{
             background-color: $uma-primary;
+        }
+        .daytime-selector{
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2vh;
+            .day-input{
+                width: 30vw;
+            }
+            .time-input{
+                width: 20vw;
+            }
         }
     }
 }

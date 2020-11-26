@@ -5,12 +5,12 @@ import Modal from "../GeneralComponents/Modal/MobileModal"
 import "../../styles/pillbox/pillbox.scss"
 import { FiTrash, FiEdit3 } from "react-icons/fi"
 import { BsClock } from "react-icons/bs"
-import { FaPills } from "react-icons/fa"
+import { FaPills, FaPlus, FaMinus } from "react-icons/fa"
 import { MdToday } from "react-icons/md"
 import { BackButton } from '../GeneralComponents/Headers';
 import DB from '../../config/DBConnection';
-
-// import 'features/monitoring/style.scss';
+import DayTimeSelector from "./Components/DayTimeSelector"
+import HoursSelector from "./Components/HoursSelector"
 
 const format = 'HH:mm';
 
@@ -19,8 +19,11 @@ const Pillbox = props => {
     const [editModal, setEditModal] = useState(false);
     const [reminderToEdit, setReminderToEdit] = useState({});
     const history = useHistory()
-    const uid = "MEpoyB2Ct9TTwmIjLrUEZmsSqKA3"
+    const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1"
     // const [recipes, setRecipes] = useState([])
+    const [personalizedShifts, setPersonalizedShifts] = useState(false)
+    const [shiftsNumber, setShiftsNumber] = useState(1)
+    const [hoursNumber, setHoursNumber] = useState(1)
     const [newReminder, setNewReminder] = useState(
         {
             uid: "",
@@ -43,7 +46,6 @@ const Pillbox = props => {
         medicine: "AMOXIDAL",
         notify: true,
         initial_date: "2020-12-12",
-        final_date: "2020-05-12",
         active: true
     },
     {
@@ -54,7 +56,6 @@ const Pillbox = props => {
         medicine: "IBUPIRAC",
         notify: true,
         initial_date: "2020-12-12",
-        final_date: "2020-05-12",
         active: false
     }])
 
@@ -70,7 +71,6 @@ const Pillbox = props => {
     // useEffect(() => {
     //     setRecipesFromFirebase()
     // }, [])
-
 
     const handleSaveReminder = () => {
         deleteReminder(reminderToEdit)
@@ -95,7 +95,7 @@ const Pillbox = props => {
         let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
         for(let recipe of sortedRecipes) {
             recipeList.push(
-                <div className='recipesList__container' key={recipe.medicine}>
+                <div className='recipesList__container' key={recipe.medicine || Math.random()}>
                     <div className='recipesListIndicator__container'>
                         <span className='item_medicine'>{recipe.medicine}</span>
                         <span className='item'><BsClock className="element_icon" />9:00 todos los dias</span>
@@ -137,14 +137,36 @@ const Pillbox = props => {
                             <span>Fecha inicial:</span>
                             <input type="date" name="" id="" onChange={(e) => setNewReminder({...newReminder, initial_date: e.target.value})}/>
                         </div>
-                        <div className='inputTime__container'>
-                            <span>Hora inicial:</span>
-                            <input type="datetime" name="" id="" />
-                        </div>
                         <div className='inputNumber__container'>
                             <span>Cantidad:</span>
                             <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, treatment: {quantity: e.target.value}})}/>
                         </div>
+                        <div className='inputFreq__container'>
+                            <label>Frecuencia:</label>
+                            <select className="form-control" onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
+                                <option value="every_day">Todos los dias</option>
+                                <option value="personalized">Horarios personalizados</option>
+                            </select>
+                        </div>
+                        
+                        {!personalizedShifts && 
+                        <div>
+                                <HoursSelector quantity={hoursNumber} />
+                                <div className="add-pill-shift-icon">
+                                <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
+                                <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
+                            </div>
+                        </div>}
+                            
+                        {personalizedShifts && 
+                        <div>
+                            <DayTimeSelector quantity={shiftsNumber} />
+                            <div className="add-pill-shift-icon">
+                                <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
+                                <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
+                            </div>
+                        </div>}
+
                         <button
                             className='save__button btn-blue-lg btn'
                             onClick={() => handleSaveReminder()} 
