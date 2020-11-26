@@ -29,12 +29,20 @@ const Pillbox = props => {
             uid: "",
             dose: 0,
             frequency_hours: 0,
-            quantity_days: 0,
+            quantity_weeks: 0,
             medicine: "",
             notify: true,
             initial_date: "",
-            final_date: "",
-            active: false
+            active: false,
+            reminders: {
+                mon: [],
+                tue: [],
+                wed: [],
+                thu: [],
+                fri: [],
+                sat: [],
+                sun: []
+            }
         }
     )
 
@@ -42,22 +50,43 @@ const Pillbox = props => {
         uid: "",
         dose: 1,
         frequency_hours: 3,
-        quantity_days: 5,
+        quantity_weeks: 5,
         medicine: "AMOXIDAL",
         notify: true,
         initial_date: "2020-12-12",
-        active: true
+        active: true,
+        personalized: false,
+        reminders: {
+            mon: ["09:00", "12:00"],
+            tue: ["9:00"],
+            wed: ["9:00"],
+            thu: ["9:00"],
+            fri: ["9:00"],
+            sat: ["9:00"],
+            sun: ["9:00"]
+        }
     },
     {
         uid: "",
         dose: 1,
         frequency_hours: 3,
-        quantity_days: 5,
+        quantity_weeks: 5,
         medicine: "IBUPIRAC",
         notify: true,
         initial_date: "2020-12-12",
-        active: false
-    }])
+        active: false,
+        personalized: true,
+        reminders: {
+            mon: ["9:00"],
+            tue: [],
+            wed: ["8:00"],
+            thu: ["20:00"],
+            fri: ["20:00"],
+            sat: ["9:00"],
+            sun: ["8:00"]
+        }
+    }
+    ])
 
     // const setRecipesFromFirebase = async () => {
     //     const recipesQuery = await DB
@@ -101,7 +130,7 @@ const Pillbox = props => {
                     <div className='recipesListIndicator__container'>
                         <label className='item_medicine'>{recipe.medicine}</label>
                         <label className='item'><BsClock className="element_icon" />9:00 todos los dias</label>
-                        <label className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</label>
+                        <label className='item'><MdToday className="element_icon" />{recipe.quantity_weeks} días restantes</label>
                         <label className='item'><FaPills className="element_icon" />Quedan 3 / Reponer</label>
                     </div>
                     <div className='recipesListEditDelete__container'
@@ -119,6 +148,10 @@ const Pillbox = props => {
         }
         return recipeList
     }
+
+    useEffect(() => {
+        setPersonalizedShifts(reminderToEdit?.personalized)
+    }, [reminderToEdit])
 
     return (
         <div className="pillbox">
@@ -201,19 +234,20 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" onChange={(e) => editReminder("quantity_days", e.target.value)}/>
+                            <input type="number" name="" id="" onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
+                            
                             <select className="form-control" onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
                                 <option value="every_day">Todos los dias</option>
-                                <option value="personalized">Horarios personalizados</option>
+                                <option value="personalized" selected={reminderToEdit?.personalized}>Horarios personalizados</option>
                             </select>
                         </div>
                         
                         {!personalizedShifts && 
                         <div>
-                                <HoursSelector quantity={hoursNumber} />
+                                <HoursSelector quantity={hoursNumber} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false} modifyQuantity={setHoursNumber}/>
                                 <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
