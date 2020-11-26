@@ -230,11 +230,11 @@ const Pillbox = props => {
                         <hr className="separator"/>
                         <div className='inputDate__container'>
                             <label>Fecha inicial:</label>
-                            <input type="date" name="" id="" onChange={(e) => editReminder("initial_date", e.target.value)}/>
+                            <input type="date" name="" id="" defaultValue={reminderToEdit?.initial_date} onChange={(e) => editReminder("initial_date", e.target.value)}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
+                            <input type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
