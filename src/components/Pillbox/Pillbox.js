@@ -129,13 +129,13 @@ const Pillbox = props => {
                 <div className='recipesList__container' key={recipe.medicine || Math.random()}>
                     <div className='recipesListIndicator__container'>
                         <label className='item_medicine'>{recipe.medicine}</label>
-                        <label className='item'><BsClock className="element_icon" />9:00 todos los dias</label>
+                        <label className='item'><BsClock className="element_icon" />{recipe.personalized? "Horarios personalizados": "Todos los dias"}</label>
                         <label className='item'><MdToday className="element_icon" />{recipe.quantity_weeks} días restantes</label>
-                        <label className='item'><FaPills className="element_icon" />Quedan 3 / Reponer</label>
+                        <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label>
                     </div>
                     <div className='recipesListEditDelete__container'
                     onClick={() => deleteReminder(recipe)}>
-                    <FiEdit3 className="edit__icon" 
+                    <FiEdit3 className="edit__icon"
                     onClick={() => {
                             setEditModal(true)
                             setReminderToEdit(recipe)
@@ -176,7 +176,11 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, treatment: {quantity: e.target.value}})}/>
+                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
+                        </div>
+                        <div className='inputNumber__container'>
+                            <label>Semanas:</label>
+                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_weeks: e.target.value})}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
@@ -185,28 +189,28 @@ const Pillbox = props => {
                                 <option value="personalized">Horarios personalizados</option>
                             </select>
                         </div>
-                        
-                        {!personalizedShifts && 
+
+                        {!personalizedShifts &&
                         <div>
                                 <HoursSelector quantity={hoursNumber} />
-                                <div className="add-pill-shift-icon">
+                                {/* <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
-                            </div>
+                            </div> */}
                         </div>}
-                            
-                        {personalizedShifts && 
+
+                        {personalizedShifts &&
                         <div>
                             <DayTimeSelector quantity={shiftsNumber} />
-                            <div className="add-pill-shift-icon">
+                            {/* <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
-                            </div>
+                            </div> */}
                         </div>}
 
                         <button
                             className='save__button btn-blue-lg btn'
-                            onClick={() => handleSaveReminder()} 
+                            onClick={() => handleSaveReminder()}
                             >
                             Guardar
                         </button>
@@ -234,38 +238,41 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
+                            <input type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
+                        </div>
+                        <div className='inputNumber__container'>
+                            <label>Semanas:</label>
+                            <input type="number" name="" id="" defaultValue={reminderToEdit?.quantity_weeks} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
-                            
-                            <select className="form-control" onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
+                            <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
                                 <option value="every_day">Todos los dias</option>
-                                <option value="personalized" selected={reminderToEdit?.personalized}>Horarios personalizados</option>
+                                <option value="personalized">Horarios personalizados</option>
                             </select>
                         </div>
-                        
-                        {!personalizedShifts && 
+
+                        {!personalizedShifts &&
                         <div>
                                 <HoursSelector quantity={hoursNumber} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false} modifyQuantity={setHoursNumber}/>
-                                <div className="add-pill-shift-icon">
+                                {/* <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
-                            </div>
+                                </div> */}
                         </div>}
-                            
-                        {personalizedShifts && 
+
+                        {personalizedShifts &&
                         <div>
                             <DayTimeSelector quantity={shiftsNumber} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false} modifyQuantity={setShiftsNumber}/>
-                            <div className="add-pill-shift-icon">
+                            {/* <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
-                            </div>
+                            </div> */}
                         </div>}
 
                         <button
                             className='save__button btn-blue-lg btn'
-                            onClick={() => handleSaveReminder()} 
+                            onClick={() => handleSaveReminder()}
                             >
                             Guardar
                         </button>
@@ -284,7 +291,7 @@ const Pillbox = props => {
                 </div>
                 <div className="pillbox__addContainer"
                 onClick={() => setReminderModal(true)}>
-              <label 
+              <label
                 className="pillbox__btnContainer">
                 <button className="pillbox__addBtn">+</button>
                 <label className="pillbox__addMsg">Agregar recordatorio</label>

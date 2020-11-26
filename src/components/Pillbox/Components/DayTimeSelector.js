@@ -1,16 +1,43 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Cleave from 'cleave.js/react';
+import { FaPlus, FaMinus } from "react-icons/fa"
 
 export default function DayTimeSelector({quantity, defaultValues = false, modifyQuantity}) {
-    const [pillboxShifts, setPillboxShifts] = useState([])
+    const [shiftsToSave, setShiftsToSave] = useState({})
+
+    useEffect(()=>{
+        if(defaultValues){
+            const values = {}
+            for(var day in defaultValues){
+                values[day] = defaultValues[day]
+            }
+            setShiftsToSave(values)
+        } else {
+            setShiftsToSave({mon:["00:00"]})
+        }
+    },[])
+
+    useEffect(() => {
+        console.log(shiftsToSave)
+    }, [shiftsToSave])
+
+    const addShift = () => {
+        setShiftsToSave({...shiftsToSave, mon:[...shiftsToSave.mon, "00:00"]})
+    }
+
+    const removeShift = () => {
+        let shifts = shiftsToSave
+        delete shifts.mon
+        setShiftsToSave(shifts)
+    }
+
 
     const renderContent = () => {
         const content  = []
-        if(defaultValues){
-            modifyQuantity(0)
-            for(var day in defaultValues){
-                defaultValues[day].map((hour) => content.push(
-                        <div className="daytime-selector" key={i}>
+            for(var day in shiftsToSave){
+                shiftsToSave[day].map((hour) => {
+                    return content.push(
+                        <div className="daytime-selector" key={hour + day}>
                         <select name="" id="" className="form-control day-input" defaultValue={day} onChange={e => console.log(e.target.value)} >
                             <option value="mon">Lunes</option>
                             <option value="tue">Martes</option>
@@ -29,34 +56,18 @@ export default function DayTimeSelector({quantity, defaultValues = false, modify
                             onChange={e => console.log(e.target.value)} 
                             className="time-input"/>
                     </div>
-                    )
+                    )}
                 )
             }
-        }
-        for(var i = 0; i<quantity; i++){
-            content.push(
-                <div className="daytime-selector" key={i}>
-                    <select name="" id="" className="form-control day-input" onChange={e => console.log(e.target.value)} >
-                        <option value="mon">Lunes</option>
-                        <option value="tue">Martes</option>
-                        <option value="wed">Miércoles</option>
-                        <option value="thu">Jueves</option>
-                        <option value="fri">Viernes</option>
-                        <option value="sat">Sábado</option>
-                        <option value="sun">Domingo</option>
-                    </select>
-                    <Cleave placeholder="Horario"
-                        options={{
-                            time: true,
-                            timePattern: ['h', 'm']
-                        }}
-                        onChange={e => console.log(e.target.value)} 
-                        className="time-input"/>
-                </div>
-            )
-        }
+        
         return content
     }
 
-    return renderContent()
+    return <> 
+        {renderContent()}
+        <div className="add-pill-shift-icon">
+            <FaPlus className="add-icon" onClick={addShift}/>
+            <FaMinus className="minus-icon" onClick={removeShift}/>
+        </div>
+        </>
 }

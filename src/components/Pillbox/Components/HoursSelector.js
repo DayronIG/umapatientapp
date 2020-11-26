@@ -1,44 +1,57 @@
-import React from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import Cleave from 'cleave.js/react';
+import { FaPlus, FaMinus } from "react-icons/fa"
 
 export default function HoursSelector({quantity, defaultValues = false, modifyQuantity}) {
+    const [hoursToSave, setHoursToSave] = useState([])
+
+    useEffect(()=>{
+        if(defaultValues){
+            const values = []
+            for(var hour of defaultValues){
+                values.push(hour)
+            }
+            setHoursToSave(values)
+        } else {
+            setHoursToSave(["00:00"])
+        }
+    },[])
+
+    useEffect(() => {
+        console.log(hoursToSave)
+    }, [hoursToSave])
+
+    const addHour = () => {
+        setHoursToSave([...hoursToSave, "00:00"])
+    }
+
+    const removeHour = () => {
+        let hours = hoursToSave.slice(0, -1)
+        setHoursToSave(hours)
+    }
 
     const renderHours = () => {
-        const content = []
-        if(defaultValues){
-            modifyQuantity(0)
-            for(var i = 0; i < defaultValues.length; i++){
-                content.push(
-                    <div className="daytime-selector" key={i}>
-                        <span>Hora:</span>
-                        <Cleave placeholder="Horario"
-                        options={{
-                            time: true,
-                            timePattern: ['h', 'm']
-                        }}
-                        value={defaultValues[i]}
-                        onChange={e => console.log(e.target.value)} 
-                        className="time-input"/>
-                    </div>
-                )
-            }
-        }
-        for(var i = 0; i < quantity; i++){
-            content.push(
-                <div className="daytime-selector" key={i}>
-                    <span>Hora:</span>
-                    <Cleave placeholder="Horario"
-                    options={{
-                        time: true,
-                        timePattern: ['h', 'm']
-                    }}
-                    onChange={e => console.log(e.target.value)} 
-                    className="time-input"/>
-                </div>
-            )
-        }
+        let content = hoursToSave.map(hour => {
+            return (<div className="daytime-selector" key={hour}>
+                <span>Hora:</span>
+                <Cleave placeholder="hh:mm"
+                options={{
+                    time: true,
+                    timePattern: ['h', 'm']
+                }}
+                value={hour}
+                onChange={e => console.log(e.target.value)} 
+                className="time-input"/>
+            </div>)}
+        )
         return content
     }
 
-    return renderHours()
+    return <>
+        {renderHours()}
+        <div className="add-pill-shift-icon">
+            <FaPlus className="add-icon" onClick={addHour}/>
+            <FaMinus className="minus-icon" onClick={removeHour}/>
+        </div>
+        </>
 }            
