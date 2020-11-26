@@ -77,7 +77,7 @@ const Pillbox = props => {
         active: false,
         personalized: true,
         reminders: {
-            mon: ["9:00"],
+            mon: ["9:00", "20:00"],
             tue: [],
             wed: ["8:00"],
             thu: ["20:00"],
@@ -256,7 +256,7 @@ const Pillbox = props => {
                             
                         {personalizedShifts && 
                         <div>
-                            <DayTimeSelector quantity={shiftsNumber} />
+                            <DayTimeSelector quantity={shiftsNumber} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false} modifyQuantity={setShiftsNumber}/>
                             <div className="add-pill-shift-icon">
                                 <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
                                 <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
