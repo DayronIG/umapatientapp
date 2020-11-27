@@ -161,20 +161,20 @@ const Pillbox = props => {
                         <h4 className='modal__title'>Recordatorio</h4>
                         <div className='inputText__container'>
                             <p>Medicina: </p>
-                            <input type="text" name="" id="" onChange={(e) => setNewReminder({...newReminder, medicine: e.target.value})}/>
+                            <input className="form-control" type="text" name="" id="" onChange={(e) => setNewReminder({...newReminder, medicine: e.target.value})}/>
                         </div>
                         <hr className="separator"/>
                         <div className='inputDate__container'>
                             <label>Fecha inicial:</label>
-                            <input type="date" name="" id="" onChange={(e) => setNewReminder({...newReminder, initial_date: e.target.value})}/>
+                            <input className="form-control" type="date" name="" id="" onChange={(e) => setNewReminder({...newReminder, initial_date: e.target.value})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Semanas:</label>
-                            <input type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_weeks: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_weeks: e.target.value})}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
@@ -213,20 +213,20 @@ const Pillbox = props => {
                         <h4 className='modal__title'>Recordatorio</h4>
                         <div className='inputText__container'>
                             <p>Medicina: </p>
-                            <input type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
                         </div>
                         <hr className="separator"/>
                         <div className='inputDate__container'>
                             <label>Fecha inicial:</label>
-                            <input type="date" name="" id="" defaultValue={reminderToEdit?.initial_date} onChange={(e) => editReminder("initial_date", e.target.value)}/>
+                            <input className="form-control" type="date" name="" id="" defaultValue={reminderToEdit?.initial_date} onChange={(e) => editReminder("initial_date", e.target.value)}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
+                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Semanas:</label>
-                            <input type="number" name="" id="" defaultValue={reminderToEdit?.quantity_weeks} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
+                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_weeks} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
