@@ -14,11 +14,14 @@ export default function HisopadosPurchase() {
     const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab)
     const survey = !!useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.eval?.uma_eval) 
 
-    // useEffect(()=>{
-    //     if(survey){
-    //         setFluxTrackerHisopado(result)
-    //     }
-    // }, [survey])
+/*     useEffect(()=>{
+        if(result){
+             setFluxTrackerHisopado(result)
+             console.log(result)
+        }
+    }, [result]) */
+
+    console.log(fluxTrackerHisopado)
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {

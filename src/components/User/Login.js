@@ -34,12 +34,12 @@ const SignIn = props => {
         let timeout = setTimeout(() => {
             setSentWs(false)
         }, 2000)
-        if(ws === "undefined") {
-            history.push('/login')
-        }
         if (ws && !history.location.pathname.includes("login")) {
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
+            if(ws === "undefined" || validPhone === "NaN" || isNaN(validPhone)) {
+                history.push('/login')
+            }
             setWs(validPhone)
             axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                 .then((res) => {
