@@ -69,7 +69,7 @@ export default function DayTimeSelector({medicine = false, defaultValues = false
                         }}
                         value={hour}
                         onChange={e => editShift(e.target.value, indexHour, day)} 
-                        className="time-input"/>
+                        className="time-input form-control"/>
                     <FaMinus className="minus-icon" onClick={() => removeShift(hour, day)}/>
                 </div>
                 )

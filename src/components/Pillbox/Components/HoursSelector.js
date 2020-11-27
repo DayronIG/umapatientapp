@@ -56,7 +56,7 @@ export default function HoursSelector({medicine = false, defaultValues = false})
                 }}
                 value={hour}
                 onChange={e => editHour(e.target.value, indexHour)} 
-                className="time-input"/>
+                className="time-input form-control"/>
             </div>)}
         )
         return content
