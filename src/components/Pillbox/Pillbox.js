@@ -186,12 +186,12 @@ const Pillbox = props => {
 
                         {!personalizedShifts &&
                         <div>
-                                <HoursSelector/>
+                            <HoursSelector medicine={newReminder.medicine}/>
                         </div>}
 
                         {personalizedShifts &&
                         <div>
-                            <DayTimeSelector />
+                            <DayTimeSelector medicine={newReminder.medicine}/>
                         </div>}
 
                         <button
@@ -238,12 +238,12 @@ const Pillbox = props => {
 
                         {!personalizedShifts &&
                         <div>
-                            <HoursSelector defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false}/>
+                            <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false}/>
                         </div>}
 
                         {personalizedShifts &&
                         <div>
-                            <DayTimeSelector defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
+                            <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
                         </div>}
 
                         <button
