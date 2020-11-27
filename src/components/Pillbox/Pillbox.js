@@ -22,8 +22,6 @@ const Pillbox = props => {
     const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1"
     // const [recipes, setRecipes] = useState([])
     const [personalizedShifts, setPersonalizedShifts] = useState(false)
-    const [shiftsNumber, setShiftsNumber] = useState(1)
-    const [hoursNumber, setHoursNumber] = useState(1)
     const [newReminder, setNewReminder] = useState(
         {
             uid: "",
@@ -108,8 +106,6 @@ const Pillbox = props => {
         setEditModal(false)
         setReminderToEdit({})
         setNewReminder({})
-        setHoursNumber(1)
-        setShiftsNumber(1)
     }
 
     const deleteReminder = (recipe) => {
@@ -160,8 +156,6 @@ const Pillbox = props => {
           callback={() => {
               setReminderModal(false)
               setNewReminder({})
-              setHoursNumber(1)
-              setShiftsNumber(1)
             }}>
             <div className='modalContent__container'>
                         <h4 className='modal__title'>Recordatorio</h4>
@@ -192,20 +186,12 @@ const Pillbox = props => {
 
                         {!personalizedShifts &&
                         <div>
-                                <HoursSelector quantity={hoursNumber} />
-                                {/* <div className="add-pill-shift-icon">
-                                <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
-                                <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
-                            </div> */}
+                                <HoursSelector/>
                         </div>}
 
                         {personalizedShifts &&
                         <div>
-                            <DayTimeSelector quantity={shiftsNumber} />
-                            {/* <div className="add-pill-shift-icon">
-                                <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
-                                <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
-                            </div> */}
+                            <DayTimeSelector />
                         </div>}
 
                         <button
@@ -222,8 +208,6 @@ const Pillbox = props => {
                     setReminderToEdit("")
                     setNewReminder({})
                     handleSaveReminder()
-                    setHoursNumber(1)
-                    setShiftsNumber(1)
                     }}>
             <div className='modalContent__container'>
                         <h4 className='modal__title'>Recordatorio</h4>
@@ -254,20 +238,12 @@ const Pillbox = props => {
 
                         {!personalizedShifts &&
                         <div>
-                                <HoursSelector quantity={hoursNumber} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false} modifyQuantity={setHoursNumber}/>
-                                {/* <div className="add-pill-shift-icon">
-                                <FaPlus className="add-icon" onClick={()=>setHoursNumber(hoursNumber + 1)}/>
-                                <FaMinus className="minus-icon" onClick={()=>setHoursNumber(hoursNumber - 1)}/>
-                                </div> */}
+                            <HoursSelector defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false}/>
                         </div>}
 
                         {personalizedShifts &&
                         <div>
-                            <DayTimeSelector quantity={shiftsNumber} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false} modifyQuantity={setShiftsNumber}/>
-                            {/* <div className="add-pill-shift-icon">
-                                <FaPlus className="add-icon" onClick={()=>setShiftsNumber(shiftsNumber + 1)}/>
-                                <FaMinus className="minus-icon" onClick={()=>setShiftsNumber(shiftsNumber - 1)}/>
-                            </div> */}
+                            <DayTimeSelector defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
                         </div>}
 
                         <button

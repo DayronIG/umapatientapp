@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import Cleave from 'cleave.js/react';
 import { FaPlus, FaMinus } from "react-icons/fa"
 
-export default function HoursSelector({quantity, defaultValues = false, modifyQuantity}) {
+export default function HoursSelector({defaultValues = false}) {
     const [hoursToSave, setHoursToSave] = useState([])
 
     useEffect(()=>{
