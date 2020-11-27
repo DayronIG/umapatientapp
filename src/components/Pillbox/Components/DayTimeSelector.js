@@ -9,7 +9,7 @@ export default function DayTimeSelector({medicine = false, defaultValues = false
 
     useEffect(() => {
         if(medicine){
-            dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: shiftsToSave}})
+            dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: shiftsToSave, personalized:true}})
         }
     }, [medicine, shiftsToSave])
 
@@ -24,10 +24,6 @@ export default function DayTimeSelector({medicine = false, defaultValues = false
             setShiftsToSave({mon:["00:00"]})
         }
     },[])
-
-    useEffect(() => {
-        console.log(shiftsToSave)
-    }, [shiftsToSave])
 
     const addShift = () => {
         if(shiftsToSave.sun?.length > 0){
@@ -53,7 +49,7 @@ export default function DayTimeSelector({medicine = false, defaultValues = false
         const mapHours = (hour, indexHour, day) => {
                 return content.push(
                     <div className="daytime-selector" key={hour + day}>
-                    <select name="" id="" className="form-control day-input" defaultValue={day} onChange={e => console.log(e.target.value)} >
+                    <select name="" id="" className="form-control day-input" defaultValue={day} onChange={e => editShift(hour, indexHour, e.target.value)} >
                         <option value="mon">Lunes</option>
                         <option value="tue">Martes</option>
                         <option value="wed">Miércoles</option>

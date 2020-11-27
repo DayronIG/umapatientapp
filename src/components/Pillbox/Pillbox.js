@@ -11,6 +11,7 @@ import { BackButton } from '../GeneralComponents/Headers';
 import DB from '../../config/DBConnection';
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
+import swal from 'sweetalert';
 
 const format = 'HH:mm';
 
@@ -22,6 +23,8 @@ const Pillbox = props => {
     const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1"
     // const [recipes, setRecipes] = useState([])
     const [personalizedShifts, setPersonalizedShifts] = useState(false)
+    const [isValid, setIsValid] = useState(false)
+    const shiftsToPost = useSelector(state => state.pillbox.shiftsToPost)
     const [newReminder, setNewReminder] = useState(
         {
             uid: "",
@@ -43,7 +46,6 @@ const Pillbox = props => {
             }
         }
     )
-
     const [recipes, setRecipes] = useState([{
         uid: "",
         dose: 1,
@@ -99,13 +101,52 @@ const Pillbox = props => {
     //     setRecipesFromFirebase()
     // }, [])
 
+    const postReminder = () => {
+        console.log(newReminder)
+    }
+
+    useEffect(() => {
+        if(shiftsToPost?.medicine && shiftsToPost.shifts?.length > 0){
+            if(!shiftsToPost?.personalized){
+            setNewReminder({...newReminder, reminders: {
+                mon: shiftsToPost.shifts,
+                tue: shiftsToPost.shifts,
+                wed: shiftsToPost.shifts,
+                thu: shiftsToPost.shifts,
+                fri: shiftsToPost.shifts,
+                sat: shiftsToPost.shifts,
+                sun: shiftsToPost.shifts,
+            }})
+            } else {
+                setNewReminder({...newReminder, reminders: shiftsToPost.shifts})
+            }
+        }
+    }, [shiftsToPost])
+    
+    // useEffect(() => {
+    //     console.log(newReminder)
+    // }, [newReminder])
+
+    useEffect(() => {
+        if(!newReminder.medicine){
+            setIsValid(false)
+        } else {
+            setIsValid(true)
+        }
+    }, [newReminder])
+
     const handleSaveReminder = () => {
-        deleteReminder(reminderToEdit)
-        setRecipes([...recipes, newReminder])
-        setReminderModal(false)
-        setEditModal(false)
-        setReminderToEdit({})
-        setNewReminder({})
+        if(isValid){
+            postReminder()
+            deleteReminder(reminderToEdit)
+            setRecipes([...recipes, newReminder])
+            setReminderModal(false)
+            setEditModal(false)
+            setReminderToEdit({})
+            setNewReminder({})
+        } else {
+            swal("Error","Datos inválidos")
+        }
     }
 
     const deleteReminder = (recipe) => {
@@ -238,7 +279,7 @@ const Pillbox = props => {
 
                         {!personalizedShifts &&
                         <div>
-                            <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders.mon: false}/>
+                            <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders?.mon: false}/>
                         </div>}
 
                         {personalizedShifts &&
@@ -246,12 +287,12 @@ const Pillbox = props => {
                             <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
                         </div>}
 
-                        <button
+                        {/* <button
                             className='save__button btn-blue-lg btn'
                             onClick={() => handleSaveReminder()}
                             >
                             Guardar
-                        </button>
+                        </button> */}
                     </div>
             </Modal>}
             <div className=''>
