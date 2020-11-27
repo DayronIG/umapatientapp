@@ -5,12 +5,10 @@ import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
 import db from "../../../config/DBConnection";
-import swal from 'sweetalert';
 
 const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
-  const [items, setItems] = useState([]);
   const user = useSelector(store => store.user);
   const { params, selectHomeForm, deliveryInfo } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
@@ -54,7 +52,7 @@ const HisopadoCart = (props) => {
   }, [data, params.price])
 
   const handlePay = () => {
-    for(let i = 0; i < data.length; i++) {
+    /* for(let i = 0; i < data.length; i++) {
       console.log("pagar")
 
       if(!!!data[i].status) {
@@ -63,7 +61,7 @@ const HisopadoCart = (props) => {
         swal("Un momento", "Es necesario que guarde todos los hisopados antes de continuar", "warning");
         return;
       }
-    }
+    } */
     history.push(`/hisopado/payment/${user.ws}`)
   }
 

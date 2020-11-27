@@ -6,13 +6,14 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
-import swal from "sweetalert"
+import swal from '@sweetalert/with-react'
 import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
 import db from "../../config/DBConnection"
+import mpicon from "../../assets/img/delivery/mp.jpg";
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -32,7 +33,6 @@ const PaymentCardMP = () => {
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
     const [allPurchases, setAllPurchases] = useState([])
-
 
     const getCurrentService = () => {
       db.firestore().collection('events/requests/delivery')
@@ -157,7 +157,7 @@ const PaymentCardMP = () => {
          axios.post(payment_url, paymentData, {headers})
              .then(res => {
                 setLoader(false)
-                 if (res.data.body?.status === "approved") {
+                 if (res.data.body?.status === "approved" || res.data.body?.status === "pending") {
                     window.gtag('event', 'purchase', {
                       'transaction_id': current.id,
                       'affiliation': user?.corporate_norm,
@@ -276,13 +276,36 @@ const PaymentCardMP = () => {
         placeholders: { name: 'Tu nombre aquí' },
         locale: { valid: 'válido hasta' }
       }
+
+      function mercadoPagoButton() {
+        swal({
+          buttons: {
+            cancel: "Cerrar",
+          },
+          content: (
+          <div>
+            <img src={mpicon} alt="mercadopago" style={{width: '100%'}} />
+            Si no cuentas con tarjeta de crédito o tu pago es rechazado puedes abonar con MercadoPago.<br />
+            Una vez realizado debes informar el pago a info@uma-health.com con el número de operación o comprobante. <br />
+            <a href="https://mpago.la/1VhVvc2" 
+              className="btn" style={{background: '#02b1ec', color: '#fff'}} 
+              target="_blank"
+              rel="noopener noreferrer">
+                Pagar con MercadoPago
+            </a>
+          </div>
+          )
+        })
+      }
     
       return (
           <div className="payment-arg">
           {loader && <CustomUmaLoader />}        
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
-            {/* <p className="titulo-card">Servicio a Pagar</p> */}
+            <p className="titulo-card" onClick={mercadoPagoButton}>
+              Sólo tarjeta de crédito. Para pagar por MercadoPago click aquí.
+            </p>
             <Cards
               cvc={cvc}
               expiry={expiry}

@@ -182,7 +182,6 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
 			dispatch({ type: 'LOADING', payload: false });
 		}
-		// history.push(`/hisopado/carrito/${ws}`)
 	}, [hisopadoUserAddress]);
 
 

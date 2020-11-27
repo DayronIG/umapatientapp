@@ -37,12 +37,7 @@ export default function AskForBuyHisopado() {
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
                 deliveryInfo.push(document)
-                if(document.status.includes("FREE:IN_RANGE")) {
-                    dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
-                    dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
-                } else if(document.status.includes("FREE")) {
-                    dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
-                }
+                dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
             dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
         })
