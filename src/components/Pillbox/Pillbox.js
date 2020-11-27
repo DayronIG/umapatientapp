@@ -106,9 +106,9 @@ const Pillbox = props => {
     }
 
     useEffect(() => {
-        if(shiftsToPost?.medicine && shiftsToPost.shifts?.length > 0){
+        if(shiftsToPost?.medicine){
             if(!shiftsToPost?.personalized){
-            setNewReminder({...newReminder, reminders: {
+                setNewReminder({...newReminder, reminders: {
                 mon: shiftsToPost.shifts,
                 tue: shiftsToPost.shifts,
                 wed: shiftsToPost.shifts,
@@ -117,7 +117,7 @@ const Pillbox = props => {
                 sat: shiftsToPost.shifts,
                 sun: shiftsToPost.shifts,
             }})
-            } else {
+            } else if (shiftsToPost?.personalized) {
                 setNewReminder({...newReminder, reminders: shiftsToPost.shifts})
             }
         }

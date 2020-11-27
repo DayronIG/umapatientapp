@@ -15,7 +15,6 @@ export default function HoursSelector({medicine = false, defaultValues = false})
     }, [medicine, hoursToSave])
 
     useEffect(()=>{
-        console.log("DEFAULT", defaultValues)
         if(defaultValues){
             const values = []
             for(var hour of defaultValues){

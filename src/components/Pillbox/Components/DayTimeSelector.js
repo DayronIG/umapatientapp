@@ -11,6 +11,7 @@ export default function DayTimeSelector({medicine = false, defaultValues = false
         if(medicine){
             dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: shiftsToSave, personalized:true}})
         }
+        console.log(shiftsToSave)
     }, [medicine, shiftsToSave])
 
     useEffect(()=>{
