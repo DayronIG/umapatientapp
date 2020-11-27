@@ -35,9 +35,9 @@ const BuyHisopado = () => {
                     return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 } else {
                     return <ButtonStyle 
-                    title="¡Hisópate hoy!" 
-                    innerText="Hazte tu testeo a domicilio." 
-                    checkoutText="Conocer más " 
+                    title="Hisopado a domicilio" 
+                    innerText="¡Pídelo ahora y tienes tu resultado en 2 horas!" 
+                    checkoutText="Quiero mi hisopado" 
                     finalAction={() => buyHisopado()} 
                     showPrice={true}/>
                 }
