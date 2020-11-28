@@ -88,8 +88,7 @@ function App(props) {
 				<Route exact path='/register/:ws/:ref?' component={Register} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
-				<Route exact path='/:ws?/recovery' component={ResetPassword} />
-				<PrivateRoute exact path='/:ws?/umacare' component={UmaCare} />
+				<PrivateRoute exact path='/umacare/:ws?' component={UmaCare} />
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
 				<Route exact path='/newregister/:ref?' component={RegisterNew} />
@@ -113,7 +112,7 @@ function App(props) {
 				<PrivateRoute exact path='/:dni/onlinedoctor/attention/:token?' component={CallContainer} />
 				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
-				<PrivateRoute exact path='/:ws?/homeCare' component={ComingSoon} />
+				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
 				<PrivateRoute exact path='/:ws/history/:dni?/:record?' component={History} />
 				<PrivateRoute from='/:ws/record' to='/:ws/history/' />
@@ -142,7 +141,7 @@ function App(props) {
 				{/* Wellness */}
 				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
 				{/* Patient tracking */}
-				<PrivateRoute exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
+				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
 				<PrivateRoute
 					exact
