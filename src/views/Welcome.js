@@ -21,9 +21,11 @@ const Welcome = props => {
     });
   }, []);
 
-  async function installAction() {
+  async function installAction(install) {
     try {
-      await props.showInstallPrompt()
+      if(install) {
+        await props.showInstallPrompt()
+      }
       let userAuth = await getAuth(user.ws)
       const plan = await getCoverage(user.ws)
       const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
@@ -99,7 +101,7 @@ const Welcome = props => {
         {install ?
           <div className="btn btn-blue-lg" onClick={() => installAction()}>Instalar</div>
           :
-          <div className="btn btn-blue-lg" onClick={() => history.push(`/home`)}>Continuar</div>
+          <div className="btn btn-blue-lg" onClick={() => installAction(false)}>Continuar</div>
         }
       </div>
     </section>

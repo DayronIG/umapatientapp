@@ -92,7 +92,6 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		setGeocoder(new maps.Geocoder());
 		if (!navigator.geolocation) return null;
 		navigator.geolocation.getCurrentPosition((pos) => {
-			console.log(pos)
 			fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.coords.latitude},${pos.coords.longitude}&key=AIzaSyDLnpXWJx1qKAfHtTeYWa30b9jGH2GeXfs`)
 				.then(response => response.json())
 				.then(apiData => {
