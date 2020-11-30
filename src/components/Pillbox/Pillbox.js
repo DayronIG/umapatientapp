@@ -102,7 +102,7 @@ const Pillbox = props => {
     // }, [])
 
     const postReminder = () => {
-        console.log("HERE POSTING THIS BROU: ", newReminder)
+        console.log("HERE POSTING THIS: ", newReminder)
     }
 
     useEffect(() => {
@@ -141,7 +141,7 @@ const Pillbox = props => {
             setReminderToEdit({})
             setNewReminder({})
         } else {
-            swal("Error",`Debe completar ${isValid}`)
+            swal("Error",`Debe completar ${isValid}`, 'warning')
         }
     }
 
