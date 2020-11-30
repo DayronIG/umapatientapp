@@ -46,10 +46,10 @@ const HisopadoCart = (props) => {
   }, [params])
 
   useEffect(() => {
-    if(data.length) {
-      setPrice(Number(params.price) * data.length);
+    if(deliveryInfo.length) {
+      setPrice(Number(params.price) * deliveryInfo.filter(el=>el.status).length);
     }
-  }, [data, params.price])
+  }, [deliveryInfo, params.price])
 
   const handlePay = () => {
     /* for(let i = 0; i < data.length; i++) {
