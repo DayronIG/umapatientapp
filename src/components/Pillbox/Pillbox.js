@@ -102,7 +102,7 @@ const Pillbox = props => {
     // }, [])
 
     const postReminder = () => {
-        console.log(newReminder)
+        console.log("HERE POSTING THIS BROU: ", newReminder)
     }
 
     useEffect(() => {
@@ -128,15 +128,10 @@ const Pillbox = props => {
         else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
         else if(!(!!newReminder.quantity_weeks)){setIsValid("Semanas")}
         else { setIsValid("") }
-        // if(!newReminder.medicine || !newReminder.initial_date || !newReminder.quantity_weeks || !newReminder.reminders){
-        //     setIsValid(false)
-        // } else {
-        //     setIsValid(true)
-        // }
-
     }, [newReminder])
 
     const handleSaveReminder = () => {
+        console.log(newReminder)
         if(!isValid){
             postReminder()
             deleteReminder(reminderToEdit)
@@ -246,9 +241,6 @@ const Pillbox = props => {
             </Modal>}
             {editModal && <Modal
                 callback={() => {
-                    setEditModal(false)
-                    setReminderToEdit("")
-                    setNewReminder({})
                     handleSaveReminder()
                     }}>
             <div className='modalContent__container'>
