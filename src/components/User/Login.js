@@ -39,18 +39,19 @@ const SignIn = props => {
             const validPhone = checkNum(ws)
             if(ws === "undefined" || validPhone === "NaN" || isNaN(validPhone)) {
                 history.push('/login')
+            } else {
+                setWs(validPhone)
+                axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
+                    .then((res) => {
+                        if(res.data.redirect === 'register') {
+                            history.replace(`/register/${validPhone}`)
+                        } else {
+                            history.replace(`/login/${validPhone}`)
+                        }
+                    })
+                    .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
             }
-            setWs(validPhone)
-            axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
-                .then((res) => {
-                    if(res.data.redirect === 'register') {
-                        history.replace(`/register/${validPhone}`)
-                    } else {
-                        history.replace(`/login/${validPhone}`)
-                    }
-                })
-                .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
-                .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
+            dispatch({ type: 'LOADING', payload: false })
         }
         return () => clearTimeout(timeout)
     }, [])

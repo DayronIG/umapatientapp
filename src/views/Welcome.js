@@ -33,11 +33,9 @@ const Welcome = props => {
       dispatch({ type: 'GET_PATIENT', payload: userAuth })
       dispatch({ type: 'SET_DELIVERY_PARAMS', payload: params })
       dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+      history.push('/home')
     } catch (err) {
       console.error(err)
-      history.push('/home')
-    } finally {
-      history.push('/home')
     }
   }
 

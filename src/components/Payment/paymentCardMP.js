@@ -159,7 +159,7 @@ const PaymentCardMP = () => {
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
-                if (res.data.body?.status === "approved" || res.data.body?.status === "pending") {
+                if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
                   window.gtag('event', 'purchase', {
                     'transaction_id': current.id,
                     'affiliation': user?.corporate_norm,

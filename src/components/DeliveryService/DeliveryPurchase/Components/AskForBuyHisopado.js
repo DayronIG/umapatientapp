@@ -27,20 +27,20 @@ export default function AskForBuyHisopado() {
         }
     }, [patient])
 
-    const getCurrentService = () => {
-        db.firestore().collection('events/requests/delivery')
+    const getCurrentService = async () => {
+        let deliveryInfo = []
+        await db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', patient.core_id)
         .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
         .get()
-        .then(res => {
-            let deliveryInfo = []
+        .then(async res => {
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
                 deliveryInfo.push(document)
                 dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
-            dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
         })
+        dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
     }
 
     const startBuying = async () => {
@@ -55,7 +55,16 @@ export default function AskForBuyHisopado() {
             }
             await axios.post(create_delivery, data, config)
                 .then(async res => {
-                    await getCurrentService()
+                    await db.firestore().collection('events/requests/delivery')
+                    .where('patient.uid', '==', patient.core_id)
+                    .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
+                    .get()
+                    .then(async res => {
+                        res.forEach(services => {
+                            let document = {...services.data(), id: services.id}
+                            dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                        })
+                    })
                     dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
                 })
                 .catch(err => swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error"))

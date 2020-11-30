@@ -149,8 +149,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		dispatch(handleDeliveryForm(formState));
 		if(!isModal){
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
-		const data = { newValues: formState };
-		const data2 = {
+		const data = {
 			'key': deliveryType || 'HISOPADO',
 			'ws': ws,
 			'dni': user.dni,
@@ -164,11 +163,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			'range': isAddressValidForHisopado || false
 		};
 		try {
-			// Primera request
-			// await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });
-			// Segunda request
-			await Axios.post(mobility_address, data2, {headers});
-
+			await Axios.post(mobility_address, data, {headers});
 			dispatch({ type: 'LOADING', payload: false });
 		} catch (error) {
 			dispatch({ type: 'LOADING', payload: false });
