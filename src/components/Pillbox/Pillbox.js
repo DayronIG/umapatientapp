@@ -23,7 +23,7 @@ const Pillbox = props => {
     const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1"
     // const [recipes, setRecipes] = useState([])
     const [personalizedShifts, setPersonalizedShifts] = useState(false)
-    const [isValid, setIsValid] = useState(false)
+    const [isValid, setIsValid] = useState("")
     const shiftsToPost = useSelector(state => state.pillbox.shiftsToPost)
     const [newReminder, setNewReminder] = useState(
         {
@@ -123,29 +123,30 @@ const Pillbox = props => {
         }
     }, [shiftsToPost])
     
-    // useEffect(() => {
-    //     console.log(newReminder)
-    // }, [newReminder])
-
     useEffect(() => {
-        if(!newReminder.medicine){
-            setIsValid(false)
-        } else {
-            setIsValid(true)
-        }
+        if(!(!!newReminder.medicine)){setIsValid("Medicina")}
+        else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
+        else if(!(!!newReminder.quantity_weeks)){setIsValid("Semanas")}
+        else { setIsValid("") }
+        // if(!newReminder.medicine || !newReminder.initial_date || !newReminder.quantity_weeks || !newReminder.reminders){
+        //     setIsValid(false)
+        // } else {
+        //     setIsValid(true)
+        // }
+
     }, [newReminder])
 
     const handleSaveReminder = () => {
-        if(isValid){
+        if(!isValid){
             postReminder()
             deleteReminder(reminderToEdit)
-            setRecipes([...recipes, newReminder])
+            setRecipes([...recipes, {...newReminder, personalized: personalizedShifts}])
             setReminderModal(false)
             setEditModal(false)
             setReminderToEdit({})
             setNewReminder({})
         } else {
-            swal("Error","Datos inválidos")
+            swal("Error",`Debe completar ${isValid}`)
         }
     }
 
@@ -211,7 +212,7 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
+                            <input className="form-control" defaultValue={1} type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Semanas:</label>
