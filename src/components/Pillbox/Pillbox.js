@@ -12,6 +12,7 @@ import DB from '../../config/DBConnection';
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import swal from 'sweetalert';
+import axios from "axios"
 
 const format = 'HH:mm';
 
@@ -20,19 +21,21 @@ const Pillbox = props => {
     const [editModal, setEditModal] = useState(false);
     const [reminderToEdit, setReminderToEdit] = useState({});
     const history = useHistory()
-    const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1"
+    const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1" //CAMBIOSANTI
     // const [recipes, setRecipes] = useState([])
     const [personalizedShifts, setPersonalizedShifts] = useState(false)
     const [isValid, setIsValid] = useState("")
     const shiftsToPost = useSelector(state => state.pillbox.shiftsToPost)
+    // const token = localStorage.getItem('Notification_Token')
+	const token = useSelector(state => state.userActive.token)
     const [newReminder, setNewReminder] = useState(
         {
             uid: "",
             dose: 0,
-            frequency_hours: 0,
             quantity_weeks: 0,
             medicine: "",
             notify: true,
+            personalized: false,
             initial_date: "",
             active: false,
             reminders: {
@@ -49,7 +52,6 @@ const Pillbox = props => {
     const [recipes, setRecipes] = useState([{
         uid: "",
         dose: 1,
-        frequency_hours: 3,
         quantity_weeks: 5,
         medicine: "AMOXIDAL",
         notify: true,
@@ -69,7 +71,6 @@ const Pillbox = props => {
     {
         uid: "",
         dose: 1,
-        frequency_hours: 3,
         quantity_weeks: 5,
         medicine: "IBUPIRAC",
         notify: true,
@@ -88,21 +89,27 @@ const Pillbox = props => {
     }
     ])
 
-    // const setRecipesFromFirebase = async () => {
-    //     const recipesQuery = await DB
-    //     .firestore()
-    //     .collection(`/services/reminders/${uid}`)
-    //     .get();
-    //     console.log(recipesQuery)
-    //     setRecipes(recipesQuery)
-    // }
+    const setRecipesFromFirebase = () => {
+        const arrOfRecipies = []
+        DB
+        .firestore()
+        .collection(`/user/${uid}/pillbox`)
+        .get()
+        .then((snapshot) => {
+			snapshot.forEach((doc) => {
+                arrOfRecipies.push(doc.data())
+            });
+            setRecipes(arrOfRecipies)
+        });
+    }
 
-    // useEffect(() => {
-    //     setRecipesFromFirebase()
-    // }, [])
+    useEffect(() => {
+        setRecipesFromFirebase()
+    }, [])
 
     const postReminder = () => {
-        console.log("HERE POSTING THIS: ", newReminder)
+        console.log("HERE POSTING THIS: ", token)
+        axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     useEffect(() => {
@@ -241,7 +248,7 @@ const Pillbox = props => {
             </Modal>}
             {editModal && <Modal
                 callback={() => {
-                    handleSaveReminder()
+                    setEditModal(false)
                     }}>
             <div className='modalContent__container'>
                         <h4 className='modal__title'>Recordatorio</h4>
@@ -280,12 +287,12 @@ const Pillbox = props => {
                             <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
                         </div>}
 
-                        {/* <button
+                        <button
                             className='save__button btn-blue-lg btn'
                             onClick={() => handleSaveReminder()}
                             >
                             Guardar
-                        </button> */}
+                        </button>
                     </div>
             </Modal>}
             <div className=''>

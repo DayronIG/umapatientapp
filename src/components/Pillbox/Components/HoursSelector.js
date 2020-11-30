@@ -9,7 +9,6 @@ export default function HoursSelector({medicine = false, defaultValues = false})
 
     useEffect(() => {
         if(medicine){
-            console.log(medicine)
             dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: hoursToSave, personalized:false}})
         }
     }, [medicine, hoursToSave])
