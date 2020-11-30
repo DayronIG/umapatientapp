@@ -14,6 +14,7 @@ import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
 import db from "../../config/DBConnection"
 import mpicon from "../../assets/img/delivery/mp.jpg";
+import Cleave from 'cleave.js/react';
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -329,16 +330,27 @@ const PaymentCardMP = () => {
           >
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
-              <input
+              {/* <input
                 autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"
-                type="text"
+                type="number"
                 name="number"
                 placeholder="xxxx-xxxx-xxxx-xxxx"
                 onChange={(e) => {
                   handleChange(e)
                 }}
                 onFocus={handleFocus}
+              /> */}
+              <Cleave 
+                autoComplete="off"
+                id="cardNumber" data-checkout="cardNumber"
+                name="number"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
+                onChange={(e) => {
+                  handleChange(e)
+                }}
+              onFocus={handleFocus}
+              options={{creditCard: true}}
               />
             </div>
 
@@ -388,15 +400,23 @@ const PaymentCardMP = () => {
                 <div className="cardExpiration">
                 <input 
                 autoComplete="off"
-                type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
-                    placeholder="Mes" className="mr-3" maxLength="2"
-                    onChange={handleChange}
-                    onFocus={handleFocus}/>
-                <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
-                    placeholder="Año" autoComplete="off" maxLength="2" onChange={e => { 
-                        handleChange(e.target.value) 
-                        expirationYearCheck(e.target.value)}}
-                    onFocus={handleFocus}/>
+                type="text" id="cardExpirationMonth" 
+                data-checkout="cardExpirationMonth"
+                inputMode="numeric"
+                maxLength="2"
+                placeholder="Mes" className="mr-3"
+                onChange={handleChange}
+                onFocus={handleFocus}/>
+                <input 
+                type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
+                className = {`${!invalidYear? "": "invalid-input"}`}
+                inputMode="numeric"
+                placeholder="Año" autoComplete="off"
+                maxLength="2"
+                onChange={e => {
+                  handleChange(e.target.value) 
+                  expirationYearCheck(e.target.value)}}
+                onFocus={handleFocus}/>
                 </div>
               </div>
             </div>
