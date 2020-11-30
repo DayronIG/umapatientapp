@@ -107,11 +107,12 @@ const PaymentCardMP = () => {
     //     }
     // }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
+        setLoader(true)
         const form = document.getElementsByTagName('form')[0]
-        window.Mercadopago.createToken(form, sdkResponseHandler)
-
+        await window.Mercadopago.createToken(form, sdkResponseHandler)
+        setLoader(false)
     }
 
     function sdkResponseHandler(status, response) {
@@ -132,75 +133,76 @@ const PaymentCardMP = () => {
     }
 
     const postData = useCallback((form, token) => {
+      setLoader(true)
       let { paymentMethodId, email } = form.elements
       let cardId = paymentMethodId.value
       if(paymentMethodId.value === "mastercard" || paymentMethodId.value === "unknown") cardId = "master"
-        setLoader(true)
-        let paymentData = {
-            email: email.value || 'info@uma-health.com',
-            paymentMethodId: cardId, 
-            token: token,
-            dni: `${user.dni}`,
-            fullname: `${user.fullname}`,
-            amount: parseInt(totalPayment) || 3499,
-            currency: 'ARS',
-            id: current.id,
-            type: 'delivery',
-            coupon
-            // mpaccount: 'sandbox'
-         }
+      let paymentData = {
+          email: email.value || 'info@uma-health.com',
+          paymentMethodId: cardId, 
+          token: token,
+          dni: `${user.dni}`,
+          uid: `${user.core_id}`,
+          fullname: `${user.fullname}`,
+          amount: parseInt(totalPayment) || 3499,
+          currency: 'ARS',
+          id: current.id,
+          type: 'delivery',
+          coupon
+          // mpaccount: 'sandbox'
+        }
          
-         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-         .then(res => console.log("Ok"))
-         .catch(err => console.log(err))
-         axios.post(payment_url, paymentData, {headers})
-             .then(res => {
-                setLoader(false)
-                 if (res.data.body?.status === "approved" || res.data.body?.status === "pending") {
-                    window.gtag('event', 'purchase', {
-                      'transaction_id': current.id,
-                      'affiliation': user?.corporate_norm,
-                      'value': parseInt(totalPayment) || 3499,
-                      'coupon': '1',
-                      'currency': 'ARS',
-                      'items': [{
-                        "id": 'Hisopado Antígeno',
-                        "name": 'Hisopado Antígeno',
-                        "price": parseInt(totalPayment) || 3499
-                      }],
-                      });
-                      window.gtag('event', 'conversion', {
-                        'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
-                        'transaction_id': current.id
-                      });
-                     setStatus("approved")
-                  } else if (res.data.body.status === "free") {
-                    setStatus("approved")
-                  } else if (res.data.body.status === "rejected") {
-                  window.gtag('event', 'payment_failed', {
-                    'event_category' : 'warning',
-                    'event_label' : 'hisopado_payment'
-                  });
-                  setStatusDetail(res.data.body.status_detail)
-                  setStatus(res.data.body.status)
-                     // alert(res.data.body.status)
-                }
-            })
-            .catch(err => {
+        let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
+        axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+        .then(res => console.log("Ok"))
+        .catch(err => console.log(err))
+        axios.post(payment_url, paymentData, {headers})
+            .then(res => {
               setLoader(false)
-              console.error(err)
-              window.gtag('event', 'payment_failed', {
-                'event_category' : 'warning',
-                'event_label' : 'hisopado_payment'
-              });
-              if(paymentMethodId.value === "unknown"){ 
-                swal("Verifique el número de tarjeta ingresado", "" ,"warning")
-              } else {
-                swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
+                if (res.data.body?.status === "approved" || res.data.body?.status === "pending") {
+                  window.gtag('event', 'purchase', {
+                    'transaction_id': current.id,
+                    'affiliation': user?.corporate_norm,
+                    'value': parseInt(totalPayment) || 3499,
+                    'coupon': '1',
+                    'currency': 'ARS',
+                    'items': [{
+                      "id": 'Hisopado Antígeno',
+                      "name": 'Hisopado Antígeno',
+                      "price": parseInt(totalPayment) || 3499
+                    }],
+                    });
+                    window.gtag('event', 'conversion', {
+                      'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
+                      'transaction_id': current.id
+                    });
+                    setStatus("approved")
+                } else if (res.data.body.status === "free") {
+                  setStatus("approved")
+                } else if (res.data.body.status === "rejected") {
+                window.gtag('event', 'payment_failed', {
+                  'event_category' : 'warning',
+                  'event_label' : 'hisopado_payment'
+                });
+                setStatusDetail(res.data.body.status_detail)
+                setStatus(res.data.body.status)
+                    // alert(res.data.body.status)
               }
-              window.Mercadopago.clearSession();
-            })
+          })
+          .catch(err => {
+            setLoader(false)
+            console.error(err)
+            window.gtag('event', 'payment_failed', {
+              'event_category' : 'warning',
+              'event_label' : 'hisopado_payment'
+            });
+            if(paymentMethodId.value === "unknown"){ 
+              swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+            } else {
+              swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
+            }
+            window.Mercadopago.clearSession();
+          })
   }, [coupon])
 
     const expirationYearCheck = (year) => {
@@ -304,7 +306,7 @@ const PaymentCardMP = () => {
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
             <p className="titulo-card" onClick={mercadoPagoButton}>
-              Sólo tarjeta de crédito. Para pagar por MercadoPago click aquí.
+              Para pagar por MercadoPago click aquí.
             </p>
             <Cards
               cvc={cvc}
