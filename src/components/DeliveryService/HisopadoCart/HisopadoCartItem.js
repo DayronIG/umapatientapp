@@ -128,6 +128,7 @@ const HisopadoCartItem = ({patient, index}) => {
         //         })
         // } else {
             console.log(index)
+            console.log(deliveryInfo[index])
             dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
         // }
     }

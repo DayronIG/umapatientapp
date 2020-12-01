@@ -20,6 +20,9 @@ const HisopadoCart = (props) => {
       const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
 
       setData(filterData);
+      console.log("SETTING DATA")
+    } else {
+      setData([])
     }
   }, [deliveryInfo])
 
