@@ -84,11 +84,12 @@ const HisopadoCartItem = ({patient, index}) => {
                 },
                 status: "FREE"
             }
-            localStorage.setItem("multiple_clients", [...multiple_clients, sendData])
-            console.log("ADDING")
             var deliveryInfoToReplace = deliveryInfo 
             deliveryInfoToReplace[index] = sendData
+            // localStorage.setItem("multiple_clients", [...multiple_clients, sendData])
+            localStorage.setItem("multiple_clients", deliveryInfoToReplace)
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
+            dispatch({type: "CHANGE_MARKER"})
             // let headers = { 'Content-Type': 'Application/Json' }
             // axios.post(create_delivery, sendData, headers)
             //     .then(res => console.log(res))
@@ -127,7 +128,7 @@ const HisopadoCartItem = ({patient, index}) => {
         //         })
         // } else {
             console.log(index)
-            dispatch({type: 'REMOVE_DELIVERY', payload: index})
+            dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
         // }
     }
 

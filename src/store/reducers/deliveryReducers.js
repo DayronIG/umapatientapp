@@ -2,6 +2,7 @@ import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LON
 
 const initialState = {
 	addressLatLongHisopado: "",
+	changeMarker: 0,
 	coverage: [],
 	current: {},
 	currentHisopadoIndex: 0,
@@ -42,7 +43,7 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_DELIVERY":
 			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
 		case "REMOVE_DELIVERY":
-			return { ...state, deliveryInfo: state.deliveryInfo.splice(payload, 1) }
+			return { ...state, deliveryInfo: state.deliveryInfo.filter(el => el !== payload) }
 		case "SET_DELIVERY_ALL":
 			return { ...state, deliveryInfo: [...payload]}
 		case "CLEAN_DELIVERY":
@@ -53,6 +54,8 @@ export default (state = initialState, { type, payload }) => {
 			return {...state, dependantInfo: payload}
 		case "SET_HISOPADO_INDEX":
 			return {...state, currentHisopadoIndex: payload}
+		case "CHANGE_MARKER":
+			return {...state, changeMarker: state.changeMarker + 1}
 		default:
 			return state;
 	}

@@ -10,7 +10,7 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const user = useSelector(store => store.user);
-  const { params, selectHomeForm, deliveryInfo } = useSelector(store => store.deliveryService);
+  const { params, selectHomeForm, deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
 
@@ -58,10 +58,11 @@ const HisopadoCart = (props) => {
 
   useEffect(() => {
     if(deliveryInfo.length) {
-      setPrice(Number(params.price) * deliveryInfo.filter(el=>el.status).length);
+      // console.log(deliveryInfo.filter(el => el.status).length, "AQUI")
+      setPrice(Number(params.price) * deliveryInfo.filter(el => el.status).length);
       // setPrice(Number(params.price) * deliveryInfo.length);
     }
-  }, [deliveryInfo, params.price])
+  }, [deliveryInfo, params.price, changeMarker])
 
   const handlePay = () => {
     /* for(let i = 0; i < data.length; i++) {
