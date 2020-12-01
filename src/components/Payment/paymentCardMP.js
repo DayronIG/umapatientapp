@@ -116,6 +116,7 @@ const PaymentCardMP = () => {
     }
 
     function sdkResponseHandler(status, response) {
+      console.log(status, response)
         if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
@@ -153,9 +154,6 @@ const PaymentCardMP = () => {
         }
          
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-        axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-        .then(res => console.log("Ok"))
-        .catch(err => console.log(err))
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
@@ -203,6 +201,9 @@ const PaymentCardMP = () => {
             }
             window.Mercadopago.clearSession();
           })
+          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+          .then(res => console.log("Ok"))
+          .catch(err => console.log(err))
   }, [coupon])
 
     const expirationYearCheck = (year) => {
