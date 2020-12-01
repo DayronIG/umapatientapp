@@ -13,14 +13,14 @@ const HisopadoCart = (props) => {
   const { params, selectHomeForm, deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
+  const multiple_clients = localStorage.getItem("multiple_clients") || []
 
   useEffect(() => {
     if(deliveryInfo.length) {
       const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
       const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
-
       setData(filterData);
-      console.log("SETTING DATA")
+      localStorage.setItem("multiple_clients", filterData)
     } else {
       setData([])
     }
