@@ -15,6 +15,7 @@ const HisopadoCartItem = ({patient, index}) => {
     const { deliveryInfo } = useSelector(store => store.deliveryService);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
+    const { isAddressValidForHisopado } = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
@@ -39,11 +40,18 @@ const HisopadoCartItem = ({patient, index}) => {
     const [wsError, setWsError] = useState(false);
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
+    const [goPreviousDestiny, setGoPreviousDestiny] = useState(0);
     const [addressError, setAddressError] = useState(false);
     const multiple_clients = localStorage.getItem("multiple_clients") || []
 
     useEffect(() => {
+        console.log(isAddressValidForHisopado, "AD")
+        setIsAddressValid(isAddressValidForHisopado)
+    }, [isAddressValidForHisopado, goPreviousDestiny])
+
+    useEffect(() => {
         if(Object.entries(dependantInfo).length !== 0) {
+            console.log(dependantInfo)
             setData({...data,
             address: dependantInfo.address,
             piso: dependantInfo.piso,
@@ -51,12 +59,12 @@ const HisopadoCartItem = ({patient, index}) => {
             lat: dependantInfo.lat,
             lng: dependantInfo.lng
             });
-            if(dependantInfo.isAddressValidForHisopado !== undefined){
-                setIsAddressValid(dependantInfo.isAddressValidForHisopado)
-            } 
-            if(dependantInfo.isAddressValidForHisopado){
-                setOpenModal(false);
-            }
+            // if(dependantInfo.isAddressValidForHisopado !== undefined){
+            //     setIsAddressValid(dependantInfo.isAddressValidForHisopado)
+            // } 
+            // if(dependantInfo.isAddressValidForHisopado){
+            //     setOpenModal(false);
+            // }
         }
     }, [dependantInfo])
 
@@ -281,7 +289,9 @@ const HisopadoCartItem = ({patient, index}) => {
             {
                 openModal &&
                 <MobileModal hideTitle callback={()=>setOpenModal(false)} surveyHisopados noScroll>
-                    {isAddressValid? <DeliverySelectDestiny isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{setIsAddressValid(true)}} history={history} />}
+                    {isAddressValid? <DeliverySelectDestiny finalAction={()=>console.log("ASD")} isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{
+                        setGoPreviousDestiny(goPreviousDestiny + 1)
+                        setIsAddressValid(true)}} history={history} />}
                 </MobileModal>
             }
         </article>

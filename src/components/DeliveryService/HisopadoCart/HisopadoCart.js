@@ -13,54 +13,44 @@ const HisopadoCart = (props) => {
   const { params, selectHomeForm, deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
-  const multiple_clients = localStorage.getItem("multiple_clients") || []
+  const multiple_clients = localStorage.getItem("multiple_clients")
 
   useEffect(() => {
-    if(deliveryInfo.length) {
+    if (deliveryInfo.length) {
       const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
       const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
-      setData(filterData);
       localStorage.setItem("multiple_clients", filterData)
+      setData(filterData);
     } else {
       setData([])
     }
   }, [deliveryInfo])
 
-  useEffect(()=>{
-    console.log(deliveryInfo, "ACAAAA")
-  },[deliveryInfo])
-
   useEffect(() => {
-    if(user.core_id) {
+    if (user.core_id) {
       db.firestore().collection('events/requests/delivery')
-      .where('patient.uid', '==', user.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
-      .get()
-      .then(res => {
-         let all_services = []
+        .where('patient.uid', '==', user.core_id)
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
+        .get()
+        .then(res => {
+          let all_services = []
           res.forEach(services => {
             // setFirstPatient(services.data().destination);
-            let document = {...services.data(), id: services.id}
+            let document = { ...services.data(), id: services.id }
+            console.log(document)
             all_services.push(document)
           })
-          dispatch({type: 'SET_DELIVERY_ALL', payload: all_services})
-      })
+          dispatch({ type: 'SET_DELIVERY_ALL', payload: all_services })
+        })
     }
   }, [user])
-
-  // window.addEventListener('storage',  ()=>{
-  //   const multiple_clients = localStorage.getItem("multiple_clients") || []
-  //   console.log("ASDASD")
-  //   console.log(multiple_clients)
-  //   dispatch({type: 'SET_DELIVERY_ALL', payload: multiple_clients})
-  // })
 
   useEffect(() => {
     setPrice(params.price);
   }, [params])
 
   useEffect(() => {
-    if(deliveryInfo.length) {
+    if (deliveryInfo.length) {
       // console.log(deliveryInfo.filter(el => el.status).length, "AQUI")
       setPrice(Number(params.price) * deliveryInfo.filter(el => el.status).length);
       // setPrice(Number(params.price) * deliveryInfo.length);
@@ -82,32 +72,33 @@ const HisopadoCart = (props) => {
   }
 
   const handleAddHisopado = () => {
-    dispatch({type: 'SET_DELIVERY', 
-    payload: {
-      patient: {
-        title: 'Completar información',
-        user: '',
-        dni: '',
-        ws: '',
-        dob: '',
-        sex: '',
-        address: '',
-        piso: '',
-        depto: '',
-      },
-      destination: {
-        user_address: '',
-        user_floor: '',
-        user_number: '',
-        user_lat: '',
-        user_lon: ''
-      },
-      isOpen: true
+    dispatch({
+      type: 'SET_DELIVERY',
+      payload: {
+        patient: {
+          title: 'Completar información',
+          user: '',
+          dni: '',
+          ws: '',
+          dob: '',
+          sex: '',
+          address: '',
+          piso: '',
+          depto: '',
+        },
+        destination: {
+          user_address: '',
+          user_floor: '',
+          user_number: '',
+          user_lat: '',
+          user_lon: ''
+        },
+        isOpen: true
       }
     })
   }
 
-  return(
+  return (
     <>
       <div className="HisopadoCart">
         <div className="HisopadoCart__container">
@@ -118,23 +109,23 @@ const HisopadoCart = (props) => {
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en <span>{params?.delay}.</span></p>
             {
-              data.length > 0 ? 
-              <p className="HisopadoCart__text">Datos del usuario</p> :
-              <div className="HisopadosCart__empty">
-                <h2>Carrito vacío</h2>
-                <p>Comienza a agregar tus hisopados</p>
-              </div>
+              data.length > 0 ?
+                <p className="HisopadoCart__text">Datos del usuario</p> :
+                <div className="HisopadosCart__empty">
+                  <h2>Carrito vacío</h2>
+                  <p>Comienza a agregar tus hisopados</p>
+                </div>
             }
           </div>
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
               {data?.map((item, index) => {
-                return <HisopadoCartItem key={index} patient={item} index={index}/>
+                return <HisopadoCartItem key={index} patient={item} index={index} />
               })}
             </div>
 
             <div className="HisopadoCart__addContainer">
-              <span 
+              <span
                 onClick={handleAddHisopado}
                 className="HisopadoCart__btnContainer">
                 <button className="HisopadoCart__addBtn">+</button>

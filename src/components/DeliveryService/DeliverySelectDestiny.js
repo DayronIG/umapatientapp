@@ -16,7 +16,7 @@ import { handleAddressValidForHisopado } from "../../store/actions/deliveryActio
 import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
 
-const DeliverySelectDestiny = ({isModal=false}) => {
+const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -68,7 +68,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 						coverage
 					)
 					dispatch(handleAddressValidForHisopado(resultPath))
-				}, 500)
+				}, 800)
 
             }
 			fetchData();
@@ -148,35 +148,44 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 		dispatch({ type: 'LOADING', payload: true });
 		dispatch(handleDeliveryForm(formState));
 		if(!isModal){
-		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
-		const data = {
-			'key': deliveryType || 'HISOPADO',
-			'ws': ws,
-			'dni': user.dni,
-			'format_address': hisopadoUserAddress,
-			'user_address': hisopadoUserAddress,
-			'lat': formState.lat,
-			'lon': formState.lng,
-			'floor': `${formState.piso}`,
-			'number': `${formState.depto}`,
-			'incidente_id': deliveryInfo?.[0]?.id || current.id,
-			'range': isAddressValidForHisopado || false
-		};
-		try {
-			await Axios.post(mobility_address, data, {headers});
-			dispatch({ type: 'LOADING', payload: false });
-		} catch (error) {
-			dispatch({ type: 'LOADING', payload: false });
-			swal('Error', 'Hubo un error al confirmar su domicilio, por favor intente nuevamente', 'error');
-			return;
-		}
-		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+			const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
+			const data = {
+				'key': deliveryType || 'HISOPADO',
+				'ws': ws,
+				'dni': user.dni,
+				'format_address': hisopadoUserAddress,
+				'user_address': hisopadoUserAddress,
+				'lat': formState.lat,
+				'lon': formState.lng,
+				'floor': `${formState.piso}`,
+				'number': `${formState.depto}`,
+				'incidente_id': deliveryInfo?.[0]?.id || current.id,
+				'range': isAddressValidForHisopado || false
+			};
+			try {
+				await Axios.post(mobility_address, data, {headers});
+				dispatch({ type: 'LOADING', payload: false });
+			} catch (error) {
+				dispatch({ type: 'LOADING', payload: false });
+				swal('Error', 'Hubo un error al confirmar su domicilio, por favor intente nuevamente', 'error');
+				return;
+			}
+			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
 		} else {
 			e.preventDefault();
-			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
+			const data = {
+				...formState,
+				format_address: hisopadoUserAddress,
+				user_address: hisopadoUserAddress,
+				address: hisopadoUserAddress,
+				isAddressValidForHisopado: isAddressValidForHisopado
+			}
+			console.log(data)
+			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
 			dispatch({ type: 'LOADING', payload: false });
+			finalAction()
 		}
-	}, [hisopadoUserAddress]);
+	}, [hisopadoUserAddress, isAddressValidForHisopado]);
 
 
 	return (
