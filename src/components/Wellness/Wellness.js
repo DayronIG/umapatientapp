@@ -32,7 +32,9 @@ const Wellness = props => {
   return (
     <>
       {modalFile.state && (
-        <MobileModal callback={() => {
+        <MobileModal 
+        isWellness 
+        callback={() => {
           setModalFile(!modalFile.state)
           dispatch({type: "TOGGLE_DETAIL", payload: false})}}>
           <FileService
