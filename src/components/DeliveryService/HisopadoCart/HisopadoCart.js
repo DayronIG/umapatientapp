@@ -23,6 +23,10 @@ const HisopadoCart = (props) => {
     }
   }, [deliveryInfo])
 
+  useEffect(()=>{
+    console.log(deliveryInfo, "ACAAAA")
+  },[deliveryInfo])
+
   useEffect(() => {
     if(user.core_id) {
       db.firestore().collection('events/requests/delivery')
@@ -41,6 +45,13 @@ const HisopadoCart = (props) => {
     }
   }, [user])
 
+  // window.addEventListener('storage',  ()=>{
+  //   const multiple_clients = localStorage.getItem("multiple_clients") || []
+  //   console.log("ASDASD")
+  //   console.log(multiple_clients)
+  //   dispatch({type: 'SET_DELIVERY_ALL', payload: multiple_clients})
+  // })
+
   useEffect(() => {
     setPrice(params.price);
   }, [params])
@@ -48,6 +59,7 @@ const HisopadoCart = (props) => {
   useEffect(() => {
     if(deliveryInfo.length) {
       setPrice(Number(params.price) * deliveryInfo.filter(el=>el.status).length);
+      // setPrice(Number(params.price) * deliveryInfo.length);
     }
   }, [deliveryInfo, params.price])
 
@@ -66,7 +78,8 @@ const HisopadoCart = (props) => {
   }
 
   const handleAddHisopado = () => {
-    dispatch({type: 'SET_DELIVERY', payload: {
+    dispatch({type: 'SET_DELIVERY', 
+    payload: {
       patient: {
         title: 'Completar información',
         user: '',
@@ -111,9 +124,9 @@ const HisopadoCart = (props) => {
           </div>
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {data?.map((item, index) => (
-                <HisopadoCartItem key={index} patient={item} index={index}/>
-              ))}
+              {data?.map((item, index) => {
+                return <HisopadoCartItem key={index} patient={item} index={index}/>
+              })}
             </div>
 
             <div className="HisopadoCart__addContainer">

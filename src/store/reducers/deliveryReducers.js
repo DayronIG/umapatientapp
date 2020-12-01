@@ -37,6 +37,8 @@ export default (state = initialState, { type, payload }) => {
 			return { ...state, step: payload}
 		case "SET_DELIVERY_CURRENT":
 			return { ...state, current: payload}
+		case "SET_DELIVERY_FROM_ZERO":
+			return { ...state, deliveryInfo: payload}
 		case "SET_DELIVERY":
 			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
 		case "REMOVE_DELIVERY":

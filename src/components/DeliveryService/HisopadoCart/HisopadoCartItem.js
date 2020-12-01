@@ -12,6 +12,7 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(store => store.user);
+    const { deliveryInfo } = useSelector(store => store.deliveryService);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
@@ -20,18 +21,18 @@ const HisopadoCartItem = ({patient, index}) => {
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
     const [data, setData] = useState({
-        title: patient.patient.title || patient.patient.user,
-        fullname: patient.patient.user,
-        dni: patient.patient.dni,
-        ws: patient.patient.ws,
-        dob: patient.patient.dob,
-        sex: patient.patient.sex,
+        title: patient.patient?.title || patient.patient?.user,
+        fullname: patient.patient?.user,
+        dni: patient.patient?.dni,
+        ws: patient.patient?.ws,
+        dob: patient.patient?.dob,
+        sex: patient.patient?.sex,
         obs: '',
-        address: patient.destination.user_address || address,
-        piso: patient.destination.user_floor || piso,
-        depto: patient.destination.user_number || depto,
-        lat: patient.destination.user_lat || lat,
-        lng: patient.destination.user_lon || lng
+        address: patient.destination?.user_address || address,
+        piso: patient.destination?.user_floor || piso,
+        depto: patient.destination?.user_number || depto,
+        lat: patient.destination?.user_lat || lat,
+        lng: patient.destination?.user_lon || lng
     });
     const [fullnameError, setFullnameError] = useState(false);
     const [dniError, setDniError] = useState(false);
@@ -39,6 +40,7 @@ const HisopadoCartItem = ({patient, index}) => {
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
     const [addressError, setAddressError] = useState(false);
+    const multiple_clients = localStorage.getItem("multiple_clients") || []
 
     useEffect(() => {
         if(Object.entries(dependantInfo).length !== 0) {
@@ -79,13 +81,18 @@ const HisopadoCartItem = ({patient, index}) => {
                     user_number: data.depto,
                     user_lat: data.lat,
                     user_lon: data.lng
-                }
+                },
+                status: "FREE"
             }
-    
-            let headers = { 'Content-Type': 'Application/Json' }
-            axios.post(create_delivery, sendData, headers)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
+            localStorage.setItem("multiple_clients", [...multiple_clients, sendData])
+            console.log("ADDING")
+            var deliveryInfoToReplace = deliveryInfo 
+            deliveryInfoToReplace[index] = sendData
+            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
+            // let headers = { 'Content-Type': 'Application/Json' }
+            // axios.post(create_delivery, sendData, headers)
+            //     .then(res => console.log(res))
+            //     .catch(err => console.log(err))
         } else {
             if(!!!data.fullname) {
                 setFullnameError(true);
@@ -110,17 +117,18 @@ const HisopadoCartItem = ({patient, index}) => {
     }
 
     const removeItem = () => {
-        if(patient.docId && patient.docId !== "") {
-            let headers = { 'Content-Type': 'Application/Json' }
-            axios.post(`${create_delivery}/remove`, { id: patient.docId }, headers)
-                .then(res => console.log(res))
-                .catch(err => {
-                    dispatch({type: 'REMOVE_DELIVERY', payload: index})
-                    console.log(err)
-                })
-        } else {
+        // if(patient.docId && patient.docId !== "") {
+        //     let headers = { 'Content-Type': 'Application/Json' }
+        //     axios.post(`${create_delivery}/remove`, { id: patient.docId }, headers)
+        //         .then(res => console.log(res))
+        //         .catch(err => {
+        //             dispatch({type: 'REMOVE_DELIVERY', payload: index})
+        //             console.log(err)
+        //         })
+        // } else {
+            console.log(index)
             dispatch({type: 'REMOVE_DELIVERY', payload: index})
-        }
+        // }
     }
 
     return (
