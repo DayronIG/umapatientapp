@@ -55,6 +55,13 @@ const PaymentCardMP = () => {
   //   if(!!user.core_id){getCurrentService()}
   // }, [user])
 
+  useEffect(() => {
+    const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+    if(deliveryInfo.length < multiple_clients?.length){
+        dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+    }
+  }, [])
+
     useEffect(() => {
       setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el=>el.status).length) 
     }, [deliveryInfo, hisopadoPrice])
