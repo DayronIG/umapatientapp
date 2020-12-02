@@ -67,7 +67,7 @@ const HisopadoCartItem = ({patient, index}) => {
     }, [dependantInfo])
 
     const handleConfirm = () => {
-        if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng) {
+        if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng && isAddressValid) {
             setShowBtn(false);
             setOpenUser(false);
             let sendData = {
@@ -115,6 +115,9 @@ const HisopadoCartItem = ({patient, index}) => {
             }
             if(!!!data.sex) {
                 setSexError(true);
+            }
+            if(!isAddressValid){
+                swal("Domicilio inválido", "Debe colocar un domicilio ubicado en el rango de operación","warning")
             }
             if(!!data.fullname && !!data.dni && !!data.ws && !!data.dob && !!data.sex && !!!data.address) {
                 swal("Faltan completar datos", "Debe completar el domicilio para continuar", "warning")
@@ -271,14 +274,15 @@ const HisopadoCartItem = ({patient, index}) => {
                         /> 
                     </div>
                 </div>
-                {
-                    !patient.docId && index !== 0 && showBtn ?
+                {/* {
+                    !patient.docId && index !== 0 && showBtn ? */}
                     <>
                         <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                         <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
-                    </> :
-                    null
-                }
+                    </> 
+                {/*     :
+                     null
+                 */}
                 <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
 
