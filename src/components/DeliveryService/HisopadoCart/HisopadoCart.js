@@ -17,16 +17,18 @@ const HisopadoCart = (props) => {
   
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+    console.log(multiple_clients)
     if (deliveryInfo.length) {
-      // if(deliveryInfo.length < multiple_clients?.length){
-      //   dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
-      // } 
-      // else {
+      if(deliveryInfo.length < multiple_clients?.length){
+        dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+        setData(multiple_clients);
+      } 
+      else {
         const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
         const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
-        localStorage.setItem("multiple_clients", JSON.stringify(filterData))
+        // localStorage.setItem("multiple_clients", JSON.stringify(filterData))
         setData(filterData);
-      // }
+      }
     } else {
       setData([])
     }
@@ -43,7 +45,6 @@ const HisopadoCart = (props) => {
           res.forEach(services => {
             // setFirstPatient(services.data().destination);
             let document = { ...services.data(), id: services.id }
-            console.log(document)
             all_services.push(document)
           })
           dispatch({ type: 'SET_DELIVERY_ALL', payload: all_services })
@@ -96,8 +97,8 @@ const HisopadoCart = (props) => {
           user_address: data[0]?.destination.user_address || hisopadoUserAddress,
           user_floor: '',
           user_number: '',
-          user_lat: '',
-          user_lon: ''
+          user_lat: data[0]?.destination.user_lat,
+          user_lon: data[0]?.destination.user_lon
         },
         isOpen: true
       }

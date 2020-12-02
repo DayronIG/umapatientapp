@@ -21,19 +21,20 @@ const HisopadoCartItem = ({patient, index}) => {
     const [showBtn, setShowBtn] = useState(true);
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
+    console.log(patient.patient?.user || patient.dependantData?.user)
     const [data, setData] = useState({
-        title: patient.patient?.title || patient.patient?.user,
-        fullname: patient.patient?.user,
-        dni: patient.patient?.dni,
-        ws: patient.patient?.ws,
-        dob: patient.patient?.dob,
-        sex: patient.patient?.sex,
+        title: patient.patient?.title || patient.patient?.user || patient.dependantData?.user,
+        fullname: patient.patient?.user || patient.dependantData?.user,
+        dni: patient.patient?.dni|| patient.dependantData?.dni,
+        ws: patient.patient?.ws|| patient.dependantData?.ws,
+        dob: patient.patient?.dob|| patient.dependantData?.dob,
+        sex: patient.patient?.sex|| patient.dependantData?.sex,
         obs: '',
-        address: patient.destination?.user_address || hisopadoUserAddress || address,
-        piso: patient.destination?.user_floor || piso,
-        depto: patient.destination?.user_number || depto,
-        lat: patient.destination?.user_lat || lat,
-        lng: patient.destination?.user_lon || lng
+        address: patient.destination?.user_address || patient.dependantDestination?.user_address || hisopadoUserAddress || address,
+        piso: patient.destination?.user_floor || patient.dependantDestination?.user_address || piso,
+        depto: patient.destination?.user_number || patient.dependantDestination?.user_number || depto,
+        lat: patient.destination?.user_lat || patient.dependantDestination?.user_lat || lat,
+        lng: patient.destination?.user_lon || patient.dependantDestination?.user_lon || lng
     });
     const [fullnameError, setFullnameError] = useState(false);
     const [dniError, setDniError] = useState(false);
@@ -96,11 +97,11 @@ const HisopadoCartItem = ({patient, index}) => {
                 },
                 status: "FREE"
             }
+            console.log(data.fullname)
             var deliveryInfoToReplace = deliveryInfo 
             deliveryInfoToReplace[index] = sendData
-            // localStorage.setItem("multiple_clients", [...multiple_clients, sendData])
+            console.log(deliveryInfoToReplace)
             localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace))
-            console.log(JSON.stringify(deliveryInfoToReplace))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
             dispatch({type: "CHANGE_MARKER"})
             // let headers = { 'Content-Type': 'Application/Json' }
