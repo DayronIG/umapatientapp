@@ -12,7 +12,7 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(store => store.user);
-    const { deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
+    const { deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const { isAddressValidForHisopado } = useSelector(store => store.deliveryService.dependantInfo);
@@ -29,7 +29,7 @@ const HisopadoCartItem = ({patient, index}) => {
         dob: patient.patient?.dob,
         sex: patient.patient?.sex,
         obs: '',
-        address: patient.destination?.user_address || address,
+        address: patient.destination?.user_address || hisopadoUserAddress || address,
         piso: patient.destination?.user_floor || piso,
         depto: patient.destination?.user_number || depto,
         lat: patient.destination?.user_lat || lat,
@@ -41,7 +41,13 @@ const HisopadoCartItem = ({patient, index}) => {
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
     const [addressError, setAddressError] = useState(false);
-    const multiple_clients = localStorage.getItem("multiple_clients") || []
+    
+    useEffect(() => {
+        const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+        if(deliveryInfo.length < multiple_clients?.length){
+            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+        }
+    }, [])
 
     useEffect(() => {
         setIsAddressValid(isAddressValidForHisopado)
@@ -93,7 +99,8 @@ const HisopadoCartItem = ({patient, index}) => {
             var deliveryInfoToReplace = deliveryInfo 
             deliveryInfoToReplace[index] = sendData
             // localStorage.setItem("multiple_clients", [...multiple_clients, sendData])
-            localStorage.setItem("multiple_clients", deliveryInfoToReplace)
+            localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace))
+            console.log(JSON.stringify(deliveryInfoToReplace))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
             dispatch({type: "CHANGE_MARKER"})
             // let headers = { 'Content-Type': 'Application/Json' }

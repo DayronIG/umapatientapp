@@ -23,7 +23,7 @@ const PaymentCardMP = () => {
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
-    const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
+    const [totalPayment, setTotalPayment] = useState(deliveryInfo.filter(el=>el.status).length * hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
     const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
@@ -33,31 +33,31 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
-    const [allPurchases, setAllPurchases] = useState([])
+  //   const [allPurchases, setAllPurchases] = useState([])
 
-    const getCurrentService = () => {
-      db.firestore().collection('events/requests/delivery')
-      .where('patient.uid', '==', user.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
-      .get()
-      .then(res => {
-        let arr = [];
-          res.forEach(services => {
-              let document = {...services.data(), id: services.id}
-              arr.push(document)
-          })
+  //   const getCurrentService = () => {
+  //     db.firestore().collection('events/requests/delivery')
+  //     .where('patient.uid', '==', user.core_id)
+  //     .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
+  //     .get()
+  //     .then(res => {
+  //       let arr = [];
+  //         res.forEach(services => {
+  //             let document = {...services.data(), id: services.id}
+  //             arr.push(document)
+  //         })
 
-          setAllPurchases(arr);
-      })
-  }
+  //         setAllPurchases(arr);
+  //     })
+  // }
 
-  useEffect(() => {
-    if(!!user.core_id){getCurrentService()}
-  }, [user])
+  // useEffect(() => {
+  //   if(!!user.core_id){getCurrentService()}
+  // }, [user])
 
     useEffect(() => {
-      setTotalPayment(parseInt(hisopadoPrice) * allPurchases.length) 
-    }, [allPurchases, hisopadoPrice])
+      setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el=>el.status).length) 
+    }, [deliveryInfo, hisopadoPrice])
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
@@ -145,11 +145,12 @@ const PaymentCardMP = () => {
           dni: `${user.dni}`,
           uid: `${user.core_id}`,
           fullname: `${user.fullname}`,
-          amount: parseInt(totalPayment) || 3499,
+          amount: parseInt(totalPayment),
           currency: 'ARS',
           id: current.id,
           type: 'delivery',
-          coupon
+          coupon,
+          clients: deliveryInfo.filter(el=>el.status)
           // mpaccount: 'sandbox'
         }
          
@@ -223,6 +224,7 @@ const PaymentCardMP = () => {
           console.log("Payment success")
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
+          localStorage.removeItem("multiple_clients")
           swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             .then(()=> history.push(`/hisopado/listTracker/${user.ws}`))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
@@ -266,7 +268,7 @@ const PaymentCardMP = () => {
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {
-          setTotalPayment(hisopadoPrice)
+          setTotalPayment(totalPayment)
         }
       }
     

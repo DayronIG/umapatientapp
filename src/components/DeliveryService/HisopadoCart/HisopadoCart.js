@@ -10,22 +10,28 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const user = useSelector(store => store.user);
-  const { params, selectHomeForm, deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
+  const { params, selectHomeForm, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
-  const multiple_clients = localStorage.getItem("multiple_clients")
 
+  
   useEffect(() => {
+    const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
     if (deliveryInfo.length) {
-      const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
-      const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
-      localStorage.setItem("multiple_clients", filterData)
-      setData(filterData);
+      // if(deliveryInfo.length < multiple_clients?.length){
+      //   dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+      // } 
+      // else {
+        const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
+        const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
+        localStorage.setItem("multiple_clients", JSON.stringify(filterData))
+        setData(filterData);
+      // }
     } else {
       setData([])
     }
   }, [deliveryInfo])
-
+  
   useEffect(() => {
     if (user.core_id) {
       db.firestore().collection('events/requests/delivery')
@@ -87,7 +93,7 @@ const HisopadoCart = (props) => {
           depto: '',
         },
         destination: {
-          user_address: '',
+          user_address: data[0]?.destination.user_address || hisopadoUserAddress,
           user_floor: '',
           user_number: '',
           user_lat: '',
