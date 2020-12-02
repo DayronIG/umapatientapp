@@ -44,7 +44,6 @@ const HisopadoCartItem = ({patient, index}) => {
     const multiple_clients = localStorage.getItem("multiple_clients") || []
 
     useEffect(() => {
-        console.log(isAddressValidForHisopado, "ISVALID")
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 
@@ -236,7 +235,7 @@ const HisopadoCartItem = ({patient, index}) => {
                     />
                 </div>  
 
-                <div onClick={() => setOpenModal(true)}>
+                <div onClick={() => setOpenModal(true)} className={`${isAddressValid ? '' : 'error'}`}>
                     <label>Domicilio</label>
                     <input 
                         type="text" 
