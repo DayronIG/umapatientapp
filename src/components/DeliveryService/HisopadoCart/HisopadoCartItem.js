@@ -12,7 +12,7 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(store => store.user);
-    const { deliveryInfo } = useSelector(store => store.deliveryService);
+    const { deliveryInfo, changeMarker } = useSelector(store => store.deliveryService);
     const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
     const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
     const { isAddressValidForHisopado } = useSelector(store => store.deliveryService.dependantInfo);
@@ -44,9 +44,9 @@ const HisopadoCartItem = ({patient, index}) => {
     const multiple_clients = localStorage.getItem("multiple_clients") || []
 
     useEffect(() => {
-        console.log(isAddressValidForHisopado, "AD")
+        console.log(isAddressValidForHisopado, "ISVALID")
         setIsAddressValid(isAddressValidForHisopado)
-    }, [isAddressValidForHisopado])
+    }, [isAddressValidForHisopado, changeMarker])
 
     useEffect(() => {
         if(Object.entries(dependantInfo).length !== 0) {
@@ -288,9 +288,8 @@ const HisopadoCartItem = ({patient, index}) => {
                     {
                     isAddressValid? 
                     <DeliverySelectDestiny 
-                    finalAction={()=>
-                        setOpenModal(false)
-                    } isModal />
+                    finalAction={()=> setOpenModal(false)}
+                    isModal />
                     :<ZoneCoveredHisopado 
                     isModal={true} 
                     goPrevious={()=>{

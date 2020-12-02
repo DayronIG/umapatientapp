@@ -181,8 +181,9 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 			}
 			console.log(data)
 			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
+			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
-			finalAction()
+			if(isAddressValidForHisopado){finalAction()}
 		}
 	}, [hisopadoUserAddress, isAddressValidForHisopado]);
 
