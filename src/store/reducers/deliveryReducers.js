@@ -8,7 +8,9 @@ const initialState = {
 	currentHisopadoIndex: 0,
 	deliveryInfo: [],
 	deliveryType: '',
-	dependantInfo: {},
+	dependantInfo: {
+		isAddressValidForHisopado: true
+	},
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",

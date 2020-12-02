@@ -111,7 +111,6 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 	};
 
 	const handleChangePlace = (place) => {
-		console.log(place)
 		const pos = {
 			lat: place?.lat || place?.geometry?.location?.lat() || "",
 			lng: place?.lng || place?.geometry?.location?.lng() || "",

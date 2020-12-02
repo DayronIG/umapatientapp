@@ -40,18 +40,16 @@ const HisopadoCartItem = ({patient, index}) => {
     const [wsError, setWsError] = useState(false);
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
-    const [goPreviousDestiny, setGoPreviousDestiny] = useState(0);
     const [addressError, setAddressError] = useState(false);
     const multiple_clients = localStorage.getItem("multiple_clients") || []
 
     useEffect(() => {
         console.log(isAddressValidForHisopado, "AD")
         setIsAddressValid(isAddressValidForHisopado)
-    }, [isAddressValidForHisopado, goPreviousDestiny])
+    }, [isAddressValidForHisopado])
 
     useEffect(() => {
         if(Object.entries(dependantInfo).length !== 0) {
-            console.log(dependantInfo)
             setData({...data,
             address: dependantInfo.address,
             piso: dependantInfo.piso,
@@ -135,8 +133,6 @@ const HisopadoCartItem = ({patient, index}) => {
         //             console.log(err)
         //         })
         // } else {
-            console.log(index)
-            console.log(deliveryInfo[index])
             dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
         // }
     }
@@ -289,9 +285,19 @@ const HisopadoCartItem = ({patient, index}) => {
             {
                 openModal &&
                 <MobileModal hideTitle callback={()=>setOpenModal(false)} surveyHisopados noScroll>
-                    {isAddressValid? <DeliverySelectDestiny finalAction={()=>console.log("ASD")} isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{
-                        setGoPreviousDestiny(goPreviousDestiny + 1)
-                        setIsAddressValid(true)}} history={history} />}
+                    {
+                    isAddressValid? 
+                    <DeliverySelectDestiny 
+                    finalAction={()=>
+                        setOpenModal(false)
+                    } isModal />
+                    :<ZoneCoveredHisopado 
+                    isModal={true} 
+                    goPrevious={()=>{
+                        setIsAddressValid(true)
+                        }} 
+                    history={history} />
+                    }
                 </MobileModal>
             }
         </article>
