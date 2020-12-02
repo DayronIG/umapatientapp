@@ -145,6 +145,7 @@ const HisopadoCartItem = ({patient, index}) => {
         //         })
         // } else {
             dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
+            localStorage.setItem("multiple_clients", deliveryInfo.filter(el => el !== deliveryInfo[index]))
         // }
     }
 
