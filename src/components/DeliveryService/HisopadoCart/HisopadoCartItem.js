@@ -49,7 +49,8 @@ const HisopadoCartItem = ({patient, index}) => {
     }, [isAddressValidForHisopado, changeMarker])
 
     useEffect(() => {
-        if(Object.entries(dependantInfo).length !== 0) {
+        //CAMBIE EL LENGTH DE 0 A 1 POR EL INITIAL VALUE DE ISADDRESSVALID.
+        if(Object.entries(dependantInfo).length !== 1) {
             setData({...data,
             address: dependantInfo.address,
             piso: dependantInfo.piso,
