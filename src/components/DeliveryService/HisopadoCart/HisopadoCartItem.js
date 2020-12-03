@@ -21,7 +21,6 @@ const HisopadoCartItem = ({patient, index}) => {
     const [showBtn, setShowBtn] = useState(true);
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
-    console.log(patient.patient?.user || patient.dependantData?.user)
     const [data, setData] = useState({
         title: patient.patient?.title || patient.patient?.user || patient.dependantData?.user,
         fullname: patient.patient?.user || patient.dependantData?.user,
@@ -42,13 +41,15 @@ const HisopadoCartItem = ({patient, index}) => {
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
     const [addressError, setAddressError] = useState(false);
+
+    console.log(patient)
     
-    useEffect(() => {
-        const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-        if(deliveryInfo.length < multiple_clients?.length){
-            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
-        }
-    }, [])
+    // useEffect(() => {
+    //     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+    //     if(deliveryInfo.length < multiple_clients?.length){
+    //         dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+    //     }
+    // }, [])
 
     useEffect(() => {
         setIsAddressValid(isAddressValidForHisopado)
@@ -144,8 +145,11 @@ const HisopadoCartItem = ({patient, index}) => {
         //             console.log(err)
         //         })
         // } else {
-            dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
-            localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfo.filter(el => el !== deliveryInfo[index])))
+            const filtered = deliveryInfo.filter(el => el !== deliveryInfo[index])
+            console.log(filtered)
+            // dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
+            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: filtered})
+            localStorage.setItem("multiple_clients", JSON.stringify(filtered))
         // }
     }
 
