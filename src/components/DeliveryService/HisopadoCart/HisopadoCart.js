@@ -13,11 +13,9 @@ const HisopadoCart = (props) => {
   const { params, selectHomeForm, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   const [data, setData] = useState([]);
-
   
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-    console.log(deliveryInfo, "FROM HERE")
     if (deliveryInfo.length) {
       if(deliveryInfo.length < multiple_clients?.length){
         dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
@@ -27,12 +25,18 @@ const HisopadoCart = (props) => {
         const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
         const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
         // localStorage.setItem("multiple_clients", JSON.stringify(filterData))
+        console.log("ENTRE A SETEAR DESDE REDUX", filterData)
         setData(filterData);
       }
     } else {
       setData([])
     }
   }, [deliveryInfo])
+
+  useEffect(() => {
+    console.log("---------------------------------------")
+    console.log(data, "CAMBIO EN DATA")
+  }, [data])
 
   
   useEffect(() => {
