@@ -93,11 +93,10 @@ const WhenScreen = (props) => {
 				if(each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
 					let coverageTemp = await getDocumentFB(path)
-					console.log(path, coverageTemp)
 					if(coverageTemp && coverageTemp.plan) {
 						for (const service in coverageTemp.plan) {
-							if(coverageTemp[service] === true) {
-								console.log(coverageTemp[service])
+							if(coverageTemp.plan[service] === true) {
+								console.log(coverageTemp.plan[service])
 								plan.plan[service] = true
 							}
 						}
