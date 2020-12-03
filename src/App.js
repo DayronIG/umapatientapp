@@ -121,12 +121,12 @@ function App(props) {
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/:dni?/chat/:specialty' component={Chat} />
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/' component={OnlineSpecialist} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/specialty' component={ListSpecialties} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/search-doctor' component={SearchDoctorOnline} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/:condition/selectsymptoms' component={SelectSymptoms} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/:condition/calendar' component={CalendarOnline} />
-				<PrivateRoute exact path='/:dni/appointmentsonline/:scheduled?/history' component={AppointmentsOnlineHistory} />
+				<PrivateRoute exact path='/appointmentsonline/:dni/' component={OnlineSpecialist} />
+				<PrivateRoute exact path='/appointmentsonline/specialty/:dni' component={ListSpecialties} />
+				<PrivateRoute exact path='/appointmentsonline/search-doctor/:dni' component={SearchDoctorOnline} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:dni' component={SelectSymptoms} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:dni' component={CalendarOnline} />
+				<PrivateRoute exact path='/appointmentsonline/:scheduled?/history/:dni' component={AppointmentsOnlineHistory} />
 				{/* TRASLADOS */}
 				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
 				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />

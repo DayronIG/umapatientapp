@@ -11,6 +11,7 @@ import enablePermissions from '../../Utils/enableVidAudPerms';
 import ImageFlow from '../../../assets/doctor-online.svg';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
+import { getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 import '../../../styles/whoScreen.scss';
 
@@ -67,12 +68,44 @@ const WhenScreen = (props) => {
 		}
 	}, [user]);
 
-	function selectWho(user) {
+	async function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
+		if(user.dni !== user.group && user.coverage) {
+			await getDependantCoverage(user.coverage)
+		}
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/${user.dni}/appointmentsonline/`);
+			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
 			props.history.replace(`/${user.dni}/onlinedoctor/when`);
+		}
+	}
+
+	const getDependantCoverage = async (coverage) => {
+		// Busco BASIC primero porque es el básico sin ningun permiso
+		let plan = await getDocumentFB('services/porfolio/BASIC/active')
+		let free = await getDocumentFB('services/porfolio/FREE/active')
+		if(plan && free) {
+			plan["onlinedoctor"] = free.onlinedoctor
+		}
+		if (!!coverage && Array.isArray(coverage)) { 
+			coverage && coverage.forEach(async each => {
+				console.log(each)
+				if(each?.plan) {
+					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
+					let coverageTemp = await getDocumentFB(path)
+					console.log(path, coverageTemp)
+					if(coverageTemp && coverageTemp.plan) {
+						for (const service in coverageTemp.plan) {
+							if(coverageTemp[service] === true) {
+								console.log(coverageTemp[service])
+								plan.plan[service] = true
+							}
+						}
+					}
+				}
+			})
+			dispatch({type: 'SET_PLAN_DATA', payload: plan })
+			console.log(plan)
 		}
 	}
 
