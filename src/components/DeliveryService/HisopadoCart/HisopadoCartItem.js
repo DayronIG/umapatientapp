@@ -134,7 +134,9 @@ const HisopadoCartItem = ({patient, index}) => {
         //             console.log(err)
         //         })
         // } else {
-            const filtered = deliveryInfo.filter(el => el !== deliveryInfo[index])
+            console.log(deliveryInfo, index)
+            const filtered = deliveryInfo.splice(index,1)
+            console.log(filtered)
             // dispatch({type: 'REMOVE_DELIVERY', payload: index})
             localStorage.setItem("multiple_clients", JSON.stringify(filtered))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: filtered})
