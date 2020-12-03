@@ -267,13 +267,14 @@ const HisopadoCartItem = ({patient, index}) => {
                 }
                 <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
-
+            <div className="HisopadoCart__modal">
             {
                 openModal &&
                 <MobileModal hideTitle callback={()=>setOpenModal(false)} surveyHisopados noScroll>
                     {isAddressValid? <DeliverySelectDestiny isModal />: <ZoneCoveredHisopado isModal={true} goPrevious={()=>{setIsAddressValid(true)}} history={history} />}
                 </MobileModal>
             }
+            </div>
         </article>
     )
 }

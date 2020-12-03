@@ -83,7 +83,7 @@
   border-radius: $regular-borders;
   z-index: 4;
   width: 90%;
-  // margin-left: 5%;
+  margin-left: 5%;
   .contentData {
     margin-top: 20px;
     color: $text-dark;
@@ -162,11 +162,9 @@
 
 .mobile-modal.hisopados {
   border-radius: 15px;
-  padding: 20px;
-  height: 90vh;
   top: 5vh;
   max-height: 90vh;
-
+  width: 90%;
   .modalContent {
     display: flex;
     flex-direction: column;
