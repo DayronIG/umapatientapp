@@ -45,7 +45,9 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_DELIVERY":
 			return { ...state, deliveryInfo: [...state.deliveryInfo, payload]}
 		case "REMOVE_DELIVERY":
-			return { ...state, deliveryInfo: state.deliveryInfo.filter(el => el !== payload) }
+			const deliveryInfo = state.deliveryInfo
+			deliveryInfo.splice(payload, 1)
+			return { ...state, deliveryInfo: deliveryInfo }
 		case "SET_DELIVERY_ALL":
 			return { ...state, deliveryInfo: [...payload]}
 		case "CLEAN_DELIVERY":

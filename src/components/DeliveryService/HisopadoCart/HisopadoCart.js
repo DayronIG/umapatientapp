@@ -17,19 +17,16 @@ const HisopadoCart = (props) => {
   
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+    console.log(deliveryInfo, "FROM HERE")
     if (deliveryInfo.length) {
-      console.log(deliveryInfo.length, multiple_clients.length)
       if(deliveryInfo.length < multiple_clients?.length){
-        console.log("SWT UNO")
         dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
         setData(multiple_clients);
       } 
       else {
-        console.log("SWT DOS")
         const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
         const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
         // localStorage.setItem("multiple_clients", JSON.stringify(filterData))
-        console.log(filterData)
         setData(filterData);
       }
     } else {
@@ -37,9 +34,6 @@ const HisopadoCart = (props) => {
     }
   }, [deliveryInfo])
 
-  useEffect(() => {
-    console.log(data, "HERE")
-  }, [data])
   
   useEffect(() => {
     if (user.core_id) {
@@ -65,7 +59,6 @@ const HisopadoCart = (props) => {
 
   useEffect(() => {
     if (deliveryInfo.length) {
-      // console.log(deliveryInfo.filter(el => el.status).length, "AQUI")
       setPrice(Number(params.price) * deliveryInfo.filter(el => el.status).length);
       // setPrice(Number(params.price) * deliveryInfo.length);
     }

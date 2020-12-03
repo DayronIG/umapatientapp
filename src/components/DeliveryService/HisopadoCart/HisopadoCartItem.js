@@ -42,8 +42,6 @@ const HisopadoCartItem = ({patient, index}) => {
     const [sexError, setSexError] = useState(false);
     const [addressError, setAddressError] = useState(false);
 
-    console.log(patient)
-    
     // useEffect(() => {
     //     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
     //     if(deliveryInfo.length < multiple_clients?.length){
@@ -102,7 +100,7 @@ const HisopadoCartItem = ({patient, index}) => {
             var deliveryInfoToReplace = deliveryInfo 
             deliveryInfoToReplace[index] = sendData
             console.log(deliveryInfoToReplace)
-            localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace))
+            localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace.filter(el=>el.status)))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
             dispatch({type: "CHANGE_MARKER"})
             // let headers = { 'Content-Type': 'Application/Json' }
@@ -146,10 +144,10 @@ const HisopadoCartItem = ({patient, index}) => {
         //         })
         // } else {
             const filtered = deliveryInfo.filter(el => el !== deliveryInfo[index])
+            // dispatch({type: 'REMOVE_DELIVERY', payload: index})
             console.log(filtered)
-            // dispatch({type: 'REMOVE_DELIVERY', payload: deliveryInfo[index]})
-            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: filtered})
             localStorage.setItem("multiple_clients", JSON.stringify(filtered))
+            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: filtered})
         // }
     }
 
@@ -164,6 +162,8 @@ const HisopadoCartItem = ({patient, index}) => {
                 <FaChevronDown /> :
                 <FaChevronUp />
                 }
+                {console.log(data.user, data.fullname, data.title)}
+                {console.log("---------------------------------------")}
             </div>
             <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
                 <div className={`${fullnameError ? 'error' : ''}`}>
