@@ -108,9 +108,11 @@ export const createTransportSchedule = async (transportData, patient) => {
 	try {
 		const travelMetaData = await calculateDistance(transportData);
 		const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
+
 		const data = {
 			id_solicitud: genTransportId(patient),
 			corporate: patient.corporate_norm,
+			createdBy: patient.fullname,
 			dependencia: '0',
 			descrip: '0-PROGRAMADO',
 			dni: patient.dni,
@@ -137,7 +139,8 @@ export const createTransportSchedule = async (transportData, patient) => {
 			retorno_tramo: `${Number(transportData.hasReturn)}`,
 			sheet: buildSheet(transportData.startSchedules),
 			time_reference: transportData.timeReference.toUpperCase(),
-			tipo_asignacion: 'manual'
+			tipo_asignacion: 'manual',
+			createdBy: `PACIENTE: ${patient.fullname || '-'}, DNI: ${patient.dni || '-'}`
 		}
 		await Axios.post(create_traslado, data);
 		dispatch(handleReset());

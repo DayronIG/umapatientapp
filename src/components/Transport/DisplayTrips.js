@@ -24,6 +24,7 @@ const TransportUserActive = () => {
 	const [openAll, setOpenAll] = useState(true);
 	const [pendingServices, setPendingServices] = useState([]);
 	const [approvedServices, setApprovedServices] = useState([]);
+	const [allServices, setAllServices] = useState([])
 	const [selectedService, setSelectedService] = useState({});
 	const [noDriver, setNoDriver] = useState(false);
 	const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const TransportUserActive = () => {
 		if (!patient?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
-			const response = await Axios.post(
+			let { data } = await Axios.post(
 				att_history,
 				{
 					ws: patient.ws,
@@ -52,18 +53,22 @@ const TransportUserActive = () => {
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
 			);
+			data.sort((a, b) => {
+				if (`${a.fecha.replace(/-/g, '')}${a.hora.replace(/:/g, '')}` > `${b.fecha.replace(/-/g, '')}${b.hora.replace(/:/g, '')}`) return 1
+				else return -1
+			})
+			data = data.filter((el) => el.status_tramo !== 'CANCEL')
 			let appservicesTemp;
 			let pendServicesTemp;
-
 			if (date_filter) {
 				let date = moment(date_filter).format('YYYY-MM-DD')
-				appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
-				pendServicesTemp = response.data.filter(item => (item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN') && item.fecha === date);
+				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
+				pendServicesTemp = data.filter(item => (item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN') && item.fecha === date);
 			} else {
-				appservicesTemp = response.data.filter(item => item.status_traslado === 'AUTHORIZED');
-				pendServicesTemp = response.data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED');
+				pendServicesTemp = data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
 			}
-
+			setAllServices(data)
 			setApprovedServices(appservicesTemp);
 			setPendingServices(pendServicesTemp);
 		} catch (error) {
@@ -337,113 +342,79 @@ const TransportUserActive = () => {
 				: null}
 
 			{openAll ?
-				<>
-					<div>
-						<ul className="transportList">
-							{approvedServices
-								.map((item, index) => (
-									<li key={index}>
-										<div className="transportContainer d-flex  align-items-center">
-											<div className="transportTime">
-												<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
-												<div><FaClock /> {item.hora}hs.</div>
-											</div>
-											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
-												<div>Estado: {renderStatus(item.status_traslado)}</div>
-											</div>
+				<div>
+					<ul className="transportList">
+						{allServices
+							.map((item, index) => (
+								<li key={index}>
+									<div className="transportContainer d-flex  align-items-center">
+										<div className="transportTime">
+											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
+											<div><FaClock /> {item.hora}hs.</div>
 										</div>
-										{openTravel.assignation_id !== item.assignation_id &&
-											<div className="openContent">
-												<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
-											</div>
-										}
-										{openTravel.assignation_id === item.assignation_id &&
-											<>
-												<div className="contentContainer">
-													<div className="origin">
-														<p className="originTitle">Origen:</p>
-														<p className="originContent">{item.geo_inicio_address}</p>
-													</div>
-													<div className="destiny">
-														<p className="destinyTitle">Destino:</p>
-														<p className="destinyContent">{item.geo_fin_address}</p>
-													</div>
-													<button
-														className="checkStatus"
-														onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
-														<FaCar /> Seguir recorrido
-													</button>
-													{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
-														<FaRegHandPaper /> Hacer un reclamo
-													</button> */}
-													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
-														<FaRegTrashAlt /> Cancelar Viaje
-													</button>
-												</div>
-												{
-													openTravel.assignation_id === item.assignation_id &&
-													<div className="openContent">
-														<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
-													</div>
-												}
-											</>
-										}
-									</li>
-								))}
-							{pendingServices
-								.map((item, index) => (
-									<li key={index}>
-										<div className="transportContainer d-flex  align-items-center">
-											<div className="transportTime">
-												<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
-												<div><FaClock /> {item.hora}hs.</div>
-											</div>
-											<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
-												<div>Estado: {renderStatus(item.status_traslado)}</div>
-											</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
 										</div>
-										{
-											openTravel.assignation_id !== item.assignation_id &&
-											<div className="openContent">
-												<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
-											</div>
-										}
-										{openTravel.assignation_id === item.assignation_id &&
-											<>
-												<div className="contentContainer">
-													<div className="origin">
-														<p className="originTitle">Origen:</p>
-														<p className="originContent">{item.geo_inicio_address}</p>
-													</div>
-													<div className="destiny">
-														<p className="destinyTitle">Destino:</p>
-														<p className="destinyContent">{item.geo_fin_address}</p>
-													</div>
-													<button className="checkStatus" onClick={() => {
-														history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)
-													}}>
-														<FaCar /> Seguir recorrido
-													</button>
-													{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
-														<FaRegHandPaper /> Hacer un reclamo
-													</button> */}
-													<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
-														<FaRegTrashAlt /> Cancelar Viaje
-													</button>
+									</div>
+									{openTravel.assignation_id !== item.assignation_id &&
+										<div className="openContent">
+											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
+										</div>
+									}
+									{openTravel.assignation_id === item.assignation_id &&
+										<>
+											<div className="contentContainer">
+												<div className="origin">
+													<p className="originTitle">Origen:</p>
+													<p className="originContent">{item.geo_inicio_address}</p>
 												</div>
-												{
-													openTravel.assignation_id === item.assignation_id &&
-													<div className="openContent">
-														<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
-													</div>
-												}
-											</>
-										}
-									</li>
-								))}
-						</ul>
-					</div>
-				</>
+												<div className="destiny">
+													<p className="destinyTitle">Destino:</p>
+													<p className="destinyContent">{item.geo_fin_address}</p>
+												</div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{console.log(item)}
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
+												<button
+													className="checkStatus"
+													onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+													<FaCar /> Seguir recorrido
+													</button>
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+													</button> */}
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
+													<FaRegTrashAlt /> Cancelar Viaje
+													</button>
+											</div>
+											{
+												openTravel.assignation_id === item.assignation_id &&
+												<div className="openContent">
+													<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
+												</div>
+											}
+										</>
+									}
+								</li>
+							))}
+					</ul>
+				</div>
 				: null
 			}
 		</div>

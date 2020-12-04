@@ -146,13 +146,11 @@
         .contentContainer {
           padding: 0 0.8rem 1rem;
 
-          .origin {
-            margin-bottom: 2.1rem;
-
+          .origin {        
             .originTitle {
               color: $uma-text-secondary;
               font-weight: 800;
-              margin-bottom: 1.5rem;
+              
             }
 
             .originContent {
@@ -166,8 +164,7 @@
           .destiny {
             .destinyTitle {
               color: $uma-text-secondary;
-              font-weight: 800;
-              margin-bottom: 1.5rem;
+              font-weight: 800;              
             }
 
             .destinyContent {

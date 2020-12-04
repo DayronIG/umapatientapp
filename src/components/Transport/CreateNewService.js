@@ -17,12 +17,11 @@ const CreateNewService = () => {
 	const { patient } = useSelector(state => state.queries);
 	const { date_filter } = useSelector(state => state.transport);
 	const [datePickerOpen, setDatePickerOpen] = useState(false)
-
 	const handlerPickerDate = (date) => {
 		setDatePickerOpen(!datePickerOpen)
 	}
 	return (
-		<div className="createNewService__container">
+		<div className={`createNewService__container ${patient.corporate_norm === 'OSEP' && 'd-none'}`}>
 			<div className="createNewService__icon " onClick={() => history.push(`/${patient.ws}/createTransportRoute`)} >
 				<TiPlus />
 			</div>
