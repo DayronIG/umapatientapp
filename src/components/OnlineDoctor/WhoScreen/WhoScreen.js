@@ -70,9 +70,7 @@ const WhenScreen = (props) => {
 
 	async function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
-		if(user.dni !== user.group && user.coverage) {
-			await getDependantCoverage(user.coverage)
-		}
+		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
 			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
@@ -80,7 +78,7 @@ const WhenScreen = (props) => {
 		}
 	}
 
-	const getDependantCoverage = async (coverage) => {
+	const getCoverage = async (coverage) => {
 		// Busco BASIC primero porque es el básico sin ningun permiso
 		let plan = await getDocumentFB('services/porfolio/BASIC/active')
 		let free = await getDocumentFB('services/porfolio/FREE/active')
@@ -88,7 +86,7 @@ const WhenScreen = (props) => {
 			plan["onlinedoctor"] = free.onlinedoctor
 		}
 		if (!!coverage && Array.isArray(coverage)) { 
-			coverage && coverage.forEach(async each => {
+			coverage && await Promise.all(coverage.map(async each => {
 				console.log(each)
 				if(each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
@@ -96,16 +94,16 @@ const WhenScreen = (props) => {
 					if(coverageTemp && coverageTemp.plan) {
 						for (const service in coverageTemp.plan) {
 							if(coverageTemp.plan[service] === true) {
-								console.log(coverageTemp.plan[service])
 								plan.plan[service] = true
 							}
 						}
 					}
 				}
-			})
-			dispatch({type: 'SET_PLAN_DATA', payload: plan })
-			console.log(plan)
+			}))
 		}
+		console.log(plan)
+		dispatch({type: 'SET_PLAN_DATA', payload: plan })
+		return plan
 	}
 
 	return (
@@ -125,15 +123,15 @@ const WhenScreen = (props) => {
 			)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
-					<div className='btn btn-blue-lg' onClick={() => selectWho(user)}>
+					<div className='btn btn-blue-lg' onClick={() => selectWho(user)} id="att_especislista_select_me">
 						Para mi
 					</div>
 					{parents.map((p, index) => (
-						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)}>
+						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)} id="att_especislista_select_other">
 							Para {capitalizeName(p.fullname)}
 						</div>
 					))}
-					<div className='btn btn-blue-lg' onClick={() => setRegisterParent(true)}>
+					<div className='btn btn-blue-lg' onClick={() => setRegisterParent(true)} id="att_register_me">
 						Para otro
 					</div>
 				</div>
