@@ -140,6 +140,7 @@ const HisopadoCartItem = ({patient, index}) => {
             // dispatch({type: 'REMOVE_DELIVERY', payload: index})
             localStorage.setItem("multiple_clients", JSON.stringify(finalFiltered))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: finalFiltered})
+            window.location.reload(false)
         // }
     }
 
