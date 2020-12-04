@@ -4,13 +4,13 @@ import image from '../assets/icons/waiting.png';
 import imageFelicitaciones from '../assets/doctor-online.svg';
 import { installPrompt } from '../components/Utils/installPrompt.js';
 import { useHistory, useParams } from 'react-router-dom';
-import "../styles/generalcomponents/Install.scss";
+import "../styles/generalcomponents/install.scss";
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 
 const Install = (props) => {
     const [deferredPrompt, setDeferredPrompt] = useState();
     const [showInstall, setShowInstall] = useState(true)
-    const { ws } = useParams();
+    const { ws, ref } = useParams();
     const history = useHistory();
     
     useEffect(() => {
@@ -24,15 +24,31 @@ const Install = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        if(showInstall === true) {
+                window.gtag('event', 'register', {
+                    'register_step': 'install',
+                    'action': 'page_view',
+                });
+        } else {
+            window.gtag('event', 'register', {
+                'register_step': 'go_to_register',
+                'action': 'page_view',
+            });
+        }
+    }, [showInstall])
 
     async function redirect() {
+        window.gtag('event', 'select_content', {
+            'content_type': 'button_install_app',
+          });
         await installPrompt(deferredPrompt, ws);
         setShowInstall(false);
     }
 
     const redirectToRegister = async () => {
         await installPrompt(deferredPrompt, ws);
-        history.push(`/${ws}/register`);
+        history.push(`/newregister/${ref}`);
     }
 
     return (
@@ -55,7 +71,6 @@ const Install = (props) => {
                 </div>
                 :
                 <div className="welcome-container">
-                    <GenericHeader profileDisabled={true}>Registro</GenericHeader> 
                     <InformationPage
                         callback={redirectToRegister}
                         title='¡Felicitaciones!'                    

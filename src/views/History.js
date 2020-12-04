@@ -7,7 +7,7 @@ import { getMedicalRecord, getBenficiaries } from '../store/actions/firebaseQuer
 
 const History = (props) => {
   const dispatch = useDispatch();
-  const patient = useSelector(state => state.queries.patient)
+  const patient = useSelector(state => state.user)
 
   useEffect(() => {
     let local = JSON.parse(localStorage.getItem('userData'))

@@ -10,10 +10,12 @@
       justify-content: space-between;
       align-items: center;
       margin: 20px;
-      
+      svg {
+         color: $uma-text !important;
+      }
       .edit-icons {
-         color: #686464;
-         background: #fff;
+         color: $uma-primary;
+         background: $white-color;
          box-shadow: $main-shadow;
          padding: 3px 6px;
          border-radius: 4px;
@@ -54,11 +56,6 @@
          top: -5px;
          right: 0;
       }
-   }
-
-   .backButtonContainer {
-      padding: 0 10px 0 10px;
-      height: 45px;
    }
    .profile-module {
       box-shadow: $main-shadow;

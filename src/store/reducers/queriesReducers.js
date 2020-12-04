@@ -58,10 +58,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 beneficiaries: action.payload
             });
-        case 'GET_PATIENT':
-            return Object.assign({}, state, {
-                patient: action.payload
-            });
         case 'GET_MEDICAL_RECORD':
             return Object.assign({}, state, {
                 medicalRecord: action.payload

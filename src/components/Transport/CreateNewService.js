@@ -14,18 +14,18 @@ import 'date-fns'
 const CreateNewService = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { date_filter } = useSelector(state => state.transport);
 	const [datePickerOpen, setDatePickerOpen] = useState(false)
 	const handlerPickerDate = (date) => {
 		setDatePickerOpen(!datePickerOpen)
 	}
 	return (
-		<div className={`createNewService__container ${patient.corporate_norm === 'OSEP' && 'd-none'}`}>
-			<div className="createNewService__icon " onClick={() => history.push(`/${patient.ws}/createTransportRoute`)} >
+		<div className={`createNewService__container ${user.corporate_norm === 'OSEP' && 'd-none'}`}>
+			<div className="createNewService__icon " onClick={() => history.push(`/${user.ws}/createTransportRoute`)} >
 				<TiPlus />
 			</div>
-			<div className="createNewService__icon calendar" onClick={handlerPickerDate}>
+			{/* <div className="createNewService__icon calendar" onClick={handlerPickerDate}>
 				<BsCalendar />
 			</div>
 			<MuiPickersUtilsProvider utils={DateFnsUtils} >
@@ -35,7 +35,7 @@ const CreateNewService = () => {
 					onClose={handlerPickerDate}
 					open={datePickerOpen}
 				/>
-			</MuiPickersUtilsProvider>
+			</MuiPickersUtilsProvider> */}
 		</div>
 	);
 }

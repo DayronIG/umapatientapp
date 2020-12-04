@@ -15,7 +15,7 @@ import {Loader} from '../GeneralComponents/Loading';
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
 	const db = DBConnection.firestore();
-	const auth = useSelector((state) => state.queries.patient);
+	const auth = useSelector((state) => state.user);
 	const modal = useSelector((state) => state.front.openDetails);
 	const { section } = useSelector((state) => state.front);
 	const [editionMode, ] = useState(true);

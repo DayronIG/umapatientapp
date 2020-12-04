@@ -12,7 +12,7 @@ const db = DB.firestore();
 
 const Specialties = (props) => {
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.queries.patient);
+	const user = useSelector((state) => state.user);
 	const dni = props.match.params.dni;
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);

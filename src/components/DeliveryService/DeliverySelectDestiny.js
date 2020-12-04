@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
@@ -13,28 +13,29 @@ import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
 import { mobility_address, node_patient } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
+import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
-import { type } from 'jquery';
 
-const DeliverySelectDestiny = () => {
+const DeliverySelectDestiny = ({isModal=false}) => {
 	const dispatch = useDispatch();
 	const { ws, incidente_id } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { addressLatLongHisopado, isAddressValidForHisopado, params, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
-		piso: patient?.piso || '',
-		depto: patient?.depto || '',
-		address: patient?.address || '',
-		lat: patient?.lat || addressLatLongHisopado.lat || -34.6037389,
-		lng: patient?.lng || addressLatLongHisopado.lng || -58.3815704,
+		piso: user?.piso || '',
+		depto: user?.depto || '',
+		address: user?.address || '',
+		lat: user?.lat || addressLatLongHisopado.lat || -34.6037389,
+		lng: user?.lng || addressLatLongHisopado.lng || -58.3815704,
 		searchBox: '',
 	});
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
+	const history = useHistory()
 
 	useEffect(() => {
 		if(mapApi && mapInstance){
@@ -59,7 +60,7 @@ const DeliverySelectDestiny = () => {
 				  });
 
 				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
-				  
+
 				let resultPath;
 				setTimeout(()=>{
 					resultPath = mapApi.geometry?.poly.containsLocation(
@@ -67,7 +68,7 @@ const DeliverySelectDestiny = () => {
 						coverage
 					)
 					dispatch(handleAddressValidForHisopado(resultPath))
-				}, 1000)
+				}, 500)
 
             }
 			fetchData();
@@ -92,12 +93,12 @@ const DeliverySelectDestiny = () => {
 		if (!navigator.geolocation) return null;
 		navigator.geolocation.getCurrentPosition((pos) => {
 			fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.coords.latitude},${pos.coords.longitude}&key=AIzaSyDLnpXWJx1qKAfHtTeYWa30b9jGH2GeXfs`)
-            .then(response => response.json())
-            .then(apiData => {
-                setUserGeoguessedAddress(apiData.results[0].formatted_address)
-            })
+				.then(response => response.json())
+				.then(apiData => {
+					setUserGeoguessedAddress(apiData.results[0].formatted_address)
+				})
 			handleForm(currentPositionHandler(pos), true)}, errorHandler);
-	
+
 	};
 
 	const handleForm = (event, isCoords = false) => {
@@ -110,6 +111,7 @@ const DeliverySelectDestiny = () => {
 	};
 
 	const handleChangePlace = (place) => {
+		console.log(place)
 		const pos = {
 			lat: place?.lat || place?.geometry?.location?.lat() || "",
 			lng: place?.lng || place?.geometry?.location?.lng() || "",
@@ -124,8 +126,8 @@ const DeliverySelectDestiny = () => {
 		if (!geocoder) return null;
 		let result;
 		const latlng = {
-			lat: parseFloat(lat),
-			lng: parseFloat(lng),
+			lat: parseFloat(lat) || -31.374420,
+			lng: parseFloat(lng) || -64.132140,
 		};
 		dispatch(setAddressLatLongHisopado(latlng))
 		geocoder.geocode({ location: latlng }, (results, status) => {
@@ -138,49 +140,50 @@ const DeliverySelectDestiny = () => {
 		});
 	}
 
-	async function handleSubmit(e) {
+	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
 		if (['lat', 'lng', 'address'].some((key) => !formState[key] || formState[key] === "")) {
 			return swal('Error', 'Por favor, seleccione una dirección', 'warning');
 		}
 		dispatch({ type: 'LOADING', payload: true });
 		dispatch(handleDeliveryForm(formState));
+		if(!isModal){
 		const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
-		const data = { newValues: formState };
-		const data2 = {
+		const data = {
 			'key': deliveryType || 'HISOPADO',
 			'ws': ws,
-			'dni': patient.dni,
-			'format_address': formState.address,
-			'user_address': formState.address,
+			'dni': user.dni,
+			'format_address': hisopadoUserAddress,
+			'user_address': hisopadoUserAddress,
 			'lat': formState.lat,
 			'lon': formState.lng,
 			'floor': `${formState.piso}`,
 			'number': `${formState.depto}`,
-			'incidente_id': current?.id,
+			'incidente_id': deliveryInfo?.[0]?.id || current.id,
 			'range': isAddressValidForHisopado || false
 		};
 		try {
-			// Primera request
-			// await Axios.patch(`${node_patient}/${patient.dni}`, data, { credentials: 'include', headers });
-			// Segunda request
-			await Axios.post(mobility_address, data2, {headers});
-
+			await Axios.post(mobility_address, data, {headers});
 			dispatch({ type: 'LOADING', payload: false });
 		} catch (error) {
 			dispatch({ type: 'LOADING', payload: false });
-			console.error(error.message);
-			swal('Error', 'Hubo un error inesperado, por favor intente nuevamente', 'error');
+			swal('Error', 'Hubo un error al confirmar su domicilio, por favor intente nuevamente', 'error');
 			return;
 		}
-			dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
-	};
+		dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
+		} else {
+			e.preventDefault();
+			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
+			dispatch({ type: 'LOADING', payload: false });
+		}
+	}, [hisopadoUserAddress]);
 
 
 	return (
-		<form className='selectDestiny' onSubmit={handleSubmit}>
+		<div className="container-map-component">
+		{/* <MobileModal hideTitle hideCloseButton surveyHisopados noScroll> */}
+		<form className={`${isModal? "modalMap": "selectDestiny "}`} onSubmit={handleSubmit}>
 			{loading && <Loader />}
-
 			<div className='selectDestiny__container map'>
 				<GoogleMapReact
 					{...mapConfig(
@@ -188,7 +191,7 @@ const DeliverySelectDestiny = () => {
 						geocodeLatLng
 					)}
 					onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-				>
+					>
 					<Marker  {...marker} />
 				</GoogleMapReact>
 			</div>
@@ -226,10 +229,11 @@ const DeliverySelectDestiny = () => {
 			</div>
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
-                Enviar
+                Seleccionar
             </div>
 			</div>
 		</form>
+		</div>
 	);
 };
 

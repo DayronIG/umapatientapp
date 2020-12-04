@@ -4,6 +4,14 @@
 	position: fixed;
 }
 
+.delivery-list-tracker{
+    min-height:100vh;
+    .back-button{
+        position: absolute;
+        top: 0px;
+    }
+}
+
 .hisopados-flux{
     display: flex;
     align-items: center;
@@ -88,61 +96,125 @@
         margin-top: 4vh;
         font-weight: 900;
         font-size: $uma-font-size-title;
-        line-height: 105.9%;
-        color: $uma-primary;
+        line-height: 2.3rem;
+        color: $uma-secondary;
     }
     .hisopados-subtitle{
+        text-align: center;
+        color: $uma-text;
+        font-size: 1.1rem;
+        line-height: 1.5rem;
         font-weight: 600;
-        font-size: 15px;
-        line-height: 18px;
-        color: #008290;
+        width: 90%;
+        margin: auto;
     }
 
     .price-center-aligner{
         width: 100vw;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-    .price-container{
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        width: 60vw;
-        height: fit-content;
-        padding: 2vh;
-        background-color: #d5e2eb52;
-        box-shadow: 0px -2px 20px rgba(126, 147, 163, 0.15);
-        border-radius: 30px;
-        .discount-container{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        .hisopados-previous-price{
-            font-size: 16px;
-            line-height: 105.9%;
-            color: $uma-text;
-            text-decoration: line-through;
-            margin-right: 2vw;
-        }
-        .hisopados-discount{       
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 105.9%;
-            text-align: center;
-            color: #50BE5F;
-            margin-left: 2vw;
-        }}
-        .hisopados-price{
-            font-family: Montserrat;
-            font-style: normal;
+        width: 70%;
+        margin: 2rem auto 0;
+        background: rgba(213, 226, 235,0.5 );
+        border: 1px solid rgba(161, 61, 223, 0.54);
+        padding: 2rem 1.8rem;
+        border-radius: 2rem;
+
+        .price-title {
+            font-size: 1.8rem;
             font-weight: 800;
-            font-size: 45px;
-            line-height: 105.9%;
-            color: $uma-secondary;
-            opacity: 1 !important;
+            color: $uma-primary;
+            line-height: 1.8rem;
+            margin-bottom: 1.8rem;
+
+            @media (max-width: 320px) {
+                font-size: 1.4rem;
+            }
         }
-    }}
+
+        .price-container{
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+
+            .discount-container{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+        
+                .hisopados-previous-price{
+                    font-size: 1rem;
+                    line-height: 1;
+                    color: $uma-text;
+                    font-weight: 800;
+                    text-decoration: line-through;
+                }
+        
+                .hisopados-discount{       
+                    font-weight: 600;
+                    font-size: 1rem;
+                    line-height: 1;
+                    text-align: center;
+                    color: #50BE5F;
+                    margin-left: 2vw;
+                }
+            }
+
+            .hisopados-price{
+                font-family: Montserrat;
+                font-style: normal;
+                font-weight: 800;
+                font-size: 3rem;
+                line-height: 3.1rem;
+                color: $uma-secondary;
+            }
+        }
+
+        .disclaimer-result {
+            text-align: center;
+            color: $uma-text;
+            font-weight: 800;
+            font-size: 1.1rem;
+            line-height: 1.5rem;
+            width: 80%;
+            margin: auto;
+
+            @media (max-width: 320px) {
+                width: 100%;
+            }
+        }
+
+        .disclaimer-time {
+            margin: 1rem auto 0;
+            font-size: 1rem;
+            color: $uma-text;
+            line-height: 1.3rem;
+            text-align: center;
+            width: 80%;
+
+            @media (max-width: 320px) {
+                width: 100%;
+            }
+        }
+    }
+
+    .coverage {
+        margin: 2rem 0 0;
+
+        .coverage-btn {
+            background: none;
+            border: none;
+            text-align: center;
+            color: #008290;
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+    }
 
     .hisopados-bullets-container{
         display: flex;
@@ -257,7 +329,6 @@
             font-size: 1.7rem !important;
         }
     }
-
     .results-menu-map-item{
         width: 90vw;
         height: 10vh;
@@ -269,6 +340,10 @@
         align-items: center;
         justify-content: space-between;
         padding: 5vw;
+        p{
+            margin: 0;
+            text-align: left;
+        }
         .icon{
             color: $uma-primary;
             font-size: 1.5rem;
@@ -279,6 +354,23 @@
             font-size: 1.2rem;
             
         }
+        .item_address{
+            font-weight: bold;
+        }
+        .item_status{
+            color: $uma-primary;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .item_time{
+            font-size: 1rem;
+        }
+        .clock_icon{
+            margin-right: 2vw;
+        }
+    }
+    .fit_content_item{
+        height: fit-content;
     }
 
     .hisopados-button {
@@ -359,6 +451,7 @@
     margin-top: 20px;
     text-align: center;
     min-height: calc(100vh - 72px);
+    
     .hisopados-title{
         margin-top: 4vh;
         margin-bottom: 4vh;
@@ -435,22 +528,8 @@
     li{list-style-type: circle;}
 }
 
-.backButtonContainer{
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    font-size: 1.6rem;
-    padding-left: 4vw;
-    height: 6vh;
-    width: 100vw;
-    margin: 0;
-    box-shadow: 0px 2px 5px rgba(199, 199, 199, 0.14);
-    border-radius: 0px 0px 6px 6px;
-    z-index: 4;
-    }
-
 .hisopado-results-contancy-dowloader{
-display: none;
+    display: none;
 }
 
 .hisopados-atentionContainer {
@@ -460,9 +539,10 @@ display: none;
     border-radius: 0.5rem;
     margin-top: 5vh;
     padding: 2rem;
+    background: $uma-secondary;
 
     h2 {
-        color: $uma-primary;
+        color: $white-color;
         font-weight: 800;
         font-size: 1.8rem;
         margin-bottom: 1rem;
@@ -470,7 +550,7 @@ display: none;
 
     ul {
         text-align: left;
-        color: $uma-primary;
+        color: $white-color;
         font-size: 1rem;
         line-height: 1.4rem;
 
@@ -479,3 +559,13 @@ display: none;
         }
     }
 }
+
+.blue-text{
+    color: $uma-primary;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+    font-weight: 800;
+    font-size: $uma-font-size-regular;
+    line-height: 25px;
+}
+

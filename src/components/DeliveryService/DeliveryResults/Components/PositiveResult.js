@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Recomendations from "./Recomendations"
 import hisopadoPos from "../../../../assets/img/hisopado_pos.svg"
-import { FaUserNurse, FaListUl, FaPencilAlt, FaArrowRight, FaHome, FaStethoscope } from "react-icons/fa"
+import { FaUserNurse, FaListUl, FaArrowRight, FaStethoscope } from "react-icons/fa"
 import { BackButton } from '../../../GeneralComponents/Headers';
 
 export default function PositiveResult({finalAction}) {
     const history = useHistory(); 
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const discount = useSelector(state => state.deliveryService.params.discount)
     const [recomendations, setRecomendations] = useState(false)
 

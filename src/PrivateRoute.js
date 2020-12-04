@@ -33,20 +33,20 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore()
     const { currentUser } = useContext(AuthContext)
-    const { patient } = useSelector(store => store.queries)
+    const user = useSelector(store => store.user)
     const [notification, setNotification] = useState(false)
     const { callRejected } = useSelector(store => store.call)
 	const token = useSelector(state => state.userActive.token)
 
     useEffect(() => {
-        if (patient.ws) {
+        if (user.ws) {
             try {
-                let subscription, queryUser = firestore.doc(`auth/${patient.ws}`)
+                let subscription, queryUser = firestore.doc(`auth/${user.ws}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data && data?._start_date !== '' && data._start_date) {
                         let calldata = data?._start_date?.split('///')
-                        if (!callRejected && rest.path !== '/:dni/onlinedoctor/attention/'){
+                        if (!callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
                             dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1] } })
                         }
@@ -66,15 +66,15 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 console.log(error)
             }
         }
-    }, [patient, firestore, callRejected, rest.path])
+    }, [user, firestore, callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (currentUser && currentUser.email && patient.dni) {
+		if (currentUser && currentUser.email && user.dni) {
 			DetectRTC.load(function () {
                     const ios = isIos()
                     let now = moment()
-                    if(patient.device?.uma_version !== version.patients
-                        || moment(now).diff(patient.device.last_login, 'minutes') >= 1) {
+                    if(user.device?.uma_version !== version.users
+                        || moment(now).diff(user.device?.last_login, 'minutes') >= 1) {
                         if (!ios) {
                             messaginTokenUpdate(currentUser, DetectRTC, true)
                         } else {
@@ -84,7 +84,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, patient, token])
+	}, [currentUser, user, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
@@ -119,14 +119,14 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 			newValues: { device },
 		};
 		Axios
-			.patch(`${node_patient}/${patient.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
+			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
 			.then((res) => {
-				console.log("Device ok");
+				console.log("UMA");
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-    }, [patient])
+    }, [user])
     
     return (
 
@@ -135,7 +135,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 <ToastNotification
                     title={'LLAMADA ENTRANTE...'}
                     button={'Contestar'}
-                    action={`/${patient.dni}/onlinedoctor/attention/`}
+                    action={`/${user.dni}/onlinedoctor/attention/`}
                     unsetNotification={setNotification}
                     audio={tone}
                 />

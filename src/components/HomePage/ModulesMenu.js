@@ -18,16 +18,16 @@ import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
-	const { patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
 				<div className='module-button'>
 					<Link to={link} className='module-name'>
-							<div className='module-ico'>
-								<img src={icon} alt={text} />
-							</div>
+						<div className='module-ico'>
+							<img src={icon} alt={text} />
+						</div>
 						<p className='module-title'>{text}</p>
 					</Link>
 				</div>
@@ -37,33 +37,33 @@ const ModulesMenu = () => {
 
 	return (
 		<>
-			{patient.ws ? (
+			{user.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
-					<GenericHeader children={patient.fullname} />
+					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
 					<section className='modules-container'>
 						<div className='card length3'>
 							{returnModule(
-								`/${patient.ws}/onlinedoctor/who`,
+								`/${user.ws}/onlinedoctor/who`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
 							)}
 							{returnModule(
-								`/${patient.ws}/autonomous`,
+								`/${user.ws}/autonomous`,
 								'autonomous',
 								iconAutodiagnostico,
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${patient.ws}/wellness`,
+								`/${user.ws}/wellness`,
 								'wellness',
 								iconEstudios,
 								'Estudios'
 							)}
 							{returnModule(
-								`/${patient.ws}/transport`,
+								`/${user.ws}/transport`,
 								'translation',
 								iconTraslados,
 								'Traslados'
@@ -75,7 +75,7 @@ const ModulesMenu = () => {
 								'Mi especialista'
 							)}
 							{returnModule(
-								`/${patient.ws}/umacare`,
+								`/${user.ws}/umacare`,
 								'umacare',
 								iconUmacare,
 								'UMA Care'
@@ -85,7 +85,7 @@ const ModulesMenu = () => {
 					<EventsHistory />
 					{/* <UmaCareHome /> */}
 					{/* <TrasladosHome /> */}
-{/* 					<button className="needhelp__btn">
+					{/* 					<button className="needhelp__btn">
 						<img src={iconBubbles} alt="Necesito ayuda"/>
 						Necesito ayuda
 					</button> */}

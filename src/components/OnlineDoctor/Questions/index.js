@@ -22,7 +22,8 @@ const Questions = () => {
 	const [responseIA, setResponseIA] = useState({ diagnostico: '', destino_final: '', epicrisis: '' });
 	const [coordinates, setCoordinates] = useState({ lat: '', lng: '' });
 	const { assessment } = useSelector((state) => state);
-	const { questions, patient } = useSelector((state) => state.queries);
+	const { questions } = useSelector((state) => state.queries);
+	const patient = useSelector(state => state.user)
 	const { loading } = useSelector((state) => state.front);
 	const propsContainerAssessmentAppointment = { seti, setj, i, j, responseIA, coordinates, alerta };
 
@@ -80,7 +81,6 @@ const Questions = () => {
 						input: data.input
 					});
 					let symptoms = [...new Set(data.symptom)]
-					console.log(symptoms)
 					symptoms.map(symptom => {
 						db.collection('parametros').doc('userapp').collection('assessment').doc(symptom).get()
 						.then(doc => {
@@ -101,7 +101,6 @@ const Questions = () => {
 						.catch(e => console.log(e));
 					})
 					let features = [...new Set(data.features)]
-					console.log(features)
 					features.map(question => {
 						db.collection('parametros').doc('userapp').collection('assessment').doc(question).get()
 						.then(doc => {

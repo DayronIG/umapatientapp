@@ -4,11 +4,11 @@ import RecipeCL from '../components/MyRecords/Recipes/RecipeCL';
 import RecipeAR from '../components/MyRecords/Recipes/RecipeAR';
 
 const RecipeView = ({ att, doc }) => {
-    const { patient } = useSelector(state => state.queries)
+    const user = useSelector(state => state.user)
     const data = { att, doc }
 
     const router = () => {
-        switch (patient.country ? patient.country.toUpperCase() : '') {
+        switch (user.country ? user.country.toUpperCase() : '') {
             case 'AR':
                 return <RecipeAR {...data} />
             case 'CL':

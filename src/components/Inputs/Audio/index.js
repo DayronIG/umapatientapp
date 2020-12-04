@@ -19,7 +19,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     const [sthetoscopeAudio, setSthetoscopeAudio] = useState("");
     const [sthetoscopeBpm, setSthetoscopeBpm] = useState("")
     const timeID = useSelector(state => state.biomarkers.sthetoscopeID)
-    const {ws} = useSelector(state => state.queries.patient)
+    const {ws} = useSelector(state => state.user)
     const [onPlay, setOnPlay] = useState(false);
     const audioElement = useSelector(state => state.biomarkers.audioData);
     const dispatch = useDispatch()
@@ -120,11 +120,11 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                     <div className="wellness__results__title">
                         {parseInt(sthetoscopeBpm) > 50 && parseInt(sthetoscopeBpm) < 180 && <p>Frecuencia cardíaca estimada: {sthetoscopeBpm}</p>}
                         {!onPlay ?
-                        <div onClick={play}  className = "record__trigger--btn styleButton">
+                        <div onClick={play}  className = "styleButton">
                             <FaPlay className="icon" />
                         </div>
                         :
-                        <div onClick={pause} className = "record__trigger--btn styleButton">
+                        <div onClick={pause} className = "styleButton">
                             <FaPause className="icon" />
                         </div>}
                         <small>Éste escaneo se encuentra en etapa experimental y no constituye ni reemplaza un análisis médico.</small>

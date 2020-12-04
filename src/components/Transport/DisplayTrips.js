@@ -14,8 +14,9 @@ import '../../styles/generalcomponents/TransportUserActive.scss';
 const TransportUserActive = () => {
 	const [reclamoModal, setReclamoModal] = useState(false)
 	const [cancelModal, setCancelModal] = useState(false)
-	const { patient } = useSelector(state => state.queries)
 	const { date_filter } = useSelector(state => state.transport);
+	const toogleModal = useSelector((state) => state.front.openDetails);
+	const user = useSelector(state => state.user)
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
@@ -36,17 +37,17 @@ const TransportUserActive = () => {
 
 	useEffect(() => {
 		getServices();
-	}, [patient, date_filter]);
+	}, [user, date_filter]);
 
 	async function getServices() {
-		if (!patient?.dni) return null;
+		if (!user?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			let { data } = await Axios.post(
 				att_history,
 				{
-					ws: patient.ws,
-					dni: patient.dni,
+					ws: user.ws,
+					dni: user.dni,
 					getUnauthorized: true
 				},
 				{
@@ -60,15 +61,18 @@ const TransportUserActive = () => {
 			data = data.filter((el) => el.status_tramo !== 'CANCEL')
 			let appservicesTemp;
 			let pendServicesTemp;
+
 			if (date_filter) {
 				let date = moment(date_filter).format('YYYY-MM-DD')
+				let allFiltered = data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
 				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
 				pendServicesTemp = data.filter(item => (item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN') && item.fecha === date);
+				setAllServices(allFiltered)
 			} else {
 				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED');
 				pendServicesTemp = data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+				setAllServices(data)
 			}
-			setAllServices(data)
 			setApprovedServices(appservicesTemp);
 			setPendingServices(pendServicesTemp);
 		} catch (error) {
@@ -87,10 +91,10 @@ const TransportUserActive = () => {
 		setDisplayLoading(true);
 		try {
 			await Axios.post(cancel_tramo, {
-				dni: patient.dni,
+				dni: user.dni,
 				tramo_id: selectedService.assignation_id,
 				date: selectedService.fecha,
-				corporate: patient.corporate_norm.toUpperCase(),
+				corporate: user.corporate_norm.toUpperCase(),
 				details: getCancelComment,
 				traslado_id: selectedService.request_id
 			}, {
@@ -115,10 +119,10 @@ const TransportUserActive = () => {
 		setDisplayLoading(true);
 		try {
 			await Axios.post(reclamo_tramo, {
-				dni: patient.dni,
+				dni: user.dni,
 				tramo_id: selectedService.assignation_id,
 				date: selectedService.fecha,
-				corporate: patient.corporate_norm.toUpperCase(),
+				corporate: user.corporate_norm.toUpperCase(),
 				details: getCancelComment,
 				traslado_id: selectedService.request_id
 			}, {
@@ -143,9 +147,6 @@ const TransportUserActive = () => {
 			setReclamoModal(true)
 		}
 	}
-
-
-
 	return (
 		<div className='transportList'>
 			{cancelModal &&
@@ -267,6 +268,24 @@ const TransportUserActive = () => {
 													<p className="originContent"> {item.geo_inicio_address}</p></div>
 												<div className="destiny"><p className="destinyTitle">Destino:</p>
 													<p className="destinyContent"> {item.geo_fin_address}</p></div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
@@ -317,6 +336,24 @@ const TransportUserActive = () => {
 													<p className="originContent"> {item.geo_inicio_address}</p></div>
 												<div className="destiny"><p className="destinyTitle">Destino:</p>
 													<p className="destinyContent"> {item.geo_fin_address}</p></div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
 												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
 													<FaCar /> Seguir recorrido
 												</button>
@@ -374,7 +411,6 @@ const TransportUserActive = () => {
 												</div>
 												<div className="destiny">
 													<p className="destinyTitle">Detalles del vehículo:</p>
-													{console.log(item)}
 													{item?.vehicle ? (
 														<>
 															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
@@ -417,7 +453,7 @@ const TransportUserActive = () => {
 				</div>
 				: null
 			}
-		</div>
+		</div >
 	)
 }
 

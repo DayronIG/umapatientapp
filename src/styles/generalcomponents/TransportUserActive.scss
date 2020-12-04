@@ -64,6 +64,12 @@
         width: 100%;
         line-height: 0;
         padding: 0 10px;
+      width: 90%;
+      margin: 20px auto 15px;
+      height: auto;
+      top: 104px;
+      bottom: 0;
+      overflow: scroll;
       }
       li {
         border-top: 4px solid #c4c4cc;
@@ -278,7 +284,6 @@
         left: 0;
       }
     }
-  }
 }
 
 .createNewService__container { 
@@ -313,4 +318,5 @@
       font-size: 2rem;
     }
   }
+}
 }

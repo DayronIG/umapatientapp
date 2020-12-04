@@ -18,10 +18,8 @@ import '../../styles/TurnoConsultorio.scss';
 
 
 const AppointmentsOnlineHistory = (props) => {
-	const firestore = db.firestore()
 	const dispatch = useDispatch()
 	const token = useSelector(state => state.userActive.token)
-	const patient = useSelector(state => state.queries.patient)
 	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
@@ -104,7 +102,6 @@ const AppointmentsOnlineHistory = (props) => {
 					type: 'cancel',
 					complain: ''
 				}
-				let headers =
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
 				return props.history.push('/home')

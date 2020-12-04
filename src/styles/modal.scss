@@ -64,18 +64,26 @@
   overflow: scroll;
 }
 
+.no-scroll{
+  overflow: hidden !important;
+}
+
+.pac-container {
+  z-index: 9999;
+}
+
 .mobile-modal {
   position: fixed;
   top: 12vh;
-  left: 4vh;
-  right: 4vh;
   height: auto;
   overflow: scroll;
   max-height: 80vh;
   box-shadow: $blured-box-shadow;
   background: $white-color;
   border-radius: $regular-borders;
-  z-index: 9999;
+  z-index: 4;
+  width: 90%;
+  margin-left: 5%;
   .contentData {
     margin-top: 20px;
     color: $text-dark;
@@ -91,17 +99,18 @@
       font-weight: bold;
     }
   }
-  .modaTitle,
+  .modalTitle,
   .modalContent {
     width: 100%;
-    padding: 15px;
+    padding: 15px 10px;
   }
-  .modaTitle {
-    color: $white-color;
+  .modalTitle {
+    color: $uma-primary;
     font-weight: bold;
+    text-align: center;
     font-size: 20px;
-    height: 10vh;
-    background-color: $uma-primary;
+    height: 6vh;
+    background-color: $white-color;
     border-top-left-radius: $regular-borders;
     border-top-right-radius: $regular-borders;
   }
@@ -109,7 +118,7 @@
     position: absolute;
     right: 15px;
     top: 10px;
-    color: $white-color;
+    color: $uma-text-secondary;
     font-size: 1.5rem;
   }
   textarea {
@@ -148,23 +157,44 @@
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 3;
 }
 
 .mobile-modal.hisopados {
   border-radius: 15px;
-  padding: 20px;
+  top: 5vh;
   max-height: 90vh;
-
+  width: 90%;
   .modalContent {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 0;
+    height: 100%;
 
     & > img {
       max-width: 80%;
       margin-bottom: 20px;
+    }
+
+    .surveyQuestion__title {
+      color: $uma-primary;
+      text-align: center;
+      font-size: 1.5rem;
+      line-height: 1.8rem;
+      font-weight: 900;
+      width: 100%;
+      margin-bottom: 1.5rem;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 25%;
+        height: 2px;
+        background: $uma-primary;
+        margin: 0.8rem auto 0;
+      }
     }
 
     .surveyQuestion {
@@ -178,7 +208,7 @@
       h3 {
         color: $uma-text;
         text-align: center;
-        font-size: 18px;
+        font-size: 1.1rem;
         line-height: 1.5;
         font-weight: 600;
 
@@ -230,4 +260,5 @@
     color: #D80000;
     font-weight: 600;
   }
+
 }

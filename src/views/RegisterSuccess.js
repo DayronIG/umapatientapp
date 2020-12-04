@@ -1,30 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import InformationPage from '../components/GeneralComponents/InformationPage.js';
 import imageFelicitaciones from '../assets/doctor-online.svg';
-import { installPrompt } from '../components/Utils/installPrompt.js';
-import { useHistory, useParams } from 'react-router-dom';
-import "../styles/generalcomponents/Install.scss";
+import "../styles/generalcomponents/install.scss";
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 
 const RegisterSuccess = (props) => {
-    const [deferredPrompt, setDeferredPrompt] = useState();
     const { ws } = useParams();
     const history = useHistory();
     
-    useEffect(() => {
-        const promptListener = (e) => {
-            e.preventDefault();
-            setDeferredPrompt(e);
-        }
-        window.addEventListener('beforeinstallprompt', promptListener)
-        return () => {
-          window.removeEventListener('beforeinstallprompt', promptListener);
-        }
-    }, [])
-
     const redirect = async () => {
-        await installPrompt(deferredPrompt, ws);
-        history.push(`/${ws}`);
+        history.push(`/home`);
     }
 
     return (

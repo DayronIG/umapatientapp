@@ -13,7 +13,7 @@ const PictureCapture = ({innerText = "", quantity = 3, modal = false, finalActio
 
   const [count, setCounter] = useState(0);
   const [date] = useState(moment().format('YYYYMMDDHHmmss'))
-  const { dni } = useSelector(state => state.queries.patient);
+  const { dni } = useSelector(state => state.user);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // const handleReset = () => {

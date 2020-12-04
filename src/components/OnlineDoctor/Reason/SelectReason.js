@@ -6,6 +6,8 @@ import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import symptoms from '../../../config/symptoms.json';
 import useScrollPosition from '../../Utils/use-scroll-position';
+import Modal from "../../GeneralComponents/Modal/MobileModal"
+import RecipeInput from "./RecipeInput"
 
 const SelectReason = (props) => {
 	const dispatch = useDispatch();
@@ -14,6 +16,7 @@ const SelectReason = (props) => {
 	const selectedSymptoms = useSelector((state) => state.assessment.selectedSymptoms);
 	// const coords = useSelector(state => state.queries.geolocation)
 	const [otherSymptoms, setOtherSymptoms] = useState('');
+	const [recipeInputModal, setRecipeInputModal] = useState(false);
 	let scrollPosition = useScrollPosition();
 
 	useEffect(() => {
@@ -27,6 +30,16 @@ const SelectReason = (props) => {
 		if (symptoms.length > 0) dispatch({ type: 'GET_SYMPTOMS', payload: symptoms });
 	}, [questionsList, dispatch]);
 
+	function disableScrolling(){
+		var x=window.scrollX;
+		var y=window.scrollY;
+		window.onscroll=function(){window.scrollTo(x, y);};
+	}
+	
+	function enableScrolling(){
+		window.onscroll=function(){};
+	}
+
 	function addReason(reason) {
 		if (!selectedSymptoms.includes(reason)) dispatch({ type: 'SET_SYMPTOM', payload: reason });
 	}
@@ -34,16 +47,37 @@ const SelectReason = (props) => {
 		const newTags = selectedSymptoms.filter((tags) => tags !== symptom);
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
+	function filterIfRecipeIsSelected(){
+		if (selectedSymptoms.includes("Receta")){
+			window.scroll(0, 100)
+			disableScrolling()
+			setRecipeInputModal(true)
+		} else {
+			redirect()
+		}
+	}
+	function recipeModalCheckout(){
+		setRecipeInputModal(false)
+		enableScrolling()
+		redirect()
+	}
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
+
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
 		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
 	}
 
 	return (
 		<>
-			<div className='dinamic-question'>
-				<Backbutton inlineButton={true} />
+			<div className={`dinamic-question`}>
+				{
+					recipeInputModal &&
+					<Modal callback={()=>recipeModalCheckout()}> 
+						<RecipeInput callback={()=>recipeModalCheckout()}/>
+					</Modal>
+				}
+				<Backbutton inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>
@@ -83,7 +117,7 @@ const SelectReason = (props) => {
 						placeholder='Otros síntomas'
 					/>
 				</div>
-				<button className='btn btn-blue-lg confirmConsultReason' onClick={redirect}>
+				<button className='btn btn-blue-lg confirmConsultReason' onClick={filterIfRecipeIsSelected}>
 					Siguiente
 				</button>
 			</div>

@@ -11,7 +11,7 @@ const Autonomous = (props) => {
     const step = useSelector((state)=>state.autonomous.current_step);
     const {assignation_id, qa_next, first_predict, biomarker,
         to_predict, qa_acumulado, final_predict} = useSelector((state)=>state.autonomous);
-    const user = useSelector(state => state.queries.patient);
+    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {

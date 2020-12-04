@@ -15,7 +15,7 @@ import {
 import '../../styles/deliveryService/selectDestiny.scss';
 
 const CreateTransportRoute = () => {
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
 	const { destiny, pointSelector } = useSelector(state => state.transport);
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -29,8 +29,8 @@ const CreateTransportRoute = () => {
 	},[])
 
 	useEffect(() => {
-		setInitialOriginPoint(patient);
-	}, [patient]);
+		setInitialOriginPoint(user);
+	}, [user]);
 
 	const handleApiLoaded = (map, maps) => {
 		if (!map || !maps) return null;

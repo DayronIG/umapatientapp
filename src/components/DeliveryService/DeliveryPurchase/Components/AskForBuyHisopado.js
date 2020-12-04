@@ -5,7 +5,6 @@ import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} fr
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
-import IllustrationHisopado from "../../../../assets/img/Illustration-Hisopado.png"
 import omsImg from "../../../../assets/img/oms.svg"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
@@ -18,7 +17,7 @@ export default function AskForBuyHisopado() {
     const [frequentQuestions, setFrequentQuestions] = useState(false)
     const [narrowContactInfo, setNarrowContactInfo] = useState(false)
     const {params, current} = useSelector(state => state.deliveryService)
-    const patient = useSelector(state => state.queries.patient)
+    const patient = useSelector(state => state.user)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -28,17 +27,20 @@ export default function AskForBuyHisopado() {
         }
     }, [patient])
 
-    const getCurrentService = () => {
-        db.firestore().collection('events/requests/delivery')
-        .where('patient.dni', '==', patient.dni)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
+    const getCurrentService = async () => {
+        let deliveryInfo = []
+        await db.firestore().collection('events/requests/delivery')
+        .where('patient.uid', '==', patient.core_id)
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
         .get()
-        .then(res => {
+        .then(async res => {
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
+                deliveryInfo.push(document)
                 dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
         })
+        dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
     }
 
     const startBuying = async () => {
@@ -48,11 +50,21 @@ export default function AskForBuyHisopado() {
         if(!current?.status) {
             let data = {
                 dni: patient.dni,
+                dependant: false,
                 service: 'HISOPADO'
             }
             await axios.post(create_delivery, data, config)
                 .then(async res => {
-                    await getCurrentService()
+                    await db.firestore().collection('events/requests/delivery')
+                    .where('patient.uid', '==', patient.core_id)
+                    .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
+                    .get()
+                    .then(async res => {
+                        res.forEach(services => {
+                            let document = {...services.data(), id: services.id}
+                            dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                        })
+                    })
                     dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
                 })
                 .catch(err => swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error"))
@@ -74,53 +86,37 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan de lunes a viernes de 10hs a 18hs.
+                            Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
-                    <p className="hisopados-title">¡Comprá tu hisopado <br/> a domicilio!</p>
-                    <p className="hisopados-subtitle">(Sólo disponible en CABA)</p>
+                    <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p>
+                    <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p>
                     <div className="price-center-aligner">
+                        <h2 className="price-title">Test rápido de antígenos</h2>
                         <div className="price-container">
-                        <div className="discount-container">
-                            <p className="hisopados-previous-price">${params?.fake_price}</p>
-                            <p className="hisopados-discount">{params?.fake_discount}% off</p>
-                        </div>
-                        <p className="hisopados-price">${params?.price}</p>
-                        </div>
-                    </div>
-                    <div className="hisopados-bulletsContainer">
-                        <p className="limited-p">Ahora puedes realizar el hisopado por <br/>COVID-19 desde la comodidad de tu casa.</p>
-                        <div className="hisopados-bullets-container">
-                            <div className="hisopados-bullets">
-                                <p><FaMapMarker className="icon"/>A domicilio</p>
-                                <p><FaBriefcaseMedical className="icon"/>No invasivo</p>
+                            <div className="discount-container">
+                                <p className="hisopados-previous-price">${params?.fake_price}</p>
+                                <p className="hisopados-discount">{params?.fake_discount}% OFF</p>
                             </div>
-                            <div className="hisopados-bullets">
-                                <p><FaCheckCircle className="icon"/>100% efectivo</p>
-                                <p><FaClock className="icon"/>Resultado en 15´</p>
-                            </div>
+                            <p className="hisopados-price">${params?.price}</p>
                         </div>
-                    </div>
-
-                    <div className="hisopados-atentionContainer">
-                        <h2>¡Atención!</h2>
-                        <ul>
-                            <li>• No lo cubren las obras sociales</li>
-                            <li>• No emite certificado oficial</li>
-                            <li>• Sólo en determinados destinos tiene validez para viajar</li>
-                            <li>• Si compras fuera de nuestro horario de atención, el hisopado se realizará cuando reanudemos la atención.</li>
-                        </ul>
+                        <p className="disclaimer-result">Indica la presencia del virus</p>
+                        <p className="disclaimer-time">Entrega de resultado en 15 minutos en tu domicilio</p>
                     </div>
                     
-                    <div className="hisopados-flux-container">
-                        <div className="oms-container">
-                            <img className="hisopados-image" src={omsImg} alt="oms" />
-                            Avalado por la OMS
-                        </div>
-                        
+                    <div className="coverage">
+                        <button 
+                            className="coverage-btn" 
+                            onClick={() => history.push(`/hisopado/cobertura/${patient.ws}`)}
+                        >
+                            Conocé nuestra zona de cobertura
+                        </button>
+                    </div>
+
+                    <div className="hisopados-flux-container">                        
                         <p className="info-title">¿En qué consiste?</p>
-                        <p>Es un test rápido de detección del Covid-19, realizado por nuestro personal de salud en tu domicilio.
-                        Es una excelente alternativa al hisopado tradicional, económica, indolora y veloz, <br />¡en sólo 15 minutos tienes el resultado!</p>
+                        <p>Es un test rápido de detección del Covid-19 avalado por la OMS, realizado por nuestro personal de salud en tu domicilio.<br />
+                        Es una excelente alternativa al hisopado tradicional, económica y veloz, ¡en sólo 15 minutos tienes el resultado!</p>
 
                         <p>Además te brindamos <span className="info-destacado">atención médica</span> una vez realizado el hisopado a través de nuestra plataforma.</p>
                         
@@ -134,6 +130,17 @@ export default function AskForBuyHisopado() {
                         <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
                     </div>
+
+                    <div className="hisopados-atentionContainer">
+                        <h2>A tener en cuenta</h2>
+                        <ul>
+                            <li>• No lo cubren las obras sociales</li>
+                            <li>• No emite certificado oficial</li>
+                            <li>• Consulte con su destino la validez del test rápido para viajar</li>
+                            <li>• Los hisopados se realizan de lunes a viernes de 8hs a 18hs. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.</li>
+                        </ul>
+                    </div>
+
                     <p className="terms-questions">
                         <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
                         <br/>

@@ -14,12 +14,12 @@ import BilirubinaIndirecta from "./BilirubinaIndirecta";
 import Error from "./Error";
 import Triglicerido from "./Trigliceridos";
 import { Loader } from "../../global/Spinner/Loaders";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import "./Styles/Buttons.scss";
 
 function LoadAnalysis(props) {
-  const patient = useSelector(state => state.queries.patient)
+  const patient = useSelector(state => state.user)
   const token = useSelector(state => state.userActive.token)
   const [resPost, setResPost] = useState("");
   const [resspiner, setresspiner] = useState(false);

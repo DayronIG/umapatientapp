@@ -18,7 +18,7 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
         helper[position] = value
         helper = helper.reduce((prev, actual) => prev ? prev.concat(`///${actual}`) : actual, '')
         dispatch({ type: 'SET_UMACARE_STATUS', payload: helper })
-        if (position === 3) setAskQuestions(false)
+        if (position === 3 ||  position === 2) setAskQuestions(false)
     }
     
     useEffect(() => {

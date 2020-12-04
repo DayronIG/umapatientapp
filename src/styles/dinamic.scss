@@ -15,14 +15,6 @@
     width: 100vw;
     height: 100%;
     z-index: 1;
-    // background: $reduced-back-gradient;
-    .backButtonContainer {
-        padding: 0 10px 0 10px;
-        height: 42px;
-        margin-left: 10px;
-        margin-top: -13px;
-        margin-bottom: 9px;
-    }
     .inlineButton {
         position: absolute;
         top: 18vh;
@@ -83,7 +75,6 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        // margin-top: 10px;
         height: 90%;
         .image-helper {
             width: 100%;
@@ -121,18 +112,54 @@
             text-align: center;
             font-size: 1.1rem;
             color: $gray-font;
-            width: 90%;
+            width: 100%;
             margin: auto;
             .question-title {
-                margin-bottom: 14px;
-                color: $white-color;
+                margin: 10px;
+                color: $uma-text !important;
+            }
+            .recipe_input_container{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .icon{
+                    margin-left: 20vw;
+                    font-size: 1.2rem;
+                }
+                .title{
+                    color: $uma-text-secondary;
+                    font-weight: normal;
+                    text-align: left;
+                    font-size: 1.1rem;
+                    height: 6vh;
+                    margin-top: 1vh;
+                }
+                .file_input{
+                    display: none;
+                }
+                .file-selector{
+                    background: $white-color;
+                    border: 0.8px solid #B6B6B6;
+                    border-radius: 6px;
+                    text-align: left;
+                    padding: 5px;
+                    width: 80vw;
+                }
+                .error-uploading{
+                    color: red;
+                    font-weight: bold;
+                    margin-top: 3vh;
+                }
+                .button{
+                    margin-top: 4vh;
+                }
             }
         }
         .when-question {
             text-align: center;
             font-weight: bold;
             font-size: 1.5rem;
-            margin: -12px 20px 15px 20px;
+            margin: 12px 20px 15px 20px;
             color: $when-dark;
         }
         .dinamic-add-reason {
@@ -207,7 +234,7 @@
                 border-radius: $regular-borders;
                 .symptom-text {
                     width: 60%;
-                    color: $text-light;
+                    color: $uma-text-secondary;
                 }
                 .symptom-addicon {
                     width: 15%;
@@ -275,6 +302,7 @@
             font-size: 14px;
             margin: 10px 20px 10px 20px;
             .question-title {
+                color: $uma-text !important;
                 line-height: 14px;
                 margin-left: 1rem;
             }

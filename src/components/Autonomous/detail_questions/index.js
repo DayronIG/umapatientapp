@@ -10,7 +10,7 @@ import swal from 'sweetalert';
 export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => {
   const [loading, setLoading] = useState(false);
   const token = useSelector(state => state.userActive.token)
-  const patient = useSelector(state => state.queries.patient)
+  const patient = useSelector(state => state.user)
   const dispatch = useDispatch();
 
   const nextQuestion = (resx) => {

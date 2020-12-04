@@ -1,71 +1,54 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
-import { GenericHeader } from "../../GeneralComponents/Headers";
 import "../../../styles/generalcomponents/register.scss";
 
-const Register = props => {
+const RegisterDependant = props => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.queries.patient);
+  const history = useHistory();
+  const user = useSelector(state => state.user);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
+  const [dependant, setDependant] = useState({ document: '', fullname: '', day: '', month: '', year: '', sex: '', cobertura: '' })
   const { dni, day, month,
-    year, sex, address, piso, os, fullname } = useSelector(state => state.register);
+    year, sex, address, piso, fullname } = useSelector(state => state.user);
   const monthRef = useRef();
   const yearRef = useRef();
 
-  useEffect(() => {
-    localStorage.setItem("userRegistered", props.match.params.ws);
-    let ws = localStorage.getItem("userRegistered");
-    let dni = localStorage.getItem("userId");
-    dispatch({ type: "REGISTER_FIRST_DNI", payload: dni });
-    dispatch({ type: "REGISTER_FIRST_WS", payload: ws });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  let composeDate = () => {
-    let buildDate = new Date(month + "/" + day + "/" + year);
-    let birth = moment(buildDate).format("YYYY-MM-DD");
-    let date = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
-    dispatch({ type: "REGISTER_FIRST_DOB", payload: birth });
-    dispatch({ type: "REGISTER_FIRST_DT", payload: date });
-  };
-
-  let handleSignUp = (event) => {
+  let handleSignUp = (event, dependant) => {
     event.preventDefault();
     window.scroll(0, 0);
     dispatch({ type: "LOADING", payload: true });
-    composeDate();
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
     let dob = `${year}-${month}-${day}`;
     let data = {
       address: address || "",
-      corporate: os || "",
-      corporate_norm: os || "",
-      dni: dni || "",
-      dob: dob || "",
+      corporate: dependant.cobertura || "",
+      dni: dependant.document || "",
+      core_id: user.core_id || "",
+      dob: dependant.dob || "",
       dt: date || "",
-      fullname: fullname || "",
+      fullname: dependant.fullname || "",
       group: user.dni || "",
       piso: piso || "",
-      sex: sex || "",
+      sex: dependant.sex || "",
       ws: user.ws || "",
     }
     axios
       .post(`${node_patient}/dependant`, { dependant: data })
       .then(res => {
         if (props.redirectToConsultory === 'true') {
-          props.history.replace(`/${dni}/appointmentsonline/`)
+          history.replace(`/${dni}/appointmentsonline/`)
         } else {
           let userData = { ...user, dni, dob, sex, fullname }
           localStorage.setItem('appointmentUserData', JSON.stringify(userData))
-          props.history.replace(`/${data.dni}/onlinedoctor/when`)
+          history.replace(`/${data.dni}/onlinedoctor/when`)
         }
         dispatch({ type: "LOADING", payload: false })
       })
@@ -76,7 +59,7 @@ const Register = props => {
             type: "warning",
             title: "No se pudo registrar",
             msg:
-              `No se pudo completar tu registro. ${error?.response?.data?.message}`
+              `No se pudo completar tu registro. ${JSON.stringify(error?.response?.data?.message)}`
           }
         })
         dispatch({ type: "LOADING", payload: false })
@@ -84,14 +67,14 @@ const Register = props => {
   }
 
   const onChangeDay = e => {
-    dispatch({ type: "REGISTER_FIRST_DAY", payload: e.target.value });
+    setDependant({ ...dependant, day: e.target.value })
     if (e.target.value.length === 2) {
       monthRef.current.focus()
     }
   }
 
   const onChangeMonth = e => {
-    dispatch({ type: "REGISTER_FIRST_MONTH", payload: e.target.value });
+    setDependant({ ...dependant, month: e.target.value })
     if (e.target.value.length === 2) {
       yearRef.current.focus()
     }
@@ -101,14 +84,12 @@ const Register = props => {
     const reg = /^\d+$/
     const str = dni.toString()
     const isNumber = reg.test(str)
-    if (isNumber) dispatch({ type: 'REGISTER_FIRST_DNI', payload: dni })
-    else if (!dni) dispatch({ type: 'REGISTER_FIRST_DNI', payload: '' })
+    if (isNumber) setDependant({ ...dependant, document: dni })
+    else if (!dni) setDependant({ ...dependant, document: '' })
   }
-
 
   return (
     <div className="register__container">
-      <GenericHeader />
       {loading && <Loading />}
       {front.alert.active && (
         <Alert
@@ -117,11 +98,13 @@ const Register = props => {
           customMessage={front.alert.msg}
         />
       )}
-      <form className="registerWrapper register-form" onSubmit={e => handleSignUp(e)}>
+      <form className="registerWrapper register-form" onSubmit={e => handleSignUp(e, dependant)}>
         <div className="registerContainerProps">
-          <input className="form-input" id="name" placeholder="Nombre y apellido" required
-            autoComplete="on" type="text"
-            onChange={e => dispatch({ type: "REGISTER_FIRST_FULLNAME", payload: e.target.value })} />
+          <label className='form-label' htmlFor='name'>
+            Nombre y apellido
+          </label>
+          <input className="form-input" id="name" placeholder="Nombre y apellido" required type="text"
+            onChange={e => setDependant({ ...dependant, fullname: e.target.value })} value={dependant.fullname} />
           <label className='form-label' htmlFor='dni'>
             Identificación, cédula o DNI
           </label>
@@ -130,48 +113,48 @@ const Register = props => {
             onChange={e => handleDni(e.target.value)} value={dni} required />
           <div className="d-flex justify-content-start">
             <div className="birthContainer w-50">
-              <label className="form-label birthLabel">
+              <label className="form-label birthLabel" htmlFor="bday">
                 Fecha de nacimiento
               </label>
               <div className="d-flex birthInputContainer">
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="31" name="bday" required="required"
-                  id="dateDay" placeholder={day}
+                  id="dateDay" placeholder={day || "01"}
                   onChange={e => onChangeDay(e)}
                 />
                 <input className="form-mid-input mr-2" maxLength="2"
                   type="number" max="12" name="bMonth"
                   required="required" id="dateMonth"
-                  ref={monthRef} placeholder={month}
+                  ref={monthRef} placeholder={month || "01"}
                   onChange={e => onChangeMonth(e)} />
                 <input
                   className="form-mid-input mr-2" maxLength="4"
                   ref={yearRef}
-                  placeholder={year}
+                  placeholder={year || "2000"}
                   type="number"
                   min="1900" max="2020"
                   name="bYear" required="required" id="dateYear"
-                  onChange={e => {
-                    dispatch({ type: "REGISTER_FIRST_YEAR", payload: e.target.value })
-                  }}
-                />
+                  onChange={e => setDependant({ ...dependant, year: e.target.value })} value={dependant.year} />
               </div>
             </div>
             <div className="sexContainer w-50">
               <label className="form-label gender">Género</label>
               <select className="form-mid-input" style={{ height: "65%" }}
                 id="gender" required
-                onChange={e => dispatch({ type: "REGISTER_FIRST_SEX", payload: e.target.value })} >
+                onChange={e => setDependant({ ...dependant, sex: e.target.value })} value={dependant.sex} >
                 <option defaultValue>Sexo</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
               </select>
             </div>
           </div>
+          <label className="form-label birthLabel" htmlFor="bday">
+            Cobertura de salud/Obra social/Prepaga/Seguro
+          </label>
           <input
-            className="form-input" id="os" placeholder="Obra social/Prepaga/Seguro"
+            className="form-input" id="os" placeholder="Cobertura de salud/Obra social/Prepaga/Seguro"
             autoComplete="off" type="text" required
-            onChange={e => dispatch({ type: "REGISTER_FIRST_OS", payload: e.target.value })}
+            onChange={e => setDependant({ ...dependant, cobertura: e.target.value })} value={dependant.cobertura}
           />
         </div>
         <div className="col-sm-12 text-right">
@@ -184,4 +167,4 @@ const Register = props => {
   );
 };
 
-export default withRouter(Register);
+export default RegisterDependant;

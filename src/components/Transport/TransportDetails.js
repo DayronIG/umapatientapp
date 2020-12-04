@@ -10,7 +10,7 @@ import Marker from '../global/Marker';
 
 const TransportTracking = () => {
 	const { service } = useSelector(state => state.transport);
-	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [openTravel, setOpenTravel] = useState(false);
@@ -31,19 +31,19 @@ const TransportTracking = () => {
 
 	useEffect(() => {
 		if (service?.status_tramo === 'FINISHED') {
-			history.replace(`/${patient.ws}/transportRating/${params.assignation_id}`);
+			history.replace(`/${user.ws}/transportRating/${params.assignation_id}`);
 		}
 	}, [service]);
 
 	useEffect(() => {
 		let unsubscribe;
-		if (patient?.corporate_norm) {
-			unsubscribe = getTransportService({ ...params, corporate: patient.corporate_norm });
+		if (user?.corporate_norm) {
+			unsubscribe = getTransportService({ ...params, corporate: user.corporate_norm });
 		}
 		return () => {
 			if (typeof unsubscribe === 'function') unsubscribe();
 		}
-	}, [patient]);
+	}, [user]);
 
 	useEffect(() => {
 		if (typeof mapBounder === 'function' && service?.current_position_remis) {

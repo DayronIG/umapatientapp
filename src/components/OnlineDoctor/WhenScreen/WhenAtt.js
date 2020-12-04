@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import StarRatings from 'react-star-ratings';
+import Comments from './Comments.js';
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
 import { getUser } from '../../../store/actions/firebaseQueries';
@@ -18,11 +18,10 @@ import 'moment/locale/es';
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
-	const { feedback, patient } = useSelector((state) => state.queries);
+	const user = useSelector((state) => state.user);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
 	const [dni] = useState(props.match.params.dni);
-	const [nocomments, setNocomments] = useState(false);
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
 
@@ -40,14 +39,6 @@ const WhenScreen = (props) => {
 		}
 	}, []);
 
-	useEffect(() => {
-		let haveComments = feedback.find((each) => each.notes !== '');
-		if (!haveComments) {
-			setNocomments(true);
-		} else {
-			setNocomments(false);
-		}
-	}, [feedback]);
 
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
@@ -112,7 +103,7 @@ const WhenScreen = (props) => {
 					<div
 						className='btn btn-blue-lg'
 						onClick={() =>
-							dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: enablePermissions(patient.dni) })
+							dispatch({ type: 'SET_CAM_MIC_PERMISSIONS', payload: enablePermissions(user.dni) })
 						}>
 						Habilitar permisos
 					</div>
@@ -122,43 +113,12 @@ const WhenScreen = (props) => {
 				</MobileModal>
 			)}
 			{!!modal && (
-				<MobileModal title='Comentarios'>
-					<div className='feedback-container'>
-						{nocomments && (
-							<small className='feedback-no-comments'>Este médico aún no ha recibido comentarios</small>
-						)}
-						{feedback?.map(
-							(comment) =>
-								comment.notes !== '' && (
-									<div className='feedback-comment' key={comment.dt}>
-										<div className='feedback-stars'>
-											{comment.doc_eval &&
-												comment.doc_eval !== '' &&
-												comment.doc_eval !== '0' && (
-													<StarRatings
-														rating={parseFloat(comment.doc_eval, 2)}
-														starRatedColor='blue'
-														numberOfStars={5}
-														name='rating'
-														starSpacing='1px'
-														starDimension='15px'
-													/>
-												)}
-										</div>
-										{comment.notes}
-										<div className='feedback-date'>
-											{moment(comment.dt).format('DD/MM/YY hh:mm')}
-										</div>
-									</div>
-								)
-						)}
-					</div>
+				<MobileModal title='Comentarios' callback={() => dispatch({ type: 'TOGGLE_DETAIL', payload: false })}>
+					<Comments />
 				</MobileModal>
 			)}
 			<DinamicScreen>
-				<div className='mt-3'>
-					<Backbutton />
-				</div>
+				<Backbutton />
 				<div className='when__container'>
 					{action === 'Loading' && (
 						<div

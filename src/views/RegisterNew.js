@@ -13,11 +13,10 @@ import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
 import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { validateInput } from '../components/Utils/stringUtils';
 import {generatePassword} from '../components/Utils/generatePassword';
-import { installPrompt } from '../components/Utils/installPrompt';
-import 'moment-timezone';
+import { checkNum } from '../components/Utils/stringUtils';
 import '../../src/styles/generalcomponents/registerNew.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -26,97 +25,46 @@ const Register = props => {
     const dispatch = useDispatch()
     const history = useHistory()
     const [registered, setRegistered] = useState(false)
-    const [deferredPrompt, setDeferredPrompt] = React.useState()
     const [termsSwitch, setTermsSwitch] = useState(true)
     const [modalDisplay, ] = useState(false)
     const loading = useSelector(state => state.front.loading)
-    const {ws: urlWS, ref} = useParams()
+    const { ref } = useParams()
     const { ws } = useParams();
     const {
         dni: getId, day: getDay, month: getMonth, year: getYear,
         dt: getDate, sex: getSex, ws: getWs, os: getOs, fullname: getFullname, country
-     } = useSelector(state => state.register)
+     } = useSelector(state => state.user)
     const monthRef = useRef()
     const yearRef = useRef()
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        const promptListener = (e) => {
-          e.preventDefault()
-          setDeferredPrompt(e)
+    useEffect(()=> {
+        if(ws){
+            let code = getCountry(ws)
+            dispatch({ type: 'USER_FIRST_COUNTRY', payload: code })
         }
-        window.addEventListener('beforeinstallprompt', promptListener)
-        return () => {
-          window.removeEventListener('beforeinstallprompt', promptListener);
-        }
-    }, [])
+    }, [ws])
 
-    useEffect(() => {
-        if(urlWS.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/home')
-        } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
-        }
-    }, [dispatch])
-    
-    async function getCountryCode() {
-        let code = await getCountry(urlWS)
-        dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
-    }
-
-    useEffect(() => {
-        if(urlWS?.length < 12) {
-            swal('Error', 'Este no es un teléfono válido.', 'warning')
-            history.push('/home')
-        } else {
-            dispatch({ type: 'REGISTER_FIRST_WS', payload: urlWS })
-            dispatch({ type: 'REGISTER_FIRST_OS', payload: ref })
-            getCountryCode()
-            generatePassword()
-        }
-    }, [dispatch])
-
-    async function getCountryCode() {
-        if(urlWS){
-            let code = await getCountry(urlWS)
-            dispatch({ type: 'REGISTER_FIRST_COUNTRY', payload: code })
-        }
-    }
-
-
-
-    const handleSignUp = useCallback(async event => {
+    const handleSignUp = async event => {
         event.preventDefault()
+        window.gtag('event', 'sign_up');
+        let verifiedws = checkNum(getWs)
+        console.log(verifiedws)
         window.scroll(0, 0)
-        let validDni = validateInput('text', getId)
-        let dniAlert = false
-       
-        let dt = composeDate()
-
-        let validFullname = validateInput('text', getFullname)
-        let validOs = validateInput('text', getOs)
-        let validDate = validateInput('number', dt)
-        if(validDni && validFullname && validOs && validDate) {
-            dniAlert = await swal({
-                title: `Confirma tu número de documento: ${getId}`,
-                text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
-                icon: 'warning',
-                buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
-                dangerMode: true,
-            })
-        }
-        
-        if (validDni && validFullname && dniAlert && termsSwitch && validOs && validDate) {
+        let dniAlert = await swal({
+            title: `Confirma tu número de documento: ${getId}`,
+            text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
+            icon: 'warning',
+            buttons: {cancel: 'Corregir', catch: { text: 'Confirmar', value: true }},
+            dangerMode: true,
+        })
+        if (dniAlert && termsSwitch && getFullname.length >= 7) {
             dispatch({ type: 'LOADING', payload: true })
             let pwd = generatePassword()
             let user = `${getWs}@${pwd}.com`
             localStorage.setItem('codeRegistered', pwd)
             try {
-                return await app.auth()
+                await app.auth()
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {
@@ -125,54 +73,36 @@ const Register = props => {
                                 'Este teléfono ya está registrado para un usuario.',
                                 'warning')
                         }
-                        else { swal('Error', err, 'warning') }
+                        else swal('Error', err, 'warning')
                         dispatch({ type: 'LOADING', payload: false })
                     })
             } catch (error) {
-                return swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
+                swal('Error', 'Ocurrió un error desconocido. Por favor, intente de nuevo más tarde.', 'warning')
             }
-        } 
-        let tempErrors = {};
-        if(!validDni) {
-            tempErrors.dni = true;
-        } 
-        if (!validFullname){
-            tempErrors.nombre = true;
-        } 
-        if(!validOs){
-            tempErrors.cobertura = true;
-        } 
-        if(!validDate){
-            tempErrors.bDay = true;
-            tempErrors.bMonth = true;
-            tempErrors.bYear = true;
-        }
-        setErrors(tempErrors);
-        if(!termsSwitch) {
+        } else if (getFullname.length <= 8){
+            swal('Aviso', 'Debes completar tu nombre y apellido completos', 'warning')
+        } else if (!dniAlert) {
+            return null
+        } else {
             swal('Aviso', 'Para registrarte debes aceptar los términos y condiciones de UMA', 'warning')
         }
-    }, [errors])
+    }
 
     let composeDate = () => {
         if(!!parseInt(getMonth) && !!parseInt(getDay) && !!parseInt(getYear)){
             let buildDate = new Date(getMonth + '/' + getDay + '/' + getYear)
             let birth = moment(buildDate).format('YYYY-MM-DD')
             let date = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
-            dispatch({ type: 'REGISTER_FIRST_DOB', payload: birth })
-            dispatch({ type: 'REGISTER_FIRST_DT', payload: date })
+            dispatch({ type: 'USER_FIRST_DOB', payload: birth })
+            dispatch({ type: 'USER_FIRST_DT', payload: date })
             return date
         }
     }
 
-    let handleSubmit = async (reg, user) => {
-        let dt = composeDate()
+    const handleSubmit = async (reg, user, pwd) => {
         dispatch({ type: 'LOADING', payload: true })
-        dispatch({ type: 'REGISTER_FIRST_CORE', payload: reg })
-        let subscription
-        let source = props.match.params.affiliate // To do move to back
-        if (source && source.toLowerCase().includes('rappi_peru')) {
-            subscription = 'AUT'
-        }
+        dispatch({ type: 'USER_FIRST_CORE', payload: reg })
+        let dt = composeDate()
         let dob = `${getYear}-${getMonth}-${getDay}`
         let dni = getId 
         if(country !== null && country !== "AR") {
@@ -180,7 +110,7 @@ const Register = props => {
         }
         let data = {
             patient: {
-                affiliate: props.match.params.affiliate || '',
+                affiliate: ref,
                 geohash: '',
                 lat: '',
                 lon: '',
@@ -193,26 +123,19 @@ const Register = props => {
                 dni: dni || '',
                 sex: getSex || '',
                 dob: dob || '',
-                ws: urlWS || '',
+                ws: getWs || '',
                 dt: dt || '',
                 corporate: getOs || '',
                 fullname: getFullname || '',
                 email: user.email,
-                subscription,
             }
         }
         if (data.sex != '') {
             let headers = { ContentType: 'Application/json' }
             try {
-                const res = await axios.post(`${node_patient}`, data, headers)
-                if (res && res.affiliate !== 'rappi') {
-                    setTimeout(() => {
-                        dispatch({ type: 'SET_STATUS', payload: 99 });
-                        setRegistered(true)
-                        dispatch({ type: 'LOADING', payload: false })
-                        history.push(`/${ws}/redirectws`)
-                    }, 2000)
-                } 
+                await axios.post(`${node_patient}`, data, headers)
+                dispatch({ type: 'LOADING', payload: false })
+                history.push('/registersuccess')
             } catch (res) {
                 user.delete()
                 if(res.response?.data?.message === "Ya existe un usuario con este documento") {
@@ -233,7 +156,6 @@ const Register = props => {
 
     const handleInput = (typeDispatch) => (event) => {
         const { type, value, name } = event.target;
-
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
@@ -266,7 +188,7 @@ const Register = props => {
                             </div>
                         </MobileModal>
                     )}
-                    {urlWS !== 'undefined' ?
+                    {ws !== 'undefined' ?
                     <div className="newregister__container">
                         <h3 className='register_form--title'>Formulario de registro</h3> 
                         <form className='registerWrapper register-form' onSubmit={e => handleSignUp(e)}>
@@ -276,8 +198,7 @@ const Register = props => {
                                     Nombre y apellido* 
                                 </label>
                                 <input className='form-input' id='name' placeholder='Nombre'
-                                autoComplete='off' name='nombre' type='text'onChange={handleInput('REGISTER_FIRST_FULLNAME')} />
-                                {console.log(errors)}
+                                autoComplete='off' name='nombre' type='text'onChange={handleInput('USER_FIRST_FULLNAME')} />
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>
                                 )}
@@ -287,20 +208,20 @@ const Register = props => {
                                     Identificación, cédula o DNI*
                                 </label>
                                 <input className='form-input' id='dni' name='dni' type='text' placeholder='e.g. 99899899' autoComplete='off'
-                                onChange={handleInput('REGISTER_FIRST_DNI')} value={getId} />
+                                onChange={handleInput('USER_FIRST_DNI')} value={getId} />
                                 {errors.dni && (
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
                             </div>
                             
                             
-                            {!urlWS && 
+                            {!ws && 
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='celular'>
                                     N° de celular
                                 </label>
                                 <input className='form-input' name='ws' id='ws' placeholder='(54) 11 33678925' autoomplete='off'
-                                onChange={handleInput('REGISTER_FIRST_WS')} type='tel' value={getWs}  />
+                                onChange={handleInput('USER_FIRST_WS')} type='tel' value={getWs}  />
                                 {errors.ws && (
                                     <p className="form__validation--error">x Debe ingresar su identificación</p>
                                 )}
@@ -313,7 +234,7 @@ const Register = props => {
                              <input
                                 className='form-input' id='os' placeholder='ej: Unión Personal'
                                 autoComplete='off' type='text'
-                                onChange={handleInput('REGISTER_FIRST_OS')}
+                                onChange={handleInput('USER_FIRST_OS')}
                                 name='cobertura'
                                 
                             />
@@ -328,32 +249,32 @@ const Register = props => {
                                     <div className='inputsContainer'>
                                         <input className='form-mid-input'
                                             onChange={(e) => {
-                                                handleInput('REGISTER_FIRST_DAY')(e);
+                                                handleInput('USER_FIRST_DAY')(e);
                                                 if(e.target.value.length === 2) monthRef.current.focus();
                                             }} type='number' min='1'
-                                            max='31' name='bday' id='dateDay' placeholder={getDay} maxLength='2'
+                                            max='31' name='bday' id='dateDay' placeholder={getDay || "01"} maxLength='2'
                                              />
                                             
                                         <input
                                             className='form-mid-input' maxLength='2' ref={monthRef}
                                             onChange={(e) => {
-                                                handleInput('REGISTER_FIRST_MONTH')(e);
+                                                handleInput('USER_FIRST_MONTH')(e);
                                                 if(e.target.value.length === 2) yearRef.current.focus();
                                             }}
                                             type='number' min='1' max='12'
                                             name='bMonth' id='dateMonth'
-                                            placeholder={getMonth}
+                                            placeholder={getMonth || "01"}
                                              />
                                         <input
-                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear}
+                                            className='form-mid-input form__midInput--year' id='dateYear' placeholder={getYear || "2000"}
                                             maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
-                                            onChange={handleInput('REGISTER_FIRST_YEAR')}
+                                            onChange={handleInput('USER_FIRST_YEAR')}
                                             
                                         />
                                         <select
                                             className='form-mid-input'
                                             id='gender'
-                                            onChange={e => dispatch({ type: 'REGISTER_FIRST_SEX', payload: e.target.value })}
+                                            onChange={e => dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value })}
                                             placeholder={getSex}
                                             >
 
@@ -362,7 +283,7 @@ const Register = props => {
                                             <option value='F'>Femenino</option>
                                         </select>                                        
                                         <span className="form__validation--error label__absolute">
-                                        {(errors.bday || errors.bMonth || errors. bYear) && 'x Debe ingresar una fecha válida'}  
+                                            {(errors.bday || errors.bMonth || errors.bYear) && 'x Debe ingresar una fecha válida'}  
                                         </span>
                                     </div>                                
                             </div>
@@ -384,7 +305,6 @@ const Register = props => {
                                 <button className='sendButtonStyles' type='submit'>
                                     Enviar
                                 </button>          
-                               
                             </div>
                         </form>
                     </div>

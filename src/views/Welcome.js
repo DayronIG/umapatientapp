@@ -1,38 +1,82 @@
 import React, { useEffect } from "react";
-import {withRouter} from 'react-router-dom';
-import "../styles/welcome.scss";
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { getAuth } from '../store/actions/firebaseQueries';
+import { getDocumentFB, snapDocumentsByFilter } from '../components/Utils/firebaseUtils';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import * as DetectRTC from 'detectrtc';
-// import { useAddToHomescreenPrompt } from "../components/Utils/addToHomeHook";
-// import AddToHomescreen from 'react-add-to-homescreen';
-import logo from '../assets/icon.png'
-
+import "../styles/welcome.scss";
 
 const Welcome = props => {
-  const dispatch = useDispatch();
+  const history = useHistory();
+  const dispatch = useDispatch()
   const [install, setInstall] = React.useState(true)
-
+  const user = useSelector(state => state.user)
   useEffect(() => {
-    //console.log(DetectRTC.isWebsiteHasWebcamPermissions())
     DetectRTC.load(function () {
-      // console.log(DetectRTC.osName)
       if (DetectRTC.osName === "iOS") {
         setInstall(false)
       }
     });
   }, []);
 
-  function installAction() {
+  async function installAction(install) {
     try {
-      props.showInstallPrompt()
+      if(install) {
+        await props.showInstallPrompt()
+      }
+      let userAuth = await getAuth(user.ws)
+      const plan = await getCoverage(user.ws)
+      const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
+      await getDeliveryInfo(user.ws)
+      dispatch({ type: 'GET_PATIENT', payload: userAuth })
+      dispatch({ type: 'SET_DELIVERY_PARAMS', payload: params })
+      dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+      history.push('/home')
     } catch (err) {
-      props.history.push('/home')
-    } finally {
-      setTimeout(() => props.history.push('/home'), 1000)
+      console.error(err)
     }
   }
+
+  	
+	const getCoverage = async (user) => {
+		// Busco BASIC primero porque es el básico sin ningun permiso
+		let plan = await getDocumentFB('services/porfolio/BASIC/active')
+		let free = await getDocumentFB('services/porfolio/FREE/active')
+		if(plan && free) {
+			plan["onlinedoctor"] = free.onlinedoctor
+		}
+		if (!!user?.coverage && Array.isArray(user?.coverage) && plan) { 
+			// Este else if es el mas importante. 
+			// Un usuario puede tener multiples subscriptions
+			// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
+			user && user.coverage && user.coverage.forEach(async each => {
+				if(each?.plan) {
+					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
+					let coverageTemp = await getDocumentFB(path)
+					for (const service in coverageTemp) {
+						if(coverageTemp[service] === true) {
+							plan.plan[service] = true
+						}
+					}
+				}
+			})
+		}
+		return plan
+	}
+
+  async function getDeliveryInfo(userAuth) {
+		const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
+		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
+		if(userAuth.dni) {
+			let filters =  [{field: 'status', value: ["PREASSIGN", "DEPENDANT", "FREE:IN_RANGE", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.uid', value: userAuth.core_id, comparator: '=='}]
+			await snapDocumentsByFilter('events/requests/delivery', filters, (data) => {
+				dispatch({type: 'CLEAN_DELIVERY', payload: "CLEAN"})
+				dispatch({type: 'SET_DELIVERY_ALL', payload: data})})
+		}
+    }
+
 
   return (
     <div className="welcome-container">
@@ -44,10 +88,6 @@ const Welcome = props => {
         <h2 className="welcome__titleContainer--title">Bienvenido a UMA</h2>
       </div>
       <div className="welcome__textContainer">
-        {/* <p className="welcome__textContainer--paragraph">
-          El registro fue exitoso. Ahora instala la aplicación para comenzar a utilizarla.
-        </p>
-        <br /> */}
         <span className="welcome__textContainer--message">
           Haga click en
           <span onClick={() => props.showInstallPrompt()} className="link">
@@ -59,13 +99,12 @@ const Welcome = props => {
         {install ?
           <div className="btn btn-blue-lg" onClick={() => installAction()}>Instalar</div>
           :
-          <div className="btn btn-blue-lg" onClick={() => props.history.push(`/home/${props.match.params.ws}`)}>Continuar</div>
+          <div className="btn btn-blue-lg" onClick={() => installAction(false)}>Continuar</div>
         }
       </div>
-      {/* <AddToHomescreen onAddToHomescreenClick={() => handleAddToHomescreenClick()} title="Instalar UMA" icon={logo} /> */}
     </section>
     </div>
   );
 };
 
-export default withRouter(Welcome);
+export default Welcome;

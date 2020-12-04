@@ -6,12 +6,10 @@ export const currentPositionHandler = (position) => ({
 });
 
 export const errorHandler = (err) =>
-	swal({
-		title: 'Error',
-		msg: err.message,
-		icon: 'warning',
-		dangerMode: true,
-	});
+	swal('No pudimos detectar tu ubicación', 
+		'No tienes activada la geolocalización, puedes introducir tu dirección manualmente',
+		'warning'
+	);
 
 
 export const handleApiLoaded = (callback) => {

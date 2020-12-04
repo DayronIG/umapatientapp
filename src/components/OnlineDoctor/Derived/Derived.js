@@ -15,7 +15,7 @@ import '../../../styles/whoScreen.scss';
 const WhenScreen = props => {
     const dispatch = useDispatch()
     const token = useSelector(state => state.userActive.token)
-    const { patient = {} } = useSelector(state => state.queries)
+    const user = useSelector(state => state.user)
     const { openDetails } = useSelector(state => state.front)
 
     function makeComplain(type, claim) {
@@ -30,7 +30,7 @@ const WhenScreen = props => {
         })
         .then((res) => {
             if (res === true) {
-                props.history.push(`/${patient.dni}/onlinedoctor/when/`)
+                props.history.push(`/${user.dni}/onlinedoctor/when/`)
             } else {
                 props.history.push('/home')
             }
@@ -40,10 +40,10 @@ const WhenScreen = props => {
     function postComplain(type, claim) {
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': token  }
         let data = {
-            ws: patient.ws,
-            dni: patient.dni,
+            ws: user.ws,
+            dni: user.dni,
             dt: moment().format('YYYY-MM-DD HH:mm:ss'),
-            assignation_id: `derived_${patient.dni}`,
+            assignation_id: `derived_${user.dni}`,
             appointment_path: '',
             type,
             complain: claim
@@ -53,13 +53,13 @@ const WhenScreen = props => {
 
     return (
         <div className='dinamic-template'>
+            <BackButton />
             {openDetails &&
                 <MobileModal title='Enviar un reclamo'>
                     <SendComplain sendComplain={claim => makeComplain('derived-complain', claim)} />
                 </MobileModal>
                 }
                 <div className='dinamic-content-container whoAttention'>
-                    <BackButton />
                     <div className='image-helper'>
                         <img src={ImageFlow} alt='medical' />
                     </div>

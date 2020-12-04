@@ -17,19 +17,20 @@ import '../../styles/deliveryService/selectDestiny.scss';
 const CreateTransportRoute = () => {
 	const dispatch = useDispatch()
 	const { patient } = useSelector(state => state.queries);
+	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
 	const { origin, pointSelector } = useSelector(state => state.transport);
 	const [mapInstance, setMapInstance] = useState(undefined);
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
-	
-	useEffect(() =>{
-		window.gtag('event', 'select_content', {content_type: "CREATE_TRANSPORT_ROUTE_ORIGIN", item: ['CREATE_TRANSPORT_ROUTE_ORIGIN']})
-	},[])
 
 	useEffect(() => {
-		setInitialOriginPoint(patient);
-	}, [patient]);
+		window.gtag('event', 'select_content', { content_type: "CREATE_TRANSPORT_ROUTE_ORIGIN", item: ['CREATE_TRANSPORT_ROUTE_ORIGIN'] })
+	}, [])
+
+	useEffect(() => {
+		setInitialOriginPoint(user);
+	}, [user]);
 
 	const handleApiLoaded = (map, maps) => {
 		if (!map || !maps) return null;

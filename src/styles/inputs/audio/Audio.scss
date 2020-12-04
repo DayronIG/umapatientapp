@@ -1,7 +1,8 @@
 @import '../../index.scss';
 
 .record__trigger--btn {
-  bottom: 0px;
+  position: absolute;
+  left: 10%;
   width: 80%;
   background-color: $primary-color;
   color: $white-color;
@@ -202,7 +203,7 @@
 }
 
 .isModalAnimation{
-  height: 30vh;
+  height: 22vh;
 }
 .isFullscreenAnimation{
   height: 70vh;

@@ -1,16 +1,19 @@
 /* eslint-disable import/no-unresolved */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { GenericHeader } from '../GeneralComponents/Headers';
+import { useHistory } from "react-router-dom";
+import { BackButton } from '../GeneralComponents/Headers';
 import PaymentCardMP from './paymentCardMP';
 import PaymentCardPP from './paymentCardPP';
 import Loader from "../GeneralComponents/Loading"
 
 export default function Payment({finalAction}) {
+    const { ws } = useSelector(state => state.user)
+    const history = useHistory();
     //DESCOMENTAR CUANDO PAYMENT SEA INTERNACIONAL
 
-    // const {lat, lon} = useSelector(state => state.queries.patient)
-    // const { country } = useSelector(state => state.queries.patient)
+    // const {lat, lon} = useSelector(state => state.user)
+    // const { country } = useSelector(state => state.user)
     // const dispatch = useDispatch()
 
     // useEffect(()=>{
@@ -55,9 +58,10 @@ export default function Payment({finalAction}) {
 
     return (
         <div className="payment-container">
-          {/* <GenericHeader children="Contratar Servicio" /> */}
+            {/* <GenericHeader children="Contratar Servicio" /> */}
             {/* {!country && <Loader/>} */}
             {/* {country === "AR"? <PaymentCardMP />: <PaymentCardPP />}  */}
+            <BackButton inlineButton={true} customTarget={ws} action={()=>history.push(`/hisopado/carrito/${ws}`)} />
             <PaymentCardMP />
         </div>
     )

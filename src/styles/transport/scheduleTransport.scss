@@ -11,17 +11,20 @@
 		border-radius: 0.5rem;
 	
 		h5 {
-			text-align: center;
 			color: $uma-primary; 
 			font-weight: 900;
 			font-size: 1.7rem;
 			line-height: 1.8rem;
-			width: 90%;
-			margin: 0 auto 2.2rem;
-
+			margin-bottom: 2rem;
 			@media (max-width: 400px) {
 				font-size: 1.4rem;
 			}
+		}
+		.centeredElements{
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			align-items: center;
 		}
 	
 		.scheduleForm__container--input {

@@ -6,19 +6,21 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
-import swal from "sweetalert"
+import swal from '@sweetalert/with-react'
 import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
+import db from "../../config/DBConnection"
+import mpicon from "../../assets/img/delivery/mp.jpg";
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
-    const {params, current} = useSelector(state => state.deliveryService)
+    const {params, current, deliveryInfo} = useSelector(state => state.deliveryService)
     const history = useHistory();
     const [loader, setLoader] = useState(false)
-    const user = useSelector(state => state.queries.patient);
+    const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
     const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
@@ -30,6 +32,31 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const [allPurchases, setAllPurchases] = useState([])
+
+    const getCurrentService = () => {
+      db.firestore().collection('events/requests/delivery')
+      .where('patient.uid', '==', user.core_id)
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
+      .get()
+      .then(res => {
+        let arr = [];
+          res.forEach(services => {
+              let document = {...services.data(), id: services.id}
+              arr.push(document)
+          })
+
+          setAllPurchases(arr);
+      })
+  }
+
+  useEffect(() => {
+    if(!!user.core_id){getCurrentService()}
+  }, [user])
+
+    useEffect(() => {
+      setTotalPayment(parseInt(hisopadoPrice) * allPurchases.length) 
+    }, [allPurchases, hisopadoPrice])
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
@@ -80,15 +107,16 @@ const PaymentCardMP = () => {
     //     }
     // }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
+        setLoader(true)
         const form = document.getElementsByTagName('form')[0]
-        window.Mercadopago.createToken(form, sdkResponseHandler)
-
+        await window.Mercadopago.createToken(form, sdkResponseHandler)
+        setLoader(false)
     }
 
     function sdkResponseHandler(status, response) {
-      console.log(response)
+      console.log(status, response)
         if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
@@ -106,63 +134,76 @@ const PaymentCardMP = () => {
     }
 
     const postData = useCallback((form, token) => {
+      setLoader(true)
       let { paymentMethodId, email } = form.elements
       let cardId = paymentMethodId.value
       if(paymentMethodId.value === "mastercard" || paymentMethodId.value === "unknown") cardId = "master"
-        setLoader(true)
-        let paymentData = {
-            email: email.value || 'info@uma-health.com',
-            paymentMethodId: cardId, 
-            token: token,
-            dni: `${user.dni}`,
-            fullname: `${user.fullname}`,
-            amount: parseInt(totalPayment),
-            currency: 'ARS',
-            id: current.id,
-            type: 'delivery',
-            coupon
-         }
+      let paymentData = {
+          email: email.value || 'info@uma-health.com',
+          paymentMethodId: cardId, 
+          token: token,
+          dni: `${user.dni}`,
+          uid: `${user.core_id}`,
+          fullname: `${user.fullname}`,
+          amount: parseInt(totalPayment) || 3499,
+          currency: 'ARS',
+          id: current.id,
+          type: 'delivery',
+          coupon
+          // mpaccount: 'sandbox'
+        }
          
-         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-         .then(res => console.log(res))
-         .catch(err => console.log(err))
-         axios.post(payment_url, paymentData, {headers})
-             .then(res => {
-                setLoader(false)
-                 if (res.data.body.status === "approved") {
-                    window.gtag('event', 'purchase', {
-                      'affiliation': user?.corporate_norm,
-                      'coupon': '1',
-                      'currency': 'ARS',
-                      'items': 'Hisopado Antígeno',
-                      'transaction_id': current.id,
-                      'value': totalPayment
-                      });
-                      window.gtag('event', 'conversion', {
-                        'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
-                        'transaction_id': current.id
-                      });
-                     setStatus("approved")
-                } else if (res.data.body.status === "rejected") {
-                  window.gtag('event', 'payment_failed', {
-                    'event_category' : 'warning',
-                    'event_label' : 'hisopado_payment'
-                  });
-                  setStatusDetail(res.data.body.status_detail)
-                  setStatus(res.data.body.status)
-                     // alert(res.data.body.status)
-                }
-            })
-            .catch(err => {
+        let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
+        axios.post(payment_url, paymentData, {headers})
+            .then(res => {
               setLoader(false)
-              if(paymentMethodId.value === "unknown"){ 
-                swal("Verifique el número de tarjeta ingresado", "" ,"warning")
-              } else {
-                swal("No se ha podido procesar el pago", "Intente nuevamente" ,"error")
+                if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
+                  window.gtag('event', 'purchase', {
+                    'transaction_id': current.id,
+                    'affiliation': user?.corporate_norm,
+                    'value': parseInt(totalPayment) || 3499,
+                    'coupon': '1',
+                    'currency': 'ARS',
+                    'items': [{
+                      "id": 'Hisopado Antígeno',
+                      "name": 'Hisopado Antígeno',
+                      "price": parseInt(totalPayment) || 3499
+                    }],
+                    });
+                    window.gtag('event', 'conversion', {
+                      'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
+                      'transaction_id': current.id
+                    });
+                    setStatus("approved")
+                } else if (res.data.body.status === "free") {
+                  setStatus("approved")
+                } else if (res.data.body.status === "rejected") {
+                window.gtag('event', 'payment_failed', {
+                  'event_category' : 'warning',
+                  'event_label' : 'hisopado_payment'
+                });
+                setStatusDetail(res.data.body.status_detail)
+                setStatus(res.data.body.status)
+                    // alert(res.data.body.status)
               }
-              window.Mercadopago.clearSession();
-            })
+          })
+          .catch(err => {
+            setLoader(false)
+            console.error(err)
+            window.gtag('event', 'payment_failed', {
+              'event_category' : 'warning',
+              'event_label' : 'hisopado_payment'
+            });
+            if(paymentMethodId.value === "unknown"){ 
+              swal("Verifique el número de tarjeta ingresado", "" ,"warning")
+            } else {
+              swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
+            }
+            window.Mercadopago.clearSession();
+          })
+          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+          .then(res => console.log("Ok"))
+          .catch(err => console.log(err))
   }, [coupon])
 
     const expirationYearCheck = (year) => {
@@ -182,8 +223,8 @@ const PaymentCardMP = () => {
           console.log("Payment success")
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
-            // swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
-            // .then(()=> history.push("/"))
+          swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
+            .then(()=> history.push(`/hisopado/listTracker/${user.ws}`))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
             switch(statusDetail){
               case("cc_rejected_insufficient_amount"):
@@ -231,12 +272,33 @@ const PaymentCardMP = () => {
     
       const handleChange = e => {
         if(e.target){const { name, value } = e.target;
-        setState({ ...state, [name]: value });}
+        setState({ ...state, [name]: value?.trim() });}
       }
     
       const properties = {
         placeholders: { name: 'Tu nombre aquí' },
         locale: { valid: 'válido hasta' }
+      }
+
+      function mercadoPagoButton() {
+        swal({
+          buttons: {
+            cancel: "Cerrar",
+          },
+          content: (
+          <div>
+            <img src={mpicon} alt="mercadopago" style={{width: '100%'}} />
+            Si no cuentas con tarjeta de crédito o tu pago es rechazado puedes abonar con MercadoPago.<br />
+            Una vez realizado debes informar el pago a info@uma-health.com con el número de operación o comprobante. <br />
+            <a href="https://mpago.la/1VhVvc2" 
+              className="btn" style={{background: '#02b1ec', color: '#fff'}} 
+              target="_blank"
+              rel="noopener noreferrer">
+                Pagar con MercadoPago
+            </a>
+          </div>
+          )
+        })
       }
     
       return (
@@ -244,7 +306,9 @@ const PaymentCardMP = () => {
           {loader && <CustomUmaLoader />}        
           {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
-            {/* <p className="titulo-card">Servicio a Pagar</p> */}
+            <p className="titulo-card" onClick={mercadoPagoButton}>
+              Para pagar por MercadoPago click aquí.
+            </p>
             <Cards
               cvc={cvc}
               expiry={expiry}
@@ -283,7 +347,7 @@ const PaymentCardMP = () => {
               <small>Email</small>
               <input
                 autoComplete="on"
-                type="text"
+                type="email"
                 name="email"
                 placeholder="nombre@email.com"
                 id="email"
@@ -313,7 +377,7 @@ const PaymentCardMP = () => {
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
                 <input 
                 autoComplete="off"
-                type="text" id="docNumber" defaultValue={user.dni.length <= 8? user.dni: "12345678"}
+                type="text" id="docNumber" defaultValue={user?.dni?.length <= 8? user.dni: "12345678"}
                     data-checkout="docNumber" style={{ display: 'none' }}
                     />
                 </div>
@@ -354,19 +418,19 @@ const PaymentCardMP = () => {
               <div className="formulario-item last__input">
                 <small>Código de descuento</small>
                 <input
-                autoComplete="off"
-                  id="discount" data-checkout="discount"
-                  type="text"
-                  className=""
-                  name="discount"
-                  placeholder="CÓDIGO"
-                  onChange={
-                    (e) => {
-                      validateDiscount(e)
-                      handleChange(e)
+                    autoComplete="off"
+                    id="discount" data-checkout="discount"
+                    type="text"
+                    className=""
+                    name="discount"
+                    placeholder="CÓDIGO"
+                    onChange={
+                      (e) => {
+                        validateDiscount(e)
+                        handleChange(e)
+                      }
                     }
-                  }
-                  onFocus={handleFocus}
+                    onFocus={handleFocus}
                 />
               </div>
               <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
