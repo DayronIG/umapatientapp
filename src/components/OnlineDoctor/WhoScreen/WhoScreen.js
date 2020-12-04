@@ -54,7 +54,7 @@ const WhenScreen = (props) => {
 	useEffect(() => {
 		if (user.dni) {
 			getUserParentsFirebase(user.dni)
-				.then(function(userParents) {
+				.then(function (userParents) {
 					setParents(userParents);
 				})
 				.catch(() => setParents([]));
@@ -82,18 +82,18 @@ const WhenScreen = (props) => {
 		// Busco BASIC primero porque es el básico sin ningun permiso
 		let plan = await getDocumentFB('services/porfolio/BASIC/active')
 		let free = await getDocumentFB('services/porfolio/FREE/active')
-		if(plan && free) {
+		if (plan && free) {
 			plan["onlinedoctor"] = free.onlinedoctor
 		}
-		if (!!coverage && Array.isArray(coverage)) { 
+		if (!!coverage && Array.isArray(coverage)) {
 			coverage && await Promise.all(coverage.map(async each => {
 				console.log(each)
-				if(each?.plan) {
+				if (each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
 					let coverageTemp = await getDocumentFB(path)
-					if(coverageTemp && coverageTemp.plan) {
+					if (coverageTemp && coverageTemp.plan) {
 						for (const service in coverageTemp.plan) {
-							if(coverageTemp.plan[service] === true) {
+							if (coverageTemp.plan[service] === true) {
 								plan.plan[service] = true
 							}
 						}
@@ -101,8 +101,7 @@ const WhenScreen = (props) => {
 				}
 			}))
 		}
-		console.log(plan)
-		dispatch({type: 'SET_PLAN_DATA', payload: plan })
+		dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 		return plan
 	}
 
@@ -114,13 +113,13 @@ const WhenScreen = (props) => {
 			{registerParent ? (
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
-				<div className='dinamic-content-container whoAttention'>
-					<div className='when-question'>¿Para quién desea la atención?</div>
-					<div className='image-helper'>
-						<img src={ImageFlow} alt='medical' />
+					<div className='dinamic-content-container whoAttention'>
+						<div className='when-question'>¿Para quién desea la atención?</div>
+						<div className='image-helper'>
+							<img src={ImageFlow} alt='medical' />
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
 					<div className='btn btn-blue-lg' onClick={() => selectWho(user)} id="att_especislista_select_me">

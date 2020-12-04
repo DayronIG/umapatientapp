@@ -1,36 +1,49 @@
-
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import FooterBtn from '../GeneralComponents/FooterBtn';
-import { att_history } from '../../config/endpoints';
-import Cab from '../../assets/icons/taxi.png';
-import moment from 'moment';
+import { att_history, cancel_tramo, reclamo_tramo } from '../../config/endpoints';
+import moment from 'moment-timezone';
+import { FaChevronDown, FaChevronUp, FaCalendarAlt, FaClock, FaCar, FaRegTrashAlt, FaRegHandPaper } from 'react-icons/fa';
+import Car from '../../assets/car.svg';
+import { renderStatus, optionsReclamos } from '../Utils/transportUtils';
+import { Loader } from '../GeneralComponents/Loading';
+import swal from 'sweetalert';
 import '../../styles/generalcomponents/TransportUserActive.scss';
-
 const TransportUserActive = () => {
+	const [reclamoModal, setReclamoModal] = useState(false)
+	const [cancelModal, setCancelModal] = useState(false)
+	const { date_filter } = useSelector(state => state.transport);
 	const toogleModal = useSelector((state) => state.front.openDetails);
 	const user = useSelector(state => state.user)
 	const getCancelComment = useSelector((state) => state.userActive.cancelTripComments);
 	const [displayLoading, setDisplayLoading] = useState(false);
 	const [openTravel, setOpenTravel] = useState({});
+	const [openApprovedServices, setOpenApprovedServices] = useState(false);
+	const [openPendingServices, setOpenPendingServices] = useState(false);
+	const [openAll, setOpenAll] = useState(true);
 	const [pendingServices, setPendingServices] = useState([]);
 	const [approvedServices, setApprovedServices] = useState([]);
+	const [allServices, setAllServices] = useState([])
 	const [selectedService, setSelectedService] = useState({});
+	const [noDriver, setNoDriver] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	useEffect(() => {
+		window.gtag('event', 'select_content', { content_type: "DISPLAY_TRIPS", item: ['DISPLAY_TRIPS'] })
+	}, [])
+
+	useEffect(() => {
 		getServices();
-	}, [user]);
+	}, [user, date_filter]);
 
 	async function getServices() {
-		if(!user?.dni) return null;
+		if (!user?.dni) return null;
 		dispatch({ type: 'LOADING', payload: true });
 		try {
-			const response = await Axios.post(
+			let { data } = await Axios.post(
 				att_history,
 				{
 					ws: user.ws,
@@ -40,9 +53,28 @@ const TransportUserActive = () => {
 				{
 					headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ }
 				}
-			)
-			setApprovedServices(response.data.filter(item => item.autorizado));
-			setPendingServices(response.data.filter(item => !item.autorizado));
+			);
+			data.sort((a, b) => {
+				if (`${a.fecha.replace(/-/g, '')}${a.hora.replace(/:/g, '')}` > `${b.fecha.replace(/-/g, '')}${b.hora.replace(/:/g, '')}`) return 1
+				else return -1
+			})
+			data = data.filter((el) => el.status_tramo !== 'CANCEL')
+			let appservicesTemp;
+			let pendServicesTemp;
+
+			if (date_filter) {
+				let date = moment(date_filter).format('YYYY-MM-DD')
+				let allFiltered = data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
+				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED' && item.fecha === date);
+				pendServicesTemp = data.filter(item => (item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN') && item.fecha === date);
+				setAllServices(allFiltered)
+			} else {
+				appservicesTemp = data.filter(item => item.status_traslado === 'AUTHORIZED');
+				pendServicesTemp = data.filter(item => item.status_traslado === 'FREE' || item.status_traslado === 'ASSIGN');
+				setAllServices(data)
+			}
+			setApprovedServices(appservicesTemp);
+			setPendingServices(pendServicesTemp);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -50,153 +82,378 @@ const TransportUserActive = () => {
 		}
 	}
 
-	function cancelTrip(e) {
+	async function cancelTrip(e) {
 		e.preventDefault();
+		if (getCancelComment === '') {
+			return alert('Ingrese el motivo de cancelación');
+		}
+		console.log(selectedService);
 		setDisplayLoading(true);
-		Axios.post('https://uma-v2.appspot.com/cancel_tramo', {
-			dni: user.dni,
-			fecha_viaje: moment(selectedService.fecha).format('YYYY-MM-DD'),
-			dt: moment(selectedService.fecha).format('YYYY-MM-DD HH:mm:ss'),
-			assignation_id: selectedService.assignation_id,
-			motivo: getCancelComment || '-',
-			corporate: user.corporate_norm
-		}).then(function (response) {
-			getServices();
-			dispatch({ type: 'TOGGLE_DETAIL' });
-		}).catch(function (error) {
-			console.log(error);
-		}).finally(function()  {
-			setDisplayLoading(false);
-			setSelectedService({});
-		});
+		try {
+			await Axios.post(cancel_tramo, {
+				dni: user.dni,
+				tramo_id: selectedService.assignation_id,
+				date: selectedService.fecha,
+				corporate: user.corporate_norm.toUpperCase(),
+				details: getCancelComment,
+				traslado_id: selectedService.request_id
+			}, {
+				headers: {
+					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
+				}
+			});
+			await swal('Éxito!', 'Viaje cancelado', 'success')
+			setDisplayLoading(false)
+			setCancelModal(false)
+			getServices()
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
-	function displayModal(item) {
-		setSelectedService(item)
-		dispatch({ type: 'TOGGLE_DETAIL' });
+	async function sendReclamo(e) {
+		e.preventDefault();
+		if (getCancelComment === '' || getCancelComment === '-') {
+			return alert('Ingrese el motivo del reclamo');
+		}
+		setDisplayLoading(true);
+		try {
+			await Axios.post(reclamo_tramo, {
+				dni: user.dni,
+				tramo_id: selectedService.assignation_id,
+				date: selectedService.fecha,
+				corporate: user.corporate_norm.toUpperCase(),
+				details: getCancelComment,
+				traslado_id: selectedService.request_id
+			}, {
+				headers: {
+					'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */
+				}
+			});
+			await swal('Éxito!', 'Reclamo registrado', 'success')
+			setDisplayLoading(false)
+			setReclamoModal(false)
+			getServices()
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
-	// 'autorizado': false,
-	// 'request.time_reference': document['request']['time_reference'],
-
+	function displayModal(item, type) {
+		setSelectedService(item);
+		if (type === 'cancel') {
+			setCancelModal(true)
+		} else if (type === 'reclamo') {
+			setReclamoModal(true)
+		}
+	}
 	return (
-		<div className="transportList">
-			{toogleModal &&
-				<MobileModal title="Cancelar viaje">
-					<textarea
-						className="form-control comments"
-						placeholder="Ingrese el motivo de cancelación"
+		<div className='transportList'>
+			{cancelModal &&
+				<MobileModal callback={() => setCancelModal(false)} title='Cancelar viaje'>
+					<h6>Seleccione el motivo de la cancelación</h6>
+					<select
+						className='form-control'
 						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
-					/>
-					<div className="buttonContainer">
+					>
+						{optionsReclamos.map((op) => <option value={op} >{op}</option>)}
+					</select>
+					{getCancelComment === 'Otro' && (
+						<textarea
+							className='form-control comments'
+							onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+							placeholder='ingrese motivo de la cancelación'
+						/>
+					)}
+					<div className='d-flex align-items-center buttonContainer'>
 						<button
-							className="cancelReason"
-							onClick={cancelTrip}>
-							{displayLoading &&
-								<div className="loading spinner-border text-info" role="initial">
-									<span className="sr-only">Loading...</span>
-								</div>
-							}
-							Cancelar viaje
+							className='cancelReason'
+							onClick={cancelTrip}
+						>
+							Confirmar
 						</button>
+						{displayLoading && <Loader />}
 					</div>
 				</MobileModal>
 			}
-			{approvedServices.length > 0 || pendingServices.length > 0 ?
-				<>
-				{approvedServices.length > 0 && 
-					<div>
-						<h5>Viajes aprobados:</h5>
-						<ul>
-							{approvedServices
-								.map((item, index) => (
-										<li key={index}>
-											<div className="titleContainer d-flex">
-												<div className="transportTitle">
-													<div>{item.fecha} - {item.hora} hs.</div>
-													<div><span>Conductor:</span></div>
-													<div>{item.provider_fullname ? item.provider_fullname : 'Sin conductor asignado.' }</div>
-												</div>
-												<div className="openContent">
-													{openTravel.assignation_id === item.assignation_id ?
-														<button onClick={() => setOpenTravel({})}> - </button> :
-														<button onClick={() => setOpenTravel(item)}> + </button>
-													}
-												</div>
-											</div>
-											{openTravel.assignation_id === item.assignation_id &&
-												<div className="contentContainer">
-													<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
-													<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-													<button className="checkStatus" onClick={() => history.push(`/${user.dni}/transportDetails/${item.assignation_id}`)}>
-														Estado del Viaje
-													</button>
-													<button className="cancelBtn" onClick={() => displayModal(item)}>
-														Cancelar Viaje
-													</button>
-												</div> 
-											}
-										</li>
-								))}
-							</ul>
-						</div>
-					}
-					{pendingServices.length > 0 &&
-						<div>
-							<h5>Pendientes de aprobación:</h5>
-							<ul>
-								{pendingServices 
-									.map((item, index) => (
-											<li key={index}>
-												<div className="titleContainer d-flex">
-													<div className="transportTitle">
-														<div>{item.fecha} - {item.hora} hs.</div>
-														<div><span>Conductor:</span></div>
-														<div>{item.provider_fullname ? item.provider_fullname : 'Sin conductor asignado.' }</div>
-													</div>
-													<div className="openContent">
-														{openTravel.assignation_id === item.assignation_id ?
-															<button onClick={() => setOpenTravel({})}> - </button> :
-															<button onClick={() => setOpenTravel(item)}> + </button>
-														}
-													</div>
-												</div>
-												{openTravel.assignation_id === item.assignation_id &&
-													<div className="contentContainer">
-														<div className="origin"><span>Origen:</span> {item.geo_inicio_address}</div>
-														<div className="destiny"><span>Destino:</span> {item.geo_fin_address}</div>
-														<button className="checkStatus" onClick={() => history.push(`/${user.dni}/transportDetails/${item.assignation_id}`)}>
-															Estado del Viaje
-														</button>
-														<button className="cancelBtn" onClick={() => displayModal(item)}>
-															Cancelar Viaje
-														</button>
-													</div>
-												}
-											</li>
-									))}
-							</ul>
-						</div>
-					}
-				</>
-				:
-				<div className="noTransfers">
-					<div className="noTransfers__container">
-						<img src={Cab} alt="cab" />
+			{reclamoModal && (
+				<MobileModal callback={() => setReclamoModal(false)} title='Reclamo'>
+					<h6>Seleccione el motivo del reclamo</h6>
+					<select
+						className='form-control'
+						onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+					>
+						{optionsReclamos.map((op) => <option value={op} >{op}</option>)}
+					</select>
+					{getCancelComment === 'Otro' && (
+						<textarea
+							className='form-control'
+							onChange={(e) => dispatch({ type: 'CANCEL_TRIP_COMMENTS', payload: e.target.value })}
+							placeholder='ingrese motivo del reclamo'
+						/>
+					)}
+					<div className='d-flex align-items-center buttonContainer'>
+						<button
+							className='cancelReason'
+							onClick={sendReclamo}
+						>
+							Confirmar
+						</button>
+						{displayLoading && <Loader />}
 					</div>
-					<div className="noTransfers__container">
-						<h3 className="trasladoTitle">Traslados</h3>
-						<h4 className="noTransfers__container--title">
-							Actualmente no tiene ningún traslado solicitado.
-						</h4>
-					</div>
-					<FooterBtn
-						text='Volver'
-						callback={() => history.push('/home')}
-					/>
+				</MobileModal>
+			)}
+			<div className='buttonDisplay'>
+				<button className={openAll === true ? 'active' : ''}
+					onClick={function () {
+						setOpenAll(true)
+						setOpenApprovedServices(false)
+						setOpenPendingServices(false)
+					}}>
+					Todos
+				</button>
+				<button className={openApprovedServices === true ? 'active' : ''}
+					onClick={function () {
+						setOpenApprovedServices(true)
+						setOpenPendingServices(false)
+						setOpenAll(false)
+					}}
+				>
+					Aprobados
+				</button>
+				<button
+					className={openPendingServices === true ? 'active' : ''}
+					onClick={function () {
+						setOpenPendingServices(true)
+						setOpenApprovedServices(false)
+						setOpenAll(false)
+					}}>
+					Pendientes
+				</button>
+			</div>
+			{/* SIN TRASLADOS */}
+			{pendingServices.length == 0 && approvedServices.length == 0 &&
+				<div className='noTranslates'>
+					<img className='carImage' src={Car}></img>
+					<h2>Aún no tienes ningún traslado</h2>
+					<p>Programa un nuevo traslado tocando el boton '+'.</p>
 				</div>
 			}
-		</div>
+			{/* TRASLADOS PENDIENTES */}
+			{openPendingServices ?
+				<div>
+					<ul className="transportList">
+						{pendingServices
+							.map((item, index) => (
+								<li key={index}>
+									<div className="transportContainer d-flex  align-items-center">
+										<div className="transportTime">
+											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
+											<div><FaClock /> {item.hora}hs.</div>
+										</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
+										</div>
+									</div>
+									{
+										openTravel.assignation_id !== item.assignation_id &&
+										<div className="openContent">
+											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
+										</div>
+									}
+									{openTravel.assignation_id === item.assignation_id &&
+										<>
+											<div className="contentContainer">
+												<div className="origin"><p className="originTitle">Origen:</p>
+													<p className="originContent"> {item.geo_inicio_address}</p></div>
+												<div className="destiny"><p className="destinyTitle">Destino:</p>
+													<p className="destinyContent"> {item.geo_fin_address}</p></div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
+												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+													<FaCar /> Seguir recorrido
+												</button>
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+												</button> */}
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
+													<FaRegTrashAlt /> Cancelar Viaje
+												</button>
+											</div>
+											{
+												openTravel.assignation_id === item.assignation_id &&
+												<div className="openContent">
+													<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
+												</div>
+											}
+										</>
+									}
+								</li>
+							))}
+					</ul>
+				</div>
+				: null}
+			{openApprovedServices ?
+				<div>
+					<ul className="transportList">
+						{approvedServices
+							.map((item, index) => (
+								<li key={index}>
+									<div className="transportContainer d-flex  align-items-center">
+										<div className="transportTime">
+											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
+											<div><FaClock /> {item.hora}hs.</div>
+										</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
+										</div>
+									</div>
+									{openTravel.assignation_id !== item.assignation_id &&
+										<div className="openContent">
+											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
+										</div>
+									}
+									{openTravel.assignation_id === item.assignation_id &&
+										<>
+											<div className="contentContainer">
+												<div className="origin"><p className="originTitle">Origen:</p>
+													<p className="originContent"> {item.geo_inicio_address}</p></div>
+												<div className="destiny"><p className="destinyTitle">Destino:</p>
+													<p className="destinyContent"> {item.geo_fin_address}</p></div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
+												<button className="checkStatus" onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+													<FaCar /> Seguir recorrido
+												</button>
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+												</button> */}
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
+													<FaRegTrashAlt /> Cancelar Viaje
+												</button>
+											</div>
+											{
+												openTravel.assignation_id === item.assignation_id &&
+												<div className="openContent">
+													<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
+												</div>
+											}
+										</>
+									}
+								</li>
+							))}
+					</ul>
+				</div>
+				: null}
+
+			{openAll ?
+				<div>
+					<ul className="transportList">
+						{allServices
+							.map((item, index) => (
+								<li key={index}>
+									<div className="transportContainer d-flex  align-items-center">
+										<div className="transportTime">
+											<div><FaCalendarAlt /> {moment(item.fecha).format('DD-MMM')}</div>
+											<div><FaClock /> {item.hora}hs.</div>
+										</div>
+										<div className='transportDriver'><div>Conductor: {item.provider_fullname ? item.provider_fullname : 'Sin asignar'}</div>
+											<div>Estado: {renderStatus(item.status_traslado)}</div>
+										</div>
+									</div>
+									{openTravel.assignation_id !== item.assignation_id &&
+										<div className="openContent">
+											<button onClick={() => setOpenTravel(item)}>Detalles <FaChevronDown /></button>
+										</div>
+									}
+									{openTravel.assignation_id === item.assignation_id &&
+										<>
+											<div className="contentContainer">
+												<div className="origin">
+													<p className="originTitle">Origen:</p>
+													<p className="originContent">{item.geo_inicio_address}</p>
+												</div>
+												<div className="destiny">
+													<p className="destinyTitle">Destino:</p>
+													<p className="destinyContent">{item.geo_fin_address}</p>
+												</div>
+												<div className="destiny">
+													<p className="destinyTitle">Detalles del vehículo:</p>
+													{item?.vehicle ? (
+														<>
+															<p className='destinyContent'>Modelo: {item?.vehicle?.model || '-'}</p>
+															<p className='destinyContent'>Patente: {item?.vehicle?.patente || '-'}</p>
+															<p className='destinyContent'>Color: {item?.vehicle?.color_vehiculo || '-'}</p>
+															<p className='destinyContent'>Año: {item?.vehicle?.fecha_vehiculo || '-'}</p>
+
+
+														</>
+													) : (
+															<>
+																<p className='destinyContent'>{'No hay datos'}</p>
+															</>
+
+														)}
+												</div>
+												<button
+													className="checkStatus"
+													onClick={() => history.push(`/transportDetails/${item.fecha}/${item.assignation_id}`)}>
+													<FaCar /> Seguir recorrido
+													</button>
+												{/* <button className='checkStatus' onClick={() => displayModal(item, 'reclamo')} >
+													<FaRegHandPaper /> Hacer un reclamo
+													</button> */}
+												<button className="cancelBtn" onClick={() => displayModal(item, 'cancel')}>
+													<FaRegTrashAlt /> Cancelar Viaje
+													</button>
+											</div>
+											{
+												openTravel.assignation_id === item.assignation_id &&
+												<div className="openContent">
+													<button onClick={() => setOpenTravel({})}>Detalles <FaChevronUp /></button>
+												</div>
+											}
+										</>
+									}
+								</li>
+							))}
+					</ul>
+				</div>
+				: null
+			}
+		</div >
 	)
 }
 

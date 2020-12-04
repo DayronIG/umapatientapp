@@ -15,8 +15,8 @@ const RegisterDependant = props => {
   const user = useSelector(state => state.user);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
-  const [dependant, setDependant] = useState({document: '', fullname: '', day: '', month: '', year: '', sex: '', cobertura: ''})
-  const { dni,  day, month,
+  const [dependant, setDependant] = useState({ document: '', fullname: '', day: '', month: '', year: '', sex: '', cobertura: '' })
+  const { dni, day, month,
     year, sex, address, piso, fullname } = useSelector(state => state.user);
   const monthRef = useRef();
   const yearRef = useRef();
@@ -28,20 +28,20 @@ const RegisterDependant = props => {
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
     let dob = `${year}-${month}-${day}`;
     let data = {
-      address: address || "", 
+      address: address || "",
       corporate: dependant.cobertura || "",
       dni: dependant.document || "",
-      core_id: user.core_id|| "",
+      core_id: user.core_id || "",
       dob: dependant.dob || "",
       dt: date || "",
-      fullname:  dependant.fullname || "",
+      fullname: dependant.fullname || "",
       group: user.dni || "",
-      piso: piso || "", 
-      sex:  dependant.sex || "",
+      piso: piso || "",
+      sex: dependant.sex || "",
       ws: user.ws || "",
     }
     axios
-      .post(`${node_patient}/dependant`, {dependant: data})
+      .post(`${node_patient}/dependant`, { dependant: data })
       .then(res => {
         if (props.redirectToConsultory === 'true') {
           history.replace(`/${dni}/appointmentsonline/`)
@@ -101,17 +101,17 @@ const RegisterDependant = props => {
       <form className="registerWrapper register-form" onSubmit={e => handleSignUp(e, dependant)}>
         <div className="registerContainerProps">
           <label className='form-label' htmlFor='name'>
-              Nombre y apellido
+            Nombre y apellido
           </label>
           <input className="form-input" id="name" placeholder="Nombre y apellido" required type="text"
             onChange={e => setDependant({ ...dependant, fullname: e.target.value })} value={dependant.fullname} />
           <label className='form-label' htmlFor='dni'>
-              Identificación, cédula o DNI
+            Identificación, cédula o DNI
           </label>
           <input
-              className='form-input' id='dni' placeholder='e.g. 34111111'
-              onChange={e => handleDni(e.target.value)} value={dependant.dni} required />
-         <div className="d-flex justify-content-start">
+            className='form-input' id='dni' placeholder='e.g. 34111111' autoComplete='on'
+            onChange={e => handleDni(e.target.value)} value={dni} required />
+          <div className="d-flex justify-content-start">
             <div className="birthContainer w-50">
               <label className="form-label birthLabel" htmlFor="bday">
                 Fecha de nacimiento

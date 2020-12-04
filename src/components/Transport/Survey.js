@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Axios from 'axios';
-import Moment from 'moment';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import StarRatings from 'react-star-ratings';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
@@ -44,7 +43,7 @@ const SurveyComponent = (props) => {
 	}
 
 	function backToTransports() {
-		props.history.push("/" + props.match.params.ws);
+		props.history.push(`/${props.match.params.ws}/transportUserActive`);
 	}
 
 	return (
@@ -56,9 +55,9 @@ const SurveyComponent = (props) => {
 					<div className="buttonContainer">
 						<button
 							className="btn btn-active buttonSuccess"
-							onClick={() => backToTransports()}>
+							onClick={backToTransports}>
 							Volver a listado de traslados
-                        </button>
+						</button>
 					</div>
 				</MobileModal>
 			}

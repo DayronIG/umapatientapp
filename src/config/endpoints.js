@@ -8,7 +8,7 @@ const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
 const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
-export const config = { headers: { 'Content-Type': 'application/json' , 'Authorization': localStorage.getItem('Notification_Token')  } }
+export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') } }
 
 export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
 export const log_event = `${EVENTS}/events`;
@@ -64,17 +64,17 @@ export const get_provider = `${NODE_SERVER}/providers`;
 // Transport
 export const att_history = `${NODE_SERVER}/transportistas/v1/att_history`;
 export const create_traslado = `${NODE_SERVER}/transportistas/v1/create_traslado`;
-export const transport_register = `${NODE_DEV}/transportistas/v1/user_traslados_app`;
-export const check_exist = `${NODE_DEV}/transportistas/v1/check_exist`;
+export const change_status_traslado = `${NODE_SERVER}/transportistas/v1/changeStatusTraslado`;
+export const cancel_tramo = `${NODE_SERVER}/transportistas/v1/cancel_tramo`;
+export const reclamo_tramo = `${NODE_SERVER}/transportistas/v1/reclamo_tramo`;
+export const transport_register = `${NODE_SERVER}/transportistas/v1/user_traslados_app`;
+export const check_exist = `${NODE_SERVER}/transportistas/v1/check_exist`;
+export const transport_feedback = `${NODE_SERVER}/transportistas/v1/feedback`;
 export const transportFormCompleted = `${URN_UMA}/check_exist`;
-
-
 // Feedback
 export const user_feedback = `${NODE_SERVER}/feedback`;
-
 // Delivery
 export const create_delivery = `${NODE_SERVER}/delivery`
 export const mobility_address = `${NODE_SERVER}/delivery/mobility_address`;
-
 // Biomarkers
 export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;

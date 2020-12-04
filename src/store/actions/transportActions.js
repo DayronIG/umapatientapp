@@ -65,6 +65,15 @@ export const handleHasReturn = (value) => ({
 	payload: value
 })
 
+export const handleHasOrigin = (value) => ({
+	type: transportTypes.HANDLE_ORIGIN,
+	payload: value
+})
+
+export const handleReset = (value) => ({
+	type: transportTypes.HANDLE_RESET
+})
+
 export const setInitialOriginPoint = (patient = {}) => {
 	const pointData = {
 		lat: patient.lat,
@@ -95,17 +104,19 @@ export const handleInputs = (pointSelector) => ({ target = {} }) => {
 }
 
 export const createTransportSchedule = async (transportData, patient) => {
-	const travelMetaData = await calculateDistance(transportData);
-	const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
+
 	try {
+		const travelMetaData = await calculateDistance(transportData);
+		const { distance = {}, duration = {} } = travelMetaData.routes?.[0]?.legs?.[0];
+
 		const data = {
 			id_solicitud: genTransportId(patient),
-			autorizado: '0',
 			corporate: patient.corporate_norm,
+			createdBy: patient.fullname,
 			dependencia: '0',
 			descrip: '0-PROGRAMADO',
 			dni: patient.dni,
-			eta_tramo: duration.text , // buscar en portal.
+			eta_tramo: duration.text, // buscar en portal.
 			km_tramo: distance.text, // buscar en portal.
 			f_inicio: transportData.start_date,
 			f_fin: transportData.end_date,
@@ -128,18 +139,20 @@ export const createTransportSchedule = async (transportData, patient) => {
 			retorno_tramo: `${Number(transportData.hasReturn)}`,
 			sheet: buildSheet(transportData.startSchedules),
 			time_reference: transportData.timeReference.toUpperCase(),
-			tipo_asignacion: 'manual'
+			tipo_asignacion: 'manual',
+			createdBy: `PACIENTE: ${patient.fullname || '-'}, DNI: ${patient.dni || '-'}`
 		}
-		return await Axios.post(create_traslado, data);
+		await Axios.post(create_traslado, data);
+		dispatch(handleReset());
+		return true;
 	} catch (error) {
-		console.error(error);
-		throw new Error(error.message || error);
+		throw error;
 	}
 }
 
-export const getTransportService = (incidente_id, dni) => {
+export const getTransportService = ({ corporate, date, assignation_id }) => {
 	try {
-		const query = firestore.doc(`/events/requests/${dni}/${incidente_id}`);
+		const query = firestore.doc(`/assignations/${date}/${corporate}/${assignation_id}`);
 		const unsubscribe = query.onSnapshot(doc => {
 			const service = doc.data();
 			dispatch(handleTransportService(service));
@@ -147,6 +160,7 @@ export const getTransportService = (incidente_id, dni) => {
 		return unsubscribe;
 	} catch (error) {
 		console.error(error);
+		throw error;
 	}
 }
 
@@ -157,4 +171,5 @@ export const setEndDate = ({ target: { value } }) => dispatch(handleEndDate(valu
 export const setNotes = ({ target: { value } }) => dispatch(handleNotes(value));
 export const setTimeReference = ({ target: { value } }) => dispatch(handleTimeReference(value));
 export const setNextPoint = () => dispatch(handlePointSelector());
-export const setHasReturn = (e) => dispatch(handleHasReturn(e.target.checked));
+export const setHasReturn = (value) => dispatch(handleHasReturn(!value));
+export const setHasOrigin = (value) => dispatch(handleHasOrigin(!value));

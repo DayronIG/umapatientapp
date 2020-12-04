@@ -33,6 +33,8 @@ import TransportUserActive from './components/Transport/TransportUserActive';
 import CreateTransportRouteView from './views/CreateTransportRouteView';
 import ScheduleTransportView from './views/ScheduleTransportView';
 import TransportDetailsView from './views/TransportDetailsView';
+import TransportNoDriver from './components/Transport/TransportNoDriver';
+import ScheduledTransportSuccess from './components/Transport/ScheduledTransportSuccess.jsx';
 // Appointments Online
 import OnlineSpecialist from './components/AppointmentsOnline/';
 import ListSpecialties from './components/AppointmentsOnline/ListSpecialties';
@@ -62,8 +64,6 @@ import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart
 import Referred from "./components/DeliveryService/Referred"
 import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
-import 'bootstrap/dist/css/bootstrap.css';
-import './styles/index.scss';
 import Install from './views/Install.js';
 import RegisterSuccess from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
@@ -72,6 +72,9 @@ import Payment from "./components/Payment"
 import DeliveryChat from "./components/DeliveryService/DeliveryChat"
 
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
+import TransportRating from './components/Transport/TransportRating.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/index.scss';
 
 function App(props) {
 	return (
@@ -134,7 +137,10 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
 				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
 				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
-				<PrivateRoute exact path='/:dni/transportDetails/:incidente_id' component={TransportDetailsView} />
+				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
+				<PrivateRoute exact path='/:ws/scheduledTransportSuccess' component={ScheduledTransportSuccess} />
+				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
+				<PrivateRoute exact path='/:ws/transportRating/:assignation_id' component={TransportRating} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
 				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />

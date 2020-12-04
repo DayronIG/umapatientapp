@@ -29,19 +29,25 @@ export const handleApiLoaded = (callback) => {
 
 export const routeDrawer = (mapsApi, directionsService, directionsDisplay) => (origin, destiny) => {
 	return new Promise((resolve, reject) => {
+		console.log(origin, destiny);
 		if (!origin?.lat || !destiny?.lat) reject('No hay datos disponibles');
 		const request = {
 			origin: new mapsApi.LatLng(origin.lat, origin.lng || origin.lon),
 			destination: new mapsApi.LatLng(destiny.lat, destiny.lng) || destiny.lon,
 			travelMode: mapsApi.DirectionsTravelMode.DRIVING,
 		};
-		directionsService.route(request, function (response, status) {
-			if (status == mapsApi.DirectionsStatus.OK) {
-				resolve(response.routes[0].legs[0].duration.text);
-				resolve(directionsDisplay.setOptions({ suppressMarkers: true }));
-				// resolve(directionsDisplay.setDirections(response));
-			}
-		});
+		directionsService.route(
+			request,
+			function (response, status) {
+				if (status == mapsApi.DirectionsStatus.OK) {
+					directionsDisplay.setDirections(response);
+					directionsDisplay.setOptions({
+						preserveViewport: true,
+						suppressMarkers: true
+					});
+					resolve(response.routes[0].legs[0].duration.text);
+				}
+			});
 	});
 };
 
@@ -91,29 +97,27 @@ export const mapConfig = (
 	onClick
 });
 
-export const calculateDistance = ({origin, destiny}) => {
+export const calculateDistance = ({ origin, destiny }) => {
 	return new Promise((resolve, reject) => {
 		const originPoint = {
-			lat: origin?.lat,
-			lng: origin?.lng
+			lat: parseFloat(origin?.lat),
+			lng: parseFloat(origin?.lng)
 		};
 		const destinyPoint = {
-			lat: destiny?.lat,
-			lng: destiny?.lng
+			lat: parseFloat(destiny?.lat),
+			lng: parseFloat(destiny?.lng)
 		};
 		const DirectionsService = new window.google.maps.DirectionsService();
 		DirectionsService.route({
-				origin: originPoint,
-				destination: destinyPoint,
-				travelMode: window.google.maps.TravelMode.DRIVING
+			origin: originPoint,
+			destination: destinyPoint,
+			travelMode: window.google.maps.TravelMode.DRIVING
 		}, (result, status) => {
-				if (status === window.google.maps.DirectionsStatus.OK) {
-					console.log(status);
-					resolve(result);
-				} else {
-					console.error(`error fetching directions ${result}`);
-					reject(result);
-				}
+			if (status === window.google.maps.DirectionsStatus.OK) {
+				resolve(result);
+			} else {
+				reject(`error fetching directions ${result}`);
+			}
 		});
 	})
 }

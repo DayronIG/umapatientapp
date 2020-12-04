@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { useSelector, useDispatch } from 'react-redux';
 import * as transportActions from '../../store/actions/transportActions';
 import { useHistory, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 import DaysSlider from '../GeneralComponents/DaysSlider';
-import DaysSlider2 from '../GeneralComponents/DaysSlider2';
+import DaysSliderReturn from '../GeneralComponents/DaysSliderReturn';
 import Loading from '../GeneralComponents/Loading';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import '../../styles/transport/scheduleTransport.scss';
+import { days } from '../Utils/transportUtils';
 
 function ScheduleTransport() {
-	const { loading } = useSelector(state => state.front)
+	const { loading } = useSelector(state => state.front);
 	const transportData = useSelector(state => state.transport);
 	const user = useSelector(state => state.user);
 	const { ws } = useParams();
@@ -20,30 +21,87 @@ function ScheduleTransport() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+	useEffect(() => {
+		window.gtag('event', 'select_content', { content_type: "SCHEDULE_TRANSPORT", item: ['SCHEDULE_TRANSPORT'] })
+	}, [])
+
+	const resetReturnDays = () => {
+		dispatch({ type: 'SET_BACK_TRANSLATE_MONDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_TUESDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_WEDNESDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_THURSDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_FRIDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_SATURDAY', payload: false });
+		dispatch({ type: 'SET_BACK_TRANSLATE_SUNDAY', payload: false });
+		dispatch({ type: 'RESET_RETURN_SCHEDULE' });
+	}
+
+	const resetOriginDays = () => {
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_MONDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_TUESDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_WEDNESDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_THURSDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_FRIDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SATURDAY', payload: false });
+		dispatch({ type: 'SET_ORIGIN_TRANSLATE_SUNDAY', payload: false });
+		dispatch({ type: 'RESET_START_SCHEDULE' });
+	}
+
 	const handleSubmit = async (event) => {
-		event.preventDefault();
 		try {
+			event.preventDefault();
 			dispatch({ type: 'LOADING', payload: true });
+			function isEmpty(obj) {
+				for (var key in obj) {
+					if (obj.hasOwnProperty(key))
+						return false;
+				}
+				return true;
+			}
+			const isValid = days.every(day => {
+				const originTime = Number(transportData.startSchedules[day]?.slice(0, 2));
+				const destinyTime = Number(transportData.returnSchedules[day]?.slice(0, 2));
+				if (!originTime || !destinyTime) return true;
+				if (destinyTime > originTime) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			if (!isValid) {
+				swal('Error', 'El horario de ida debe ser anterior al de vuelta.', 'warning')
+				dispatch({ type: 'LOADING', payload: false });
+				return false;
+			}
+			if (isEmpty(transportData.startSchedules)) {
+				swal('Error', 'El horario de llegada a destino no puede estar vacio. Ingrese al menos 1.', 'warning');
+				dispatch({ type: 'LOADING', payload: false });
+				return false;
+			}
 			await transportActions.createTransportSchedule(transportData, user);
 			await swal('Éxito', 'Traslado creado con éxito', 'success');
+			window.gtag('event', 'select_content', { content_type: "NEW_TRANSPORT_CREATED", item: ['NEW_TRANSPORT_CREATED'] })
 			dispatch({ type: 'LOADING', payload: false });
-			history.push(`/${ws}/transportUserActive`);
+			history.push(`/${ws}/scheduledTransportSuccess`);
+			return true;
 		} catch (error) {
 			console.error(error);
 			dispatch({ type: 'LOADING', payload: false });
+			window.gtag('event', 'select_content', { content_type: "NEW_TRANSPORT_FAIL", item: ['NEW_TRANSPORT_FAIL'] })
 			swal('Error', 'Hubo un error al crear su traslado. Por favor, intente de nuevo', 'warning');
+			return false;
 		}
 	}
 
 	return (
 		<form className='scheduleForm'>
 			{loading && <Loading />}
-			
 			<div className='scheduleForm__container'>
+				<h5>Duración del traslado</h5>
 				<div className='scheduleForm__container--input'>
-				
-					<label>Fecha desde:</label>
+					<label className="label">Fecha de inicio</label>
 					<input
+						className="dateInput"
 						required
 						min={today}
 						type='date'
@@ -52,8 +110,9 @@ function ScheduleTransport() {
 					/>
 				</div>
 				<div className='scheduleForm__container--input'>
-					<label>Fecha hasta:</label>
+					<label className="label">Fecha de finalizacion</label>
 					<input
+						className="dateInput"
 						required
 						min={tomorrow}
 						type='date'
@@ -63,44 +122,52 @@ function ScheduleTransport() {
 				</div>
 			</div>
 			<div className='scheduleForm__container'>
-				<div className="centeredElements">
-				<h5 className='scheduleForm__container--title'>Horario</h5>
-				<label htmlFor='scheduleReturn'>Ida y vuelta:</label> {' '}
-				<input
-					type='checkbox'
-					onChange={transportActions.setHasReturn}
-					id='scheduleReturn'
-					name='scheduleReturn'
-					value={transportData.hasReturn}
-				/>
+				<div className='centeredElements'>
+					<h5 className='scheduleForm__container--title'>Horario de llegada a destino</h5>
+					<DaysSlider
+						values={transportData.startSchedules}
+						handleChange={transportActions.setStartSchedule}
+					/>
 				</div>
-			<DaysSlider
-				title='Llegada a destino'
-				values={transportData.startSchedules}
-				handleChange={transportActions.setStartSchedule}
-			/>
-
-			{transportData.hasReturn && (
-				<DaysSlider2
-					title='Regreso a origen'
-					values={transportData.returnSchedules}
-					handleChange={transportActions.setReturnSchedule}
-				/>
-			)}
 			</div>
-			{/* <div className='scheduleForm__container'>
-				<div className='scheduleForm__container--input'>
-					<label>Tiempo de referencia:</label>
-					<select value={transportData.timeReference} onChange={transportActions.setTimeReference}>
-						<option value='ORIGEN'>Origen</option>
-						<option value='DESTINO'>Destino</option>
-					</select>
+			<div className="scheduleForm__container">
+				<div className='centeredElements'>
+					<h5 className='scheduleForm__container--title'>Horario de salida</h5>
+					{!transportData.hasReturn && (
+						<button
+							className="addButton"
+							type="button"
+							onClick={() => transportActions.setHasReturn(false)}
+						>
+							+ Agregar horarios
+						</button>
+					)
+					}
+					{transportData.hasReturn && (
+						<>
+							<DaysSliderReturn
+								values={transportData.returnSchedules}
+								handleChange={transportActions.setReturnSchedule}
+							/>
+							<button
+								className="addButton closeDays"
+								type="button"
+								onClick={function () {
+									transportActions.setHasReturn(true)
+									resetReturnDays()
+								}}
+							>
+								- Borrar horarios
+						</button>
+						</>
+					)}
 				</div>
-			</div> */}
+			</div>
 			<div className='scheduleForm__container'>
-				<div className="scheduleForm__observations"> 
-					<h5>Observaciones</h5>
-					<input
+				<div className='scheduleForm__container--observations'>
+					<h5 className="scheduleForm__observationsTitle">Observaciones</h5>
+					<textarea
+						rows='10'
 						type='text'
 						placeholder='Escribe tus comentarios aquí...'
 						name='notes'
@@ -110,14 +177,10 @@ function ScheduleTransport() {
 					/>
 				</div>
 			</div>
-			<div className="centeredElements">
-			<FooterBtn
-				callback={handleSubmit}
-				text='Confirmar'
-				type='submit'
-			/>
+			<div className="FooterBtn">
+				<button onClick={handleSubmit}>Crear traslado</button>
 			</div>
-		</form>
+		</form >
 	);
 }
 

@@ -15,12 +15,18 @@ import {
 import '../../styles/deliveryService/selectDestiny.scss';
 
 const CreateTransportRoute = () => {
+	const dispatch = useDispatch()
+	const { patient } = useSelector(state => state.queries);
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
 	const { origin, pointSelector } = useSelector(state => state.transport);
 	const [mapInstance, setMapInstance] = useState(undefined);
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
+
+	useEffect(() => {
+		window.gtag('event', 'select_content', { content_type: "CREATE_TRANSPORT_ROUTE_ORIGIN", item: ['CREATE_TRANSPORT_ROUTE_ORIGIN'] })
+	}, [])
 
 	useEffect(() => {
 		setInitialOriginPoint(user);
@@ -66,28 +72,13 @@ const CreateTransportRoute = () => {
 	async function handleSubmit(e) {
 		e.preventDefault();
 		setNextPoint();
+		dispatch({ type: 'SET_HISOPADO_USER_ADDRESS', payload: "" })
 	};
 
 	return (
 		<form className='selectDestiny' onSubmit={handleSubmit}>
 			{loading && <Loader />}
-			<div className='selectDestiny__container'>
-				<h5 className='selectDestiny__container--title'>
-					Seleccione punto de partida
-				</h5>
-			</div>
-			<div className='selectDestiny__container'>
-				<div className='selectDestiny__container--row'>
-					{(mapInstance && mapApi) && (
-						<SearchBox
-							map={mapInstance}
-							mapApi={mapApi}
-							handleChangePlace={handleChangePlace}
-						/>
-					)}
-				</div>
-			</div>
-			<div className='selectDestiny__container map'>
+			<div className='selectDestiny__container map' style={{ zIndex: -1 }}>
 				<GoogleMapReact
 					{...mapConfig(
 						{ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
@@ -98,17 +89,23 @@ const CreateTransportRoute = () => {
 					{origin.lat && <Marker {...origin} />}
 				</GoogleMapReact>
 			</div>
-			<div className='selectDestiny__container'>
-				<input
-					placeholder='Dirección'
-					type='text'
-					name='address'
-					id='address'
-					disabled
-					value={origin.address}
-				/>
-			</div>
-			<div className='selectDestiny__container'>
+			<div className='selectDestiny__container formInputs'>
+				<div className='selectDestiny__container--title'>
+					<h5>¿De dónde sales?</h5>
+				</div>
+				<div className='selectDestiny__container--text'>
+					<p>Ingresa la dirección de donde saldrás</p>
+				</div>
+				<div className='selectDestiny__container--row'>
+					{(mapInstance && mapApi) && (
+						<SearchBox
+							map={mapInstance}
+							mapApi={mapApi}
+							handleChangePlace={handleChangePlace}
+							placeholder='Ingresa el punto de origen'
+						/>
+					)}
+				</div>
 				<div className='selectDestiny__container--row'>
 					<input
 						onChange={handleInputs(pointSelector)}
@@ -127,8 +124,12 @@ const CreateTransportRoute = () => {
 						value={origin.depto}
 					/>
 				</div>
+				<div className='selectDestiny__container--row'>
+					<button type='button' onClick={handleSubmit}>
+						Continuar
+					</button>
+				</div>
 			</div>
-			<FooterBtn callback={handleSubmit} text='Continuar' />
 		</form>
 	);
 };
