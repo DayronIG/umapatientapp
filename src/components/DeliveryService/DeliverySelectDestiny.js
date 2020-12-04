@@ -106,12 +106,11 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			const { value, id } = event.target;
 			return setFormState({ ...formState, [id]: value });
 		} else {
-			return setFormState({ ...formState, ...event, searchBox: event.address });
+			return setFormState({ ...formState, ...event, searchBox: event.address, address: event.address });
 		}
 	};
 
 	const handleChangePlace = (place) => {
-		console.log(place)
 		const pos = {
 			lat: place?.lat || place?.geometry?.location?.lat() || "",
 			lng: place?.lng || place?.geometry?.location?.lng() || "",
@@ -176,7 +175,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			dispatch({type: "SET_DEPENDANT_INFO", payload: {...formState, isAddressValidForHisopado: isAddressValidForHisopado}})
 			dispatch({ type: 'LOADING', payload: false });
 		}
-	}, [hisopadoUserAddress]);
+	}, [hisopadoUserAddress, formState]);
 
 
 	return (
