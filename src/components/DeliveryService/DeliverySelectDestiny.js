@@ -106,7 +106,7 @@ const DeliverySelectDestiny = ({isModal=false}) => {
 			const { value, id } = event.target;
 			return setFormState({ ...formState, [id]: value });
 		} else {
-			return setFormState({ ...formState, ...event, searchBox: event.address, address: event.address });
+			return setFormState({ ...formState, ...event, searchBox: event.address });
 		}
 	};
 
