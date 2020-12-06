@@ -31,12 +31,15 @@ function AuthProvider({ children }) {
 		const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
 		dispatch({type: 'SET_DELIVERY_PARAMS', payload: params})
 		if(userAuth.dni) {
-			let filters =  [{field: 'status', value: ["PREASSIGN", "DEPENDANT", "FREE:IN_RANGE", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.uid', value: userAuth.core_id, comparator: '=='}]
+			let filters =  [{field: 'status', value: ["PREASSIGN", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"], comparator: 'in'}, {field: 'patient.uid', value: userAuth.core_id, comparator: '=='}]
 			await snapDocumentsByFilter('events/requests/delivery', filters, (data) => {
-				dispatch({type: 'CLEAN_DELIVERY', payload: "CLEAN"})
-				dispatch({type: 'SET_DELIVERY_ALL', payload: data})})
+				if(data.length > 0) {
+					dispatch({type: 'CLEAN_DELIVERY', payload: "CLEAN"})
+					dispatch({type: 'SET_DELIVERY_ALL', payload: data})
+				}
+			})
 		}
-    }
+	}
 
 
 	async function getInitialData(user) {
