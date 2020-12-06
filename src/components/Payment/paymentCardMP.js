@@ -14,6 +14,7 @@ import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
 import db from "../../config/DBConnection"
 import mpicon from "../../assets/img/delivery/mp.jpg";
+import Cleave from 'cleave.js/react';
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -22,7 +23,7 @@ const PaymentCardMP = () => {
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
-    const [totalPayment, setTotalPayment] = useState(hisopadoPrice) 
+    const [totalPayment, setTotalPayment] = useState(deliveryInfo.length * hisopadoPrice) 
     const [submit, setSubmit] = useState(false);
     const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
@@ -32,31 +33,38 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
-    const [allPurchases, setAllPurchases] = useState([])
+  //   const [allPurchases, setAllPurchases] = useState([])
+  console.log(deliveryInfo, totalPayment)
+  //   const getCurrentService = () => {
+  //     db.firestore().collection('events/requests/delivery')
+  //     .where('patient.uid', '==', user.core_id)
+  //     .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
+  //     .get()
+  //     .then(res => {
+  //       let arr = [];
+  //         res.forEach(services => {
+  //             let document = {...services.data(), id: services.id}
+  //             arr.push(document)
+  //         })
 
-    const getCurrentService = () => {
-      db.firestore().collection('events/requests/delivery')
-      .where('patient.uid', '==', user.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
-      .get()
-      .then(res => {
-        let arr = [];
-          res.forEach(services => {
-              let document = {...services.data(), id: services.id}
-              arr.push(document)
-          })
+  //         setAllPurchases(arr);
+  //     })
+  // }
 
-          setAllPurchases(arr);
-      })
-  }
+  // useEffect(() => {
+  //   if(!!user.core_id){getCurrentService()}
+  // }, [user])
 
   useEffect(() => {
-    if(!!user.core_id){getCurrentService()}
-  }, [user])
+    const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+    if(deliveryInfo.length < multiple_clients?.length){
+        dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+    }
+  }, [])
 
     useEffect(() => {
-      setTotalPayment(parseInt(hisopadoPrice) * allPurchases.length) 
-    }, [allPurchases, hisopadoPrice])
+      setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el=>el.status).length) 
+    }, [deliveryInfo, hisopadoPrice])
 
     useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
@@ -116,7 +124,6 @@ const PaymentCardMP = () => {
     }
 
     function sdkResponseHandler(status, response) {
-      console.log(status, response)
         if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
@@ -145,15 +152,19 @@ const PaymentCardMP = () => {
           dni: `${user.dni}`,
           uid: `${user.core_id}`,
           fullname: `${user.fullname}`,
-          amount: parseInt(totalPayment) || 3499,
+          amount: parseInt(totalPayment),
           currency: 'ARS',
           id: current.id,
           type: 'delivery',
-          coupon
+          coupon,
+          clients: deliveryInfo
           // mpaccount: 'sandbox'
         }
          
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
+        axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
+        .then(res => console.log("Ok"))
+        .catch(err => console.log(err))
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
@@ -201,10 +212,7 @@ const PaymentCardMP = () => {
             }
             window.Mercadopago.clearSession();
           })
-          axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-          .then(res => console.log("Ok"))
-          .catch(err => console.log(err))
-  }, [coupon])
+  }, [coupon, deliveryInfo])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
@@ -223,6 +231,7 @@ const PaymentCardMP = () => {
           console.log("Payment success")
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
+          localStorage.removeItem("multiple_clients")
           swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             .then(()=> history.push(`/hisopado/listTracker/${user.ws}`))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
@@ -266,7 +275,7 @@ const PaymentCardMP = () => {
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {
-          setTotalPayment(hisopadoPrice)
+          setTotalPayment(totalPayment)
         }
       }
     
@@ -330,16 +339,27 @@ const PaymentCardMP = () => {
           >
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
-              <input
+              {/* <input
                 autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"
-                type="text"
+                type="number"
                 name="number"
                 placeholder="xxxx-xxxx-xxxx-xxxx"
                 onChange={(e) => {
                   handleChange(e)
                 }}
                 onFocus={handleFocus}
+              /> */}
+              <Cleave 
+                autoComplete="off"
+                id="cardNumber" data-checkout="cardNumber"
+                name="number"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
+                onChange={(e) => {
+                  handleChange(e)
+                }}
+              onFocus={handleFocus}
+              options={{creditCard: true}}
               />
             </div>
 
@@ -389,15 +409,23 @@ const PaymentCardMP = () => {
                 <div className="cardExpiration">
                 <input 
                 autoComplete="off"
-                type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
-                    placeholder="Mes" className="mr-3" maxLength="2"
-                    onChange={handleChange}
-                    onFocus={handleFocus}/>
-                <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" className = {`${!invalidYear? "": "invalid-input"}`}
-                    placeholder="Año" autoComplete="off" maxLength="2" onChange={e => { 
-                        handleChange(e.target.value) 
-                        expirationYearCheck(e.target.value)}}
-                    onFocus={handleFocus}/>
+                type="text" id="cardExpirationMonth" 
+                data-checkout="cardExpirationMonth"
+                inputMode="numeric"
+                maxLength="2"
+                placeholder="Mes" className="mr-3"
+                onChange={handleChange}
+                onFocus={handleFocus}/>
+                <input 
+                type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
+                className = {`${!invalidYear? "": "invalid-input"}`}
+                inputMode="numeric"
+                placeholder="Año" autoComplete="off"
+                maxLength="2"
+                onChange={e => {
+                  handleChange(e.target.value) 
+                  expirationYearCheck(e.target.value)}}
+                onFocus={handleFocus}/>
                 </div>
               </div>
             </div>
