@@ -1,61 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
-import db from "../../../config/DBConnection";
 
 const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const user = useSelector(store => store.user);
-  const { params, selectHomeForm, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
+  const { params, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
-  const [data, setData] = useState([]);
   
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-    if (deliveryInfo.length) {
       if(deliveryInfo.length < multiple_clients?.length){
         dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
-        setData(multiple_clients);
-      } 
-      else {
-        const allStatus = ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'FREE:DEPENDANT', "DEPENDANT"];
-        const filterData = deliveryInfo.filter(item => allStatus.includes(item.status) || !item.status);
-        // localStorage.setItem("multiple_clients", JSON.stringify(filterData))
-        console.log("ENTRE A SETEAR DESDE REDUX", filterData)
-        setData(filterData);
       }
-    } else {
-      setData([])
-    }
   }, [deliveryInfo])
-
-  useEffect(() => {
-    console.log("---------------------------------------")
-    console.log(data, "CAMBIO EN DATA")
-  }, [data])
-
-  
-  useEffect(() => {
-    if (user.core_id) {
-      db.firestore().collection('events/requests/delivery')
-        .where('patient.uid', '==', user.core_id)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER', 'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
-        .get()
-        .then(res => {
-          let all_services = []
-          res.forEach(services => {
-            // setFirstPatient(services.data().destination);
-            let document = { ...services.data(), id: services.id }
-            all_services.push(document)
-          })
-          dispatch({ type: 'SET_DELIVERY_ALL', payload: all_services })
-        })
-    }
-  }, [user])
 
   useEffect(() => {
     setPrice(params.price);
@@ -64,25 +26,14 @@ const HisopadoCart = (props) => {
   useEffect(() => {
     if (deliveryInfo.length) {
       setPrice(Number(params.price) * deliveryInfo.filter(el => el.status).length);
-      // setPrice(Number(params.price) * deliveryInfo.length);
     }
   }, [deliveryInfo, params.price, changeMarker])
 
   const handlePay = () => {
-    /* for(let i = 0; i < data.length; i++) {
-      console.log("pagar")
-
-      if(!!!data[i].status) {
-        console.log("pagar")
-
-        swal("Un momento", "Es necesario que guarde todos los hisopados antes de continuar", "warning");
-        return;
-      }
-    } */
     history.push(`/hisopado/payment/${user.ws}`)
   }
 
-  const handleAddHisopado = () => {
+  const handleAddHisopado = useCallback(() => {
     dispatch({
       type: 'SET_DELIVERY',
       payload: {
@@ -98,16 +49,16 @@ const HisopadoCart = (props) => {
           depto: '',
         },
         destination: {
-          user_address: data[0]?.destination.user_address || hisopadoUserAddress,
+          user_address: deliveryInfo[0]?.destination.user_address || hisopadoUserAddress,
           user_floor: '',
           user_number: '',
-          user_lat: data[0]?.destination.user_lat,
-          user_lon: data[0]?.destination.user_lon
+          user_lat: deliveryInfo[0]?.destination.user_lat,
+          user_lon: deliveryInfo[0]?.destination.user_lon
         },
         isOpen: true
       }
     })
-  }
+  }, [deliveryInfo])
 
   return (
     <>
@@ -120,7 +71,7 @@ const HisopadoCart = (props) => {
             <h1 className="HisopadoCart__title">Tu compra</h1>
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en <span>{params?.delay}.</span></p>
             {
-              data.length > 0 ?
+              deliveryInfo.length > 0 ?
                 <p className="HisopadoCart__text">Datos del usuario</p> :
                 <div className="HisopadosCart__empty">
                   <h2>Carrito vacío</h2>
@@ -130,8 +81,8 @@ const HisopadoCart = (props) => {
           </div>
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {data?.map((item, index) => {
-                return <HisopadoCartItem key={index} patient={item} index={index} />
+              {deliveryInfo.map((item, index) => {
+                return <><HisopadoCartItem key={`${index}${item.patient.user}`} patient={item} index={index} /></>
               })}
             </div>
 
@@ -145,9 +96,8 @@ const HisopadoCart = (props) => {
             </div>
           </section>
         </div>
-
         {
-          data.length > 0 &&
+          deliveryInfo.length > 0 &&
           <div className="HisopadoCart__payment">
             <div className="HisopadoCart__payDetails">
               <div className="HisopadoCart__payDetail">

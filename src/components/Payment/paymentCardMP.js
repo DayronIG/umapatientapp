@@ -157,7 +157,7 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: deliveryInfo.filter(el=>el.status)
+          clients: deliveryInfo
           // mpaccount: 'sandbox'
         }
          
@@ -212,7 +212,7 @@ const PaymentCardMP = () => {
             }
             window.Mercadopago.clearSession();
           })
-  }, [coupon])
+  }, [coupon, deliveryInfo])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){

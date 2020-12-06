@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {useHistory} from "react-router-dom"
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from 'react-icons/fa';
-import { create_delivery } from '../../../config/endpoints';
-import axios from 'axios';
 import swal from 'sweetalert';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DeliverySelectDestiny from '../DeliverySelectDestiny';
@@ -11,43 +9,41 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
-    const { dni } = useSelector(store => store.user);
-    const { deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
-    const { address, piso, depto, lat, lng } = useSelector(store => store.deliveryService.selectHomeForm);
-    const dependantInfo = useSelector(store => store.deliveryService.dependantInfo);
-    const { isAddressValidForHisopado } = useSelector(store => store.deliveryService.dependantInfo);
+    const { dni } = useSelector(state => state.user);
+    const { deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(state => state.deliveryService);
+    const { address, piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
+    const dependantInfo = useSelector(state => state.deliveryService.dependantInfo);
+    const { isAddressValidForHisopado } = useSelector(state => state.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
     const [showBtn, setShowBtn] = useState(true);
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
     const [data, setData] = useState({
-        title: patient.patient?.title || patient.patient?.user || patient.dependantData?.user,
-        fullname: patient.patient?.user || patient.dependantData?.user,
-        dni: patient.patient?.dni|| patient.dependantData?.dni,
-        ws: patient.patient?.ws|| patient.dependantData?.ws,
-        dob: patient.patient?.dob|| patient.dependantData?.dob,
-        sex: patient.patient?.sex|| patient.dependantData?.sex,
+        title: patient.patient?.title || patient.patient?.user,
+        fullname: patient.patient?.user ,
+        dni: patient.patient?.dni,
+        ws: patient.patient?.ws,
+        dob: patient.patient?.dob,
+        sex: patient.patient?.sex,
         obs: '',
-        address: patient.destination?.user_address || patient.dependantDestination?.user_address || hisopadoUserAddress || address,
-        piso: patient.destination?.user_floor || patient.dependantDestination?.user_address || piso,
-        depto: patient.destination?.user_number || patient.dependantDestination?.user_number || depto,
-        lat: patient.destination?.user_lat || patient.dependantDestination?.user_lat || lat,
-        lng: patient.destination?.user_lon || patient.dependantDestination?.user_lon || lng
+        address: patient.destination?.user_address || hisopadoUserAddress || address,
+        piso: patient.destination?.user_floor || piso,
+        depto: patient.destination?.user_number  || depto,
+        lat: patient.destination?.user_lat || lat,
+        lng: patient.destination?.user_lon || lng
     });
     const [fullnameError, setFullnameError] = useState(false);
     const [dniError, setDniError] = useState(false);
     const [wsError, setWsError] = useState(false);
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
-    const [addressError, setAddressError] = useState(false);
 
     useEffect(() => {
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 
     useEffect(() => {
-        //CAMBIE EL LENGTH DE 0 A 1 POR EL INITIAL VALUE DE ISADDRESSVALID.
         if(Object.entries(dependantInfo).length !== 1) {
             setData({...data,
             address: dependantInfo.address,
@@ -56,12 +52,6 @@ const HisopadoCartItem = ({patient, index}) => {
             lat: dependantInfo.lat,
             lng: dependantInfo.lng
             });
-            // if(dependantInfo.isAddressValidForHisopado !== undefined){
-            //     setIsAddressValid(dependantInfo.isAddressValidForHisopado)
-            // } 
-            // if(dependantInfo.isAddressValidForHisopado){
-            //     setOpenModal(false);
-            // }
         }
     }, [dependantInfo])
 
@@ -73,14 +63,14 @@ const HisopadoCartItem = ({patient, index}) => {
                 dni,
                 service: 'HISOPADO',
                 dependant: true,
-                dependantData: {
+                patient: {
                     sex: data.sex,
                     dob: data.dob,
                     dni: data.dni,
                     ws: data.ws,
                     user: data.fullname
                 },
-                dependantDestination: {
+                destination: {
                     user_address: data.address,
                     user_floor: data.piso,
                     user_number: data.depto,
@@ -124,25 +114,12 @@ const HisopadoCartItem = ({patient, index}) => {
         }
     }
 
-    const removeItem = () => {
-        // if(patient.docId && patient.docId !== "") {
-        //     let headers = { 'Content-Type': 'Application/Json' }
-        //     axios.post(`${create_delivery}/remove`, { id: patient.docId }, headers)
-        //         .then(res => console.log(res))
-        //         .catch(err => {
-        //             dispatch({type: 'REMOVE_DELIVERY', payload: index})
-        //             console.log(err)
-        //         })
-        // } else {
-            console.log(deliveryInfo, index)
-            const filtered = deliveryInfo.splice(index,1)
-            const finalFiltered = deliveryInfo.filter(el => el !== filtered)
-            // dispatch({type: 'REMOVE_DELIVERY', payload: index})
-            localStorage.setItem("multiple_clients", JSON.stringify(finalFiltered))
-            dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: finalFiltered})
-            window.location.reload(false)
-        // }
-    }
+    const removeItem = useCallback(() => {
+        deliveryInfo.splice(index,1)
+        let newDeliveryInfo = [...deliveryInfo]
+        localStorage.setItem("multiple_clients", JSON.stringify(newDeliveryInfo))
+        dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: newDeliveryInfo})
+    }, [deliveryInfo])
 
     return (
         <article className="HisopadoCart__user">
@@ -278,15 +255,10 @@ const HisopadoCartItem = ({patient, index}) => {
                         /> 
                     </div>
                 </div>
-                {/* {
-                    !patient.docId && index !== 0 && showBtn ? */}
                     <>
                         <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
                         <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
                     </> 
-                {/*     :
-                     null
-                 */}
                 <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
 
