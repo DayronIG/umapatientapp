@@ -23,7 +23,7 @@ const PaymentCardMP = () => {
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
-    const [totalPayment, setTotalPayment] = useState(deliveryInfo.length * hisopadoPrice) 
+    const [totalPayment, setTotalPayment] = useState(3499) 
     const [submit, setSubmit] = useState(false);
     const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
@@ -34,7 +34,7 @@ const PaymentCardMP = () => {
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
   //   const [allPurchases, setAllPurchases] = useState([])
-  console.log(deliveryInfo, totalPayment)
+
   //   const getCurrentService = () => {
   //     db.firestore().collection('events/requests/delivery')
   //     .where('patient.uid', '==', user.core_id)
@@ -63,7 +63,9 @@ const PaymentCardMP = () => {
   }, [])
 
     useEffect(() => {
-      setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el=>el.status).length) 
+      if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
+        setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.length) 
+      }
     }, [deliveryInfo, hisopadoPrice])
 
     useEffect(() => {
