@@ -12,7 +12,6 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
-import db from "../../config/DBConnection"
 import mpicon from "../../assets/img/delivery/mp.jpg";
 import Cleave from 'cleave.js/react';
 
@@ -33,34 +32,13 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
-  //   const [allPurchases, setAllPurchases] = useState([])
 
-  //   const getCurrentService = () => {
-  //     db.firestore().collection('events/requests/delivery')
-  //     .where('patient.uid', '==', user.core_id)
-  //     .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'FREE:DEPENDANT', 'DEPENDANT'])
-  //     .get()
-  //     .then(res => {
-  //       let arr = [];
-  //         res.forEach(services => {
-  //             let document = {...services.data(), id: services.id}
-  //             arr.push(document)
-  //         })
-
-  //         setAllPurchases(arr);
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   if(!!user.core_id){getCurrentService()}
-  // }, [user])
-
-  useEffect(() => {
-    const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-    if(deliveryInfo.length < multiple_clients?.length){
-        dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
-    }
-  }, [])
+    useEffect(() => {
+      const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
+      if(deliveryInfo.length < multiple_clients?.length){
+          dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+      }
+    }, [])
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
@@ -72,50 +50,6 @@ const PaymentCardMP = () => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
         window.Mercadopago.getIdentificationTypes();
       }, [])
-
-    /**
-     * This method is executed when credit card input has more than 6 characters
-     * Then calls getPaymentMethod function of the MercadoPago SDK
-     *
-     * @param {Object} event HTML event
-     */
-
-    // function guessingPaymentMethod(event) {
-    //     const bin = event.currentTarget.value;
-    //     console.log(bin, event)
-    //     if (bin.length >= 6) {
-    //         window.Mercadopago.getPaymentMethod({
-    //             "bin": bin.substring(0, 6),
-    //         }, setPaymentMethodInfo);
-    //     }
-    // }
-
-    /**
-        * This method is going to be the callback one from getPaymentMethod of the MercadoPago Javascript SDK
-        * Is going to be creating a hidden input with the paymentMethodId obtain from the SDK
-        *
-        * @param {Number} status HTTP status code
-        * @param {Object} response API Call response
-    */
-
-    // function setPaymentMethodInfo(status, response) {
-    //     const paymentMethodElement = document.querySelector('input[name=paymentMethodId]');
-    //     setCreditCard(response[0]?.id)
-    //     if (status === 200) {
-    //         if (paymentMethodElement) {
-    //             paymentMethodElement.value = response[0].id;
-    //         } else {
-    //             const form = document.querySelector('#pay');
-    //             const input = document.createElement('input');
-    //             input.setattribute('name', 'paymentMethodId');
-    //             input.setAttribute('type', 'hidden');
-    //             input.setAttribute('value', response[0].id);
-    //             form.appendChild(input);
-    //         }
-    //     } else {
-    //         console.log(`Método de pago no encontrado`);
-    //     }
-    // }
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -160,9 +94,9 @@ const PaymentCardMP = () => {
           type: 'delivery',
           coupon,
           clients: deliveryInfo
-          // mpaccount: 'sandbox'
+//          mpaccount: 'sandbox'
         }
-         
+        console.log(paymentData)
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
         .then(res => console.log("Ok"))
@@ -255,7 +189,6 @@ const PaymentCardMP = () => {
                 break;
             }
             window.Mercadopago.clearSession();
-            console.log("Payment failed")
         }
     }, [paymentStatus, history])
 

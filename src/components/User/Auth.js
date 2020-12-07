@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
 import db from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
 import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
