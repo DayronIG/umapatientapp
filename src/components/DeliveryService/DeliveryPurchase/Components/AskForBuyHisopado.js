@@ -86,7 +86,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan de lunes a viernes (excepto feriados) de 8hs a 18hs.
+                            Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
                     <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p>
@@ -137,7 +137,7 @@ export default function AskForBuyHisopado() {
                             <li>• No lo cubren las obras sociales</li>
                             <li>• No emite certificado oficial</li>
                             <li>• Consulte con su destino la validez del test rápido para viajar</li>
-                            <li>• Los hisopados se realizan de lunes a viernes (excepto feriados) de 8hs a 18hs. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.</li>
+                            <li>• Los hisopados se realizan de lunes a viernes de 8hs a 18hs. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.</li>
                         </ul>
                     </div>
 

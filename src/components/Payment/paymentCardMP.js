@@ -56,13 +56,13 @@ const PaymentCardMP = () => {
         setLoader(true)
         const form = document.getElementsByTagName('form')[0]
         await window.Mercadopago.createToken(form, sdkResponseHandler)
-        setLoader(false)
     }
 
     function sdkResponseHandler(status, response) {
         if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "" ,"error")
             setSubmit(false);
+            setLoader(false)
         } else {
             setSubmit(true);
             const form = document.querySelector('#pay')
