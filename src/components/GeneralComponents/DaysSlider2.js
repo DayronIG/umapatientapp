@@ -32,7 +32,6 @@ export default function DaysSlider({
 	return (
 		<div className='daysSlider'>
 			<p>{hours.mondayMinutes}</p>
-			<h5 className='daysSlider__title'>{title}</h5>
 					<div className="modal-body">
 						<div className="switcher">
 							<span>Lunes</span>

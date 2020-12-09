@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {  useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import swal from 'sweetalert';
 import { FaFileMedicalAlt } from 'react-icons/fa';

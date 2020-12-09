@@ -1,0 +1,37 @@
+@import '../global/Vars.scss';
+
+.scheduledSuccess {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: column;
+	background-color: #fff;
+	.scheduledSuccess__container {
+		padding: 15px;
+		text-align: center;
+		width: 90%;
+		.scheduledSuccess__container--img {
+
+		}
+		.scheduledSuccess__container--text {
+			font-size: $uma-font-size-regular;
+		}
+		.scheduledSuccess__container--title {
+			font-size: $uma-font-size-title;
+			color: $uma-button;
+		}
+		.scheduledSuccess__container--btn {
+			background:none;
+			border:none;
+			background: $uma-button;
+			border-radius: $uma-regular-borders;
+			height: 45px;
+			width: 75%;
+			color:white;
+			cursor: pointer;
+			font-weight: bold;
+		}
+	}
+}

@@ -7,7 +7,8 @@ import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
-import UmaCareHome from '../UmaCare/Home'
+import UmaCareHome from '../UmaCare/Home';
+import TrasladosHome from './TrasladosHome';
 import '../../styles/generalcomponents/ModulesMenu.scss';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
@@ -17,6 +18,7 @@ import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
+	const {plan} = useSelector((state) => state.queries.plan);
 
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -70,11 +72,7 @@ const ModulesMenu = () => {
 					</section>
 					<EventsHistory />
 					<UmaCareHome />
-					{/* <TrasladosHome /> */}
-{/* 					<button className="needhelp__btn">
-						<img src={iconBubbles} alt="Necesito ayuda"/>
-						Necesito ayuda
-					</button> */}
+					{plan?.translation && <TrasladosHome />}
 				</>
 			) : (
 					<Loading />

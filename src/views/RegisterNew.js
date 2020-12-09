@@ -13,10 +13,10 @@ import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
 import {getCountry} from '../components/Utils/getCountry.js';
 import Welcome from './Welcome';
 import swal from 'sweetalert';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { validateInput } from '../components/Utils/stringUtils';
 import {generatePassword} from '../components/Utils/generatePassword';
-import 'moment-timezone';
+import { checkNum } from '../components/Utils/stringUtils';
 import '../../src/styles/generalcomponents/registerNew.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -46,8 +46,10 @@ const Register = props => {
     }, [ws])
 
     const handleSignUp = async event => {
-        window.gtag('event', 'sign_up');
         event.preventDefault()
+        window.gtag('event', 'sign_up');
+        let verifiedws = checkNum(getWs)
+        console.log(verifiedws)
         window.scroll(0, 0)
         let dniAlert = await swal({
             title: `Confirma tu número de documento: ${getId}`,

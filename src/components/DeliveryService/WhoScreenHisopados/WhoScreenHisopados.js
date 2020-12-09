@@ -69,7 +69,7 @@ const WhenScreen = (props) => {
 	function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/${user.dni}/appointmentsonline/`);
+			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
 			props.history.replace(`/${user.dni}/onlinedoctor/when`);
 		}

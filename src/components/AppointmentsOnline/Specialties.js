@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DB from '../../config/DBConnection';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import { Loader } from '../global/Spinner/Loaders';
 import { getUser } from '../../store/actions/firebaseQueries';
@@ -101,14 +101,14 @@ const Specialties = (props) => {
 			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return props.history.push(`/${dni}/chat/${specialty}`);
+			return props.history.push(`/chat/${specialty}/${dni}`);
 		} else if (
 			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return props.history.push(`/${dni}/chat/${specialty}`);
+			return props.history.push(`/chat/${specialty}/${dni}`);
 		} else {
-			return props.history.push(`/${dni}/appointmentsonline/${specialty}/calendar`);
+			return props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
 		}
 	};
 

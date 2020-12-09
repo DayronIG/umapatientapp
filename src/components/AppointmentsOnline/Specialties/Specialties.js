@@ -100,14 +100,14 @@ const Specialties = () => {
 			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return history.push(`/${dni}/chat/${specialty}`);
+			return history.push(`/chat/${specialty}/${dni}`);
 		} else if (
 			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return history.push(`/${dni}/chat/${specialty}`);
+			return history.push(`/chat/${specialty}/${dni}`);
 		} else {
-			return history.push(`/${dni}/appointmentsonline/${specialty}/calendar`);
+			return history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
 		}
 	};
 

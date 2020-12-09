@@ -57,7 +57,7 @@ const SearchDoctor = (props) => {
 		<>
 			<GenericHeader children='Buscar médico' />
 			<div className='searchDoctor_container'>
-				<BackButton customTarget={`/${dni}/appointmentsonline/specialty`} />
+				<BackButton customTarget={`/appointmentsonline/specialty/${dni}`} />
 				<div className='searchDoctor__input'>
 					<input type='text' name='search-doctor' placeholder='Ingrese el nombre del médico'
 						onChange={(e) => handleSearch(e.target.value)}
@@ -70,7 +70,7 @@ const SearchDoctor = (props) => {
 						{!!(filteredDocs.length > 0) && filteredDocs.map((doc, index) => {
 							return (
 								<div className='searchDoctor_results' key={index}
-									onClick={() => props.history.push(`/${dni}/appointmentsonline/${doc.cuit}/calendar`)}>
+									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${dni}`)}>
 									<DoctorCardOffice doctor={doc} />
 								</div>
 							)

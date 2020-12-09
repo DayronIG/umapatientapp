@@ -2,37 +2,119 @@
 
 .transportDetails {
 	position: relative;
+	height: 100vh;
 	.transportDetails__backBtn {
 		position: absolute;
 		z-index: 2;
-
 		a {
 			color: $primary-blue;
 		}
 	}
-
 	.transportDetails__map {
-		height: calc(100vh - 52px);
+		height: 72.5vh;
 	}
-	
 	.transportDetails__container {
 		width: 100%;
 		position: absolute;
 		left: 0;
-		bottom: 0;
-		padding: 20px;
+		top: 57vh;
+		padding: 30px;
+		border-radius: 50px 50px 0 0;		
 		background: #fff;
-
+		h3 {
+			color:rgb(24, 119, 173);
+		}
 		li {
 			font-size: 0.9rem;
-
 			@media screen and (max-width: 320px) {
 				font-size: 0.7rem;
 			} 
-			
 			span {
 				font-weight: 600;
 			}
 		}
+		.transportDetails__container--title {
+			color: $uma-primary;
+			font-size: 24px;
+			font-weight: bold;
+		}
+		.transportDriver {
+			width:100%;
+			box-shadow: 1px 3px 7px rgba(126, 147, 163, 0.15);
+			border-radius: 10px;
+			margin-bottom:10px;
+			padding: 5px;
+			.transportDriverData{
+				p:nth-child(1) {
+					font-weight: bold;
+				}
+				p {
+					margin:0;
+				}
+			}
+			.transportDriverImg{
+				width: 70px;
+				img {
+					width:100%;
+					border-radius: 200%;
+				}
+			}
+		}
+		.openContent {
+			padding: 0 0.8rem 1rem;
+			display: flex;
+			justify-content: center;
+			button {
+				border: none;
+				background: none;
+				color: $uma-text-secondary;
+				display: flex;
+				align-items: center;
+				font-weight: 800;
+
+				svg {
+					margin-left: 0.4rem;
+				}
+			}
+		}
+	}
+}
+.originP{
+	margin:0;
+	font-weight: bold;
+}
+.originText{
+	 margin-left:5px;
+	 margin-top:5px;
+}
+.originLi{
+	margin:15px;
+	padding:0px 5px;
+	
+}
+.driverUl{
+	box-shadow: 1px 1px 2px rgba(128, 128, 128, 0.514),
+	-1px -1px 2px rgba(128, 128, 128, 0.514);
+	border-radius: 10px;
+	padding:5px 0px;
+}
+.noTranslates{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	top:20vh;
+	h2{
+		font-size: 20px;
+		font-weight: bold;
+		color:rgb(24, 119, 173);
+		margin:20px;
+	}
+	p{
+		margin:5px;
+		text-align: center;
+	}
+	.carImage{
+		width:50%;
 	}
 }

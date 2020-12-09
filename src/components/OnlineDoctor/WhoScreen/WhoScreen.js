@@ -11,6 +11,7 @@ import enablePermissions from '../../Utils/enableVidAudPerms';
 import ImageFlow from '../../../assets/doctor-online.svg';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
+import { getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 import '../../../styles/whoScreen.scss';
 
@@ -53,7 +54,7 @@ const WhenScreen = (props) => {
 	useEffect(() => {
 		if (user.dni) {
 			getUserParentsFirebase(user.dni)
-				.then(function(userParents) {
+				.then(function (userParents) {
 					setParents(userParents);
 				})
 				.catch(() => setParents([]));
@@ -67,13 +68,40 @@ const WhenScreen = (props) => {
 		}
 	}, [user]);
 
-	function selectWho(user) {
+	async function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
+		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/${user.dni}/appointmentsonline/`);
+			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
 			props.history.replace(`/${user.dni}/onlinedoctor/when`);
 		}
+	}
+
+	const getCoverage = async (coverage) => {
+		// Busco BASIC primero porque es el básico sin ningun permiso
+		let plan = await getDocumentFB('services/porfolio/BASIC/active')
+		let free = await getDocumentFB('services/porfolio/FREE/active')
+		if (plan && free) {
+			plan["onlinedoctor"] = free.onlinedoctor
+		}
+		if (!!coverage && Array.isArray(coverage)) {
+			coverage && await Promise.all(coverage.map(async each => {
+				if (each?.plan) {
+					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
+					let coverageTemp = await getDocumentFB(path)
+					if (coverageTemp && coverageTemp.plan) {
+						for (const service in coverageTemp.plan) {
+							if (coverageTemp.plan[service] === true) {
+								plan.plan[service] = true
+							}
+						}
+					}
+				}
+			}))
+		}
+		dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+		return plan
 	}
 
 	return (
@@ -84,24 +112,24 @@ const WhenScreen = (props) => {
 			{registerParent ? (
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
-				<div className='dinamic-content-container whoAttention'>
-					<div className='when-question'>¿Para quién desea la atención?</div>
-					<div className='image-helper'>
-						<img src={ImageFlow} alt='medical' />
+					<div className='dinamic-content-container whoAttention'>
+						<div className='when-question'>¿Para quién desea la atención?</div>
+						<div className='image-helper'>
+							<img src={ImageFlow} alt='medical' />
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
-					<div className='btn btn-blue-lg' onClick={() => selectWho(user)}>
+					<div className='btn btn-blue-lg' onClick={() => selectWho(user)} id="att_especislista_select_me">
 						Para mi
 					</div>
 					{parents.map((p, index) => (
-						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)}>
+						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)} id="att_especislista_select_other">
 							Para {capitalizeName(p.fullname)}
 						</div>
 					))}
-					<div className='btn btn-blue-lg' onClick={() => setRegisterParent(true)}>
+					<div className='btn btn-blue-lg' onClick={() => setRegisterParent(true)} id="att_register_me">
 						Para otro
 					</div>
 				</div>

@@ -5,11 +5,10 @@
 	background-color: #fff;
 	padding: 10px;
 	border-radius: $regular-borders;
-	margin-top: 25px;
-	margin-bottom: 25px;
 	display:flex;
 	align-items: center;
 	flex-direction: column;
+	padding: 0;
 
 	.daysSlider__title{
 		text-decoration: underline;
@@ -23,6 +22,8 @@
 	.modal-body{
 		font-size: 14px;
 		width:100%;
+		padding: 0;
+
 		.timeInput{
 			height: 100%;
 			width: 20%;
@@ -47,19 +48,36 @@
 .switch {
 	position: relative;
 	display: inline-block;
-	width: 60px;
-	height: 34px;
-	margin-right:5px;
+	width: 45px;
+	height: 25px;
 	
-  }
+	 input { 
+		opacity: 0;
+		width: 0;
+		height: 0;
+
+		& + .slider {
+			background-color: $uma-input;
+		}
+		
+		&:checked + .slider {
+			background-color: $uma-primary;
+		}
+		
+		&:focus + .slider {
+			box-shadow: 0 0 1px $uma-primary;
+		}
+		
+		&:checked + .slider:before {
+			-webkit-transform: translateX(20px);
+			-ms-transform: translateX(20px);
+			transform: translateX(20px);
+		}
+	}
+}
   
-  .switch input { 
-	opacity: 0;
-	width: 0;
-	height: 0;
-  }
   
-  .slider {
+.slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -68,86 +86,139 @@
 	bottom: 0;
 	-webkit-transition: .4s;
 	transition: .4s;
-  }
+	
+	&:before {
+		position: absolute;
+		content: "";
+		height: 20px;
+		width: 20px;
+		left: 3px;
+		bottom: 3px;
+		background-color: white;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+}
   
-  .slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-  }
-  
-  input:checked + .slider {
-	background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-	box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+/* Rounded sliders */
+.slider.round {
 	border-radius: 34px;
 	color:white;
 	font-size: 24px;
 	padding-left:5px;
-  }
+	font-size: 0.8rem;
+
+	& svg {
+		position: relative;
+		left: 1px;
+	}
+	
+	&:before {
+		border-radius: 50%;
+	}
+}
   
-  .slider.round:before {
-	border-radius: 50%;
-  }
 
-  .switcher{
-	  display:flex;
-	  flex-direction: row;
-	  width:100%;
-	  justify-content: space-between;
-	  margin-top:5px;
-	  span{
-		  font-weight: bold;
-	  }
-  }
-  .inputers{
-	  display:flex;
-	  flex-wrap: wrap;
-	  position: absolute;
-	  left:50%;
-	  transform: translateX(-50%);
+.switcher {
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 0 0.7rem;
+	border-bottom: 1px solid $uma-input;
+	margin-bottom: 1rem;
 
-	  & > div {
-		  text-align: center;
-	  }
-	  input{
-		  text-align: center;
-	  }
-	  span{
-		  margin-left:5px;
-	  }
-  }
-  .centeredElements{
-	  display:flex;
-	  justify-content: center;
-	  flex-direction: column;
-	  align-items: center;
-  }
-  .footerBtn{
-	  display:flex;
-	  align-items: center;
-	  justify-content: center;
-  }
-  .CleaveInput{
-	  width:30%;
-  }
-		
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	span{
+		color: $uma-text-secondary;
+		font-weight: 800;
+		font-size: 1.2rem;
+		line-height: 1.4rem;
+
+		@media (max-width: 400px) {
+			font-size: 1.1rem;
+		}
+	}
+}
+.inputers{
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	position: absolute;
+	left:50%;
+	transform: translateX(-50%);
+
+	& > div {
+		text-align: center;
+	}
+	input{
+		text-align: center;
+	}
+	span{
+		margin-left:5px;
+	}
+
+	& > div {
+		display: inline;
+		position: relative;
+		width: 30%;
+
+		@media screen and (max-width: 380px) {
+			width: 35%;
+		}
+
+		@media screen and (max-width: 320px) {
+			width: 40%;
+		}
+
+
+		&::before {
+			content: '';
+			display: block;
+			width: 40%;
+			height: 2px;
+			background: $uma-text-secondary;	
+			position: absolute;
+			bottom: 1px;
+			left: 3px;
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			width: 40%;
+			height: 2px;
+			background: $uma-text-secondary;	
+			position: absolute;
+			bottom: 1px;
+			right: 3px;
+		}
+
+		.CleaveInput{
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			border: none;
+			font-size: 1.1rem;
+			color: $uma-text-secondary;
+			line-height: 1;
+			font-weight: 800;
+			outline: none;
+		}
+	}
+}
+.centeredElements{
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+.footerBtn{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}
 }

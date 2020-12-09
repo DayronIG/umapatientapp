@@ -15,14 +15,15 @@
    background-color: $white-color;
    z-index: 4;
    a {
-      color: $primary-color;
+      color: #B6B6B6;
       svg {
          margin: 0;
          padding: 0;
+         vertical-align: middle;
       }
    }
    a:hover {
-      color: $primary-color;
+      color: #B6B6B6;
    }
 }
 
