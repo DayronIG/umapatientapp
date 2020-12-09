@@ -25,6 +25,7 @@ const OnlineSpecialist = ({ match, history }) => {
 		async () => {
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
+			console.log(plan)
 			if(plan && plan.my_specialist === false) {
 				dispatch({ type: 'LOADING', payload: false });
 				return false
@@ -40,7 +41,8 @@ const OnlineSpecialist = ({ match, history }) => {
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
 				} else if (social_work.includes(user.corporate_norm) ||
-						social_work.includes(user.corporate?.toUpperCase())
+						social_work.includes(user.corporate?.toUpperCase()) || 
+						plan.my_specialist === true
 				) {
 					redirect = true;
 				}
