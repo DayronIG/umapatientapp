@@ -54,7 +54,7 @@ const OnlineSpecialist = ({ match, history }) => {
 						}
 					});
 					if (hasAppoint) {
-						return history.push(`/appointmentsonline/history/${dni}`);
+						return history.push(`/appointmentsonline/pending/${dni}`);
 					}
 				}
 				render(redirect);
