@@ -33,11 +33,6 @@ const HisopadoCart = (props) => {
     }
   }, [deliveryInfo])
 
-  useEffect(() => {
-    console.log("---------------------------------------")
-    console.log(data, "CAMBIO EN DATA")
-  }, [data])
-
   
   useEffect(() => {
     if (user.core_id) {
@@ -131,6 +126,7 @@ const HisopadoCart = (props) => {
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
               {data?.map((item, index) => {
+                console.log("-------RE RENDERING-------")
                 return <HisopadoCartItem key={index} patient={item} index={index} />
               })}
             </div>
