@@ -87,39 +87,6 @@ const Wellness = props => {
                   </div>
                 </div>
               </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("lungs")}
-              >
-                <div className="markers__item--icon">
-                  <img src={lungs} alt="Respiratorias" />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("allergies")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faAllergies} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("laringitis")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faBriefcaseMedical} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
             </ul>
           </div>
         </div>
