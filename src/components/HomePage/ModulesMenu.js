@@ -35,7 +35,6 @@ const ModulesMenu = () => {
 		);
 	};
 
-	console.log(plan)
 	return (
 		<>
 			{user.ws ? (

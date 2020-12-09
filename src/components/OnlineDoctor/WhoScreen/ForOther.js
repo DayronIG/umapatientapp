@@ -44,7 +44,7 @@ const RegisterDependant = props => {
       .post(`${node_patient}/dependant`, { dependant: data })
       .then(res => {
         if (props.redirectToConsultory === 'true') {
-          history.replace(`/${dni}/appointmentsonline/`)
+          history.replace(`/appointmentsonline/${dni}`)
         } else {
           let userData = { ...user, dni, dob, sex, fullname }
           localStorage.setItem('appointmentUserData', JSON.stringify(userData))

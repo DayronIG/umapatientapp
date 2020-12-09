@@ -175,7 +175,7 @@ const MyCalendar = () => {
 					<div className='calendar__legend'>
 						<FontAwesomeIcon icon={faUserMd} /> Turnos disponibles este día
 					</div>
-					<FooterBtn text='Volver' callback={() => history.replace(`/${dni}/appointmentsonline/specialty`)} />
+					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${dni}`)} />
 				</>
 			) : (
 					<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />

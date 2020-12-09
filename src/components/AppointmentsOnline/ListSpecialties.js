@@ -19,7 +19,7 @@ const ListSpecialties = (props) => {
 				</div>
 			</div>
 			<div className='searchByDoctor'>
-				<Link to={`/${dni}/appointmentsonline/search-doctor`}>BUSCAR POR MEDICO</Link>
+				<Link to={`/appointmentsonline/search-doctor/${dni}`}>BUSCAR POR MEDICO</Link>
 				<FaUserMd />
 			</div>
 		</>
