@@ -154,18 +154,18 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/hisopado/:ws?'
-					component={DeliveryPurchase}
-				/>
-				<PrivateRoute
-					exact
 					path='/hisopado/carrito/:ws?'
 					component={HisopadoCart}
 				/>
-				<PrivateRoute
+				<Route
 					exact
 					path='/hisopado/cobertura/:ws?'
 					component={DeliveryCoverage}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/:ws?'
+					component={DeliveryPurchase}
 				/>
 				<PrivateRoute
 					exact
