@@ -6,8 +6,8 @@ import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import symptoms from '../../../config/symptoms.json';
 import useScrollPosition from '../../Utils/use-scroll-position';
-import Modal from "../../GeneralComponents/Modal/MobileModal"
-import RecipeInput from "./RecipeInput"
+import Modal from '../../GeneralComponents/Modal/MobileModal'
+import RecipeInput from './RecipeInput'
 
 const SelectReason = (props) => {
 	const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const SelectReason = (props) => {
 		dispatch({ type: 'REMOVE_SYMPTOM_TAG', payload: newTags });
 	}
 	function filterIfRecipeIsSelected(){
-		if (selectedSymptoms.includes("Receta")){
+		if (selectedSymptoms.includes('Receta')){
 			window.scroll(0, 100)
 			disableScrolling()
 			setRecipeInputModal(true)
@@ -66,6 +66,12 @@ const SelectReason = (props) => {
 
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
 		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
+	}
+	function addOtherSympton(e){
+		if(e.key === 'Enter'){ 
+			dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms })
+			setOtherSymptoms('')
+		}
 	}
 
 	return (
@@ -113,6 +119,7 @@ const SelectReason = (props) => {
 					<input
 						type='text'
 						onChange={(e) => setOtherSymptoms(e.target.value)}
+						onKeyPress={(e) => addOtherSympton(e)}
 						value={otherSymptoms}
 						placeholder='Otros síntomas'
 					/>
