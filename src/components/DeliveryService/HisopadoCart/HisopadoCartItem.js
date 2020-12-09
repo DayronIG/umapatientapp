@@ -39,7 +39,31 @@ const HisopadoCartItem = ({patient, index}) => {
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
 
+
+    // const [deliveryInfoToMap, setDeliveryInfoToMap] = useState([]) 
+
+    // useEffect(()=>{
+    //     deliveryInfo.map(patient => {
+    //         setDeliveryInfoToMap([...deliveryInfoToMap, {
+    //             title: patient.patient?.title || patient.patient?.user || patient.dependantData?.user,
+    //             fullname: patient.patient?.user || patient.dependantData?.user,
+    //             dni: patient.patient?.dni|| patient.dependantData?.dni,
+    //             ws: patient.patient?.ws|| patient.dependantData?.ws,
+    //             dob: patient.patient?.dob|| patient.dependantData?.dob,
+    //             sex: patient.patient?.sex|| patient.dependantData?.sex,
+    //             obs: '',
+    //             address: patient.destination?.user_address || patient.dependantDestination?.user_address || hisopadoUserAddress || address,
+    //             piso: patient.destination?.user_floor || patient.dependantDestination?.user_address || piso,
+    //             depto: patient.destination?.user_number || patient.dependantDestination?.user_number || depto,
+    //             lat: patient.destination?.user_lat || patient.dependantDestination?.user_lat || lat,
+    //             lng: patient.destination?.user_lon || patient.dependantDestination?.user_lon || lng
+    //         }])
+    //     })
+    // })
+
+
     useEffect(() => {
+        console.log(patient, "---> RENDERING PATIENT")
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 

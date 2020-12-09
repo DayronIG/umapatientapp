@@ -72,7 +72,8 @@
                 flex-direction: column;
                 .HisopadoCart__modal {
                     width: 90%;
-                    position: absolute;
+                    position: fixed;
+                    left:0vw;
                 }
                 .HisopadoCart__user {
                     border-radius: 0 0.5rem 1rem 1rem;

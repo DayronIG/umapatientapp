@@ -81,7 +81,7 @@ const HisopadoCart = (props) => {
           </div>
           <section className="HisopadoCart__userSection">
             <div className="HisopadoCart__users">
-              {deliveryInfo.map((item, index) => {
+              {deliveryInfo?.map((item, index) => {
                 return <><HisopadoCartItem key={`${index}${item.patient.user}`} patient={item} index={index} /></>
               })}
             </div>

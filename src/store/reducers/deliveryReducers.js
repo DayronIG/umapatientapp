@@ -43,7 +43,7 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_DELIVERY_FROM_ZERO":
 			return { ...state, deliveryInfo: payload}
 		case "SET_DELIVERY":
-			return { ...state, deliveryInfo: payload }
+			return { ...state, deliveryInfo: [...state.deliveryInfo, payload] }
 		case "SET_DELIVERY_COVERAGE":
 			return { ...state, coverage: payload }
 		case 'CLEAN_DELIVERYDATA':
