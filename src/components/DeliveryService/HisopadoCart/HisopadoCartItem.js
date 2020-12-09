@@ -63,7 +63,6 @@ const HisopadoCartItem = ({patient, index}) => {
 
 
     useEffect(() => {
-        console.log(patient, "---> RENDERING PATIENT")
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 

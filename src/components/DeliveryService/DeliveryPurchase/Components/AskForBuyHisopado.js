@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom"
-import { FaMapMarker, FaBriefcaseMedical, FaClock, FaCheckCircle, FaCartPlus} from "react-icons/fa"
+import { FaCartPlus} from "react-icons/fa"
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
-import omsImg from "../../../../assets/img/oms.svg"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
 import db from "../../../../config/DBConnection";
@@ -55,19 +54,26 @@ export default function AskForBuyHisopado() {
             }
             await axios.post(create_delivery, data, config)
                 .then(async res => {
-                    await db.firestore().collection('events/requests/delivery')
-                    .where('patient.uid', '==', patient.core_id)
-                    .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
-                    .get()
-                    .then(async res => {
-                        res.forEach(services => {
-                            let document = {...services.data(), id: services.id}
-                            dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+                    setTimeout(() => {
+                        db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                        .get()
+                        .then(async query => {
+                            console.log(query, query.data())
+                            let data = {
+                                ...query.data(),
+                                id: res.data.id
+                            }
+                            localStorage.setItem("multiple_clients", JSON.stringify([data]))
+                            dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
+                            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+    
                         })
-                    })
-                    dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+                    }, 1500)
                 })
-                .catch(err => swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error"))
+                .catch(err =>{ 
+                    swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
+                    console.log(err)
+                })
         } else {
             dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
         }

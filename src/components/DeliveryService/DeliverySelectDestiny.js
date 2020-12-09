@@ -11,14 +11,15 @@ import swal from 'sweetalert';
 import Axios from 'axios';
 import Loader from '../GeneralComponents/Loading';
 import Marker from '../global/Marker';
-import { mobility_address, node_patient } from '../../config/endpoints';
+import { mobility_address } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
-import MobileModal from "../GeneralComponents/Modal/MobileModal"
 import '../../styles/deliveryService/selectDestiny.scss';
+import db from "../../config/DBConnection";
+
 
 const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 	const dispatch = useDispatch();
-	const { ws, incidente_id } = useParams();
+	const { ws } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
 	const [mapApi, setMapApi] = useState(undefined);
 	const [geocoder, setGeocoder] = useState(undefined);
@@ -37,6 +38,28 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 	const [userGeoguessedAddress, setUserGeoguessedAddress] = useState("")
 	const history = useHistory()
 
+	useEffect(() => {
+        if(user.dni) {
+            getCurrentService()
+        }
+    }, [user])
+
+    const getCurrentService = async () => {
+        let deliveryInfo = []
+        await db.firestore().collection('events/requests/delivery')
+        .where('patient.uid', '==', user.core_id)
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
+        .get()
+        .then(async res => {
+            res.forEach(services => {
+                let document = {...services.data(), id: services.id}
+                deliveryInfo.push(document)
+                dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+            })
+        })
+        dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
+	}
+	
 	useEffect(() => {
 		if(mapApi && mapInstance){
 			async function fetchData() {
