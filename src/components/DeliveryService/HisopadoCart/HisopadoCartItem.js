@@ -135,16 +135,16 @@ const HisopadoCartItem = ({patient, index}) => {
             </div>
             <div className={`HisopadoCart__userData ${openUser ? 'open' : ''}`}>
                 <div className={`${fullnameError ? 'error' : ''}`}>
-                    <label>Nombre y apellido</label>
+                    <label>Nombre y Apellido</label>
                     <input 
                         type="text"
-                        required
                         inputMode="text" 
                         value={data.fullname || ''} 
                         onChange={(e) => {
                             setFullnameError(false);
                             setData({...data, title: e.target.value, fullname: e.target.value});
                         }}
+                        required
                     />
                 </div>
 

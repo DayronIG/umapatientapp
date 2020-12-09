@@ -112,7 +112,7 @@ const WhenScreen = (props) => {
 					</div>
 				</MobileModal>
 			)}
-			{!!modal && (
+			{modal && (
 				<MobileModal title='Comentarios' callback={() => dispatch({ type: 'TOGGLE_DETAIL', payload: false })}>
 					<Comments />
 				</MobileModal>

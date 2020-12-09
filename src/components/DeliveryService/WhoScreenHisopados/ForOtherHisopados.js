@@ -139,7 +139,7 @@ const Register = props => {
         
           <div className="inputContainer">
           <label className='form-label'>Nombre y Apellido</label>
-          <input className="form-input" id="name" placeholder="Juan Perez" required
+          <input className="form-input" id="name" placeholder="Nombre y Apellido" required
             autoComplete="on" type="text"
             onChange={e => dispatch({ type: "USER_FIRST_FULLNAME", payload: e.target.value })} />
             </div>

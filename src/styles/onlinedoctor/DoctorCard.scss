@@ -170,9 +170,6 @@
     }
     .feedback-stars {
         margin-bottom: 5px;
-        path {
-            fill: $uma-primary !important;
-        }
     }
     .feedback-no-comments {
         position: absolute;
@@ -188,6 +185,7 @@
         margin-bottom: 10px;
         text-align: center;
         font-size: 1.3rem;
+        border-radius: 10px;
     }
     .feedback-date {
         font-size: 0.7rem;

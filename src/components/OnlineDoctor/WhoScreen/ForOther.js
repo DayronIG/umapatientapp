@@ -101,9 +101,9 @@ const RegisterDependant = props => {
       <form className="registerWrapper register-form" onSubmit={e => handleSignUp(e, dependant)}>
         <div className="registerContainerProps">
           <label className='form-label' htmlFor='name'>
-            Nombre y apellido
+            Nombre y Apellido
           </label>
-          <input className="form-input" id="name" placeholder="Nombre y apellido" required type="text"
+          <input className="form-input" id="name" placeholder="Nombre y Apellido" required type="text"
             onChange={e => setDependant({ ...dependant, fullname: e.target.value })} value={dependant.fullname} />
           <label className='form-label' htmlFor='dni'>
             Identificación, cédula o DNI

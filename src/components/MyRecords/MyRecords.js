@@ -30,8 +30,8 @@ const MyRecords = () => {
     return (
         <>
             <GenericHeader>Mi historia</GenericHeader>
+            <Backbutton />
             <div className="myhistory-container">
-                <Backbutton />
                 <div className="text-center tab-container">
                     <button className={tab === patient.fullname ? "active btn btn-secondary" : "btn btn-secondary"}
                             onClick={() => selectBeneficiarieMr("owner")}> {patient.fullname} </button>

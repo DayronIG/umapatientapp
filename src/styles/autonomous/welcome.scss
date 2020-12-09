@@ -64,12 +64,12 @@
             .tags-container {
                 .tag {
                     color: $white-color;
-                    background: $secondary-color;
+                    background: $uma-secondary;
                     font-size: 1rem;
                     border-radius: $regular-borders;
-                    line-height: 1rem;
-                    margin: 5px 3px 0 0;
-                    padding: 12px 8px;
+                    margin: 5px 5px 0 0;
+                    padding: 5px 8px;
+                    max-height: 15px;
                     text-align: center;
                 }
             }

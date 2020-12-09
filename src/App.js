@@ -62,7 +62,6 @@ import DeliveryResults from "./components/DeliveryService/DeliveryResults";
 import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
 import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart'
 import Referred from "./components/DeliveryService/Referred"
-import Derived from './components/OnlineDoctor/Derived/Derived';
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import Install from './views/Install.js';
 import RegisterSuccess from './views/RegisterSuccess.js';
@@ -111,7 +110,6 @@ function App(props) {
 				<PrivateRoute exact path='/:dni/onlinedoctor/questions' component={Questions} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/reason' component={Reason} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/queue' component={AttQueue} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/derived' component={Derived} />
 				<PrivateRoute exact path='/:dni/onlinedoctor/attention/:token?' component={CallContainer} />
 				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}

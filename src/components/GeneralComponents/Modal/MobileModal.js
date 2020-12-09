@@ -12,9 +12,11 @@ const MobileModal = (props) => {
       <div className={`mobile-modal ${props.noScroll? "no-scroll": ""} ${props.surveyHisopados ? 'hisopados' : ''} ${props.isWellness ? 'isWellness' : ''}`}>
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
-            if (props.callback) props.callback();
-            // dispatch({ type: 'HANDLE_MODAL', payload: false })
-            dispatch({ type: 'TOGGLE_DETAIL', payload: false });
+            if (props.callback) {
+              props.callback();
+            } else {
+              dispatch({ type: 'TOGGLE_DETAIL', payload: false });
+            }
           }}>
             <MdClose />
           </div>

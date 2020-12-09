@@ -56,13 +56,6 @@ const WhenScreen = (props) => {
 					setParents(userParents);
 				})
 				.catch(() => setParents([]));
-			getPendingTraslate(user.dni)
-				.then((res) => {
-					if (res === true) {
-						props.history.push('./derived');
-					}
-				})
-				.catch();
 		}
 	}, [user]);
 
