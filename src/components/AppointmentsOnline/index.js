@@ -40,7 +40,8 @@ const OnlineSpecialist = ({ match, history }) => {
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
 				} else if (social_work.includes(user.corporate_norm) ||
-						social_work.includes(user.corporate?.toUpperCase())
+						social_work.includes(user.corporate?.toUpperCase()) || 
+						plan.my_specialist === true
 				) {
 					redirect = true;
 				}

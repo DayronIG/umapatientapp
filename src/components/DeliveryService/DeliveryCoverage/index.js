@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { BackButton } from '../../GeneralComponents/Headers';
+import { useHistory, useParams } from 'react-router-dom';
+import { BackButton, GenericHeader } from '../../GeneralComponents/Headers';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded } from '../../Utils/mapsApiHandlers';
 import { IoMdArrowRoundBack } from 'react-icons/io'
@@ -10,9 +10,9 @@ import { getDocumentFB } from '../../Utils/firebaseUtils';
 
 const HisopadosCoverage = () => {
     const history = useHistory();
+    const { ws } = useParams();
     const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
     const allCoords = useSelector(state => state.deliveryService.coverage)
-    const { ws } = useSelector(state => state.user)
 
     const onGoogleApiLoaded = async (map, maps) => {
         handleApiLoaded(setUserLocation);
@@ -43,7 +43,11 @@ const HisopadosCoverage = () => {
     
     return (
         <div className="coverage__container">
-             <BackButton inlineButton={true} customTarget={ws} action={()=>history.push(`/hisopado/${ws}`)} />
+            {
+                ws ?
+                <BackButton inlineButton={true} customTarget={ws} action={()=>history.push(`/hisopado/${ws}`)} /> :
+                <GenericHeader />
+            }
             <div className="coverage__map">
                 {/* <button className="coverage__back" onClick={()=> history.push(`/hisopado/${ws}`)}>
                     <IoMdArrowRoundBack />
