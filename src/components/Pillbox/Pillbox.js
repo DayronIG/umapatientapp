@@ -105,12 +105,10 @@ const Pillbox = props => {
     }
 
     const postReminder = () => {
-        console.log("HERE POSTING THIS: ", newReminder)
         axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     const updateReminder = () => {
-        console.log("HERE PATCHING THIS: ", newReminder)
         axios.patch("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
@@ -187,6 +185,7 @@ const Pillbox = props => {
                     <FiEdit3 className="edit__icon"
                     onClick={() => {
                             setEditModal(true)
+                            setPersonalizedShifts(recipe.personalized)
                             setReminderToEdit(recipe)
                             setNewReminder(recipe)
                             setReminderToEditIndex(recipes.indexOf(recipe))
@@ -207,7 +206,7 @@ const Pillbox = props => {
     return (
         <div className="pillbox">
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
-        {reminderModal && <Modal
+            {reminderModal && <Modal
           callback={() => {
               setReminderModal(false)
               setNewReminder({})
@@ -282,7 +281,15 @@ const Pillbox = props => {
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
-                            <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
+                            <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} 
+                            onChange={(e) => {
+                            if(e.target.value === "personalized") {
+                                setPersonalizedShifts(true)
+                                editReminder("personalized", true)
+                            } else {
+                                setPersonalizedShifts(false)
+                                editReminder("personalized", false)
+                            }}}>
                                 <option value="every_day">Todos los dias</option>
                                 <option value="personalized">Horarios personalizados</option>
                             </select>
@@ -316,16 +323,14 @@ const Pillbox = props => {
                     </div>
                     {recipesList()}
                 </div>
-                </div>
-                <div className="pillbox__addContainer"
-                onClick={() => setReminderModal(true)}>
-              <label
-                className="pillbox__btnContainer">
-                <button className="pillbox__addBtn">+</button>
-                <label className="pillbox__addMsg">Agregar recordatorio</label>
-              </label>
             </div>
+            <div className="pillbox__addContainer" onClick={() => setReminderModal(true)}>
+                <label className="pillbox__btnContainer">
+                    <button className="pillbox__addBtn">+</button>
+                    <label className="pillbox__addMsg">Agregar recordatorio</label>
+                </label>
             </div>
+        </div>
     )
 
 }
