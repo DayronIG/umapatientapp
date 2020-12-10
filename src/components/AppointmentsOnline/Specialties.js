@@ -84,8 +84,8 @@ const Specialties = (props) => {
 	};
 
 	const handleClick = (sp, active) => {
-		const speciality = sp
-		if (speciality !== 'pediatria' && agePediatry) {
+		const specialty = sp
+		if (specialty !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
 			return;
 		}
@@ -93,10 +93,12 @@ const Specialties = (props) => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		pushPage(speciality);
+		props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
+		// pushPage(speciality);
 	};
 
-	const pushPage = (specialty) => {
+// Temp disabled the chats
+/* 	const pushPage = (specialty) => {
 		if (
 			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
@@ -110,7 +112,7 @@ const Specialties = (props) => {
 		} else {
 			return props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
 		}
-	};
+	}; */
 
 	return (
 		<>
