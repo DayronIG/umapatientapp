@@ -95,9 +95,8 @@ const Specialties = () => {
 		return objeto;
 	};
 
-	const handleClick = (sp, active) => {
-		const specialty = sp?.split('online_')[1];
-		if (specialty !== 'pediatria' && agePediatry) {
+	const handleClick = (value, active) => {
+		if (value !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
 			return;
 		}
@@ -105,7 +104,7 @@ const Specialties = () => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		return history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
+		return history.push(`/appointmentsonline/${value}/calendar/${dni}`);
 
 		// pushPage(speciality);
 	};
@@ -134,7 +133,7 @@ const Specialties = () => {
 					<li
 						key={value}
 						className={`listSpecialties__list--item ${active && 'active'}`}
-						onClick={() => handleClick(value, active)}>
+						onClick={() => handleClick(label, active)}>
 						<span>{label}</span>
 					</li>
 				))}
