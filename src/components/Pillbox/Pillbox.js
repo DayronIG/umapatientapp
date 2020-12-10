@@ -20,8 +20,10 @@ const Pillbox = props => {
     const [reminderModal, setReminderModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
     const [reminderToEdit, setReminderToEdit] = useState({});
+    const [reminderToEditIndex, setReminderToEditIndex] = useState(0);
     const history = useHistory()
     const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1" //CAMBIOSANTI
+    const patient = useSelector(state => state.user)
     // const [recipes, setRecipes] = useState([])
     const [personalizedShifts, setPersonalizedShifts] = useState(false)
     const [isValid, setIsValid] = useState("")
@@ -30,7 +32,7 @@ const Pillbox = props => {
 	const token = useSelector(state => state.userActive.token)
     const [newReminder, setNewReminder] = useState(
         {
-            uid: "",
+            uid: uid,
             dose: 0,
             quantity_days: 0,
             medicine: "",
@@ -90,12 +92,11 @@ const Pillbox = props => {
     ])
 
     const setRecipesFromFirebase = () => {
-        const arrOfRecipies = []
         DB
         .firestore()
         .collection(`/user/${uid}/pillbox`)
-        .get()
-        .then((snapshot) => {
+        .onSnapshot((snapshot) => {
+            const arrOfRecipies = []
 			snapshot.forEach((doc) => {
                 arrOfRecipies.push({...doc.data(), pillbox_id: doc.id})
             });
@@ -103,13 +104,14 @@ const Pillbox = props => {
         });
     }
 
-    useEffect(() => {
-        setRecipesFromFirebase()
-    }, [])
-
     const postReminder = () => {
-        console.log("HERE POSTING THIS: ", token)
+        console.log("HERE POSTING THIS: ", newReminder)
         axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
+    }
+
+    const updateReminder = () => {
+        console.log("HERE PATCHING THIS: ", newReminder)
+        axios.patch("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     useEffect(() => {
@@ -133,16 +135,19 @@ const Pillbox = props => {
     useEffect(() => {
         if(!(!!newReminder.medicine)){setIsValid("Medicina")}
         else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
-        else if(!(!!newReminder.quantity_days)){setIsValid("Semanas")}
+        else if(!(!!newReminder.quantity_days)){setIsValid("Días")}
         else { setIsValid("") }
     }, [newReminder])
 
-    const handleSaveReminder = () => {
-        console.log(newReminder)
+    const handleSaveReminder = (edit) => {
         if(!isValid){
-            postReminder()
+            if(edit){
+                updateReminder()
+            } else {
+                postReminder()
+                setRecipes([...recipes, {...newReminder, personalized: personalizedShifts}])
+            }
             deleteReminder(reminderToEdit)
-            setRecipes([...recipes, {...newReminder, personalized: personalizedShifts}])
             setReminderModal(false)
             setEditModal(false)
             setReminderToEdit({})
@@ -152,6 +157,7 @@ const Pillbox = props => {
         }
     }
 
+    
     const deleteReminder = (recipe) => {
         var filteredRecipes = recipes.filter((el)=> el !== recipe)
         setRecipes(filteredRecipes)
@@ -160,6 +166,10 @@ const Pillbox = props => {
     const editReminder = (field, value) => {
         setNewReminder({...reminderToEdit, [field]: value})
     }
+
+    useEffect(() => {
+        setRecipesFromFirebase()
+    }, [reminderModal, editModal])
 
     const recipesList = () => {
         const recipeList = [];
@@ -179,6 +189,7 @@ const Pillbox = props => {
                             setEditModal(true)
                             setReminderToEdit(recipe)
                             setNewReminder(recipe)
+                            setReminderToEditIndex(recipes.indexOf(recipe))
                     }}/>
                     <FiTrash className="delete__icon"
                     onClick={() => deleteReminder(recipe)}/>
@@ -189,13 +200,9 @@ const Pillbox = props => {
         return recipeList
     }
 
-    useEffect(()=>{
-        console.log("ACA", recipes)
-    },[recipes])
-
     useEffect(() => {
         setPersonalizedShifts(reminderToEdit?.personalized)
-    }, [reminderToEdit])
+    }, [])
 
     return (
         <div className="pillbox">
@@ -221,7 +228,7 @@ const Pillbox = props => {
                             <input className="form-control" defaultValue={1} type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
                         </div>
                         <div className='inputNumber__container'>
-                            <label>Semanas:</label>
+                            <label>Días:</label>
                             <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_days: e.target.value})}/>
                         </div>
                         <div className='inputFreq__container'>
@@ -244,7 +251,7 @@ const Pillbox = props => {
 
                         <button
                             className='save__button btn-blue-lg btn'
-                            onClick={() => handleSaveReminder()}
+                            onClick={() => handleSaveReminder(false)}
                             >
                             Guardar
                         </button>
@@ -270,7 +277,7 @@ const Pillbox = props => {
                             <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
                         </div>
                         <div className='inputNumber__container'>
-                            <label>Semanas:</label>
+                            <label>Días:</label>
                             <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_days} onChange={(e) => editReminder("quantity_days", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
@@ -293,7 +300,7 @@ const Pillbox = props => {
 
                         <button
                             className='save__button btn-blue-lg btn'
-                            onClick={() => handleSaveReminder()}
+                            onClick={() => handleSaveReminder(true)}
                             >
                             Guardar
                         </button>
