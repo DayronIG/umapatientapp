@@ -259,9 +259,9 @@ const Register = props => {
                             <div className='d-flex flex-wrap'>
                             <div className="form__spanWrapper">
                                 <label className='form-label' htmlFor='name'>
-                                    Nombre y apellido* 
+                                    Nombre y Apellido* 
                                 </label>
-                                <input className='form-input' id='name' placeholder='Nombre'
+                                <input className='form-input' id='name' placeholder='Nombre y Apellido'
                                 autoComplete='off' name='nombre' type='text'onChange={handleInput('USER_FIRST_FULLNAME')} />
                                  {errors.nombre && (
                                     <p className="form__validation--error">x Debe ingresar su nombre y apellido</p>

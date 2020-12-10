@@ -32,7 +32,9 @@ const Wellness = props => {
   return (
     <>
       {modalFile.state && (
-        <MobileModal callback={() => {
+        <MobileModal 
+        isWellness 
+        callback={() => {
           setModalFile(!modalFile.state)
           dispatch({type: "TOGGLE_DETAIL", payload: false})}}>
           <FileService
@@ -80,39 +82,6 @@ const Wellness = props => {
               >
                 <div className="markers__item--icon active__marker">
                   <FontAwesomeIcon icon={faDeaf} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("lungs")}
-              >
-                <div className="markers__item--icon">
-                  <img src={lungs} alt="Respiratorias" />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("allergies")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faAllergies} />
-                  <div className="markers__item--info">
-                    <FontAwesomeIcon icon={faInfo} />
-                  </div>
-                </div>
-              </li>
-              <li
-                className="markers__item"
-                onClick={() => biomarkerHandler("laringitis")}
-              >
-                <div className="markers__item--icon">
-                  <FontAwesomeIcon icon={faBriefcaseMedical} />
                   <div className="markers__item--info">
                     <FontAwesomeIcon icon={faInfo} />
                   </div>

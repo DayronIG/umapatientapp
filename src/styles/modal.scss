@@ -30,7 +30,7 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        background: $primary-color;
+        background: $uma-primary;
         border-radius: 50%;
         height: 25px;
         width: 25px;
@@ -38,7 +38,7 @@
       }
       .modal-head {
         padding: 15px;
-        background-color: $deep-blue-b;
+        background-color: $uma-primary;
         color: $white-color;
         font-weight: bold;
         .modalClose {
@@ -70,6 +70,10 @@
 
 .pac-container {
   z-index: 9999;
+}
+
+.isWellness{
+  margin-left: 5%;
 }
 
 .mobile-modal {
@@ -162,11 +166,9 @@
 
 .mobile-modal.hisopados {
   border-radius: 15px;
-  padding: 20px;
-  height: 90vh;
   top: 5vh;
   max-height: 90vh;
-
+  width: 90%;
   .modalContent {
     display: flex;
     flex-direction: column;
@@ -262,5 +264,4 @@
     color: #D80000;
     font-weight: 600;
   }
-
 }

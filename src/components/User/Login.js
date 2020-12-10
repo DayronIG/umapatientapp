@@ -34,20 +34,24 @@ const SignIn = props => {
         let timeout = setTimeout(() => {
             setSentWs(false)
         }, 2000)
-        if (ws && !props.history.location.pathname.includes("login")) {
+        if (ws && !history.location.pathname.includes("login")) {
             dispatch({ type: 'LOADING', payload: true })
             const validPhone = checkNum(ws)
-            setWs(validPhone)
-            axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
-                .then((res) => {
-                    if(res.data.redirect === 'register') {
-                        props.history.replace(`/register/${validPhone}`)
-                    } else {
-                        props.history.replace(`/login/${validPhone}`)
-                    }
-                })
-                .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
-                .finally(() =>  dispatch({ type: 'LOADING', payload: false }))
+            if(ws === "undefined" || validPhone === "NaN" || isNaN(validPhone)) {
+                history.push('/login')
+            } else {
+                setWs(validPhone)
+                axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
+                    .then((res) => {
+                        if(res.data.redirect === 'register') {
+                            history.replace(`/register/${validPhone}`)
+                        } else {
+                            history.replace(`/login/${validPhone}`)
+                        }
+                    })
+                    .catch(err => swal('Ocurrió un error en el Login', `${err}`, 'warning'))
+            }
+            dispatch({ type: 'LOADING', payload: false })
         }
         return () => clearTimeout(timeout)
     }, [])
@@ -131,6 +135,9 @@ const SignIn = props => {
         } else {
             const data = { ws }
             const headers = { 'Content-type': 'application/json'  }
+            if(ws === "NaN" || ws === "undefined") {
+                props.history.push(`/login`)
+            }
             await axios.get(`${node_patient}/exists/${ws}`, {}, config)
                 .then(async (res) => {
                     if(res.data.redirect === 'register') {

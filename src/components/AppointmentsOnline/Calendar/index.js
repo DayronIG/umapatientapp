@@ -56,13 +56,15 @@ const MyCalendar = () => {
 			let specialty = '', queryCondition = '';
 			if (condition.match(regexWord)) {
 				specialty = spacesToUnderscore(condition);
-			} else {
-				specialty = await getDoctor(condition).then((r) => r.matricula_especialidad);
+			} else if (condition) {
+				specialty = await getDoctor(condition).then((r) => {
+					return r.matricula_especialidad
+				});
 			}
 			if (condition?.match?.(regexNumbers)) {
 				queryCondition = condition;
-			} else if (social_work.includes(patient.corporate_norm)) {
-				queryCondition = [patient.corporate_norm];
+			} else {
+				queryCondition = await getCorporates()
 			}
 			let appoints = await getFreeAppointmentsCustom(yearMonth, `online_${specialty}`, queryCondition);
 			if (appoints.length === 0) {
@@ -101,6 +103,15 @@ const MyCalendar = () => {
 			console.log(error);
 		}
 	};
+
+	function getCorporates() {
+		let corporates = []
+		corporates.push(patient.corporate_norm.toUpperCase())
+		patient.coverage.forEach(element => {
+			corporates.push(element.plan.toUpperCase())
+		})
+		return corporates
+	}
 
 	const newToolbar = () => {
 		return (
@@ -175,7 +186,7 @@ const MyCalendar = () => {
 					<div className='calendar__legend'>
 						<FontAwesomeIcon icon={faUserMd} /> Turnos disponibles este día
 					</div>
-					<FooterBtn text='Volver' callback={() => history.replace(`/${dni}/appointmentsonline/specialty`)} />
+					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${dni}`)} />
 				</>
 			) : (
 					<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />

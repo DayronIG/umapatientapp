@@ -4,11 +4,11 @@ import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { CovidSteps } from './CovidSteps';
 import Steper from './Steper';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const SelectedTracking = ({setTextDetail}) => {
     const history = useHistory()
-    const {patient} = useSelector(state=> state.queries)
+    const patient = useSelector(state=> state.user)
     const umacare = useSelector(state=> state.umacare)
     const [color, setColor] = useState('');
     const [percent, setPercent] = useState(0);
@@ -73,6 +73,11 @@ const SelectedTracking = ({setTextDetail}) => {
         }
     }
 
+    const goToUmacare = () => {
+        console.log(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`)
+        history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`)
+    }
+
     return(
         <div className="tracking__container">
             <Steper percent={percent} color={color} result={result} title={steperTitle} />
@@ -85,8 +90,7 @@ const SelectedTracking = ({setTextDetail}) => {
                 <h3>Actualizar mi estado</h3>
                 <p>Realiza el test diario para actualizar tu estado de salud</p>
                 <button type="button"
-                        onClick={() => {
-                        history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`) }}>
+                        onClick={() => goToUmacare()}>
                     Realizar test
                 </button>
             </div>}

@@ -250,10 +250,10 @@ const Register = props => {
                         <form className='registerWrapper register-form mt-2' onSubmit={e => handleSignUp(e)}>
                             <div className='col-sm-12'>
                                 <label className='form-label' htmlFor='name'>
-                                    Nombre y apellido
+                                    Nombre y Apellido
                                 </label>
                                 <input
-                                    className='form-input' id='name' placeholder='Nombre'
+                                    className='form-input' id='name' placeholder='Nombre y Apellido'
                                     autoComplete='on' type='text'
                                     onChange={e => dispatch({ type: 'USER_FIRST_FULLNAME', payload: e.target.value })}
                                     required

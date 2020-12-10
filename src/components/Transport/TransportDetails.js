@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
-import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
+import { mapConfig, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
+import { renderMarker, calculateFirstPoint, renderTitle, renderTimeMessage, calculateCenter } from '../Utils/transportUtils';
 import { getTransportService } from '../../store/actions/transportActions';
-import { useParams } from 'react-router-dom';
-import useInterval from '../Hooks/useInterval';
+import { useParams, useHistory } from 'react-router-dom';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import Marker from '../global/Marker';
 
 const TransportTracking = () => {
-	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const { service } = useSelector(state => state.transport);
+	const user = useSelector(state => state.user);
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
-	const { dni, incidente_id } = useParams();
+	const [openTravel, setOpenTravel] = useState(false);
+	const [eta, setEta] = useState('No hay datos disponibles');
+	const params = useParams();
+	const history = useHistory();
+	// const [remis, setRemis] = useState({});
 
 	function setMapFunctions({ map, maps }) {
 		const dirServ = new maps.DirectionsService();
@@ -19,62 +25,120 @@ const TransportTracking = () => {
 		dirRenderer.setMap(map);
 		setDrawRoute(() => routeDrawer(maps, dirServ, dirRenderer));
 		setMapBounder(() => mapBounds(map, maps));
-		handleApiLoaded(setUserLocation);
 	}
 
+
+
 	useEffect(() => {
-		const unsubscribe = getTransportService(incidente_id, dni);
+		if (service?.status_tramo === 'FINISHED') {
+			history.replace(`/${user.ws}/transportRating/${params.assignation_id}`);
+		}
+	}, [service]);
+
+	useEffect(() => {
+		let unsubscribe;
+		if (user?.corporate_norm) {
+			unsubscribe = getTransportService({ ...params, corporate: user.corporate_norm });
+		}
 		return () => {
 			if (typeof unsubscribe === 'function') unsubscribe();
 		}
-	}, []);
-
-	useInterval(() => {
-		if (typeof drawRoute === 'function') {
-			drawRoute(
-				{
-					lng: service.request?.geo_inicio?.lon,
-					lat: service.request?.geo_inicio?.lat
-				},
-				{
-					lat: service.request?.geo_fin?.lat,
-					lng: service.request?.geo_fin?.lon
-				}
-			);
-		}
-	}, 4000);
+	}, [user]);
 
 	useEffect(() => {
-		if (typeof mapBounder === 'function') {
+		if (typeof mapBounder === 'function' && service?.current_position_remis) {
 			mapBounder([
+				calculateFirstPoint(service),
 				{
-					lng: service.request?.geo_inicio?.lon,
-					lat: service.request?.geo_inicio?.lat
-				},
-				{
-					lat: service.request?.geo_fin?.lat,
-					lng: service.request?.geo_fin?.lon
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
 				}
 			]);
 		}
 	}, [mapBounder, service]);
 
+	useEffect(() => {
+		if (typeof drawRoute === 'function' && service?.current_position_remis) {
+			drawRoute(
+				calculateFirstPoint(service),
+				{
+					lat: service.current_position_remis?.lat,
+					lng: service.current_position_remis?.lon
+				}
+			).then(eta => setEta(eta));
+		}
+	}, [drawRoute, service]);
+
 	return (
 		<div>
 			<div className='transportDetails__map'>
 				<GoogleMapReact
-					{...mapConfig({ lat: userLocation.lat, lng: userLocation.lng })}
+					{...mapConfig(calculateCenter(service))}
 					onGoogleApiLoaded={setMapFunctions}
-				/>
+				>
+					{service?.current_position_remis?.lat && (
+						<Marker
+							lat={service?.current_position_remis?.lat || 0}
+							lng={service?.current_position_remis?.lon || 0}
+							text='Ubicacion del remis' type='remis'
+						/>
+					)}
+					<Marker {...renderMarker(service)} />
+				</GoogleMapReact>
 			</div>
 			<div className='transportDetails__container'>
-				<ul>
-					<li><span>Origen:</span> {service.request?.geo_inicio.address}.</li>
-					<li><span>Destino:</span> {service.request?.geo_fin.address}.</li>
-					<li><span>Notas:</span> {service.request?.notas}.</li>
-					<li><span>Remis:</span>  {service.provider_fullname}.</li>
-					<li><span>Estatus:</span> {service.current_state}</li>
-				</ul>
+				<h4 className='transportDetails__container--title'>{renderTitle(service?.status_tramo)}</h4>
+				<p>Tiempo estimado: {eta ? eta : 'No hay datos disponibles.'}</p>
+				<div className='transportDriver'>
+					<div className='transportDriverData'>
+						<p>Conductor: {service?.provider_fullname || ''}</p>
+						<p>CUIT: {service?.provider_id || ''} </p>
+					</div>
+				</div>
+				<div className='openContent'>
+					{openTravel ?
+						<button onClick={() => setOpenTravel(!openTravel)}><FaChevronUp /></button> :
+						<button onClick={() => setOpenTravel(!openTravel)}>Ver detalles <FaChevronDown /></button>
+					}
+				</div>
+				{openTravel &&
+					<ul className='driverUl'>
+						<li className='originLi'>
+							<p className='originP'>Origen:</p>
+							<p className='originText'>{service?.request?.geo_inicio.address}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Destino:</p>
+							<p className='originText'>{service?.request?.geo_fin.address}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>{renderTimeMessage(service?.trip_type)}:</p>
+							<p className='originText'>{service?.hora}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Notas:</p>
+							<p className='originText'>{service?.request?.notas || 'No hay notas'}</p>
+						</li>
+						<li className='originLi'>
+							<p className='originP'>Datos del vehíulo</p>
+							{service?.vehicle ? (
+								<>
+									<p className='originText'>Modelo: {service?.vehicle?.model || '-'}</p>
+									<p className='originText'>Patente: {service?.vehicle?.patente || '-'}</p>
+									<p className='originText'>Color: {service?.vehicle?.color_vehiculo || '-'}</p>
+									<p className='originText'>Año: {service?.request?.fecha_vehiculo || '-'}</p>
+
+
+								</>
+							) : (
+									<>
+										<p className='originText'>{'No hay datos'}</p>
+									</>
+
+								)}
+						</li>
+					</ul>
+				}
 			</div>
 		</div>
 	);

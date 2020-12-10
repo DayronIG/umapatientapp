@@ -4,20 +4,19 @@ import { useDispatch } from 'react-redux';
 import { MdClose } from 'react-icons/md'
 import '../../../styles/modal.scss';
 
-/* 
-<MobileModal hideCloseButton="" title="" children="" />
-*/
-
 const MobileModal = (props) => {
   const dispatch = useDispatch()
   return (
     <div className="modalContainer">
       <div className="modal-back"></div>
-      <div className={`mobile-modal ${props.noScroll? "no-scroll": ""} ${props.surveyHisopados ? 'hisopados' : ''}`}>
+      <div className={`mobile-modal ${props.noScroll? "no-scroll": ""} ${props.surveyHisopados ? 'hisopados' : ''} ${props.isWellness ? 'isWellness' : ''}`}>
         {props.hideCloseButton ? '' :
           <div className="modal-close" onClick={() => {
-            if (props.callback) props.callback();
-            dispatch({ type: 'HANDLE_MODAL', payload: false })
+            if (props.callback) {
+              props.callback();
+            } else {
+              dispatch({ type: 'TOGGLE_DETAIL', payload: false });
+            }
           }}>
             <MdClose />
           </div>

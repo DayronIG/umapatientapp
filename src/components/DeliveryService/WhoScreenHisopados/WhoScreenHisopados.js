@@ -56,20 +56,13 @@ const WhenScreen = (props) => {
 					setParents(userParents);
 				})
 				.catch(() => setParents([]));
-			getPendingTraslate(user.dni)
-				.then((res) => {
-					if (res === true) {
-						props.history.push('./derived');
-					}
-				})
-				.catch();
 		}
 	}, [user]);
 
 	function selectWho(user) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/${user.dni}/appointmentsonline/`);
+			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
 			props.history.replace(`/${user.dni}/onlinedoctor/when`);
 		}

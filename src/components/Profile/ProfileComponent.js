@@ -7,7 +7,7 @@ import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms
 import Version from '../GeneralComponents/Version';
 import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import '../../styles/profile.scss';
 import Loading from '../GeneralComponents/Loading';
 import {Loader} from '../GeneralComponents/Loading';

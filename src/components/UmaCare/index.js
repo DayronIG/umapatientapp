@@ -27,11 +27,12 @@ const UmaCare = _ => {
 
   const carouselProperties = {
     autoplay: true,
-    autoplayInterval: 3000,
+    autoplayInterval: 10000,
     wrapAround: true,
     cellSpacing: 10,
     renderCenterLeftControls: null,
     renderCenterRightControls: null,
+    speed: 10000
   }
 
 

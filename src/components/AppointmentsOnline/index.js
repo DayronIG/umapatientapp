@@ -13,6 +13,7 @@ const docTypesUP = [2, 3, 4, 5, 7, 1]; // Ordenados por prioridad: DNI, LE, LC, 
 const OnlineSpecialist = ({ match, history }) => {
 	const user = useSelector((state) => state.user);
 	const { loading } = useSelector((state) => state.front);
+	const { plan } = useSelector((state) => state.queries.plan);
 	const { dni } = match.params;
 	const dispatch = useDispatch();
 
@@ -24,6 +25,10 @@ const OnlineSpecialist = ({ match, history }) => {
 		async () => {
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
+			if(plan && plan.my_specialist === false) {
+				dispatch({ type: 'LOADING', payload: false });
+				return false
+			}
 			try {
 				const medicRecs = await getUserMedicalRecord(dni, user.ws);
 				let redirect = false;
@@ -35,7 +40,8 @@ const OnlineSpecialist = ({ match, history }) => {
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
 					redirect = true;
 				} else if (social_work.includes(user.corporate_norm) ||
-						social_work.includes(user.corporate?.toUpperCase())
+						social_work.includes(user.corporate?.toUpperCase()) || 
+						plan.my_specialist === true
 				) {
 					redirect = true;
 				}
@@ -49,7 +55,7 @@ const OnlineSpecialist = ({ match, history }) => {
 						}
 					});
 					if (hasAppoint) {
-						return history.push(`/${dni}/appointmentsonline/history`);
+						return history.push(`/appointmentsonline/pending/${dni}`);
 					}
 				}
 				render(redirect);
@@ -63,9 +69,9 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const render = (redirect) => {
 		if (user.first_time && user.first_time.length >= 1) {
-			history.push(`/${dni}/appointmentsonline/${user.first_time}/calendar`);
+			history.push(`/appointmentsonline/${user.first_time}/calendar/${dni}`);
 		} else if (redirect) {
-			history.push(`/${dni}/appointmentsonline/specialty`);
+			history.push(`/appointmentsonline/specialty/${dni}`);
 		} else {
 			// console.log('No')
 		}

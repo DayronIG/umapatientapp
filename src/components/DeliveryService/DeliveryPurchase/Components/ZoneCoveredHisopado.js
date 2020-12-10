@@ -73,6 +73,9 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
                         </>
                         :
                         <>
+                        {
+                        isModal && <br/>
+                        }
                             <img src={hisopadoCross} alt="delivery_cross" className="delivery_cross hisopados_cross" />
                             <p className="delivery-title">¡Ups!</p>
                             <p>Esta zona aún no cuenta con cobertura</p>

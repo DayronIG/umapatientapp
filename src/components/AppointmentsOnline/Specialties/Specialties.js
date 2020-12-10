@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory, useParams} from 'react-router-dom';
-import specialties from '../../../config/specialties';
+// import specialties from '../../../config/specialties';
 import DB from '../../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
@@ -34,38 +34,51 @@ const Specialties = () => {
 
 	useEffect(() => {
 		if (user.corporate_norm) {
-			dispatch({ type: 'LOADING', payload: true });
-			Promise.all(specialties.map((specialty) => getSpecialties(specialty))).then((data) => {
-				let ordenado = data.sort((a, b) => b.active - a.active);
-				setArraySpecialties(ordenado);
-			});
+			db.doc(`/parametros/specialties`).get().then(res => {
+				Promise.all(res.data().specialties_list.map((specialty) => getSpecialties(specialty))).then((data) => {
+					let ordenado = data.sort((a, b) => b.active - a.active);
+					setArraySpecialties(ordenado);
+				});
+			})
 		}
 	}, [user]);
 
-	const getSpecialties = async ({ name, label }) => {
+	function getCorporates() {
+		let corporates = []
+		corporates.push(user.corporate_norm.toUpperCase())
+		user.coverage.forEach(element => {
+			corporates.push(element.plan.toUpperCase())
+		})
+		return corporates
+	}
+
+	const getSpecialties = async ({ value, label }) => {
+		dispatch({ type: 'LOADING', payload: true });
 		let currentMonth = [],
 			nextMonth = [];
+		let corporates = await getCorporates()
 		currentMonth = await db
-			.collection(`/assignations/${name}/${mesActual}`)
-			.where('social_work', 'array-contains', user.corporate_norm.toUpperCase())
+			.collection(`/assignations/online_${value}/${mesActual}`)
+			.where('social_work', 'array-contains-any', corporates)
 			.where('state', '==', 'FREE')
 			.get();
 		nextMonth = await db
-			.collection(`/assignations/${name}/${mesSiguiente}`)
-			.where('social_work', 'array-contains', user.corporate_norm.toUpperCase())
+			.collection(`/assignations/online_${value}/${mesSiguiente}`)
+			.where('social_work', 'array-contains-any', corporates)
 			.where('state', '==', 'FREE')
 			.get();
+		dispatch({ type: 'LOADING', payload: false });
 		if (!currentMonth.empty | !nextMonth.empty) {
 			const algo = currentMonth.docs;
 			const algo2 = nextMonth.docs;
 			const juntos = algo.concat(algo2);
-			return retornaObjeto(juntos, name, label);
+			return retornaObjeto(juntos,`online_${label}`,  value);
 		} else {
-			return { name, label, active: false };
+			return { value: `online_${label}`, label, active: false };
 		}
 	};
 
-	const retornaObjeto = (arreglo, name, label) => {
+	const retornaObjeto = (arreglo, value, label) => {
 		let objeto;
 		arreglo.forEach((doc) => {
 			let { date, time } = doc.data();
@@ -73,18 +86,17 @@ const Specialties = () => {
 				date > moment().format('YYYY-MM-DD') ||
 				(date === moment().format('YYYY-MM-DD')) & (time >= moment().format('HH:mm'))
 			) {
-				objeto = { name, label, active: true };
+				objeto = { value, label, active: true };
 			} else {
-				objeto = { name, label, active: false };
+				objeto = { value, label, active: false };
 			}
 		});
 		dispatch({ type: 'LOADING', payload: false });
 		return objeto;
 	};
 
-	const handleClick = (sp, active) => {
-		const speciality = sp.split('online_')[1];
-		if (speciality !== 'pediatria' && agePediatry) {
+	const handleClick = (value, active) => {
+		if (value !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
 			return;
 		}
@@ -92,34 +104,36 @@ const Specialties = () => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		pushPage(speciality);
+		return history.push(`/appointmentsonline/${value}/calendar/${dni}`);
+
+		// pushPage(speciality);
 	};
 
-	const pushPage = (specialty) => {
+/* 	const pushPage = (specialty) => {
 		if (
 			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return history.push(`/${dni}/chat/${specialty}`);
+			return history.push(`/chat/${specialty}/${dni}`);
 		} else if (
 			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return history.push(`/${dni}/chat/${specialty}`);
+			return history.push(`/chat/${specialty}/${dni}`);
 		} else {
-			return history.push(`/${dni}/appointmentsonline/${specialty}/calendar`);
+			return history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
 		}
-	};
+	}; */
 
 	return (
 		<>
-			{!!loading && <Loader />}
+			{!!loading && <div className="m-5"><Loader /></div>}
 			<ul className='listSpecialties__list'>
-				{arraySpecialties.map(({ name, label, active }) => (
+				{arraySpecialties.map(({ value, label, active }) => (
 					<li
-						key={name}
+						key={value}
 						className={`listSpecialties__list--item ${active && 'active'}`}
-						onClick={() => handleClick(name, active)}>
+						onClick={() => handleClick(label, active)}>
 						<span>{label}</span>
 					</li>
 				))}

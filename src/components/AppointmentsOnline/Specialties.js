@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DB from '../../config/DBConnection';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import { Loader } from '../global/Spinner/Loaders';
 import { getUser } from '../../store/actions/firebaseQueries';
@@ -84,8 +84,8 @@ const Specialties = (props) => {
 	};
 
 	const handleClick = (sp, active) => {
-		const speciality = sp
-		if (speciality !== 'pediatria' && agePediatry) {
+		const specialty = sp
+		if (specialty !== 'pediatria' && agePediatry) {
 			swal('Aviso', 'Esta especialidad no es pediatrica', 'warning');
 			return;
 		}
@@ -93,24 +93,26 @@ const Specialties = (props) => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		pushPage(speciality);
+		props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
+		// pushPage(speciality);
 	};
 
-	const pushPage = (specialty) => {
+// Temp disabled the chats
+/* 	const pushPage = (specialty) => {
 		if (
 			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return props.history.push(`/${dni}/chat/${specialty}`);
+			return props.history.push(`/chat/${specialty}/${dni}`);
 		} else if (
 			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
 			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
 		) {
-			return props.history.push(`/${dni}/chat/${specialty}`);
+			return props.history.push(`/chat/${specialty}/${dni}`);
 		} else {
-			return props.history.push(`/${dni}/appointmentsonline/${specialty}/calendar`);
+			return props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
 		}
-	};
+	}; */
 
 	return (
 		<>

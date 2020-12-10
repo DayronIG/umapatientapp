@@ -12,9 +12,9 @@ const LoginWithCore = (props) => {
 
     useEffect(() => {
         if (props.match.params.core === '' || !props.match.params.core) {
-            props.history.push(`/${props.match.params.ws}/`)
+            props.history.push(`/home`)
         }
-    }, [props.history, props.match.params.core, props.match.params.ws])
+    }, [props.history, props.match.params.core])
 
     useEffect(() => {
         (async function loginCore() {

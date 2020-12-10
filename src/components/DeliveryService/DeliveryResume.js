@@ -28,7 +28,7 @@ function DeliveryResume({ duration, active }) {
 		personal: 0,
 		app: 0,
 		comment: ''
-	})
+	});
 	const [error, setError] = useState(false);
 	const [steps, setSteps] = useState([
 		{
@@ -245,8 +245,7 @@ function DeliveryResume({ duration, active }) {
 				</button>
 			} */}
 		</section>
-		{
-			surveyModal &&
+		{surveyModal &&
 			<MobileModal hideTitle hideCloseButton surveyHisopados>
 				<h2 className="surveyQuestion__title">Completa la encuesta y descarga tu constancia</h2>
 				<div className="surveyQuestion">
@@ -283,9 +282,7 @@ function DeliveryResume({ duration, active }) {
 						<textarea name="comment" onChange={handleChangeComment} onKeyDown={(e) => handleEnter(e)} cols="30" rows="10" placeholder="Escribe tus comentarios aquí"></textarea>
 					</div>
 				</div>
-				
 				{error && <p className="stepper__error">Todos los campos son obligatorios</p>}
-				
 				<button className="stepper__btn" onClick={sendRating}>
 					Enviar
 				</button>

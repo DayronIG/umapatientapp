@@ -2,7 +2,7 @@ import React from 'react';
 import { FaCarSide } from 'react-icons/fa'
 import marker from '../../assets/markers/no_users.svg';
 import '../../styles/global/Marker.scss';
-
+ 
 function Marker({
 	callback = () => { },
 	text = '',
