@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {useSelector} from 'react-redux';
 import {withRouter, Link} from 'react-router-dom';
 import {ocr_labo} from '../../../config/endpoints';
@@ -15,6 +15,7 @@ import Error from "./Error";
 import Triglicerido from "./Trigliceridos";
 import { Loader } from "../../global/Spinner/Loaders";
 import moment from "moment-timezone";
+import { FaUpload } from "react-icons/fa"
 
 import "./Styles/Buttons.scss";
 
@@ -34,6 +35,11 @@ function LoadAnalysis(props) {
   const [resLdl, SetresLdl] = useState("");
   const [resTrigliceridos, SetresTrigliceridos] = useState("");
   const [resImagen, SetresImagen] = useState("");
+  const inputRef = useRef();
+
+  const handleClickInputFile = () => {
+    inputRef.current.click();
+  };
 
   //const fecha = moment().tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
   let fecha = new Date();
@@ -143,7 +149,9 @@ function LoadAnalysis(props) {
         <input type="file" id="files" accept="image/*"
           onChange={handleFileChange}
           placeholder="subir"
-          className="btn-blue-lg" />
+          style={{display: "none"}}
+          ref={inputRef} />
+        <div className="btn-blue-lg" onClick={() => handleClickInputFile()}>Selecciona un archivo <FaUpload className="icon" /></div>
         <label htmlFor="files">Sacar foto o adjuntar documento</label>
       </div>
       <br></br>

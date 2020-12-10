@@ -17,21 +17,21 @@ const Autonomus = props => {
             <button
               onClick={ () => {
                 setLoading(true)
-                dispatch({ type: 'HANDLE_MODAL', payload: true })
+                dispatch({ type: 'OPEN_MODAL', payload: true })
               }}
               className="btnSI"
             >Si</button>
             
             <button 
               onClick={ () => {
-                dispatch({ type: 'HANDLE_MODAL', payload: false })
+                dispatch({ type: 'CLOSE_MODAL' })
               }} 
               className="btnNO"
             >No</button>
           </div>
         </> :
         <div className="coronavirus__modal--container">
-          <MobileModal title="Test autónomo" callback={() => dispatch({ type: 'HANDLE_MODAL', payload: false })}>
+          <MobileModal title="Test autónomo" callback={() => dispatch({ type: 'CLOSE_MODAL' })}>
             <div className="coronavirus__autonomousContainer">
               <Autonomous isModal={true} />
             </div>

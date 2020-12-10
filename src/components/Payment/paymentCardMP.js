@@ -42,7 +42,7 @@ const PaymentCardMP = () => {
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
-        setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.length) 
+        setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length) 
       }
     }, [deliveryInfo, hisopadoPrice])
 

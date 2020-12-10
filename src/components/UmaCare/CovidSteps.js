@@ -24,7 +24,7 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
           </div>
           <p className="link"
                 onClick={() => {
-                  dispatch({ type: "HANDLE_MODAL", payload: true });
+                  dispatch({ type: "OPEN_MODAL", payload: true });
                   setTextDetail("Para realizar el diagnóstico de COVID-19 es necesario tomar una muestra de las fosas nasales y/o garganta utilizando un hisopo. Este consiste en un bastoncillo de plástico con una punta de algodón. Sus síntomas pueden deberse a la infección por otros virus como la gripe o el resfrió común, por lo cual es importante que mantenga las medidas de higiene de manos y el uso de tapaboca para evitar el contagio de otras personas.");
                 }}>Más Información</p>
         </div>
@@ -42,7 +42,7 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
             </div>
           </div>
           <p className="link" onClick={() => {
-            dispatch({ type: "HANDLE_MODAL", payload: true });
+            dispatch({ type: "OPEN_MODAL", payload: true });
             setTextDetail("La muestra del hisopado es llevada a un laboratorio especializado para su análisis. En el mismo se realiza una técnica específica llamada PCR. La misma consiste en amplificar una porción del virus COVID-19, para así poder detectarlo. Dado que es una técnica compleja y con gran demanda los resultados suelen demorar entre 48 y 72hs.")
           }}>Más Información</p>
         </>
@@ -68,7 +68,7 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
             </div>
           </div>
             <p className="link" onClick={() => {
-              dispatch({ type: "HANDLE_MODAL", payload: true });
+              dispatch({ type: "OPEN_MODAL", payload: true });
               result === 'positive' ?
               setTextDetail("Un test positivo significa que actualmente está infectado con el virus COVID-19. No debe alarmarse, pero si debe saber que es muy importante que respete las medidas de aislamiento para no contagiar a otras personas.")
               :
@@ -93,7 +93,7 @@ export const CovidSteps = ({percent, setTextDetail, result}) => {
             </div>
           </div>
           <p className="link" onClick={() => {
-            dispatch({ type: "HANDLE_MODAL", payload: true });
+            dispatch({ type: "OPEN_MODAL", payload: true });
             setTextDetail("Ya han transcurrido 10 días del inicio de los síntomas y hemos observado que su evolución es favorable. Dentro de pocos días podrá obtener el alta médica. Fuerza que falta poco!");
           }}>Más Información</p>
         </>
