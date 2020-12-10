@@ -62,7 +62,7 @@ const UmaCare = _ => {
       { loading && <CustomUmaLoader  /> }
       {modal && 
             <Modal title="Información" callback={() => {
-                dispatch({ type: "HANDLE_MODAL", payload: false });
+                dispatch({ type: "CLOSE_MODAL" });
               }}>
               <p className="text-center">{textDetail}</p>
             </Modal>}
