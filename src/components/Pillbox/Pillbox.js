@@ -51,51 +51,14 @@ const Pillbox = props => {
             }
         }
     )
-    const [recipes, setRecipes] = useState([{
-        uid: "",
-        dose: 1,
-        quantity_days: 5,
-        medicine: "AMOXIDAL",
-        notify: true,
-        initial_date: "2020-12-12",
-        active: true,
-        personalized: false,
-        reminders: {
-            mon: ["09:00", "12:00"],
-            tue: ["9:00"],
-            wed: ["9:00"],
-            thu: ["9:00"],
-            fri: ["9:00"],
-            sat: ["9:00"],
-            sun: ["9:00"]
-        }
-    },
-    {
-        uid: "",
-        dose: 1,
-        quantity_days: 5,
-        medicine: "IBUPIRAC",
-        notify: true,
-        initial_date: "2020-12-12",
-        active: false,
-        personalized: true,
-        reminders: {
-            mon: ["9:00", "20:00"],
-            tue: [],
-            wed: ["8:00"],
-            thu: ["20:00"],
-            fri: ["20:00"],
-            sat: ["9:00"],
-            sun: ["8:00"]
-        }
-    }
-    ])
+    const [recipes, setRecipes] = useState([])
 
     const setRecipesFromFirebase = () => {
         DB
         .firestore()
         .collection(`/user/${uid}/pillbox`)
-        .onSnapshot((snapshot) => {
+        .get()
+        .then((snapshot) => {
             const arrOfRecipies = []
 			snapshot.forEach((doc) => {
                 arrOfRecipies.push({...doc.data(), pillbox_id: doc.id})
@@ -110,6 +73,10 @@ const Pillbox = props => {
 
     const updateReminder = () => {
         axios.patch("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
+    }
+    
+    const deleteReminderDB = (recipe) => {
+        axios.post("http://localhost:8080/pillbox/reminder/delete",{uid: uid, pillbox_id: recipe.pillbox_id},{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     useEffect(() => {
@@ -134,6 +101,7 @@ const Pillbox = props => {
         if(!(!!newReminder.medicine)){setIsValid("Medicina")}
         else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
         else if(!(!!newReminder.quantity_days)){setIsValid("Días")}
+        else if(!(!!newReminder.dose)){setIsValid("Cantidad")}
         else { setIsValid("") }
     }, [newReminder])
 
@@ -141,22 +109,24 @@ const Pillbox = props => {
         if(!isValid){
             if(edit){
                 updateReminder()
+                let updatedRecipes = recipes
+                updatedRecipes[reminderToEditIndex] = newReminder
+                setRecipes(updatedRecipes)
+                setEditModal(false)
+                setReminderToEdit({})
             } else {
                 postReminder()
                 setRecipes([...recipes, {...newReminder, personalized: personalizedShifts}])
+                setReminderModal(false)
             }
-            deleteReminder(reminderToEdit)
-            setReminderModal(false)
-            setEditModal(false)
-            setReminderToEdit({})
+            deleteReminderFront(reminderToEdit)
             setNewReminder({})
         } else {
             swal("Error",`Debe completar ${isValid}`, 'warning')
         }
     }
 
-    
-    const deleteReminder = (recipe) => {
+    const deleteReminderFront = (recipe) => {
         var filteredRecipes = recipes.filter((el)=> el !== recipe)
         setRecipes(filteredRecipes)
     }
@@ -167,7 +137,7 @@ const Pillbox = props => {
 
     useEffect(() => {
         setRecipesFromFirebase()
-    }, [reminderModal, editModal])
+    }, [])
 
     const recipesList = () => {
         const recipeList = [];
@@ -191,7 +161,9 @@ const Pillbox = props => {
                             setReminderToEditIndex(recipes.indexOf(recipe))
                     }}/>
                     <FiTrash className="delete__icon"
-                    onClick={() => deleteReminder(recipe)}/>
+                    onClick={() =>{
+                        deleteReminderDB(recipe)
+                        deleteReminderFront(recipe)}}/>
                     </div>
                 </div>
             )
@@ -224,7 +196,7 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input className="form-control" defaultValue={1} type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Días:</label>
