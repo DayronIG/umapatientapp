@@ -32,7 +32,7 @@ const Pillbox = props => {
         {
             uid: "",
             dose: 0,
-            quantity_weeks: 0,
+            quantity_days: 0,
             medicine: "",
             notify: true,
             personalized: false,
@@ -52,7 +52,7 @@ const Pillbox = props => {
     const [recipes, setRecipes] = useState([{
         uid: "",
         dose: 1,
-        quantity_weeks: 5,
+        quantity_days: 5,
         medicine: "AMOXIDAL",
         notify: true,
         initial_date: "2020-12-12",
@@ -71,7 +71,7 @@ const Pillbox = props => {
     {
         uid: "",
         dose: 1,
-        quantity_weeks: 5,
+        quantity_days: 5,
         medicine: "IBUPIRAC",
         notify: true,
         initial_date: "2020-12-12",
@@ -97,7 +97,7 @@ const Pillbox = props => {
         .get()
         .then((snapshot) => {
 			snapshot.forEach((doc) => {
-                arrOfRecipies.push(doc.data())
+                arrOfRecipies.push({...doc.data(), pillbox_id: doc.id})
             });
             setRecipes(arrOfRecipies)
         });
@@ -133,7 +133,7 @@ const Pillbox = props => {
     useEffect(() => {
         if(!(!!newReminder.medicine)){setIsValid("Medicina")}
         else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
-        else if(!(!!newReminder.quantity_weeks)){setIsValid("Semanas")}
+        else if(!(!!newReminder.quantity_days)){setIsValid("Semanas")}
         else { setIsValid("") }
     }, [newReminder])
 
@@ -169,25 +169,29 @@ const Pillbox = props => {
                 <div className='recipesList__container' key={recipe.medicine || Math.random()}>
                     <div className='recipesListIndicator__container'>
                         <label className='item_medicine'>{recipe.medicine}</label>
-                        <label className='item'><BsClock className="element_icon" />{recipe.personalized? "Horarios personalizados": "Todos los dias"}</label>
-                        <label className='item'><MdToday className="element_icon" />{recipe.quantity_weeks} días restantes</label>
-                        <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label>
+                        <label className='item'><BsClock className="element_icon" />{recipe.personalized? "Horarios personalizados": `${recipe.dose} todos los dias`}</label>
+                        <label className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</label>
+                        {/* <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label> */}
                     </div>
-                    <div className='recipesListEditDelete__container'
-                    onClick={() => deleteReminder(recipe)}>
+                    <div className='recipesListEditDelete__container'>
                     <FiEdit3 className="edit__icon"
                     onClick={() => {
                             setEditModal(true)
                             setReminderToEdit(recipe)
                             setNewReminder(recipe)
                     }}/>
-                    <FiTrash className="delete__icon"/>
+                    <FiTrash className="delete__icon"
+                    onClick={() => deleteReminder(recipe)}/>
                     </div>
                 </div>
             )
         }
         return recipeList
     }
+
+    useEffect(()=>{
+        console.log("ACA", recipes)
+    },[recipes])
 
     useEffect(() => {
         setPersonalizedShifts(reminderToEdit?.personalized)
@@ -218,7 +222,7 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Semanas:</label>
-                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_weeks: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_days: e.target.value})}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
@@ -267,7 +271,7 @@ const Pillbox = props => {
                         </div>
                         <div className='inputNumber__container'>
                             <label>Semanas:</label>
-                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_weeks} onChange={(e) => editReminder("quantity_weeks", e.target.value)}/>
+                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_days} onChange={(e) => editReminder("quantity_days", e.target.value)}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
