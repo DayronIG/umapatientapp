@@ -82,7 +82,6 @@ const WhenScreen = (props) => {
 			coverage && await Promise.all(coverage.map(async each => {
 				if (each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
-					console.log(each, path)
 					let coverageTemp = await getDocumentFB(path)
 					if (coverageTemp && coverageTemp.plan) {
 						for (const service in coverageTemp.plan) {

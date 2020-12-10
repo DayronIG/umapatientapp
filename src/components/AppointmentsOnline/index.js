@@ -25,7 +25,6 @@ const OnlineSpecialist = ({ match, history }) => {
 		async () => {
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
-			console.log(plan)
 			if(plan && plan.my_specialist === false) {
 				dispatch({ type: 'LOADING', payload: false });
 				return false
