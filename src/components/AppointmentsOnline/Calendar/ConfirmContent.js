@@ -163,7 +163,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					throw new Error('La cita que escogió ya está ocupada');
 				} else {
 					localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-					return history.replace(`/appointmentsonline/scheduled/history/${userData.dni}`);
+					return history.replace(`/appointmentsonline/pending/${userData.dni}`);
 				}
 			} catch (error) {
 				//console.log(error)

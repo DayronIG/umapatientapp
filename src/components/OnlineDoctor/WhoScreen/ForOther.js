@@ -110,7 +110,7 @@ const RegisterDependant = props => {
           </label>
           <input
             className='form-input' id='dni' placeholder='e.g. 34111111' autoComplete='on'
-            onChange={e => handleDni(e.target.value)} value={dni} required />
+            onChange={e => handleDni(e.target.value)} value={dependant.dni} required />
           <div className="d-flex justify-content-start">
             <div className="birthContainer w-50">
               <label className="form-label birthLabel" htmlFor="bday">

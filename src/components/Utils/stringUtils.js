@@ -29,7 +29,7 @@ export function validateInput(type, value) {
     let isValid = false;
     switch (type) {
         case 'tel':
-            if(!!value && /^\d+$/.test && value.length >= 10){              
+            if(!!value && /^\d+$/.test && value.length >= 13){              
                 isValid = true;
             } 
             return isValid;

@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
@@ -155,7 +155,10 @@ const Register = props => {
     }
 
     const handleInput = (typeDispatch) => (event) => {
-        const { type, value, name } = event.target;
+        let { type, value, name } = event.target;
+        if(type === 'tel') {
+            value = checkNum(value)
+        }
         const isValid = validateInput(type, value);
         if(!isValid && value !== "") {
             dispatch({ type: typeDispatch, payload: value })
