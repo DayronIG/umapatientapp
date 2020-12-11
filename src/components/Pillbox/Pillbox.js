@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom"
 import Modal from "../GeneralComponents/Modal/MobileModal"
@@ -67,7 +67,12 @@ const Pillbox = props => {
         });
     }
 
+    useEffect(() => {
+        console.log("LOGGING RECIPES", recipes)
+    }, [recipes])
+
     const postReminder = () => {
+        console.log("POSTING")
         axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
@@ -110,15 +115,19 @@ const Pillbox = props => {
             if(edit){
                 updateReminder()
                 let updatedRecipes = recipes
+                console.log([updatedRecipes], "UPDATED2")
                 updatedRecipes[reminderToEditIndex] = newReminder
                 setRecipes(updatedRecipes)
-                setEditModal(false)
-                setReminderToEdit({})
             } else {
                 postReminder()
-                setRecipes([...recipes, {...newReminder, personalized: personalizedShifts}])
-                setReminderModal(false)
+                // let updatedRecipes = [...recipes, newReminder] 
+                // console.log([updatedRecipes], "UPDATED2")
+                // setRecipes(updatedRecipes)
+                recipes.push(newReminder)
             }
+            setEditModal(false)
+            setReminderModal(false)
+            setReminderToEdit({})
             deleteReminderFront(reminderToEdit)
             setNewReminder({})
         } else {
@@ -139,7 +148,9 @@ const Pillbox = props => {
         setRecipesFromFirebase()
     }, [])
 
-    const recipesList = () => {
+    const recipesList = useCallback(
+        () => {
+        console.log("RE RENDERING")
         const recipeList = [];
         let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
         for(let recipe of sortedRecipes) {
@@ -169,7 +180,7 @@ const Pillbox = props => {
             )
         }
         return recipeList
-    }
+    }, [recipes])
 
     useEffect(() => {
         setPersonalizedShifts(reminderToEdit?.personalized)
