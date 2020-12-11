@@ -110,13 +110,11 @@ const Pillbox = props => {
             if(edit){
                 updateReminder()
                 let updatedRecipes = recipes
-                console.log([updatedRecipes], "UPDATED2")
                 updatedRecipes[reminderToEditIndex] = newReminder
                 setRecipes(updatedRecipes)
             } else {
                 postReminder()
                 // let updatedRecipes = [...recipes, newReminder] 
-                // console.log([updatedRecipes], "UPDATED2")
                 // setRecipes(updatedRecipes)
                 recipes.push(newReminder)
             }
@@ -145,7 +143,6 @@ const Pillbox = props => {
 
     const recipesList = useCallback(
         () => {
-        console.log("RE RENDERING")
         const recipeList = [];
         let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
         for(let recipe of sortedRecipes) {
@@ -302,8 +299,8 @@ const Pillbox = props => {
                         {recipes.length > 0 ?
                         recipesList():
                         <div className="spinner__container">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="sr-only">Loading...</span>
                             </div>
                         </div>}
                 </div>
