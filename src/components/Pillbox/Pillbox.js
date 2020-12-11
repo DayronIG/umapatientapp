@@ -67,12 +67,7 @@ const Pillbox = props => {
         });
     }
 
-    useEffect(() => {
-        console.log("LOGGING RECIPES", recipes)
-    }, [recipes])
-
     const postReminder = () => {
-        console.log("POSTING")
         axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
@@ -304,7 +299,13 @@ const Pillbox = props => {
                             Recordatorios
                         </div>
                     </div>
-                    {recipesList()}
+                        {recipes.length > 0 ?
+                        recipesList():
+                        <div className="spinner__container">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>}
                 </div>
             </div>
             <div className="pillbox__addContainer" onClick={() => setReminderModal(true)}>

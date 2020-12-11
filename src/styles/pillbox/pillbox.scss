@@ -5,6 +5,13 @@
     min-height: 100vh;
     .pillboxList__container{
         padding: 30px;
+        .spinner__container{
+            width: 85vw;
+            display: flex;
+            justify-content: center;
+            margin-top: 10vh;
+            margin-bottom: 10vh;
+        }
         .pillboxReminder__header{
             display: flex;
             justify-content: space-between;
