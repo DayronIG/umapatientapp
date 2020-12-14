@@ -140,10 +140,11 @@ export default function AskForBuyHisopado() {
                     <div className="hisopados-atentionContainer">
                         <h2>A tener en cuenta</h2>
                         <ul>
+                            <li>• Los hisopados se realizan de lunes a viernes de 8hs a 18hs para todas las compras realizadas antes de las 18hs durante los días hábiles. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil. El tiempo de envío es de un máximo de 3 horas desde la recepción del pago. No se realizan hisopados los días domingos ni feriados.</li>
                             <li>• No lo cubren las obras sociales</li>
                             <li>• No emite certificado oficial</li>
                             <li>• Consulte con su destino la validez del test rápido para viajar</li>
-                            <li>• Los hisopados se realizan de lunes a viernes de 8hs a 18hs. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.</li>
+                            <li>• El pago no admite cancelaciones ni devoluciones.</li>
                         </ul>
                     </div>
 
