@@ -3,6 +3,22 @@
 .pillbox{
     background-color: $white-color;
     min-height: 100vh;
+    .filterByTime__container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        font-size: 0.8rem;
+        color: $uma-text-secondary;
+        margin-top: 2vh;
+        p{
+
+        }
+        .clicked{
+            color: $uma-primary;
+            text-decoration: underline;
+        }
+    }
+
     .pillboxList__container{
         padding: 30px;
         .spinner__container{
@@ -20,20 +36,31 @@
         }
         .recipesList__container{
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             padding: 2vw;
-            background: #F8F8F8;
-            box-shadow: 2.75px 2.75px 13.75px rgba(199, 199, 199, 0.14);
-            border-radius: 8.25px;
+            background: #FFFFFF;
+            box-shadow: 0px 1px 14px rgba(126, 147, 163, 0.25);
+            border-radius: 6px;
             margin: 3vh 0vw;
+            .pill_image{
+                width: 100px;
+                height: 150px;
+                border-radius: 6px 0px 0px 6px;
+                justify-self: flex-start;
+            }
             .recipesListIndicator__container{
                 display: flex;
                 flex-direction: column;
+                padding: 3vh;
                 .item_medicine{
                     font-weight: bold;
                 }
                 .item{
                     padding-left: 3vw;
+                    font-weight: bold;
+                    font-size: 12px;
+                    line-height: 24px;
+                    color: #1E1E1E;
                     .element_icon{
                         margin-right: 2vw;
                     }
@@ -54,9 +81,11 @@
             }
         }
     }
-    .pillbox__title{
-        text-align: center;
-        padding-top: 4vh;
+    .dateTitle{
+        color: $uma-primary;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding-left: 30px;
     }
     .pillbox__addContainer {
         display: flex;

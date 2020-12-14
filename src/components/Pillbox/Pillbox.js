@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom"
 import Modal from "../GeneralComponents/Modal/MobileModal"
 import "../../styles/pillbox/pillbox.scss"
 import { FiTrash, FiEdit3 } from "react-icons/fi"
-import { BsClock } from "react-icons/bs"
 import { FaPills, FaPlus, FaMinus } from "react-icons/fa"
+import { BsClock } from "react-icons/bs"
 import { MdToday } from "react-icons/md"
 import { BackButton } from '../GeneralComponents/Headers';
 import DB from '../../config/DBConnection';
@@ -13,57 +13,34 @@ import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import swal from 'sweetalert';
 import axios from "axios"
+import moment from "moment"
+import PillList from "./PillList"
+import PillDetail from "./PillDetail"
+import PillCreate from "./PillCreate"
 
 const format = 'HH:mm';
 
 const Pillbox = props => {
+    const dispatch = useDispatch()
+    const history = useHistory()
     const [reminderModal, setReminderModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
-    const [reminderToEdit, setReminderToEdit] = useState({});
-    const [reminderToEditIndex, setReminderToEditIndex] = useState(0);
-    const history = useHistory()
-    const uid = "UH0QnNl14nVlq0xtqd3hpB0dAws1" //CAMBIOSANTI
-    const patient = useSelector(state => state.user)
-    // const [recipes, setRecipes] = useState([])
-    const [personalizedShifts, setPersonalizedShifts] = useState(false)
+    const { core_id } = useSelector(state => state.user)
     const [isValid, setIsValid] = useState("")
-    const shiftsToPost = useSelector(state => state.pillbox.shiftsToPost)
-    // const token = localStorage.getItem('Notification_Token')
+    const { newReminder, personalizedShifts, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes, renderState} = useSelector(state => state.pillbox)
 	const token = useSelector(state => state.userActive.token)
-    const [newReminder, setNewReminder] = useState(
-        {
-            uid: uid,
-            dose: 0,
-            quantity_days: 0,
-            medicine: "",
-            notify: true,
-            personalized: false,
-            initial_date: "",
-            active: false,
-            reminders: {
-                mon: [],
-                tue: [],
-                wed: [],
-                thu: [],
-                fri: [],
-                sat: [],
-                sun: []
-            }
-        }
-    )
-    const [recipes, setRecipes] = useState([])
 
     const setRecipesFromFirebase = () => {
         DB
         .firestore()
-        .collection(`/user/${uid}/pillbox`)
+        .collection(`/user/${core_id}/pillbox`)
         .get()
         .then((snapshot) => {
             const arrOfRecipies = []
 			snapshot.forEach((doc) => {
                 arrOfRecipies.push({...doc.data(), pillbox_id: doc.id})
             });
-            setRecipes(arrOfRecipies)
+            dispatch({type: "SET_RECIPES_REMINDERS", payload: arrOfRecipies})
         });
     }
 
@@ -76,13 +53,14 @@ const Pillbox = props => {
     }
     
     const deleteReminderDB = (recipe) => {
-        axios.post("http://localhost:8080/pillbox/reminder/delete",{uid: uid, pillbox_id: recipe.pillbox_id},{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
+        axios.post("http://localhost:8080/pillbox/reminder/delete",{core_id: core_id, pillbox_id: recipe.pillbox_id},{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     useEffect(() => {
         if(shiftsToPost?.medicine){
             if(!shiftsToPost?.personalized){
-                setNewReminder({...newReminder, reminders: {
+                dispatch({type: "SET_NEW_REMINDER", 
+                payload: {...newReminder, reminders: {
                 mon: shiftsToPost.shifts,
                 tue: shiftsToPost.shifts,
                 wed: shiftsToPost.shifts,
@@ -90,9 +68,9 @@ const Pillbox = props => {
                 fri: shiftsToPost.shifts,
                 sat: shiftsToPost.shifts,
                 sun: shiftsToPost.shifts,
-            }})
+            }}})
             } else if (shiftsToPost?.personalized) {
-                setNewReminder({...newReminder, reminders: shiftsToPost.shifts})
+                dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, reminders: shiftsToPost.shifts}})
             }
         }
     }, [shiftsToPost])
@@ -111,18 +89,20 @@ const Pillbox = props => {
                 updateReminder()
                 let updatedRecipes = recipes
                 updatedRecipes[reminderToEditIndex] = newReminder
-                setRecipes(updatedRecipes)
+                dispatch({type: "SET_RECIPES_REMINDERS", payload: updatedRecipes})
             } else {
                 postReminder()
                 // let updatedRecipes = [...recipes, newReminder] 
                 // setRecipes(updatedRecipes)
+                // dispatch({type: "SET_RECIPES_REMINDERS", payload: updatedRecipes})
                 recipes.push(newReminder)
             }
             setEditModal(false)
             setReminderModal(false)
-            setReminderToEdit({})
+            dispatch({type: "SET_REMINDER_TO_EDIT", payload: {}})
+            // setReminderToEdit({})
             deleteReminderFront(reminderToEdit)
-            setNewReminder({})
+            dispatch({type: "SET_NEW_REMINDER", payload: {}})
         } else {
             swal("Error",`Debe completar ${isValid}`, 'warning')
         }
@@ -130,84 +110,61 @@ const Pillbox = props => {
 
     const deleteReminderFront = (recipe) => {
         var filteredRecipes = recipes.filter((el)=> el !== recipe)
-        setRecipes(filteredRecipes)
-    }
-
-    const editReminder = (field, value) => {
-        setNewReminder({...reminderToEdit, [field]: value})
+        dispatch({type: "SET_RECIPES_REMINDERS", payload: filteredRecipes})
     }
 
     useEffect(() => {
-        setRecipesFromFirebase()
+        if(core_id){setRecipesFromFirebase()}
+    }, [core_id])
+
+    useEffect(() => {
+        dispatch({type: "SET_PERSONALIZED_SHIFTS", payload: reminderToEdit?.personalized})
     }, [])
 
-    const recipesList = useCallback(
-        () => {
-        const recipeList = [];
-        let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
-        for(let recipe of sortedRecipes) {
-            recipeList.push(
-                <div className='recipesList__container' key={recipe.medicine || Math.random()}>
-                    <div className='recipesListIndicator__container'>
-                        <label className='item_medicine'>{recipe.medicine}</label>
-                        <label className='item'><BsClock className="element_icon" />{recipe.personalized? "Horarios personalizados": `${recipe.dose} todos los dias`}</label>
-                        <label className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</label>
-                        {/* <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label> */}
-                    </div>
-                    <div className='recipesListEditDelete__container'>
-                    <FiEdit3 className="edit__icon"
-                    onClick={() => {
-                            setEditModal(true)
-                            setPersonalizedShifts(recipe.personalized)
-                            setReminderToEdit(recipe)
-                            setNewReminder(recipe)
-                            setReminderToEditIndex(recipes.indexOf(recipe))
-                    }}/>
-                    <FiTrash className="delete__icon"
-                    onClick={() =>{
-                        deleteReminderDB(recipe)
-                        deleteReminderFront(recipe)}}/>
-                    </div>
-                </div>
-            )
+    const renderContent = () => {
+        switch(renderState){
+            case 'LIST':
+                return <PillList />
+            case 'DETAIL':
+                return <PillDetail handleSaveReminder={handleSaveReminder} />
+            case 'CREATE':
+                return <PillCreate handleSaveReminder={handleSaveReminder} />
+            default:
+                console.log("default")
         }
-        return recipeList
-    }, [recipes])
-
-    useEffect(() => {
-        setPersonalizedShifts(reminderToEdit?.personalized)
-    }, [])
+    }
 
     return (
         <div className="pillbox">
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
-            {reminderModal && <Modal
+        {reminderModal && <Modal
           callback={() => {
               setReminderModal(false)
-              setNewReminder({})
+              dispatch({type: "SET_NEW_REMINDER", payload: {}})
+
             }}>
             <div className='modalContent__container'>
                         <h4 className='modal__title'>Recordatorio</h4>
                         <div className='inputText__container'>
                             <p>Medicina: </p>
-                            <input className="form-control" type="text" name="" id="" onChange={(e) => setNewReminder({...newReminder, medicine: e.target.value})}/>
+                            <input className="form-control" type="text" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, medicine: e.target.value}})}/>
                         </div>
                         <hr className="separator"/>
                         <div className='inputDate__container'>
                             <label>Fecha inicial:</label>
-                            <input className="form-control" type="date" name="" id="" onChange={(e) => setNewReminder({...newReminder, initial_date: e.target.value})}/>
+                            <input className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Cantidad:</label>
-                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, dose: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
                         </div>
                         <div className='inputNumber__container'>
                             <label>Días:</label>
-                            <input className="form-control" type="number" name="" id="" onChange={(e) => setNewReminder({...newReminder, quantity_days: e.target.value})}/>
+                            <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, quantity_days: e.target.value}})}/>
                         </div>
                         <div className='inputFreq__container'>
                             <label>Frecuencia:</label>
-                            <select className="form-control" onChange={(e) => e.target.value === "personalized"? setPersonalizedShifts(true): setPersonalizedShifts(false)}>
+                            <select className="form-control" onChange={(e) => e.target.value === "personalized"? dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:true}): dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:false})}>
                                 <option value="every_day">Todos los dias</option>
                                 <option value="personalized">Horarios personalizados</option>
                             </select>
@@ -231,86 +188,7 @@ const Pillbox = props => {
                         </button>
                     </div>
             </Modal>}
-            {editModal && <Modal
-                callback={() => {
-                    setEditModal(false)
-                    }}>
-            <div className='modalContent__container'>
-                        <h4 className='modal__title'>Recordatorio</h4>
-                        <div className='inputText__container'>
-                            <p>Medicina: </p>
-                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
-                        </div>
-                        <hr className="separator"/>
-                        <div className='inputDate__container'>
-                            <label>Fecha inicial:</label>
-                            <input className="form-control" type="date" name="" id="" defaultValue={reminderToEdit?.initial_date} onChange={(e) => editReminder("initial_date", e.target.value)}/>
-                        </div>
-                        <div className='inputNumber__container'>
-                            <label>Cantidad:</label>
-                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
-                        </div>
-                        <div className='inputNumber__container'>
-                            <label>Días:</label>
-                            <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_days} onChange={(e) => editReminder("quantity_days", e.target.value)}/>
-                        </div>
-                        <div className='inputFreq__container'>
-                            <label>Frecuencia:</label>
-                            <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} 
-                            onChange={(e) => {
-                            if(e.target.value === "personalized") {
-                                setPersonalizedShifts(true)
-                                editReminder("personalized", true)
-                            } else {
-                                setPersonalizedShifts(false)
-                                editReminder("personalized", false)
-                            }}}>
-                                <option value="every_day">Todos los dias</option>
-                                <option value="personalized">Horarios personalizados</option>
-                            </select>
-                        </div>
-
-                        {!personalizedShifts &&
-                        <div>
-                            <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders?.mon: false}/>
-                        </div>}
-
-                        {personalizedShifts &&
-                        <div>
-                            <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
-                        </div>}
-
-                        <button
-                            className='save__button btn-blue-lg btn'
-                            onClick={() => handleSaveReminder(true)}
-                            >
-                            Guardar
-                        </button>
-                    </div>
-            </Modal>}
-            <div className=''>
-                <h2 className="pillbox__title">Pillbox</h2>
-                <div className='pillboxList__container'>
-                    <div className='pillboxReminder__header'>
-                        <div className=''>
-                            Recordatorios
-                        </div>
-                    </div>
-                        {recipes.length > 0 ?
-                        recipesList():
-                        <div className="spinner__container">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        </div>}
-                </div>
-            </div>
-            <div className="pillbox__addContainer" onClick={() => setReminderModal(true)}>
-                <label className="pillbox__btnContainer">
-                    <button className="pillbox__addBtn">+</button>
-                    <label className="pillbox__addMsg">Agregar recordatorio</label>
-                </label>
-            </div>
+        {renderContent()}
         </div>
     )
 

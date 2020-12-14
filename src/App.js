@@ -70,7 +70,6 @@ import Whatsapp from './views/Whatsapp.js';
 import Payment from "./components/Payment"
 import DeliveryChat from "./components/DeliveryService/DeliveryChat"
 import Pillbox from "./components/Pillbox/Pillbox"
-
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 import TransportRating from './components/Transport/TransportRating.js';
 import 'bootstrap/dist/css/bootstrap.css';
