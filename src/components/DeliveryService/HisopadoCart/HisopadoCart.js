@@ -69,7 +69,7 @@ const HisopadoCart = (props) => {
           </div>
           <div className="HisopadoCart__header">
             <h1 className="HisopadoCart__title">Tu compra</h1>
-            <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio en <span>{params?.delay}.</span></p>
+            <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio <span>{params?.delay}.</span></p>
             {
               deliveryInfo.length > 0 ?
                 <p className="HisopadoCart__text">Datos del usuario</p> :

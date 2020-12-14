@@ -10,7 +10,7 @@ const BuyHisopado = () => {
     const patient = useSelector((state) => state.user)
 	const currentHisopadoIndex = useSelector(state => state.deliveryService)
     // const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
-    const deliveryInfo = useSelector((state) => state.deliveryService?.deliveryInfo) || ""
+    const  { params, deliveryInfo } = useSelector((state) => state.deliveryService)
     const [deliveryStatus, setDeliveryStatus] = useState(false);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const BuyHisopado = () => {
                 } else {
                     return <ButtonStyle 
                     title="Hisopado a domicilio" 
-                    innerText="¡Pídelo ahora y tienes tu resultado en 2 horas!" 
+                    innerText={`¡Pídelo ahora y tienes tu resultado ${params?.delay}!`}
                     checkoutText="Quiero mi hisopado" 
                     finalAction={() => buyHisopado()} 
                     showPrice={true}/>
