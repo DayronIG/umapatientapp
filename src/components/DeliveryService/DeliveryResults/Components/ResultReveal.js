@@ -8,8 +8,9 @@ import ReactToPrint from 'react-to-print';
 
 export default function ResultReveal({finalAction}) {
     const constRef = useRef()
-    const user = useSelector(state => state.user)
+    // const user = useSelector(state => state.user)
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+	const user = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.patient)
     const docId = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)
     const date = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)?.split("_")[1].slice(0,8)
     const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab);
