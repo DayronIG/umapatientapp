@@ -39,7 +39,7 @@ export default function ListTracker({finalAction}) {
     return (
         <div className="allwhite-hisopados-background hisopados-flux delivery-list-tracker" >
                 <div className="back-button">
-                  <BackButton inlineButton={true} customTarget={patient.ws} action={()=>history.push(`/`)} />
+                  <BackButton customTarget={patient.ws} action={()=>history.push(`/`)} />
                 </div>
                 <div className="results-container">
                     <img src={hisopadosNeg} alt="hisopado_neg" className="estamos_con_vos"/>
