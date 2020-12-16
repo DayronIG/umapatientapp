@@ -30,8 +30,8 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -117,34 +117,34 @@ const PaymentCardMP = () => {
           clients: deliveryInfo
 //          mpaccount: 'sandbox'
         }
-        console.log(paymentData)
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
         .then(res => console.log("Ok"))
         .catch(err => console.log(err))
-
-        console.log(totalPayment)
+        
+        console.log("POSTING THIS")
+        console.log(paymentData)
 
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
                 if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
-                  window.gtag('event', 'purchase', {
-                    'transaction_id': current.id,
-                    'affiliation': user?.corporate_norm,
-                    'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
-                    'coupon': '1',
-                    'currency': 'ARS',
-                    'items': [{
-                      "id": 'Hisopado Antígeno',
-                      "name": 'Hisopado Antígeno',
-                      "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
-                    }],
-                    });
-                    window.gtag('event', 'conversion', {
-                      'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
-                      'transaction_id': current.id
-                    });
+                  // window.gtag('event', 'purchase', {
+                  //   'transaction_id': current.id,
+                  //   'affiliation': user?.corporate_norm,
+                  //   'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
+                  //   'coupon': '1',
+                  //   'currency': 'ARS',
+                  //   'items': [{
+                  //     "id": 'Hisopado Antígeno',
+                  //     "name": 'Hisopado Antígeno',
+                  //     "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
+                  //   }],
+                  //   });
+                  //   window.gtag('event', 'conversion', {
+                  //     'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
+                  //     'transaction_id': current.id
+                  //   });
                     setStatus("approved")
                 } else if (res.data.body.status === "free") {
                   setStatus("approved")
@@ -172,7 +172,7 @@ const PaymentCardMP = () => {
             }
             window.Mercadopago.clearSession();
           })
-  }, [coupon, deliveryInfo])
+  }, [coupon, deliveryInfo, totalPayment])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
