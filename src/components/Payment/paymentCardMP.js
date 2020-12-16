@@ -58,9 +58,7 @@ const PaymentCardMP = () => {
         if(moment().format('dddd') === 'sábado'
           || moment().format('dddd') === 'domingo'
           || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
-          || moment().format('DD/MM') === "24/12"
           || moment().format('DD/MM') === "25/12"
-          || moment().format('DD/MM') === "31/12"
           || moment().format('DD/MM') === "01/01") {
             const confirm = await await swal({
               title: "¿Desea continuar?", 
