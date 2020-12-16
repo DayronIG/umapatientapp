@@ -38,7 +38,7 @@ const PaymentCardMP = () => {
       if(deliveryInfo.length < multiple_clients?.length){
           dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
       }
-    }, [])
+    }, [deliveryInfo])
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
@@ -124,6 +124,9 @@ const PaymentCardMP = () => {
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
         .then(res => console.log("Ok"))
         .catch(err => console.log(err))
+
+        console.log(totalPayment)
+
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
@@ -131,13 +134,13 @@ const PaymentCardMP = () => {
                   window.gtag('event', 'purchase', {
                     'transaction_id': current.id,
                     'affiliation': user?.corporate_norm,
-                    'value': parseInt(totalPayment) || 3499,
+                    'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
                     'coupon': '1',
                     'currency': 'ARS',
                     'items': [{
                       "id": 'Hisopado Antígeno',
                       "name": 'Hisopado Antígeno',
-                      "price": parseInt(totalPayment) || 3499
+                      "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
                     }],
                     });
                     window.gtag('event', 'conversion', {
