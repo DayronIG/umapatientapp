@@ -8,6 +8,7 @@ import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
 import "../../../styles/generalcomponents/register.scss";
+import swal from 'sweetalert';
 
 const RegisterDependant = props => {
   const dispatch = useDispatch();
@@ -53,15 +54,7 @@ const RegisterDependant = props => {
         dispatch({ type: "LOADING", payload: false })
       })
       .catch(function (error) {
-        dispatch({
-          type: "ALERT",
-          payload: {
-            type: "warning",
-            title: "No se pudo registrar",
-            msg:
-              `No se pudo completar tu registro. ${JSON.stringify(error?.response?.data?.message)}`
-          }
-        })
+        swal("No se pudo registrar", `No se pudo completar tu registro. ${JSON.stringify(error?.response?.data?.message)}`, "warning")
         dispatch({ type: "LOADING", payload: false })
       })
   }
