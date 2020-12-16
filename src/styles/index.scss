@@ -20,7 +20,8 @@
 		}
 		button:focus,
 		button:active {
-			filter: brightness(85%) !important;
+			filter: contrast(0.6) !important;
+			outline: none;
 		}
 	}
 	.bg-white {
