@@ -18,7 +18,7 @@ const CoronavirusModal = () => {
                 {modal &&
                     <Modal title="Test autónomo" callback={() => {
                                 dispatch({ type: 'AUTONOMOUS_RESET' })
-                                dispatch({ type: 'HANDLE_MODAL', payload: false })
+                                dispatch({ type: 'CLOSE_MODAL' })
                             }}>
                         <div className="coronavirus__autonomousContainer">
                             <Autonomous isModal={true} />
@@ -30,10 +30,10 @@ const CoronavirusModal = () => {
                     <div className="conoravirus__floating--close" onClick={() => setLauncher(false)}>
                         <FontAwesomeIcon icon={faTimesCircle} />
                     </div>
-                    <div className="coronavirus__floating--image" onClick={() => dispatch({ type: 'HANDLE_MODAL', payload: true })}>
+                    <div className="coronavirus__floating--image" onClick={() => dispatch({ type: 'OPEN_MODAL', payload: true })}>
                         <FontAwesomeIcon icon={faBiohazard} />
                     </div>
-                    <div className="coronavirus__floating--textContainer" onClick={() => dispatch({ type: 'HANDLE_MODAL', payload: true })}>
+                    <div className="coronavirus__floating--textContainer" onClick={() => dispatch({ type: 'OPEN_MODAL', payload: true })}>
                         <span>¿Sospechas de coronavirus?</span>
                     </div>
                 </div>
