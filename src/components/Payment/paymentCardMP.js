@@ -54,13 +54,36 @@ const PaymentCardMP = () => {
     async function handleSubmit(event) {
         event.preventDefault()
         setLoader(true)
-        const form = document.getElementsByTagName('form')[0]
-        await window.Mercadopago.createToken(form, sdkResponseHandler)
+        console.log(moment().format('DD/MM') === "16/12", moment().format('dddd'), moment().format('DD/MM'))
+        if(moment().format('dddd') === 'sábado'
+          || moment().format('dddd') === 'domingo'
+          || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
+          || moment().format('DD/MM') === "24/12"
+          || moment().format('DD/MM') === "25/12"
+          || moment().format('DD/MM') === "31/12"
+          || moment().format('DD/MM') === "01/01") {
+            const confirm = await await swal({
+              title: "¿Desea continuar?", 
+              text: "Si abona su compra ahora, nuestro personal de salud acudirá el Lunes",
+              icon: "info",
+              buttons: true,
+              dangerMode: false,
+            })
+            if(confirm) {
+                const form = document.getElementsByTagName('form')[0]
+                window.Mercadopago.createToken(form, sdkResponseHandler)
+            } else {
+              setLoader(false)
+            }
+        } else {
+          const form = document.getElementsByTagName('form')[0]
+          await window.Mercadopago.createToken(form, sdkResponseHandler)
+        }
     }
 
     function sdkResponseHandler(status, response) {
         if (status !== 200 && status !== 201 && status !== 202) {
-            swal("Verifique los datos ingresados", "" ,"error")
+            swal("Verifique los datos ingresados", "Alguno de sus datos personales o de su tarjeta son inválidos" ,"error")
             setSubmit(false);
             setLoader(false)
         } else {
@@ -224,7 +247,7 @@ const PaymentCardMP = () => {
         locale: { valid: 'válido hasta' }
       }
 
-      function mercadoPagoButton() {
+/*       function mercadoPagoButton() {
         swal({
           buttons: {
             cancel: "Cerrar",
@@ -243,16 +266,12 @@ const PaymentCardMP = () => {
           </div>
           )
         })
-      }
+      } */
     
       return (
           <div className="payment-arg">
           {loader && <CustomUmaLoader />}        
-          {/* <FaArrowLeft className="flecha-pay" /> */}
           <div className="tarjeta-credito">
-            <p className="titulo-card" onClick={mercadoPagoButton}>
-              Para pagar por MercadoPago click aquí.
-            </p>
             <Cards
               cvc={cvc}
               expiry={expiry}
