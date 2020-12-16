@@ -8,7 +8,7 @@ export default function ButtonStyle({finalAction}) {
     return (
         <section className="all_hisopado__container" onClick={() => finalAction()}>
         <div className="all_hisopado__content">
-            {quantity} Hisopados en curso <FaArrowRight className="icon" />
+            Seguí {quantity > 1 ? ' tus hisopados': 'tu hisopado'} <FaArrowRight className="icon" />
         </div>
     </section>
     )
