@@ -14,6 +14,7 @@ import autonomous from './autonomousReducers';
 import umacare from './umacareReducers';
 import deliveryService from './deliveryReducers';
 import transport from './transportReducer';
+import pillbox from './pillboxReducer';
 import cx from './cxReducers';
 
 const appReducer = combineReducers({
@@ -28,6 +29,7 @@ const appReducer = combineReducers({
 	queries,
 	onboardingSecondStep,
 	onboardingThirdStep,
+	pillbox,
 	user,
 	survey,
 	umacare,

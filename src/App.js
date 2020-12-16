@@ -69,7 +69,7 @@ import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
 import Payment from "./components/Payment"
 import DeliveryChat from "./components/DeliveryService/DeliveryChat"
-
+import Pillbox from "./components/Pillbox/Pillbox"
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 import TransportRating from './components/Transport/TransportRating.js';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -183,6 +183,8 @@ function App(props) {
 					component={DeliveryChat}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				{/* PILLBOX */}
+				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

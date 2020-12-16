@@ -14,7 +14,7 @@ class ConstancyHisopado extends React.Component {
                 <img className="logo-uma" src={LogoUma} alt="logo" />
                 <div className="patient-data">
                     <p>
-                        <b>Paciente: </b> {patient.fullname}
+                        <b>Paciente: </b> {patient.user}
                     </p>
                     <p>
                         <b>DNI: </b> {patient.dni}
