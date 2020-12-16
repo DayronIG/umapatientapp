@@ -129,22 +129,22 @@ const PaymentCardMP = () => {
             .then(res => {
               setLoader(false)
                 if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
-                  // window.gtag('event', 'purchase', {
-                  //   'transaction_id': current.id,
-                  //   'affiliation': user?.corporate_norm,
-                  //   'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
-                  //   'coupon': '1',
-                  //   'currency': 'ARS',
-                  //   'items': [{
-                  //     "id": 'Hisopado Antígeno',
-                  //     "name": 'Hisopado Antígeno',
-                  //     "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
-                  //   }],
-                  //   });
-                  //   window.gtag('event', 'conversion', {
-                  //     'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
-                  //     'transaction_id': current.id
-                  //   });
+                  window.gtag('event', 'purchase', {
+                    'transaction_id': current.id,
+                    'affiliation': user?.corporate_norm,
+                    'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
+                    'coupon': '1',
+                    'currency': 'ARS',
+                    'items': [{
+                      "id": 'Hisopado Antígeno',
+                      "name": 'Hisopado Antígeno',
+                      "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
+                    }],
+                    });
+                    window.gtag('event', 'conversion', {
+                      'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
+                      'transaction_id': current.id
+                    });
                     setStatus("approved")
                 } else if (res.data.body.status === "free") {
                   setStatus("approved")
