@@ -47,6 +47,7 @@ const HisopadoCart = (props) => {
           address: '',
           piso: '',
           depto: '',
+          uid: user.core_id
         },
         destination: {
           user_address: deliveryInfo[0]?.destination.user_address || hisopadoUserAddress,

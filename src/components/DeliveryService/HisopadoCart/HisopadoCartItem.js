@@ -26,6 +26,7 @@ const HisopadoCartItem = ({patient, index}) => {
         ws: patient.patient?.ws,
         dob: patient.patient?.dob,
         sex: patient.patient?.sex,
+        uid: patient.patient?.uid,
         obs: '',
         address: patient.destination?.user_address || hisopadoUserAddress || address,
         piso: patient.destination?.user_floor || piso,
@@ -91,7 +92,8 @@ const HisopadoCartItem = ({patient, index}) => {
                     dob: data.dob,
                     dni: data.dni,
                     ws: data.ws,
-                    user: data.fullname
+                    user: data.fullname,
+                    uid: data.uid
                 },
                 destination: {
                     user_address: data.address,
