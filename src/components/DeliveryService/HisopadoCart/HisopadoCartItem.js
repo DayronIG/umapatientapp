@@ -291,7 +291,6 @@ const HisopadoCartItem = ({patient, index}) => {
                 <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
             <div className="HisopadoCart__modal">
-                {console.log(openModal)}
             {
                 openModal &&
                 <MobileModal hideTitle callback={()=>setOpenModal(false)} surveyHisopados noScroll>
