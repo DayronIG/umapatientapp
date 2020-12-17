@@ -45,7 +45,8 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
     }, [user])
 
     const getCurrentService = async () => {
-        let deliveryInfo = []
+        if(!isModal){
+		let deliveryInfo = []
         await db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', user.core_id)
         .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
@@ -57,7 +58,7 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
                 dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
         })
-        dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})
+        dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})}
 	}
 	
 	useEffect(() => {
