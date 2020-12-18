@@ -41,6 +41,10 @@ const PaymentCardMP = () => {
     }, [deliveryInfo])
 
     useEffect(() => {
+      console.log(deliveryInfo.filter(el => el.status))
+    }, [])
+
+    useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
         setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length) 
       }
@@ -114,7 +118,7 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: deliveryInfo
+          clients: deliveryInfo.filter(el => el.status)
 //          mpaccount: 'sandbox'
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
