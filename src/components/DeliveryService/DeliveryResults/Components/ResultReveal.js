@@ -37,7 +37,7 @@ export default function ResultReveal({finalAction}) {
                         Ver resultado
                     </div>:
                     <div onClick={() => history.push('/')} className="blue-button">
-                            HOME
+                        HOME
                     </div>                
                     }
                     {

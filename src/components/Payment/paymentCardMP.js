@@ -64,7 +64,7 @@ const PaymentCardMP = () => {
           || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
           || moment().format('DD/MM') === "25/12"
           || moment().format('DD/MM') === "01/01") {
-            const confirm = await await swal({
+            const confirm = await swal({
               title: "¿Desea continuar?", 
               text: "Si abona su compra ahora, nuestro personal de salud acudirá el Lunes",
               icon: "info",
