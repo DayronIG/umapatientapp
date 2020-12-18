@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FaChevronLeft } from 'react-icons/fa';
+import swal from 'sweetalert'
 import './../../../styles/deliveryService/HisopadoCart.scss';
 import HisopadoCartItem from './HisopadoCartItem';
 
@@ -11,6 +12,7 @@ const HisopadoCart = (props) => {
   const user = useSelector(store => store.user);
   const { params, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
+  const [warning, setWarning] = useState('');
   
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -32,6 +34,22 @@ const HisopadoCart = (props) => {
   const handlePay = () => {
     history.push(`/hisopado/payment/${user.ws}`)
   }
+
+  useEffect(() => {
+    if(params?.warning_pre_purchase?.active){
+      setWarning(params?.warning_pre_purchase?.active)
+      swal({
+        title: 'Atención',
+        text: `${params?.warning_pre_purchase?.msg} ¿Desea continuar?`,
+        buttons: true,
+      })
+      .then(accepted => {
+        if(!accepted){
+          history.push('/')
+        }
+      })
+    }
+  }, [params])
 
   const handleAddHisopado = useCallback(() => {
     dispatch({
