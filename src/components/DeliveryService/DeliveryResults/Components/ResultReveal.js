@@ -15,6 +15,7 @@ export default function ResultReveal({finalAction}) {
     const date = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)?.split("_")[1].slice(0,8)
     const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab);
     const [constancy, showConstancy] = useState(false);
+    const history = useHistory()
 
     useEffect(() => {
         if(docId !== undefined) {
@@ -30,9 +31,15 @@ export default function ResultReveal({finalAction}) {
                     <img src={hisopadosList} alt="hisopados_list" className="hisopados_cross"/>
                     <p className="hisopados-title">Conoce tu resultado</p>
                     <p>Ya se encuentra a tu disposición el resutlado de tu hisopado</p>
+                    {
+                        constancy ?
                     <div onClick={() => finalAction()} className="blue-button">
                         Ver resultado
-                    </div>
+                    </div>:
+                    <div onClick={() => history.push('/')} className="blue-button">
+                            HOME
+                    </div>                
+                    }
                     {
                         constancy &&
                         <ReactToPrint
