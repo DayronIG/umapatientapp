@@ -30,8 +30,8 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -39,6 +39,10 @@ const PaymentCardMP = () => {
           dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
       }
     }, [deliveryInfo])
+
+    useEffect(() => {
+      console.log(deliveryInfo.filter(el => el.status))
+    }, [])
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
@@ -60,7 +64,7 @@ const PaymentCardMP = () => {
           || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
           || moment().format('DD/MM') === "25/12"
           || moment().format('DD/MM') === "01/01") {
-            const confirm = await await swal({
+            const confirm = await swal({
               title: "¿Desea continuar?", 
               text: "Si abona su compra ahora, nuestro personal de salud acudirá el Lunes",
               icon: "info",
@@ -114,8 +118,8 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: deliveryInfo,
-          mpaccount: 'sandbox'
+          clients: deliveryInfo.filter(el => el.status)
+//          mpaccount: 'sandbox'
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
