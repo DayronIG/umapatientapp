@@ -17,7 +17,7 @@ import '../../styles/deliveryService/selectDestiny.scss';
 import db from "../../config/DBConnection";
 
 
-const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
+const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) => {
 	const dispatch = useDispatch();
 	const { ws } = useParams();
 	const [mapInstance, setMapInstance] = useState(undefined);
@@ -26,7 +26,7 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { hisopadoUserAddress, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: user?.piso || '',
 		depto: user?.depto || '',
@@ -203,8 +203,10 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 				address: hisopadoUserAddress,
 				isAddressValidForHisopado: isAddressValidForHisopado
 			}
-			console.log(data)
 			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
+			const dependantAddressesToDispatch = hisopadoDependantAddresses
+			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon}
+			dispatch({type: 'SET_HISOPADO_DEPENDANT_ADDRESSES', payload: dependantAddressesToDispatch})
 			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
 			if(isAddressValidForHisopado){finalAction()}
@@ -236,30 +238,32 @@ const DeliverySelectDestiny = ({isModal=false, finalAction}) => {
 					{mapInstance && mapApi && <SearchBox map={mapInstance} mapApi={mapApi} id="searchBox" handleChangePlace={handleChangePlace} value={formState.searchBox}/>}
 				</div>
 			</div>
-			<div className='selectDestiny__container'>
-				<input
-					onChange={handleForm}
-					placeholder='Dirección'
-					type='hidden'
-					name='address'
-					id='address'
-					required
-					value={formState.address}
-				/>
-			</div>
-			<div className='selectDestiny__container'>
-				<div className='selectDestiny__container--row'>
-					<input onChange={handleForm} placeholder='Piso' type='number' name='piso' id='piso' value={formState.piso} />
+			{!isModal && <div>
+				<div className='selectDestiny__container'>
 					<input
 						onChange={handleForm}
-						placeholder='Departamento'
-						type='text'
-						name='depto'
-						id='depto'
-						value={formState.depto}
+						placeholder='Dirección'
+						type='hidden'
+						name='address'
+						id='address'
+						required
+						value={formState.address}
 					/>
 				</div>
-			</div>
+				<div className='selectDestiny__container'>
+					<div className='selectDestiny__container--row'>
+						<input onChange={handleForm} placeholder='Piso' type='number' name='piso' id='piso' value={formState.piso} />
+						<input
+							onChange={handleForm}
+							placeholder='Departamento'
+							type='text'
+							name='depto'
+							id='depto'
+							value={formState.depto}
+						/>
+					</div>
+				</div>
+			</div>}
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
                 Seleccionar

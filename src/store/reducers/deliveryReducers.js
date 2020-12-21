@@ -9,8 +9,10 @@ const initialState = {
 	deliveryInfo: [],
 	deliveryType: '',
 	dependantInfo: {
-		isAddressValidForHisopado: true
+		isAddressValidForHisopado: true,
+		address: ''
 	},
+	hisopadoDependantAddresses: [],
 	hisopadoUserAddress: "",
 	isAddressValidForHisopado: true,
 	params: "",
@@ -33,6 +35,8 @@ export default (state = initialState, { type, payload }) => {
 		case SET_ADDRESS_LAT_LONG_HISOPADO:
 			return { ...state, addressLatLongHisopado: payload };
 		case "SET_HISOPADO_USER_ADDRESS":
+			return { ...state, hisopadoUserAddress: payload };
+		case "SET_HISOPADO_DEPENDANT_ADDRESSES":
 			return { ...state, hisopadoUserAddress: payload };
 		case "SET_DELIVERY_PARAMS":
 			return { ...state, params: payload }

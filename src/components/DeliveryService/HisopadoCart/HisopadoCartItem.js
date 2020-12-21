@@ -10,9 +10,8 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(state => state.user);
-    const { deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(state => state.deliveryService);
+    const { deliveryInfo, changeMarker, hisopadoDependantAddresses, dependantInfo } = useSelector(state => state.deliveryService);
     const { address, piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
-    const dependantInfo = useSelector(state => state.deliveryService.dependantInfo);
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
@@ -28,7 +27,7 @@ const HisopadoCartItem = ({patient, index}) => {
         sex: patient.patient?.sex,
         uid: patient.patient?.uid,
         obs: '',
-        address: patient.destination?.user_address || hisopadoUserAddress || address,
+        address: patient.destination?.user_address,
         piso: patient.destination?.user_floor || piso,
         depto: patient.destination?.user_number  || depto,
         lat: patient.destination?.user_lat || lat,
@@ -39,6 +38,12 @@ const HisopadoCartItem = ({patient, index}) => {
     const [wsError, setWsError] = useState(false);
     const [dobError, setDobError] = useState(false);
     const [sexError, setSexError] = useState(false);
+
+    useEffect(() => {
+        if(hisopadoDependantAddresses[index]){
+            setData({...data, address: hisopadoDependantAddresses[index].address, lat: hisopadoDependantAddresses[index].lat, lon: hisopadoDependantAddresses[index].lon})
+        }
+    }, [changeMarker])
 
 
     // const [deliveryInfoToMap, setDeliveryInfoToMap] = useState([]) 
@@ -71,17 +76,17 @@ const HisopadoCartItem = ({patient, index}) => {
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 
-    useEffect(() => {
-        if(Object.entries(dependantInfo).length !== 1) {
-            setData({...data,
-            address: dependantInfo.address,
-            piso: dependantInfo.piso,
-            depto: dependantInfo.depto,
-            lat: dependantInfo.lat,
-            lng: dependantInfo.lng
-            });
-        }
-    }, [dependantInfo])
+    // useEffect(() => {
+    //     if(Object.entries(dependantInfo).length !== 1) {
+    //         setData({...data,
+    //         address: dependantInfo.address,
+    //         piso: dependantInfo.piso,
+    //         depto: dependantInfo.depto,
+    //         lat: dependantInfo.lat,
+    //         lng: dependantInfo.lng
+    //         });
+    //     }
+    // }, [dependantInfo])
 
     const handleConfirm = () => {
         if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng && isAddressValid) {
@@ -297,6 +302,7 @@ const HisopadoCartItem = ({patient, index}) => {
                     {
                     isAddressValid? 
                     <DeliverySelectDestiny 
+                    dependantIndex={index}
                     finalAction={()=> setOpenModal(false)}
                     isModal />
                     :<ZoneCoveredHisopado 
