@@ -37,7 +37,6 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
             } else if (renderQuestion === 1 && userUmacareStatus.split('///')[1] !== '') {
                 if (userUmacareStatus.split('///')[1] === 'positive') {
                     setRenderQuestion(2)
-                } else {
                     setAskQuestions(false)
                 }
             } else if (renderQuestion === 2 && userUmacareStatus.split('///')[2] !== '') {
