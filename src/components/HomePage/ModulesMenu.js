@@ -41,7 +41,7 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
-					{/* <BuyHisopado /> */}
+					<BuyHisopado />
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
