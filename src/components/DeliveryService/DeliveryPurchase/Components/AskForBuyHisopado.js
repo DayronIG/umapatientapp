@@ -95,8 +95,8 @@ export default function AskForBuyHisopado() {
                             Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
-                    <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p>
-                    <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p>
+                    {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
+                    {/* <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p> */}
                     <div className="price-center-aligner">
                         <h2 className="price-title">Test rápido de antígenos</h2>
                         <div className="price-container">
@@ -117,6 +117,36 @@ export default function AskForBuyHisopado() {
                         >
                             Conocé nuestra zona de cobertura
                         </button>
+                    </div>
+
+                    <div className='read-with-attention'>
+                        <div className='read-with-attention-title'>
+                            Leer con atención
+                        </div>
+                        <div className='read-with-attention-content'>
+                            <ul>
+                                <li>
+                                Los hisopados se realizan de <b>lunes a viernes de 8hs a 18hs</b>, para todas las compras realizadas antes de las 18hs durante los <b>días hábiles</b>. 
+                                <br/>
+                                Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.
+                                <br/>
+                                <b><u>No se realizan hisopados los días domingos ni feriados.</u></b>
+                                </li>
+                                <li>
+                                No lo cubren las obras sociales
+                                </li>
+                                <li>
+                                No emite certificado oficial
+                                </li>
+                                <li>
+                                Consulte con su destino la validez del test rápido para viajar
+                                </li>
+                                <li>
+                                <p className='blue-text'>El pago no admite cancelaciones ni devoluciones</p>
+                                </li>
+                            </ul>
+
+                        </div>
                     </div>
 
                     <div className="hisopados-flux-container">                        
