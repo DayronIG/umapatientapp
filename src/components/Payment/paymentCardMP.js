@@ -14,6 +14,7 @@ import 'react-credit-cards/es/styles-compiled.css'
 import { payment_url, node_patient } from "../../config/endpoints"
 import mpicon from "../../assets/img/delivery/mp.jpg";
 import Cleave from 'cleave.js/react';
+import db from "../../config/DBConnection";
 
 const PaymentCardMP = () => {
     const dispatch = useDispatch()
@@ -30,8 +31,8 @@ const PaymentCardMP = () => {
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
+    // const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -40,9 +41,23 @@ const PaymentCardMP = () => {
       }
     }, [deliveryInfo])
 
-    useEffect(() => {
-      console.log(deliveryInfo.filter(el => el.status))
-    }, [])
+    const getCurrentService = async () => {
+      await db.firestore().collection('events/requests/delivery')
+      .where('patient.uid', '==', user.core_id)
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT"])
+      .get()
+      .then(async res => {
+          res.forEach(services => {
+              let document = {...services.data(), id: services.id}
+              deliveryInfo.push(document)
+              dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+          })
+      })
+  }
+
+    // useEffect(() => {
+    //   console.log(deliveryInfo.filter(el => el.status))
+    // }, [])
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
@@ -51,6 +66,7 @@ const PaymentCardMP = () => {
     }, [deliveryInfo, hisopadoPrice])
 
     useEffect(() => {
+        getCurrentService()
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
         window.Mercadopago.getIdentificationTypes();
       }, [])
@@ -100,6 +116,10 @@ const PaymentCardMP = () => {
             postData(form, response.id)
         }
     }
+
+    useEffect(() => {
+      console.log(current.id)
+    }, [current])
 
     const postData = useCallback((form, token) => {
       setLoader(true)
