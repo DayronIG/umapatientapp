@@ -145,7 +145,6 @@ export default function AskForBuyHisopado() {
                                 <p className='blue-text'>El pago no admite cancelaciones ni devoluciones</p>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
 
@@ -166,7 +165,7 @@ export default function AskForBuyHisopado() {
                         <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
                     </div>
-
+{/* 
                     <div className="hisopados-atentionContainer">
                         <h2>A tener en cuenta</h2>
                         <ul>
@@ -176,7 +175,7 @@ export default function AskForBuyHisopado() {
                             <li>• Consulte con su destino la validez del test rápido para viajar</li>
                             <li>• El pago no admite cancelaciones ni devoluciones.</li>
                         </ul>
-                    </div>
+                    </div> */}
 
                     <p className="terms-questions">
                         <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
