@@ -92,7 +92,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan de lunes a viernes de 8hs a 18hs.
+                            Los hisopados se realizan en días hábiles de lunes a viernes de 8hs a 18hs.
                         </article>
                     }
                     {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
@@ -130,7 +130,7 @@ export default function AskForBuyHisopado() {
                                 <br/>
                                 Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.
                                 <br/>
-                                <b><u>No se realizan hisopados los días domingos ni feriados.</u></b>
+                                <b><u>No se realizan hisopados los días sábados, domingos ni feriados.</u></b>
                                 </li>
                                 <li>
                                 No lo cubren las obras sociales

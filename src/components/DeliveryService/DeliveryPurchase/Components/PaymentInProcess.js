@@ -11,7 +11,7 @@ export default function PaymentInProcess() {
             <div className="instructions-container">
                 <img src={hisopadosPay} alt="hisopados_tic" className="hisopados_cross"/>
                 <p className="hisopados-title">Estamos procesando su pago...</p>
-                <p>Aguarde unos instantes</p>
+                <p>Mercado Pago aún no ha aprobado tu solicitud de pago. Aguarde unos instantes.</p>
             <button className="go__home" onClick={() => history.push('/home')}>
                 Ir a inicio
             </button>
