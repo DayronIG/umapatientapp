@@ -8,6 +8,7 @@ import Loading from '../GeneralComponents/Loading';
 import NotService from './NotService';
 import EndAssignationHisopado from "../DeliveryService/DeliveryPurchase/Components/EndAssignationHisopado"
 import '../../styles/deliveryService/trackProgress.scss';
+import PaymentInProcess from './DeliveryPurchase/Components/PaymentInProcess';
 
 const DeliveryTrackProgress = () => {
 	const history = useHistory();
@@ -20,6 +21,7 @@ const DeliveryTrackProgress = () => {
 		if (status && status !== 'FREE' && status !== "FREE:IN_RANGE") {
 			switch (step) {
 				case 'PREASSIGN': return <EndAssignationHisopado />;
+				case 'IN_PROCESS': return <PaymentInProcess />;
 				case 'ASSIGN:DELIVERY': return <PackageOnTheWay active={1} />;
 				case 'ASSIGN:ARRIVED': return <PackageOnTheWay active={2} />;
 				case 'DONE:RESULT': return <PackageOnTheWay active={3} />;

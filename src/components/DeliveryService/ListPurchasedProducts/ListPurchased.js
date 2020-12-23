@@ -15,7 +15,7 @@ export default function ReferredInvitation({finalAction}) {
     const getCurrentServices = () => {
         db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', patient?.core_id)
-        .where('status', 'in', ["PREASSIGN",'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', "DONE:RESULT"])
+        .where('status', 'in', ["PREASSIGN",'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', "DONE:RESULT", 'IN_PROCESS'])
         .get()
         .then(res => {
             res.forEach(services => {

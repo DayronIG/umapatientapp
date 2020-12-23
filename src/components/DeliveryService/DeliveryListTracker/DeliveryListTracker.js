@@ -21,6 +21,7 @@ export default function ListTracker({finalAction}) {
         dispatch({type: "SET_HISOPADO_INDEX", payload: index})
         switch(purchases[index].status){
             case("PREASSIGN"):
+            case("IN_PROCESS"):
             case("ASSIGN:DELIVERY"):
             case("ASSIGN:ARRIVED"):
                 return history.push(`/delivery/progress/${patient.ws}/${id}/`);
@@ -49,6 +50,7 @@ export default function ListTracker({finalAction}) {
                     {purchases.map((purchase, index) => {
                     if(!["FREE", "FREE:IN_RANGE", "DEPENDANT"].includes(purchase.status)){let state;  
                     if (purchase.status === "PREASSIGN"){state="En preparación"}
+                    if (purchase.status === "IN_PROCESS"){state="Procesando pago"}
                     if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
                     if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
                     if (purchase.status === "DONE:RESULT"){state="Ver resultado"}

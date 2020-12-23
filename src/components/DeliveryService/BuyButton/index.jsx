@@ -15,7 +15,7 @@ const BuyHisopado = () => {
 
     useEffect(() => {
         deliveryInfo.map(el => {
-        if( el.status === "PREASSIGN" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
+        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
             setDeliveryStatus(true)
         }})
     }, [deliveryInfo])
