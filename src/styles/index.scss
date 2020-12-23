@@ -257,6 +257,10 @@
 		.disabled {
 			background: $gray-body-background;
 		}
+		&.secondary {
+			background: $uma-secondary;
+			width: 90% !important;
+		}
 	}
 	.btn-alert {
 		padding: 5px;

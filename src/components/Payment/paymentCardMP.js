@@ -62,10 +62,11 @@ const PaymentCardMP = () => {
     // }, [])
 
     useEffect(() => {
-      if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
+      if(hisopadosToPurchase && hisopadosToPurchase.length && !isNaN(hisopadoPrice)) {
+        console.log(parseInt(hisopadoPrice), hisopadosToPurchase.length)
         setTotalPayment(parseInt(hisopadoPrice) * hisopadosToPurchase.length) 
       }
-    }, [deliveryInfo, hisopadoPrice])
+    }, [hisopadosToPurchase, hisopadoPrice])
 
     useEffect(() => {
         getCurrentService()
@@ -96,8 +97,19 @@ const PaymentCardMP = () => {
               setLoader(false)
             }
         } else {
-          const form = document.getElementsByTagName('form')[0]
-          await window.Mercadopago.createToken(form, sdkResponseHandler)
+          const confirm = await swal({
+            title: "¿Desea continuar?", 
+            text: `Debido a la alta demanda en este momento el hisopado puede demorar más de lo habitual. Tiempo estimado: ${params.delay}`,
+            icon: "info",
+            buttons: true,
+            dangerMode: false,
+          })
+          if(confirm) {
+              const form = document.getElementsByTagName('form')[0]
+              window.Mercadopago.createToken(form, sdkResponseHandler)
+          } else {
+            setLoader(false)
+          }
         }
     }
 
@@ -257,6 +269,7 @@ const PaymentCardMP = () => {
 
       const validateDiscount = (e) => {
         setCoupon(e.target.value)
+        console.log(e.target.value)
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {
