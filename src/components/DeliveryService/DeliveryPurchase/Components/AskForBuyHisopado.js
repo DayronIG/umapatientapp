@@ -156,7 +156,7 @@ export default function AskForBuyHisopado() {
                         <p>Además te brindamos <span className="info-destacado">atención médica</span> una vez realizado el hisopado a través de nuestra plataforma.</p>
                         
                         <p className="info-title">Medios de pago</p>
-                        <p>Puedes pagarlo con tarjeta de crédito y débito a través de MercadoPago.</p>
+                        <p>Puedes pagarlo con tarjeta de crédito a través de MercadoPago.</p>
 
                         <br />
                         <br />
