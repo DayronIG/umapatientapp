@@ -37,7 +37,7 @@ export default (state = initialState, { type, payload }) => {
 		case "SET_HISOPADO_USER_ADDRESS":
 			return { ...state, hisopadoUserAddress: payload };
 		case "SET_HISOPADO_DEPENDANT_ADDRESSES":
-			return { ...state, hisopadoUserAddress: payload };
+			return { ...state, hisopadoDependantAddresses: payload };
 		case "SET_DELIVERY_PARAMS":
 			return { ...state, params: payload }
 		case "SET_DELIVERY_STEP":

@@ -14,7 +14,6 @@ function Marker({
 			{text &&
 				<div className='mapMarker__container'>
 					<p className='mapMarker__container--text'>{text}</p>
-					{console.log(text, 'TEXT')}
 				</div>
 			}
 			<div className='mapMarker__container'>
