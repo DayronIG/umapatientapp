@@ -106,9 +106,9 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				lng: parseFloat(formState.lng),
 			};
 			dispatch({type: "SET_ADDRESS_LAT_LONG_HISOPADO", payload: latlng})
-			setMarker({ ...latlng, text: formState.address });
+			setMarker({ ...latlng, text: hisopadoUserAddress });
 			setFormState({...formState, searchBox: userGeoguessedAddress, address: userGeoguessedAddress})
-	}, [formState.lat, formState.lng, userGeoguessedAddress]);
+	}, [formState.lat, formState.lng, userGeoguessedAddress, hisopadoUserAddress]);
 
 	const handleApiLoaded = (map, maps) => {
 		setMapInstance(map);

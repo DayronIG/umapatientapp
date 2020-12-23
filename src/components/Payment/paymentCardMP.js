@@ -30,6 +30,7 @@ const PaymentCardMP = () => {
     const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
+    const [hisopadosToPurchase, setHisopadosToPurchase] = useState([]);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
@@ -39,6 +40,7 @@ const PaymentCardMP = () => {
       if(deliveryInfo.length < multiple_clients?.length){
           dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
       }
+      setHisopadosToPurchase(deliveryInfo.filter(el => el.status && !['DONE:RESULT', 'ASSIGN:ARRIVED', 'ASSIGN:DELIVERY'].includes(el.status)))
     }, [deliveryInfo])
 
     const getCurrentService = async () => {
@@ -56,12 +58,12 @@ const PaymentCardMP = () => {
   }
 
     // useEffect(() => {
-    //   console.log(deliveryInfo.filter(el => el.status))
+    //   console.log(hisopadosToPurchase)
     // }, [])
 
     useEffect(() => {
       if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
-        setTotalPayment(parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length) 
+        setTotalPayment(parseInt(hisopadoPrice) * hisopadosToPurchase.length) 
       }
     }, [deliveryInfo, hisopadoPrice])
 
@@ -138,7 +140,7 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: deliveryInfo.filter(el => el.status)
+          clients: hisopadosToPurchase
 //          mpaccount: 'sandbox'
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
@@ -156,13 +158,13 @@ const PaymentCardMP = () => {
                   window.gtag('event', 'purchase', {
                     'transaction_id': current.id,
                     'affiliation': user?.corporate_norm,
-                    'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length,
+                    'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * hisopadosToPurchase.length,
                     'coupon': '1',
                     'currency': 'ARS',
                     'items': [{
                       "id": 'Hisopado Antígeno',
                       "name": 'Hisopado Antígeno',
-                      "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * deliveryInfo.filter(el => el.status).length
+                      "price": parseInt(totalPayment) || parseInt(hisopadoPrice) * hisopadosToPurchase.length
                     }],
                     });
                     window.gtag('event', 'conversion', {
