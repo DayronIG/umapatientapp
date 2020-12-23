@@ -97,8 +97,19 @@ const PaymentCardMP = () => {
               setLoader(false)
             }
         } else {
-          const form = document.getElementsByTagName('form')[0]
-          await window.Mercadopago.createToken(form, sdkResponseHandler)
+          const confirm = await swal({
+            title: "¿Desea continuar?", 
+            text: `Debido a la alta demanda en este momento el hisopado puede demorar más de lo habitual. Tiempo estimado: ${params.delay}`,
+            icon: "info",
+            buttons: true,
+            dangerMode: false,
+          })
+          if(confirm) {
+              const form = document.getElementsByTagName('form')[0]
+              window.Mercadopago.createToken(form, sdkResponseHandler)
+          } else {
+            setLoader(false)
+          }
         }
     }
 
