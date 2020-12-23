@@ -785,6 +785,11 @@ const Recipe = ({ att, doc }) => {
 						)}
 						content={() => compRef.current}
 					/>
+					<div className='d-flex justify-content-around'>
+						<div className='d-flex justify-content-center btn btn-blue-lg'>
+							<div className='patient-action'>Pedir por Rappi</div>
+						</div>
+					</div>
 					<div className='d-none'>{fromUP ? <RecipePDFUP {...dataToPrint} /> : <RecipePDF {...dataToPrint} />}</div>
 				</div>
 			) : (
