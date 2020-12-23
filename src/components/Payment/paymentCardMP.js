@@ -62,10 +62,11 @@ const PaymentCardMP = () => {
     // }, [])
 
     useEffect(() => {
-      if(deliveryInfo && deliveryInfo.length && !isNaN(hisopadoPrice)) {
+      if(hisopadosToPurchase && hisopadosToPurchase.length && !isNaN(hisopadoPrice)) {
+        console.log(parseInt(hisopadoPrice), hisopadosToPurchase.length)
         setTotalPayment(parseInt(hisopadoPrice) * hisopadosToPurchase.length) 
       }
-    }, [deliveryInfo, hisopadoPrice])
+    }, [hisopadosToPurchase, hisopadoPrice])
 
     useEffect(() => {
         getCurrentService()
@@ -257,6 +258,7 @@ const PaymentCardMP = () => {
 
       const validateDiscount = (e) => {
         setCoupon(e.target.value)
+        console.log(e.target.value)
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {
