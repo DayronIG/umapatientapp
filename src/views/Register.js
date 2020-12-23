@@ -39,7 +39,7 @@ const Register = props => {
             e.preventDefault();
             setDeferredPrompt(e);
         })
-        if(urlWS.length < 12) {
+        if(urlWS.length < 11) {
             swal('Error', 'Este no es un teléfono válido.', 'warning');
             history.push('/home');
         } else {
