@@ -786,9 +786,9 @@ const Recipe = ({ att, doc }) => {
 						content={() => compRef.current}
 					/>
 					<div className='d-flex justify-content-around'>
-						<div className='d-flex justify-content-center btn btn-blue-lg'>
-							<div className='patient-action'>Pedir por Rappi</div>
-						</div>
+						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
+								Pedir por Rappi
+						</a>
 					</div>
 					<div className='d-none'>{fromUP ? <RecipePDFUP {...dataToPrint} /> : <RecipePDF {...dataToPrint} />}</div>
 				</div>
