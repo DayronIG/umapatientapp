@@ -81,6 +81,8 @@ export function checkNum(phone) {
         } else if(validPhone.length === 10 && validPhone.slice(3, 4) !== '15') {
             validPhone = `549${validPhone}`
         }
+    } else if (phone.length >= 11) {
+        return phone
     } else {
         console.log("Teléfono inválido")
         return false;
