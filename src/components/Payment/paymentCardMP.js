@@ -49,7 +49,7 @@ const PaymentCardMP = () => {
       .then(async res => {
           res.forEach(services => {
               let document = {...services.data(), id: services.id}
-              deliveryInfo.push(document)
+              // deliveryInfo.push(document)
               dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
           })
       })

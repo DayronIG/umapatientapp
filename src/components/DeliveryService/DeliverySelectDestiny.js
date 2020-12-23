@@ -54,8 +54,8 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
         .then(async res => {
             res.forEach(services => {
                 let document = {...services.data(), id: services.id}
-                deliveryInfo.push(document)
-                dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
+				deliveryInfo.push(document)
+				dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
         })
         dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})}
