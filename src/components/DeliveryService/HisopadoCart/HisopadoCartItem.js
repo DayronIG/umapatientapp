@@ -274,7 +274,6 @@ const HisopadoCartItem = ({patient, index}) => {
                             onChange={(e) => {
                                 setData({...data, piso: e.target.value});
                             }}
-                            readOnly
                         /> 
                     </div>
                     <div>
@@ -285,7 +284,6 @@ const HisopadoCartItem = ({patient, index}) => {
                             onChange={(e) => {
                                 setData({...data, depto: e.target.value});
                             }}
-                            readOnly
                         /> 
                     </div>
                 </div>
