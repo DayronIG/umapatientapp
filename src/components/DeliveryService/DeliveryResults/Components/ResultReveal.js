@@ -18,7 +18,7 @@ export default function ResultReveal({finalAction}) {
     const history = useHistory()
 
     useEffect(() => {
-        if(docId !== undefined) {
+        if(docId !== undefined && result !== 'CANCEL') {
             showConstancy(true);
         }
     }, [docId])
