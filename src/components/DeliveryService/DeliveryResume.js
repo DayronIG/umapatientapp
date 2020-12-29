@@ -16,7 +16,7 @@ import { MdChatBubble } from 'react-icons/md'
 
 function DeliveryResume({ duration, active }) {
 	const history = useHistory();
-	const { ws, dni,  } = useSelector(store => store.queries.patient)
+	const { ws, dni } = useSelector(store => store.user)
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
 	const { status, delivery, docId } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]);
 	const { notes, nurse_eval, uma_eval } = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex].eval);
