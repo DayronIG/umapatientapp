@@ -30,12 +30,11 @@ export default function ResultReveal({finalAction}) {
             <div className="allwhite-hisopados-background" >
                 <div className="instructions-container">
                     <img src={hisopadosList} alt="hisopados_list" className="hisopados_cross"/>
-                    {result !== 'CANCEL' ? 
+                    {result !== 'CANCEL' && 
                     <>
                     <p className="hisopados-title">Conoce tu resultado</p>
                     <p>Ya se encuentra a tu disposición el resutlado de tu hisopado</p>
-                    </>:
-                    <p className="hisopados-title">Su hisopado ha sido cancelado.</p>
+                    </>
                     }
                     {
                         constancy ?
