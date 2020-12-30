@@ -166,7 +166,14 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
 		if (['lat', 'lng', 'address'].some((key) => !formState[key] || formState[key] === "")) {
-			return swal('Error', 'Por favor, seleccione una dirección', 'warning');
+			return swal('Error', 'Por favor, seleccione una dirección.', 'warning');
+		}
+		//CHECK ADDRESS
+		let boolAddressSplitByCommas = formState.address.split('').map(el => {
+			return Number.isInteger(parseInt(el))
+		})
+		if(!boolAddressSplitByCommas.includes(true)){
+			return swal('Error', 'Por favor, seleccione una altura para su dirección.', 'warning');
 		}
 		dispatch({ type: 'LOADING', payload: true });
 		dispatch(handleDeliveryForm(formState));
@@ -255,7 +262,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 						<input onChange={handleForm} placeholder='Piso' type='number' name='piso' id='piso' value={formState.piso} />
 						<input
 							onChange={handleForm}
-							placeholder='Departamento'
+							placeholder='Depto'
 							type='text'
 							name='depto'
 							id='depto'

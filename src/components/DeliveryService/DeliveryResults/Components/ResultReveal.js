@@ -18,7 +18,8 @@ export default function ResultReveal({finalAction}) {
     const history = useHistory()
 
     useEffect(() => {
-        if(docId !== undefined) {
+        console.log(result)
+        if(docId !== undefined && result !== 'CANCEL') {
             showConstancy(true);
         }
     }, [docId])
@@ -29,15 +30,19 @@ export default function ResultReveal({finalAction}) {
             <div className="allwhite-hisopados-background" >
                 <div className="instructions-container">
                     <img src={hisopadosList} alt="hisopados_list" className="hisopados_cross"/>
+                    {result !== 'CANCEL' && 
+                    <>
                     <p className="hisopados-title">Conoce tu resultado</p>
                     <p>Ya se encuentra a tu disposición el resutlado de tu hisopado</p>
+                    </>
+                    }
                     {
                         constancy ?
                     <div onClick={() => finalAction()} className="blue-button">
                         Ver resultado
                     </div>:
                     <div onClick={() => history.push('/')} className="blue-button">
-                        HOME
+                        Ir al inicio
                     </div>                
                     }
                     {
