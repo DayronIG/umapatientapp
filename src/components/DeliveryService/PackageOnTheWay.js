@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
 import DeliveryResume from './DeliveryResume';
@@ -15,19 +15,19 @@ const PackageOnTheWay = ({ active }) => {
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
-    const firestore = db.firestore();
+	const firestore = db.firestore();
+	const dispatch = useDispatch()
 
 	function snapDeliveryLatLon(){
-		firestore
+		return firestore
 		.collection('providers')
 		.doc(`${delivery?.cuit_nurse}`)
 		.collection('tracking')
 		.doc('geo')
 		.onSnapshot((snap) => {
-			console.log(snap.data())
-			dispatchEvent({type:'SET_DELIVERY_LAT_LONG_PROVIDERS', payload: {
-				lat: snap.data().lat,
-				lon: snap.data().lon
+			dispatch({type:'SET_DELIVERY_LAT_LONG_PROVIDERS', payload: {
+				lat: parseFloat(snap.data()?.lat),
+				lon: parseFloat(snap.data()?.lon)
 			}})
 		}, err => {
 			console.error(err)
@@ -35,9 +35,11 @@ const PackageOnTheWay = ({ active }) => {
 	}
 
 	useEffect(() => {
+		let snapDelivery = () => {}
 		if(delivery){
-			snapDeliveryLatLon()
+			snapDelivery = snapDeliveryLatLon()
 		}
+		return () => snapDelivery()
 	}, [delivery])
 
 	function setMapFunctions({ map, maps }) {

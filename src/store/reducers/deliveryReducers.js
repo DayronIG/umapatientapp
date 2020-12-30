@@ -71,7 +71,7 @@ export default (state = initialState, { type, payload }) => {
 		case "CHANGE_MARKER":
 			return {...state, changeMarker: state.changeMarker + 1}
 		case "SET_DELIVERY_LAT_LONG_PROVIDERS":
-			return {...state, deliveryLatLongProviders: state.deliveryLatLongProviders}
+			return {...state, deliveryLatLongProviders: payload}
 		default:
 			return state;
 	}
