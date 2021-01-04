@@ -133,7 +133,6 @@ export function getFreeAppointments(specialty, doctors, date) {
 
 export async function getFreeAppointmentsCustom(date, specialty, condition) {
 	try {
-		console.log(condition)
 		const assigns = [];
 		let query = {};
 		if (!!condition?.match?.(regexNumbers)) {

@@ -36,6 +36,7 @@ const MyCalendar = () => {
 
 	moment.locale('es');
 
+
 	useEffect(() => {
 		(async function getAppointments() {
 			window.scroll(0, 0);
@@ -167,11 +168,10 @@ const MyCalendar = () => {
 								// you wont understand this, even if you wanted to. don't change it.
 								const year = moment(date).format('YYYY');
 								const month = moment(date)
-									.subtract(1, 'months')
 									.format('MM');
 								const day = moment(dateNav).format('DD');
-
-								setFilterDt(moment(new Date(year, month, day)).format('YYYY-MM-DD'));
+								console.log(year, month, day)
+								setFilterDt(`${year}-${month}-${day}`);
 							}}
 							events={calendarAppoints}
 							defaultView='month'
