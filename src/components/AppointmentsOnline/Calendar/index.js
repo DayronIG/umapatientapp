@@ -168,10 +168,11 @@ const MyCalendar = () => {
 								// you wont understand this, even if you wanted to. don't change it.
 								const year = moment(date).format('YYYY');
 								const month = moment(date)
+									// .subtract(1, 'months')
 									.format('MM');
 								const day = moment(dateNav).format('DD');
-								console.log(year, month, day)
 								setFilterDt(`${year}-${month}-${day}`);
+								
 							}}
 							events={calendarAppoints}
 							defaultView='month'
