@@ -33,7 +33,8 @@ const PaymentCardMP = () => {
     const [hisopadosToPurchase, setHisopadosToPurchase] = useState([]);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    // const MERCADOPAGO_PUBLIC_KEY_MARCODINA = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -152,8 +153,8 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: hisopadosToPurchase
-//          mpaccount: 'sandbox'
+          clients: hisopadosToPurchase,
+          mpaccount: 'ihsa'
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
