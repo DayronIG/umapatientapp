@@ -66,25 +66,14 @@ export function getFreeAppointments(specialty, doctors, date) {
 				.doc(specialty)
 				.collection(yearMonth)
 				.where('date', '==', date)
-				.where('state', '==', 'FREE');
+				.where('state', '==', 'FREE')
+				.limit(8000)
 			query.get().then(function (res) {
 				res.forEach((subDoc) => {
 					const data = { ...subDoc.data(), path: subDoc.ref.path };
 					const u = JSON.parse(localStorage.getItem('userData'));
 					let match;
-					if (u && u.context === 'temp') {
-						if (u && (u.country === 'AR' || !u.country || u.country === '')) {
-							match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'temp');
-						} else {
-							match = doctors.find(
-								(d) =>
-									d.cuit === data.cuil &&
-									d.enable === 'temp' &&
-									d.country &&
-									d.country.includes(u.country.toString())
-							);
-						}
-					} else {
+					if (u && u.context !== 'temp') {
 						if (u && (u.country === 'AR' || !u.country || u.country === '')) {
 							match = doctors.find(
 								(d) =>
@@ -111,6 +100,18 @@ export function getFreeAppointments(specialty, doctors, date) {
 									d.country.includes(u.country.toString())
 								);
 							});
+						}
+					} else if (u && u.context === 'temp'){
+						if (u && (u.country === 'AR' || !u.country || u.country === '')) {
+							match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'temp');
+						} else {
+							match = doctors.find(
+								(d) =>
+									d.cuit === data.cuil &&
+									d.enable === 'temp' &&
+									d.country &&
+									d.country.includes(u.country.toString())
+							);
 						}
 					}
 					const now = new Date();

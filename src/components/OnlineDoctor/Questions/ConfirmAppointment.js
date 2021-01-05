@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -9,6 +9,7 @@ import { FaFileMedicalAlt } from 'react-icons/fa';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { Loader } from '../../global/Spinner/Loaders';
 import {FaUserMd} from  'react-icons/fa'
+import DoctorDelay from '../AttQueue/DoctorDelay';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment-timezone';
@@ -47,28 +48,26 @@ const ConfirmAppointment = (props) => {
 
 	const cleanSyntoms = () => {
 		const finalSymptoms = [];
-	
 		symptomsForDoc.filter(Boolean).map(item => {
 			finalSymptoms.push(item);
 		});
-
 		answers.split('. ').filter(Boolean).map(item => {
 			finalSymptoms.push(item);
 		});
-
 		return finalSymptoms.join('.');
 	}
 
-	const postData = async () => {
+	const postData = async (bag = false) => {
 		dispatch({ type: 'LOADING', payload: true });
 		try {
 			let symptoms = '', userVerified;
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
-			const appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
-
-			
+			let appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
+			if(bag === true) {
+				appointmentId = ''
+			}
 			let data = {
 				age: userVerified.age || '',
 				biomarker: biomarkers || [],
@@ -91,7 +90,6 @@ const ConfirmAppointment = (props) => {
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
-			
 			if (res.data.fecha === '') {
 				return history.replace(`/${userVerified.dni}/onlinedoctor/who`);
 			} else {
@@ -103,20 +101,10 @@ const ConfirmAppointment = (props) => {
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
-			return history.replace('/');
 		}
 	};
 
 	const submitRequest = async () => {
-		const confirmAction = await swal({
-			title: 'Confirmación',
-			text: 'Está seguro que desea agendar este turno?',
-			icon: 'warning',
-			buttons: true,
-		});
-		if (!confirmAction) {
-			return;
-		}
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 		const lastAssingState = await getDocumentFB(`assignations/${appointId}`);
@@ -124,11 +112,15 @@ const ConfirmAppointment = (props) => {
 			return postData();
 		} else {
 			dispatch({ type: 'LOADING', payload: false });
-			swal(
-				'La cita que escogió ya está ocupada',
-				'Su turno ya ha sido escogido, por favor escoga otro. Será redirigido al home.',
-				'warning'
-			);
+			const confirmAction = await swal({
+				title: 'El especialista que escogió ya no está disponible',
+				text: 'Podemos asignarte a otro médico con disponibilidad. Deseas que te asignemos el primero disponible?',
+				icon: 'warning',
+				buttons: true,
+			});
+			if (!confirmAction) {
+				return postData(true);
+			}
 			return history.replace('/');
 		}
 	};
@@ -146,7 +138,8 @@ const ConfirmAppointment = (props) => {
 						<div className="appointment__detail">Hora: <b>{selectedAppointment.time}</b></div>
 						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
 					</div>
-					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar. <br /> También puede adjuntar análisis de laboratorio o fotos de su credencial, fármaco o lesiones que puedan ayudar al médico en su consulta.</p>
+					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
+					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 				</div>
 				: 
 				<div className='appointment'>
@@ -155,7 +148,7 @@ const ConfirmAppointment = (props) => {
 						<FaUserMd />
 					</div>
 					<div className="appointment__detail">Médico de guardia</div>
-					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.<br /> También puede adjuntar análisis de laboratorio o fotos de su credencial, fármaco o lesiones que puedan ayudar al médico en su consulta.</p>
+					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
 				</div>
 			}
 			<div className="questionsContainer">
