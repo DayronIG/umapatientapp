@@ -5,16 +5,18 @@ import { user_cancel, cx_action_create } from '../../../config/endpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, useHistory } from 'react-router-dom';
 import { calcReaminingHrsMins } from '../../Utils/dateUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { getAppointmentByDni } from '../../../store/actions/firebaseQueries';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { BackButton } from '../../GeneralComponents/Headers';
 import QueueActions from './QueueActions';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import SendComplain from './SendComplain';
+import DoctorDelay from './DoctorDelay';
 import AnswerComplain from '../../CX';
 import DBConnection from '../../../config/DBConnection';
 import Slider from './Slider';
@@ -39,6 +41,7 @@ const Queue = (props) => {
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord[0])
+    const history = useHistory()
 
     useEffect(() => {
         (async function checkAssignedAppointment() {
@@ -51,7 +54,7 @@ const Queue = (props) => {
                 if (assigned) {
                     dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
                 } else {
-                    return props.history.replace(`/home`)
+                    return history.replace(`/home`)
                 }
             }
         })()
@@ -327,7 +330,7 @@ const Queue = (props) => {
             }
             if (type === 'cancel') {
                 dispatch({ type: 'RESET_ALL' })
-                return props.history.push('/home')
+                return history.push('/home')
             }
             return dispatch({ type: 'LOADING', payload: false })
         } catch (err) {
@@ -336,7 +339,7 @@ const Queue = (props) => {
             dispatch({ type: 'RESET_ALL' })
             dispatch({ type: 'LOADING', payload: false })
             if (type === 'cancel') {
-                return props.history.push('/home')
+                return history.push('/home')
             }
         }
     }
@@ -357,6 +360,7 @@ const Queue = (props) => {
 
     return (
         <>
+            <BackButton action={()=> history.push(`/`)} />
             {loading && <Loading />}
             {showModalCancelOptions &&
                 <div className='text-center'>
@@ -424,14 +428,7 @@ const Queue = (props) => {
                 </>
                 :
                 <>
-                    <div className='dinamic-time mb-3'>
-                        <Link to='/home'>
-                            <FaArrowLeft color='#97c1d3' fontSize='2rem' />
-                        </Link>
-                        <div className='question-title'>
-                            {!!remainingText ? remainingText : 'Será atendido pronto'}
-                        </div>
-                    </div>
+                    <DoctorDelay cuit={assignedAppointment.cuit} time={assignedAppointment.time} date={assignedAppointment.date} />
                     <Slider />
                 </>
             }

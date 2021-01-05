@@ -54,14 +54,15 @@ const WhenScreen = (props) => {
 		try {
 			setAction('Loading');
 			let assigned = undefined;
-			// Check only when is for other person.
 			if (person.group !== person.dni) {
 				assigned = await findAllAssignedAppointment(person.dni, type);
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
+				console.log("Assigned check", assigned)
 				return props.history.replace(`/${person.dni}/onlinedoctor/queue`);
 			} else {
+				console.log("No assigned")
 				return findFreeAppointments(person, type);
 			}
 		} catch (error) {
@@ -73,13 +74,8 @@ const WhenScreen = (props) => {
 	async function findFreeAppointments(person, type) {
 		try {
 			// Get free appointments from firebase.
-			let freeAppoints;
-			if (false && person.corporate_norm === 'PAMI') {
-				/* Quitar el false para prod */
-				freeAppoints = await findAllFreeAppointments(type, person.corporate_norm);
-			} else {
-				freeAppoints = await findAllFreeAppointments(type);
-			}
+			let freeAppoints = await findAllFreeAppointments(type);
+			console.log("Freeappoints", freeAppoints)
 			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
@@ -120,6 +116,22 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
+					<div className='mb-4'>
+						<GuardCard pediatric={pediatric} dni={dni} />
+					</div>
+					<div className='when-question'>O elija un {pediatric ? 'pediatra' : 'médico'}</div>
+					{action === 'Doctors' && (
+						<div>
+							{assignations?.map((assignation, index) => (
+								<DoctorCard
+									remaining={assignation.remaining}
+									doctor={assignation}
+									dni={dni}
+									key={index}
+								/>
+							))}
+						</div>
+					)}
 					{action === 'Loading' && (
 						<div
 							style={{
@@ -131,30 +143,12 @@ const WhenScreen = (props) => {
 							}}
 							className='d-flex align-items-center justify-content-center flex-column mb-3'>
 							<Loader />
-							<div className='mt-5'>Cargando datos...</div>
-						</div>
-					)}
-					{action !== 'Loading' && (
-						<div className='mb-4'>
-							<GuardCard pediatric={pediatric} dni={dni} />
-						</div>
-					)}
-					{action === 'Doctors' && (
-						<div>
-							<div className='when-question'>O elija un {pediatric ? 'pediatra' : 'médico'}</div>
-							{assignations?.map((assignation, index) => (
-								<DoctorCard
-									remaining={assignation.remaining}
-									doctor={assignation}
-									dni={dni}
-									key={index}
-								/>
-							))}
+							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
 					)}
 					{action === 'Empty' && (
-						<div className='dinamic-time'>
-							Aún no hemos encontrado turnos, por favor espere o seleccione médico de guardia.
+						<div className='dinamic-time  text-center'>
+							En este momento no hay especialistas con agenda disponible, seleccione médico de guardia y será atendido por el primer especialista disponible.
 						</div>
 					)}
 					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/home')}>

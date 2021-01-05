@@ -24,7 +24,7 @@ export const getOneRecord = (patient) => ({
 export function searchActiveProviders(service = 'online', type = '', social_work) {
     let docQuery = firestore
             .collection('providers')
-            .where('services.MEDICO', 'array-contains', service)
+			.where('services.MEDICO', 'array-contains', service)
     return new Promise((resolve, reject) => {
         docQuery
             .get()
@@ -33,14 +33,15 @@ export function searchActiveProviders(service = 'online', type = '', social_work
                 snap.forEach(res => {
                     let doctor = res.data()
                     if (doctor.matricula_especialidad && doctor.matricula_especialidad.includes(type)) {
-                        if(social_work === "PAMI" && doctor.social_work && doctor.social_work.includes("PAMI")) {
                             data.push(doctor)
-                        } else if((social_work !== "PAMI" 
+						/*  Sirve para filtrar por OS
+						if(social_work === "PAMI" && doctor.social_work && doctor.social_work.includes("PAMI")) {
+						} else if((social_work !== "PAMI" 
                                     && doctor.social_work && !doctor.social_work.includes("PAMI"))
                                     || doctor.social_work === []
                                     || !doctor.social_work) {
                             data.push(doctor)
-                        }
+                        } */
                     }
                 });
                 return resolve(data);

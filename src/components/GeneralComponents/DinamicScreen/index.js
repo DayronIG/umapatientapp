@@ -11,7 +11,6 @@ const DinamicScreen = props => {
   return (
     <div className="dinamic-template">
       <GenericHeader children={userDataToJson.fullname} />
-      {/* <BackButton inlineButton={true}/> */}
       {loading ? (
         <Loading />
       ) : (

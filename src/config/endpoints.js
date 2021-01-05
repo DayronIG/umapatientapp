@@ -1,5 +1,5 @@
 const isLocal = window.location.origin.includes('localhost');
-const URN_UMA = `https://uma-v2.uc.r.appspot.com`;
+const URN_UMA = `https://uma-v2.uc.r.appspot.com`; // `https://test-dot-uma-v2.uc.r.appspot.com` 
 const NODE_DEV = `http://localhost:8080`; // https://20200924t180300-dot-nodeserver-dot-uma-v2.uc.r.appspot.com
 const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const EVENTS = `https://gps-dot-uma-v2.appspot.com/v1/users`;

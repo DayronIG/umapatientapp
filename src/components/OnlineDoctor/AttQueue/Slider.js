@@ -14,7 +14,7 @@ const Slider = () => {
 
   const properties = {
     autoplay: true,
-    autoplayInterval: 3000,
+    autoplayInterval: 6000,
     wrapAround: true,
     cellSpacing: 50,
     renderCenterLeftControls: null,
@@ -35,7 +35,6 @@ const Slider = () => {
         </MobileModal>
         :
         <div className="carousel-container">
-          <h6 className="titulo-recomendacion">Recomendaciones COVID-19</h6>
           <Carousel {...properties}>
             {slides.map((slide, i) => <SlideItem slide={slide} key={i} setModalOpen={setModalOpen} setComponenteJuego={setComponenteJuego} />)}
           </Carousel>
