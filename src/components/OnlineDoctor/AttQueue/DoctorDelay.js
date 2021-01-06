@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
 import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
@@ -7,8 +7,15 @@ const DoctorDelay = ({cuit, date, time}) => {
     const [delay, setDelay] = useState('5');
 
     useEffect(() => {
-		console.log(cuit)
-		if(cuit && cuit !== ''){
+        getDelayAndQueue()
+		let interval = setInterval(()=> {
+            getDelayAndQueue()
+        }, 60000)
+        return () => interval
+    }, [cuit]);
+
+    const getDelayAndQueue = useCallback(() => {
+        if(cuit && cuit !== ''){
 			let dt = moment().format('YYYYMM');
 			let filters = [
 				{field: 'cuit', value: cuit, comparator: '=='},
@@ -28,11 +35,9 @@ const DoctorDelay = ({cuit, date, time}) => {
 						setDelay(pendingTime)
 					}
 				})
-
 		}
-    }, [cuit]);
+    }, [cuit, date, time])
     
-
     return <div className="appointment__delay--container">
         <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
