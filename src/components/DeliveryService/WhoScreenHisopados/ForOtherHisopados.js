@@ -127,7 +127,7 @@ const Register = props => {
       
       <form className="forOTherHisopado" onSubmit={e => handleSignUp(e)}>
       <BackButton />
-      <h1 className="title">Datos del Usuario</h1>
+      <h1 className="title">Datos de la persona a hisopar</h1>
       <div className="message">Necesitamos que completes el siguiente formulario con los datos de la persona que será hisopada.</div>
         
           <div className="inputContainer">
