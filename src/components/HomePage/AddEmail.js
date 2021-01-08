@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import Firebase from 'firebase/app';
+import axios from 'axios';
+import { node_patient } from "../../config/endpoints"
 import { GoogleButton, MicrosoftButton, EmailButton } from '../User/LoginButtons';
 import { MdRadioButtonUnchecked } from 'react-icons/md';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
@@ -11,18 +13,21 @@ import '../../styles/home/addemail.scss';
 const EmailForm = (props) => {
     const dispatch = useDispatch()
     const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
     const [passValidation, setPassValidation] = useState({ validPass: true, validRepetition: true })
+    const { currentUser } = useSelector((state) => state.userActive)
+    const user = useSelector((state) => state.user)
 
     const _validateForm = useCallback((e) => {
         if (e.target.name === "email") {
             // validar email
+            setEmail(e.target.name)
         } else if (e.target.name === "pass") {
             setPassword(e.target.value)
             if (e.target.value.length < 6) {
                 setPassValidation({ ...passValidation, validPass: false })
             } else {
                 setPassValidation({ ...passValidation, validPass: true })
-
             }
         } else if (e.target.name === "passrepeat") {
             if (e.target.value !== password) {
@@ -32,6 +37,24 @@ const EmailForm = (props) => {
             }
         }
     }, [passValidation, password])
+
+    const _submitForm = useCallback(async (e) => {
+        // var credential = Firebase.auth.EmailAuthProvider.credential(email, password)
+        var provider = await new Firebase.auth.GoogleAuthProvider();
+
+        // Firebase.auth.currentUser.linkWithRedirect(provider)
+
+        currentUser.linkWithPopup(provider).then(function(result) {
+            // Accounts successfully linked.
+            var credential = result.credential;
+            var user = result.user;
+            // ...
+          }).catch(function(error) {
+            // Handle Errors here.
+            // ...
+            console.log(error)
+          });
+    }, [email, password])
 
     return <div className="addEmail__container">
         <div className="addEmail__title">Necesitamos que completes algunos datos</div>
@@ -85,7 +108,7 @@ const EmailForm = (props) => {
             }
         </form>
         <div className="addEmail__actions">
-            <button onClick={() => console.log('email')} className="btn btn-lg-blue">Confirmar</button>
+            <button onClick={() => _submitForm()} className="btn btn-lg-blue">Confirmar</button>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
         </div>
     </div>
@@ -95,20 +118,44 @@ const EmailForm = (props) => {
 const Advice = ({setAdvice}) => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.userActive)
-    const linkAccount = () => {
-        console.log(currentUser)
-        var googleProvider = new Firebase.auth.GoogleAuthProvider();
+    const user = useSelector((state) => state.user)
 
-        currentUser.linkWithPopup(googleProvider).then(function (result) {
-            // Accounts successfully linked.
-            var credential = result.credential;
-            var user = result.user;
-            // ...
-        }).catch(function (error) {
-            // Handle Errors here.
-            // ...
-        });
+    const linkAccount = async (type) => {
+        let provider
+        if(type === "google") {
+            provider = new Firebase.auth.GoogleAuthProvider();
+        } else if(type === "microsoft") {
+            provider = new Firebase.auth.OAuthProvider('microsoft.com');
+
+        }
+        await currentUser.linkWithPopup(provider)
+            .then(async function (result) {
+                var credential = result.credential;
+                console.log(credential)
+                let loginMethod = credential.providerId || 'social'
+                await currentUser.getIdToken().then(async token => { 
+                    let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    await axios.patch(`${node_patient}/${user.dni}`, {newValues: {login: loginMethod}}, {headers})
+                        .then(res => console.log("Ok"))
+                        .catch(err => console.log(err))
+                })
+                dispatch({type: 'CLOSE_MODAL'})
+            }).catch(function (error) {
+                // Handle Errors here.
+                // ...
+                console.log(error)
+            });
     }
+
+    const _unlinkProvider = () => {
+        currentUser.unlink('google.com').then(function() {
+            console.log("Desvinculado")
+          }).catch(function(error) {
+            console.log(error)
+          });
+    }
+
+
     return <div className="addEmail__container">
         <div className="addEmail__title">¡Tenemos novedades!</div>
         <div className="addEmail__text">
@@ -116,10 +163,13 @@ const Advice = ({setAdvice}) => {
             Solo tienes que <b>vincular tu cuenta</b> con el email que usarás para ingresar.
         </div>
         <div className="addEmail__action">
-            <GoogleButton buttonText="Vincular con Google" action={() => linkAccount(false)}></GoogleButton>
-            <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount(false)}></MicrosoftButton>
-            <EmailButton buttonText="Vincular con Email" action={() => setAdvice(false)}></EmailButton>
+            <GoogleButton buttonText="Vincular con Google" action={() => linkAccount("google")}></GoogleButton>
+            <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
+            <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
+
+            <button onClick={() => _unlinkProvider()} className="btn btn-lg-blue">Desvincular</button>
+
         </div>
     </div>
 }
