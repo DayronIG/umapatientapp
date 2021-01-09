@@ -7,6 +7,7 @@ import { node_patient } from "../../config/endpoints"
 import { GoogleButton, MicrosoftButton, EmailButton } from '../User/LoginButtons';
 import { MdRadioButtonUnchecked } from 'react-icons/md';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
+import swal from 'sweetalert';
 import '../../styles/home/addemail.scss';
 
 
@@ -14,14 +15,20 @@ const EmailForm = (props) => {
     const dispatch = useDispatch()
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
-    const [passValidation, setPassValidation] = useState({ validPass: true, validRepetition: true })
+    const [validEmail, setValidEmail] = useState(false)
+    const [passValidation, setPassValidation] = useState({ validPass: false, validRepetition: false })
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
 
     const _validateForm = useCallback((e) => {
         if (e.target.name === "email") {
-            // validar email
-            setEmail(e.target.name)
+            setEmail(e.target.value)
+            let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
+            if(valid) { 
+                setValidEmail(true)
+            } else {
+                setValidEmail(false)
+            }
         } else if (e.target.name === "pass") {
             setPassword(e.target.value)
             if (e.target.value.length < 6) {
@@ -39,22 +46,18 @@ const EmailForm = (props) => {
     }, [passValidation, password])
 
     const _submitForm = useCallback(async (e) => {
+        if(!passValidation.validPass || !passValidation.validRepetition || !validEmail) {
+            swal("Revisa los datos", "Por favor, revisa los datos introducidos", "warning")
+            return ""
+        }
         // var credential = Firebase.auth.EmailAuthProvider.credential(email, password)
-        var provider = await new Firebase.auth.GoogleAuthProvider();
+        // var provider = await new Firebase.auth.GoogleAuthProvider();
+        let oldUser = user.email
+        currentUser.updateEmail(email)
+        currentUser.updatePassword(password)
+        console.log(oldUser)
 
-        // Firebase.auth.currentUser.linkWithRedirect(provider)
-
-        currentUser.linkWithPopup(provider).then(function(result) {
-            // Accounts successfully linked.
-            var credential = result.credential;
-            var user = result.user;
-            // ...
-          }).catch(function(error) {
-            // Handle Errors here.
-            // ...
-            console.log(error)
-          });
-    }, [email, password])
+    }, [email, password, validEmail, passValidation])
 
     return <div className="addEmail__container">
         <div className="addEmail__title">Necesitamos que completes algunos datos</div>
@@ -71,6 +74,14 @@ const EmailForm = (props) => {
                 onChange={(e) => _validateForm(e)}
                 autoComplete="nopaasdasde"
             ></input>
+             {validEmail ? <div className="addEmail__success">
+                <IoIosCheckmarkCircleOutline />
+                <span>Email válido</span>
+            </div> :
+                <div className="addEmail__warning">
+                    <MdRadioButtonUnchecked />
+                    <span>Introduzca un email válido</span>
+            </div>}
             <label htmlFor="pass" className="addEmail__label">Contraseña*</label>
             <input
                 type="password"
@@ -119,14 +130,12 @@ const Advice = ({setAdvice}) => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
-
     const linkAccount = async (type) => {
         let provider
         if(type === "google") {
             provider = new Firebase.auth.GoogleAuthProvider();
         } else if(type === "microsoft") {
             provider = new Firebase.auth.OAuthProvider('microsoft.com');
-
         }
         await currentUser.linkWithPopup(provider)
             .then(async function (result) {
@@ -148,7 +157,8 @@ const Advice = ({setAdvice}) => {
     }
 
     const _unlinkProvider = () => {
-        currentUser.unlink('google.com').then(function() {
+        console.log(user.login)
+        currentUser.unlink('microsoft.com').then(function() {
             console.log("Desvinculado")
           }).catch(function(error) {
             console.log(error)
@@ -167,9 +177,7 @@ const Advice = ({setAdvice}) => {
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
             <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
-
             <button onClick={() => _unlinkProvider()} className="btn btn-lg-blue">Desvincular</button>
-
         </div>
     </div>
 }
