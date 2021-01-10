@@ -53,9 +53,30 @@ const EmailForm = (props) => {
         // var credential = Firebase.auth.EmailAuthProvider.credential(email, password)
         // var provider = await new Firebase.auth.GoogleAuthProvider();
         let oldUser = user.email
-        currentUser.updateEmail(email)
-        currentUser.updatePassword(password)
-        console.log(oldUser)
+        let code = user.email.split('@')[1].slice(0,6)
+        console.log(user.email, code)
+        Firebase.auth()
+            .signInWithEmailAndPassword(user.email, code)
+            .then(async function(userCredential) {
+                console.log(email, password)
+                await userCredential.user.updateEmail(email)
+                await userCredential.user.updatePassword(password)
+                await currentUser.getIdToken().then(async token => { 
+                    let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    let data = {
+                        newValues: {
+                            login: 'email',
+                            ws_code: code,
+                            email: email || user.email,
+                            password: password
+                        }}
+                    console.log(data)
+                    await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
+                        .then(res => console.log("Ok"))
+                        .catch(err => console.log(err))
+                })
+            })
+            .catch(err => console.log(err))
 
     }, [email, password, validEmail, passValidation])
 
@@ -134,6 +155,8 @@ const Advice = ({setAdvice}) => {
         let provider
         if(type === "google") {
             provider = new Firebase.auth.GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
         } else if(type === "microsoft") {
             provider = new Firebase.auth.OAuthProvider('microsoft.com');
         }
@@ -144,7 +167,14 @@ const Advice = ({setAdvice}) => {
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-                    await axios.patch(`${node_patient}/${user.dni}`, {newValues: {login: loginMethod}}, {headers})
+                    let data = {
+                        newValues: {
+                            login: loginMethod,
+                            ws_code: user.email.split('@')[1].slice(0,6),
+                            email: result.user.email || user.email
+                        }}
+                    console.log(data)
+                    await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
                         .then(res => console.log("Ok"))
                         .catch(err => console.log(err))
                 })
