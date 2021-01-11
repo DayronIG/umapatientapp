@@ -30,6 +30,10 @@ const BuyHisopado = () => {
         history.push(`/hisopado/${patient.ws}`)
     }
 
+    const confirmHisopado = () => {
+        history.push(`/hisopado/corporate/${patient.ws}`)
+    }
+
     const renderButtonContentFromState = () => {
                 if(deliveryStatus){
                     return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
@@ -38,7 +42,13 @@ const BuyHisopado = () => {
                     title="Hisopado a domicilio" 
                     innerText={`¡Pídelo ahora y tienes tu resultado ${params?.delay}!`}
                     checkoutText="Quiero mi hisopado" 
-                    finalAction={() => buyHisopado()} 
+                    finalAction={() => {
+                        if (patient.corporate_norm !== 'IOMA') {
+                            buyHisopado()
+                        } else {
+                            confirmHisopado()
+                        }
+                    }} 
                     showPrice={true}/>
                 }
 
