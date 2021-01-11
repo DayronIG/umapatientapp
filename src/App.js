@@ -181,7 +181,7 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/hisopado/deliveryChat/:ws?/:incidente_id'
+					path='/hisopado/deliveryChat/:incidente_id'
 					component={DeliveryChat}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
