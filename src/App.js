@@ -76,6 +76,8 @@ import TransportRating from './components/Transport/TransportRating.js';
 import Vaccine from './components/Vaccine';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
+/* IOMA */
+import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 
 function App(props) {
 	return (
@@ -178,6 +180,11 @@ function App(props) {
 					exact
 					path='/hisopado/payment/:ws?'
 					component={Payment}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/corporate/:ws?'
+					component={HisopadoCorporate}
 				/>
 				<PrivateRoute
 					exact
