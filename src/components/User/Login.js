@@ -87,7 +87,6 @@ const SignIn = props => {
             db.auth()
                 .signInWithEmailAndPassword(email, pass)
                 .then(async (reg) => {
-                    console.log(reg.user)
                     reg.user.updateProfile({displayName: validPhone}).then(res => console.log(res)).catch(err => console.log(err))
                     window.gtag('event', 'success_login', {
                         'event_category' : 'login',

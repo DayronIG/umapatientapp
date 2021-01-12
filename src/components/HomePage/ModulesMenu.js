@@ -20,7 +20,7 @@ const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
 	const {plan} = useSelector((state) => state.queries.plan);
-    const modal = useSelector(state => state.front.modal)
+    const {modal, loading} = useSelector(state => state.front)
     const dispatch = useDispatch()
 
 	useEffect(()=> {
@@ -51,6 +51,7 @@ const ModulesMenu = () => {
 			{user.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
+					{loading && <Loading />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
 					{modal === true && <AddEmail />}

@@ -50,6 +50,7 @@ const EmailForm = (props) => {
             swal("Revisa los datos", "Por favor, revisa los datos introducidos", "warning")
             return ""
         }
+        dispatch({type: "LOADING", payload: true})
         // var credential = Firebase.auth.EmailAuthProvider.credential(email, password)
         // var provider = await new Firebase.auth.GoogleAuthProvider();
         let oldUser = user.email
@@ -60,7 +61,6 @@ const EmailForm = (props) => {
         Firebase.auth()
             .signInWithEmailAndPassword(user.email, code)
             .then(async function(userCredential) {
-                console.log(email, password)
                 await userCredential.user.updateEmail(email)
                 await userCredential.user.updatePassword(password)
                 await userCredential.user.updateProfile({displayName: user.ws})
@@ -78,8 +78,9 @@ const EmailForm = (props) => {
                         .then(res => {
                             console.log("Ok")
                             dispatch({type: 'CLOSE_MODAL'})
+                            dispatch({type: 'SET_USER_LOGIN', payload: 'email'})
+                            dispatch({type: "LOADING", payload: false})
                         })
-                        .catch(err => console.log(err))
                 })
             })
             .catch(err => {
@@ -87,6 +88,7 @@ const EmailForm = (props) => {
                 if(err.message === "The email address is already in use by another account.") {
                     swal("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
                 }
+                dispatch({type: "LOADING", payload: false})
             })
 
     }, [email, password, validEmail, passValidation])
@@ -125,7 +127,7 @@ const EmailForm = (props) => {
             ></input>
             {passValidation.validPass ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
-                <span>Alta contraseña</span>
+                <span>Contraseña válida</span>
             </div> :
                 <div className="addEmail__warning">
                     <MdRadioButtonUnchecked />
@@ -142,7 +144,7 @@ const EmailForm = (props) => {
             ></input>
             {passValidation.validRepetition ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
-                <span>Perfecto</span>
+                <span>Confirmación válida</span>
             </div> :
                 <div className="addEmail__warning">
                     <MdRadioButtonUnchecked />
@@ -162,7 +164,9 @@ const Advice = ({setAdvice}) => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
+
     const linkAccount = async (type) => {
+        dispatch({type: "LOADING", payload: true})
         let provider
         if(type === "google") {
             provider = new Firebase.auth.GoogleAuthProvider();
@@ -188,15 +192,15 @@ const Advice = ({setAdvice}) => {
                             email: result.additionalUserInfo.profile.email || user.email,
                             picture: result.additionalUserInfo.profile.picture
                         }}
-                    await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
-                        .then(res => console.log("Ok"))
-                        .catch(err => console.log(err))
+                await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
+                    .then(res => console.log("Ok"))
                 })
                 dispatch({type: 'CLOSE_MODAL'})
+                dispatch({type: 'SET_USER_LOGIN', payload: type})
+                dispatch({type: "LOADING", payload: false})
             }).catch(function (error) {
-                // Handle Errors here.
-                // ...
                 console.log(error)
+                dispatch({type: "LOADING", payload: false})
             });
     }
 
