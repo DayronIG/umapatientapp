@@ -63,7 +63,7 @@ const EmailForm = (props) => {
                 console.log(email, password)
                 await userCredential.user.updateEmail(email)
                 await userCredential.user.updatePassword(password)
-                await userCredential.updateProfile({displayName: user.ws})
+                await userCredential.user.updateProfile({displayName: user.ws})
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
                     let data = {
