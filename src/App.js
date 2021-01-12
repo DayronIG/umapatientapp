@@ -72,8 +72,12 @@ import DeliveryChat from "./components/DeliveryService/DeliveryChat"
 import Pillbox from "./components/Pillbox/Pillbox"
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 import TransportRating from './components/Transport/TransportRating.js';
+/* Vaccine */
+import Vaccine from './components/Vaccine';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
+/* IOMA */
+import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 
 function App(props) {
 	return (
@@ -180,10 +184,17 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/hisopado/deliveryChat/:ws?/:incidente_id'
+					path='/hisopado/corporate/:ws?'
+					component={HisopadoCorporate}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/deliveryChat/:incidente_id'
 					component={DeliveryChat}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				{/* VACCINE */}
+				<PrivateRoute exact path='/vacunacion/:id' component={Vaccine} />
 				{/* PILLBOX */}
 				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
 				{/* ACCESS DENIED */}

@@ -66,6 +66,10 @@
                 top: 0;
             }
 
+            &.ioma::after {
+                display: none;
+            }
+
             .hisopado__title {
                 color: $uma-primary;
                 font-weight: 600;

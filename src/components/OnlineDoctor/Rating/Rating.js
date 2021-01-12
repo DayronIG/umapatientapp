@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
@@ -65,32 +65,41 @@ const Rating = (props) => {
 		}
 	}, [mr]);
 
-    async function submitRating() {
-        let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
-        try {
-            let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
-            let u = JSON.parse(localStorage.getItem('appointmentUserData'))
-            // let mr = JSON.parse(localStorage.getItem('userMr'))
-            // let assignation_id = JSON.parse(localStorage.getItem('currentMr'))
-            let data = {
-                'ws': u.ws,
-                'dni': u.dni,
-                'dt': date,
-                'assignation_id': mr[0].assignation_id,
-                'uma_eval': ratingApp.toString(),
-                'doc_eval': ratingMed.toString(),
-                'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim()
-            }
-            if (!mr[0] && mr[0].assignation_id) {
-                data = { ...data, 'assignation_id': mr[0].assignation_id, }
-            }
-            await axios.post(feedback, data, headers)
-            props.history.push('/home')
-        } catch (err) {
-            console.error(err)
-            props.history.push('/home')
-        }
-    }
+    const submitRating = useCallback(
+		async () => {
+			if(ratingApp === 0 || ratingMed === 0) {
+				swal("Debes poner una calificación!", "No te olvides de puntuar al médico y a la aplicación", "warning")
+				return ""
+			}
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
+			try {
+				let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
+				let u = JSON.parse(localStorage.getItem('appointmentUserData'))
+				// let mr = JSON.parse(localStorage.getItem('userMr'))
+				// let assignation_id = JSON.parse(localStorage.getItem('currentMr'))
+				let data = {
+					'ws': u.ws,
+					'dni': u.dni,
+					'dt': date,
+					'assignation_id': mr[0].assignation_id,
+					'uma_eval': ratingApp.toString(),
+					'doc_eval': ratingMed.toString(),
+					'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim()
+				}
+				if (!mr[0] && mr[0].assignation_id) {
+					data = { ...data, 'assignation_id': mr[0].assignation_id, }
+				}
+				await axios.post(feedback, data, headers)
+				props.history.push('/home')
+			} catch (err) {
+				console.error(err)
+				props.history.push('/home')
+			}
+		},
+		[ratingApp, ratingMed],
+	)
+       
+    
 
     return (
 			<div className="ratings-container text-center p5">

@@ -149,7 +149,7 @@ function DeliveryResume({ duration, active }) {
 		}
 	}, [active])
 	const openChat = () => {
-		history.push(`/hisopado/deliveryChat/${ws}/${docId}`);
+		history.push(`/hisopado/deliveryChat/${docId}`);
 	}
 
 
