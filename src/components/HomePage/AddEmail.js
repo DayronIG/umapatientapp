@@ -61,6 +61,7 @@ const EmailForm = (props) => {
                 console.log(email, password)
                 await userCredential.user.updateEmail(email)
                 await userCredential.user.updatePassword(password)
+                await userCredential.updateProfile({displayName: user.ws})
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
                     let data = {
@@ -72,11 +73,19 @@ const EmailForm = (props) => {
                         }}
                     console.log(data)
                     await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
-                        .then(res => console.log("Ok"))
+                        .then(res => {
+                            console.log("Ok")
+                            dispatch({type: 'CLOSE_MODAL'})
+                        })
                         .catch(err => console.log(err))
                 })
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                if(err.message === "The email address is already in use by another account.") {
+                    swal("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                }
+            })
 
     }, [email, password, validEmail, passValidation])
 
@@ -163,7 +172,6 @@ const Advice = ({setAdvice}) => {
         await currentUser.linkWithPopup(provider)
             .then(async function (result) {
                 var credential = result.credential;
-                console.log(credential)
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
@@ -171,9 +179,9 @@ const Advice = ({setAdvice}) => {
                         newValues: {
                             login: loginMethod,
                             ws_code: user.email.split('@')[1].slice(0,6),
-                            email: result.user.email || user.email
+                            email: result.additionalUserInfo.profile.email || user.email,
+                            picture: result.additionalUserInfo.profile.picture
                         }}
-                    console.log(data)
                     await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
                         .then(res => console.log("Ok"))
                         .catch(err => console.log(err))
@@ -186,9 +194,8 @@ const Advice = ({setAdvice}) => {
             });
     }
 
-    const _unlinkProvider = () => {
-        console.log(user.login)
-        currentUser.unlink('microsoft.com').then(function() {
+    const _unlinkProvider = (login) => {
+        currentUser.unlink('google.com').then(function() {
             console.log("Desvinculado")
           }).catch(function(error) {
             console.log(error)
@@ -207,7 +214,7 @@ const Advice = ({setAdvice}) => {
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
             <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
-            <button onClick={() => _unlinkProvider()} className="btn btn-lg-blue">Desvincular</button>
+            <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button>
         </div>
     </div>
 }
