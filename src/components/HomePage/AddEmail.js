@@ -54,7 +54,9 @@ const EmailForm = (props) => {
         // var provider = await new Firebase.auth.GoogleAuthProvider();
         let oldUser = user.email
         let code = user.email.split('@')[1].slice(0,6)
-        console.log(user.email, code)
+        if(parseInt(user.email.split('@')[1].slice(0,6)).length < 5) {
+            code = user.ws_code
+        }
         Firebase.auth()
             .signInWithEmailAndPassword(user.email, code)
             .then(async function(userCredential) {
@@ -175,10 +177,14 @@ const Advice = ({setAdvice}) => {
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    let code = user.email.split('@')[1].slice(0,6) 
+                    if(parseInt(user.email.split('@')[1].slice(0,6)).length < 5) {
+                        code = user.ws_code
+                    }
                     let data = {
                         newValues: {
                             login: loginMethod,
-                            ws_code: user.email.split('@')[1].slice(0,6),
+                            ws_code: code,
                             email: result.additionalUserInfo.profile.email || user.email,
                             picture: result.additionalUserInfo.profile.picture
                         }}
