@@ -68,7 +68,7 @@ const EmailForm = (props) => {
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
                     let data = {
                         newValues: {
-                            login: 'email',
+                            login: ['email'],
                             ws_code: code,
                             email: email || user.email,
                             password: password
@@ -187,7 +187,7 @@ const Advice = ({setAdvice}) => {
                     }
                     let data = {
                         newValues: {
-                            login: loginMethod,
+                            login: [loginMethod],
                             ws_code: code,
                             email: result.additionalUserInfo.profile.email || user.email,
                             picture: result.additionalUserInfo.profile.picture
@@ -224,7 +224,7 @@ const Advice = ({setAdvice}) => {
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
             <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
-            <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button>
+            {/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
         </div>
     </div>
 }

@@ -24,7 +24,7 @@ const ModulesMenu = () => {
     const dispatch = useDispatch()
 
 	useEffect(()=> {
-        if(!user.login || user.login === "") {
+        if(!user.login || user.login === [] || user.login === "") {
             dispatch({type: 'OPEN_MODAL', payload: true})
         } else {
 			dispatch({type: 'CLOSE_MODAL'})
