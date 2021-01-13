@@ -1,0 +1,61 @@
+@import "../global/Vars.scss";
+
+.hisopado__corporate {
+    min-height: calc(100vh - 30px);
+    background: $white-color;
+    position: relative;
+    top: -10px;
+    padding: 10px 5% 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+
+    h2 {
+        color: $uma-primary;
+        text-align: center;
+        font-weight: 900;
+        font-size: 2rem;
+        line-height: 2.2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    article {
+        box-shadow: 0px 2px 5px 3px rgba(99, 99, 99, 0.15);
+        border-radius: 0.7rem;
+        margin-bottom: 2rem;
+
+        h3 {
+            padding: 1rem 1rem 0.5rem;
+            color: $uma-primary;
+            font-weight: 800;
+            font-size: 1.3rem;
+            line-height: 1.5rem;
+        }
+    
+        p {
+            padding: 0 1rem;
+            color: $uma-text;
+            font-size: 1.05rem;
+            line-height: 1.4rem;
+            margin-bottom: 1rem;
+        }
+    
+        button {
+            background: $uma-primary;
+            width: 100%;
+            border: none;
+            color: $white-color;
+            border-bottom-left-radius: 0.7rem;
+            border-bottom-right-radius: 0.7rem;
+            padding: 0.6rem 1rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+}

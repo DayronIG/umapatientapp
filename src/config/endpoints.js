@@ -78,3 +78,5 @@ export const create_delivery = `${NODE_SERVER}/delivery`
 export const mobility_address = `${NODE_SERVER}/delivery/mobility_address`;
 // Biomarkers
 export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
+// Vaccine
+export const vaccine = `${NODE_SERVER}/vaccine`;

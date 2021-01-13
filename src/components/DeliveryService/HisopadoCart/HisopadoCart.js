@@ -74,7 +74,7 @@ const HisopadoCart = (props) => {
             <p className="HisopadoCart__text">Comprando ahora, nuestro personal de salud llegará a tu domicilio <span>{params?.delay}.</span></p>
             {
               deliveryInfo.length > 0 ?
-                <p className="HisopadoCart__text">Datos del usuario</p> :
+                <p className="HisopadoCart__text">Persona a hisopar</p> :
                 <div className="HisopadosCart__empty">
                   <h2>Carrito vacío</h2>
                   <p>Comienza a agregar tus hisopados</p>

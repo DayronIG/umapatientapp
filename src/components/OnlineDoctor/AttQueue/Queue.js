@@ -250,7 +250,7 @@ const Queue = (props) => {
             ws: patient.ws,
             dni: patient.dni,
             dt: moment().format('YYYY-MM-DD HH:mm:ss'),
-            assignation_id: patient.incidente_id,
+            assignation_id: assignedAppointment.appointments[0][14] || patient.incidente_id,
             appointment_path: '',
             type,
             complain: claim
@@ -278,7 +278,7 @@ const Queue = (props) => {
         // let event = await getEvent()
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         let yearAndMonth = moment(new Date()).format('YYYYMM')
-        let documentBuild, aid = assignation, ws = patient.ws
+        let documentBuild, aid = assignedAppointment.appointments[0][14], ws = patient.ws
         if (assignedAppointment.cuil !== 'bag') {
             try {
                 documentBuild = `assignations/online_clinica_medica/${yearAndMonth}/${assignedAppointment.date.replace(

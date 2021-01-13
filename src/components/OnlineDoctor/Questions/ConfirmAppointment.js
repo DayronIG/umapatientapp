@@ -8,7 +8,7 @@ import { genAppointmentID } from '../../Utils/appointmentsUtils';
 import { FaFileMedicalAlt } from 'react-icons/fa';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import { Loader } from '../../global/Spinner/Loaders';
-import {FaUserMd} from  'react-icons/fa'
+import { FaUserMd } from 'react-icons/fa'
 import DoctorDelay from '../AttQueue/DoctorDelay';
 import swal from 'sweetalert';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, symptomsForDoc, answers, responseIA, patient, coordinates, alerta } = props;
+	const { dispatch, history, symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
@@ -33,7 +33,7 @@ const ConfirmAppointment = (props) => {
 		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		let file = e.target.files[0];
 		let fileName = e.target.files[0].name;
-		uploadFileToFirebase(file, `${patient.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
+		uploadFileToFirebase(file, `${user.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
 			.then(imgLink => {
 				setContador(contador + 1);
 				setFile([...File, imgLink]);
@@ -65,7 +65,7 @@ const ConfirmAppointment = (props) => {
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			let appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
-			if(bag === true) {
+			if (bag === true) {
 				appointmentId = ''
 			}
 			let data = {
@@ -74,7 +74,7 @@ const ConfirmAppointment = (props) => {
 				destino_final: responseIA.destino_final || '',
 				diagnostico: responseIA.diagnostico || '',
 				dt,
-				dni: userVerified.dni || patient.dni,
+				dni: userVerified.dni || user.dni,
 				epicrisis: responseIA.epicrisis || '',
 				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
 				lon: coordinates.lng || '',
@@ -84,7 +84,7 @@ const ConfirmAppointment = (props) => {
 				ruta: appointmentId || '',
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
-				ws: userVerified.ws || patient.ws,
+				ws: userVerified.ws || user.ws,
 			};
 
 			const headers = { 'Content-type': 'application/json' };
@@ -127,7 +127,7 @@ const ConfirmAppointment = (props) => {
 
 	return (
 		<>
-			{selectedAppointment ? 
+			{selectedAppointment ?
 				<div className='appointment'>
 					<h5>Información del turno</h5>
 					<div>
@@ -141,7 +141,7 @@ const ConfirmAppointment = (props) => {
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
 					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 				</div>
-				: 
+				:
 				<div className='appointment'>
 					<h5>Información del turno</h5>
 					<div className="appointment__doctorIcon">
@@ -153,13 +153,13 @@ const ConfirmAppointment = (props) => {
 			}
 			<div className="questionsContainer">
 				{
-					loading ? <div className="text-center"><Loader /></div> 
-					:
-					<div className="input-file">
-						<FaFileMedicalAlt size="1.5rem" />
-						<p>{ contador < 1 ? 'Adjuntar archivo' : ( contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos` ) }</p>
-						<input type="file" onChange={uploadImage} />
-					</div>
+					loading ? <div className="text-center"><Loader /></div>
+						:
+						<div className="input-file">
+							<FaFileMedicalAlt size="1.5rem" />
+							<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
+							<input type="file" onChange={uploadImage} />
+						</div>
 				}
 				<button className="btn-questions btn-normal" onClick={() => submitRequest()}>Confirmar turno</button>
 			</div>
