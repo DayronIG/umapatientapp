@@ -50,33 +50,46 @@ const EmailForm = (props) => {
             swal("Revisa los datos", "Por favor, revisa los datos introducidos", "warning")
             return ""
         }
+        dispatch({type: "LOADING", payload: true})
         // var credential = Firebase.auth.EmailAuthProvider.credential(email, password)
         // var provider = await new Firebase.auth.GoogleAuthProvider();
         let oldUser = user.email
         let code = user.email.split('@')[1].slice(0,6)
-        console.log(user.email, code)
+        if(parseInt(user.email.split('@')[1].slice(0,6)).length < 5) {
+            code = user.ws_code
+        }
         Firebase.auth()
             .signInWithEmailAndPassword(user.email, code)
             .then(async function(userCredential) {
-                console.log(email, password)
                 await userCredential.user.updateEmail(email)
                 await userCredential.user.updatePassword(password)
+                await userCredential.user.updateProfile({displayName: user.ws})
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
                     let data = {
                         newValues: {
-                            login: 'email',
+                            login: ['email'],
                             ws_code: code,
                             email: email || user.email,
                             password: password
                         }}
                     console.log(data)
                     await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
-                        .then(res => console.log("Ok"))
-                        .catch(err => console.log(err))
+                        .then(res => {
+                            console.log("Ok")
+                            dispatch({type: 'CLOSE_MODAL'})
+                            dispatch({type: 'SET_USER_LOGIN', payload: 'email'})
+                            dispatch({type: "LOADING", payload: false})
+                        })
                 })
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                if(err.message === "The email address is already in use by another account.") {
+                    swal("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                }
+                dispatch({type: "LOADING", payload: false})
+            })
 
     }, [email, password, validEmail, passValidation])
 
@@ -114,7 +127,7 @@ const EmailForm = (props) => {
             ></input>
             {passValidation.validPass ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
-                <span>Alta contraseña</span>
+                <span>Contraseña válida</span>
             </div> :
                 <div className="addEmail__warning">
                     <MdRadioButtonUnchecked />
@@ -131,7 +144,7 @@ const EmailForm = (props) => {
             ></input>
             {passValidation.validRepetition ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
-                <span>Perfecto</span>
+                <span>Confirmación válida</span>
             </div> :
                 <div className="addEmail__warning">
                     <MdRadioButtonUnchecked />
@@ -152,6 +165,7 @@ const Advice = ({setAdvice}) => {
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
     const linkAccount = async (type) => {
+        dispatch({type: "LOADING", payload: true})
         let provider
         if(type === "google") {
             provider = new Firebase.auth.GoogleAuthProvider();
@@ -163,32 +177,34 @@ const Advice = ({setAdvice}) => {
         await currentUser.linkWithPopup(provider)
             .then(async function (result) {
                 var credential = result.credential;
-                console.log(credential)
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    let code = user.email.split('@')[1].slice(0,6) 
+                    if(parseInt(user.email.split('@')[1].slice(0,6)).length < 5) {
+                        code = user.ws_code
+                    }
                     let data = {
                         newValues: {
-                            login: loginMethod,
-                            ws_code: user.email.split('@')[1].slice(0,6),
-                            email: result.user.email || user.email
+                            login: [loginMethod],
+                            ws_code: code,
+                            email: result.additionalUserInfo.profile.email || user.email,
+                            picture: result.additionalUserInfo.profile.picture
                         }}
-                    console.log(data)
-                    await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
-                        .then(res => console.log("Ok"))
-                        .catch(err => console.log(err))
+                await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
+                    .then(res => console.log("Ok"))
                 })
                 dispatch({type: 'CLOSE_MODAL'})
+                dispatch({type: 'SET_USER_LOGIN', payload: type})
+                dispatch({type: "LOADING", payload: false})
             }).catch(function (error) {
-                // Handle Errors here.
-                // ...
                 console.log(error)
+                dispatch({type: "LOADING", payload: false})
             });
     }
 
-    const _unlinkProvider = () => {
-        console.log(user.login)
-        currentUser.unlink('microsoft.com').then(function() {
+    const _unlinkProvider = (login) => {
+        currentUser.unlink('google.com').then(function() {
             console.log("Desvinculado")
           }).catch(function(error) {
             console.log(error)
@@ -207,7 +223,7 @@ const Advice = ({setAdvice}) => {
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
             <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
-            <button onClick={() => _unlinkProvider()} className="btn btn-lg-blue">Desvincular</button>
+            {/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
         </div>
     </div>
 }

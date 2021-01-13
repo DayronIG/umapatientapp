@@ -19,12 +19,12 @@ import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
-	const {plan} = useSelector((state) => state.queries.plan);
-    const modal = useSelector(state => state.front.modal)
-    const dispatch = useDispatch()
+  const {plan} = useSelector((state) => state.queries.plan);
+  const {modal, loading} = useSelector(state => state.front)
+  const dispatch = useDispatch()
 
 	useEffect(()=> {
-        if(!user.login || user.login === "") {
+        if(!user.login || user.login === [] || user.login === "") {
             dispatch({type: 'OPEN_MODAL', payload: true})
         } else {
 			dispatch({type: 'CLOSE_MODAL'})
@@ -51,6 +51,7 @@ const ModulesMenu = () => {
 			{user.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
+					{loading && <Loading />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
 					{modal === true && <AddEmail />}

@@ -44,9 +44,19 @@ function AuthProvider({ children }) {
 
 
 	async function getInitialData(user) {
-		if (user.email) {
-			const userAuth = await getAuth(user.email.split("@")[0])
+		if (user.displayName) {
+			const userAuth = await getAuth(user.displayName)
 			let plan = undefined;
+			plan = await getCoverage(userAuth)
+			if (!!userAuth) {
+				dispatch({ type: 'GET_PATIENT', payload: userAuth })
+				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+				getDeliveryInfo(userAuth)
+			}
+		} else if(user.email) {
+			const userAuth = await getAuth(user.email)
+			let plan = undefined;
+			console.log(user.ws)
 			plan = await getCoverage(userAuth)
 			if (!!userAuth) {
 				dispatch({ type: 'GET_PATIENT', payload: userAuth })

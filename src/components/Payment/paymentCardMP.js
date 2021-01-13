@@ -158,8 +158,8 @@ const PaymentCardMP = () => {
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-        .then(res => console.log("Ok"))
-        .catch(err => console.log(err))
+          .then(res => console.log("Ok"))
+          .catch(err => console.log(err))
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
