@@ -160,10 +160,6 @@ const PaymentCardMP = () => {
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
           .then(res => console.log("Ok"))
           .catch(err => console.log(err))
-        
-        console.log("POSTING THIS")
-        console.log(paymentData)
-
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
