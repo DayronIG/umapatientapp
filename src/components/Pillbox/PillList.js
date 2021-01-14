@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { FaPills } from "react-icons/fa"
 import { BsClock } from "react-icons/bs"
 import { MdToday } from "react-icons/md"
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
@@ -26,7 +27,7 @@ export default function PillList({editStatus}) {
                         <label className='item_medicine'>{recipe.medicine}</label>
                         <label className='item'><BsClock className="element_icon" />{recipe.personalized? "Horarios personalizados": `${recipe.dose} todos los dias`}</label>
                         <label className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</label>
-                        {/* <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label> */}
+                        <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label>
                     </div>
                     {/* <div className='recipesListEditDelete__container'>
                     <FiEdit3 className="edit__icon"
@@ -60,6 +61,10 @@ export default function PillList({editStatus}) {
         </div>
             <div className=''>
                 <div className="dateTitle">Hoy, 20 de noviembre</div>
+                <div className="progressContainer">
+                    <progress className="progressBar" value="40" max="100" />
+                    <p className="progressText"><p className="blue">2/5</p> tomadas</p>
+                </div>
                 <div className='pillboxList__container'>
                     <div className='pillboxReminder__header'>
                         <div className=''>
