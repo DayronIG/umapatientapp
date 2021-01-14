@@ -13,6 +13,8 @@ import '../../styles/home/addemail.scss';
 
 const EmailForm = (props) => {
     const dispatch = useDispatch()
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmation, setShowConfirmation] = useState(false)
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [validEmail, setValidEmail] = useState(false)
@@ -107,6 +109,7 @@ const EmailForm = (props) => {
                 className="addEmail__input"
                 onChange={(e) => _validateForm(e)}
                 autoComplete="nopaasdasde"
+                hid
             ></input>
              {validEmail ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
@@ -117,14 +120,17 @@ const EmailForm = (props) => {
                     <span>Introduzca un email válido</span>
             </div>}
             <label htmlFor="pass" className="addEmail__label">Contraseña*</label>
+            <div className="addEmail__inputContainer">
             <input
-                type="password"
+                type={showPassword === true ? "text" : "password"}
                 name="pass"
-                placeholder="contraseña"
+                placeholder="Contraseña"
                 className="addEmail__input"
                 onChange={(e) => _validateForm(e)}
-                autoComplete="nopes"
-            ></input>
+                autoComplete="nopes" />
+            <img src={require('../../assets/icons/showpassword.png')} alt="password"
+                   onClick={() => setShowPassword(!showPassword)} />
+            </div>
             {passValidation.validPass ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
                 <span>Contraseña válida</span>
@@ -134,14 +140,17 @@ const EmailForm = (props) => {
                     <span>Mínimo 6 caracteres</span>
                 </div>}
             <label htmlFor="passrepeat" className="addEmail__label">Confirmar contraseña</label>
+            <div className="addEmail__inputContainer">
             <input
-                type="password"
+                type={showConfirmation === true ? "text" : "password"}
                 name="passrepeat"
-                placeholder="contraseña"
+                placeholder="Contraseña"
                 className="addEmail__input"
                 onChange={(e) => _validateForm(e)}
-                autoComplete="nopes"
-            ></input>
+                autoComplete="nopes" />
+                <img src={require('../../assets/icons/showpassword.png')} alt="password" 
+                     onClick={() => setShowConfirmation(!showConfirmation)} />
+            </div>
             {passValidation.validRepetition ? <div className="addEmail__success">
                 <IoIosCheckmarkCircleOutline />
                 <span>Confirmación válida</span>
@@ -153,7 +162,7 @@ const EmailForm = (props) => {
             }
         </form>
         <div className="addEmail__actions">
-            <button onClick={() => _submitForm()} className="btn btn-lg-blue">Confirmar</button>
+            <button onClick={() => _submitForm()} className="btn-blue-lg">Confirmar</button>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
         </div>
     </div>
@@ -192,6 +201,7 @@ const Advice = ({setAdvice}) => {
                             email: result.additionalUserInfo.profile.email || user.email,
                             picture: result.additionalUserInfo.profile.picture
                         }}
+                await result.user.updateProfile({displayName: user.ws})
                 await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
                     .then(res => console.log("Ok"))
                 })
@@ -222,7 +232,7 @@ const Advice = ({setAdvice}) => {
         <div className="addEmail__action">
             <GoogleButton buttonText="Vincular con Google" action={() => linkAccount("google")}></GoogleButton>
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
-            <EmailButton buttonText="Vincular con otra cuenta" action={() => setAdvice(false)}></EmailButton>
+            <EmailButton buttonText="Vincular con otro email" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
             {/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
         </div>
@@ -236,7 +246,7 @@ const AddEmail = (props) => {
 
 
     return (
-        <MobileModal hideCloseButton={true} callback={() => dispatch({ type: 'CLOSE_MODAL' })}>
+        <MobileModal hideCloseButton={true} hideTitle={true} callback={() => dispatch({ type: 'CLOSE_MODAL' })}>
             {showAdvice ? <Advice setAdvice={setAdvice}/> : <EmailForm {...props}/>}
         </MobileModal>)
 }

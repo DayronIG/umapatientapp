@@ -44,7 +44,8 @@ function AuthProvider({ children }) {
 
 
 	async function getInitialData(user) {
-		if (user.displayName) {
+		console.log(user.displayName)
+		if (user.displayName && user.displayName !== "") {
 			const userAuth = await getAuth(user.displayName)
 			let plan = undefined;
 			plan = await getCoverage(userAuth)

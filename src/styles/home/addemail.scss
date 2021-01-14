@@ -7,28 +7,39 @@
         color: $uma-primary;
         font-weight: 900;
         font-size: 1.3rem;
-        margin: 10px 0;
+        margin: 20px;
     }
     .addEmail__text {
         font-weight: 500;
-        line-height: 1.2rem;
-        font-size: 0.9rem;
-        margin-bottom: 20px;
+        line-height: 1.4rem;
+        font-size: 1rem;
+        margin-bottom: 30px;
+        padding: 0 20px;
     }
     .addEmail__actionSkip  {
         color: $uma-primary;
         font-weight: 900;
-        font-size: 0.7rem;
-        margin: 10px 0; 
+        font-size: 1.1rem;
+        margin: 20px 0; 
     }
     .addEmail__form {
         padding: 10px;
+        margin-top: -15px;
         .addEmail__label {
             width: 100%;
             color: $black;
             text-align: left;
             font-size: 0.8rem;
             margin: 0
+        }
+        .addEmail__inputContainer{
+            position: relative;
+            img {
+                width: 20px;
+                position: absolute;
+                right: 15px;
+                top: calc(50% - 10px)
+            }
         }
         .addEmail__input {
             width: 100%;
