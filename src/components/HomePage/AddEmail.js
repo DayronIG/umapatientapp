@@ -173,7 +173,6 @@ const Advice = ({setAdvice}) => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
-
     const linkAccount = async (type) => {
         dispatch({type: "LOADING", payload: true})
         let provider
