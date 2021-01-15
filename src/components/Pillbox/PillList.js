@@ -59,8 +59,9 @@ export default function PillList({editStatus}) {
             <p>NOCHE</p>
             <p>MADRUGADA</p>
         </div>
-            <div className=''>
+            <div className='pillListContainer'>
                 <div className="dateTitle">Hoy, 20 de noviembre</div>
+                <div className="progressTitle">Progreso diario</div>
                 <div className="progressContainer">
                     <progress className="progressBar" value="40" max="100" />
                     <p className="progressText"><p className="blue">2/5</p> tomadas</p>
