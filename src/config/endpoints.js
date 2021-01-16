@@ -1,5 +1,5 @@
 const isLocal = window.location.origin.includes('localhost');
-const URN_UMA = `https://uma-v2.uc.r.appspot.com`; // `https://test-dot-uma-v2.uc.r.appspot.com` 
+const URN_UMA = `https://uma-v2.uc.r.appspot.com`  // `https://uma-v2.uc.r.appspot.com`; // `https://test-dot-uma-v2.uc.r.appspot.com` 
 const NODE_DEV = `http://localhost:8080`; // https://20200924t180300-dot-nodeserver-dot-uma-v2.uc.r.appspot.com
 const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const EVENTS = `https://gps-dot-uma-v2.appspot.com/v1/users`;
@@ -18,7 +18,6 @@ export const make_appointment = `${URN_UMA}/make_appointment`;
 export const feedback = `${URN_UMA}/feedback`;
 export const get_labels = `${URN_UMA}/labels`;
 export const user_cancel = `${URN_UMA}/user_cancel`;
-export const assessment_url = `${URN_UMA}/assessment`;
 export const triage = `${TRIAGE_UMA}/api_python`;
 export const transport = `${URN_UMA}/user_traslados_app`;
 export const install_event = `${URN_UMA}/events`;

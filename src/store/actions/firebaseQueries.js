@@ -271,24 +271,6 @@ export function getAuth(ws) {
 	});
 }
 
-export function getAuthByDni(dni) {
-	return new Promise((resolve, reject) => {
-		try {
-			const authQuery = firestore.collection('auth').where('dni', '==', dni);
-			authQuery
-				.get()
-				.then((snap) => {
-					snap.forEach((doc) => {
-						return resolve(doc.data());
-					});
-				})
-				.catch((err) => reject(err));
-		} catch (error) {
-			return reject(error);
-		}
-	});
-}
-
 export function getBills(dni) {
 	return new Promise((resolve, reject) => {
 		let bills = [];

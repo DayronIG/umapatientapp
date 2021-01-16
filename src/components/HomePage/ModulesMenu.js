@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
+import AddEmail from './AddEmail';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/';
@@ -18,8 +19,18 @@ import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
-	const {plan} = useSelector((state) => state.queries.plan);
+  const {plan} = useSelector((state) => state.queries.plan);
+  const {modal} = useSelector(state => state.front)
+  const dispatch = useDispatch()
 
+	useEffect(()=> {
+        if(!user.login || user.login === [] || user.login === "") {
+            dispatch({type: 'OPEN_MODAL', payload: true})
+        } else {
+			dispatch({type: 'CLOSE_MODAL'})
+		}
+	}, [user])
+	
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
@@ -42,6 +53,7 @@ const ModulesMenu = () => {
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
+					{modal === true && <AddEmail />}
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

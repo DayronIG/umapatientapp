@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
+import { payment_url, node_patient } from "../../config/endpoints"
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
 import swal from '@sweetalert/with-react'
@@ -11,7 +12,6 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import { payment_url, node_patient } from "../../config/endpoints"
 import mpicon from "../../assets/img/delivery/mp.jpg";
 import Cleave from 'cleave.js/react';
 import db from "../../config/DBConnection";
@@ -158,8 +158,8 @@ const PaymentCardMP = () => {
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-        .then(res => console.log("Ok"))
-        .catch(err => console.log(err))
+          .then(res => console.log("Ok"))
+          .catch(err => console.log(err))
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)

@@ -98,7 +98,8 @@ function App(props) {
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
 				<Route exact path='/newregister/:ref?' component={RegisterNew} />
-				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
+				<Route exact path='/referredregister/:ref?' component={RegisterNew} />
+				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
 				<Route exact path='/registersuccess' component={RegisterSuccess} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
