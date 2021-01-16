@@ -76,7 +76,7 @@ const SignIn = props => {
             let email, pass
             await axios.get(`${node_patient}/validatePassword/${ws}/${password.value}`, {}, config)
                 .then((res) => {
-                    if(res.data.type === "new") {
+                    if(res.data.type === "email") {
                         email = res.data.email
                         pass = res.data.password
                     } else {

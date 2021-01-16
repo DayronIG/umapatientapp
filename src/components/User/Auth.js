@@ -44,7 +44,6 @@ function AuthProvider({ children }) {
 
 
 	async function getInitialData(user) {
-		console.log(user.displayName)
 		if (user.displayName && user.displayName !== "") {
 			const userAuth = await getAuth(user.displayName)
 			let plan = undefined;
@@ -55,7 +54,7 @@ function AuthProvider({ children }) {
 				getDeliveryInfo(userAuth)
 			}
 		} else if(user.email) {
-			const userAuth = await getAuth(user.email)
+			const userAuth = await getAuth(user.email.split('@')[0])
 			let plan = undefined;
 			console.log(user.ws)
 			plan = await getCoverage(userAuth)

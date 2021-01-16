@@ -89,6 +89,12 @@ const EmailForm = (props) => {
                 console.log(err)
                 if(err.message === "The email address is already in use by another account.") {
                     swal("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                } else if(err.message === "User can only be linked to one identity for the given provider.") {
+                    swal("Ya tienes una cuenta de google vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
+                } else if(err.message === "There is no user record corresponding to this identifier. The user may have been deleted.") {
+                    swal("No se pudo vincular esta cuenta", "Intenta con otro email", "warning")
+                } else {
+                    swal("Ocurrió un error", err.message || err, "warning")
                 }
                 dispatch({type: "LOADING", payload: false})
             })
@@ -186,6 +192,7 @@ const Advice = ({setAdvice}) => {
         await currentUser.linkWithPopup(provider)
             .then(async function (result) {
                 var credential = result.credential;
+                console.log(result)
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
@@ -197,7 +204,7 @@ const Advice = ({setAdvice}) => {
                         newValues: {
                             login: [loginMethod],
                             ws_code: code,
-                            email: result.additionalUserInfo.profile.email || user.email,
+                            email: result.additionalUserInfo.profile.email || result.additionalUserInfo.profile.mail || provider.email || user.email,
                             picture: result.additionalUserInfo.profile.picture
                         }}
                 await result.user.updateProfile({displayName: user.ws})
@@ -207,9 +214,16 @@ const Advice = ({setAdvice}) => {
                 dispatch({type: 'CLOSE_MODAL'})
                 dispatch({type: 'SET_USER_LOGIN', payload: type})
                 dispatch({type: "LOADING", payload: false})
-            }).catch(function (error) {
-                console.log(error)
+            }).catch(function (err) {
+                console.log(err)
                 dispatch({type: "LOADING", payload: false})
+                if(err.message === "The email address is already in use by another account.") {
+                    swal("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                } else if(err.message === "User can only be linked to one identity for the given provider.") {
+                    swal("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
+                } else if (err.message === "This credential is already associated with a different user account.") {
+                    swal("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
+                }
             });
     }
 
