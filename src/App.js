@@ -78,6 +78,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 /* IOMA */
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
+import Invitation from './views/Invitation';
 
 function App(props) {
 	return (
@@ -195,6 +196,8 @@ function App(props) {
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* VACCINE */}
 				<PrivateRoute exact path='/vacunacion/:id' component={Vaccine} />
+				{/* VACCINE */}
+				<PrivateRoute exact path='/invitation/:id' component={Invitation} />
 				{/* PILLBOX */}
 				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
 				{/* ACCESS DENIED */}

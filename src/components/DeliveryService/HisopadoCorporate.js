@@ -29,7 +29,7 @@ const HisopadoCorporate = () => {
                 <article>
                     <h3>¿Eres particular?</h3>
 
-                    <p>Si tu obra social <strong><u>no</u></strong> cubre el hisopado, puedes realizártelo con ÜMA a sólo ${price}.</p>
+                    <p>Si tu obra social <strong><u>no</u></strong> te cubre el hisopado, puedes realizártelo con ÜMA a sólo ${price}.</p>
 
                     <p>¡Pídelo ahora y tendrás tu resultado mañana!</p>
 
