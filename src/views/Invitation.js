@@ -7,7 +7,7 @@ import checkIllustration from '../assets/vaccine/check.png';
 import Loading from '../components/GeneralComponents/Loading';
 import {BackButton} from '../components/GeneralComponents/Headers'
 import db from '../config/DBConnection';
-import { vaccine } from '../config/endpoints';
+import { invitation } from '../config/endpoints';
 
 const Vaccine = () => {
     const history = useHistory()
@@ -16,11 +16,11 @@ const Vaccine = () => {
     const [modal, setModal] = useState({
         show: false,
         title: '',
-        text: '¿Desea continuar?',
-        note: 'NOTA: Esta acción no se puede deshacer',
+        text: '',
+        note: '',
         action: '',
     });
-    const [actionConfirmed, setActionConfirmed] = useState(false);
+    const [cancelComment, setCancelComment] = useState("Me arrepentí")
     const [initialData, setInitialData] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -30,25 +30,37 @@ const Vaccine = () => {
                 .get()
                 .then(doc => {
                     if (doc.exists) {
-                        setInitialData(doc.data());
+                        setInitialData({...doc.data(), id: doc.id});
                         setLoading(false);
                     }
                 })
         }
     }, [id]);
 
-    const handleConfirmVaccine = () => {
+    const handleRejectService = async (comment, type, id) => {
         setLoading(true);
-        const data = {}
-        axios.post(`${vaccine}/confirmation/${id}`, data, {
+        const data = {
+            comment,
+            type, 
+            id
+        }
+        await axios.post(`${invitation}/${id}`, data, {
             headers: {
                 'Content-Type': 'application/json',
             }})
-        .then(response => {
-            setActionConfirmed(true);
-            setLoading(false);
-        })
-        .catch(error => console.log(error));
+            .then(response => {
+                setLoading(false);
+                setModal({
+                    ...modal,
+                    show: false,
+                })
+            })
+            .catch(error => console.log(error));
+        setLoading(false)
+    }
+
+    const _handleComment = (e) => {
+        setCancelComment(e.target.value)
     }
 
     return (
@@ -69,24 +81,25 @@ const Vaccine = () => {
                             onClick={() => setModal({
                                 ...modal,
                                 show: true,
-                                title: 'Estás por rechazar la vacunación contra el virus COVID-19',
-                                action: 'reject',
-                            })}>
+                                title: 'Por favor detalla el motivo por el que ya no quieres el servicio',
+                                type: 'cancel',
+                                action: 'reject'})}>
                             No
                         </button>
                         <button
                             className="vaccineBtn vaccineConfirm"
-                            onClick={() => setModal({
-                                ...modal,
-                                show: true,
-                                title: 'Estás por aceptar la vacunación contra el virus COVID-19',
-                                action: 'confirm',
-                            })}
-                        >
+                            onClick={() => history.push(`/${initialData.ws}`)}>
                             Si
                         </button>
                     </div>
-                    <button className="btn-alert" onClick={() => console.log(true)}>Reportar un problema</button>
+                    <button className="btn-alert" onClick={() => setModal({
+                                ...modal,
+                                show: true,
+                                title: 'Por favor introduce la mayor cantidad posible de detalles sobre el problema',
+                                type: 'problem',
+                                action: 'reject'})}>
+                        Reportar un problema
+                    </button>
                 </>
                 </div> :
                 <div className="vaccineContainer">
@@ -100,35 +113,52 @@ const Vaccine = () => {
         {modal.show &&
             <div className="vaccineOverlay">
                 <div className="vaccineModal">
-                    <p className="vaccineModalTitle">{modal.title}</p>
-                    <p className="vaccineModalText">{modal.text}</p>
-                    <p className="vaccineModalNote">{modal.note}</p>
-
-                    <div className="vaccineModalBtns">
-                        <button
-                            className="vaccineModalBtn vaccineModalCancel"
-                            onClick={() => setModal({
-                                ...modal,
-                                show: false,
-                            })}
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            className="vaccineModalBtn vaccineModalConfirm"
-                            onClick={() => {
-                                setModal({
+                    <h6 className="vaccineModalTitle">{modal.title}</h6>
+                    {modal.type === 'cancel' ?
+                    <>
+                        <select
+                            className='form-control mb-1'
+                            onChange={(e) => { _handleComment(e)}}>
+                            <option value="Me arrepentí" >Me arrepentí</option>
+                            <option value="No es lo que buscaba" >No es lo que buscaba</option>
+                            <option value="No puedo registrarme" >No puedo registrarme</option>
+                            <option value="Otro" >Otro</option>
+                        </select>
+                        {cancelComment !== 'Me arrepentí' &&
+                        cancelComment !== 'No es lo que buscaba' &&
+                        cancelComment !== 'No puedo registrarme' && (
+                            <textarea
+                                className='form-control'
+                                onChange={(e) => setCancelComment(e.target.value)}
+                                placeholder='Ingrese otro motivo (opcional)'
+                            />
+                        )}
+                        </> :
+                        <> 
+                            <textarea
+                                className='form-control'
+                                onChange={(e) => setCancelComment(e.target.value)}
+                                placeholder='Ingrese los detalles aquí'
+                                />
+                        </>}
+                        <div className="vaccineModalBtns mt-5">
+                            <button
+                                className="vaccineModalBtn vaccineModalCancel"
+                                onClick={() => setModal({
                                     ...modal,
                                     show: false,
-                                })
-                                handleConfirmVaccine()
-                            }}>
-                            Confirmar
-                        </button>
-                    </div>
+                                })}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                className="vaccineModalBtn vaccineModalConfirm"
+                                onClick={() => { handleRejectService(cancelComment, modal.type, initialData.id)}}>
+                                Confirmar
+                            </button>
+                        </div>
                 </div>
-            </div>
-        }
+            </div>}
         </div>
     </>
 )

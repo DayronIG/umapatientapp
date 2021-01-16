@@ -195,9 +195,9 @@ function App(props) {
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* VACCINE */}
-				<PrivateRoute exact path='/vacunacion/:id' component={Vaccine} />
+				<Route exact path='/vacunacion/:id' component={Vaccine} />
 				{/* VACCINE */}
-				<PrivateRoute exact path='/invitation/:id' component={Invitation} />
+				<Route exact path='/invitation/:id' component={Invitation} />
 				{/* PILLBOX */}
 				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
 				{/* ACCESS DENIED */}
