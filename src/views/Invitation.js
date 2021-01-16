@@ -8,6 +8,7 @@ import Loading from '../components/GeneralComponents/Loading';
 import {BackButton} from '../components/GeneralComponents/Headers'
 import db from '../config/DBConnection';
 import { invitation } from '../config/endpoints';
+import swal from 'sweetalert';
 
 const Vaccine = () => {
     const history = useHistory()
@@ -54,8 +55,13 @@ const Vaccine = () => {
                     ...modal,
                     show: false,
                 })
+                swal('Gracias!', 'Ya hemos recibido tu solicitud', 'success');
+
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                setLoading(false);
+                swal('Error', 'Falló el intento de ingresar tu solicitud', 'error');
+            });
         setLoading(false)
     }
 
