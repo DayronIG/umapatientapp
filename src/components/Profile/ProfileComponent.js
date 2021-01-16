@@ -11,6 +11,7 @@ import moment from 'moment-timezone';
 import '../../styles/profile.scss';
 import Loading from '../GeneralComponents/Loading';
 import {Loader} from '../GeneralComponents/Loading';
+import { SignOut } from '../User/Login';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
@@ -72,6 +73,15 @@ const ProfileComponent = () => {
 		}
 	};
 
+
+    // const _unlinkProvider = (login) => {
+    //     currentUser.unlink('google.com').then(function() {
+    //         console.log("Desvinculado")
+    //       }).catch(function(error) {
+    //         console.log(error)
+    //       });
+	// }
+	
 	return (
 		<>
 			{loading && !auth.fullname && <Loading />}
@@ -119,6 +129,8 @@ const ProfileComponent = () => {
 						<b>Sexo:</b> {(auth.sex === 'M' && 'Hombre') || (auth.sex === 'F' && 'Mujer')}
 					</p>
 				</div>
+				<button onClick={() => SignOut()} className="btn-blue-lg">Salir</button>
+				{/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
 				<div className='umaVersion text-center'>
 					<Version />
 				</div>

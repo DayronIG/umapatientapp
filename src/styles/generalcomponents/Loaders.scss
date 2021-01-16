@@ -74,7 +74,17 @@
 
 .loader {
 	@include loader($width: 36px, $height: 36px);
-	
+}
+
+.coverScreen {
+	background: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .deliveryLoader {

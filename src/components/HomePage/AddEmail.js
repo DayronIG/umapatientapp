@@ -9,6 +9,7 @@ import { MdRadioButtonUnchecked } from 'react-icons/md';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 import swal from 'sweetalert';
 import '../../styles/home/addemail.scss';
+import {Loader} from '../GeneralComponents/Loading';
 
 
 const EmailForm = (props) => {
@@ -75,10 +76,8 @@ const EmailForm = (props) => {
                             email: email || user.email,
                             password: password
                         }}
-                    console.log(data)
                     await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
                         .then(res => {
-                            console.log("Ok")
                             dispatch({type: 'CLOSE_MODAL'})
                             dispatch({type: 'SET_USER_LOGIN', payload: 'email'})
                             dispatch({type: "LOADING", payload: false})
@@ -179,6 +178,7 @@ const Advice = ({setAdvice}) => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.userActive)
     const user = useSelector((state) => state.user)
+    const {loading} = useSelector(state => state.front)
     const linkAccount = async (type) => {
         dispatch({type: "LOADING", payload: true})
         let provider
@@ -192,7 +192,6 @@ const Advice = ({setAdvice}) => {
         await currentUser.linkWithPopup(provider)
             .then(async function (result) {
                 var credential = result.credential;
-                console.log(result)
                 let loginMethod = credential.providerId || 'social'
                 await currentUser.getIdToken().then(async token => { 
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
@@ -227,16 +226,8 @@ const Advice = ({setAdvice}) => {
             });
     }
 
-    const _unlinkProvider = (login) => {
-        currentUser.unlink('google.com').then(function() {
-            console.log("Desvinculado")
-          }).catch(function(error) {
-            console.log(error)
-          });
-    }
-
-
     return <div className="addEmail__container">
+        {loading && <Loader />}
         <div className="addEmail__title">¡Tenemos novedades!</div>
         <div className="addEmail__text">
             A partir de febrero vas a tener una <b>nueva forma de ingresar</b> a ÜMA. <br />
@@ -247,7 +238,6 @@ const Advice = ({setAdvice}) => {
             <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
             <EmailButton buttonText="Vincular con otro email" action={() => setAdvice(false)}></EmailButton>
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
-            {/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
         </div>
     </div>
 }
