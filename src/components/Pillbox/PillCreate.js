@@ -8,10 +8,10 @@ export default function PillCreate({handleSaveReminder}) {
     const dispatch = useDispatch()
 
     return (
-        <div className='modalContent__container'>
-        <h4 className='modal__title'>Recordatorio</h4>
+        <div className='createContent__container'>
+        <div className='pillForm'>
         <div className='inputText__container'>
-            <p>Medicina: </p>
+            <label>Medicamento: </label>
             <input className="form-control" type="text" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, medicine: e.target.value}})}/>
         </div>
         <hr className="separator"/>
@@ -51,6 +51,7 @@ export default function PillCreate({handleSaveReminder}) {
             >
             Guardar
         </button>
+    </div>
     </div>
     )
 }

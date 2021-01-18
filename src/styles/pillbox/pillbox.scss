@@ -195,7 +195,7 @@
                 display: block;
                 width: 80vw;
                 border: none;
-                border-bottom: 0.1rem solid $uma-input;
+                border-bottom: 0.12rem solid $uma-input;
                 padding: 1.5rem 0.3rem 0.5rem;
                 color: $uma-text;
                 font-size: 0.9rem;
@@ -270,6 +270,107 @@
         }
         .delete__button{
             background-color: red;
+            margin-bottom: 3vh;
+        }
+        .doseDisplay{
+            display: flex;
+            justify-content: space-between;
+            .hourList{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        .daytime-selector{
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2vh;
+            .day-input{
+                width: 30vw;
+            }
+            .time-input{
+                width: 20vw;
+            }
+        }
+    }
+
+    .createContent__container{
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        .pillForm{
+            width: 80vw;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal__title{
+            text-align: center;
+        }
+        .image__container{
+            height: 20vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .pill_image{
+                height: 15vh;
+            }
+        }
+        .inputText__container{
+            label {
+                color: $uma-text-secondary;
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 25px;
+                margin: 0 0;
+                margin-top: 2vh;
+            }
+            input,
+            select {
+                display: block;
+                width: 80vw;
+                border: none;
+                border-bottom: 0.12rem solid $uma-input;
+                padding: 1.5rem 0.3rem 0.5rem;
+                color: $uma-text;
+                font-size: 0.9rem;
+                background: none;
+            }
+        }
+        .separator{
+            width: 30vw;
+        }
+        .inputDate__container{
+            margin: 2vh;
+            display: flex;
+            justify-content: space-around;
+            label{
+                width: 30vw;
+            }
+            input{
+                width: 25vw;
+            }
+        }
+        .add-pill-shift-icon{
+            margin: 2vh;
+            display: flex;
+            justify-content: center;
+            .add-icon{
+                color: $uma-primary;
+                font-size: 1.3rem;
+                margin-right: 3vw;
+            }
+        }
+        .minus-icon{
+            color: red;
+            font-size: 1.3rem;
+            margin-left: 3vw;
+        }
+        .save__button{
+            margin-top: 3vh;
+            background-color: $uma-primary;
+        }
+        .delete__button{
+            background-color: red;
+            margin-bottom: 3vh;
         }
         .doseDisplay{
             display: flex;
