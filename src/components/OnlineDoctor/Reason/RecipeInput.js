@@ -59,8 +59,8 @@ export default function RecipeInput({callback}) {
                 <span class="sr-only">Loading...</span>
             </div>}
             {errorUploading && <small className="error-uploading">Falló la subida</small>}
-            <button className="btn btn-blue-lg button" onClick={callback}>Aceptar</button>
-            <button className="btn btn-blue-lg button" onClick={callback}>Omitir</button>
+            <button className="btn btn-blue-lg" onClick={callback}>Aceptar</button>
+            <button className="btn btn-blue-lg" onClick={callback}>Omitir</button>
         </div>
     )
 }

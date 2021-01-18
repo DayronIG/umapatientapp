@@ -57,17 +57,6 @@ export default function DeliveryProgressBar({ percent }) {
 						</div>
 					)}
 				</Step>
-				{/* <Step transition='scale'>
-					{({ accomplished }) => (
-						<div className={`trackProgressVertical__container--step ${accomplished ? 'accomplished' : ''}`}>
-							<FaCheckCircle />
-							<div className='trackProgressVertical__container--text'>
-								<h3>Hisopado</h3>
-								<p>Se ha realizado el hisopado</p>
-							</div>
-						</div>
-					)}
-				</Step> */}
 				<Step transition='scale'>
 					{({ accomplished }) => (
 						<div className={`trackProgressVertical__container--step ${accomplished ? 'accomplished' : ''}`}>

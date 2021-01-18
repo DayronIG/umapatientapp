@@ -5,14 +5,16 @@ import { GenericHeader } from '../../../GeneralComponents/Headers';
 import {useHistory} from "react-router-dom";
 import ConstancyHisopado from "./Constancy/ConstancyHisopado"
 import ReactToPrint from 'react-to-print';
+import moment from 'moment';
 
 export default function ResultReveal({finalAction}) {
     const constRef = useRef()
     // const user = useSelector(state => state.user)
-	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+    const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
+    const hisopado = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex])
 	const user = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.patient)
     const docId = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)
-    const date = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.docId)?.split("_")[1].slice(0,8)
+    const [date, setDate] = useState(docId?.split("_")[1].slice(0,8))
     const result = useSelector(state => state.deliveryService?.deliveryInfo[currentHisopadoIndex]?.lab?.result_lab);
     const [constancy, showConstancy] = useState(false);
     const history = useHistory()
@@ -21,6 +23,10 @@ export default function ResultReveal({finalAction}) {
         console.log(result)
         if(docId !== undefined && result !== 'CANCEL') {
             showConstancy(true);
+            if(hisopado.dt_cierre && hisopado.dt_cierre !== "") {
+                console.log(docId?.split("_")[1].slice(0,8), hisopado.dt_cierre.toDate(), moment(new Date(hisopado.dt_cierre.toDate())).format('DD-MM-YYYY'))
+                setDate(hisopado.dt_cierre.toDate())
+            }
         }
     }, [docId])
 

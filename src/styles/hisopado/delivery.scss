@@ -47,7 +47,7 @@
     .hisopado__content {
         display: flex;
         align-items: center;
-        padding: 1.5rem 1rem;
+        padding: 0.8rem 1rem;
 
         .hisopado__info {
             padding-right: 1rem;
@@ -64,6 +64,10 @@
                 position: absolute;
                 right: 0;
                 top: 0;
+            }
+
+            &.ioma::after {
+                display: none;
             }
 
             .hisopado__title {

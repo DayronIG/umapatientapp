@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
+import { payment_url, node_patient } from "../../config/endpoints"
 import {CustomUmaLoader} from '../../components/global/Spinner/Loaders';
 import moment from "moment";
 import swal from '@sweetalert/with-react'
@@ -11,7 +12,6 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import { payment_url, node_patient } from "../../config/endpoints"
 import mpicon from "../../assets/img/delivery/mp.jpg";
 import Cleave from 'cleave.js/react';
 import db from "../../config/DBConnection";
@@ -33,7 +33,8 @@ const PaymentCardMP = () => {
     const [hisopadosToPurchase, setHisopadosToPurchase] = useState([]);
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    // const MERCADOPAGO_PUBLIC_KEY_MARCODINA = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
+    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -152,17 +153,13 @@ const PaymentCardMP = () => {
           id: current.id,
           type: 'delivery',
           coupon,
-          clients: hisopadosToPurchase
-//          mpaccount: 'sandbox'
+          clients: hisopadosToPurchase,
+          mpaccount: 'ihsa'
         }
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
-        .then(res => console.log("Ok"))
-        .catch(err => console.log(err))
-        
-        console.log("POSTING THIS")
-        console.log(paymentData)
-
+          .then(res => console.log("Ok"))
+          .catch(err => console.log(err))
         axios.post(payment_url, paymentData, {headers})
             .then(res => {
               setLoader(false)
@@ -333,17 +330,6 @@ const PaymentCardMP = () => {
           >
             <div className="formulario-item">
               <small>Número de la tarjeta</small>
-              {/* <input
-                autoComplete="off"
-                id="cardNumber" data-checkout="cardNumber"
-                type="number"
-                name="number"
-                placeholder="xxxx-xxxx-xxxx-xxxx"
-                onChange={(e) => {
-                  handleChange(e)
-                }}
-                onFocus={handleFocus}
-              /> */}
               <Cleave 
                 autoComplete="off"
                 id="cardNumber" data-checkout="cardNumber"

@@ -1,3 +1,4 @@
+import credencial from './fotos/credencial.png';
 import foto1 from "./fotos/1.png";
 import foto2 from "./fotos/2.png";
 import foto3 from "./fotos/3.png";
@@ -11,6 +12,12 @@ import foto10 from "./fotos/10.png";
 import foto11 from "./fotos/11.png";
 
 const slidesContent = [
+  {
+    title: "",
+    description: 'Si cuentas con cobertura de salud recuerda tener a mano la credencial antes de ingresar a la consulta',
+    image: credencial,
+    link: ''
+  },
   {
     title: "",
     description: 'No se debe compartir objetos de uso personal tal como cepillos de dientes, vasos, platos, cubiertos, toallas, ropa, etc.',

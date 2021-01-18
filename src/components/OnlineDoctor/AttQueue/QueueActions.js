@@ -10,7 +10,6 @@ import swal from 'sweetalert';
 
 const QueueActions = (props) => {
 	const dispatch = useDispatch()
-	const [alert, setAlert] = useState(false)
 	const [contador, setContador] = useState(0);
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [File, setFile] = useState([]);

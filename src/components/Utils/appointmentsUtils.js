@@ -206,28 +206,45 @@ export const genAppointmentID = (selectedAppointment, yearAndMonth) => {
 };
 
 export const findAllAssignedAppointment = async (dni, type = '') => {
+	var start = window.performance.now();
 	const doctors = await searchActiveProviders('online', type);
+	var step1 = window.performance.now();
+	console.log(`Execution time: ${step1 - start} ms`);
 	const assignedBag = getAssignedAppointments('online_clinica_medica', 'bag', doctors, dni, currentDt);
+	var step2 = window.performance.now();
+	console.log(`Execution time: ${step2 - step1} ms`);
 	const assignedToday = getAssignedAppointments('online_clinica_medica', yearMonth, doctors, dni, currentDt);
+	var step3 = window.performance.now();
+	console.log(`Execution time: ${step3 - step2} ms`);
 	const assignedTomorrow = getAssignedAppointments('online_clinica_medica', yearMonth, doctors, dni, dtNextDay);
+	var step4 = window.performance.now();
+	console.log(`Execution time: ${step4 - step3} ms`);
 	const resolve = await Promise.all([assignedBag, assignedToday, assignedTomorrow]);
+	var end = window.performance.now();
+	console.log(`Execution time: ${end - step4} ms`);
 	const assigned = resolve.find((res) => !!res && res);
 	return assigned;
 };
 
 export const findAllFreeAppointments = async (type, social_work) => {
-	let doctors = [];
-	if (social_work === 'PAMI') {
-		doctors = await searchActiveProviders('online', type, social_work);
-	} else {
-		doctors = await searchActiveProviders('online', type);
-	}
+	var start = window.performance.now();
+	let doctors = await searchActiveProviders('online', type);
+	var step1 = window.performance.now();
+	console.log(`Execution time: ${step1 - start} ms`);
 	let freeApps = await getFreeAppointments('online_clinica_medica', doctors, currentDt);
+	var step2 = window.performance.now();
+	console.log(`Execution time: ${step2 - step1} ms`);
 	if (!freeApps || freeApps.length === 0) {
 		freeApps = await getFreeAppointments('online_clinica_medica', doctors, dtNextDay);
 	}
 	freeApps = await filterByDoctors(freeApps);
+	var step3 = window.performance.now();
+	console.log(`Execution time: ${step3 - step2} ms`);
 	freeApps = await setRemainingTimes(freeApps);
+	var step4 = window.performance.now();
+	console.log(`Execution time: ${step4 - step3} ms`);
 	freeApps = await shuffleAppoints(freeApps);
+	var end = window.performance.now();
+	console.log(`Execution time: ${end - step4} ms`);
 	return freeApps;
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SignOut } from '../User/Login';
 import version from '../../config/version.json';
+
 const Version = () => {
   function logout() {
     SignOut()

@@ -11,13 +11,16 @@ const BuyHisopado = () => {
 	const currentHisopadoIndex = useSelector(state => state.deliveryService)
     // const id = useSelector((state) => state.deliveryService?.deliveryInfo[0]?.docId)
     const  { params, deliveryInfo } = useSelector((state) => state.deliveryService)
-    const [deliveryStatus, setDeliveryStatus] = useState(false);
+    const [deliveryStatus, setDeliveryStatus] = useState("");
 
     useEffect(() => {
         deliveryInfo.map(el => {
-        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
-            setDeliveryStatus(true)
-        }})
+        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED"){
+            setDeliveryStatus("TRACKING")
+        } else if (el.status === "DONE:RESULT" && el.eval.uma_eval === 0){
+            setDeliveryStatus("RESULT")
+        }
+    })
     }, [deliveryInfo])
 
     const buyHisopado = () => {
@@ -30,15 +33,27 @@ const BuyHisopado = () => {
         history.push(`/hisopado/${patient.ws}`)
     }
 
+    const confirmHisopado = () => {
+        history.push(`/hisopado/corporate/${patient.ws}`)
+    }
+
     const renderButtonContentFromState = () => {
-                if(deliveryStatus){
-                    return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
+                if(deliveryStatus === "TRACKING"){
+                    return <ButtonAllHisopados innerText="Mis hisopados" finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
+                } else if (deliveryStatus === "RESULT"){
+                    return <ButtonAllHisopados innerText="Ya tienes tu resultado" finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 } else {
                     return <ButtonStyle 
                     title="Hisopado a domicilio" 
                     innerText={`¡Pídelo ahora y tienes tu resultado ${params?.delay}!`}
                     checkoutText="Quiero mi hisopado" 
-                    finalAction={() => buyHisopado()} 
+                    finalAction={() => {
+                        if (patient.corporate_norm !== 'IOMA') {
+                            buyHisopado()
+                        } else {
+                            confirmHisopado()
+                        }
+                    }} 
                     showPrice={true}/>
                 }
 

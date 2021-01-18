@@ -72,8 +72,13 @@ import DeliveryChat from "./components/DeliveryService/DeliveryChat"
 import Pillbox from "./components/Pillbox/Pillbox"
 import Constancy from "./components/DeliveryService/DeliveryResults/Components/Constancy/ConstancyHisopado.js"
 import TransportRating from './components/Transport/TransportRating.js';
+/* Vaccine */
+import Vaccine from './components/Vaccine';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
+/* IOMA */
+import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
+import Invitation from './views/Invitation';
 
 function App(props) {
 	return (
@@ -94,7 +99,8 @@ function App(props) {
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
 				<Route exact path='/newregister/:ref?' component={RegisterNew} />
-				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
+				<Route exact path='/referredregister/:ref?' component={RegisterNew} />
+				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
 				<Route exact path='/registersuccess' component={RegisterSuccess} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
@@ -179,10 +185,19 @@ function App(props) {
 				/>
 				<PrivateRoute
 					exact
-					path='/hisopado/deliveryChat/:ws?/:incidente_id'
+					path='/hisopado/corporate/:ws?'
+					component={HisopadoCorporate}
+				/>
+				<PrivateRoute
+					exact
+					path='/hisopado/deliveryChat/:incidente_id'
 					component={DeliveryChat}
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
+				{/* VACCINE */}
+				<Route exact path='/vacunacion/:id' component={Vaccine} />
+				{/* VACCINE */}
+				<Route exact path='/invitation/:id' component={Invitation} />
 				{/* PILLBOX */}
 				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* ACCESS DENIED */}

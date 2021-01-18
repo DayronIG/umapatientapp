@@ -23,7 +23,11 @@ const initialState = {
 		lat: 0,
 		lng: 0,
 	},
-	step: "ASK_FOR_BUY"
+	step: "ASK_FOR_BUY",
+	deliveryLatLongProviders: {
+		lat: '',
+		lon: ''
+	}
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -66,6 +70,8 @@ export default (state = initialState, { type, payload }) => {
 			return {...state, currentHisopadoIndex: payload}
 		case "CHANGE_MARKER":
 			return {...state, changeMarker: state.changeMarker + 1}
+		case "SET_DELIVERY_LAT_LONG_PROVIDERS":
+			return {...state, deliveryLatLongProviders: payload}
 		default:
 			return state;
 	}

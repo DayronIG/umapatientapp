@@ -3,13 +3,12 @@
 .questionsContainer {
   left: 0;
   bottom: 25px;
-  position: absolute;
   width: 100%;
   text-align: center;
   overflow: hidden;
   .input-file {
     position: relative;
-    background: $uma-secondary;
+    background: $uma-primary;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -18,7 +17,7 @@
     width: 90%;
     border-radius: 6px;
     font-weight: bold;  
-    height: 50px;
+    height: 40px;
     margin: 5px auto;
 
     @media (max-height: 530px) {
@@ -49,7 +48,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     margin: 5px 0;
-    min-height: 50px;
+    min-height: 40px;
     border-radius: $regular-borders;
     color: $white-color;
     border: none;
@@ -83,6 +82,35 @@
     color: $text-dark;
   }
 }
+
+.appointment__delay--container {
+  display: flex;
+  justify-content: center;
+  .appointment__delay {
+      background: $uma-input;
+      color: $uma-button;
+      display: flex;
+      flex-direction: column;
+      width: 130px;
+      min-height: 80px;
+      padding: 15px;
+      margin: 0 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      .appointment__number {
+        font-weight: 700;
+        font-size: 3rem;
+        line-height: 2.5rem;
+        text-align: center;
+      }
+      .appointment__detail {
+        color: $uma-button;
+        font-weight: 700;
+        line-height: 1rem;
+        text-align: center;
+      }
+    }
+  }
 
 .appointment {
   width: 90%;

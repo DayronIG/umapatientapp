@@ -1,18 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import GoogleMapReact from 'google-map-react';
 import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/mapsApiHandlers';
 import DeliveryResume from './DeliveryResume';
 import Marker from '../global/Marker';
 import useInterval from '../Hooks/useInterval';
+import db from "../../config/DBConnection"
 
 const PackageOnTheWay = ({ active }) => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
 	const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
-	const { delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]);
+	const {delivery,  destination} = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]);
+	const {deliveryLatLongProviders} = useSelector(state => state.deliveryService)
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
+	const firestore = db.firestore();
+	const dispatch = useDispatch()
+
+	function snapDeliveryLatLon(){
+		return firestore
+		.collection('providers')
+		.doc(`${delivery?.cuit_nurse}`)
+		.collection('tracking')
+		.doc('geo')
+		.onSnapshot((snap) => {
+			dispatch({type:'SET_DELIVERY_LAT_LONG_PROVIDERS', payload: {
+				lat: parseFloat(snap.data()?.lat),
+				lon: parseFloat(snap.data()?.lon)
+			}})
+		}, err => {
+			console.error(err)
+		});
+	}
+
+	useEffect(() => {
+		let snapDelivery = () => {}
+		if(delivery){
+			snapDelivery = snapDeliveryLatLon()
+		}
+		return () => snapDelivery()
+	}, [delivery])
 
 	function setMapFunctions({ map, maps }) {
 		const dirServ = new maps.DirectionsService();
@@ -31,8 +59,8 @@ const PackageOnTheWay = ({ active }) => {
 			};
 			drawRoute(
 				{
-					lng: delivery.lon_delivery, 
-					lat: delivery.lat_delivery
+					lng: deliveryLatLongProviders.lon, 
+					lat: deliveryLatLongProviders.lat
 				}, 
 				userPos
 			)
@@ -45,8 +73,8 @@ const PackageOnTheWay = ({ active }) => {
 		if (typeof mapBounder === 'function') {
 			mapBounder([
 				{
-					lat: delivery.lat_delivery,
-					lng: delivery.lon_delivery
+					lat: deliveryLatLongProviders.lat,
+					lng: deliveryLatLongProviders.lon
 				},
 				{
 					lat: destination.user_lat,
@@ -63,8 +91,8 @@ const PackageOnTheWay = ({ active }) => {
 				onGoogleApiLoaded={setMapFunctions}
 			>
 				<Marker
-					lat={delivery.lat_delivery}
-					lng={delivery.lon_delivery}
+					lat={deliveryLatLongProviders.lat}
+					lng={deliveryLatLongProviders.lon}
 					text='Ubicación del profesional'
 					type = 'remis'
 				/>

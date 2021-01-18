@@ -41,9 +41,7 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
 
     dispatch({ type: 'SAVE_ANSWERS', payload: string })
     dispatch({ type: 'SAVE_ANSWERS_ID', payload: answers })
-    
-
-    
+        
     if (assessment.selectedQuestions[j + 1]) {
       setj(j + 1)
     } else {
@@ -98,11 +96,12 @@ const Assessment = ({ assessment, answersId, seti, setj, i, j, dispatch }) => {
       default: return ""
     }
   }
-
   return (
     <>
-      {
-        assessment.currentQuestion.answers.map((a, index) => inputType(a, index))
+      {assessment?.currentQuestion?.answers.length >= 1 &&
+        assessment.currentQuestion.answers.map((a, index) => {
+          return inputType(a, index)
+        })
       }
       {assessment.currentQuestion.showSkip && <button className="skipBtn" onClick={stopQuestions}>Omitir preguntas restantes</button>}
     </>
