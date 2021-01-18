@@ -15,9 +15,12 @@ const BuyHisopado = () => {
 
     useEffect(() => {
         deliveryInfo.map(el => {
-        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
-            setDeliveryStatus(true)
-        }})
+        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" ){
+            setDeliveryStatus("TRACK")
+        } else if ( el.status === "DONE:RESULT" && el.eval.uma_eval === 0){
+            setDeliveryStatus("RESULT")
+        }
+        })
     }, [deliveryInfo])
 
     const buyHisopado = () => {
@@ -35,8 +38,10 @@ const BuyHisopado = () => {
     }
 
     const renderButtonContentFromState = () => {
-                if(deliveryStatus){
-                    return <ButtonAllHisopados finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
+                if(deliveryStatus === "TRACK"){
+                    return <ButtonAllHisopados innerText={"Mis hisopados"} finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
+                } else if (deliveryStatus === "RESULT") {
+                    return <ButtonAllHisopados innerText={"Ya tienes tu resultado"} finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 } else {
                     return <ButtonStyle 
                     title="Hisopado a domicilio" 
