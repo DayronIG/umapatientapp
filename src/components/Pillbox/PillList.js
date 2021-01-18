@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FaPills } from "react-icons/fa"
 import { BsClock } from "react-icons/bs"
 import { MdToday } from "react-icons/md"
+import moment from "moment"
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
 export default function PillList({editStatus}) {
@@ -69,9 +70,10 @@ export default function PillList({editStatus}) {
                 <div className='pillboxList__container'>
                     <div className='pillboxReminder__header'>
                         <div className=''>
-                            Recordatorios
+                            {moment().format("hh:mm")}
                         </div>
                     </div>
+                    <hr/>
                         {recipes.length > 0 ?
                         recipesList():
                         <div className="spinner__container">
@@ -83,8 +85,7 @@ export default function PillList({editStatus}) {
             </div>
             <div className="pillbox__addContainer" onClick={() => dispatch({type: "SET_RENDER_STATE", payload:"CREATE"})}>
                 <label className="pillbox__btnContainer">
-                    <button className="pillbox__addBtn">+</button>
-                    <label className="pillbox__addMsg">Agregar recordatorio</label>
+                    <button className="pillbox__addBtn"><p>+</p></button>
                 </label>
             </div>
         </div>
