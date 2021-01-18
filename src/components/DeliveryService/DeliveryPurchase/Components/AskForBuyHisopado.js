@@ -30,7 +30,7 @@ export default function AskForBuyHisopado() {
         let deliveryInfo = []
         await db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', patient.core_id)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT", 'IN_PROCESS'])
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
         .get()
         .then(async res => {
             res.forEach(services => {
@@ -46,7 +46,7 @@ export default function AskForBuyHisopado() {
         window.gtag('event', 'select_item', {
             'item_list_name': 'Hisopado Antígeno'
           });
-        if(!current?.status) {
+        if (!current?.status || current?.status === 'FREE') {
             let data = {
                 dni: patient.dni,
                 dependant: false,

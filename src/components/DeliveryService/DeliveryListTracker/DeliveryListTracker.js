@@ -48,23 +48,27 @@ export default function ListTracker({finalAction}) {
                 </div>
                 <div className="results-menu-map-container">
                     {purchases.map((purchase, index) => {
-                    if(!["FREE", "FREE:IN_RANGE", "DEPENDANT"].includes(purchase.status)){let state;  
-                    if (purchase.status === "PREASSIGN"){state="En preparación"}
-                    if (purchase.status === "IN_PROCESS"){state="Procesando pago"}
-                    if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
-                    if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
-                    if (purchase.status === "DONE:RESULT"){state="Ver resultado"}
-                    return <div key={purchase.patient?.dni} className="results-menu-map-item fit_content_item"
-                    onClick={() => handleDerivation(index)}>
-                        <div>
-                            <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>
-                            <p className="item_status">{state}</p>
-                        </div>
-                        {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
-                    </div>}})}
+                        if(!["FREE", "FREE:IN_RANGE", "DEPENDANT"].includes(purchase.status)){let state;  
+                        if (purchase.status === "PREASSIGN"){state="En preparación"}
+                        if (purchase.status === "IN_PROCESS"){state="Procesando pago"}
+                        if (purchase.status === "ASSIGN:DELIVERY"){state="En camino"}
+                        if (purchase.status === "ASSIGN:ARRIVED"){state="En domicilio"}
+                        if (purchase.status === "DONE:RESULT"){state="Ver resultado"}
+                        return <div key={purchase.patient?.dni} className="results-menu-map-item fit_content_item"
+                        onClick={() => handleDerivation(index)}>
+                            <div>
+                                <p className="item_address">{purchase.destination?.user_address.split(",")[0]}</p>
+                                <p className="item_status">{state}</p>
+                            </div>
+                            {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
+                        </div>}
+                    })}
                     
                     <div className="results-menu-map-item highlighted-color"
-                        onClick={() => history.push(`/hisopado/carrito/${patient.ws}`)}
+                        onClick={() => {
+                            dispatch({ type: "SET_DELIVERY_STEP", payload: "ASK_FOR_BUY"})
+                            history.push(`/hisopado/${patient.ws}`)
+                        }}
                         >
                         <div>
                             <GiTransparentTubes className="icon" />
