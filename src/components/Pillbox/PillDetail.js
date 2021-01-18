@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
+import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
 export default function PillDetail({handleSaveReminder}) {
     const { personalizedShifts, reminderToEdit} = useSelector(state => state.pillbox)
@@ -12,28 +13,38 @@ export default function PillDetail({handleSaveReminder}) {
     }
     
     return (
-        <div className='modalContent__container'>
-                        <h4 className='modal__title'>Recordatorio</h4>
+        <div className='detailContent__container'>
+            <div className='pillForm'>
+                        <div className='image__container'>
+                            <img className='pill_image' src={defaultPillImage} alt="defaultPill"/> 
+                        </div>
                         <div className='inputText__container'>
-                            <p>Medicina: </p>
+                            <label>Medicina </label>
                             <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
                         </div>
-                        <hr className="separator"/>
-                        <div className='inputDate__container'>
-                            <label>Fecha inicial:</label>
+                        <div className='inputText__container'>
+                            <label>Formato </label>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                        </div>
+                        <div className='inputText__container'>
+                            <label>Stock </label>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                        </div>
+                        <div className='inputText__container'>
+                            <label>Fecha de inicio:</label>
                             <input className="form-control" type="date" name="" id="" defaultValue={reminderToEdit?.initial_date} onChange={(e) => editReminder("initial_date", e.target.value)}/>
                         </div>
-                        <div className='inputNumber__container'>
+                        <div className='inputText__container'>
                             <label>Cantidad:</label>
                             <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.dose} onChange={(e) => editReminder("dose", e.target.value)}/>
                         </div>
-                        <div className='inputNumber__container'>
+                        <div className='inputText__container'>
                             <label>Días:</label>
                             <input className="form-control" type="number" name="" id="" defaultValue={reminderToEdit?.quantity_days} onChange={(e) => editReminder("quantity_days", e.target.value)}/>
                         </div>
-                        <div className='inputFreq__container'>
-                            <label>Frecuencia:</label>
-                            <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} 
+                        <div className='inputText__container'>
+                            <label>Dosaje</label>
+                            {/* <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} 
                             onChange={(e) => {
                             if(e.target.value === "personalized") {
                                 dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:true})
@@ -44,25 +55,51 @@ export default function PillDetail({handleSaveReminder}) {
                             }}}>
                                 <option value="every_day">Todos los dias</option>
                                 <option value="personalized">Horarios personalizados</option>
-                            </select>
+                            </select> */}
                         </div>
 
+
                         {!personalizedShifts &&
-                        <div>
-                            <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders?.mon: false}/>
+                        <div className='doseDisplay'>
+                            <p className='weekday'>Todos los dias</p>
+                            <div className='hourlist'>
+                                {reminderToEdit?.reminders?.mon.map(el => <p className='hour'>{el}</p>)}
+                            </div>
+                            {/* <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders?.mon: false}/> */}
                         </div>}
 
                         {personalizedShifts &&
-                        <div>
-                            <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/>
-                        </div>}
+                        <>
+                            {Object.keys(reminderToEdit?.reminders).map(el =>
+                                <div className='doseDisplay'>
+                                    <p className='weekday'>{el}</p>
+                                    <div className='hourlist'>
+                                    {reminderToEdit?.reminders[el].map(hour => <p className='hour'>{hour}</p>)}
+                                    </div>
+                                    {/* <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/> */}
+                            </div>)}
+                        </>
+                        }
+
+                        <div className='inputText__container'>
+                            <label>Observaciones </label>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                        </div>
 
                         <button
                             className='save__button btn-blue-lg btn'
                             onClick={() => handleSaveReminder(true)}
                             >
-                            Guardar
+                            Editar
                         </button>
+
+                        <button
+                            className='delete__button btn-blue-lg btn'
+                            onClick={() => handleSaveReminder(true)}
+                            >
+                            Eliminar
+                        </button>
+                        </div>
                     </div>
     )
 }
