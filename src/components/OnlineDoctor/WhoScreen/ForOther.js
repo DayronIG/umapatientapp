@@ -27,13 +27,13 @@ const RegisterDependant = props => {
     window.scroll(0, 0);
     dispatch({ type: "LOADING", payload: true });
     let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
-    let dob = `${year}-${month}-${day}`;
+    let dob = `${dependant.year}-${dependant.month}-${dependant.day}`;
     let data = {
       address: address || "",
       corporate: dependant.cobertura || "",
       dni: dependant.document || "",
       core_id: user.core_id || "",
-      dob: dependant.dob || "",
+      dob: dob || "",
       dt: date || "",
       fullname: dependant.fullname || "",
       group: user.dni || "",
@@ -41,6 +41,7 @@ const RegisterDependant = props => {
       sex: dependant.sex || "",
       ws: user.ws || "",
     }
+
     axios
       .post(`${node_patient}/dependant`, { dependant: data })
       .then(res => {

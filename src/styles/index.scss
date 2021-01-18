@@ -289,10 +289,17 @@
 		}
 	}
 	.btn-alert {
-		padding: 5px;
-		background: $red-high;
 		width: 90% !important;
-		min-height: 50px;
+		font-size: 1.2rem;
+		font-weight: 700;
+		padding: 10px 0;
+		margin: 15px 5%;
+		height: 44px;
+		border-radius: 15px;
+		color: $white-color;		
+		background: $red-high;
+		cursor: pointer;
+		border: none;
 	}
 	.btn-calling {
 		padding: 5px;

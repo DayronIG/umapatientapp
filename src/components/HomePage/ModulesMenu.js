@@ -19,9 +19,10 @@ import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
-  const {plan} = useSelector((state) => state.queries.plan);
-  const {modal} = useSelector(state => state.front)
-  const dispatch = useDispatch()
+	const {plan} = useSelector((state) => state.queries.plan);
+	const {modal} = useSelector(state => state.front)
+	const censo = useSelector(state => state.deliveryService.params.censo)
+	const dispatch = useDispatch()
 
 	useEffect(()=> {
         if(!user.login || user.login === [] || user.login === "") {
@@ -53,7 +54,7 @@ const ModulesMenu = () => {
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
-					{modal === true && <AddEmail />}
+					{modal === true && censo && <AddEmail />}
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

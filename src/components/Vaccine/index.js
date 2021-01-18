@@ -56,7 +56,7 @@ const Vaccine = () => {
                 setActionConfirmed(true);
                 setLoading(false);
             })
-            .catch(error => console.log(error));
+            .catch(error => setLoading(false));
     }
 
     return (
