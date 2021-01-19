@@ -70,6 +70,6 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
             </div>
             <div className='addHour' onClick={addHour}>+</div>
         </div>
-        {renderHours()}
+        {value && renderHours()}
         </>
 }            

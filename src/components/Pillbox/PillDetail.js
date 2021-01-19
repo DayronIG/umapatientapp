@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
+import { BackButton } from '../GeneralComponents/Headers';
 
 export default function PillDetail({handleSaveReminder}) {
     const { personalizedShifts, reminderToEdit} = useSelector(state => state.pillbox)
@@ -13,6 +14,8 @@ export default function PillDetail({handleSaveReminder}) {
     }
     
     return (
+        <>
+        <BackButton inlineButton={true} customTarget action={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})} />
         <div className='detailContent__container'>
             <div className='pillForm'>
                         <div className='image__container'>
@@ -101,5 +104,6 @@ export default function PillDetail({handleSaveReminder}) {
                         </button>
                         </div>
                     </div>
+                    </>
     )
 }

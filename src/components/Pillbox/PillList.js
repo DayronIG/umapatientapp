@@ -4,11 +4,14 @@ import { FaPills } from "react-icons/fa"
 import { BsClock } from "react-icons/bs"
 import { MdToday } from "react-icons/md"
 import moment from "moment"
+import { useHistory } from "react-router-dom"
+import { BackButton } from '../GeneralComponents/Headers';
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
 export default function PillList({editStatus}) {
     const dispatch = useDispatch()
     const { newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
+    const history = useHistory()
 
     const recipesList = () => {
         const recipeList = [];
@@ -52,6 +55,7 @@ export default function PillList({editStatus}) {
 
     return (
         <div>
+        <BackButton inlineButton={true} action={()=>history.push(`/`)} />
         <div>
             <div className="filterByTime__container">
             <p className="clicked">TODOS</p>

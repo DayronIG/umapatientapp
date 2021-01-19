@@ -13,7 +13,7 @@ export default function PillCreate({handleSaveReminder}) {
         <div className='createContent__container'>
             <div className='pillCreate__header'>
                 <p className='content'>Nuevo recordatorio</p>
-                <GrClose className='icon'/>
+                <GrClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
         <div className='inputText__container'>
@@ -79,7 +79,7 @@ export default function PillCreate({handleSaveReminder}) {
             className='save__button btn-blue-lg btn'
             onClick={() => handleSaveReminder(false)}
             >
-            Guardar
+            Crear recordatorio
         </button>
     </div>
     </div>

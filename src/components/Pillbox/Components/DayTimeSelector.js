@@ -222,7 +222,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <p>DÍAS ESPECÍFICOS</p>
             </div>
         </div>
-        {renderContent()}
+        {value && renderContent()}
         {/* <div className="add-pill-shift-icon">
             <FaPlus className="add-icon" onClick={addShift}/>
         </div> */}

@@ -136,7 +136,6 @@ const Pillbox = props => {
 
     return (
         <div className="pillbox">
-        <BackButton inlineButton={true} action={()=>history.push(`/`)} />
         {reminderModal && <Modal
           callback={() => {
               setReminderModal(false)
