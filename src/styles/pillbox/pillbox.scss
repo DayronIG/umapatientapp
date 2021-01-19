@@ -202,9 +202,6 @@
                 background: none;
             }
         }
-        .separator{
-            width: 30vw;
-        }
         .inputDate__container{
             margin: 2vh;
             display: flex;
@@ -249,16 +246,6 @@
                 width: 30vw;
             }
         }
-        .add-pill-shift-icon{
-            margin: 2vh;
-            display: flex;
-            justify-content: center;
-            .add-icon{
-                color: $uma-primary;
-                font-size: 1.3rem;
-                margin-right: 3vw;
-            }
-        }
         .minus-icon{
             color: red;
             font-size: 1.3rem;
@@ -280,25 +267,38 @@
                 flex-direction: column;
             }
         }
-        .daytime-selector{
-            display: flex;
-            justify-content: space-around;
-            margin-top: 2vh;
-            .day-input{
-                width: 30vw;
-            }
-            .time-input{
-                width: 20vw;
-            }
-        }
     }
 
     .createContent__container{
         width: 100vw;
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        .pillCreate__header{
+            background: #0A6DD7;
+            box-shadow: 0px 2px 5px rgba(199, 199, 199, 0.14);
+            border-radius: 0px;
+            height: 7vh;
+            width: 100vw;
+            padding: 3vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            p{
+                color: white;
+                font-weight: 800;
+                font-size: 18px;
+                line-height: 25px;
+                margin-top: 2vh;
+            }
+            .icon{
+                color: white;
+            }
+        }
         .pillForm{
-            width: 80vw;
+            width: 85vw;
+            padding-top: 2vh;
             display: flex;
             flex-direction: column;
         }
@@ -321,22 +321,20 @@
                 font-size: 18px;
                 line-height: 25px;
                 margin: 0 0;
-                margin-top: 2vh;
+                margin-top: 3vh;
             }
             input,
             select {
-                display: block;
-                width: 80vw;
+                background: #FFFFFF;
+                box-shadow: 0px 2px 5px rgba(126, 147, 163, 0.25);
+                border-radius: 6px;
                 border: none;
-                border-bottom: 0.12rem solid $uma-input;
-                padding: 1.5rem 0.3rem 0.5rem;
-                color: $uma-text;
-                font-size: 0.9rem;
-                background: none;
+                color: rgba(104, 100, 100, 0.6);
+                margin-top: 1vh;
             }
-        }
-        .separator{
-            width: 30vw;
+            ::placeholder{
+                color: rgba(104, 100, 100, 0.6);
+            }
         }
         .inputDate__container{
             margin: 2vh;
@@ -359,6 +357,35 @@
                 margin-right: 3vw;
             }
         }
+        .radioButton__container{
+            .radioText{
+                display: flex;
+                width: 50vw;
+                justify-content: space-around;
+                p{
+                    color: $uma-text-secondary
+                }
+                input{
+                    margin-top: 1vh;
+                }
+            }
+            .addHour{
+                background-color: $shiny-blue;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 800;
+                font-size: 2rem;
+                width: 8vw;
+                height: 5vh;
+                border-radius: 50px;
+            }
+            height: 6vh;
+            margin-top: 2vh;
+            display: flex;
+            justify-content: space-between;
+        }
         .minus-icon{
             color: red;
             font-size: 1.3rem;
@@ -368,10 +395,6 @@
             margin-top: 3vh;
             background-color: $uma-primary;
         }
-        .delete__button{
-            background-color: red;
-            margin-bottom: 3vh;
-        }
         .doseDisplay{
             display: flex;
             justify-content: space-between;
@@ -380,15 +403,33 @@
                 flex-direction: column;
             }
         }
+        .separator{
+            width: 85vw;
+            border: 1px solid #B6B6B6;
+        }
         .daytime-selector{
             display: flex;
-            justify-content: space-around;
-            margin-top: 2vh;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0vh 4vw;
+            height: 4vh;
             .day-input{
                 width: 30vw;
             }
             .time-input{
                 width: 20vw;
+                border: none;
+                border-bottom: 0.12rem solid $uma-input;
+                padding: 1.5rem 0.3rem 0.5rem;
+                color: $uma-text;
+                font-size: 1.2rem;
+                font-weight: 800;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.13em;
+                color: #686464;
+            }
+            .icon{
             }
         }
     }

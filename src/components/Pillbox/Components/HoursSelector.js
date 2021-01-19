@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { useDispatch } from "react-redux";
 import Cleave from 'cleave.js/react';
-import { FaPlus, FaMinus } from "react-icons/fa"
+import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa"
 
 export default function HoursSelector({medicine = false, defaultValues = false}) {
     const [hoursToSave, setHoursToSave] = useState([])
@@ -42,8 +42,8 @@ export default function HoursSelector({medicine = false, defaultValues = false})
 
     const renderHours = () => {
         let content = hoursToSave.map((hour, indexHour) => {
-            return (<div className="daytime-selector" key={hour}>
-                <span>Hora:</span>
+            return (
+            <div className="daytime-selector" key={hour}>
                 <Cleave placeholder="hh:mm"
                 options={{
                     time: true,
@@ -52,16 +52,24 @@ export default function HoursSelector({medicine = false, defaultValues = false})
                 value={hour}
                 onChange={e => editHour(e.target.value, indexHour)} 
                 className="time-input form-control"/>
+                <FaTrashAlt className='icon' />
             </div>)}
         )
         return content
     }
 
     return <>
-        {renderHours()}
-        <div className="add-pill-shift-icon">
+        {/* <div className="add-pill-shift-icon">
             <FaPlus className="add-icon" onClick={addHour}/>
             <FaMinus className="minus-icon" onClick={removeHour}/>
+        </div> */}
+        <div className='radioButton__container'>
+            <div className='radioText'>
+                <input type="radio" name="" id=""/> 
+                <p>TODOS LOS DÍAS</p>
+            </div>
+            <div className='addHour' onClick={addHour}>+</div>
         </div>
+        {renderHours()}
         </>
 }            
