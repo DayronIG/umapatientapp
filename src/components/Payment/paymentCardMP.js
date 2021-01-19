@@ -17,6 +17,7 @@ import Cleave from 'cleave.js/react';
 import db from "../../config/DBConnection";
 
 const PaymentCardMP = () => {
+    const isLocal = window.location.origin.includes('localhost');
     const dispatch = useDispatch()
     const {params, current, deliveryInfo} = useSelector(state => state.deliveryService)
     const history = useHistory();
@@ -34,23 +35,25 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     // const MERCADOPAGO_PUBLIC_KEY_MARCODINA = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
-    const MERCADOPAGO_PUBLIC_KEY = "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
+  const MERCADOPAGO_PUBLIC_KEY = isLocal ? 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231' : "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
       if(deliveryInfo.length < multiple_clients?.length){
           dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
       }
+      // console.log(deliveryInfo.filter(el => el.status && !['DONE:RESULT', 'ASSIGN:ARRIVED', 'ASSIGN:DELIVERY'].includes(el.status)));
       setHisopadosToPurchase(deliveryInfo.filter(el => el.status && !['DONE:RESULT', 'ASSIGN:ARRIVED', 'ASSIGN:DELIVERY'].includes(el.status)))
     }, [deliveryInfo])
 
     const getCurrentService = async () => {
       await db.firestore().collection('events/requests/delivery')
       .where('patient.uid', '==', user.core_id)
-      .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT", 'IN_PROCESS'])
+      .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
       .get()
       .then(async res => {
           res.forEach(services => {
+              // console.log(services.data());
               let document = {...services.data(), id: services.id}
               // deliveryInfo.push(document)
               dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
@@ -63,14 +66,20 @@ const PaymentCardMP = () => {
     // }, [])
 
     useEffect(() => {
+      // console.log(hisopadosToPurchase);
       if(hisopadosToPurchase && hisopadosToPurchase.length && !isNaN(hisopadoPrice)) {
-        console.log(parseInt(hisopadoPrice), hisopadosToPurchase.length)
+        // console.log(parseInt(hisopadoPrice), hisopadosToPurchase.length)
         setTotalPayment(parseInt(hisopadoPrice) * hisopadosToPurchase.length) 
       }
     }, [hisopadosToPurchase, hisopadoPrice])
 
     useEffect(() => {
-        getCurrentService()
+      if(user) {
+        getCurrentService();
+      }
+    }, [user])
+
+    useEffect(() => {
         window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
         window.Mercadopago.getIdentificationTypes();
       }, [])
@@ -78,7 +87,6 @@ const PaymentCardMP = () => {
     async function handleSubmit(event) {
         event.preventDefault()
         setLoader(true)
-        console.log(moment().format('DD/MM') === "16/12", moment().format('dddd'), moment().format('DD/MM'))
         if(moment().format('dddd') === 'sábado'
           || moment().format('dddd') === 'domingo'
           || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
@@ -132,9 +140,7 @@ const PaymentCardMP = () => {
         }
     }
 
-    useEffect(() => {
-      console.log(current.id)
-    }, [current])
+    // console.log(current.id);
 
     const postData = useCallback((form, token) => {
       setLoader(true)
@@ -154,8 +160,11 @@ const PaymentCardMP = () => {
           type: 'delivery',
           coupon,
           clients: hisopadosToPurchase,
-          mpaccount: 'ihsa'
+          mpaccount: isLocal ? 'sandbox' : 'ihsa'
         }
+
+        console.log(paymentData);
+
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
           .then(res => console.log("Ok"))
@@ -195,7 +204,7 @@ const PaymentCardMP = () => {
           })
           .catch(err => {
             setLoader(false)
-            console.error(err)
+            console.error('Error tarjeta: ', err)
             window.gtag('event', 'payment_failed', {
               'event_category' : 'warning',
               'event_label' : 'hisopado_payment'
@@ -207,7 +216,7 @@ const PaymentCardMP = () => {
             }
             window.Mercadopago.clearSession();
           })
-  }, [coupon, deliveryInfo, totalPayment])
+    }, [coupon, deliveryInfo, totalPayment, hisopadosToPurchase])
 
     const expirationYearCheck = (year) => {
         if(year < moment().format("YY") && year !== ""){
@@ -227,6 +236,7 @@ const PaymentCardMP = () => {
           setLoader(false)
           dispatch({type: 'SET_DELIVERY_STEP', payload: "END_ASSIGNATION"})
           localStorage.removeItem("multiple_clients")
+          dispatch({ type: 'SET_DELIVERY_CURRENT', payload: {} })
           swal('El pago se ha registrado correctamente', 'Gracias por confiar en ÜMA!', 'success')
             .then(()=> history.push(`/hisopado/listTracker/${user.ws}`))
         } else if(paymentStatus && paymentStatus !== "approved" && paymentStatus !== "") {
