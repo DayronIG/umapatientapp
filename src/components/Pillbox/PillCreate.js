@@ -57,14 +57,14 @@ export default function PillCreate({handleSaveReminder}) {
 
         {/* {!personalizedShifts && */}
         <div>
-            <HoursSelector medicine={newReminder.medicine}/>
+            <HoursSelector value={!personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <hr className='separator'/>
 
         {/* {personalizedShifts && */}
         <div>
-            <DayTimeSelector medicine={newReminder.medicine}/>
+            <DayTimeSelector value={personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <div className='inputText__container'>

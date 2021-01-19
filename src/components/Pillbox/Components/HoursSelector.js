@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Cleave from 'cleave.js/react';
 import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa"
 
-export default function HoursSelector({medicine = false, defaultValues = false}) {
+export default function HoursSelector({value, medicine = false, defaultValues = false}) {
     const [hoursToSave, setHoursToSave] = useState([])
     const dispatch = useDispatch()
 
@@ -43,7 +43,7 @@ export default function HoursSelector({medicine = false, defaultValues = false})
     const renderHours = () => {
         let content = hoursToSave.map((hour, indexHour) => {
             return (
-            <div className="daytime-selector" key={hour}>
+            <div className="hours-selector initial-padding" key={hour}>
                 <Cleave placeholder="hh:mm"
                 options={{
                     time: true,
@@ -65,7 +65,7 @@ export default function HoursSelector({medicine = false, defaultValues = false})
         </div> */}
         <div className='radioButton__container'>
             <div className='radioText'>
-                <input type="radio" name="" id=""/> 
+                <input value={value} type="radio" name="" id=""/> 
                 <p>TODOS LOS DÍAS</p>
             </div>
             <div className='addHour' onClick={addHour}>+</div>

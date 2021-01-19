@@ -357,6 +357,18 @@
                 margin-right: 3vw;
             }
         }
+        .addHour{
+            background-color: $shiny-blue;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 2rem;
+            width: 8vw;
+            height: 5vh;
+            border-radius: 50px;
+        }
         .radioButton__container{
             .radioText{
                 display: flex;
@@ -368,18 +380,6 @@
                 input{
                     margin-top: 1vh;
                 }
-            }
-            .addHour{
-                background-color: $shiny-blue;
-                color: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-weight: 800;
-                font-size: 2rem;
-                width: 8vw;
-                height: 5vh;
-                border-radius: 50px;
             }
             height: 6vh;
             margin-top: 2vh;
@@ -407,14 +407,109 @@
             width: 85vw;
             border: 1px solid #B6B6B6;
         }
-        .daytime-selector{
+        .initial-padding{
+            padding: 0vh 4vw;
+        }
+        .hours-selector{
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding: 0vh 4vw;
             height: 4vh;
+            .checkButton__container{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100vw;
+                height: 4vh;
+                .checkText__container{
+                    width: 15vw;
+                    display: flex;
+                    align-items: center;
+                    height: 4vh;
+                }
+                p{
+                    margin-top: 2.5vh;
+                    margin-left: 3vw;
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #686464;
+                }
+            }
             .day-input{
                 width: 30vw;
+                border: none;
+                border-bottom: 0.12rem solid $uma-input;
+                padding: 1.5rem 0.3rem 0.5rem;
+                color: $uma-text;
+                font-size: 1.2rem;
+                font-weight: 800;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.13em;
+                color: #686464;
+            }
+            .time-input{
+                width: 20vw;
+                border: none;
+                border-bottom: 0.12rem solid $uma-input;
+                padding: 1.5rem 0.3rem 0.5rem;
+                color: $uma-text;
+                font-size: 1.2rem;
+                font-weight: 800;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.13em;
+                color: #686464;
+            }
+            .icon{
+            }
+        }
+        .daytime-selector{
+            .checkButton__container{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 85vw;
+                height: 4vh;
+                .checkText__container{
+                    width: 15vw;
+                    display: flex;
+                    align-items: center;
+                    height: 4vh;
+                }
+                p{
+                    margin-top: 2.5vh;
+                    margin-left: 3vw;
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #686464;
+                }
+            }
+            .checkHours__container{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 85vw;
+                height: 4vh;
+                margin-top: 2vh;
+                margin-bottom: 2vh
+            }
+            .day-input{
+                width: 30vw;
+                border: none;
+                border-bottom: 0.12rem solid $uma-input;
+                padding: 1.5rem 0.3rem 0.5rem;
+                color: $uma-text;
+                font-size: 1.2rem;
+                font-weight: 800;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.13em;
+                color: #686464;
             }
             .time-input{
                 width: 20vw;
