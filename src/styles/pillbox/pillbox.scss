@@ -46,8 +46,9 @@
             margin: 3vh 0vw;
             max-height: 20vh;
             .pill_image{
-                width: 100px;
-                height: 120px;
+                max-width: 100px;
+                max-height: 120px;
+                display: block; 
                 border-radius: 6px 0px 0px 6px;
                 justify-self: flex-start;
             }

@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react'
-import { useDispatch } from "react-redux";
+import React, {useState, useEffect, useCallback} from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import Cleave from 'cleave.js/react';
 import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa"
 
 export default function HoursSelector({value, medicine = false, defaultValues = false}) {
     const [hoursToSave, setHoursToSave] = useState([])
+    const { personalizedShifts } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -58,6 +59,10 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
         return content
     }
 
+    const changePersonalized = useCallback(()=>{
+        dispatch({type: "SET_PERSONALIZED_SHIFTS", payload: !personalizedShifts})
+    },[personalizedShifts])
+
     return <>
         {/* <div className="add-pill-shift-icon">
             <FaPlus className="add-icon" onClick={addHour}/>
@@ -65,7 +70,7 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
         </div> */}
         <div className='radioButton__container'>
             <div className='radioText'>
-                <input value={value} type="radio" name="" id=""/> 
+                <input type="radio" name="" id="" checked={!personalizedShifts} value={!personalizedShifts} onClick={()=>changePersonalized()}/>
                 <p>TODOS LOS DÍAS</p>
             </div>
             <div className='addHour' onClick={addHour}>+</div>

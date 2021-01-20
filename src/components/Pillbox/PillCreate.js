@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { GrClose } from 'react-icons/gr'
+import { AiOutlineClose } from 'react-icons/ai'
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import { IconContext } from "react-icons";
@@ -13,7 +13,7 @@ export default function PillCreate({handleSaveReminder}) {
         <div className='createContent__container'>
             <div className='pillCreate__header'>
                 <p className='content'>Nuevo recordatorio</p>
-                <GrClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
+                <AiOutlineClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
         <div className='inputText__container'>
@@ -43,13 +43,13 @@ export default function PillCreate({handleSaveReminder}) {
             <label>Cantidad</label>
             <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
-        <div className='inputText__container'>
+        {/* <div className='inputText__container'>
             <label>Frecuencia:</label>
             <select className="form-control" onChange={(e) => e.target.value === "personalized"? dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:true}): dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:false})}>
                 <option value="every_day">Todos los dias</option>
                 <option value="personalized">Horarios personalizados</option>
             </select>
-        </div>
+        </div> */}
 
         <div className='inputText__container'>
             <label>Configure los días y horarios en los que debe tomar su medicación</label>

@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
-import { useDispatch } from "react-redux";
+import React, {useState, useEffect, useCallback} from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import Cleave from 'cleave.js/react';
 import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa"
 
 export default function DayTimeSelector({value, medicine = false, defaultValues = false}) {
     const [shiftsToSave, setShiftsToSave] = useState({})
+    const { personalizedShifts } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -215,10 +216,14 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
         return content
     }
 
+    const changePersonalized = useCallback(()=>{
+        dispatch({type: "SET_PERSONALIZED_SHIFTS", payload: !personalizedShifts})
+    },[personalizedShifts])
+
     return <> 
         <div className='radioButton__container'>
             <div className='radioText'>
-                <input type="radio" name="" id="" value={value}/> 
+                <input type="radio" name="" id="" checked={personalizedShifts} value={personalizedShifts} onClick={()=>changePersonalized()}/> 
                 <p>DÍAS ESPECÍFICOS</p>
             </div>
         </div>
