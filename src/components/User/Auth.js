@@ -44,7 +44,16 @@ function AuthProvider({ children }) {
 
 
 	async function getInitialData(user) {
-		if (user.displayName && user.displayName !== "") {
+		console.log("USUARIO:", user)
+		const userAuth = await getAuth(user.uid)
+		let plan = undefined;
+		plan = await getCoverage(userAuth)
+		if (!!userAuth) {
+			dispatch({ type: 'GET_PATIENT', payload: userAuth })
+			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+			getDeliveryInfo(userAuth)
+		}
+/* 		if (user.displayName && user.displayName !== "") {
 			const userAuth = await getAuth(user.displayName)
 			let plan = undefined;
 			plan = await getCoverage(userAuth)
@@ -63,7 +72,7 @@ function AuthProvider({ children }) {
 				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 				getDeliveryInfo(userAuth)
 			}
-		}
+		} */
 	}	
 	
 	const getCoverage = async (user) => {

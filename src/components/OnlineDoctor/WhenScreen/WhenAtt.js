@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Comments from './Comments.js';
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser, getOnlineCustom } from '../../../store/actions/firebaseQueries';
+import { getUser, getFreeGuardia } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import { Loader } from '../../GeneralComponents/Loading';
@@ -73,7 +73,7 @@ const WhenScreen = (props) => {
 
 	async function findFreeAppointments(person, type) {
 		try {
-			let freeAppoints = await getOnlineCustom(); // WIP
+			let freeAppoints = await getFreeGuardia(); // WIP
 
 			// Get free appointments from firebase.
 			// let freeAppoints = await findAllFreeAppointments(type);
@@ -127,9 +127,7 @@ const WhenScreen = (props) => {
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
-									remaining={assignation.remaining}
-									doctor={assignation}
-									dni={dni}
+									{...assignation}
 									key={index}
 								/>
 							))}
