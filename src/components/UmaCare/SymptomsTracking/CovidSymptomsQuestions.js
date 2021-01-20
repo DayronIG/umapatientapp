@@ -11,7 +11,6 @@ const CovidSymptomsQuestions = (props) => {
 
     const handleRes = (position, value, val) => {
         let helper = userUmacareStatus ? userUmacareStatus : ''
-        console.log(value, position)
         helper = helper.split('///')
         helper[position] = value
         helper = helper.reduce((prev, actual) => prev ? prev.concat(`///${actual}`) : actual, '')

@@ -84,7 +84,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, user, token])
+	}, [currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
