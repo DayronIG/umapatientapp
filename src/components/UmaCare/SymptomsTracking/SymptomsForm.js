@@ -58,11 +58,12 @@ const SymptomsTracking = ({ sendTracking }) => {
             })
         }
     }, [])
+    
 
     return (
         <>
             {askQuestions ?
-                <CovidSymptomsQuestions setAskQuestions={setAskQuestions} />
+                <CovidSymptomsQuestions questionsHandler={setAskQuestions} />
                 :
                 <>
                     <CovidMainQuestions

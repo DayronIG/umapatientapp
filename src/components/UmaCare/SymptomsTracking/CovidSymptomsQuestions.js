@@ -1,46 +1,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import covidUmacare from '../../../config/covidUmacare.json';
 
-const CovidSymptomsQuestions = ({ setAskQuestions }) => {
+const CovidSymptomsQuestions = (props) => {
     const { userUmacareStatus, umacare } = useSelector(state => state.queries)
     const dispatch = useDispatch()
     const [renderQuestion, setRenderQuestion] = useState(0)
+    const { questionsHandler } = props
 
     const handleRes = (position, value, val) => {
         let helper = userUmacareStatus ? userUmacareStatus : ''
-        if(value === "no") {
-            setRenderQuestion(3)
-            setAskQuestions(false)
-        }
+        console.log(value, position)
         helper = helper.split('///')
         helper[position] = value
         helper = helper.reduce((prev, actual) => prev ? prev.concat(`///${actual}`) : actual, '')
         dispatch({ type: 'SET_UMACARE_STATUS', payload: helper })
-        if (position === 3 ||  position === 2) setAskQuestions(false)
+        if (position === 3 ||  position === 2) {
+            questionsHandler(false)
+        }
+        if(value === "no" || value === "negative") {
+            questionsHandler(false)
+        }
     }
     
     useEffect(() => {
         if(umacare?.mr_diagnostico === "INESP   Contacto estrecho COVID19" 
             || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x epidemiol"
             || umacare?.mr_diagnostico === "INESP   Confirmado COVID19 x hisopado") {
-                setAskQuestions(false)
+                questionsHandler(false)
             }
         if (userUmacareStatus) {
             if (renderQuestion === 0 && userUmacareStatus.split('///')[0] !== '') {
                 if (userUmacareStatus.split('///')[0] === 'yes' || userUmacareStatus.split('///')[0] === 'no') {
                     setRenderQuestion(1)
                 } else {
-                    setAskQuestions(false)
+                    questionsHandler(false)
                 }
             } else if (renderQuestion === 1 && userUmacareStatus.split('///')[1] !== '') {
                 if (userUmacareStatus.split('///')[1] === 'positive') {
-                    setRenderQuestion(2)
-                    setAskQuestions(false)
+                    questionsHandler(false)
                 }
-            } else if (renderQuestion === 2 && userUmacareStatus.split('///')[2] !== '') {
-                setTimeout(() => setAskQuestions(false), 500)
             }
         }
     }, [userUmacareStatus])
@@ -52,12 +52,8 @@ const CovidSymptomsQuestions = ({ setAskQuestions }) => {
             setRenderQuestion(0)
         } else if (userUmacareStatus && userUmacareStatus.split('///')[1] === 'idky') {
             setRenderQuestion(1)
-        } else if (userUmacareStatus && userUmacareStatus.split('///')[1] === 'positive') { //  && daysDiff >= 9
-            setRenderQuestion(2)
-        } else if (userUmacareStatus && userUmacareStatus.split('///')[2] === 'home') {
-            setAskQuestions(false)
         } else {
-            setAskQuestions(false)
+            questionsHandler(false)
         }
     }, [])
     
