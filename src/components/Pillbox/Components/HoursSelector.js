@@ -31,6 +31,7 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
     }
 
     const removeHour = () => {
+        console.log("removing")
         let hours = hoursToSave.slice(0, -1)
         setHoursToSave(hours)
     }
@@ -53,7 +54,7 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
                 value={hour}
                 onChange={e => editHour(e.target.value, indexHour)} 
                 className="time-input form-control"/>
-                <FaTrashAlt className='icon' />
+                <FaTrashAlt className='icon' onClick={()=>removeHour()} />
             </div>)}
         )
         return content
@@ -73,7 +74,7 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
                 <input type="radio" name="" id="" checked={!personalizedShifts} value={!personalizedShifts} onClick={()=>changePersonalized()}/>
                 <p>TODOS LOS DÍAS</p>
             </div>
-            <div className='addHour' onClick={addHour}>+</div>
+            {value && <div className='addHour' onClick={addHour}>+</div>}
         </div>
         {value && renderHours()}
         </>

@@ -27,11 +27,11 @@ export default function PillDetail({handleSaveReminder}) {
                         </div>
                         <div className='inputText__container'>
                             <label>Formato </label>
-                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.format} onChange={(e) => editReminder("format", e.target.value)}/>
                         </div>
                         <div className='inputText__container'>
                             <label>Stock </label>
-                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.stock} onChange={(e) => editReminder("stock", e.target.value)}/>
                         </div>
                         <div className='inputText__container'>
                             <label>Fecha de inicio:</label>
@@ -86,7 +86,7 @@ export default function PillDetail({handleSaveReminder}) {
 
                         <div className='inputText__container'>
                             <label>Observaciones </label>
-                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.medicine} onChange={(e) => editReminder("medicine", e.target.value)}/>
+                            <input className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.obs} onChange={(e) => editReminder("obs", e.target.value)}/>
                         </div>
 
                         <button

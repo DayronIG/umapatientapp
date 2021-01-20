@@ -53,6 +53,38 @@ export default function PillList({editStatus}) {
         return recipeList
     }
 
+    const renderMonth = (month) => {
+        console.log(month)
+        switch(month){
+            case('01'):
+                return 'Enero'
+            case('02'):
+                return 'Febrero'
+            case('03'):
+                return 'Marzo'
+            case('04'):
+                return 'Abril'
+            case('05'):
+                return 'Mayo'
+            case('06'):
+                return 'Junio'
+            case('07'):
+                return 'Julio'
+            case('08'):
+                return 'Agosto'
+            case('09'):
+                return 'Septiembre'
+            case('10'):
+                return 'Octubre'
+            case('11'):
+                return 'Noviembre'
+            case('12'):
+                return 'Diciembre'
+            default:
+                break
+            }
+    }
+
     return (
         <div>
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
@@ -65,7 +97,7 @@ export default function PillList({editStatus}) {
             <p>MADRUGADA</p>
         </div>
             <div className='pillListContainer'>
-                <div className="dateTitle">Hoy, 20 de noviembre</div>
+                <div className="dateTitle">{`Hoy, ${moment().format('DD')} de ${renderMonth(moment().format('MM'))}`}</div>
                 <div className="progressTitle">Progreso diario</div>
                 <div className="progressContainer">
                     <progress className="progressBar" value="40" max="100" />
