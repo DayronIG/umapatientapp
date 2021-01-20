@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Comments from './Comments.js';
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser } from '../../../store/actions/firebaseQueries';
+import { getUser, getOnlineCustom } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import { Loader } from '../../GeneralComponents/Loading';
@@ -73,8 +73,11 @@ const WhenScreen = (props) => {
 
 	async function findFreeAppointments(person, type) {
 		try {
+			let freeAppoints = await getOnlineCustom(); // WIP
+
 			// Get free appointments from firebase.
-			let freeAppoints = await findAllFreeAppointments(type);
+			// let freeAppoints = await findAllFreeAppointments(type);
+			
 			console.log("Freeappoints", freeAppoints)
 			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {

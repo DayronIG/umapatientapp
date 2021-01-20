@@ -21,6 +21,19 @@ export const getOneRecord = (patient) => ({
 	payload: patient,
 });
 
+
+export async function getFreeGuardia() {
+	let docQuery = []
+	await firestore
+		.collection('assignations/guardia/upcoming')
+		.get()
+		.then(snap => {
+			snap.forEach((element) => {
+				docQuery.push(element.data())
+			})
+		})
+	return docQuery
+}
 export function searchActiveProviders(service = 'online', type = '', social_work) {
     let docQuery = firestore
             .collection('providers')
