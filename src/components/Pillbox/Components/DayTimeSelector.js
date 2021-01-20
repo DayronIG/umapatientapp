@@ -27,11 +27,16 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
         }
     },[])
 
-    const addShift = () => {
-        if(shiftsToSave.sun?.length > 0){
-            setShiftsToSave({...shiftsToSave, sun:[...shiftsToSave.sun, "00:00"]})
+    const addShift = (day) => {
+        // if(shiftsToSave.sun?.length > 0){
+        //     setShiftsToSave({...shiftsToSave, sun:[...shiftsToSave.sun, "00:00"]})
+        // } else {
+        //     setShiftsToSave({...shiftsToSave, sun:["00:00"]})
+        // }
+        if(shiftsToSave[day]?.length > 0){
+            setShiftsToSave({...shiftsToSave, [day]:[...shiftsToSave?.[day], "00:00"]})
         } else {
-            setShiftsToSave({...shiftsToSave, sun:["00:00"]})
+            setShiftsToSave({...shiftsToSave, [day]:["00:00"]})
         }
     }
 
@@ -45,327 +50,178 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
         setShiftsToSave(shifts)
     }
 
-
-    const renderContentTwo = () => {
-        const content  = []        
-        const mapHours = (hour, indexHour, day) => {
-                return content.push(
-                    <>
-                    <div className="daytime-selector" key={hour + day}>
-                    {/* <select name="" id="" className="form-control day-input" defaultValue={day} onChange={e => editShift(hour, indexHour, e.target.value)} >
-                        <option value="mon">Lunes</option>
-                        <option value="tue">Martes</option>
-                        <option value="wed">Miércoles</option>
-                        <option value="thu">Jueves</option>
-                        <option value="fri">Viernes</option>
-                        <option value="sat">Sábado</option>
-                        <option value="sun">Domingo</option>
-                    </select> */}
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>LUNES</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>MARTES</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>MIÉRCOLES</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>JUEVES</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>VIERNES</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>SÁBADO</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                <div className="daytime-selector" key={hour + day}>
-                    <div className='checkButton__container'>
-                        <div className='checkText__container'>
-                            <input type="checkbox" name="" id=""/>
-                            <p className='dayLabel'>DOMINGO</p>
-                        </div>
-                        <div className='addHour' onClick={addShift}>+</div>
-                    </div>
-                   <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
-                            options={{
-                                time: true,
-                                timePattern: ['h', 'm']
-                            }}
-                            value={hour}
-                            onChange={e => editShift(e.target.value, indexHour, day)} 
-                            className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(hour, day)}/>
-                   </div>
-                    <hr/>
-                </div>
-                </>
-                )
+    const checkUncheckShift = (day) => {
+        console.log("ASDASD")
+        if(!!shiftsToSave[day]){
+            setShiftsToSave({...shiftsToSave, [day]:null})
+        } else {
+            setShiftsToSave({...shiftsToSave, [day]:['00:00']})
         }
-        for(var day in shiftsToSave){
-            shiftsToSave[day].map((hour, indexHour) => mapHours(hour, indexHour, day))
-        }
-        return content
     }
 
     const renderContent = () => {
-        console.log(shiftsToSave)
         const content  = []        
         content.push(
                     <>
                     <div className="daytime-selector" key={"mon"}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['mon']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['mon']} onClick={()=>checkUncheckShift('mon')}/>
                             <p className='dayLabel'>LUNES</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('mon')}>+</div>
                     </div>
-                   {shiftsToSave['mon'] && <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                   {shiftsToSave['mon'] && 
+                   shiftsToSave['mon'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['mon'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'mon')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'mon')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['mon'].hour, 'mon')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'mon')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'tue'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['tue']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['tue']} onClick={()=>checkUncheckShift('tue')}/>
                             <p className='dayLabel'>MARTES</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('tue')}>+</div>
                     </div>
-                    {shiftsToSave['tue'] &&  <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['tue'] && 
+                   shiftsToSave['tue'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['tue'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'tue')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'tue')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['tue'][0], 'tue')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'tue')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'wed'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['wed']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['wed']} onClick={()=>checkUncheckShift('wed')}/>
                             <p className='dayLabel'>MIÉRCOLES</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('wed')}>+</div>
                     </div>
-                    {shiftsToSave['wed'] && <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['wed'] && 
+                   shiftsToSave['wed'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['wed'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'wed')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'wed')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['wed'][0], 'wed')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'wed')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'thu'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['thu']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['thu']} onClick={()=>checkUncheckShift('thu')}/>
                             <p className='dayLabel'>JUEVES</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('thu')}>+</div>
                     </div>
-                    {shiftsToSave['thu'] &&  <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['thu'] && 
+                   shiftsToSave['thu'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['thu'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'thu')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'thu')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['thu'][0], 'thu')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'thu')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'fri'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['fri']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['fri']} onClick={()=>checkUncheckShift('fri')}/>
                             <p className='dayLabel'>VIERNES</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('fri')}>+</div>
                     </div>
-                    {shiftsToSave['fri'] && <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['fri'] && 
+                   shiftsToSave['fri'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['fri'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'fri')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'fri')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['fri'][0], 'fri')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'fri')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'sat'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sat']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sat']} onClick={()=>checkUncheckShift('sat')}/>
                             <p className='dayLabel'>SÁBADO</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('sat')}>+</div>
                     </div>
-                    {shiftsToSave['sat'] && <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['sat'] && 
+                   shiftsToSave['sat'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['sat'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'sat')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'sat')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['sat'][0], 'sat')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'sat')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 <div className="daytime-selector" key={'sun'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sun']}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sun']} onClick={()=>checkUncheckShift('sun')}/>
                             <p className='dayLabel'>DOMINGO</p>
                         </div>
-                        <div className='addHour' onClick={addShift}>+</div>
+                        <div className='addHour' onClick={()=>addShift('sun')}>+</div>
                     </div>
-                    {shiftsToSave['sun'] && <div className='checkHours__container'>
-                        <Cleave placeholder="Horario"
+                    {shiftsToSave['sun'] && 
+                   shiftsToSave['sun'].map((hour, indexHour) =>
+                    <div className='checkHours__container'>
+                        <Cleave placeholder="-"
                             options={{
                                 time: true,
                                 timePattern: ['h', 'm']
                             }}
-                            value={shiftsToSave['sun'][0]}
-                            onChange={e => editShift(e.target.value, 0, 'sun')} 
+                            value={hour}
+                            onChange={e => editShift(e.target.value, indexHour, 'sun')} 
                             className="time-input form-control"/>
-                        <FaTrashAlt className="" onClick={() => removeShift(shiftsToSave['sun'][0], 'sun')}/>
-                   </div>}
+                        <FaTrashAlt className="" onClick={() => removeShift(hour, 'sun')}/>
+                   </div>)}
                     <hr/>
                 </div>
                 </>
