@@ -227,16 +227,21 @@ const Advice = ({setAdvice}) => {
     }
 
     return <div className="addEmail__container">
-        {loading && <Loader />}
+        
         <div className="addEmail__title">¡Tenemos novedades!</div>
         <div className="addEmail__text">
             A partir de febrero vas a tener una <b>nueva forma de ingresar</b> a ÜMA. <br />
             Solo tienes que <b>vincular tu cuenta</b> con el email que usarás para ingresar.
         </div>
         <div className="addEmail__action">
-            <GoogleButton buttonText="Vincular con Google" action={() => linkAccount("google")}></GoogleButton>
-            <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
-            <EmailButton buttonText="Vincular con otro email" action={() => setAdvice(false)}></EmailButton>
+            {loading ? 
+            <Loader />
+            :
+            <>
+                <GoogleButton buttonText="Vincular con Google" action={() => linkAccount("google")}></GoogleButton>
+                <MicrosoftButton buttonText="Vincular con Microsoft" action={() => linkAccount("microsoft")}></MicrosoftButton>
+                <EmailButton buttonText="Vincular con otro email" action={() => setAdvice(false)}></EmailButton>
+            </>}
             <span className="addEmail__actionSkip" onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>Ahora no</span>
         </div>
     </div>

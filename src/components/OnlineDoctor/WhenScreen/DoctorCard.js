@@ -34,6 +34,7 @@ const DoctorCard = (props) => {
 	}
 
 	function selectDoctor(selected) {
+		console.log(selected)
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
 		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
@@ -42,7 +43,7 @@ const DoctorCard = (props) => {
 	return (
 		<>
 			<div className='doctorCard-container disable-selection'>
-				<div className='doctorCard-firstRow' onClick={() => selectDoctor(props.doctor)}>
+				<div className='doctorCard-firstRow' onClick={() => selectDoctor(props)}>
 					<div className='doctorCard-photoContainer'>
 						<img src={props.doc.path_profile_pic} alt='Doctor' className='doctorImage' />
 					</div>
