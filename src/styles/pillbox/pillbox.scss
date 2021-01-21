@@ -183,6 +183,21 @@
             }
         }
         .inputText__container{
+            .stockButton__container{
+                position: absolute;
+                right: 12vw;
+                top: 55vh;
+                .stockButton{
+                width: 25vw;
+                height: 5vh;
+                background-color: $uma-primary;
+                color: $white-color;
+                font-weight: 800;
+                font-size: 16px;
+                line-height: 22px;
+                border-radius: 15px;
+                border: none
+            }}
             label {
                 color: $uma-text-secondary;
                 font-weight: 600;
@@ -203,55 +218,6 @@
                 background: none;
             }
         }
-        .inputDate__container{
-            margin: 2vh;
-            display: flex;
-            justify-content: space-around;
-            label{
-                width: 30vw;
-            }
-            input{
-                width: 25vw;
-            }
-        }
-        .inputTime__container{
-            margin: 2vh;
-            display: flex;
-            justify-content: space-evenly;
-            label{
-                width: 30vw;
-            }
-            input{
-                width: 30vw;
-            }
-        }
-        .inputNumber__container{
-            margin: 2vh;
-            display: flex;
-            justify-content: space-evenly;
-            label{
-                width: 30vw;
-            }
-            input{
-                width: 30vw;
-            }
-        }
-        .inputFreq__container{
-            margin: 2vh;
-            display: flex;
-            justify-content: space-evenly;
-            label{
-                width: 30vw;
-            }
-            select{
-                width: 30vw;
-            }
-        }
-        .minus-icon{
-            color: red;
-            font-size: 1.3rem;
-            margin-left: 3vw;
-        }
         .save__button{
             margin-top: 3vh;
             background-color: $uma-primary;
@@ -267,6 +233,21 @@
                 display: flex;
                 flex-direction: column;
             }
+        }
+    }
+
+    .modalContent__container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .icon{
+            font-size: 3rem;
+            margin-bottom: 2vh;
+        }
+        p{
+            text-align: center;
+            padding: 2vw;
         }
     }
 
@@ -341,19 +322,15 @@
                 color: rgba(104, 100, 100, 0.6);
                 margin-top: 1vh;
             }
+            .observations{
+                border: none;
+                border-bottom: 1px solid rgba(182, 182, 182, 0.3);
+                box-shadow: none;
+                box-sizing: border-box;
+                border-radius: 0px;
+            }
             ::placeholder{
                 color: rgba(104, 100, 100, 0.6);
-            }
-        }
-        .inputDate__container{
-            margin: 2vh;
-            display: flex;
-            justify-content: space-around;
-            label{
-                width: 30vw;
-            }
-            input{
-                width: 25vw;
             }
         }
         .add-pill-shift-icon{

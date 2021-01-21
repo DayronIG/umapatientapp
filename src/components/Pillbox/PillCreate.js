@@ -47,40 +47,31 @@ export default function PillCreate({handleSaveReminder}) {
             <input className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
-            <label>Cantidad</label>
-            <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <label>Dosis</label>
+            <input className="form-control" placeholder='2 por día' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
-        {/* <div className='inputText__container'>
-            <label>Frecuencia:</label>
-            <select className="form-control" onChange={(e) => e.target.value === "personalized"? dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:true}): dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:false})}>
-                <option value="every_day">Todos los dias</option>
-                <option value="personalized">Horarios personalizados</option>
-            </select>
-        </div> */}
 
         <div className='inputText__container'>
             <label>Configure los días y horarios en los que debe tomar su medicación</label>
         </div>
 
-        {/* {!personalizedShifts && */}
         <div>
             <HoursSelector value={!personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <hr className='separator'/>
 
-        {/* {personalizedShifts && */}
         <div>
             <DayTimeSelector value={personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <div className='inputText__container'>
             <label>Stock</label>
-            <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <input placeholder='Cantidad en stock' className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Observaciones</label>
-            <input className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <textarea className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
         <button
             className='save__button btn-blue-lg btn'
