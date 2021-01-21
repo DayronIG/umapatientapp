@@ -212,7 +212,7 @@ const PaymentCardMP = () => {
             if(paymentMethodId.value === "unknown"){ 
               swal("Verifique el número de tarjeta ingresado", "" ,"warning")
             } else {
-              swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
+              swal("No se ha podido procesar el pago.", "Intente nuevamente. Asegúrese que los datos ingresados correspondan a una TARJETA DE CRÉDITO. Si el error persiste comuniquese a info@uma-health.com" ,"error")
             }
             window.Mercadopago.clearSession();
           })
