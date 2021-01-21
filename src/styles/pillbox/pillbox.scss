@@ -316,6 +316,14 @@
             }
         }
         .inputText__container{
+            .uploadIcon{
+                color: rgba(104, 100, 100, 0.6);
+                position:relative;
+                top:6vh;
+                left:75vw;
+                width:24px;
+                height:24px;
+            }
             label {
                 color: $uma-text-secondary;
                 font-weight: 600;

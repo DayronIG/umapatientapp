@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineUpload } from 'react-icons/ai'
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import { IconContext } from "react-icons";
@@ -8,6 +8,11 @@ import { IconContext } from "react-icons";
 export default function PillCreate({handleSaveReminder}) {
     const { personalizedShifts, newReminder } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
+    const fileRef = useRef()
+
+    const uploadFile = () => {
+        fileRef.current.click()
+    }
 
     return (
         <div className='createContent__container'>
@@ -16,9 +21,11 @@ export default function PillCreate({handleSaveReminder}) {
                 <AiOutlineClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
-        <div className='inputText__container'>
+        <div className='inputText__container' onClick={() => uploadFile()}>
+            <input ref={fileRef} type="file" name="" id="" style={{display: 'none'}}/>
             <label>Suba una foto de su medicamento (opcional) </label>
-            <input placeholder='Seleccione un archivo' className="form-control" type="text" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, medicine: e.target.value}})}/>
+            <AiOutlineUpload className='uploadIcon'/>
+            <input readOnly placeholder='Seleccione un archivo' className="form-control" type="text" name="" id=""/>
         </div>
         <div className='inputText__container'>
             <label>Medicamento </label>
