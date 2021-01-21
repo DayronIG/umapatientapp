@@ -119,7 +119,9 @@ export default function PillList({editStatus}) {
                         </div>}
                 </div>
             </div>
-            <div className="pillbox__addContainer" onClick={() => dispatch({type: "SET_RENDER_STATE", payload:"CREATE"})}>
+            <div className="pillbox__addContainer" onClick={() =>{ 
+                dispatch({type: "SET_IS_EDITION", payload: false})
+                dispatch({type: "SET_RENDER_STATE", payload:"CREATE"})}}>
                 <label className="pillbox__btnContainer">
                     <button className="pillbox__addBtn"><p>+</p></button>
                 </label>

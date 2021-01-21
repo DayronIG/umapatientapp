@@ -1,4 +1,5 @@
 const initialState = {
+	isEdition: false,
 	newReminder: {
 		uid: '',
 		dose: 0,
@@ -40,6 +41,8 @@ export default (state = initialState, { type, payload }) => {
 			return {...state, reminderToEdit: payload}
 		case "SET_REMINDER_TO_EDIT_INDEX":
 			return {...state, reminderToEditIndex: payload}
+		case "SET_IS_EDITION":
+			return {...state, isEdition: payload}
 		case "SET_SHIFTS_TO_POST":
 			return {...state, shiftsToPost: {...state.shiftsToPost, ...payload}}
 		default:

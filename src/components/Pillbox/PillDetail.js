@@ -115,6 +115,7 @@ export default function PillDetail({handleSaveReminder}) {
                             className='save__button btn-blue-lg btn'
                             onClick={() => {
                                 dispatch({type: "SET_NEW_REMINDER", payload: reminderToEdit})
+                                dispatch({type: "SET_IS_EDITION", payload: true})
                                 dispatch({type: "SET_RENDER_STATE", payload:"CREATE"})
                                 }}>
                             Editar

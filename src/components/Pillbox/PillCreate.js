@@ -6,7 +6,7 @@ import HoursSelector from "./Components/HoursSelector"
 import { IconContext } from "react-icons";
 
 export default function PillCreate({handleSaveReminder}) {
-    const { personalizedShifts, newReminder } = useSelector(state => state.pillbox)
+    const { personalizedShifts, newReminder, isEdition } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
     const fileRef = useRef()
 
@@ -17,7 +17,7 @@ export default function PillCreate({handleSaveReminder}) {
     return (
         <div className='createContent__container'>
             <div className='pillCreate__header'>
-                <p className='content'>Nuevo recordatorio</p>
+                <p className='content'>{isEdition ? 'Editar':'Nuevo'} recordatorio</p>
                 <AiOutlineClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
@@ -29,26 +29,26 @@ export default function PillCreate({handleSaveReminder}) {
         </div>
         <div className='inputText__container'>
             <label>Medicamento </label>
-            <input placeholder='Nombre (Ej: Ibuprofeno 600)' className="form-control" type="text" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, medicine: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.medicine:''} placeholder='Nombre (Ej: Ibuprofeno 600)' className="form-control" type="text" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, medicine: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Formato </label>
-            <select placeholder='Selecciona una opción' className="form-control" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, format: e.target.value}})}>
+            <select defaultValue={isEdition ? newReminder.format:''} placeholder='Selecciona una opción' className="form-control" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, format: e.target.value}})}>
                 <option>Comprimido</option>
                 <option>Pastilla</option>
             </select>
         </div>
         <div className='inputText__container'>
             <label>Fecha de inicio</label>
-            <input className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.initial_date:''} className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Fecha de fin (opcional)</label>
-            <input className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.end_date:''} className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Dosis</label>
-            <input className="form-control" placeholder='2 por día' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.dose:''} className="form-control" placeholder='2 por día' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
 
         <div className='inputText__container'>
@@ -67,17 +67,17 @@ export default function PillCreate({handleSaveReminder}) {
 
         <div className='inputText__container'>
             <label>Stock</label>
-            <input placeholder='Cantidad en stock' className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.stock:''} placeholder='Cantidad en stock' className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Observaciones</label>
-            <textarea className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <textarea defaultValue={isEdition ? newReminder.obs:''} className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
         <button
             className='save__button btn-blue-lg btn'
             onClick={() => handleSaveReminder(false)}
             >
-            Crear recordatorio
+            {isEdition?'Guardar':'Crear'} recordatorio
         </button>
     </div>
     </div>
