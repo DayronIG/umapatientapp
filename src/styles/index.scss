@@ -266,6 +266,10 @@
 			margin-bottom: 15px;
 			justify-content: flex-start;
 		}
+		&:hover {
+			background: $primary-color !important;
+		}
+
 	}
 	.btn-blue-lg {
 		width: 90% !important;

@@ -7,13 +7,11 @@ import PrivateRoute from './PrivateRoute';
 import Welcome from './views/Welcome';
 import Reset from './views/Reset';
 import Feedback from './views/Feedback';
-import ResetPassword from './components/User/ResetPassword';
 import Login from './components/User/Login';
 import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
-import ReferredRegister from './views/ReferredRegister';
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -49,7 +47,6 @@ import Autonomous from './components/Autonomous/';
 import Laboratorio from './components/Laboratorio';
 /* Wellness */
 import Wellness from './views/Wellness';
-import Chat from './views/Chat';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
 /* SymptomsTracking */

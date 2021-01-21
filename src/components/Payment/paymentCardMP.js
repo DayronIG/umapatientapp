@@ -35,7 +35,7 @@ const PaymentCardMP = () => {
     const discountParam = useSelector(state => state.deliveryService.params.discount)
     // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
     // const MERCADOPAGO_PUBLIC_KEY_MARCODINA = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
-  const MERCADOPAGO_PUBLIC_KEY = isLocal ? 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231' : "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
+    const MERCADOPAGO_PUBLIC_KEY = isLocal ? 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231' : "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
@@ -212,7 +212,7 @@ const PaymentCardMP = () => {
             if(paymentMethodId.value === "unknown"){ 
               swal("Verifique el número de tarjeta ingresado", "" ,"warning")
             } else {
-              swal("No se ha podido procesar el pago.", "Intente nuevamente. Si el error persiste comuniquese a info@uma-health.com" ,"error")
+              swal("No se ha podido procesar el pago.", "Intente nuevamente. Asegúrese que los datos ingresados correspondan a una TARJETA DE CRÉDITO. Si el error persiste comuniquese a info@uma-health.com" ,"error")
             }
             window.Mercadopago.clearSession();
           })

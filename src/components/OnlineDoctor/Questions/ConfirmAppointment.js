@@ -24,8 +24,13 @@ const ConfirmAppointment = (props) => {
 	const biomarkers = useSelector(state => state.biomarkers)
 
 	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem('selectedAppointment'));
-		setSelectedAppointment(data);
+		if(localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
+			const data = JSON.parse(localStorage.getItem('selectedAppointment'));
+			delete data.history
+			delete data.location
+			delete data.match
+			setSelectedAppointment(data);
+		}
 	}, []);
 
 	const uploadImage = e => {
@@ -132,9 +137,9 @@ const ConfirmAppointment = (props) => {
 					<h5>Información del turno</h5>
 					<div>
 						<div className="appointment__doctorIcon">
-							<img src={selectedAppointment.path_profile_pic} alt="Doctor" />
+							<img src={selectedAppointment.doc?.path_profile_pic} alt="Doctor" />
 						</div>
-						<div className="appointment__detail">Doctor: <b>{selectedAppointment.fullname}</b></div>
+						<div className="appointment__detail">Doctor: <b>{selectedAppointment.doc?.fullname}</b></div>
 						<div className="appointment__detail">Hora: <b>{selectedAppointment.time}</b></div>
 						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
 					</div>
