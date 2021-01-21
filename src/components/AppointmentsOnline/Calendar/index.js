@@ -52,7 +52,7 @@ const MyCalendar = () => {
 	const findFreeAppointments = async () => {
 		if (!(patient && Object.keys(patient).length > 0)) return;
 		setTimeout(() => setLoading(false), 10000);
-		const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
+		await getDocumentFB('/parametros/userapp/variables/specialist');
 		try {
 			let specialty = '', queryCondition = '';
 			if (condition.match(regexWord)) {
