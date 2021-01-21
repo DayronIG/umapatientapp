@@ -75,7 +75,7 @@ export default function PillCreate({handleSaveReminder}) {
         </div>
         <button
             className='save__button btn-blue-lg btn'
-            onClick={() => handleSaveReminder(false)}
+            onClick={isEdition? () => handleSaveReminder(true): () => handleSaveReminder(false)}
             >
             {isEdition?'Guardar':'Crear'} recordatorio
         </button>

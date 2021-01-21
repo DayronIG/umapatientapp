@@ -76,7 +76,6 @@ const Pillbox = props => {
     useEffect(() => {
         if(!(!!newReminder.medicine)){setIsValid("Medicina")}
         else if(!(!!newReminder.initial_date)){setIsValid("Fecha inicial")}
-        else if(!(!!newReminder.quantity_days)){setIsValid("Días")}
         else if(!(!!newReminder.dose)){setIsValid("Cantidad")}
         else { setIsValid("") }
     }, [newReminder])
@@ -90,15 +89,13 @@ const Pillbox = props => {
                 dispatch({type: "SET_RECIPES_REMINDERS", payload: updatedRecipes})
             } else {
                 postReminder()
-                // let updatedRecipes = [...recipes, newReminder] 
-                // setRecipes(updatedRecipes)
-                // dispatch({type: "SET_RECIPES_REMINDERS", payload: updatedRecipes})
                 recipes.push(newReminder)
             }
             dispatch({type: "SET_REMINDER_TO_EDIT", payload: {}})
             // setReminderToEdit({})
             deleteReminderFront(reminderToEdit)
             dispatch({type: "SET_NEW_REMINDER", payload: {}})
+            dispatch({type: "SET_RENDER_STATE", payload: 'LIST'})
         } else {
             swal("Error",`Debe completar ${isValid}`, 'warning')
         }
