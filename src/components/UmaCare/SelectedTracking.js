@@ -33,7 +33,7 @@ const SelectedTracking = ({setTextDetail}) => {
             }
         })
         current = ++current
-        if(current === -1) {
+        if(current === -1 || umacare.activeTracking.length === 0) {
             setPercent(100);
             setSteperTitle("Umacare ya ha finalizado")
         } else {

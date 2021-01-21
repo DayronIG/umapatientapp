@@ -59,10 +59,8 @@ const WhenScreen = (props) => {
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				console.log("Assigned check", assigned)
 				return props.history.replace(`/${person.dni}/onlinedoctor/queue`);
 			} else {
-				console.log("No assigned")
 				return findFreeAppointments(person, type);
 			}
 		} catch (error) {
@@ -74,11 +72,8 @@ const WhenScreen = (props) => {
 	async function findFreeAppointments(person, type) {
 		try {
 			let freeAppoints = await getFreeGuardia(); // WIP
-
 			// Get free appointments from firebase.
 			// let freeAppoints = await findAllFreeAppointments(type);
-			
-			console.log("Freeappoints", freeAppoints)
 			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);

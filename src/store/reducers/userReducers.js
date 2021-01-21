@@ -1,23 +1,22 @@
 const initialState = {
-  core_id: "",
-  country: null,
-  email: "",
-  dni: "",
-  sex: "",
-  dob: "",
   address: "",
   city: "",
-  piso: "",
-  depto: "",
-  ws: "",
+  core_id: "",
+  country: 'AR',
   day: "",
-  month: "",
-  year: "",
+  depto: "",
+  dni: "",
+  dob: "",
   dt: "",
-  os: "",
-  phone:"",
-  osNumber: 0,
+  email: "",
   fullname: "",
+  piso: "",
+  lat: "",
+  lon: "",
+  month: "",
+  os: "",
+  osNumber: 0,
+  phone:"",
   userToFill: {
     dt_start: "",
     fullname: "",
@@ -26,7 +25,10 @@ const initialState = {
     dob: "",
     sex: "",
     corporate: ""
-  }
+  },
+  sex: "",
+  year: "",
+  ws: "",
 };
 
 export default function userReducers(state = initialState, action) {
@@ -73,6 +75,8 @@ export default function userReducers(state = initialState, action) {
       return { ...state, fullname: action.payload };
     case "USER_PHONE_NUMBER":
         return { ...state, phone: action.payload };
+    case "SET_COORDS":
+      return { ...state, lat: action.payload.lat, lon: action.payload.lon };
     case "FILL_REGISTER":
       if (action.payload) {
         return { ...state, userToFill: action.payload };
