@@ -26,9 +26,9 @@ const ConfirmAppointment = (props) => {
 	useEffect(() => {
 		if(localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
 			const data = JSON.parse(localStorage.getItem('selectedAppointment'));
-			delete data['history']
-			delete data['location']
-			delete data['match']
+			delete data.history
+			delete data.location
+			delete data.match
 			setSelectedAppointment(data);
 		}
 	}, []);

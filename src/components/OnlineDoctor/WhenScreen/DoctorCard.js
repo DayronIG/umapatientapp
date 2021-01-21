@@ -76,7 +76,11 @@ const DoctorCard = (props) => {
 						<div className='timeRemainingBefore'>
 							Disponible en
 							<br />
+							{moment(`${props.date} ${props.time}:00`).diff(moment(), "minutes") > 0 ?
 							<span className='ml-1'>{moment(`${props.date} ${props.time}:00`).diff(moment(), "minutes")} minutos</span>
+							:
+							<span className='ml-1'>Ahora</span>
+							}
 						</div>
 					</div>
 				</div>
