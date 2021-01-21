@@ -15,7 +15,7 @@ const BuyHisopado = () => {
 
     useEffect(() => {
         deliveryInfo.map(el => {
-        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED"){
+        if( el.status === "PREASSIGN" || el.status === "IN_PROCESS" || el.status === "ASSIGN:DELIVERY" || el.status === "ASSIGN:ARRIVED" || el.status === "DONE:RESULT"){
             setDeliveryStatus("TRACKING")
         } else if (el.status === "DONE:RESULT" && el.eval.uma_eval === 0){
             setDeliveryStatus("RESULT")
