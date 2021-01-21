@@ -22,16 +22,27 @@ export const getOneRecord = (patient) => ({
 });
 
 
-export async function getFreeGuardia() {
+export async function getFreeGuardia(test = false) {
 	let docQuery = []
-	await firestore
-		.collection('assignations/guardia/upcoming')
-		.get()
-		.then(snap => {
-			snap.forEach((element) => {
-				docQuery.push(element.data())
+	if(test === "test") {
+		await firestore
+			.collection('assignations/guardia/test')
+			.get()
+			.then(snap => {
+				snap.forEach((element) => {
+					docQuery.push(element.data())
+				})
 			})
-		})
+	} else {
+		await firestore
+			.collection('assignations/guardia/upcoming')
+			.get()
+			.then(snap => {
+				snap.forEach((element) => {
+					docQuery.push(element.data())
+				})
+			})
+	}
 	return docQuery
 }
 export function searchActiveProviders(service = 'online', type = '', social_work) {

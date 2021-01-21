@@ -71,7 +71,12 @@ const WhenScreen = (props) => {
 
 	async function findFreeAppointments(person, type) {
 		try {
-			let freeAppoints = await getFreeGuardia(); // WIP
+			let freeAppoints =  []
+			if(user.context === "temp") {
+				freeAppoints = await getFreeGuardia("test"); // WIP
+			} else {
+				freeAppoints = await getFreeGuardia(); // WIP
+			}
 			// Get free appointments from firebase.
 			// let freeAppoints = await findAllFreeAppointments(type);
 			// Filter doctors by cuil
