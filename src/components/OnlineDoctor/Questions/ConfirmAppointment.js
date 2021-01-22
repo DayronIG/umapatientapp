@@ -109,10 +109,10 @@ const ConfirmAppointment = (props) => {
 		}
 	};
 
-	const submitRequest = async () => {
+	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
-		const lastAssingState = await getDocumentFB(`assignations/${appointId}`);
+		const lastAssingState = await getDocumentFB(`${selectedAppointment}`);
 		if (appointId === '' || lastAssingState.state === 'FREE') {
 			return postData();
 		} else {
@@ -128,7 +128,7 @@ const ConfirmAppointment = (props) => {
 			}
 			return history.replace('/');
 		}
-	};
+	}, [selectedAppointment])
 
 	return (
 		<>
