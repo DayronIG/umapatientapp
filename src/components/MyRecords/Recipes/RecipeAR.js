@@ -13,9 +13,9 @@ class RecipePDF extends React.Component {
 		} = this.props;
 		for (let i = 0; i <= recipe.length; i++) {
 			const cvRecipe = document.getElementById(`barcodeRecipe_${i}`),
-			cvRecipe_rep = document.getElementById(`barcodeRecipe_rep_${i}`),
-			cvAff = document.getElementById(`barcodeAffiliate_${i}`),
-			cvAff_rep = document.getElementById(`barcodeAffiliate_rep_${i}`);
+				cvRecipe_rep = document.getElementById(`barcodeRecipe_rep_${i}`),
+				cvAff = document.getElementById(`barcodeAffiliate_${i}`),
+				cvAff_rep = document.getElementById(`barcodeAffiliate_rep_${i}`);
 			if (!!prescriptionNumber) {
 				cvRecipe &&
 					JsBarcode(cvRecipe, prescriptionNumber, {
@@ -114,17 +114,17 @@ class RecipePDF extends React.Component {
 									<div className='recipeToPrint__container'>
 										<ul className='recipeToPrint__container--list'>
 											<li>Nombre completo: {patient.fullname}</li>
-											{mr.diagnostico && 
+											{mr.diagnostico &&
 												<li>Diagnóstico: {mr.diagnostico}</li>
 											}
 											<li>Fecha de prescripción: {prescriptionDate}</li>
-											{patient.obra_social && 
+											{patient.obra_social &&
 												<li>Obra Social: {patient.obra_social}</li>
 											}
-											{patient.n_afiliado && 
+											{patient.n_afiliado &&
 												<li>Número de afiliado: {patient.n_afiliado}</li>
 											}
-											{patient.dni && 
+											{patient.dni &&
 												<li>Dni del paciente: {patient.dni}</li>
 											}
 										</ul>
@@ -172,8 +172,8 @@ class RecipePDF extends React.Component {
 													</div>
 												</div>
 											) : (
-												<canvas id='barcodeAffiliate' style={{ display: 'none' }} />
-											)}
+													<canvas id='barcodeAffiliate' style={{ display: 'none' }} />
+												)}
 										</div>
 										<h6 className='recipeToPrint__bottomContainer--doctorData'>
 											{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
@@ -216,17 +216,17 @@ class RecipePDF extends React.Component {
 										</div>
 										<div className='recipeToPrint__container'>
 											<ul className='recipeToPrint__container--list'>
-												{patient && 
+												{patient &&
 													<li>Nombre completo: {patient.fullname}</li>
 												}
-												{mr.diagnostico && 
+												{mr.diagnostico &&
 													<li>Diagnóstico: {mr.diagnostico}</li>
 												}
 												<li>Fecha de prescripción: {prescriptionDate}</li>
-												{patient.obra_social && 
+												{patient.obra_social &&
 													<li>Obra Social: {patient.obra_social}</li>
 												}
-												{patient.n_afiliado && 
+												{patient.n_afiliado &&
 													<li>Número de afiliado: {patient.n_afiliado}</li>
 												}
 												{patient.dni && <li>Dni del paciente: {patient.dni}</li>}
@@ -281,14 +281,14 @@ class RecipePDF extends React.Component {
 														</div>
 													</div>
 												) : (
-													<canvas id='barcodeAffiliate_rep' style={{ display: 'none' }} />
-												)}
+														<canvas id='barcodeAffiliate_rep' style={{ display: 'none' }} />
+													)}
 											</div>
 											<h6 className='recipeToPrint__bottomContainer--doctorData'>
 												{!!doctorInfo && <span>Médico: {doctorInfo.fullname}</span>}
 											</h6>
 											<h6 className='recipeToPrint__bottomContainer--doctorData'>
-												{!!doctorInfo && 
+												{!!doctorInfo &&
 													<span>Matrícula número: {doctorInfo.matricula}</span>
 												}
 											</h6>
@@ -321,283 +321,228 @@ class RecipePDF extends React.Component {
 }
 class RecipePDFUP extends React.Component {
 	componentDidMount() {
-		const canvasAffiliate = document.getElementById('barcodeAffiliateUP');
-		const canvasAffiliate_rep = document.getElementById('barcodeAffiliateUP_rep');
-		if (!!this.props.prescriptionNumber) {
-			canvasAffiliate &&
-				JsBarcode(canvasAffiliate, this.props.prescriptionNumber, {
-					format: 'CODE128',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
-			canvasAffiliate_rep &&
-				JsBarcode(canvasAffiliate_rep, this.props.prescriptionNumber, {
-					format: 'CODE128',
-					width: 3,
-					height: 50,
-					fontSize: 20,
-					flat: true,
-				});
+		for (let i = 0; i < this.props.recipe.length; i++) {
+			const canvasAffiliate = document.getElementById(`barcodeAffiliateUP_${i}`)
+			const canvasAffiliate_rep = document.getElementById(`barcodeAffiliateUP_rep_${i}`)
+			if (!!this.props.prescriptionNumber) {
+				canvasAffiliate && JsBarcode(canvasAffiliate, this.props.prescriptionNumber, {
+					format: 'CODE128', width: 3, height: 50, fontSize: 20, flat: true
+				})
+				canvasAffiliate_rep && JsBarcode(canvasAffiliate_rep, this.props.prescriptionNumber, {
+					format: 'CODE128', width: 3, height: 50, fontSize: 20, flat: true
+				})
+			}
 		}
 	}
 	render() {
-		const { prescriptionNumber, prescriptionDate, patient, recipe, doctorInfo, mr } = this.props;
-		const replicate = recipe.some((med) => parseInt(med.duplicado) === 1);
-		let nAff = patient.n_afiliado;
+		const { prescriptionNumber, prescriptionDate, patient, recipe, doctorInfo, mr } = this.props
+		const replicate = recipe.some(med => parseInt(med.duplicado) === 1)
+		let nAff = patient.n_afiliado
+		let printTimes = 0, printArr = [];
+		let helper = recipe.length;
 		if (!!nAff && nAff.length === 10) {
-			nAff = `${nAff}0`;
+			nAff = `${nAff}0`
 		} else if (!!nAff && nAff.length < 10) {
 			while (nAff.length < 10) {
-				nAff = `0${nAff}`;
+				nAff = `0${nAff}`
 			}
-			nAff = `${nAff}0`;
+			nAff = `${nAff}0`
 		}
-		return (
-			<div>
-				<div className='recipeToPrintUp'>
-					<div className='recipeToPrintUp__container'>
-						<div className='recipeToPrintUp__container--title'>
-							<img src={UMA} alt="uma" />
-						</div>
-						<div className='recipeToPrintUp__container--recipeData'>
-							{prescriptionNumber && (
-								<div className='barcodeContainer'>
-									<canvas id='barcodeAffiliateUP'></canvas>
-								</div>
-							)}
-							<div className='mt-4'>{prescriptionNumber && <span>Nro. Receta:{prescriptionNumber}</span>}</div>
-						</div>
-					</div>
-					<div className='recipeToPrintUp__container'>
-						<div className='recipeToPrintUp__container--recipeResume'>
-							{!!patient.fullname && (
-								<p>
-									<span>Paciente: </span>
-									<b>{patient.fullname}</b>
-								</p>
-							)}
-							{!!patient.dni && (
-								<p>
-									<span>DNI: </span>
-									<b>{patient.dni}</b>
-								</p>
-							)}
-							{!!patient.obra_social && (
-								<p>
-									<span>Convenio: </span>
-									<b>{patient.obra_social}</b>
-								</p>
-							)}
-							{!!nAff && (
-								<p>
-									<span>Nro. Afiliado: </span>
-									<b>{nAff}</b>
-								</p>
-							)}
-						</div>
-						<div className='recipeToPrintUp__container--recipeResume'>
-							{!!patient.dob && (
-								<p>
-									<span>Fecha Nac.: </span>
-									<b>{patient.dob}</b>
-								</p>
-							)}
-						</div>
-					</div>
-					<div className='recipeToPrintUp__container'>
-						<div className='recipeToPrintUp__container--recipeData'>
-							<h1>
-								<b>Rp/</b>
-							</h1>
-							{recipe.map((medicine, index) => (
-								<p className='pl-4' key={index}>
-									<span>
-										{medicine.productName} - {medicine.drugName} - {medicine.presentationName}
-									</span>{' '}
-									<br />
-									<span> Cantidad del envase:{medicine.cantidad}</span> <br />
-								</p>
-							))}
-							{recipe?.[0] && recipe[0].indicaciones && (
-								<>
-									<h1 className='mt-5'>
-										<b>INDICACIONES</b>
-									</h1>
-									{recipe.map((medicine, index) => (
-										<p className='pl-4' key={index}>
-											<span>{medicine.indicaciones}</span>
-										</p>
-									))}
-								</>
-							)}
-						</div>
-					</div>
-					<div className='recipeToPrintUp__container'>
-						<div className='recipeToPrintUp__containerBottom'>
-							<div className='recipeToPrintUp__containerBottom--doctorData'>
-								{mr.diagnostico && <li>Diagnóstico: {mr.diagnostico}</li>}
-								<p>
-									<span>
-										Fecha: <b>{prescriptionDate}</b>
-									</span>
-								</p>
-							</div>
-							<div className='recipeToPrintUp__containerBottom--doctorData'>
-								{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='firma del doctor' />}
-								{!!doctorInfo.fullname && (
-									<p>
-										<span>
-											Médico: <b>{doctorInfo.fullname}</b>{' '}
-										</span>
-									</p>
-								)}
-								{!!doctorInfo.matricula && (
-									<p>
-										<span>
-											Matrícula número: <b>{doctorInfo.matricula}</b>
-										</span>{' '}
-									</p>
-								)}
-							</div>
-						</div>
-						<div className='recipeToPrintUp__containerBottom'>
-							<span>info@uma-health.com</span>
-						</div>
-					</div>
-				</div>
-				{replicate && (
-					<div className='recipeToPrintUp'>
-						<div className='recipeToPrintUp__container '>
-							<h4 className='font-weight-bold text-uppercase'>Duplicado</h4>
-						</div>
-						<div className='recipeToPrintUp__container'>
-							<div className='recipeToPrintUp__container--title'>
-								<img src={UMA} alt={"uma"} />
-							</div>
-							<div className='recipeToPrintUp__container--recipeData'>
-								{!!prescriptionNumber && (
-									<div className='barcodeContainer'>
-										<canvas
-											id='barcodeAffiliateUP_rep'
-											style={{
-												display: 'block',
-											}}
-										/>
+		if (helper === 1) {
+			printTimes = 1;
+		} else if (helper % 2 === 0) {
+			printTimes = helper / 2;
+		} else if (helper % 2 !== 0) {
+			printTimes = helper / 2 + 1;
+		} else {
+			printTimes = 0;
+		}
+		for (let i = 1; i <= printTimes; i++) {
+			printArr.push(i);
+		}
+		if (printArr.length > 0 && recipe[0]) {
+			return (
+				<div>
+					{printArr.map((item, i) => {
+						let replicate,
+							mapMeds = [];
+						if (i === 0) {
+							mapMeds.push(recipe[i]);
+							if (recipe[i + 1]) {
+								mapMeds.push(recipe[i + 1]);
+							}
+						} else if (i === 1) {
+							if (recipe[i + 1]) {
+								mapMeds.push(recipe[i + 1]);
+							}
+							if (recipe[i + 2]) {
+								mapMeds.push(recipe[i + 2]);
+							}
+						} else {
+							if (recipe[i + 2]) {
+								mapMeds.push(recipe[i + 2]);
+							}
+							if (recipe[i + 3]) {
+								mapMeds.push(recipe[i + 3]);
+							}
+						}
+						if (mapMeds[0]) {
+							replicate = mapMeds.some((med) => parseInt(med.duplicado) === 1);
+						}
+						return (
+							<>
+								<div className='recipeToPrintUp'>
+									<div className='recipeToPrintUp__container'>
+										<div className='recipeToPrintUp__container--title'>
+											<img src={UMA} />
+										</div>
+										<div className='recipeToPrintUp__container--recipeData'>
+											{prescriptionNumber &&
+												<div className='barcodeContainer'>
+													<canvas id={`barcodeAffiliateUP_${i}`}></canvas>
+												</div>}
+											<div className='mt-4'>
+												{prescriptionNumber && <span>Nro. Receta:{prescriptionNumber}</span>}
+											</div>
+										</div>
 									</div>
-								)}
-								<div className='mt-4'>{!!prescriptionNumber && <span>Nro. Receta: {prescriptionNumber}</span>}</div>
-							</div>
-						</div>
-						<div className='recipeToPrintUp__container'>
-							<div className='recipeToPrintUp__container--recipeResume'>
-								{!!patient.fullname && (
-									<p>
-										<span>Paciente: </span>
-										<b>{patient.fullname}</b>
-									</p>
-								)}
-								{!!patient.dni && (
-									<p>
-										<span>DNI: </span>
-										<b>{patient.dni}</b>
-									</p>
-								)}
-								{!!patient.obra_social && (
-									<p>
-										<span>Convenio: </span>
-										<b>{patient.obra_social}</b>
-									</p>
-								)}
-								{!!nAff && (
-									<p>
-										<span>Nro. Afiliado: </span>
-										<b>{nAff}</b>
-									</p>
-								)}
-							</div>
-							<div className='recipeToPrintUp__container--recipeResume'>
-								{!!patient.dob && (
-									<p>
-										<span>Fecha Nac.: </span>
-										<b>{patient.dob}</b>
-									</p>
-								)}
-							</div>
-						</div>
-						<div className='recipeToPrintUp__container'>
-							<div className='recipeToPrintUp__container--recipeData'>
-								<h1>
-									<b>Rp/</b>
-								</h1>
-								{recipe.forEach((medicine, index) => {
-									if (parseInt(medicine.duplicado) === 1) {
-										return (
-											<p className='pl-4' key={index}>
-												<span>
-													{medicine.productName} - {medicine.drugName} - {medicine.presentationName}
-												</span>{' '}
-												<br />
-												<span> Cantidad del envase:{medicine.cantidad}</span> <br />
-											</p>
-										);
-									}
-								})}
-								{recipe?.[0] && recipe[0].indicaciones && (
-									<>
-										<h1 className='mt-5'>
-											<b>INDICACIONES</b>
-										</h1>
-										{recipe.forEach((medicine, index) => {
-											if (parseInt(medicine.duplicado) === 1) {
-												return (
-													<p className='pl-4' key={index}>
-														<span>{medicine.indicaciones}</span>
-													</p>
-												);
+									<div className='recipeToPrintUp__container'>
+										<div className='recipeToPrintUp__container--recipeResume'>
+											{!!patient.fullname && <p><span>Paciente: </span><b>{patient.fullname}</b></p>}
+											{!!patient.dni && <p><span>DNI: </span><b>{patient.dni}</b></p>}
+											{!!patient.obra_social && <p><span>Convenio: </span><b>{patient.obra_social}</b></p>}
+											{!!nAff && <p><span>Nro. Afiliado: </span><b>{nAff}</b></p>}
+										</div>
+										<div className='recipeToPrintUp__container--recipeResume'>
+											{!!patient.dob && <p><span>Fecha Nac.: </span><b>{patient.dob}</b></p>}
+										</div>
+									</div>
+									<div className='recipeToPrintUp__container'>
+										<div className='recipeToPrintUp__container--recipeData'>
+											<h1><b>Rp/</b></h1>
+											{mapMeds.map((medicine, index) => (
+												<p className='pl-4' key={index}>
+													<span>
+														{medicine.productName} - {medicine.drugName} - {medicine.presentationName}
+													</span> <br />
+													<span> Cantidad del envase:{medicine.cantidad}</span> <br />
+												</p>
+											))}
+											{mapMeds[0] && mapMeds[0].indicaciones &&
+												<>
+													<h1 className='mt-5'><b>INDICACIONES</b></h1>
+													{mapMeds.map((medicine, index) => (
+														<p className='pl-4' key={index}><span>{medicine.indicaciones}</span></p>
+													))}
+												</>
 											}
-										})}
-									</>
-								)}
-							</div>
-						</div>
-						<div className='recipeToPrintUp__container'>
-							<div className='recipeToPrintUp__containerBottom'>
-								<div className='recipeToPrintUp__containerBottom--doctorData'>
-									{mr.diagnostico && <li>Diagnóstico: {mr.diagnostico}</li>}
-									<p>
-										<span>
-											Fecha: <b>{prescriptionDate}</b>
-										</span>
-									</p>
+										</div>
+									</div>
+									<div className='recipeToPrintUp__container'>
+										<div className='recipeToPrintUp__containerBottom'>
+											<div className='recipeToPrintUp__containerBottom--doctorData'>
+												<p><b>Diagnóstico:</b><li>{mr.diagnostico}</li></p>
+												<p><span>Fecha: <b>{prescriptionDate}</b></span>
+												</p>
+											</div>
+											<div className='recipeToPrintUp__containerBottom--doctorData'>
+												{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='firma del doctor' />}
+												{!!doctorInfo.fullname &&
+													<p><span>Médico: <b>{doctorInfo.fullname}</b> </span></p>}
+												{!!doctorInfo.matricula &&
+													<p><span>Matrícula número: <b>{doctorInfo.matricula}</b></span> </p>}
+											</div>
+										</div>
+										<div className='recipeToPrintUp__containerBottom'>
+											<span>info@uma-health.com</span>
+										</div>
+									</div>
 								</div>
-								<div className='recipeToPrintUp__containerBottom--doctorData'>
-									{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='firma del doctor' />}
-									{!!doctorInfo.fullname && (
-										<p>
-											<span>
-												Médico: <b>{doctorInfo.fullname}</b>{' '}
-											</span>
-										</p>
-									)}
-									{!!doctorInfo.matricula && (
-										<p>
-											<span>
-												Matrícula número: <b>{doctorInfo.matricula}</b>
-											</span>{' '}
-										</p>
-									)}
-								</div>
-							</div>
-							<div className='recipeToPrintUp__containerBottom'>
-								<span>info@uma-health.com</span>
-							</div>
-						</div>
-					</div>
-				)}
-			</div>
-		);
+
+								{replicate &&
+									<div className='recipeToPrintUp'>
+										<div className='recipeToPrintUp__container '>
+											<h4 className='font-weight-bold text-uppercase'>Duplicado</h4>
+										</div>
+										<div className='recipeToPrintUp__container'>
+											<div className='recipeToPrintUp__container--title'>
+												<img src={UMA} />
+											</div>
+											<div className='recipeToPrintUp__container--recipeData'>
+												{!!prescriptionNumber &&
+													<div className='barcodeContainer'>
+														<canvas id={`barcodeAffiliateUP_rep_${i}`} />
+													</div>}
+												<div className='mt-4'>
+													{!!prescriptionNumber && <span>Nro. Receta: {prescriptionNumber}</span>}
+												</div>
+											</div>
+										</div>
+										<div className='recipeToPrintUp__container'>
+											<div className='recipeToPrintUp__container--recipeResume'>
+												{!!patient.fullname && <p><span>Paciente: </span><b>{patient.fullname}</b></p>}
+												{!!patient.dni && <p><span>DNI: </span><b>{patient.dni}</b></p>}
+												{!!patient.obra_social && <p><span>Convenio: </span><b>{patient.obra_social}</b></p>}
+												{!!nAff && <p><span>Nro. Afiliado: </span><b>{nAff}</b></p>}
+											</div>
+											<div className='recipeToPrintUp__container--recipeResume'>
+												{!!patient.dob && <p><span>Fecha Nac.: </span><b>{patient.dob}</b></p>}
+											</div>
+										</div>
+										<div className='recipeToPrintUp__container'>
+											<div className='recipeToPrintUp__container--recipeData'>
+												<h1><b>Rp/</b></h1>
+												{mapMeds.map((medicine, index) => {
+													if (parseInt(medicine.duplicado) === 1) {
+														return (
+															<p className='pl-4' key={index}>
+																<span>
+																	{medicine.productName} - {medicine.drugName} - {medicine.presentationName}
+																</span> <br />
+																<span> Cantidad del envase:{medicine.cantidad}</span> <br />
+															</p>
+														)
+													}
+												})}
+												{mapMeds[0] && mapMeds[0].indicaciones &&
+													<>
+														<h1 className='mt-5'><b>INDICACIONES</b></h1>
+														{recipe.map((medicine, index) => {
+															if (parseInt(medicine.duplicado) === 1) {
+																return <p className='pl-4' key={index}><span>{medicine.indicaciones}</span></p>
+															}
+														})}
+													</>
+												}
+											</div>
+										</div>
+										<div className='recipeToPrintUp__container'>
+											<div className='recipeToPrintUp__containerBottom'>
+												<div className='recipeToPrintUp__containerBottom--doctorData'>
+													<p><b>Diagnóstico:</b><li>{mr.diagnostico}</li></p>
+													<p><span>Fecha: <b>{prescriptionDate}</b></span>
+													</p>
+												</div>
+												<div className='recipeToPrintUp__containerBottom--doctorData'>
+													{!!doctorInfo.signature && <img src={doctorInfo.signature} alt='firma del doctor' />}
+													{!!doctorInfo.fullname &&
+														<p><span>Médico: <b>{doctorInfo.fullname}</b> </span></p>}
+													{!!doctorInfo.matricula &&
+														<p><span>Matrícula número: <b>{doctorInfo.matricula}</b></span> </p>}
+												</div>
+											</div>
+											<div className='recipeToPrintUp__containerBottom'>
+												<span>info@uma-health.com</span>
+											</div>
+										</div>
+									</div>
+								}
+							</>
+						)
+					})}
+				</div>
+			)
+		}
 	}
 }
 
@@ -625,7 +570,7 @@ const Recipe = ({ att, doc }) => {
 		prescriptionNumber: prescripNum || '',
 		prescriptionDate: prescripDate || '',
 	};
-	
+
 	useEffect(() => {
 		if (mr?.receta?.[0]) {
 			try {
@@ -787,7 +732,7 @@ const Recipe = ({ att, doc }) => {
 					/>
 					<div className='d-flex justify-content-around' id="pedirPorRappi">
 						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
-								Pedir por Rappi
+							Pedir por Rappi
 						</a>
 					</div>
 					<div className='d-none'>{fromUP ? <RecipePDFUP {...dataToPrint} /> : <RecipePDF {...dataToPrint} />}</div>
