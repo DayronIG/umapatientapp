@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/vaccine/Vaccine.scss';
-import welcomeImg from '../assets/doctor-online.svg';
+import welcomeImg from '../assets/icons/doctors.png';
 import checkIllustration from '../assets/vaccine/check.png';
 import Loading from '../components/GeneralComponents/Loading';
 import {BackButton} from '../components/GeneralComponents/Headers'
@@ -79,8 +79,9 @@ const Vaccine = () => {
                 <>
                     <img src={welcomeImg} alt="Vacunación" className="vaccineIllustration" />
                     <h1 className="vaccineTitle">Bienvenido a ÜMA</h1>
-                    <p className="vaccineText">Por favor confirma tu solicitud para continuar con el registro y acceder a nuestros servicios. Si te arrepentiste o no quieres acceder por esta vía cliquea "No". Si tuviste algún inconveniente con el registro cliquea "Reportar un problema"</p>
-                    <p className="vaccineText"><b>¿Aún deseas ingresar?</b></p>
+                    <p className="vaccineText">Por favor, confirma tu solicitud para continuar con el registro y acceder a nuestros servicios.
+                    </p>
+                    <p className="vaccineText"><b>¿Deseas registrarte en ÜMA?</b></p>
                     <div className="vaccineBtns">
                         <button
                             className="vaccineBtn vaccineReject"
@@ -98,14 +99,14 @@ const Vaccine = () => {
                             Si
                         </button>
                     </div>
-                    <button className="btn-alert" onClick={() => setModal({
+                    <p className="vaccineReportProblem" onClick={() => setModal({
                                 ...modal,
                                 show: true,
                                 title: 'Por favor introduce la mayor cantidad posible de detalles sobre el problema',
                                 type: 'problem',
                                 action: 'reject'})}>
-                        Reportar un problema
-                    </button>
+                        <span>¿No pudiste registrarte?</span><b>Reportar un problema</b>
+                    </p>
                 </>
                 </div> :
                 <div className="vaccineContainer">

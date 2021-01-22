@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 
-const token = localStorage.getItem('token');
-
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({ profile_pic: user.profile_pic || '' });
+    const { currentUser } = useSelector((state) => state.userActive)
 
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
@@ -18,16 +17,18 @@ export const ProfilePic = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		await axios
-			.patch(`${node_patient}/${user.dni}`, data, {headers})
-			.then((res) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-			})
-			.catch((err) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-				console.log(err);
-			});
+		await currentUser.getIdToken().then(async token => {
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+			await axios
+				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.then((res) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+		})
 		dispatch({type: 'LOADING', payload: false})
 	};
 
@@ -57,6 +58,7 @@ export const ProfilePic = ({ user }) => {
 
 export const PersonalData = ({ user }) => {
 	const dispatch = useDispatch();
+	const { currentUser } = useSelector((state) => state.userActive)
 	const [userData, setUserData] = useState({
 		corporate: user.corporate || '',
 		fullname: user.fullname || '',
@@ -72,17 +74,19 @@ export const PersonalData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		await axios
-			.patch(`${node_patient}/${user.dni}`, data, {headers})
-			.then((res) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-			})
-			.catch((err) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-				console.log(err);
-			});
-			dispatch({type: 'LOADING', payload: false})
+		await currentUser.getIdToken().then(async token => {
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+			await axios
+				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.then((res) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+		})
+		dispatch({type: 'LOADING', payload: false})
 	};
 
 	return (
@@ -114,6 +118,7 @@ export const PersonalData = ({ user }) => {
 
 export const ContactData = ({ user }) => {
 	const dispatch = useDispatch();
+	const { currentUser } = useSelector((state) => state.userActive)
 	const [userData, setUserData] = useState({
 		address: user.address || '',
 		piso: user.piso || '',
@@ -124,16 +129,18 @@ export const ContactData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		axios
-			.patch(`${node_patient}/${user.dni}`, data, {headers})
-			.then((res) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-			})
-			.catch((err) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-				console.log(err);
-			});
+		currentUser.getIdToken().then(async token => {
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+			await axios
+				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.then((res) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+		})
 		dispatch({type: 'LOADING', payload: false})
 	};
 
@@ -160,6 +167,7 @@ export const ContactData = ({ user }) => {
 
 export const HealtData = ({ user }) => {
 	const dispatch = useDispatch();
+	const { currentUser } = useSelector((state) => state.userActive)
 	const [userData, setUserData] = useState({ sex: user.sex || '' });
 	const handleSubmit = (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
@@ -167,16 +175,18 @@ export const HealtData = ({ user }) => {
 		let data = {
 			newValues: { ...userData },
 		};
-		let headers = { 'Content-Type': 'Application/json', "Authorization": token };
-		axios
-			.patch(`${node_patient}/${user.dni}`, data, {headers})
-			.then((res) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-			})
-			.catch((err) => {
-				dispatch({ type: 'TOGGLE_DETAIL' });
-				console.log(err);
-			});
+		currentUser.getIdToken().then(async token => {
+			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+			await axios
+				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.then((res) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+		})
 		dispatch({type: 'LOADING', payload: false})
 	};
 

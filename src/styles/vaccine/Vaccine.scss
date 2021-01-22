@@ -73,6 +73,15 @@
                 }
             }
         }
+        .vaccineReportProblem{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            color: $uma-primary;
+            width: 100%;
+            align-items: center;
+            margin-top: 50px;
+        }
 
         .vaccineLink {
             font-size: 1rem;

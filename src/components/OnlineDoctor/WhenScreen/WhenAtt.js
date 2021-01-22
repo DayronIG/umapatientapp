@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Comments from './Comments.js';
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser } from '../../../store/actions/firebaseQueries';
+import { getUser, getFreeGuardia } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import { Loader } from '../../GeneralComponents/Loading';
@@ -59,10 +59,8 @@ const WhenScreen = (props) => {
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				console.log("Assigned check", assigned)
 				return props.history.replace(`/${person.dni}/onlinedoctor/queue`);
 			} else {
-				console.log("No assigned")
 				return findFreeAppointments(person, type);
 			}
 		} catch (error) {
@@ -73,9 +71,14 @@ const WhenScreen = (props) => {
 
 	async function findFreeAppointments(person, type) {
 		try {
+			let freeAppoints =  []
+			if(user.context === "temp") {
+				freeAppoints = await getFreeGuardia("test"); // WIP
+			} else {
+				freeAppoints = await getFreeGuardia(); // WIP
+			}
 			// Get free appointments from firebase.
-			let freeAppoints = await findAllFreeAppointments(type);
-			console.log("Freeappoints", freeAppoints)
+			// let freeAppoints = await findAllFreeAppointments(type);
 			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
@@ -124,9 +127,7 @@ const WhenScreen = (props) => {
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
-									remaining={assignation.remaining}
-									doctor={assignation}
-									dni={dni}
+									{...assignation}
 									key={index}
 								/>
 							))}

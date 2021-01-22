@@ -9,8 +9,10 @@ import {feedback } from '../../../config/endpoints'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faPhone } from "@fortawesome/free-solid-svg-icons";
 import Alert from '../../GeneralComponents/Alert/Alerts';
+import swal from 'sweetalert';
+import { make_appointment } from '../../../config/endpoints';
 
-    const Predict = ({predicted, history})=>{
+const Predict = ({predicted, history})=>{
     const dispatch = useDispatch();
     const token = useSelector(state => state.userActive.token)
     const patient = useSelector(state => state.user)
@@ -55,27 +57,54 @@ import Alert from '../../GeneralComponents/Alert/Alerts';
 
     const restartAll = () => {
         dispatch({type:'AUTONOMOUS_RESET'})
-        // dispatch({type: 'TOGGLE_DETAIL', payload: true})
         history.push(`/${patient.ws}/`)
-    }
-
-    function redirectToOnlineDoc(predicted) {
-        setRedirecting(true)
-        setTimeout(() => {
-            history.push(`/${patient.ws}/onlinedoctor/who`)
-            dispatch({type: 'TOGGLE_DETAIL', payload: true})
-            // window.location.href = ;
-        }, 5000)
     }
 
     function redirectNow() {
         window.location.href = `/${patient.ws}/onlinedoctor/who`;
     }
 
+    async function _getOnlineAppointment() {
+        dispatch({ type: 'LOADING', payload: true });
+		try {
+			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
+			let data = {
+				age: patient.dob || '',
+				biomarker: [],
+				destino_final: '',
+				diagnostico: '',
+				dt,
+				dni: patient.dni,
+				epicrisis: `${autonomous.final_predict.epicrisis}`,
+				lat: patient.dni || '',
+				lon: patient.lon || '',
+				msg: 'make_appointment',
+				motivo_de_consulta: `Derivación de consulta autónoma: ${autonomous.final_predict.epicrisis}`,
+				alertas: '',
+				ruta: '',
+				sex: patient.sex || '',
+				specialty: 'online_clinica_medica',
+                ws: patient.ws,
+                category: 'GUARDIA_AUTONOMOUS'
+			};
+			const headers = { 'Content-type': 'application/json' };
+			const res = await axios.post(make_appointment, data, headers);
+			dispatch({ type: 'LOADING', payload: false });
+            localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
+            localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
+            dispatch({type: 'TOGGLE_DETAIL', payload: false})
+            return history.replace(`/${patient.dni}/onlinedoctor/queue`);
+		} catch (err) {
+			console.log(err)
+			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
+			dispatch({ type: 'LOADING', payload: false });
+		}
+    }
+
     const AutonomousAction = () => {
         if(autonomous.final_predict.boton === "3"){
         return(
-            <div className="sugested-action green" onClick={() => redirectToOnlineDoc()}>
+            <div className="sugested-action green" onClick={() => _getOnlineAppointment()}>
                 <div className="suggested-title">
                     <span>{autonomous.final_predict.speech}</span>
                 </div>
@@ -107,7 +136,7 @@ import Alert from '../../GeneralComponents/Alert/Alerts';
             )
         } else if(autonomous.final_predict.boton === "4") {
             return(
-                <div className="sugested-action violet" onClick={() => redirectToOnlineDoc()}>
+                <div className="sugested-action violet" onClick={() => _getOnlineAppointment()}>
                     <div className="suggested-title">
                         <span>{autonomous.final_predict.speech}</span>
                     </div>

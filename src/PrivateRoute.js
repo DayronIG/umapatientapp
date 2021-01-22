@@ -84,7 +84,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, user, token])
+	}, [currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
@@ -117,15 +117,18 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	const handleSubmit = useCallback((device) => {
 		let data = {
 			newValues: { device },
-		};
-		Axios
-			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
-			.then((res) => {
-				console.log("UMA");
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+        };
+        currentUser.getIdToken().then(async token => {
+            let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+            Axios
+                .patch(`${node_patient}/${user.dni}`, data,  {headers: headers })
+                .then((res) => {
+                    console.log("UMA");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            })
     }, [user])
     
     return (
