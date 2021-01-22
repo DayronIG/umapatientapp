@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { make_appointment } from '../../../config/endpoints';
@@ -86,7 +86,7 @@ const ConfirmAppointment = (props) => {
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
-				ruta: appointmentId || '',
+				ruta: selectedAppointment.path?.split('assignations/')[1] || '',
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
@@ -112,7 +112,8 @@ const ConfirmAppointment = (props) => {
 	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
-		const lastAssingState = await getDocumentFB(`${selectedAppointment}`);
+		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
+		console.log(lastAssingState)
 		if (appointId === '' || lastAssingState.state === 'FREE') {
 			return postData();
 		} else {

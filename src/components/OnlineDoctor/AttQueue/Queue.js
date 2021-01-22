@@ -159,7 +159,7 @@ const Queue = (props) => {
             if (callSettings.room === '') {
                 try {
                     if ((!patient.ws || patient.ws === '') && assignedAppointment) {
-                        patient.ws = assignedAppointment.appointments['0']['6']
+                        patient.ws = assignedAppointment.appointments?.['0']?.['6']
                     }
                     let queryUser = firestore.collection('auth').doc(patient.ws)
                     queryUser.onSnapshot(async function (doc) {
