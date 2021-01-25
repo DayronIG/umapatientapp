@@ -56,20 +56,21 @@ const Pillbox = props => {
 
     useEffect(() => {
         if(shiftsToPost?.medicine){
-            if(!shiftsToPost?.personalized){
-                dispatch({type: "SET_NEW_REMINDER", 
-                payload: {...newReminder, reminders: {
-                mon: shiftsToPost.shifts,
-                tue: shiftsToPost.shifts,
-                wed: shiftsToPost.shifts,
-                thu: shiftsToPost.shifts,
-                fri: shiftsToPost.shifts,
-                sat: shiftsToPost.shifts,
-                sun: shiftsToPost.shifts,
-            }}})
-            } else if (shiftsToPost?.personalized) {
+            // if(!shiftsToPost?.personalized){
+            //     dispatch({type: "SET_NEW_REMINDER", 
+            //     payload: {...newReminder, reminders: {
+            //     mon: shiftsToPost.shifts,
+            //     tue: shiftsToPost.shifts,
+            //     wed: shiftsToPost.shifts,
+            //     thu: shiftsToPost.shifts,
+            //     fri: shiftsToPost.shifts,
+            //     sat: shiftsToPost.shifts,
+            //     sun: shiftsToPost.shifts,
+            // }}})
+            // } else if (shiftsToPost?.personalized) {
+                console.log(shiftsToPost.shifts, "aquí")
                 dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, reminders: shiftsToPost.shifts}})
-            }
+            // }
         }
     }, [shiftsToPost])
     

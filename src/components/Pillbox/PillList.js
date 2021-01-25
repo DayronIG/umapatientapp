@@ -40,7 +40,6 @@ export default function PillList({editStatus}) {
     }
 
     const renderMonth = (month) => {
-        console.log(month)
         switch(month){
             case('01'):
                 return 'Enero'

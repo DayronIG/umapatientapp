@@ -7,10 +7,11 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
     const [hoursToSave, setHoursToSave] = useState([])
     const { personalizedShifts } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
+    const [renderMarker, setRenderMarker] = useState(0)
 
     useEffect(() => {
+        console.log(hoursToSave, "ASD")
         if(medicine){
-            console.log('CHANGE')
             dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, 
             shifts: {
                 mon: hoursToSave,
@@ -22,10 +23,9 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
                 sun: hoursToSave,
             }, personalized:false}})
         }
-    }, [medicine, hoursToSave])
+    }, [medicine, hoursToSave, renderMarker])
 
     useEffect(()=>{
-        console.log(defaultValues)
         if(defaultValues.mon){
             const values = []
             for(var hour of defaultValues.mon){
@@ -51,6 +51,9 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
         var hours = hoursToSave
         hours[indexHour] = hour
         setHoursToSave(hours)
+        if(hour.length === 5){
+            setRenderMarker(renderMarker + 1)
+        }
     }
 
     const renderHours = () => {
