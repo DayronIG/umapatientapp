@@ -1,0 +1,30 @@
+.records-sections {
+    display: flex;
+    justify-content: center;
+    box-shadow: 0px 4px 24px #E6E6E6;
+    height: 55px;
+    background-color: #fff;
+    box-shadow: 0px 10px 24px 0px #E6E6E6;
+
+
+    .button-record {
+        font-weight: bold;
+        border: none;
+        text-transform: uppercase;
+        background-color: #fff;
+        padding: 10px 5px;
+        color: #B6B6B6;
+        font-size: 14px;
+
+        &.active {
+            color: #0A6DD7;
+        }
+
+        button {
+            border: none;
+            background-color: #fff;
+        }
+
+    }
+
+}

@@ -28,7 +28,7 @@ const HistoryHome = ({ user }) => {
                 :
                 <Events data={lastMr} />}
                 <Link to={`/${patient.ws}/history`} className="history-link">
-                    Ver todo el historial
+                    Ver todo 
                     <FontAwesomeIcon icon={faChevronRight} />
                 </Link>
         </section>

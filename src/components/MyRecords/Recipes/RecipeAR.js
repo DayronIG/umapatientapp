@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
+import moment from 'moment-timezone';
 import JsBarcode from 'jsbarcode';
 import ReactToPrint from 'react-to-print';
 import UMA from '../../../assets/icons/icon-168.png';
+import './../../../styles/orders.scss';
 
 class RecipePDF extends React.Component {
 	componentDidMount() {
@@ -106,11 +108,11 @@ class RecipePDF extends React.Component {
 									<div className='recipeToPrint__container logo_container'>
 										<img src={logo || UMA} className='recipeToPrint__container--logo' alt='' />
 									</div>
-									<div className='recipeToPrint__container'>
+									{/*<div className='recipeToPrint__container'>
 										<h1 className='recipeToPrint__container--title'>
 											Receta Médica
 										</h1>
-									</div>
+										</div>*/}
 									<div className='recipeToPrint__container'>
 										<ul className='recipeToPrint__container--list'>
 											<li>Nombre completo: {patient.fullname}</li>
@@ -211,9 +213,9 @@ class RecipePDF extends React.Component {
 												<b>DUPLICADO</b>
 											</h5>
 										</div>
-										<div className='recipeToPrint__container'>
+										{/* <div className='recipeToPrint__container'>
 											<h1 className='recipeToPrint__container--title'>Receta Médica</h1>
-										</div>
+											</div>*/}
 										<div className='recipeToPrint__container'>
 											<ul className='recipeToPrint__container--list'>
 												{patient && 
@@ -665,83 +667,134 @@ const Recipe = ({ att, doc }) => {
 
 	return (
 		<>
-			{mr?.receta?.[0] ? (
+			{mr?.receta?.[0] ? ( 
 				<div className='d-flex flex-column justify-content-between p-2' id='receta'>
-					<h3 className='text-center'>Receta médica</h3>
 					<div className='dossier-att-info'>
 						<p>
 							<b>Afiliado: </b>
-							{patient && patient.fullname}
 						</p>
+						<span className='dossier-info'>{patient && patient.fullname}</span>
+						<hr/>
 						<p>
 							<b>DNI: </b>
-							{patient && patient.dni}
 						</p>
+						<span className='dossier-info'>{patient && patient.dni}</span>
 						<hr />
-						<p>
-							<b>Fecha de prescripción</b>
-							<br />
-							{mr.dt_cierre}
-						</p>
-						<hr />
-						{patient && 'obra_social' in patient && patient?.obra_social && (
-							<p>
-								<b>Obra social</b> {patient.obra_social}
-							</p>
-						)}
-						{patient && 'n_afiliado' in patient && patient?.n_afiliado && (
-							<p>
-								<b>Número de afiliado</b> {patient.n_afiliado}
-							</p>
-						)}
-						<div>
-							<b>Producto(s):</b>
-							<br />
-							{mr.receta.map((item, index) => {
-								return (
-									<ul key={index}>
-										<li>Producto: {item.productName}</li>
-										<li>Droga: {item.drugName}</li>
-										<li>Cantidad: {item.cantidad}</li>
-										<li>Presentación: {item.presentationName}</li>
-										<li>Indicaciones: {item.indicaciones}</li>
-										{mr.receta.length >= 2 && <li>---------------------------------</li>}
-									</ul>
-								);
-							})}
+						
+						<div className="d-flex justify-content-between">
+							<div>
+								<p><b>Fecha de prescripción:</b></p>
+								<span className='dossier-info'>{att && moment(mr.dt_cierre).format('DD-MM-YYYY')}</span>
+							</div>
+							<div>
+								<p><b>Hora de prescripción:</b></p>
+								<span className='dossier-info'>{att && moment(mr.dt_cierre).format('HH:mm')}</span>
+							</div>
 						</div>
 						<hr />
-						{mr.diagnostico && (
-							<p>
-								<b>Diagnóstico:</b>
-								<span className='Break-Word'>{mr.diagnostico}</span>
-							</p>
+						
+						{patient && 'obra_social' in patient && patient?.obra_social && (
+							<>
+								<p>
+									<b>Obra social:</b> 
+								</p>
+								<span className='dossier-info'>{patient.obra_social}</span>
+								<hr/>
+							</>
 						)}
-						<hr />
+						{patient && 'n_afiliado' in patient && patient?.n_afiliado && (
+							<>
+								<p>
+									<b>Número de afiliado:</b> 
+								</p>
+								<span className='dossier-info'>{patient.n_afiliado}</span>
+								<hr/>
+							</>
+						)}
+						{mr.diagnostico && (
+							<>
+								<p>
+									<b>Diagnóstico:</b>
+								</p>
+								<span className='dossier-info'>{mr.diagnostico}</span>
+								<hr />
+							</>
+						)}
 						<p>
 							<b>Médico</b>
 							<br />
 						</p>
-						<span className='dossier-doctor-name'>Nombre: {doc.fullname || ''} </span>
+						<span className='dossier-doc-info'><b>Nombre: </b> {doc.fullname || ''} </span>
 						<br />
 						{doc.matricula && (
 							<>
-								<span className='dossier-doctor-enroll'>Matrícula: {doc.matricula} </span>
+								<span className='dossier-doc-info'><b>Matrícula: </b>{doc.matricula} </span>
 								<br />
 							</>
 						)}
+						<p><b>Firma:</b></p>
 						<span className='w-100 ml-5 text-center'>
-							{doc.signature && doc.signature !== '' && <img className='ml-5 w-25' src={doc.signature} alt='signature' />}
+							{doc.signature && doc.signature !== '' && <img className='ml-5 w-50' src={doc.signature} alt='signature' />}
 						</span>
-						<hr />
-						<div className='text-center'>
+						<div className="mt-4">
+							<p><b>Medicación prescripta:</b></p>
+							<div className="modal-medicacion">
+								{mr.receta.map((item, index) => {
+									return (
+										<ul key={index}>
+											<li>Producto:</li>
+											<li>{item.productName}</li>
+											<hr/>
+											<li>Droga:</li> 
+											<li>{item.drugName}</li>
+											<hr/>
+											<li>Cantidad:</li>
+											<li>{item.cantidad}</li>
+											<hr/>
+											<li>Presentación: </li>
+											<li>{item.presentationName}</li>
+											<hr/>
+											<li>Indicaciones: </li>
+											<li>{item.indicaciones}</li>
+											{mr.receta.length >= 2 && <li>---------------------------------</li>}
+											<hr/>
+										</ul>
+									);
+								})}
+							</div>
+							<ul className="mt-4">
+								{mr.receta.map((item, index) => {
+										return (
+											<ul key={index}>
+												<li>Producto:</li>
+												<li>{item.productName}</li>
+												<hr/>
+												<li>Droga:</li> 
+												<li>{item.drugName}</li>
+												<hr/>
+												<li>Cantidad:</li>
+												<li>{item.cantidad}</li>
+												<hr/>
+												<li>Presentación: </li>
+												<li>{item.presentationName}</li>
+												<hr/>
+												<li>Indicaciones: </li>
+												<li>{item.indicaciones}</li>
+												{mr.receta.length >= 2 && <li>---------------------------------</li>}
+												<hr/>
+											</ul>
+										);
+									})
+								}
+							</ul>
+						</div>
 							<div className='orderToPrint__bottomContainer--barcode w-100'>
-								<h4>
-									<b>Número de receta</b>
-								</h4>
-								<div className='w-100'>
+								<p>
+									Número de receta
+								</p>
+								<div className='recipe-number'>
 									<canvas
-										className='w-100'
+										className='w-50'
 										id='barcodeRecipe'
 										style={{
 											display: 'block',
@@ -749,7 +802,8 @@ const Recipe = ({ att, doc }) => {
 									/>
 								</div>
 							</div>
-							{patient.n_afiliado ? (
+							{/*</div>*/}
+							{/*{patient.n_afiliado ? (
 								<div className='orderToPrint__bottomContainer--barcode'>
 									<h4>
 										<b>Número de afiliado</b>
@@ -772,24 +826,22 @@ const Recipe = ({ att, doc }) => {
 											display: 'none',
 										}}
 									/>
-								)}
-						</div>
+								)}*/}
+						
+					</div>
+					<div className='d-flex justify-content-around' id="pedirPorRappi">
+						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
+							Comprá por Rappi
+						</a>
 					</div>
 					<ReactToPrint
 						trigger={() => (
-							<div className='d-flex justify-content-around'>
-								<div className='d-flex justify-content-center btn btn-blue-lg'>
-									<div className='patient-action'>Descargar</div>
-								</div>
+							<div className='d-flex justify-content-around '>
+								<div className='patient-action mt-4'><b style={{color: '#0A6DD7', fontSize: '18px'}}>Descarga receta</b></div>
 							</div>
 						)}
 						content={() => compRef.current}
 					/>
-					<div className='d-flex justify-content-around' id="pedirPorRappi">
-						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
-								Pedir por Rappi
-						</a>
-					</div>
 					<div className='d-none'>{fromUP ? <RecipePDFUP {...dataToPrint} /> : <RecipePDF {...dataToPrint} />}</div>
 				</div>
 			) : (

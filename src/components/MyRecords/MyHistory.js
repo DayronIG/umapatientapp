@@ -1,0 +1,63 @@
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd, faChevronRight, faCarAlt , faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'
+import { HistoryHeader } from '../GeneralComponents/Headers';
+import { useSelector } from 'react-redux';
+import './../../styles/history/myhistory.scss';
+
+const MyHistory = () => {
+    const {ws} = useSelector(state => state.user)
+
+    const sectionsHistory = [
+        {
+            sectionName: 'Recetas',
+            icon: faFileAlt, 
+            url: `/${ws}/recipes`
+        },
+        {
+            sectionName: 'Consultas',
+            icon: faUserMd,
+            url: `/${ws}/history/consultas`
+        }, 
+        {
+            sectionName: 'Autonomous',
+            icon: faCarAlt,
+            url: `''`
+        }
+    ]
+
+    return (
+        <> 
+            <HistoryHeader> Mi historial </HistoryHeader>
+            <div className="my-history-container">
+
+                {
+                    sectionsHistory.map((item, index) => {
+                        return(
+                            <>
+                                <li key={index}>
+                                    <Link to={item.url} className="link-to">
+                                        <div className="section">
+                                            <div className="section-name-icon">
+                                                <div className="leftIcon">
+                                                    <FontAwesomeIcon icon={item.icon} />
+                                                </div>
+                                            <p>{item.sectionName}</p>
+                                            </div>
+                                            <FontAwesomeIcon className='foward-btn' icon={faChevronRight} />
+                                        </div>
+                                    </Link>
+                                </li>
+                                <hr/>
+                            </>
+                        )
+                    })
+                }
+            </div>
+        </>
+    )
+}
+
+
+export default MyHistory;

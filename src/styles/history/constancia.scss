@@ -1,0 +1,34 @@
+#dossier-constancia {
+
+    .dossier-date-img{
+        margin-bottom: 40px;
+
+        .uma-img {
+            height: 40px;
+            width: 40px;
+            margin: 0;
+        }
+
+        p {
+            text-align: end;
+        }
+
+    }
+    .dossier-text {
+        color: #1E1E1E;
+
+        .dossier-text-diagnostico {
+            margin-top: 20px;
+        }
+
+    }
+    .dossier-text-emergencias {
+        font-weight: bold;
+        
+        b {
+            color: #0A6DD7;
+         }
+
+    }
+
+}

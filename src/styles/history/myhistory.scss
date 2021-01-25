@@ -1,0 +1,31 @@
+.my-history-container {
+    width: 100%;
+    min-height: 90vh;
+    margin: auto;
+    padding: 8%;
+    background-color: #fff;
+    .link-to {
+        color: #1E1E1E;
+        .section {
+            font-size: 1rem;
+            font-weight: bold;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            .section-name-icon {
+                display: flex;
+                .leftIcon {
+                    margin-right: 22px;
+                    svg {
+                        height: 40px;
+                        width: 30px;
+                        color: #0A6DD7;
+                    }
+                }
+                 p {
+                    margin-top: 5px;
+                 }
+            }
+        }
+    }
+}

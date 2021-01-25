@@ -201,3 +201,46 @@
 .Break-Word {
 	word-break: break-word;
 }
+
+#receta {
+
+	.dossier-att-info {
+		.dossier-info {
+			font-size: 18px;
+			font-weight: bold;
+		}
+
+		.dossier-doc-info {
+			font-size: 18px;
+			font-weight: normal;
+
+		}
+	}
+
+	.modal-medicacion {
+		margin: 0 auto;
+		width: 100%;
+		padding: 15px 25px;
+		box-shadow: 0px 2px 5px 0px #7E93A3;
+		border-radius: 5px;  
+		li {
+			margin-top: 5px;
+		}
+	}
+	
+	ul {
+		li {
+			margin-top: 5px;
+		}
+	}
+
+	.recipe-number {
+		width: 100%;
+
+		#barcodeRecipe {
+			margin: 0 auto;
+		}
+
+	}
+
+}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLaptopMedical, faArrowLeft, faUserCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faLaptopMedical, faArrowLeft, faUserCircle, faCheck, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/logo.png';
 import umacare from '../../assets/umacare.png';
 import '../../styles/global/Backbutton.scss';
@@ -99,6 +99,19 @@ export const GenericHeader = (props) => {
 		</section>
 	);
 };
+
+export const HistoryHeader = (props) => {
+	const history = useHistory()
+
+	return(
+		<section className='header-container history'>	
+				<div onClick={() => history.goBack()} className='back-btn'>
+					<FontAwesomeIcon icon={faChevronLeft} /> 
+				</div>
+				<p className='header-title'>{props.children}</p>
+		</section>
+	)
+}
 
 export const BackButton = (props) => {
 	return (
