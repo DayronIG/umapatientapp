@@ -10,14 +10,25 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
 
     useEffect(() => {
         if(medicine){
-            dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: hoursToSave, personalized:false}})
+            console.log('CHANGE')
+            dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, 
+            shifts: {
+                mon: hoursToSave,
+                tue: hoursToSave,
+                wed: hoursToSave,
+                thu: hoursToSave,
+                fri: hoursToSave,
+                sat: hoursToSave,
+                sun: hoursToSave,
+            }, personalized:false}})
         }
     }, [medicine, hoursToSave])
 
     useEffect(()=>{
-        if(defaultValues){
+        console.log(defaultValues)
+        if(defaultValues.mon){
             const values = []
-            for(var hour of defaultValues){
+            for(var hour of defaultValues.mon){
                 values.push(hour)
             }
             setHoursToSave(values)

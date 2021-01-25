@@ -10,9 +10,10 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
 
     useEffect(() => {
         if(medicine){
+            console.log('CHANGE')
+            console.log(shiftsToSave)
             dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, shifts: shiftsToSave, personalized:true}})
         }
-        console.log(shiftsToSave)
     }, [medicine, shiftsToSave])
 
     useEffect(()=>{
@@ -51,7 +52,6 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
     }
 
     const checkUncheckShift = (day) => {
-        console.log("ASDASD")
         if(!!shiftsToSave[day]){
             setShiftsToSave({...shiftsToSave, [day]:null})
         } else {

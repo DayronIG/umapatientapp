@@ -34,7 +34,7 @@ export default function PillCreate({handleSaveReminder}) {
                 <AiOutlineClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
-        <div className='inputText__container' onClick={() => uploadFileClick()}>
+        <div className='inputText__container uploadImageInput' onClick={() => uploadFileClick()}>
             <input ref={fileRef} onChange={e => uploadImage(e)} type="file" name="" id="" style={{display: 'none'}}/>
             <label>Suba una foto de su medicamento (opcional) </label>
             <AiOutlineUpload className='uploadIcon'/>
@@ -69,13 +69,13 @@ export default function PillCreate({handleSaveReminder}) {
         </div>
 
         <div>
-            <HoursSelector value={!personalizedShifts} medicine={newReminder.medicine}/>
+            <HoursSelector defaultValues={isEdition ? newReminder.reminders:''} value={!personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <hr className='separator'/>
 
         <div>
-            <DayTimeSelector value={personalizedShifts} medicine={newReminder.medicine}/>
+            <DayTimeSelector defaultValues={isEdition ? newReminder.reminders:''} value={personalizedShifts} medicine={newReminder.medicine}/>
         </div>
 
         <div className='inputText__container'>

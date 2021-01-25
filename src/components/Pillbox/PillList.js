@@ -33,20 +33,6 @@ export default function PillList({editStatus}) {
                         <label className='item'><MdToday className="element_icon" />{recipe.quantity_days} días restantes</label>
                         <label className='item'><FaPills className="element_icon" />Quedan {recipe.dose} / Reponer</label>
                     </div>
-                    {/* <div className='recipesListEditDelete__container'>
-                    <FiEdit3 className="edit__icon"
-                    onClick={() => {
-                            setEditModal(true)
-                            setPersonalizedShifts(recipe.personalized)
-                            setReminderToEdit(recipe)
-                            setNewReminder(recipe)
-                            setReminderToEditIndex(recipes.indexOf(recipe))
-                    }}/>
-                    <FiTrash className="delete__icon"
-                    onClick={() =>{
-                        deleteReminderDB(recipe)
-                        deleteReminderFront(recipe)}}/>
-                    </div> */}
                 </div>
             )
         }
@@ -85,13 +71,26 @@ export default function PillList({editStatus}) {
             }
     }
 
+    const filterByTime = (time) => {
+        let filteredRecipes = recipes.filter(recipe => {
+            let reminders = recipe.reminders
+            Object.keys(reminders).map((day)=>{
+                reminders[day].map(hour =>{
+                    console.log(hour)
+                    return Number(hour.replace(':', '')) > 600 && Number(hour.replace(':', '')) < 1200 
+                })
+            })
+        })
+        console.log(filteredRecipes)
+    }
+
     return (
         <div>
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
         <div>
             <div className="filterByTime__container">
             <p className="clicked">TODOS</p>
-            <p>MAÑANA</p>
+            <p onClick={() =>filterByTime()}>MAÑANA</p>
             <p>TARDE</p>
             <p>NOCHE</p>
             <p>MADRUGADA</p>
