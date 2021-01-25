@@ -182,11 +182,11 @@
                 height: 15vh;
             }
         }
-        .inputText__container{
+        .stockButtonInput_container{
             .stockButton__container{
-                position: absolute;
-                right: 12vw;
-                top: 55vh;
+                width: 25vw;
+                position: relative;
+                left: 52vw;
                 .stockButton{
                 width: 25vw;
                 height: 5vh;
@@ -198,6 +198,11 @@
                 border-radius: 15px;
                 border: none
             }}
+            .stockInput{
+                margin-top: -8vw;
+            }
+        }
+        .inputText__container{
             label {
                 color: $uma-text-secondary;
                 font-weight: 600;
@@ -216,6 +221,9 @@
                 color: $uma-text;
                 font-size: 0.9rem;
                 background: none;
+            }
+            input:focus {
+                outline: none !important;
             }
         }
         .save__button{

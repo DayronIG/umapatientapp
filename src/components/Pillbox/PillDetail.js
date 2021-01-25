@@ -38,7 +38,7 @@ export default function PillDetail({handleSaveReminder}) {
         <div className='detailContent__container'>
             <div className='pillForm'>
                         <div className='image__container'>
-                            <img className='pill_image' src={defaultPillImage} alt="defaultPill"/> 
+                            <img className='pill_image' src={reminderToEdit?.imagePath || defaultPillImage} alt="defaultPill"/> 
                         </div>
                         <div className='inputText__container'>
                             <label>Medicina </label>
@@ -48,12 +48,12 @@ export default function PillDetail({handleSaveReminder}) {
                             <label>Formato </label>
                             <input readOnly className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.format} onChange={(e) => editReminder("format", e.target.value)}/>
                         </div>
-                        <div className='inputText__container'>
+                        <div className='inputText__container stockButtonInput_container'>
                             <label>Stock </label>
                             <div className='stockButton__container'>
-                            <button className='stockButton'>Reponer</button>
+                                <button className='stockButton'>Reponer</button>
                             </div>
-                            <input readOnly className="form-control" type="text" name="" id="" defaultValue={reminderToEdit?.stock} onChange={(e) => editReminder("stock", e.target.value)}/>
+                            <input readOnly className="form-control stockInput" type="text" name="" id="" defaultValue={reminderToEdit?.stock} onChange={(e) => editReminder("stock", e.target.value)}/>
                         </div>
                         <div className='inputText__container'>
                             <label>Fecha de inicio:</label>

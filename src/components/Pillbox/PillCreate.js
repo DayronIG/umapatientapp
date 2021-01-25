@@ -1,18 +1,31 @@
 import React, {useRef} from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { AiOutlineClose, AiOutlineUpload } from 'react-icons/ai'
+import moment from 'moment'
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import { IconContext } from "react-icons";
+import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 
 export default function PillCreate({handleSaveReminder}) {
     const { personalizedShifts, newReminder, isEdition } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
     const fileRef = useRef()
+    const { dni } = useSelector(state => state.user)
 
-    const uploadFile = () => {
+    const uploadFileClick = () => {
         fileRef.current.click()
     }
+
+	const uploadImage = (e) => {
+		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
+		const currentFile = e.target.files[0];
+        const fileName = e.target.files[0].name;
+        console.log(`${dni}/pillbox/${dt}_${fileName}_${newReminder.medicine || ''}`)
+        dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, imagePath: e.target.value}})
+		uploadFileToFirebase(currentFile, `${dni}/pillbox/${dt}_${fileName}_${newReminder.medicine || ''}`)
+	};
+
 
     return (
         <div className='createContent__container'>
@@ -21,8 +34,8 @@ export default function PillCreate({handleSaveReminder}) {
                 <AiOutlineClose className='icon' onClick={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})}/>
             </div>
         <div className='pillForm'>
-        <div className='inputText__container' onClick={() => uploadFile()}>
-            <input ref={fileRef} type="file" name="" id="" style={{display: 'none'}}/>
+        <div className='inputText__container' onClick={() => uploadFileClick()}>
+            <input ref={fileRef} onChange={e => uploadImage(e)} type="file" name="" id="" style={{display: 'none'}}/>
             <label>Suba una foto de su medicamento (opcional) </label>
             <AiOutlineUpload className='uploadIcon'/>
             <input readOnly placeholder='Seleccione un archivo' className="form-control" type="text" name="" id=""/>
