@@ -94,7 +94,7 @@ export default function PillCreate({handleSaveReminder}) {
             <textarea defaultValue={isEdition ? newReminder.obs:''} className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, obs: e.target.value}})}/>
         </div>
         <button
-            className='save__button btn-blue-lg btn'
+            className='save__button btn-blue-lg btn mb-3'
             onClick={isEdition? () => handleSaveReminder(true): () => handleSaveReminder(false)}
             >
             {isEdition?'Guardar':'Crear'} recordatorio

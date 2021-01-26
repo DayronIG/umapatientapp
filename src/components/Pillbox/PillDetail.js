@@ -98,7 +98,6 @@ export default function PillDetail({handleSaveReminder}) {
                             <div className='hourlist'>
                                 {reminderToEdit?.reminders?.mon.map((el, i) => {
                                 if(!!el && el.length > 0){
-                                    console.log(el, "el")
                                     return <p className='hour' key={i}>{el}</p>
                                 }}
                                 )}

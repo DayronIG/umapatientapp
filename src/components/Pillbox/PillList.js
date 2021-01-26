@@ -14,6 +14,8 @@ export default function PillList({ }) {
     const history = useHistory()
     const [filterTime, setFilterTime] = useState('TODOS')
     const [renderRecipes, setRenderRecipes] = useState(null)
+    const [dailyReminders, setDailyReminders] = useState(0)
+    const [dailyRemindersTaken, setDailyRemindersTaken] = useState(0)
 
     const recipesList = useCallback(() => {
         const recipeList = [];
@@ -99,6 +101,62 @@ export default function PillList({ }) {
         dispatch({type: 'SET_FILTERED_RECIPES', payload: filteredRecipesLocal})
     }
 
+    const getDayForObjectKey = (day) => {
+        switch(day){
+            case('lun'):
+                return 'mon'
+            case('mar'):
+                return 'tue'
+            case('mie'):
+                return 'wed'
+            case('jue'):
+                return 'thu'
+            case('vie'):
+                return 'fri'
+            case('sab'):
+                return 'sat'
+            case('dom'):
+                return 'sun'
+            default:
+                break
+        }
+    }
+
+    const getProgress = () => {
+        let dailyRecipesLocal = []
+        let dailyRemindersLocal = []
+        let dailyRemindersTakenLocal = []
+
+        recipes.map(recipe => {
+            let reminders = recipe.reminders
+            Object.keys(reminders).map((day)=>{
+                console.log(day, getDayForObjectKey(moment().format('dddd').slice(0,3).toLowerCase()))
+                if(getDayForObjectKey(moment().format('dddd').slice(0,3).toLowerCase()) === day){
+                    dailyRemindersLocal.push(...reminders[day])
+                    dailyRecipesLocal.push(recipe)
+                    reminders[day].map(hour =>{
+                        if(Number(hour.replace(':', '')) > Number(moment().format("hh:mm").replace(':', ''))){
+                            dailyRemindersTakenLocal.push(hour)
+                        } 
+                    })
+                }
+            })
+        })
+
+        console.log(dailyRemindersLocal, dailyRemindersTakenLocal)
+
+        return [dailyRemindersLocal.length, dailyRemindersTakenLocal.length]
+    }
+
+    useEffect(() => {
+        if(recipes.length > 0){
+            let progress = getProgress()
+            console.log(getProgress())
+            setDailyReminders(progress[0])
+            setDailyRemindersTaken(progress[1])
+        }
+    }, [recipes])
+
     return (
         <div>
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
@@ -129,8 +187,8 @@ export default function PillList({ }) {
                 <div className="dateTitle">{`Hoy, ${moment().format('DD')} de ${renderMonth(moment().format('MM'))}`}</div>
                 <div className="progressTitle">Progreso diario</div>
                 <div className="progressContainer">
-                    <progress className="progressBar" value="40" max="100" />
-                    <p className="progressText"><span className="blue">2/5</span> tomadas</p>
+                    <progress className="progressBar" value={dailyRemindersTaken} max={dailyReminders} />
+                    <p className="progressText"><span className="blue">{dailyRemindersTaken}/{dailyReminders}</span> tomadas</p>
                 </div>
                 <div className='pillboxList__container'>
                     <div className='pillboxReminder__header'>
