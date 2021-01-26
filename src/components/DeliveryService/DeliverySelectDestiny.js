@@ -64,34 +64,53 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	useEffect(() => {
 		if(mapApi && mapInstance){
 			async function fetchData() {
-                let coords = [];
-                if(params.zones?.caba) {
-                    // eslint-disable-next-line array-callback-return
-                    params.zones.caba.map(coord => {
-                        let coordToNumber = {
-                            lat: Number(coord.lat),
-                            lng: Number(coord.lng)
-                        }
-                        coords.push(coordToNumber);
-                    })
-                }
-                let coverage = new mapApi.Polygon({
-                    paths: coords,
-                    strokeColor: "#009042",
-                    strokeOpacity: 0,
-                    fillColor: "#009042",
-                    fillOpacity: 0
-				  });
+				let coords = [];
+				let coordsArray = []
+                if(params.zones) {
+					// eslint-disable-next-line array-callback-return
+					Object.keys(params.zones).map(zone => {
+						let coordsArrayByZone = []
+						params.zones[zone].map(coord => {
+							let coordToNumber = {
+								lat: Number(coord.lat),
+								lng: Number(coord.lng)
+							}
+							coordsArrayByZone.push(coordToNumber);
+						})
+						coordsArray.push(coordsArrayByZone)
+					})
+				}
+				
+				let coveragesArray = []
+
+				coordsArray.map(arr => {
+					let coverage = new mapApi.Polygon({
+						paths: arr,
+						strokeColor: "#009042",
+						strokeOpacity: 0,
+						fillColor: "#009042",
+						fillOpacity: 0
+					  });
+					  coveragesArray.push(coverage)
+				})
 
 				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
 
 				let resultPath;
+				let isValid = [];
 				setTimeout(()=>{
-					resultPath = mapApi.geometry?.poly.containsLocation(
-						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
-						coverage
-					)
-					dispatch(handleAddressValidForHisopado(resultPath))
+					coveragesArray.map((cov) => {
+						resultPath = mapApi.geometry?.poly.containsLocation(
+							new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
+							cov
+						)
+						isValid.push(resultPath)
+					})
+					if(isValid.includes(true)){
+						dispatch(handleAddressValidForHisopado(true))
+					} else {
+						dispatch(handleAddressValidForHisopado(false))
+					}
 				}, 800)
 
             }
