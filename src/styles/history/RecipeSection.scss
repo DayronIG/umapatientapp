@@ -1,0 +1,43 @@
+@import '../global/Vars.scss';
+
+.recipe-container {
+    min-height: 90vh;
+    background-color: #fff;
+
+    .history-recipe {
+        display: flex;
+        align-items: center;
+        padding: 0 5% 0 6.5%;
+        width: 100%;
+
+        .leftIcon {
+            padding-right: 15px; 
+
+            svg {
+                color: $uma-primary;
+                font-size: 40px;
+            }
+
+        }
+
+        .info-recipe {
+
+            .product-name {
+                margin: 0;
+                font-size: 16px;
+                color: $text-super-dark;
+                font-weight: bold; 
+            }
+
+            .p-date {
+                margin: 0;
+                color: $text-gray-blue;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+        }
+
+    }
+
+}

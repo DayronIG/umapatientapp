@@ -7,7 +7,7 @@ import { faUserMd } from '@fortawesome/free-solid-svg-icons'
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { FaSlidersH } from "react-icons/fa";
-import '../../styles/history/HeaderContainer.scss'
+// import '../../styles/history/HeaderContainer.scss'
 
 const MyRecords = () => {
     const {category} = useParams();
