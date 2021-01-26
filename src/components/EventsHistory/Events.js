@@ -6,42 +6,46 @@ import { faUserMd, faChevronRight, faFlask, faFileAlt } from '@fortawesome/free-
 
 
 const Events = (props) => {
-    // let { data } = props
+    
     const {ws} = useSelector(state => state.user)
+
+    const sectionEvents = [
+        {
+            sectionName: 'Recetas',
+            icon: faFileAlt, 
+            url: `/${ws}/recipes`
+        },
+        {
+            sectionName: 'Órdenes y análisis',
+            icon: faFlask,
+            url: ``
+        }, 
+        {
+            sectionName: 'Consultas',
+            icon: faUserMd,
+            url: `/${ws}/record`
+        }
+    ]
+
 
     const renderEvents = () => {
         return (
             <>
-            {/* {data.map((record, index) => {  */}
-                {/* return (record.mr &&  */}
-                        <div className="event" >
-                            <div onClick={e => props.history.push(`/${ws}/recipes`)}>
-                                <div className="section-icon" >
-                                    <FontAwesomeIcon icon={faFileAlt} />
-                                    <span>Recetas</span>
-                                </div>
-                                <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
-                            </div>
-                            <hr/>
-                            <div>
-                                <div className="section-icon">
-                                    <FontAwesomeIcon icon={faFlask} />
-                                    <span>Órdenes y análisis</span>
-                                </div>
-                                <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
-                            </div>
-                            <hr/>
-                            <div onClick={e => props.history.push(`/${ws}/record`)}>
-                                <div className="section-icon"  >
-                                    <FontAwesomeIcon icon={faUserMd} />
-                                    <span>Consultas</span>
-                                </div>
-                                <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
-                            </div>
-                            
-                        </div>
-                     {/* )    */}
-             {/* })} */}
+                <div className="event" >
+                    {
+                        sectionEvents.map(item => {
+                            return(
+                                    <div className="mt-3 mb-3" onClick={e => props.history.push(item.url)}>
+                                        <div className="section-icon">
+                                            <FontAwesomeIcon icon={item.icon} />
+                                            <span>{item.sectionName}</span>
+                                        </div>
+                                        <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
+                                    </div>
+                            )
+                        })
+                    }
+                </div>
             </>
         )
     }
