@@ -22,8 +22,10 @@ export default function PillCreate({handleSaveReminder}) {
 		const currentFile = e.target.files[0];
         const fileName = e.target.files[0].name;
         console.log(`${dni}/pillbox/${dt}_${fileName}_${newReminder.medicine || ''}`)
-        dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, imagePath: e.target.value}})
-		uploadFileToFirebase(currentFile, `${dni}/pillbox/${dt}_${fileName}_${newReminder.medicine || ''}`)
+        uploadFileToFirebase(currentFile, `${dni}/pillbox/${dt}_${fileName}_${newReminder.medicine || ''}`)
+        .then(url => {
+            dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, imagePath: url}})
+        })
 	};
 
 
@@ -37,6 +39,11 @@ export default function PillCreate({handleSaveReminder}) {
         <div className='inputText__container uploadImageInput' onClick={() => uploadFileClick()}>
             <input ref={fileRef} onChange={e => uploadImage(e)} type="file" name="" id="" style={{display: 'none'}}/>
             <label>Suba una foto de su medicamento (opcional) </label>
+            {newReminder.imagePath? 
+            <div className='image__container'>
+                <img className='pill_image' src={newReminder?.imagePath} alt="defaultPill"/> 
+            </div>
+            : ''}
             <AiOutlineUpload className='uploadIcon'/>
             <input readOnly placeholder='Seleccione un archivo' className="form-control" type="text" name="" id=""/>
         </div>
@@ -57,11 +64,11 @@ export default function PillCreate({handleSaveReminder}) {
         </div>
         <div className='inputText__container'>
             <label>Fecha de fin (opcional)</label>
-            <input defaultValue={isEdition ? newReminder.end_date:''} className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, initial_date: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.end_date:''} className="form-control" type="date" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, end_date: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
-            <label>Dosis</label>
-            <input defaultValue={isEdition ? newReminder.dose:''} className="form-control" placeholder='2 por día' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <label>Cantidad</label>
+            <input defaultValue={isEdition ? newReminder.dose:'1'} className="form-control" placeholder='1' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
         </div>
 
         <div className='inputText__container'>
@@ -80,11 +87,11 @@ export default function PillCreate({handleSaveReminder}) {
 
         <div className='inputText__container'>
             <label>Stock</label>
-            <input defaultValue={isEdition ? newReminder.stock:''} placeholder='Cantidad en stock' className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <input defaultValue={isEdition ? newReminder.stock:''} placeholder='Cantidad en stock' className="form-control" type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, stock: e.target.value}})}/>
         </div>
         <div className='inputText__container'>
             <label>Observaciones</label>
-            <textarea defaultValue={isEdition ? newReminder.obs:''} className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, dose: e.target.value}})}/>
+            <textarea defaultValue={isEdition ? newReminder.obs:''} className="form-control observations" placeholder='Tomar una cucharada antes de la comida, en ayunas, etc.' type="number" name="" id="" onChange={(e) => dispatch({type: "SET_NEW_REMINDER",payload:{...newReminder, obs: e.target.value}})}/>
         </div>
         <button
             className='save__button btn-blue-lg btn'

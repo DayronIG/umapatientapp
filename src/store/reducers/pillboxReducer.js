@@ -1,5 +1,6 @@
 const initialState = {
 	isEdition: false,
+	loadingReminders: true,
 	newReminder: {
 		uid: '',
 		dose: 0,
@@ -30,6 +31,8 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
 	switch (type) {
+		case "SET_LOADING_REMINDERS":
+			return {...state, loadingReminders: payload}
 		case "SET_NEW_REMINDER":
 			return {...state, newReminder: payload}
 		case "SET_PERSONALIZED_SHIFTS":

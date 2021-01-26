@@ -10,7 +10,7 @@ import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
 export default function PillList({ }) {
     const dispatch = useDispatch()
-    const { filteredRecipes ,newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
+    const { filteredRecipes, loadingReminders, newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
     const history = useHistory()
     const [filterTime, setFilterTime] = useState('TODOS')
     const [renderRecipes, setRenderRecipes] = useState(null)
@@ -20,10 +20,8 @@ export default function PillList({ }) {
         let sortedRecipes = []
         if(filteredRecipes.length > 0){
             sortedRecipes = filteredRecipes.sort((a, b) =>{return a.medicine > b.medicine})
-            console.log('filtered')
         } else {
             sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
-            console.log('NOfiltered')
         }
         for(let recipe of sortedRecipes) {
             recipeList.push(
@@ -49,7 +47,6 @@ export default function PillList({ }) {
     }, [recipes, filteredRecipes])
 
     useEffect(() => {
-        console.log('CHANGE')
         setRenderRecipes(recipesList())
     }, [filteredRecipes, recipes, filterTime])
 
@@ -142,7 +139,7 @@ export default function PillList({ }) {
                         </div>
                     </div>
                     <hr/>
-                        {recipes.length > 0 ?
+                        {!loadingReminders ?
                         renderRecipes:
                         <div className="spinner__container">
                             <div className="spinner-border text-primary" role="status">

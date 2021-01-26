@@ -29,6 +29,7 @@ const Pillbox = props => {
 	const token = useSelector(state => state.userActive.token)
 
     const setRecipesFromFirebase = () => {
+        dispatch({type: "SET_LOADING_REMINDERS", payload: true})
         DB
         .firestore()
         .collection(`/user/${core_id}/pillbox`)
@@ -40,15 +41,16 @@ const Pillbox = props => {
             });
             dispatch({type: "SET_RECIPES_REMINDERS", payload: arrOfRecipies})
             dispatch({type: "SET_ORIGINAL_RECIPES", payload: arrOfRecipies})
+            dispatch({type: "SET_LOADING_REMINDERS", payload: false})
         });
     }
 
     const postReminder = () => {
-        axios.post("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
+        axios.post("http://localhost:8080/pillbox/reminder", {...newReminder, uid: core_id}, { headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
 
     const updateReminder = () => {
-        axios.patch("http://localhost:8080/pillbox/reminder",newReminder,{ headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
+        axios.patch("http://localhost:8080/pillbox/reminder",{...newReminder, uid: core_id}, { headers: {'Content-Type': 'Application/Json', "Authorization": `${token}`}})
     }
     
     const deleteReminderDB = (recipe) => {
