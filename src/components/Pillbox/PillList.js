@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom"
 import { BackButton } from '../GeneralComponents/Headers';
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
-export default function PillList({ }) {
+export default function PillList() {
     const dispatch = useDispatch()
     const { filteredRecipes, loadingReminders, newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
     const history = useHistory()
@@ -123,17 +123,13 @@ export default function PillList({ }) {
     }
 
     const getProgress = () => {
-        let dailyRecipesLocal = []
         let dailyRemindersLocal = []
         let dailyRemindersTakenLocal = []
-
         recipes.map(recipe => {
             let reminders = recipe.reminders
             Object.keys(reminders).map((day)=>{
-                console.log(day, getDayForObjectKey(moment().format('dddd').slice(0,3).toLowerCase()))
                 if(getDayForObjectKey(moment().format('dddd').slice(0,3).toLowerCase()) === day){
                     dailyRemindersLocal.push(...reminders[day])
-                    dailyRecipesLocal.push(recipe)
                     reminders[day].map(hour =>{
                         if(Number(hour.replace(':', '')) > Number(moment().format("hh:mm").replace(':', ''))){
                             dailyRemindersTakenLocal.push(hour)
@@ -142,9 +138,6 @@ export default function PillList({ }) {
                 }
             })
         })
-
-        console.log(dailyRemindersLocal, dailyRemindersTakenLocal)
-
         return [dailyRemindersLocal.length, dailyRemindersTakenLocal.length]
     }
 
