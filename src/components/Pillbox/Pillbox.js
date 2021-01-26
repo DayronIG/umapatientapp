@@ -39,6 +39,7 @@ const Pillbox = props => {
                 arrOfRecipies.push({...doc.data(), pillbox_id: doc.id})
             });
             dispatch({type: "SET_RECIPES_REMINDERS", payload: arrOfRecipies})
+            dispatch({type: "SET_ORIGINAL_RECIPES", payload: arrOfRecipies})
         });
     }
 
@@ -69,7 +70,7 @@ const Pillbox = props => {
             // }}})
             // } else if (shiftsToPost?.personalized) {
                 console.log(shiftsToPost.shifts, "aquí")
-                dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, reminders: shiftsToPost.shifts}})
+                dispatch({type: "SET_NEW_REMINDER", payload:{...newReminder, personalized: shiftsToPost?.personalized, reminders: shiftsToPost.shifts}})
             // }
         }
     }, [shiftsToPost])
@@ -118,7 +119,7 @@ const Pillbox = props => {
     const renderContent = () => {
         switch(renderState){
             case 'LIST':
-                return <PillList />
+                return <PillList setRecipesFromFirebase={setRecipesFromFirebase} />
             case 'DETAIL':
                 return <PillDetail />
             case 'CREATE':

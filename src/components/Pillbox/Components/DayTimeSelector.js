@@ -5,7 +5,7 @@ import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa"
 
 export default function DayTimeSelector({value, medicine = false, defaultValues = false}) {
     const [shiftsToSave, setShiftsToSave] = useState({})
-    const { personalizedShifts } = useSelector(state => state.pillbox)
+    const { personalizedShifts, newReminder } = useSelector(state => state.pillbox)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -27,11 +27,6 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
     },[])
 
     const addShift = (day) => {
-        // if(shiftsToSave.sun?.length > 0){
-        //     setShiftsToSave({...shiftsToSave, sun:[...shiftsToSave.sun, "00:00"]})
-        // } else {
-        //     setShiftsToSave({...shiftsToSave, sun:["00:00"]})
-        // }
         if(shiftsToSave[day]?.length > 0){
             setShiftsToSave({...shiftsToSave, [day]:[...shiftsToSave?.[day], "00:00"]})
         } else {
@@ -50,8 +45,8 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
     }
 
     const checkUncheckShift = (day) => {
-        if(!!shiftsToSave[day]){
-            setShiftsToSave({...shiftsToSave, [day]:null})
+        if(!!shiftsToSave[day] && shiftsToSave[day]?.length > 0){
+            setShiftsToSave({...shiftsToSave, [day]:[]})
         } else {
             setShiftsToSave({...shiftsToSave, [day]:['00:00']})
         }
@@ -64,14 +59,14 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                     <div className="daytime-selector" key={"mon"}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['mon']} onClick={()=>checkUncheckShift('mon')}/>
+                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['mon'] && shiftsToSave['mon']?.length > 0} onClick={()=>checkUncheckShift('mon')}/>
                             <p className='dayLabel'>LUNES</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('mon')}>+</div>
                     </div>
                    {shiftsToSave['mon'] && 
                    shiftsToSave['mon'].map((hour, indexHour) =>
-                    <div className='checkHours__container'>
+                    <div className='checkHours__container' key={indexHour}>
                         <Cleave placeholder="-"
                             options={{
                                 time: true,
@@ -87,7 +82,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'tue'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['tue']} onClick={()=>checkUncheckShift('tue')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['tue'] && shiftsToSave['tue']?.length > 0} onClick={()=>checkUncheckShift('tue')}/>
                             <p className='dayLabel'>MARTES</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('tue')}>+</div>
@@ -110,7 +105,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'wed'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['wed']} onClick={()=>checkUncheckShift('wed')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['wed'] && shiftsToSave['wed']?.length > 0} onClick={()=>checkUncheckShift('wed')}/>
                             <p className='dayLabel'>MIÉRCOLES</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('wed')}>+</div>
@@ -133,7 +128,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'thu'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['thu']} onClick={()=>checkUncheckShift('thu')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['thu'] && shiftsToSave['thu']?.length > 0} onClick={()=>checkUncheckShift('thu')}/>
                             <p className='dayLabel'>JUEVES</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('thu')}>+</div>
@@ -156,7 +151,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'fri'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['fri']} onClick={()=>checkUncheckShift('fri')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['fri'] && shiftsToSave['fri']?.length > 0} onClick={()=>checkUncheckShift('fri')}/>
                             <p className='dayLabel'>VIERNES</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('fri')}>+</div>
@@ -179,7 +174,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'sat'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sat']} onClick={()=>checkUncheckShift('sat')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['sat'] && shiftsToSave['sat']?.length > 0} onClick={()=>checkUncheckShift('sat')}/>
                             <p className='dayLabel'>SÁBADO</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('sat')}>+</div>
@@ -202,7 +197,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
                 <div className="daytime-selector" key={'sun'}>
                     <div className='checkButton__container'>
                         <div className='checkText__container'>
-                            <input type="checkbox" name="" id="" checked={!!shiftsToSave['sun']} onClick={()=>checkUncheckShift('sun')}/>
+                            <input type="checkbox" name="" id=""  checked={!!shiftsToSave['sun'] && shiftsToSave['sun']?.length > 0} onClick={()=>checkUncheckShift('sun')}/>
                             <p className='dayLabel'>DOMINGO</p>
                         </div>
                         <div className='addHour' onClick={()=>addShift('sun')}>+</div>
@@ -229,6 +224,7 @@ export default function DayTimeSelector({value, medicine = false, defaultValues 
 
     const changePersonalized = useCallback(()=>{
         dispatch({type: "SET_PERSONALIZED_SHIFTS", payload: !personalizedShifts})
+        dispatch({type: "SET_NEW_REMINDER", payload: {...newReminder, reminders: {mon: ['00:00']}}})
     },[personalizedShifts])
 
     return <> 

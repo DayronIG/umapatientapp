@@ -19,6 +19,7 @@ const initialState = {
 			sun: []
 		}
 	},
+	filteredRecipes: [],
 	personalizedShifts: false,
 	recipes: [],
 	renderState: 'LIST',
@@ -35,6 +36,8 @@ export default (state = initialState, { type, payload }) => {
 			return {...state, personalizedShifts: payload}
 		case "SET_RECIPES_REMINDERS":
 			return {...state, recipes: payload}
+		case "SET_FILTERED_RECIPES":
+			return {...state, filteredRecipes: payload}
 		case "SET_RENDER_STATE":
 			return {...state, renderState: payload}
 		case "SET_REMINDER_TO_EDIT":

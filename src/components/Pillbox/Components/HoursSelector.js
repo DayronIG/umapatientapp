@@ -10,7 +10,6 @@ export default function HoursSelector({value, medicine = false, defaultValues = 
     const [renderMarker, setRenderMarker] = useState(0)
 
     useEffect(() => {
-        console.log(hoursToSave, "ASD")
         if(medicine){
             dispatch({type: "SET_SHIFTS_TO_POST", payload: {medicine: medicine, 
             shifts: {

@@ -7,6 +7,7 @@ import {FaExclamationTriangle} from 'react-icons/fa'
 
 export default function PillDetail({handleSaveReminder}) {
     const { personalizedShifts, reminderToEdit} = useSelector(state => state.pillbox)
+    const { ws } = useSelector(state => state.user)
     const [displayModalDelete, setDisplayModalDelete] = useState(false)
     const dispatch = useDispatch()
 
@@ -17,10 +18,30 @@ export default function PillDetail({handleSaveReminder}) {
     const deleteReminder = () => {
 
     }
+
+    const renderDay = (day) => {
+        switch(day){
+            case('mon'):
+                return 'Lunes'
+            case('tue'):
+                return 'Martes'
+            case('wed'):
+                return 'Miércoles'
+            case('thu'):
+                return 'Jueves'
+            case('fri'):
+                return 'Viernes'
+            case('sat'):
+                return 'Sábado'
+            case('sun'):
+                return 'Domingo'
+            default:
+                break
+            }
+    }
     
     return (
         <>
-        {console.log(displayModalDelete)}
         {displayModalDelete && 
         <MobileModal callback={() => setDisplayModalDelete(false)}>
             <div className='modalContent__container'>
@@ -34,7 +55,7 @@ export default function PillDetail({handleSaveReminder}) {
                 </button>
             </div>
         </MobileModal>}
-        <BackButton inlineButton={true} customTarget action={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})} />
+        <BackButton inlineButton={true} customTarget={ws} action={()=>dispatch({type: "SET_RENDER_STATE", payload:"LIST"})} />
         <div className='detailContent__container'>
             <div className='pillForm'>
                         <div className='image__container'>
@@ -69,40 +90,33 @@ export default function PillDetail({handleSaveReminder}) {
                         </div>
                         <div className='inputText__container'>
                             <label>Dosaje</label>
-                            {/* <select className="form-control" defaultValue={reminderToEdit?.personalized? "personalized": "every_day"} 
-                            onChange={(e) => {
-                            if(e.target.value === "personalized") {
-                                dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:true})
-                                editReminder("personalized", true)
-                            } else {
-                                dispatch({type: "SET_PERSONALIZED_SHIFTS", payload:false})
-                                editReminder("personalized", false)
-                            }}}>
-                                <option value="every_day">Todos los dias</option>
-                                <option value="personalized">Horarios personalizados</option>
-                            </select> */}
                         </div>
-
 
                         {!personalizedShifts &&
                         <div className='doseDisplay'>
                             <p className='weekday'>Todos los dias</p>
                             <div className='hourlist'>
-                                {reminderToEdit?.reminders?.mon.map(el => <p className='hour'>{el}</p>)}
+                                {reminderToEdit?.reminders?.mon.map((el, i) => {
+                                if(!!el && el.length > 0){
+                                    console.log(el, "el")
+                                    return <p className='hour' key={i}>{el}</p>
+                                }}
+                                )}
                             </div>
-                            {/* <HoursSelector medicine={reminderToEdit?.medicine} defaultValues={!reminderToEdit?.personalized ? reminderToEdit?.reminders?.mon: false}/> */}
                         </div>}
 
                         {personalizedShifts &&
                         <>
-                            {Object.keys(reminderToEdit?.reminders).map(el =>
-                                <div className='doseDisplay'>
-                                    <p className='weekday'>{el}</p>
-                                    <div className='hourlist'>
-                                    {reminderToEdit?.reminders[el].map(hour => <p className='hour'>{hour}</p>)}
-                                    </div>
-                                    {/* <DayTimeSelector medicine={reminderToEdit?.medicine} defaultValues={reminderToEdit?.personalized ? reminderToEdit?.reminders: false}/> */}
-                            </div>)}
+                            {Object.keys(reminderToEdit?.reminders).map((el, i) =>{
+                                if(!!reminderToEdit?.reminders[el] && reminderToEdit?.reminders[el].length > 0){
+                                return  <div className='doseDisplay' key={i}>
+                                            <p className='weekday'>{renderDay(el)}</p>
+                                            <div className='hourlist'>
+                                                {reminderToEdit?.reminders[el].map(((hour, index) => <p className='hour' key={index}>{hour}</p>))}
+                                            </div>
+                                        </div>
+                                }})
+                            }
                         </>
                         }
 

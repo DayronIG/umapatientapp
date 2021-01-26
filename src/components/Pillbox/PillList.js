@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaPills } from "react-icons/fa"
 import { BsClock } from "react-icons/bs"
@@ -8,14 +8,23 @@ import { useHistory } from "react-router-dom"
 import { BackButton } from '../GeneralComponents/Headers';
 import defaultPillImage from "../../assets/img/pillbox/defaultPillImage.jpg"
 
-export default function PillList({editStatus}) {
+export default function PillList({ }) {
     const dispatch = useDispatch()
-    const { newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
+    const { filteredRecipes ,newReminder, shiftsToPost, reminderToEdit, reminderToEditIndex, recipes} = useSelector(state => state.pillbox)
     const history = useHistory()
+    const [filterTime, setFilterTime] = useState('TODOS')
+    const [renderRecipes, setRenderRecipes] = useState(null)
 
-    const recipesList = () => {
+    const recipesList = useCallback(() => {
         const recipeList = [];
-        let sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
+        let sortedRecipes = []
+        if(filteredRecipes.length > 0){
+            sortedRecipes = filteredRecipes.sort((a, b) =>{return a.medicine > b.medicine})
+            console.log('filtered')
+        } else {
+            sortedRecipes = recipes.sort((a, b) =>{return a.medicine > b.medicine})
+            console.log('NOfiltered')
+        }
         for(let recipe of sortedRecipes) {
             recipeList.push(
                 <div className='recipesList__container' key={recipe.medicine || Math.random()} 
@@ -37,7 +46,12 @@ export default function PillList({editStatus}) {
             )
         }
         return recipeList
-    }
+    }, [recipes, filteredRecipes])
+
+    useEffect(() => {
+        console.log('CHANGE')
+        setRenderRecipes(recipesList())
+    }, [filteredRecipes, recipes, filterTime])
 
     const renderMonth = (month) => {
         switch(month){
@@ -70,17 +84,22 @@ export default function PillList({editStatus}) {
             }
     }
 
-    const filterByTime = (time) => {
-        let filteredRecipes = recipes.filter(recipe => {
+    const filterByTime = (lowCut, highCut, isTodos=false) => {
+        let filteredRecipesLocal = []
+        if (!isTodos){
+        recipes.map(recipe => {
             let reminders = recipe.reminders
             Object.keys(reminders).map((day)=>{
                 reminders[day].map(hour =>{
-                    console.log(hour)
-                    return Number(hour.replace(':', '')) > 600 && Number(hour.replace(':', '')) < 1200 
+                    if(Number(hour.replace(':', '')) >= lowCut && Number(hour.replace(':', '')) < highCut){
+                        if(!filteredRecipesLocal.includes(recipe)){
+                            filteredRecipesLocal.push(recipe)
+                        }
+                    } 
                 })
             })
-        })
-        console.log(filteredRecipes)
+        })} 
+        dispatch({type: 'SET_FILTERED_RECIPES', payload: filteredRecipesLocal})
     }
 
     return (
@@ -88,18 +107,33 @@ export default function PillList({editStatus}) {
         <BackButton inlineButton={true} action={()=>history.push(`/`)} />
         <div>
             <div className="filterByTime__container">
-            <p className="clicked">TODOS</p>
-            <p onClick={() =>filterByTime()}>MAÑANA</p>
-            <p>TARDE</p>
-            <p>NOCHE</p>
-            <p>MADRUGADA</p>
+            <p onClick={() =>{
+                filterByTime(0, 2400, true)
+                setFilterTime('TODOS')
+                }} className={`${filterTime === 'TODOS' ? 'clicked':''}`}>TODOS</p>
+            <p onClick={() =>{
+                filterByTime(600, 1200)
+                setFilterTime('MAÑANA')
+                }} className={`${filterTime === 'MAÑANA' ? 'clicked':''}`}>MAÑANA</p>
+            <p onClick={() =>{
+                filterByTime(1200, 2000)
+                setFilterTime('TARDE')
+                }} className={`${filterTime === 'TARDE' ? 'clicked':''}`}>TARDE</p>
+            <p onClick={() =>{
+                filterByTime(2000, 2400)
+                setFilterTime('NOCHE')
+                }} className={`${filterTime === 'NOCHE' ? 'clicked':''}`}>NOCHE</p>
+            <p onClick={() =>{
+                filterByTime(100, 600)
+                setFilterTime('MADRUGADA')
+            }} className={`${filterTime === 'MADRUGADA' ? 'clicked':''}`}>MADRUGADA</p>
         </div>
             <div className='pillListContainer'>
                 <div className="dateTitle">{`Hoy, ${moment().format('DD')} de ${renderMonth(moment().format('MM'))}`}</div>
                 <div className="progressTitle">Progreso diario</div>
                 <div className="progressContainer">
                     <progress className="progressBar" value="40" max="100" />
-                    <p className="progressText"><p className="blue">2/5</p> tomadas</p>
+                    <p className="progressText"><span className="blue">2/5</span> tomadas</p>
                 </div>
                 <div className='pillboxList__container'>
                     <div className='pillboxReminder__header'>
@@ -109,7 +143,7 @@ export default function PillList({editStatus}) {
                     </div>
                     <hr/>
                         {recipes.length > 0 ?
-                        recipesList():
+                        renderRecipes:
                         <div className="spinner__container">
                             <div className="spinner-border text-primary" role="status">
                                 <span className="sr-only">Loading...</span>
