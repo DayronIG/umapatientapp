@@ -108,12 +108,12 @@ function App(props) {
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
-				<PrivateRoute exact path='/:dni/onlinedoctor/when' component={When} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/who' component={Who} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/questions' component={Questions} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/reason' component={Reason} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/queue' component={AttQueue} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/attention/:token?' component={CallContainer} />
+				<PrivateRoute exact path='/onlinedoctor/when/:dni' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/who/:dni' component={Who} />
+				<PrivateRoute exact path='/onlinedoctor/questions/:dni' component={Questions} />
+				<PrivateRoute exact path='/onlinedoctor/reason/:dni' component={Reason} />
+				<PrivateRoute exact path='/onlinedoctor/queue/:dni' component={AttQueue} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:token?' component={CallContainer} />
 				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />

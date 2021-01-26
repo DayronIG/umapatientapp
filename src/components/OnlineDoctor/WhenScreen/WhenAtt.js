@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Comments from './Comments.js';
@@ -12,7 +12,7 @@ import { Loader } from '../../GeneralComponents/Loading';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import Backbutton from '../../GeneralComponents/Backbutton';
-import { findAllAssignedAppointment, findAllFreeAppointments } from '../../Utils/appointmentsUtils';
+import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
@@ -27,13 +27,17 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if (dni !== undefined) {
+			dispatch({type: 'LOADING', payload: true})
 			getUser(dni)
 				.then((p) => {
 					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
-					setPediatric(type ? true : false);
-					findAssignedAppointments(p, type);
+					setPediatric(type);
+					let test = p.context === "temp" ? true : false
+					findAssignedAppointments(p, type, test);
+					dispatch({type: 'LOADING', payload: false})
 				})
 				.catch(function(error) {
+					dispatch({type: 'LOADING', payload: false})
 					return error;
 				});
 		}
@@ -50,7 +54,7 @@ const WhenScreen = (props) => {
 		});
 	}, []);
 
-	async function findAssignedAppointments(person, type) {
+	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
 			let assigned = undefined;
@@ -59,9 +63,9 @@ const WhenScreen = (props) => {
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				return props.history.replace(`/${person.dni}/onlinedoctor/queue`);
+				return props.history.replace(`/onlinedoctor/queue/${person.dni}`);
 			} else {
-				return findFreeAppointments(person, type);
+				return findFreeAppointments(person, type, test);
 			}
 		} catch (error) {
 			// console.error(error)
@@ -69,14 +73,10 @@ const WhenScreen = (props) => {
 		}
 	}
 
-	async function findFreeAppointments(person, type) {
+	const findFreeAppointments = useCallback(async (person, type, test) => {
 		try {
 			let freeAppoints =  []
-			if(user.context === "temp") {
-				freeAppoints = await getFreeGuardia("test"); // WIP
-			} else {
-				freeAppoints = await getFreeGuardia(); // WIP
-			}
+			freeAppoints = await getFreeGuardia(test, user.country, type); // WIP
 			// Get free appointments from firebase.
 			// let freeAppoints = await findAllFreeAppointments(type);
 			// Filter doctors by cuil
@@ -87,9 +87,10 @@ const WhenScreen = (props) => {
 				return setAction('Empty');
 			}
 		} catch (error) {
+			console.log(error)
 			return props.history.replace('/');
 		}
-	}
+	}, [pediatric])
 
 	return (
 		<>
@@ -129,6 +130,7 @@ const WhenScreen = (props) => {
 								<DoctorCard
 									{...assignation}
 									key={index}
+									dni={dni}
 								/>
 							))}
 						</div>

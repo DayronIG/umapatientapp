@@ -58,7 +58,7 @@ const ModulesMenu = () => {
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
-								`/${user.ws}/onlinedoctor/who`,
+								`/onlinedoctor/who/${user.ws}`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'

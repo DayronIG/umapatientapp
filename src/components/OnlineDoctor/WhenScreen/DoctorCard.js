@@ -7,11 +7,9 @@ import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
-import moment from 'moment';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
-	const [firstOption, setFirstOption] = useState();
 	var timeDelay = classnames('timeDelay', {
 		verygood: props.doc && props.doc.metrics && props.doc.metrics.punctuality <= 0.5,
 		good:
@@ -22,22 +20,23 @@ const DoctorCard = (props) => {
 		regular: props.doc && props.doc.metrics && props.doc.metrics.punctuality >= 1.5,
 	});
 
-	useEffect(() => {
-		// getDoctor(props.doctor.cuil).then(setFirstOption);
-	}, [props.doctor]);
-
 	function viewComments(doc) {
+		dispatch({ type: 'TOGGLE_DETAIL' });
+		dispatch({type: 'LOADING', payload: true})
 		getFeedback(doc).then((res) => {
 			dispatch({ type: 'SET_FEEDBACK', payload: res });
-			dispatch({ type: 'TOGGLE_DETAIL' });
-		});
+			dispatch({type: 'LOADING', payload: false})
+		}).catch((err)=> {
+			console.log(err)
+			dispatch({type: 'LOADING', payload: false})
+		})
 	}
 
 	function selectDoctor(selected) {
-		console.log(selected)
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
+		console.log(props)
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
+		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	}
 
 	return (
@@ -74,13 +73,8 @@ const DoctorCard = (props) => {
 					</div>
 					<div className='doctorCard-timeContainer'>
 						<div className='timeRemainingBefore'>
-							Disponible en
 							<br />
-							{moment(`${props.date} ${props.time}:00`).diff(moment(), "minutes") > 0 ?
-							<span className='ml-1'>{moment(`${props.date} ${props.time}:00`).diff(moment(), "minutes")} minutos</span>
-							:
-							<span className='ml-1'>Ahora</span>
-							}
+							<span className='ml-1'>Disponible {props.delay}</span>
 						</div>
 					</div>
 				</div>
@@ -96,7 +90,7 @@ const DoctorCard = (props) => {
 							{props.doc.metrics && props.doc.metrics.punctuality >= 1.5 && 'Regular'}
 						</div>
 					)}
-					<div className='doctorCard-comments' onClick={() => viewComments(props.cuil)}>
+					<div className='doctorCard-comments' onClick={() => viewComments(props.cuit)}>
 						Ver comentarios
 					</div>
 				</div>
@@ -112,7 +106,7 @@ const GuardCardComp = (props) => {
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/${props.dni}/onlinedoctor/reason`);
+		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	};
 
 	return (
@@ -146,7 +140,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/${dni}/onlinedoctor/reason`);
+		history.replace(`/onlinedoctor/reason/${dni}`);
 	}
 
 	return (

@@ -61,7 +61,7 @@ const Predict = ({predicted, history})=>{
     }
 
     function redirectNow() {
-        window.location.href = `/${patient.ws}/onlinedoctor/who`;
+        window.location.href = `/onlinedoctor/who/${patient.ws}`;
     }
 
     async function _getOnlineAppointment() {
@@ -85,6 +85,7 @@ const Predict = ({predicted, history})=>{
 				sex: patient.sex || '',
 				specialty: 'online_clinica_medica',
                 ws: patient.ws,
+                uid: patient.core_id,
                 category: 'GUARDIA_AUTONOMOUS'
 			};
 			const headers = { 'Content-type': 'application/json' };
@@ -93,7 +94,7 @@ const Predict = ({predicted, history})=>{
             localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
             localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
             dispatch({type: 'TOGGLE_DETAIL', payload: false})
-            return history.replace(`/${patient.dni}/onlinedoctor/queue`);
+            return history.replace(`/onlinedoctor/queue/${patient.dni}`);
 		} catch (err) {
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');

@@ -39,7 +39,7 @@ const QueueActions = (props) => {
 		<div className="questionsContainer">
 			{ 
 				props.calling &&
-				<Link to={`/${props.dni}/onlinedoctor/attention/`} replace={true}>
+				<Link to={`/onlinedoctor/attention/${props.dni}`} replace={true}>
 					<button className="btn-questions btn-calling">Ingresar al consultorio</button>
 				</Link>
 			}

@@ -100,6 +100,7 @@ export const SymptomsWarning = ({ history }) => {
 				sex: user.sex || '',
 				specialty: 'online_clinica_medica',
                 ws: user.ws,
+                uid: user.core_id,
                 category: 'GUARDIA_UMACARE'
 			};
 			const headers = { 'Content-type': 'application/json' };
@@ -107,7 +108,7 @@ export const SymptomsWarning = ({ history }) => {
 			dispatch({ type: 'LOADING', payload: false });
             localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
             localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-            return history.replace(`/${user.dni}/onlinedoctor/queue`);
+            return history.replace(`/onlinedoctor/queue/${user.dni}`);
 		} catch (err) {
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');

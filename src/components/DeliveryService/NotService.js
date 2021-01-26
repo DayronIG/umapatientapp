@@ -17,7 +17,7 @@ const NotService = () => {
       <h2 className="notService__title">Algo salió mal</h2>
       <p className="notService__text">No hemos encontrado lo que buscabas, pero tal vez te interese esto</p>
 
-      <button className="notService__button" onClick={() => history.push(`/${user.ws}/onlinedoctor/who`)}>
+      <button className="notService__button" onClick={() => history.push(`/onlinedoctor/who/${user.ws}`)}>
         <div>
           <img src={especialista} alt="Consulta médica"/>
           <span>Quiero una consulta médica</span>

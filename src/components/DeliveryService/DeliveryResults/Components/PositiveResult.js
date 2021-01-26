@@ -58,7 +58,7 @@ export default function PositiveResult({finalAction}) {
                             </div>
                             <FaArrowRight className="icon-arrow" />
                         </div>
-                        <div className="results-menu-map-item" onClick={() => history.push(`/${patient.ws}/onlinedoctor/who`)}>
+                        <div className="results-menu-map-item" onClick={() => history.push(`/onlinedoctor/who/${patient.ws}`)}>
                             <div>
                             <FaUserNurse className="icon" />
                                 Quiero una consulta médica

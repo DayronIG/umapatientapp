@@ -35,7 +35,7 @@ const Queue = (props) => {
     const [cancelOptions, setCancelOptions] = useState('')
     const [cancelDescription, setCancelDescription] = useState('');
     const [responseAction, setResponseAction] = useState({ response: '', action: '' })
-    const { openDetails, modalAction, remainingText, loading } = useSelector(state => state.front)
+    const { openDetails, modalAction, loading } = useSelector(state => state.front)
     const assessment = useSelector(state => state.assessment)
     const [dni] = useState(props.match.params.dni)
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
@@ -79,7 +79,7 @@ const Queue = (props) => {
                 .onSnapshot(res => {
                     if (mr && mr !== undefined) {
                         let mr = res.data() && res.data().mr
-                        if (mr.destino_final === 'Paciente ausente' || mr.destino_final === 'Anula por falla de conexión') {
+                        if (mr.destino_final !== '') {
                             swal(`El médico cerró tu atencion.`, `Motivo: ${mr.destino_final}. Puedes tomar una nueva consulta.`, 'warning')
                             dispatch({ type: 'RESET_ALL' })
                         }
@@ -154,35 +154,12 @@ const Queue = (props) => {
     }, [assignedAppointment])
 
     useEffect(() => {
-        try {
-            dispatch({ type: 'LOADING', payload: true })
-            if (callSettings.room === '') {
-                try {
-                    if ((!patient.ws || patient.ws === '') && assignedAppointment) {
-                        patient.ws = assignedAppointment.appointments?.['0']?.['6']
-                    }
-                    let queryUser = firestore.collection('auth').doc(patient.ws)
-                    queryUser.onSnapshot(async function (doc) {
-                        let data = doc.data()._start_date
-                        if (data !== '' && data !== "geo") {
-                            let callRoom = data?.split('///')
-                            if(callRoom) {
-                                dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
-                            }
-                        } else {
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
-                        }
-                    })
-                } catch (err) {
-                    dispatch({ type: 'ERROR', payload: 'FAILED QueryUser ' + err })
-                }
-            }
-        } catch (err) {
-            console.log(err)
-        } finally {
-            dispatch({ type: 'LOADING', payload: false })
+        let snapshot = () => { console.log("No hay snapshot") }
+        if (callSettings.room === '') {
+            snapshot = getCallStatus()
         }
-    }, [assignedAppointment, dispatch, callSettings.room, dni])
+        return () => snapshot
+    }, [patient])
 
     // Effect to listen callSettings
     useEffect(() => {
@@ -194,7 +171,6 @@ const Queue = (props) => {
     useEffect(() => {
         try {
             var audioControl = document.getElementById('toneAudio')
-            dispatch({ type: 'START_CALL' })
             if (audioControl !== null) {
                 var interval = setInterval(() => {
                     audioControl.play()
@@ -242,6 +218,36 @@ const Queue = (props) => {
         }
     }
 
+    const getCallStatus = useCallback(() =>{
+        // WIP
+        try {
+            if ((!patient.ws || patient.ws === '') && assignedAppointment) {
+                patient.ws = assignedAppointment.appointments?.['0']?.['6']
+            }
+            if(patient.ws && patient.ws !== "") {
+                console.log("Cargó", patient)
+                let queryUser = firestore.collection('auth').doc(patient.ws)
+                return queryUser.onSnapshot(async function (doc) {
+                    let data = doc.data()._start_date
+                    dispatch({ type: 'LOADING', payload: false })
+                    if (data !== '' && data !== "geo") {
+                        let callRoom = data?.split('///')
+                        if(callRoom) {
+                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
+                        }
+                    } else {
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
+                    }
+                })
+            } else {
+                console.log("Cargando", patient)
+                dispatch({ type: 'LOADING', payload: true })
+            }
+        } catch (err) {
+            dispatch({ type: 'ERROR', payload: 'FAILED QueryUser ' + err })
+        }
+    }, [patient, assignedAppointment])
+
     async function handleComplain(type, claim) {
         dispatch({ type: 'TOGGLE_MODAL_ACTION', payload: true })
         dispatch({ type: 'TOGGLE_DETAIL' });
@@ -264,15 +270,6 @@ const Queue = (props) => {
             swal('Error', 'Hubo un error al enviar el reclamo, intenta nuevamente.', 'error')
         }
     }
-
-    function getEvent() {
-        return firestore.collection('events/requests/online').doc(assignation).get()
-            .then((res) => {
-                return res.data()
-            })
-            .catch(err => console.log(err))
-    }
-
     async function cancelAppointment(type, claim = '') {
         dispatch({ type: 'LOADING', payload: true })
         // let event = await getEvent()
@@ -418,7 +415,7 @@ const Queue = (props) => {
             {calling ?
                 <>
                     <div className='ico-calling'>
-                        <Link to={`/${dni}/onlinedoctor/attention/`} replace={true}>
+                        <Link to={`/onlinedoctor/attention/${dni}`} replace={true}>
                             <FontAwesomeIcon icon={faPhoneAlt} />
                         </Link>
                     </div>

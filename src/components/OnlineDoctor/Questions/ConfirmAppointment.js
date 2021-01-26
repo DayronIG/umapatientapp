@@ -90,17 +90,18 @@ const ConfirmAppointment = (props) => {
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
+				uid: user.core_id
 			};
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/${userVerified.dni}/onlinedoctor/who`);
+				return history.replace(`/onlinedoctor/who/${userVerified.dni}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/${userVerified.dni}/onlinedoctor/queue`);
+				return history.replace(`/onlinedoctor/queue/${userVerified.dni}`);
 			}
 		} catch (err) {
 			console.log(err)

@@ -22,8 +22,9 @@ export const getOneRecord = (patient) => ({
 });
 
 
-export async function getFreeGuardia(test = false) {
+export async function getFreeGuardia(test = false, country = false, type = false) {
 	let docQuery = []
+	console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
 	if(test === "test") {
 		await firestore
 			.collection('assignations/guardia/test')
@@ -39,7 +40,17 @@ export async function getFreeGuardia(test = false) {
 			.get()
 			.then(snap => {
 				snap.forEach((element) => {
-					docQuery.push(element.data())
+					if(type === 'pediatria') {
+						if(element.data().doc?.specialty === "pediatria") {
+							docQuery.push(element.data())
+						} 
+					} else {
+						if(element.data().doc?.country.includes(country)) {
+							docQuery.push(element.data())
+						} else if(country === false || country === 'AR' || country === "") {
+							docQuery.push(element.data())
+						}
+					}
 				})
 			})
 	}

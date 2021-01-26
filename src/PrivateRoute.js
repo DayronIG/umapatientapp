@@ -138,7 +138,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 <ToastNotification
                     title={'LLAMADA ENTRANTE...'}
                     button={'Contestar'}
-                    action={`/${user.dni}/onlinedoctor/attention/`}
+                    action={`/onlinedoctor/attention/${user.dni}`}
                     unsetNotification={setNotification}
                     audio={tone}
                 />

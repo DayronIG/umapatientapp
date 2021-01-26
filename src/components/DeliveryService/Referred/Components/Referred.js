@@ -27,7 +27,7 @@ export default function ReferredInvitation({finalAction}) {
                         <FaArrowRight className="icon-arrow" />
                     </div>
                     <div className="results-menu-map-item"
-                    onClick={() => history.push(`/${patient.ws}/onlinedoctor/who`)}
+                    onClick={() => history.push(`/onlinedoctor/who/${patient.ws}`)}
                     >
                         <div>
                             <FaUserNurse className="icon" />
