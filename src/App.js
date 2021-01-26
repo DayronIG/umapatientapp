@@ -196,7 +196,7 @@ function App(props) {
 				{/* VACCINE */}
 				<Route exact path='/invitation/:id' component={Invitation} />
 				{/* PILLBOX */}
-				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
+				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
