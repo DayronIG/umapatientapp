@@ -114,7 +114,8 @@ function App(props) {
 				<PrivateRoute exact path='/onlinedoctor/reason/:dni' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:dni' component={AttQueue} />
 				<PrivateRoute exact path='/onlinedoctor/attention/:token?' component={CallContainer} />
-				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:token?' component={CallContainer} />
+				<PrivateRoute exact path='/onlinedoctor/rating/:ws' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
