@@ -36,4 +36,4 @@ const HistoryHome = ({ user }) => {
     )
 }
 
-export default HistoryHome
+export default HistoryHome;
