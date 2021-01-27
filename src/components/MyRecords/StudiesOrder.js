@@ -24,9 +24,9 @@ class OrderPDF extends React.Component {
 											{mr && mr.diagnostico && <li>Diagnóstico: {mr.diagnostico} </li>}
 									</ul>
 							</div>
-							<div className="orderToPrint__container mt-5">
+							<div className='orderToPrint__container mt-5'>
 									<h2>Estudios:</h2>
-									<ul className="orderToPrint__container--list mt-2">
+									<ul className='orderToPrint__container--list mt-2'>
 											{mr.ordenes.map((item, index) => <li key={index}>{item.nombre}</li>)}
 									</ul>
 							</div>
@@ -37,7 +37,7 @@ class OrderPDF extends React.Component {
 									<h6 className='orderToPrint__bottomContainer--doctorData'>
 											Matrícula número: {doctorInfo && doctorInfo.matricula}
 									</h6>
-									{doctorInfo.signature && doctorInfo.signature !== "" &&
+									{doctorInfo.signature && doctorInfo.signature !== '' &&
 											<div className='orderToPrint__bottomContainer--firm'>
 													<img src={doctorInfo.signature} alt='' />
 											</div>}
@@ -65,74 +65,74 @@ function StudiesOrder({ att, doc }) {
         <>
             {!!att && !!mr && !!mr.ordenes && mr.ordenes.length > 0 ?
                 <>
-                    <div className='d-flex flex-column justify-content-between p-2' id='receta' ref={compRef}>
+                    <div id='receta' ref={compRef}>
                         <div className='dossier-att-info'>
                             <p><b>Afiliado: </b></p>
-                            <span className="dossier-info">{patient && patient.fullname}</span>
+                            <span className='dossier-info'>{patient && patient.fullname}</span>
                             <hr />
                             <p><b>DNI: </b></p>
-                            <span className="dossier-info">{patient && patient.dni}</span>
+                            <span className='dossier-info'>{patient && patient.dni}</span>
                             <hr />
-                            <div className="d-flex justify-content-between">
+                            <div className='date-prescription'>
                                 <div>
-                                    <p><b>Fecha de prescripción</b></p>
-                                    <span className="dossier-info">{att && moment(mr.dt_cierre).format('DD-MM-YYYY')}</span>
+                                    <p><b>Fecha de prescripción:</b></p>
+                                    <span className='dossier-info'>{att && moment(mr.dt_cierre).format('DD-MM-YYYY')}</span>
                                 </div>
                                 <div>
-                                    <p><b>Hora de prescripción</b></p>
-                                    <span className="dossier-info">{att && moment(mr.dt_cierre).format('HH:mm')}</span>
+                                    <p><b>Hora de prescripción:</b></p>
+                                    <span className='dossier-info'>{att && moment(mr.dt_cierre).format('HH:mm')}</span>
                                 </div>
                             </div>
                             <hr />
                             {(patient && 'obra_social' in patient && patient.obra_social) &&
                                 <>
-                                    <p><b>Obra social</b> </p>
-                                    <span className="dossier-info">{patient.obra_social}</span>
+                                    <p><b>Obra social:</b> </p>
+                                    <span className='dossier-info'>{patient.obra_social}</span>
                                     <hr />
                                 </>
                             }
                             {(patient && 'n_afiliado' in patient && patient.n_afiliado) &&
                                 <>
-                                    <p><b>Número de afiliado</b></p> 
-                                    <span className="dossier-info">{patient.n_afiliado}</span>
+                                    <p><b>Número de afiliado:</b></p> 
+                                    <span className='dossier-info'>{patient.n_afiliado}</span>
                                     <hr/>
                                 </>
                             }
-                            <p><b>Diagnóstico:</b></p>
-                            <span className="dossier-info">{mr.diagnostico}</span> 
+                            <p><b>Diagnóstico</b></p>
+                            <span className='dossier-info'>{mr.diagnostico}</span> 
                             <hr/>
                             <div>
-                                <b>Estudio:</b><br />
+                                <b>Estudio</b><br />
                                 <ul>
-                                    {mr.ordenes.map((item, index) => <li className="dossier-info" key={index}>Nombre: {item.nombre}</li>)}
+                                    {mr.ordenes.map((item, index) => <li className='dossier-info' key={index}>Nombre: {item.nombre}</li>)}
                                 </ul>
                             </div>
                             <hr />
                             <p><b>Médico</b><br /></p>
-                            <span className="dossier-doc-info"><b>Nombre: </b> {doc.fullname || ''} </span><br />
-                            <span className="dossier-doc-info"><b>Matrícula: </b> {doc.matricula || ''} </span><br />
-                            <span className="dossier-doc-info"><b>Firma: </b> </span> <br />
-                            <div className='text-center'>
+                            <span className='dossier-doc-info'><b>Nombre: </b> {doc.fullname || ''} </span><br />
+                            <span className='dossier-doc-info'><b>Matrícula: </b> {doc.matricula || ''} </span><br />
+                            <span className='dossier-doc-info'><b>Firma: </b> </span> <br />
+                            <div className='doctor-signature'>
                                 <img src={dataToPrint.doctorInfo.signature} alt='doctor signature' style={{width: '200px', }}/>
                             </div>
                         </div>
                     </div>
-                    <div className='d-none'>
+                    <div style={{display: 'none'}}>
                         <OrderPDF {...dataToPrint} />
                     </div>
                     <ReactToPrint
                         trigger={() => (
-                            <div className='d-flex justify-content-around'>
-                                <div className='d-flex justify-content-center btn btn-blue-lg'>
-                                    <div className='patient-action'>Descargar orden</div>
-                                </div>
+                            <div className='download-order'>
+                                <button className='patient-action button-d'>
+                                    Descargar orden
+                                </button>
                             </div>
                         )}
                         content={() => compRef.current}
                     />
                 </>
                 :
-                <div className='w-100 text-center mt-5'>
+                <div className='no-orders'>
                     No se adjuntaron órdenes de estudios.
         </div>
             }

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import MyHistory from '../components/MyRecords/MyHistory';
 import MyRecords from '../components/MyRecords/MyRecords';
 import Record from '../components/MyRecords/Record'
 import { getMedicalRecord, getBenficiaries } from '../store/actions/firebaseQueries';
@@ -20,7 +19,6 @@ const History = (props) => {
   if (props.match.params.record) {
     return <Record dni={props.match.params.dni} aid={props.match.params.record} />
   } else {
-    // return 
     return <MyRecords /> 
   }
 }
