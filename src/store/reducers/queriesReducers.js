@@ -5,7 +5,7 @@ const initialState = {
     attempts: 1,
     beneficiaries: [],
     bills: [],
-    callSettings: { room: '', token: '' },
+    callSettings: { room: '', token: '', assignation: '' },
     country: "",
     dniFront: '',
     dniBack: '',

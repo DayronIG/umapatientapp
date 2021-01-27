@@ -28,7 +28,6 @@ const DoctorDelay = ({cuit, date, time}) => {
                     if(pendingTime <= 0) {
                         pendingTime = 5
                     }
-					console.log(pendingTime)
 					if(res.length >= 1){ 
 						setDelay(res.length * 10 + pendingTime)
 					} else {

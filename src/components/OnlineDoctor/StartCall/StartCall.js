@@ -104,11 +104,11 @@ const StartCall = (props) => {
 		if (!!error) {
 			if (error.code === 1004) {
 				console.log(
-					`La conexión no pudo establecerse. La sala ha sido cerrada por el especialista o se ha creado una nueva. Por favor refresque la página o realice una nueva consulta.`
+					`La conexión no pudo establecerse. La sala ha sido cerrada por el especialista o se ha creado una nueva. Por favor refresque la página o realice una nueva consulta. ${error.message}`
 				);
 			} else if (error.code === 1500) {
 				console.log(
-					`No se pudo ingresar a la llamada. Su dispositivo está bloqueando la cámara o el micrófono. Intente refrescar esta página y/o verifique los permisos.`
+					`No se pudo ingresar a la llamada. Su dispositivo está bloqueando la cámara o el micrófono. Intente refrescar esta página y/o verifique los permisos. ${error.message}`
 				);
 			}
 		}

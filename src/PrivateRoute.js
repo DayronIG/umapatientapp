@@ -48,11 +48,11 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                         let calldata = data?._start_date?.split('///')
                         if (!callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1] } })
+                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1], assignation: calldata?.[2] } })
                         }
                     } else {
                         setNotification(false)
-                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '', assignation: '' } })
                     }
                 })
                 return () => {

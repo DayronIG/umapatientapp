@@ -141,25 +141,23 @@ const Queue = (props) => {
     }
 
     useEffect(() => {
+        let snapshot = () => { console.log("No hay snapshot") }
+
         if (!!assignedAppointment && Object.keys(assignedAppointment).length > 0) {
             calculateRemainingTime(assignedAppointment)
         }
         const interval = setInterval(() => {
             calculateRemainingTime(assignedAppointment)
+            if (callSettings.room === '') {
+                snapshot = getCallStatus()
+            }
         }, 10000)
         return () => {
+            snapshot()
             clearInterval(interval)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [assignedAppointment])
-
-    useEffect(() => {
-        let snapshot = () => { console.log("No hay snapshot") }
-        if (callSettings.room === '') {
-            snapshot = getCallStatus()
-        }
-        return () => snapshot
-    }, [patient])
 
     // Effect to listen callSettings
     useEffect(() => {
@@ -225,7 +223,6 @@ const Queue = (props) => {
                 patient.ws = assignedAppointment.appointments?.['0']?.['6']
             }
             if(patient.ws && patient.ws !== "") {
-                console.log("Cargó", patient)
                 let queryUser = firestore.collection('auth').doc(patient.ws)
                 return queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()._start_date
@@ -233,7 +230,7 @@ const Queue = (props) => {
                     if (data !== '' && data !== "geo") {
                         let callRoom = data?.split('///')
                         if(callRoom) {
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1] } })
+                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1], assignation: callRoom?.[2]  } })
                         }
                     } else {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })

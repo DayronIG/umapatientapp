@@ -24,7 +24,7 @@ const ConfirmAppointment = (props) => {
 	const biomarkers = useSelector(state => state.biomarkers)
 
 	useEffect(() => {
-		if(localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
+		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
 			const data = JSON.parse(localStorage.getItem('selectedAppointment'));
 			delete data.history
 			delete data.location
@@ -114,7 +114,6 @@ const ConfirmAppointment = (props) => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
-		console.log(lastAssingState)
 		if (appointId === '' || lastAssingState.state === 'FREE') {
 			return postData();
 		} else {
