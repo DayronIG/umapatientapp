@@ -35,13 +35,13 @@ const Events = (props) => {
                     {
                         sectionEvents.map(item => {
                             return(
-                                    <div className="mt-3 mb-3" onClick={e => props.history.push(item.url)}>
-                                        <div className="section-icon">
-                                            <FontAwesomeIcon icon={item.icon} />
-                                            <span>{item.sectionName}</span>
-                                        </div>
-                                        <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
+                                <div className="event-section" onClick={e => props.history.push(item.url)}>
+                                    <div className="section-icon">
+                                        <FontAwesomeIcon icon={item.icon} />
+                                        <span>{item.sectionName}</span>
                                     </div>
+                                    <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
+                                </div>
                             )
                         })
                     }
