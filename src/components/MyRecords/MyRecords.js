@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import moment from 'moment-timezone';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserMd } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { FaSlidersH } from "react-icons/fa";
-// import '../../styles/history/HeaderContainer.scss'
+import '../../styles/history/myrecords.scss';
 
 const MyRecords = () => {
     const {category} = useParams();
@@ -35,12 +35,10 @@ const MyRecords = () => {
         <>
             
             <HistoryHeader> Consultas </HistoryHeader>
-            <div className="myhistory-container"> 
-                <div className="d-flex justify-content-between">
+            <div className="my-history-container"> 
+                <div className="title-icon">
                     <p className="font-weight-bold">Consultas médicas</p>
-                    <div>
-                        <FaSlidersH/>
-                    </div>
+                    <FaSlidersH/>
                 </div>
                 {/*  Beneficiary cambia de lugar */}
                 <div className="my-history-beneficiary"> 
@@ -53,27 +51,27 @@ const MyRecords = () => {
                     })}
                 </div>
                 <ul>
-                    {records && records.length === 0 && <div className="text-center mt-5">
+                    {records && records.length === 0 && <div className="no-records">
                         Aún no se encontraron registros para esta persona.</div>}
                     {records && records.map((r, index) => {
                         return ( 
                             r.mr.destino_final !== "USER CANCEL" &&
                             (r.mr.destino_final !== "" || r.incidente_id !== 'auto') &&
-                            <li key={index} className="myhistory-consultation">
+                            <li key={index} className="my-history-consultation">
                                 {/*</li>className={r.incidente_id === 'DISCA' ? "transport myhistory-consultation" : (r.incidente_id === 'auto' ? "myhistory-consultation history-bg-autonomous" : "myhistory-consultation")*/}
                                 {/*{r.incidente_id !== 'auto' ?*/}
                                 {/* ${r.patient.dni}/${r.assignation_id} */}
-                                    <Link to={`/${r.patient.ws}/history/${r.patient.dni}/${r.assignation_id}`} className="d-flex">
+                                    <Link to={`/${r.patient.ws}/history/${r.patient.dni}/${r.assignation_id}`} className="consult-link">
 
-                                        <div className="d-flex consultContainer">
-                                            <div className="leftIcon">
+                                        {/* <div className=""> */}
+                                            <div className="left-icon">
                                                 <FontAwesomeIcon icon={faUserMd} />
                                             </div>
-                                            <div> 
-                                                <p>Guardia</p>
-                                                <p className="font-weight-normal">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
+                                            <div className="title-date"> 
+                                                <p className="title">Guardia</p>
+                                                <p className="consult-date">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
                                             </div>
-                                        </div>
+                                        {/* </div> */}
                                         
 
                                         {/*{r.incidente_id === 'DISCA' ?

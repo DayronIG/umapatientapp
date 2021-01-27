@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import DossierContainer from './DossierContainer'
 import { getVoucherById } from '../../store/actions/firebaseQueries';
@@ -12,10 +12,6 @@ const Record = (props) => {
     const dispatch = useDispatch()
     const att = useSelector((state) => state.queries.voucher)
     const [tab, setTab] = useState('resumen')
-    // const user = useSelector(state => state.user)
-    // const history = useHistory()
-
-
 
     useEffect(() => {
         dispatch(getVoucherById(props.dni, props.aid))
@@ -60,7 +56,7 @@ const Record = (props) => {
             </div>
             {att && att.assignation_id ?
                 <DossierContainer att={att} tab={tab} /> :
-                <div className='p-3 text-center mt-5'>
+                <div className='record-not-completed'>
                     El Médico aún no completó la ficha de su consulta o se está cargando. Estará disponible en breve.
                 </div>}
 
