@@ -1,7 +1,48 @@
-.myhistory-container {
-    
+@import '../../styles/global/Vars.scss';
+
+.my-history-container {
+
+    .title-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .my-history-beneficiary {
         margin-bottom: 15px;
+    }
+
+    .no-records {
+        text-align: center;
+        margin: 50px;
+    }
+
+    .my-history-consultation {
+
+        .consult-link {
+            display: flex;
+            align-items: center;
+            .left-icon {
+                margin-right: 20px;
+                svg {
+                    font-size: 2rem;
+                }
+            }
+
+            .title-date {
+                .title {
+                    margin: 0;
+                    padding: 0;
+                    color: $text-super-dark;
+                }
+                .consult-date {
+                    margin: 0;
+                    color: $text-super-dark;
+                }
+            }
+            
+        }
+
     }
 
 }

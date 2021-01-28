@@ -4,7 +4,7 @@ import { faUserMd, faChevronRight, faCarAlt , faFileAlt } from '@fortawesome/fre
 import { Link } from 'react-router-dom'
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { useSelector } from 'react-redux';
-import './../../styles/history/myhistory.scss';
+import './../../styles/history/MyHistory.scss';
 
 const MyHistory = () => {
     const {ws} = useSelector(state => state.user)
@@ -31,7 +31,6 @@ const MyHistory = () => {
         <> 
             <HistoryHeader> Mi historial </HistoryHeader>
             <div className="my-history-container">
-
                 {
                     sectionsHistory.map((item, index) => {
                         return(
@@ -40,7 +39,7 @@ const MyHistory = () => {
                                     <Link to={item.url} className="link-to">
                                         <div className="section">
                                             <div className="section-name-icon">
-                                                <div className="leftIcon">
+                                                <div className="left-icon">
                                                     <FontAwesomeIcon icon={item.icon} />
                                                 </div>
                                             <p>{item.sectionName}</p>

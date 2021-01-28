@@ -33,7 +33,6 @@
 	.App {
 		max-height: 100%;
 		height: auto;
-		// background: $reduced-back-gradient;
 		background-repeat: no-repeat;
 	}
 	.route {
@@ -94,7 +93,8 @@
 			padding: 0 5% 0 6.5%;
 			width: 100%;
 			
-			div	 {
+			.event-section	{
+				margin: 15px 0;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;

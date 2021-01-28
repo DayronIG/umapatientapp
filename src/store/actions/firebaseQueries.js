@@ -349,7 +349,7 @@ export function getPatientData(ws) {
 					}
 				})
 				.catch((err) => {
-					// console.log(err);
+					console.log(err);
 					dispatch({
 						type: 'ERROR',
 						payload: 'getPatientData for ' + ws + err,
@@ -359,6 +359,24 @@ export function getPatientData(ws) {
 		};
 	} catch (err) {
 		return { type: 'ERROR', payload: ' getPatientData for ' + ws + err };
+	}
+}
+
+export function getPrescriptions(uid) {
+	try {
+		return dispatch => {
+			const query = firestore.collection('events/prescriptions/AR').where("uid", "==", uid).get()
+			.then(snap => {
+				let prescriptions = []
+				snap.forEach((el) => {
+					prescriptions.push(el.data())
+				})
+				dispatch({type: 'SET_PRESCRIPTIONS', payload: prescriptions})
+			})
+			.catch(err => console.log(err))
+		}
+	} catch(err) {
+		console.log(err)
 	}
 }
 
