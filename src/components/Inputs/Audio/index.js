@@ -128,7 +128,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                             <FaPause className="icon" />
                         </div>}
                         <small>Éste escaneo se encuentra en etapa experimental y no constituye ni reemplaza un análisis médico.</small>
-                        <Link to={`/${ws}/onlinedoctor/`}>
+                        <Link to={`/onlinedoctor/${ws}`}>
                             <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
                         </Link>
                     </div>

@@ -19,7 +19,7 @@ const DoctorDelay = ({cuit, date, time}) => {
 			let dt = moment().format('YYYYMM');
 			let filters = [
 				{field: 'cuit', value: cuit, comparator: '=='},
-				{field: 'status', value: cuit, comparator: 'ASSIGN'}			
+				{field: 'status', value: 'ASSIGN', comparator: '=='}			
 			]
 			getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
 				.then(res => {
@@ -28,13 +28,13 @@ const DoctorDelay = ({cuit, date, time}) => {
                     if(pendingTime <= 0) {
                         pendingTime = 5
                     }
-					console.log(pendingTime)
 					if(res.length >= 1){ 
 						setDelay(res.length * 10 + pendingTime)
 					} else {
 						setDelay(pendingTime)
 					}
-				})
+                })
+            .catch(err => console.log(err))
 		}
     }, [cuit, date, time])
     

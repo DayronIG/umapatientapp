@@ -21,6 +21,41 @@ export const getOneRecord = (patient) => ({
 	payload: patient,
 });
 
+
+export async function getFreeGuardia(test = false, country = false, type = false) {
+	let docQuery = []
+	// console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
+	if(test === true) {
+		await firestore
+			.collection('assignations/guardia/test')
+			.get()
+			.then(snap => {
+				snap.forEach((element) => {
+					docQuery.push(element.data())
+				})
+			})
+	} else {
+		await firestore
+			.collection('assignations/guardia/upcoming')
+			.get()
+			.then(snap => {
+				snap.forEach((element) => {
+					if(type === 'pediatria') {
+						if(element.data().doc?.specialty === "pediatria") {
+							docQuery.push(element.data())
+						} 
+					} else {
+						if(element.data().doc?.country.includes(country)) {
+							docQuery.push(element.data())
+						} else if(country === false || country === 'AR' || country === "") {
+							docQuery.push(element.data())
+						}
+					}
+				})
+			})
+	}
+	return docQuery
+}
 export function searchActiveProviders(service = 'online', type = '', social_work) {
     let docQuery = firestore
             .collection('providers')
@@ -251,10 +286,10 @@ export function getUser(dni) {
 	});
 }
 
-export function getAuth(ws) {
+export function getAuth(uid) {
 	return new Promise((resolve, reject) => {
 		try {
-			const authQuery = firestore.collection('auth').doc(ws);
+			const authQuery = firestore.collection('user').doc(uid);
 			authQuery
 				.get()
 				.then((doc) => {
@@ -266,24 +301,6 @@ export function getAuth(ws) {
 				});
 		} catch (error) {
 			console.log(error)
-			return reject(error);
-		}
-	});
-}
-
-export function getAuthByDni(dni) {
-	return new Promise((resolve, reject) => {
-		try {
-			const authQuery = firestore.collection('auth').where('dni', '==', dni);
-			authQuery
-				.get()
-				.then((snap) => {
-					snap.forEach((doc) => {
-						return resolve(doc.data());
-					});
-				})
-				.catch((err) => reject(err));
-		} catch (error) {
 			return reject(error);
 		}
 	});
@@ -304,24 +321,6 @@ export function getBills(dni) {
 					// console.log(d)
 				});
 				return resolve(bills);
-			})
-			.catch((err) => reject(err));
-	});
-}
-
-export function getPatientByEmail(email) {
-	return new Promise((resolve, reject) => {
-		let e = '';
-		if (email && email !== 'undefined') {
-			e = email.toLowerCase();
-		}
-		const authQuery = firestore.collection('auth').where('email', '==', e);
-		authQuery
-			.get()
-			.then((doc) => {
-				let user = [];
-				doc.forEach((each) => user.push(each.data()));
-				return resolve(user[0]);
 			})
 			.catch((err) => reject(err));
 	});

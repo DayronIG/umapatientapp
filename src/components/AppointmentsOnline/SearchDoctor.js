@@ -71,7 +71,7 @@ const SearchDoctor = (props) => {
 							return (
 								<div className='searchDoctor_results' key={index}
 									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${dni}`)}>
-									<DoctorCardOffice doctor={doc} />
+									<DoctorCardOffice doctor={doc} dni={dni} />
 								</div>
 							)
 						})}

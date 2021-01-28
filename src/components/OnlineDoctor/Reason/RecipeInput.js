@@ -6,7 +6,7 @@ import { FaUpload } from "react-icons/fa"
 
 export default function RecipeInput({callback}) {
     const dispatch = useDispatch()
-    const { path } = useSelector(state => state.assignations.selectedAppointment)
+    const path = useSelector(state => state.assignations?.selectedAppointment?.path)
     const { corporate_norm, dni } = useSelector(state => state.user)
     const [medicine, setMedicine] = useState(false)
     const [carnet, setCarnet] = useState(false)

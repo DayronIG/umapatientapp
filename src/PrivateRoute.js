@@ -48,11 +48,11 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                         let calldata = data?._start_date?.split('///')
                         if (!callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1] } })
+                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1], assignation: calldata?.[2] } })
                         }
                     } else {
                         setNotification(false)
-                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
+                        dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '', assignation: '' } })
                     }
                 })
                 return () => {
@@ -84,7 +84,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, user, token])
+	}, [currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
@@ -117,15 +117,18 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	const handleSubmit = useCallback((device) => {
 		let data = {
 			newValues: { device },
-		};
-		Axios
-			.patch(`${node_patient}/${user.dni}`, data,  {headers: { 'Content-Type': 'Application/json', Authorization: token }})
-			.then((res) => {
-				console.log("UMA");
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+        };
+        currentUser.getIdToken().then(async token => {
+            let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+            Axios
+                .patch(`${node_patient}/${user.dni}`, data,  {headers: headers })
+                .then((res) => {
+                    console.log("UMA");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            })
     }, [user])
     
     return (
@@ -135,7 +138,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 <ToastNotification
                     title={'LLAMADA ENTRANTE...'}
                     button={'Contestar'}
-                    action={`/${user.dni}/onlinedoctor/attention/`}
+                    action={`/onlinedoctor/attention/${user.dni}`}
                     unsetNotification={setNotification}
                     audio={tone}
                 />

@@ -79,7 +79,7 @@
     }
     .hisopados-alert {
         background: $uma-secondary;
-        padding: 1rem 10%;
+        padding: 2vh 2vw ;
         border-radius: 0 0 20px 20px;
         box-shadow: 0px 4px 50px rgba(126, 147, 163, 0.25);
         color: $white-color;
@@ -122,6 +122,7 @@
         border: 1px solid rgba(161, 61, 223, 0.54);
         padding: 2rem 1.8rem;
         border-radius: 2rem;
+        
 
         .price-title {
             font-size: 1.8rem;
@@ -213,7 +214,7 @@
             text-decoration: underline;
             font-weight: 600;
             font-size: 1rem;
-            margin: 0;
+            margin-bottom: 2vh;
         }
     }
 
@@ -282,6 +283,23 @@
         background: $white-color;
         box-shadow: 0px -2px 20px rgba(126, 147, 163, 0.15);
         text-align: left;
+        .info-important{
+            color: #CF2626;
+            text-align: center;
+            font-weight: 900;
+            font-size: 24px;
+        }
+        .info-important-line{
+            width: 189px;
+            height: 4px;
+            background: #CF2626;
+            border-radius: 10%;
+        }
+        .info-title-big{
+            font-weight: 800;
+            font-size: 24px;
+            color: $uma-text;
+        }
         .info-title{
             font-weight: 800;
             font-size: $uma-font-size-regular;

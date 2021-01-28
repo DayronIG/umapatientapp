@@ -10,13 +10,11 @@ import PrivateRoute from './PrivateRoute';
 import Welcome from './views/Welcome';
 import Reset from './views/Reset';
 import Feedback from './views/Feedback';
-import ResetPassword from './components/User/ResetPassword';
 import Login from './components/User/Login';
 import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
-import ReferredRegister from './views/ReferredRegister';
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -52,7 +50,6 @@ import Autonomous from './components/Autonomous/';
 import Laboratorio from './components/Laboratorio';
 /* Wellness */
 import Wellness from './views/Wellness';
-import Chat from './views/Chat';
 /* DeliveryService */
 import DeliveryTrackProgress from './components/DeliveryService/DeliveryTrackProgress.js';
 /* SymptomsTracking */
@@ -81,6 +78,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 /* IOMA */
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
+import Invitation from './views/Invitation';
 
 function App(props) {
 	return (
@@ -101,7 +99,8 @@ function App(props) {
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
 				<Route exact path='/newregister/:ref?' component={RegisterNew} />
-				<Route exact path='/referredRegister/:ref?' component={ReferredRegister} />
+				<Route exact path='/referredregister/:ref?' component={RegisterNew} />
+				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
 				<Route exact path='/registersuccess' component={RegisterSuccess} />
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
@@ -112,13 +111,15 @@ function App(props) {
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
-				<PrivateRoute exact path='/:dni/onlinedoctor/when' component={When} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/who' component={Who} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/questions' component={Questions} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/reason' component={Reason} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/queue' component={AttQueue} />
-				<PrivateRoute exact path='/:dni/onlinedoctor/attention/:token?' component={CallContainer} />
-				<PrivateRoute exact path='/:ws/onlinedoctor/rating' component={Rating} />
+				<PrivateRoute exact path='/onlinedoctor/when/:dni' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/who/:dni' component={Who} />
+				<PrivateRoute exact path='/onlinedoctor/questions/:dni' component={Questions} />
+				<PrivateRoute exact path='/onlinedoctor/reason/:dni' component={Reason} />
+				<PrivateRoute exact path='/onlinedoctor/queue/:dni' component={AttQueue} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:dni?' component={CallContainer} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:dni?' component={CallContainer} />
+				<PrivateRoute exact path='/:dni?/onlinedoctor/attention' component={CallContainer} /> 
+				<PrivateRoute exact path='/onlinedoctor/rating/:ws' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
@@ -199,9 +200,11 @@ function App(props) {
 				/>
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* VACCINE */}
-				<PrivateRoute exact path='/vacunacion/:id' component={Vaccine} />
+				<Route exact path='/vacunacion/:id' component={Vaccine} />
+				{/* VACCINE */}
+				<Route exact path='/invitation/:id' component={Invitation} />
 				{/* PILLBOX */}
-				{/* <PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} /> */}
+				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

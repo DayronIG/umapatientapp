@@ -48,13 +48,15 @@ export async function getDocumentsByFilter(route, filters, limit = false, postFi
 			ref = ref.where(filter.field, filter.comparator, filter.value);
 		});
 		if (limit !== false) ref.limit(limit)
-		await ref.get().then((snapshot) => {
-			snapshot.forEach((doc) => {
-				let document = doc.data();
-				document.docId = doc.id;
-				result.push(document);
-			});
-		});
+		await ref.get()
+			.then((snapshot) => {
+				snapshot.forEach((doc) => {
+					let document = doc.data();
+					document.docId = doc.id;
+					result.push(document);
+				});
+			})
+			.catch(err => console.log(err));
 	} catch (err) {
 		console.error('errror', err);
 	}
@@ -89,7 +91,7 @@ export async function snapDocumentsByFilter(route, filters, action = (data) => c
 				return result
 			});
 			if (!postFilters) action(result);
-		})
+		}, err => console.log(err))
 	} catch (err) {
 		console.error('errror', err);
 	}

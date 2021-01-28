@@ -145,7 +145,7 @@ const AppointmentsOnlineHistory = (props) => {
 					{incomingCall &&
 						<div style={{ textAlign: 'center', color: 'green' }}>
 							<small>Su médico ya lo está esperando en la sala</small>
-							<Link to={`/${dni}/onlinedoctor/attention/`} replace={true}>
+							<Link to={`/onlinedoctor/attention/${dni}`} replace={true}>
 								<button
 									type="button"
 									className="btn btn-blue-lg btn-calling">

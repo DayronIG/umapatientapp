@@ -30,7 +30,7 @@ export default function AskForBuyHisopado() {
         let deliveryInfo = []
         await db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', patient.core_id)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT", 'IN_PROCESS'])
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
         .get()
         .then(async res => {
             res.forEach(services => {
@@ -46,7 +46,7 @@ export default function AskForBuyHisopado() {
         window.gtag('event', 'select_item', {
             'item_list_name': 'Hisopado Antígeno'
           });
-        if(!current?.status) {
+        if (!current?.status || current?.status === 'FREE') {
             let data = {
                 dni: patient.dni,
                 dependant: false,
@@ -107,7 +107,7 @@ export default function AskForBuyHisopado() {
                             <p className="hisopados-price">${params?.price}</p>
                         </div>
                         <p className="disclaimer-result">Indica la presencia del virus</p>
-                        <p className="disclaimer-time">Entrega de resultado en 15 minutos en tu domicilio</p>
+                        {/* <p className="disclaimer-time">Entrega de resultado en 15 minutos en tu domicilio</p> */}
                     </div>
                     
                     <div className="coverage">
@@ -148,19 +148,22 @@ export default function AskForBuyHisopado() {
                         </div>
                     </div>
 
-                    <div className="hisopados-flux-container">                        
+                    {/* <div className="hisopados-flux-container">                        
                         <p className="info-title">¿En qué consiste?</p>
                         <p>Es un test rápido de detección del Covid-19 avalado por la OMS, realizado por nuestro personal de salud en tu domicilio.<br />
                         Es una excelente alternativa al hisopado tradicional, económica y veloz, ¡en sólo 15 minutos tienes el resultado!</p>
-
                         <p>Además te brindamos <span className="info-destacado">atención médica</span> una vez realizado el hisopado a través de nuestra plataforma.</p>
-                        
-                        <p className="info-title">Medios de pago</p>
+                    </div> */}
+                    <div className="hisopados-flux-container">                        
+                        <p className="info-title-big">Medios de pago</p>
                         <p>Puedes pagarlo con tarjeta de crédito a través de MercadoPago.</p>
-
-                        <br />
-                        <br />
-
+                        <p className="info-important">Importante</p>
+                        <hr className="info-important-line"/>
+                        <p>Sólo aceptamos pagos por la <b><u>app </u></b> de ÜMA o a través de un <b><u>link </u></b> de pago enviado via mail por nuestro personal de ÜMA.</p> 
+                        <p>Si te ofrecen abonar por otro medio, NO ACEPTES, y contactanos inmediatamente.</p>
+                    
+                    </div>
+                    <div className="hisopados-flux-container">                        
                         <p className="info-title">Contacto estrecho</p>
                         <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>

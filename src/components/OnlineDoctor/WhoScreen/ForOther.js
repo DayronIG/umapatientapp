@@ -50,7 +50,7 @@ const RegisterDependant = props => {
         } else {
           let userData = { ...user, dni, dob, sex, fullname }
           localStorage.setItem('appointmentUserData', JSON.stringify(userData))
-          history.replace(`/${data.dni}/onlinedoctor/when`)
+          history.replace(`/onlinedoctor/when/${data.dni}`)
         }
         dispatch({ type: "LOADING", payload: false })
       })

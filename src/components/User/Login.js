@@ -73,10 +73,21 @@ const SignIn = props => {
 
         if (password) {
             localStorage.setItem('accessCode', password.value)
-            let email = `${validPhone}@${password.value}.com`;
+            let email, pass
+            await axios.get(`${node_patient}/validatePassword/${ws}/${password.value}`, {}, config)
+                .then((res) => {
+                    if(res.data.type === "email") {
+                        email = res.data.email
+                        pass = res.data.password
+                    } else {
+                        email = `${validPhone}@${password.value}.com`;
+                        pass = password.value
+                    }
+                })
             db.auth()
-                .signInWithEmailAndPassword(email, password.value)
+                .signInWithEmailAndPassword(email, pass)
                 .then(async (reg) => {
+                    reg.user.updateProfile({displayName: validPhone})
                     window.gtag('event', 'success_login', {
                         'event_category' : 'login',
                         'event_label' : 'login'

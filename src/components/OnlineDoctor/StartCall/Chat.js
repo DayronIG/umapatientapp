@@ -19,7 +19,8 @@ const Chat = (props) => {
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
     const [, setMedicalRecord] = useState([])
-    const token = useSelector(state => state.userActive.token)
+    const { assignation } = useSelector(state => state.queries.callSettings)
+    const { token} = useSelector(state => state.userActive.token)
     const [dataChat, setDataChat] = useState([])
     const [inputValue, setInputValue] = useState('')
     const chatRef = useRef()
@@ -49,8 +50,10 @@ const Chat = (props) => {
     }, [dni])
 
     useEffect(() => {
-        if (current?.appointments) {
-            let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", current.appointments[0]["14"])
+        if (current?.appointments || assignation) {
+            let aid = current?.appointments?.[0]["14"] || assignation
+            console.log(assignation)
+            let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", aid)
             query.onSnapshot({
                 includeMetadataChanges: true
             },
@@ -70,7 +73,7 @@ const Chat = (props) => {
                     setDataChat(tempArray)
                 })
         }
-    }, [current])
+    }, [current, assignation])
 
     async function findMR() {
         try {
@@ -141,9 +144,6 @@ const Chat = (props) => {
 
 
     function postDataConversation(postValue) {
-/*         if (!current?.cuil || !current?.appointments[0]["14"]) {
-            window.location.reload();
-        } */
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
         // 'Accept': 'text/plain' 
@@ -153,7 +153,7 @@ const Chat = (props) => {
                 'dni': dni,
                 'dt': date,
                 'cuil': current?.cuil || '',
-                'assignation_id': current?.appointments && (current?.appointments[0]["14"] || ''),
+                'assignation_id': current?.appointments && (current?.appointments[0]["14"] || assignation),
                 'rol': 'patient',
                 'text': inputValue || ''
             }

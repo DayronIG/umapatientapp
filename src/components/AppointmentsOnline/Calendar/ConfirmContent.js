@@ -154,6 +154,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					specialty: `${doctor.matricula_especialidad}`,
 					sex: userData.sex || '',
 					ws: userData.ws,
+					uid: userData.core_id
 				};
 				const res = await post(make_appointment, data, {
 					headers: { 'Content-Type': 'application/json', 'Authorization': token },

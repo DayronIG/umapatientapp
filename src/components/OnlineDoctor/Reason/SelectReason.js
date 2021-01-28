@@ -61,12 +61,13 @@ const SelectReason = (props) => {
 		enableScrolling()
 		redirect()
 	}
+
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
-
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
-		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
+		props.history.replace(`/onlinedoctor/questions/${props.match.params.dni}`);
 	}
+	
 	function addOtherSympton(e){
 		if(e.key === 'Enter'){ 
 			dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms })
@@ -83,7 +84,7 @@ const SelectReason = (props) => {
 						<RecipeInput callback={()=>recipeModalCheckout()}/>
 					</Modal>
 				}
-				<Backbutton inlineButton={false} />
+				<Backbutton customTarget={`/onlinedoctor/when/${props.match.params.dni}`} inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>

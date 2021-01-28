@@ -5,7 +5,7 @@ const initialState = {
     attempts: 1,
     beneficiaries: [],
     bills: [],
-    callSettings: { room: '', token: '' },
+    callSettings: { room: '', token: '', assignation: '' },
     country: "",
     dniFront: '',
     dniBack: '',
@@ -74,6 +74,10 @@ export default (state = initialState, action) => {
         case 'SET_USER_COUNTRY':
             return Object.assign({}, state, {
                 country: action.payload
+            })
+        case 'SET_USER_LOGIN':
+            return Object.assign({}, state, {
+                login: action.payload
             })
         case 'GET_BILLS':
             return Object.assign({}, state, {

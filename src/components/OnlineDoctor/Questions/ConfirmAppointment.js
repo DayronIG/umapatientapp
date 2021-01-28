@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { make_appointment } from '../../../config/endpoints';
@@ -24,8 +24,13 @@ const ConfirmAppointment = (props) => {
 	const biomarkers = useSelector(state => state.biomarkers)
 
 	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem('selectedAppointment'));
-		setSelectedAppointment(data);
+		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
+			const data = JSON.parse(localStorage.getItem('selectedAppointment'));
+			delete data.history
+			delete data.location
+			delete data.match
+			setSelectedAppointment(data);
+		}
 	}, []);
 
 	const uploadImage = e => {
@@ -81,21 +86,22 @@ const ConfirmAppointment = (props) => {
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
-				ruta: appointmentId || '',
+				ruta: selectedAppointment.path?.split('assignations/')[1] || '',
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
+				uid: user.core_id
 			};
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/${userVerified.dni}/onlinedoctor/who`);
+				return history.replace(`/onlinedoctor/who/${userVerified.dni}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/${userVerified.dni}/onlinedoctor/queue`);
+				return history.replace(`/onlinedoctor/queue/${userVerified.dni}`);
 			}
 		} catch (err) {
 			console.log(err)
@@ -104,10 +110,10 @@ const ConfirmAppointment = (props) => {
 		}
 	};
 
-	const submitRequest = async () => {
+	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
-		const lastAssingState = await getDocumentFB(`assignations/${appointId}`);
+		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
 		if (appointId === '' || lastAssingState.state === 'FREE') {
 			return postData();
 		} else {
@@ -123,7 +129,7 @@ const ConfirmAppointment = (props) => {
 			}
 			return history.replace('/');
 		}
-	};
+	}, [selectedAppointment])
 
 	return (
 		<>
@@ -132,9 +138,9 @@ const ConfirmAppointment = (props) => {
 					<h5>Información del turno</h5>
 					<div>
 						<div className="appointment__doctorIcon">
-							<img src={selectedAppointment.path_profile_pic} alt="Doctor" />
+							<img src={selectedAppointment.doc?.path_profile_pic} alt="Doctor" />
 						</div>
-						<div className="appointment__detail">Doctor: <b>{selectedAppointment.fullname}</b></div>
+						<div className="appointment__detail">Doctor: <b>{selectedAppointment.doc?.fullname}</b></div>
 						<div className="appointment__detail">Hora: <b>{selectedAppointment.time}</b></div>
 						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
 					</div>

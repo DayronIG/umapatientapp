@@ -44,7 +44,7 @@ const WhenScreen = (props) => {
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-						return props.history.replace(`/${userDni}/onlinedoctor/queue`);
+						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
 			}
@@ -67,7 +67,7 @@ const WhenScreen = (props) => {
 		if (redirectToConsultory === 'true') {
 			props.history.replace(`/appointmentsonline/${user.dni}`);
 		} else {
-			props.history.replace(`/${user.dni}/onlinedoctor/when`);
+			props.history.replace(`/onlinedoctor/when/${user.dni}`);
 		}
 	}
 

@@ -12,6 +12,7 @@ function AuthProvider({ children }) {
 
 	useEffect(() => {  // Get authorization changes
 		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)
+		dispatch({ type: 'SET_LOGED_ACTIVE', payload: currentUser })
 		if(currentUser) {
 			getInitialData(currentUser)
 		}
@@ -43,15 +44,13 @@ function AuthProvider({ children }) {
 
 
 	async function getInitialData(user) {
-		if (user.email) {
-			const userAuth = await getAuth(user.email.split("@")[0])
-			let plan = undefined;
-			plan = await getCoverage(userAuth)
-			if (!!userAuth) {
-				dispatch({ type: 'GET_PATIENT', payload: userAuth })
-				dispatch({ type: 'SET_PLAN_DATA', payload: plan })
-				getDeliveryInfo(userAuth)
-			}
+		const userAuth = await getAuth(user.uid)
+		let plan = undefined;
+		plan = await getCoverage(userAuth)
+		if (!!userAuth) {
+			dispatch({ type: 'GET_PATIENT', payload: userAuth })
+			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
+			getDeliveryInfo(userAuth)
 		}
 	}	
 	

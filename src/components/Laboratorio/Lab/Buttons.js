@@ -258,7 +258,7 @@ function LoadAnalysis(props) {
                 </h5>
               )}
             </div>
-            <Link to={`/${patient.ws}/onlinedoctor/`}>
+            <Link to={`/onlinedoctor/${patient.ws}`}>
             <div className="">Si desea puede consultar a un médico online haciendo click aquí</div>
             </Link>
           </table>
