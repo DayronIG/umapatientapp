@@ -260,6 +260,31 @@
 
 	}
 
+
+	#pedirPorRappi {
+		text-align: center;
+		width: 100%;
+
+		.rappi-link {
+			text-align: center;
+			font-weight: bold;
+			background-color: $uma-secondary;
+			border-radius: 15px;
+			align-items: center;
+			width: 80%;
+			height: 38px;
+			border: none;
+			transition: 0.2s ease-in-out;
+			margin-bottom: 15px;
+			&:hover {
+				background-color: #8935bd;
+			}
+			a {
+				color: $white-color;
+			}
+		}
+	}
+
 }
 
 .download-order {
