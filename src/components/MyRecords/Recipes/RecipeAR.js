@@ -772,30 +772,28 @@ const Recipe = ({ att, doc }) => {
 										}}
 									/>
 								)}*/}
-						
 					</div>
-					<div className='d-flex justify-content-around' id="pedirPorRappi">
-						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
+					<div id="pedirPorRappi">
+						<button className="rappi-link">
+							<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city">
 							Comprá por Rappi
-						</a>
+							</a>
+						</button>
 					</div>
 					<ReactToPrint
 						trigger={() => (
-							<div className='d-flex justify-content-around '>
-								<div className='patient-action mt-4'><b style={{color: '#0A6DD7', fontSize: '18px'}}>Descarga receta</b></div>
+							<div className='download-order '>
+								<button className='button-d'>Descarga receta</button>
 							</div>
 						)}
 						content={() => compRef.current}
 					/>
-					<div className='d-flex justify-content-around' id="pedirPorRappi">
-						<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city" className="btn btn-blue-lg secondary">
-							Pedir por Rappi
-						</a>
-					</div>
 					<div className='d-none'>{fromUP ? <RecipePDFUP {...dataToPrint} /> : <RecipePDF {...dataToPrint} />}</div>
+
 				</div>
+
 			) : (
-					<p className='text-center mt-5 mb-5'>No se adjuntó receta.</p>
+					<p className='no-orders'>No se adjuntó receta.</p>
 				)}
 		</>
 	);
