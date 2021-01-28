@@ -90,18 +90,14 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		//first we get the messaging token
         let userToken = ''
 		if(deviceWithPush) {
-            try {
-                userToken = await askPermissionToRecieveNotifications()
-            } catch (err) {
-                console.log(err)
-            }
+            userToken = await askPermissionToRecieveNotifications()
 		}
 		// now we get the current user
 		if (currentUser && currentUser.email) {
 			try {
 				let dt = moment().format('YYYY-MM-DD HH:mm:ss')
 				let device = {
-						messaging_token: userToken,
+						messaging_token: userToken || '',
 						device: deviceInfo.osName,
 						os: deviceInfo.browser.name,
 						last_login: dt,
