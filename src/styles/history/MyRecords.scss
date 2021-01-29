@@ -51,9 +51,12 @@
             }
 
             .title-date {
-                .title {
+                margin-top: 10px;
+                .title-guardia {
+                    font-size: 18px;
+                    color: $text-super-dark;
+                    font-weight: bold; 
                     margin: 0;
-                    padding: 0;
                     color: $text-super-dark;
                 }
                 .consult-date {
