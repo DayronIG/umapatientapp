@@ -15,6 +15,8 @@ const RecipeSection = () => {
     const patient = useSelector(state => state.user)
     const prescriptions = useSelector(state => state.queries.prescriptions)
 
+    console.log(prescriptions)
+
     useEffect(() => {
         if(patient.core_id) {
             dispatch(getPrescriptions(patient.core_id))

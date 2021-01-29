@@ -48,7 +48,6 @@ const MyHistory = () => {
                                         </div>
                                     </Link>
                                 </li>
-                                <hr/>
                             </>
                         )
                     })
