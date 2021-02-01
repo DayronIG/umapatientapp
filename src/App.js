@@ -126,7 +126,7 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/record/' component={MyRecords} />
 				<PrivateRoute exact path='/:ws/history/' component={MyHistory} />
 				<PrivateRoute exact path='/:ws/history/:category' component={MyRecords} />
-				<PrivateRoute exact path='/:ws/history/:dni?/:record?' component={History} /> 
+				<PrivateRoute exact path='/:ws/history/:dni?/:record?/:recipe?' component={History} /> 
 				<PrivateRoute exact path='/:ws/recipes' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/:ws?/profile/' component={Profile} />
