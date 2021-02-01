@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import {withRouter} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {useSelector} from 'react-redux'
-import { faUserMd, faChevronRight, faFlask, faFileAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {useSelector} from 'react-redux';
+import { faUserMd, faChevronRight, faFlask, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const Events = (props) => {
@@ -27,32 +27,25 @@ const Events = (props) => {
         }
     ]
 
-
-    const renderEvents = () => {
-        return (
-            <>
-                <div className="event" >
-                    {
-                        sectionEvents.map(item => {
-                            return(
+    return (
+        <div className="event" >
+                {
+                    sectionEvents.map(item => {
+                        return(
+                            <>
                                 <div className="event-section" onClick={e => props.history.push(item.url)}>
                                     <div className="section-icon">
                                         <FontAwesomeIcon icon={item.icon} />
                                         <span>{item.sectionName}</span>
                                     </div>
-                                    <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight} /> 
+                                    <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight}/> 
                                 </div>
-                            )
-                        })
-                    }
-                </div>
-            </>
-        )
-    }
-    return (
-        <>
-            {renderEvents()}
-        </>
+                                <div className='line'></div>
+                            </>
+                        )
+                    })
+                }
+            </div>
     )
 }
 
