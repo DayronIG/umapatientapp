@@ -21,23 +21,53 @@
 
     .constancy-content {
         color: $text-super-dark;
+        font-weight: bold;
     }
 
-
-    .constancy-diagnosis {
-        margin-top: 20px;
+    .diagnosis {
+        margin-top: 30px;
+        .constancy-diagnosis {
+            margin-bottom: 5px;
+        }
+        .medication {
+            margin-top: 30px;
+            :nth-child(1) {
+                margin-bottom: 5px;
+            }
+        }
     }
 
     .text-emergencias {
         font-weight: bold;
         color: $uma-primary;
+        margin: 30px 0;
+        :nth-child(1) {
+            font-weight: normal;
+            color: $text-super-dark;
+        }
+        :nth-child(2) {
+            text-transform: uppercase;
+            margin-bottom: 0;
+        }
     }
 
     .verify-attention {
+        margin-top: 80px;
         text-align: center;
-        p {
-            margin: 0;
+        div {
+            margin: 30px 0;
         }
+        p {
+            margin: 5px 0;
+        }
+        :nth-child(3) {
+            font-size: 15px;
+        }
+    }
+
+    .qr-code {
+        text-align: center;
+        margin: 30px 0;
     }
 
 }

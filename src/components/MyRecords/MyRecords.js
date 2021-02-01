@@ -34,7 +34,7 @@ const MyRecords = () => {
     return (
         <>
             <HistoryHeader> Consultas </HistoryHeader>
-            <div className="my-history-container"> 
+            <main className="my-history-container"> 
                 <div className="title-icon">
                     <p className="font-weight-bold">Consultas médicas</p>
                     <button><FaSlidersH/></button>
@@ -49,6 +49,7 @@ const MyRecords = () => {
                             key={index}> {p.fullname} </button>
                     })}
                 </div>
+                {/* --- */}
                 <ul>
                     {records && records.length === 0 && <div className="no-records">
                         Aún no se encontraron registros para esta persona.</div>}
@@ -62,10 +63,10 @@ const MyRecords = () => {
                                                 <div className="left-icon">
                                                     <FontAwesomeIcon icon={faUserMd} />
                                                 </div>
-                                                <div className="title-date"> 
+                                                <section className="title-date"> 
                                                     <p className="title-guardia">Guardia</p>
                                                     <p className="consult-date">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
-                                                </div>
+                                                </section>
                                         </Link>
                                     </li>
                                 <hr/>
@@ -73,7 +74,7 @@ const MyRecords = () => {
                         )
                     })}
                 </ul>
-            </div>
+            </main>
         </>
     )
 }

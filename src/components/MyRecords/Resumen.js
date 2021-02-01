@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import moment from 'moment-timezone';
 import QRCode from 'qrcode.react';
-// import { getDoctor } from '../../store/actions/firebaseQueries';
 import '../../styles/orders.scss';
 
 const Resumen = ({att, docData}) => {
-
 
     return <div id='receta'>
         <div className='dossier-att-info'>

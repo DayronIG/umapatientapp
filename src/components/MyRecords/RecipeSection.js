@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import HeaderContainer from './HeaderContainer/HeaderContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

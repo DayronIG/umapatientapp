@@ -134,7 +134,7 @@ function StudiesOrder({ att, doc }) {
                 :
                 <div className='no-orders'>
                     No se adjuntaron órdenes de estudios.
-        </div>
+                </div>
             }
         </>
     )
