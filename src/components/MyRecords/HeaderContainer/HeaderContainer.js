@@ -1,5 +1,5 @@
-import React from 'react'
-import '../../../styles/history/HeaderContainer.scss'
+import React from 'react';
+import '../../../styles/history/HeaderContainer.scss';
 
 const HeaderContainer = ({children}) => {
     
@@ -8,7 +8,7 @@ const HeaderContainer = ({children}) => {
             {
                 children.map(item => {
                     return(
-                        <div>{item}</div>
+                        <section>{item}</section>
                     )
                 })
             }
