@@ -115,12 +115,9 @@
 						font-weight: 700;
 					}
 				}
-
 			}
-
-			strong {
-				color: $text-gray-blue;
-				font-size: 14px;
+			.line {
+				border-top: 1px solid #D7D7D7;
 			}
 		}
 		.history-link {
