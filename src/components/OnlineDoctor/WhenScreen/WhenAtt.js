@@ -32,6 +32,7 @@ const WhenScreen = (props) => {
 				.then((p) => {
 					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
 					setPediatric(type);
+					console.log(p)
 					let test = p.context === "temp" ? true : false
 					findAssignedAppointments(p, type, test);
 					dispatch({type: 'LOADING', payload: false})

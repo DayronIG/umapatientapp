@@ -24,7 +24,7 @@ export const getOneRecord = (patient) => ({
 
 export async function getFreeGuardia(test = false, country = false, type = false) {
 	let docQuery = []
-	// console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
+	console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
 	if(test === true) {
 		await firestore
 			.collection('assignations/guardia/test')
