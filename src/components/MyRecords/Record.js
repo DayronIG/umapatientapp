@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import DossierContainer from './DossierContainer'
 import { getVoucherById } from '../../store/actions/firebaseQueries';
@@ -12,6 +12,15 @@ const Record = (props) => {
     const dispatch = useDispatch()
     const att = useSelector((state) => state.queries.voucher)
     const [tab, setTab] = useState('resumen')
+    const {recipe} = useParams()
+
+    useEffect(()=>{
+        if(recipe) {
+            setTab(recipe)
+        }
+    },[recipe])
+
+    console.log('tab', tab)
 
     useEffect(() => {
         dispatch(getVoucherById(props.dni, props.aid))
@@ -27,9 +36,7 @@ const Record = (props) => {
 
     return (
         <>
-            <div>
-                <HistoryHeader > Detalles de consulta </HistoryHeader>
-            </div>
+            <HistoryHeader > Detalles de consulta </HistoryHeader>
             <div className='records-sections'>
                 <button className={tab === 'resumen' ? 'active button-record' : 'button-record'}
                     onClick={() => setTab('resumen')}>
