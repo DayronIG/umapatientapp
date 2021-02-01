@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { getDoctor } from '../../store/actions/firebaseQueries';
 import StudiesOrder from './StudiesOrder';
@@ -31,8 +31,6 @@ const DossierContainer = (props) => {
         return console.log('Reclamo enviado')
     }
 
-
-
     return (
         <>
             {att.mr.dt_cierre && att.mr.dt_cierre !== '' && att.mr.destino_final !== 'Anula el paciente' &&
@@ -52,7 +50,6 @@ const DossierContainer = (props) => {
                         <>
                             {tab !== 'receta' && tab !== 'ordenes' &&
                                 <div className='download-order'>
-                                {/* // 'd-flex flex-column justify-content-center' */}
                                     <button className="button-d">
                                         <ReactToPrint
                                             trigger={() => (
