@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import HeaderContainer from './HeaderContainer/HeaderContainer';
+// import DossierContainer from './DossierContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { getPrescriptions } from '../../store/actions/firebaseQueries';
@@ -14,8 +15,6 @@ const RecipeSection = () => {
     const [tab, setTab] = useState('todas')
     const patient = useSelector(state => state.user)
     const prescriptions = useSelector(state => state.queries.prescriptions)
-
-    console.log(prescriptions)
 
     useEffect(() => {
         if(patient.core_id) {
@@ -60,7 +59,7 @@ const RecipeSection = () => {
                 {
                     prescriptions && prescriptions.map(p => {
                         return(
-                            <Link className="history-recipe" to={`/${patient.ws}/history/${p.hc}`}> 
+                            <Link className="history-recipe" to={`/${patient.ws}/history/${p.hc}/receta`}> 
                                 <div className="leftIcon">
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </div>
@@ -71,7 +70,7 @@ const RecipeSection = () => {
                         )
                     })
                 }
-             </div>
+            </div>
         </>
     )
 }
