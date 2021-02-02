@@ -69,6 +69,7 @@ const ConfirmAppointment = (props) => {
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
+			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
 			let data = {
 				age: userVerified.age || '',
 				biomarker: biomarkers || [],
@@ -83,10 +84,12 @@ const ConfirmAppointment = (props) => {
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
 				ruta: selectedAppointment.path?.split('assignations/')[1] || '',
+				// cuit: "2034109531",
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
-				uid: user.core_id
+				uid: user.core_id,
+				category
 			};
 
 			const headers = { 'Content-type': 'application/json' };

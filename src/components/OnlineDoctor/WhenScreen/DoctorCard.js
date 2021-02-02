@@ -34,7 +34,6 @@ const DoctorCard = (props) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		console.log(props)
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
 		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	}
