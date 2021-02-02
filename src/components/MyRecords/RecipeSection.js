@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import HeaderContainer from './HeaderContainer/HeaderContainer';
-// import DossierContainer from './DossierContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { getPrescriptions } from '../../store/actions/firebaseQueries';
