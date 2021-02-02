@@ -70,7 +70,7 @@ function StudiesOrder({ att, doc }) {
                             <p><b>Afiliado: </b></p>
                             <span className='dossier-info'>{patient && patient.fullname}</span>
                             <hr />
-                            <p><b>DNI: </b></p>
+                            <p><b>Documento: </b></p>
                             <span className='dossier-info'>{patient && patient.dni}</span>
                             <hr />
                             <div className='date-prescription'>
