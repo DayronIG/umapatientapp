@@ -19,6 +19,7 @@ const HistoryHome = ({ user }) => {
             && el.mr.destino_final !== "Anula el paciente"
         }).slice(0, 5))
    }, [mr])
+
     
     return (
         <section className="history__container">
@@ -26,13 +27,13 @@ const HistoryHome = ({ user }) => {
             {lastMr && lastMr.length === 0 ?
                 <div className="text-center p-2">Aún no hay eventos registrados.</div>
                 :
-                <Events data={lastMr} />}
+                <Events />}
                 <Link to={`/${patient.ws}/history`} className="history-link">
-                    Ver todo el historial
-                    <FontAwesomeIcon icon={faChevronRight} />
+                    Ver todo 
+                <FontAwesomeIcon icon={faChevronRight} />
                 </Link>
         </section>
     )
 }
 
-export default HistoryHome
+export default HistoryHome;

@@ -12,6 +12,7 @@ const initialState = {
     feedback: [],
     geolocation: { lat: '', lng: '' },
     medicalRecord: [],
+    prescriptions: [],
     patient: { ws: '', },
     plan: {
         onlinedoctor: {
@@ -103,6 +104,8 @@ export default (state = initialState, action) => {
             return { ...state, upNumAff_store: action.payload };
         case 'SET_ASSIGNED_APPOINTMENT':
             return { ...state, assignedAppointment: action.payload }
+        case 'SET_PRESCRIPTIONS':
+            return { ...state, prescriptions: action.payload}
         case 'SET_UMACARE':
             return { ...state, umacare: action.payload }
         case 'SET_UMACARE_STATUS':

@@ -10,6 +10,32 @@
       position: -webkit-sticky;
       position: sticky;
       margin: 0;
+
+      &.history {
+         box-shadow: 0px 2px 5px rgba(199, 199, 199, 0.2);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         padding: 5px 6px;
+         height: 55px;
+
+         .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: #686464;
+            border: none;
+            background-color: #fff;
+            cursor: pointer;
+            line-height: 2px;
+         }
+
+         .header-title {
+            color: #686464;
+            font-weight: bold;
+         }
+         
+      }
       .contentWrapper {
          display: flex;
          justify-content: space-between;
@@ -145,5 +171,7 @@
       text-align: center;
       background: $white-color;
    }
+
+
 }
 

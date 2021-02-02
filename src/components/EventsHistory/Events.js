@@ -1,36 +1,51 @@
-import React from 'react'
+import React from 'react';
 import {withRouter} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import moment from 'moment';
-import { faUserNurse } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {useSelector} from 'react-redux';
+import { faUserMd, faChevronRight, faFlask, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const Events = (props) => {
-    let { data } = props
     
-    const renderEvents = () => {
-        return (
-            <>
-            {data.map((record, index) => {
-                return (record.mr && 
-                <div className="event" key={index} 
-                    onClick={(e) => props.history.push(`/${record.patient.ws}/history/${record.patient.dni}/${record.assignation_id}`)}>
-                    <div>
-                        <FontAwesomeIcon icon={faUserNurse} />
-                        <span>Consulta Online</span>
-                    </div>
-                    <strong>
-                        {moment(record.created_dt).format("DD-MM-YYYY")}
-                    </strong>
-                </div>)
-            })}
-            </>
-        )
-    }
+    const {ws} = useSelector(state => state.user)
+
+    const sectionEvents = [
+        {
+            sectionName: 'Recetas',
+            icon: faFileAlt, 
+            url: `/${ws}/recipes`
+        },
+        {
+            sectionName: 'Órdenes y análisis',
+            icon: faFlask,
+            url: ``
+        }, 
+        {
+            sectionName: 'Consultas',
+            icon: faUserMd,
+            url: `/${ws}/record`
+        }
+    ]
+
     return (
-        <>
-            {renderEvents()}
-        </>
+        <div className="event" >
+                {
+                    sectionEvents.map(item => {
+                        return(
+                            <>
+                                <div className="event-section" onClick={e => props.history.push(item.url)}>
+                                    <div className="section-icon">
+                                        <FontAwesomeIcon icon={item.icon} />
+                                        <span>{item.sectionName}</span>
+                                    </div>
+                                    <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight}/> 
+                                </div>
+                                <div className='line'></div>
+                            </>
+                        )
+                    })
+                }
+            </div>
     )
 }
 

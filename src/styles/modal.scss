@@ -144,6 +144,20 @@
       font-size: 1.1rem;
       padding-top: 10px;
     }
+    .button {
+      width: 80%;
+      height: 48px;
+      border-radius: 5px;
+      background-color: $uma-primary;
+      color: $white-color;
+      margin: 0 auto;
+      font-weight: bold;
+      border: none;
+      transition: 0.2s ease-in-out;
+      &:hover {
+        background-color: $deep-blue;
+      }
+    }
     img {
       width: 30vh;
       margin-left: 6vw;
