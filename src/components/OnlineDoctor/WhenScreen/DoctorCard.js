@@ -54,8 +54,9 @@ const DoctorCard = (props) => {
 								<div className='doctorStars'>
 									<StarRatings
 										rating={
-											props.doc?.metrics?.stars &&
+											(props.doc?.metrics?.stars &&
 											parseFloat(props.doc.metrics.stars)
+											)|| 5
 										}
 										starRatedColor='#F8BD1D'
 										numberOfStars={5}
