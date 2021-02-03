@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
-import { FaSlidersH } from "react-icons/fa";
 import '../../styles/history/MyRecords.scss';
 
 const MyRecords = () => {
-    const {category} = useParams();
     const dispatch = useDispatch()
+    const [tab, setTab] = useState(false)
     const records = useSelector(state => state.queries.medicalRecord)
-    const [tab, setTab] = React.useState(false)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
 
+    useEffect(() => { 
+        window.scroll(0, 0);
 
-    useEffect(() => { window.scroll(0, 0); }, [])
+    }, [patient])
 
     function selectBeneficiarieMr(p) {
         if (p === "owner") {
+            console.log("owner")
             setTab(false)
             dispatch(getMedicalRecord(beneficiaries?.[0]?.group, beneficiaries[0]?.ws))
         } else {
@@ -37,7 +38,7 @@ const MyRecords = () => {
             <main className="my-history-container"> 
                 <div className="title-icon">
                     <p className="font-weight-bold">Consultas médicas</p>
-                    <button><FaSlidersH/></button>
+                    {/* <button><FaSlidersH/></button> */}
                 </div>
                 {/*  Beneficiary cambia de lugar con el nuevo diseño*/}
                 <div className="my-history-beneficiary"> 
@@ -49,7 +50,6 @@ const MyRecords = () => {
                             key={index}> {p.fullname} </button>
                     })}
                 </div>
-                {/* --- */}
                 <ul>
                     {records && records.length === 0 && <div className="no-records">
                         Aún no se encontraron registros para esta persona.</div>}
@@ -57,9 +57,9 @@ const MyRecords = () => {
                         return ( 
                             r.mr.destino_final !== "USER CANCEL" &&
                             (r.mr.destino_final !== "" || r.incidente_id !== 'auto') &&
-                            <>
-                                <li key={index} className="my-history-consultation">
-                                        <Link to={`/${r.patient.ws}/history/${r.patient.dni}/${r.assignation_id}`} className="consult-link">
+                            <React.Fragment key={index}>
+                                <li className="my-history-consultation">
+                                        <Link to={`/history/${r.patient.dni}/${r.assignation_id}/${r.patient.ws}`} className="consult-link">
                                                 <div className="left-icon">
                                                     <FontAwesomeIcon icon={faUserMd} />
                                                 </div>
@@ -70,7 +70,7 @@ const MyRecords = () => {
                                         </Link>
                                     </li>
                                 <hr/>
-                            </>
+                            </React.Fragment>
                         )
                     })}
                 </ul>

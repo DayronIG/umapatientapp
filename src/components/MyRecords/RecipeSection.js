@@ -37,7 +37,7 @@ const RecipeSection = () => {
     return(
         <>
             <HistoryHeader> Recetas </HistoryHeader>
-            <HeaderContainer> 
+{/*             <HeaderContainer> 
                 <ValidateAction action='not-clickable' field='recipe'>
                     <button className={tab === 'todas' ? 'active button-record' : 'button-record'} onClick={() => setTab('todas')}>
                         Todas
@@ -53,12 +53,12 @@ const RecipeSection = () => {
                         Usadas
                     </button>
                 </ValidateAction>
-            </HeaderContainer>
+            </HeaderContainer> */}
             <div className='recipe-container'> 
                 {
-                    prescriptions && prescriptions.map(p => {
+                    prescriptions.length >= 1 ? prescriptions.map(p => {
                         return(
-                            <Link className="history-recipe" to={`/${patient.ws}/history/${p.hc}/receta`}> 
+                            <Link className="history-recipe" to={`/history/${p.hc}/receta`}> 
                                 <div className="leftIcon">
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </div>
@@ -68,6 +68,8 @@ const RecipeSection = () => {
                             </Link>
                         )
                     })
+                    : 
+                    <p className='recipe-empty'>No hay recetas disponibles</p>
                 }
             </div>
         </>

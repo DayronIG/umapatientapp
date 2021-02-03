@@ -5,7 +5,7 @@ import { GenericHeader } from '../GeneralComponents/Headers';
 import AddEmail from './AddEmail';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
-import EventsHistory from '../EventsHistory/';
+import EventsHistory from '../EventsHistory/index';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home';

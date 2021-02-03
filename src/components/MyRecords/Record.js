@@ -20,8 +20,6 @@ const Record = (props) => {
         }
     },[recipe])
 
-    console.log('tab', tab)
-
     useEffect(() => {
         dispatch(getVoucherById(props.dni, props.aid))
     }, [props.aid])
@@ -36,7 +34,7 @@ const Record = (props) => {
 
     return (
         <>
-            <HistoryHeader > Detalles de consulta </HistoryHeader>
+            <HistoryHeader>Detalles de consulta</HistoryHeader>
             <div className='records-sections'>
                 <button className={tab === 'resumen' ? 'active button-record' : 'button-record'}
                     onClick={() => setTab('resumen')}>

@@ -123,11 +123,11 @@ function App(props) {
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
-				<PrivateRoute exact path='/:ws/record/' component={MyRecords} />
-				<PrivateRoute exact path='/:ws/history/' component={MyHistory} />
-				<PrivateRoute exact path='/:ws/history/:category' component={MyRecords} />
-				<PrivateRoute exact path='/:ws/history/:dni?/:record?/:recipe?' component={History} /> 
-				<PrivateRoute exact path='/:ws/recipes' component={RecipeSection} />
+				<PrivateRoute exact path='/record/:ws' component={MyRecords} />
+				<PrivateRoute exact path='/history/:ws' component={MyHistory} />
+				<PrivateRoute exact path='/history/:category' component={MyRecords} />
+				<PrivateRoute exact path='/history/:dni?/:record?/:recipe?' component={History} /> 
+				<PrivateRoute exact path='/recipes' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/:ws?/profile/' component={Profile} />
 				{/* APPOINTMENTS ONLINE */}
