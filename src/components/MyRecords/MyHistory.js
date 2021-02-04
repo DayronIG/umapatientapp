@@ -18,7 +18,7 @@ const MyHistory = () => {
         {
             sectionName: 'Consultas',
             icon: faUserMd,
-            url: `/history/consultas/${ws}`
+            url: `/record/${ws}`
         }, 
         {
             sectionName: 'Autonomous',

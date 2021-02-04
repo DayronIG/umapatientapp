@@ -9,7 +9,7 @@ import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import '../../styles/history/MyRecords.scss';
 
 const MyRecords = () => {
-    const {category} = useParams();
+    // const {category} = useParams();
     const dispatch = useDispatch()
     const [tab, setTab] = useState(false)
     const records = useSelector(state => state.queries.medicalRecord)
@@ -73,11 +73,10 @@ const MyRecords = () => {
                                                 }
                                                 </div>
                                                 <section className="title-date"> 
-                                                   
                                                         {r.mr_preds.pre_clasif == "" ?
-                                                        <p className='title-guardia'>Guardia</p> //cambia title-guardia por otro nombre
+                                                        <p className='title-clasif'>Guardia</p> 
                                                         : 
-                                                        <p className='title-guardia'>Médico clínico</p>
+                                                        <p className='title-clasif'>Médico clínico</p>
                                                         }
                                                     
                                                     <p className="consult-date">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>

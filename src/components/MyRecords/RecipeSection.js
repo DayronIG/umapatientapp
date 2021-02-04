@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HistoryHeader } from '../GeneralComponents/Headers';
-import HeaderContainer from './HeaderContainer/HeaderContainer';
+// import HeaderContainer from './HeaderContainer/HeaderContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { getPrescriptions } from '../../store/actions/firebaseQueries';
-import ValidateAction from '../ValidateAction/index';
+// import ValidateAction from '../ValidateAction/index';
 import '../.././styles/history/RecipeSection.scss';
 
 const RecipeSection = () => {
     const dispatch = useDispatch()
-    const [tab, setTab] = useState('todas')
+    // const [tab, setTab] = useState('todas')
     const patient = useSelector(state => state.user)
     const prescriptions = useSelector(state => state.queries.prescriptions)
 
@@ -56,7 +56,7 @@ const RecipeSection = () => {
             </HeaderContainer> */}
             <div className='recipe-container'> 
                 {
-                    prescriptions.length >= 1 ? prescriptions.map(p => {
+                    prescriptions.length > 0 ? prescriptions.map(p => {
                         return(
                             <Link className="history-recipe" to={`/history/${p.hc}/receta`}> 
                                 <div className="leftIcon">
