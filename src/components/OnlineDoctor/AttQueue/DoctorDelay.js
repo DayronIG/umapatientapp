@@ -15,8 +15,8 @@ const DoctorDelay = ({cuit, date, time}) => {
     }, [cuit]);
 
     const getDelayAndQueue = useCallback(() => {
+        let dt = moment().format('YYYYMM');
         if(cuit && cuit !== ''){
-			let dt = moment().format('YYYYMM');
 			let filters = [
 				{field: 'cuit', value: cuit, comparator: '=='},
 				{field: 'status', value: 'ASSIGN', comparator: '=='}			
@@ -35,7 +35,13 @@ const DoctorDelay = ({cuit, date, time}) => {
 					}
                 })
             .catch(err => console.log(err))
-		}
+		} else {
+            let filters = [{field: 'status', value: 'ASSIGN', comparator: '=='}]
+            getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
+                .then(res => {
+                    setQueue(res.length)
+                })
+        }
     }, [cuit, date, time])
     
     return <div className="appointment__delay--container">
@@ -43,10 +49,10 @@ const DoctorDelay = ({cuit, date, time}) => {
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div>
-        <div className="appointment__delay">
+        {cuit && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">minutos de espera aprox.</span>
-        </div>
+        </div>}
     </div>
 }
 

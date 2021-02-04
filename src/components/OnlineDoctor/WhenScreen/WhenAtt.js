@@ -121,10 +121,14 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					<div className='mb-4'>
-						<GuardCard pediatric={pediatric} dni={dni} />
-					</div>
-					<div className='when-question'>O elija un {pediatric ? 'pediatra' : 'médico'}</div>
+					<GuardCard pediatric={pediatric} dni={dni} doctorsCount={assignations.length} />
+					{action === 'Loading' && (
+						<div
+							className='when__loading'>
+							<Loader />
+							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
+						</div>
+					)}
 					{action === 'Doctors' && (
 						<div>
 							{assignations?.map((assignation, index) => (
@@ -134,25 +138,6 @@ const WhenScreen = (props) => {
 									dni={dni}
 								/>
 							))}
-						</div>
-					)}
-					{action === 'Loading' && (
-						<div
-							style={{
-								margin: 'auto',
-								width: '85vw',
-								backgroundColor: 'white',
-								borderRadius: '6px',
-								minHeight: '360px',
-							}}
-							className='d-flex align-items-center justify-content-center flex-column mb-3'>
-							<Loader />
-							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
-						</div>
-					)}
-					{action === 'Empty' && (
-						<div className='dinamic-time  text-center'>
-							En este momento no hay especialistas con agenda disponible, seleccione médico de guardia y será atendido por el primer especialista disponible.
 						</div>
 					)}
 					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/home')}>

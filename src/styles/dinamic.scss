@@ -95,6 +95,19 @@
             flex-direction: column;
             justify-content: start;
         }
+        .when__loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            width: 95%;
+            padding: 20px;
+            margin-top: 10px;
+            background: white;
+            border-radius: 6px;
+            min-height: 40vh;
+        }
         .dinamic-answer-card {
             margin: 20px;
         }

@@ -69,10 +69,6 @@ const ConfirmAppointment = (props) => {
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
-			let appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
-			if (bag === true) {
-				appointmentId = ''
-			}
 			let data = {
 				age: userVerified.age || '',
 				biomarker: biomarkers || [],
@@ -81,7 +77,7 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || user.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
+				lat: coordinates.lat || '', 
 				lon: coordinates.lng || '',
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
@@ -133,7 +129,7 @@ const ConfirmAppointment = (props) => {
 
 	return (
 		<>
-			{selectedAppointment ?
+			{selectedAppointment.doc?.path_profile_pic ?
 				<div className='appointment'>
 					<h5>Información del turno</h5>
 					<div>
@@ -145,7 +141,6 @@ const ConfirmAppointment = (props) => {
 						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
 					</div>
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
-					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 				</div>
 				:
 				<div className='appointment'>
@@ -157,15 +152,16 @@ const ConfirmAppointment = (props) => {
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
 				</div>
 			}
+			<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 			<div className="questionsContainer">
 				{
 					loading ? <div className="text-center"><Loader /></div>
-						:
-						<div className="input-file">
-							<FaFileMedicalAlt size="1.5rem" />
-							<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
-							<input type="file" onChange={uploadImage} />
-						</div>
+					:
+					<div className="input-file">
+						<FaFileMedicalAlt size="1.5rem" />
+						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
+						<input type="file" onChange={uploadImage} />
+					</div>
 				}
 				<button className="btn-questions btn-normal" onClick={() => submitRequest()}>Confirmar turno</button>
 			</div>
