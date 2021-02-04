@@ -34,7 +34,7 @@ const DoctorCard = (props) => {
         <>
             {!!firstOption ?
                 <div className="doctorCard-container disable-selection">
-                    <div className="doctorCard-firstRow" > 
+                    <div className="doctorCard-firstRow"> 
                         <div className="doctorCard-photoContainer">
                             <img src={firstOption?.path_profile_pic} alt="Doctor" className="doctorImage" />
                         </div>

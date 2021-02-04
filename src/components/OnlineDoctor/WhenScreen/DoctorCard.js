@@ -7,18 +7,11 @@ import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
+import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
+import moment from 'moment';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
-	var timeDelay = classnames('timeDelay', {
-		verygood: props.doc && props.doc.metrics && props.doc.metrics.punctuality <= 0.5,
-		good:
-			props.doc &&
-			props.doc.metrics &&
-			props.doc.metrics.punctuality > 0.5 &&
-			props.doc.metrics.punctuality < 1.5,
-		regular: props.doc && props.doc.metrics && props.doc.metrics.punctuality >= 1.5,
-	});
 
 	function viewComments(doc) {
 		dispatch({ type: 'TOGGLE_DETAIL' });
@@ -49,50 +42,49 @@ const DoctorCard = (props) => {
 						<div className='doctorName'>
 							<b>{props.doc.fullname}</b>
 						</div>
-						{props.doc.metrics && (
-							<>
-								<div className='doctorStars'>
-									<StarRatings
-										rating={
-											(props.doc?.metrics?.stars &&
-											parseFloat(props.doc.metrics.stars)
-											)|| 5
-										}
-										starRatedColor='#F8BD1D'
-										numberOfStars={5}
-										name='rating'
-										starSpacing='1px'
-										starDimension='15px'
-									/>
-								</div>
-								<div className='doctorAtts'>
-									({props.doc.metrics ? props.doc.metrics.n_att : '0'} atenciones)
-								</div>
-							</>
-						)}
 					</div>
 					<div className='doctorCard-timeContainer'>
 						<div className='timeRemainingBefore'>
-							<br />
-							<span className='ml-1'>Disponible {props.delay}</span>
+							<span>{props.delay}</span>
 						</div>
 					</div>
 				</div>
 				<div className='doctorCard-secondRow'>
+					<div className='doctorAtts'>
+						<p>{props.doc.metrics ? props.doc.metrics.n_att : '0'}</p><span>atenciones</span>
+					</div>
 					{props.doc.metrics && (
-						<div className={timeDelay}>
-							Puntualidad: &nbsp;
-							{props.doc.metrics && props.doc.metrics.punctuality <= 0.5 && 'Muy buena'}
-							{props.doc.metrics &&
-								props.doc.metrics.punctuality > 0.5 &&
-								props.doc.metrics.punctuality < 1.5 &&
-								'Buena'}
-							{props.doc.metrics && props.doc.metrics.punctuality >= 1.5 && 'Regular'}
+						<div className='doctorStars'>
+							<StarRatings
+								rating={
+									(props.doc?.metrics?.stars &&
+									parseFloat(props.doc.metrics.stars)) || 5
+								}
+								starRatedColor='#0A6DD7'
+								numberOfStars={5}
+								name='rating'
+								starSpacing='1px'
+								starDimension='15px'
+							/>
+							<span>Valoraciones</span>
+						</div>
+						)}
+					{props.doc.metrics && (
+						<div className='doctorPunctuality'>
+							<p>
+								{props.doc.metrics && props.doc.metrics.punctuality <= 0.5 && 'Muy buena'}
+								{props.doc.metrics &&
+									props.doc.metrics.punctuality > 0.5 &&
+									props.doc.metrics.punctuality < 1.5 &&
+									'Buena'}
+								{props.doc.metrics && props.doc.metrics.punctuality >= 1.5 && 'Regular'}
+							</p>
+							<span>Puntualidad</span>
 						</div>
 					)}
-					<div className='doctorCard-comments' onClick={() => viewComments(props.cuit)}>
-						Ver comentarios
-					</div>
+				</div>
+				<div className='doctorCard-comments' onClick={() => viewComments(props.cuit)}>
+					Ver comentarios
 				</div>
 			</div>
 		</>
@@ -103,23 +95,35 @@ export default withRouter(DoctorCard);
 
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
+	const [queue, setQueue] = useState("0")
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
 		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	};
+	
+	useEffect(() => {
+		let filters = [{field: 'status', value: 'ASSIGN', comparator: '=='}]
+		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
+			.then(res => {
+				if(res.length > 0) {
+					setQueue(res.length)
+				}
+			})
+	}, [])
 
 	return (
 		<div className='doctorCard-container'>
-			<div className='doctorCard-firstRow guardDoctor' onClick={selectGuard}>
-				<div className='doctorCard-photoContainer guardDoctor'>
+			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
+				<div className='doctorCard-photoContainer guardia'>
 					<span className='guard-icon'>
 						<FontAwesomeIcon icon={faUserMd} />
 					</span>
 				</div>
 				<div className='doctorCard-doctorInfo'>
-					<div className='doctorName guardDoctor'>
-						<b>PEDIR MÉDICO DE GUARDIA {props.pediatric ? 'PEDIÁTRICA' : 'ADULTOS'}</b>
+					<div className='doctorName guardia'>
+						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
+						<small>Hay {queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
 					</div>
 				</div>
 			</div>

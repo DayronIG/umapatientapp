@@ -773,13 +773,13 @@ const Recipe = ({ att, doc }) => {
 									/>
 								)}*/}
 					</div>
-					<div id="pedirPorRappi">
+{/* 					<div id="pedirPorRappi">
 						<button className="rappi-link">
 							<a href="gbrappi://com.grability.rappi?store_type=market&market_type=farma_city">
 							Comprá por Rappi
 							</a>
 						</button>
-					</div>
+					</div> */}
 					<ReactToPrint
 						trigger={() => (
 							<div className='download-order '>

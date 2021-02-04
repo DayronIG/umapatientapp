@@ -13,18 +13,18 @@ const MyHistory = () => {
         {
             sectionName: 'Recetas',
             icon: faFileAlt, 
-            url: `/recipes`
+            url: `/recipes/${ws}`
         },
         {
             sectionName: 'Consultas',
             icon: faUserMd,
             url: `/record/${ws}`
         }, 
-        {
-            sectionName: 'Autonomous',
-            icon: faCarAlt,
-            url: `''`
-        }
+        // {
+        //     sectionName: 'Autonomous',
+        //     icon: faCarAlt,
+        //     url: `''`
+        // }
     ]
 
     return (

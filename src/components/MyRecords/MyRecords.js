@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd, faUserNurse, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { HistoryHeader } from '../GeneralComponents/Headers';
-import { getMedicalRecord } from '../../store/actions/firebaseQueries';
+import { getMedicalRecord, getBenficiaries } from '../../store/actions/firebaseQueries';
 import '../../styles/history/MyRecords.scss';
 
 const MyRecords = () => {
@@ -19,9 +19,14 @@ const MyRecords = () => {
 
     useEffect(() => { 
         window.scroll(0, 0);
+        if(patient.dni) {
+            dispatch(getBenficiaries(patient.dni))
+            dispatch(getMedicalRecord(patient.dni, patient.ws))
+        }
     }, [patient])
 
     function selectBeneficiarieMr(p) {
+        console.log('esto es p', p)
         if (p === 'owner') {
             console.log('owner')
             setTab(false)
@@ -29,7 +34,7 @@ const MyRecords = () => {
         } else {
             console.log('no owner')
             setTab(p.fullname)
-            dispatch(getMedicalRecord(p.dni, p.ws))
+            dispatch(getMedicalRecord(p.split('-')[0], p.split('-')[1]))
         }
     }
 
@@ -50,17 +55,19 @@ const MyRecords = () => {
                             onClick={() => selectBeneficiarieMr(p)}
                             key={index}> {p.fullname} </button>
                     })} */}
-                    <select className='select-beneficiary'>
+                    <select className='select-beneficiary' onChange={(p) => selectBeneficiarieMr(p.target.value)}>
                         <FontAwesomeIcon icon={faSortDown} />
-                        <option value=""> {patient.fullname} </option>
+                        <option value="owner"> {patient.fullname} </option>
                     {beneficiaries.map((p, index) => {
-                        return <option key={index} value={p.fullname}> {p.fullname} </option>
+                        return <option key={index} value={`${p.dni}-${p.ws}`}> {p.fullname} </option>
                     })}
                     </select>
                 </div>
                 {/* --- */}
                 <ul>
-                    {records && records.length === 0 && <div className='no-records'>
+                    {records && records.filter(r => r.mr.destino_final !== 'USER CANCEL' && 
+                            r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
+                            r.mr.dt_cierre !== '' &&  r.incidente_id !== 'auto').length === 0 && <div className='no-records'>
                         Aún no se encontraron registros para esta persona.</div>}
                     {records && records.map((r, index) => {
                         return ( 
@@ -70,7 +77,7 @@ const MyRecords = () => {
                             <React.Fragment key={index}>
                                 {console.log(r)}
                                 <li className='my-history-consultation'>
-                                        <Link to={`/history/${r.patient.dni}/${r.assignation_id}/${r.patient.ws}`} className='consult-link'>
+                                        <Link to={`/history/${r.patient.dni}/${r.assignation_id}`} className='consult-link'>
                                             
                                                 <div className='left-icon'>
                                                 {r.mr_preds.pre_clasif == '' ?
@@ -80,10 +87,10 @@ const MyRecords = () => {
                                                 }
                                                 </div>
                                                 <section className='title-date'> 
-                                                        {r.mr_preds.pre_clasif == '' ?
+                                                        {typeof r.mr_preds.pre_clasif === 'string' ?
                                                         <p className='title-clasif'>Guardia</p> 
                                                         : 
-                                                        <p className='title-clasif'>Médico clínico</p>
+                                                        <p className='title-clasif'>{r.mr_preds.pre_clasif[2] || 'Médico clínico'}</p>
                                                         }
                                                     
                                                     <p className='consult-date'>{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>

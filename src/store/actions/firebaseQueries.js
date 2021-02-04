@@ -24,7 +24,6 @@ export const getOneRecord = (patient) => ({
 
 export async function getFreeGuardia(test = false, country = false, type = false) {
 	let docQuery = []
-	console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
 	if(test === true) {
 		await firestore
 			.collection('assignations/guardia/test')
@@ -388,11 +387,14 @@ export function getMedicalRecord(dni, ws){
             .where('patient.ws', '==', ws)
         return dispatch => {
             usersQuery.onSnapshot(subSnapshot => {
+				console.log("Dale bro")
+
                 var tempArray = [];
                 subSnapshot.forEach(content => {
                     tempArray.push(content.data());
                 });
-                let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+				let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+				console.log(result)
                 dispatch({
                     type: 'GET_MEDICAL_RECORD',
                     payload: result
@@ -402,7 +404,7 @@ export function getMedicalRecord(dni, ws){
             });
         }
     } catch (err) {
-        return { type: 'ERROR getMedicalRecord', err };
+        console.log('ERROR getMedicalRecord', err);
     }
 }
 
