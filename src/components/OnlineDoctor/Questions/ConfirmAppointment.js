@@ -69,6 +69,7 @@ const ConfirmAppointment = (props) => {
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
+			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
 			let data = {
 				age: userVerified.age || '',
 				biomarker: biomarkers || [],
@@ -83,17 +84,19 @@ const ConfirmAppointment = (props) => {
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
 				ruta: selectedAppointment.path?.split('assignations/')[1] || '',
+				// cuit: "2034109531",
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
-				uid: user.core_id
+				uid: user.core_id,
+				category
 			};
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/onlinedoctor/who/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
@@ -101,6 +104,9 @@ const ConfirmAppointment = (props) => {
 			}
 		} catch (err) {
 			console.log(err)
+			if(err.data.fecha === '') {
+				return history.replace(`/onlinedoctor/who`);
+			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 		}

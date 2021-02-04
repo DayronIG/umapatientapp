@@ -2,6 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 /* History */
 import History from './views/History.js';
+import MyRecords from './components/MyRecords/MyRecords';
+import MyHistory from './components/MyRecords/MyHistory';
+import RecipeSection from './components/MyRecords/RecipeSection';
 /* User */
 import PrivateRoute from './PrivateRoute';
 import Welcome from './views/Welcome';
@@ -120,8 +123,11 @@ function App(props) {
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
-				<PrivateRoute exact path='/:ws/history/:dni?/:record?' component={History} />
-				<PrivateRoute from='/:ws/record' to='/:ws/history/' />
+				<PrivateRoute exact path='/record/:ws' component={MyRecords} />
+				<PrivateRoute exact path='/history/:ws' component={MyHistory} />
+				<PrivateRoute exact path='/history/:category' component={MyRecords} />
+				<PrivateRoute exact path='/history/:dni?/:record?/:recipe?' component={History} /> 
+				<PrivateRoute exact path='/recipes/:ws' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/:ws?/profile/' component={Profile} />
 				{/* APPOINTMENTS ONLINE */}

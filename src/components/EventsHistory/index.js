@@ -10,7 +10,7 @@ const HistoryHome = ({ user }) => {
     const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord)
 
-   useEffect(() => {
+    useEffect(() => {
         setLastMr(mr.filter(el=> {
             return el.mr.destino_final !== "" 
             && el.mr.destino_final !== "Paciente Ausente"
@@ -18,7 +18,8 @@ const HistoryHome = ({ user }) => {
             && el.mr.destino_final !== "USER CANCEL"
             && el.mr.destino_final !== "Anula el paciente"
         }).slice(0, 5))
-   }, [mr])
+    }, [mr])
+
     
     return (
         <section className="history__container">
@@ -26,13 +27,14 @@ const HistoryHome = ({ user }) => {
             {lastMr && lastMr.length === 0 ?
                 <div className="text-center p-2">Aún no hay eventos registrados.</div>
                 :
-                <Events data={lastMr} />}
-                <Link to={`/${patient.ws}/history`} className="history-link">
-                    Ver todo el historial
-                    <FontAwesomeIcon icon={faChevronRight} />
-                </Link>
+                <Events />
+            }
+            <Link to={`/history/${patient.ws}`} className="history-link">
+                Ver todo 
+            <FontAwesomeIcon icon={faChevronRight} />
+            </Link>
         </section>
     )
 }
 
-export default HistoryHome
+export default HistoryHome;

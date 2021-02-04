@@ -1,23 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileMedicalAlt, faCarAlt } from '@fortawesome/free-solid-svg-icons'
-import { GenericHeader } from '../GeneralComponents/Headers';
-import { getMedicalRecord } from '../../store/actions/firebaseQueries';
-import Backbutton from '../GeneralComponents/Backbutton';
+import moment from 'moment-timezone';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { HistoryHeader } from '../GeneralComponents/Headers';
+import { getMedicalRecord, getBenficiaries } from '../../store/actions/firebaseQueries';
+import '../../styles/history/MyRecords.scss';
 
 const MyRecords = () => {
     const dispatch = useDispatch()
+    const [tab, setTab] = useState(false)
     const records = useSelector(state => state.queries.medicalRecord)
-    const [tab, setTab] = React.useState(false)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
 
-    useEffect(() => { window.scroll(0, 0); }, [])
+    useEffect(() => { 
+        window.scroll(0, 0);
+        if(patient.dni) {
+            dispatch(getBenficiaries(patient.dni))
+            dispatch(getMedicalRecord(patient.dni, patient.ws))
+        }
+    }, [patient])
 
     function selectBeneficiarieMr(p) {
         if (p === "owner") {
+            console.log("owner")
             setTab(false)
             dispatch(getMedicalRecord(beneficiaries?.[0]?.group, beneficiaries[0]?.ws))
         } else {
@@ -29,70 +37,47 @@ const MyRecords = () => {
 
     return (
         <>
-            <GenericHeader>Mi historia</GenericHeader>
-            <Backbutton />
-            <div className="myhistory-container">
-                <div className="text-center tab-container">
-                    <button className={tab === patient.fullname ? "active btn btn-secondary" : "btn btn-secondary"}
+            <HistoryHeader> Consultas </HistoryHeader>
+            <main className="my-history-container"> 
+                <div className="title-icon">
+                    <p className="font-weight-bold">Consultas médicas</p>
+                    {/* <button><FaSlidersH/></button> */}
+                </div>
+                {/*  Beneficiary cambia de lugar con el nuevo diseño*/}
+                <div className="my-history-beneficiary"> 
+                    <button className={tab === patient.fullname ? "active button-patient" : "button-patient"} 
                             onClick={() => selectBeneficiarieMr("owner")}> {patient.fullname} </button>
                     {beneficiaries.map((p, index) => {
-                        return <button className={tab === p.fullname ? "active btn btn-secondary" : "btn btn-secondary"}
+                        return <button className={tab === p.fullname ? "active button-patient" : "button-patient"}
                             onClick={() => selectBeneficiarieMr(p)}
                             key={index}> {p.fullname} </button>
                     })}
                 </div>
                 <ul>
-                    {records && records.length === 0 && <div className="text-center mt-5">
+                    {records && records.length === 0 && <div className="no-records">
                         Aún no se encontraron registros para esta persona.</div>}
                     {records && records.map((r, index) => {
-                        return (
+                        return ( 
                             r.mr.destino_final !== "USER CANCEL" &&
-                            (r.mr.destino_final !== "" || r.incidente_id === 'auto') &&
-                            <li key={index} className={r.incidente_id === 'DISCA' ? "transport myhistory-consultation" : (r.incidente_id === 'auto' ? "myhistory-consultation history-bg-autonomous" : "myhistory-consultation")}>
-                                {r.incidente_id !== 'auto' ?
-                                    <Link to={`./history/${r.patient.dni}/${r.assignation_id}`} className="d-flex">
-                                        {r.incidente_id === 'DISCA' ?
-                                            <div className="leftIcon">
-                                                <FontAwesomeIcon icon={faCarAlt} />
-                                            </div>
-                                            :
-                                            <div className="leftIcon">
-                                                <FontAwesomeIcon icon={faFileMedicalAlt} />
-                                            </div>}
-                                        <div>
-                                            <div className="consultContainer">
-                                                {!!r.mr && r.mr.dt_cierre}
-                                            </div>
-                                            {r.incidente_id === 'DISCA' ?
-                                                <div>
-                                                    <p>Traslado</p>
+                            (r.mr.destino_final !== "" || r.incidente_id !== 'auto') &&
+                            <React.Fragment key={index}>
+                                <li className="my-history-consultation">
+                                        <Link to={`/history/${r.patient.dni}/${r.assignation_id}/${r.patient.ws}`} className="consult-link">
+                                                <div className="left-icon">
+                                                    <FontAwesomeIcon icon={faUserMd} />
                                                 </div>
-                                                : r.mr.motivos_de_consulta &&
-                                                <div className="wrapper-consultContainer">
-                                                    <p>Consulta por {r.mr.motivos_de_consulta}</p>
-                                                </div>
-                                            }
-                                        </div>
-                                    </Link>
-                                    :
-                                    <div className="my-autonomous d-flex ">
-                                        <div className="leftIcon">
-                                            <i className="fas fa-vr-cardboard"></i>
-                                        </div>
-                                        <div>
-                                            <div className="consultContainer">
-                                                {!!r.mr && r.mr.dt_cierre}
-                                            </div>
-                                            <div className="wrapper-consultContainer">
-                                                <p>Autonomous: {r.mr.epicrisis}</p>
-                                            </div>
-                                        </div>
-                                    </div>}
-                            </li>
+                                                <section className="title-date"> 
+                                                    <p className="title-guardia">Guardia</p>
+                                                    <p className="consult-date">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
+                                                </section>
+                                        </Link>
+                                    </li>
+                                <hr/>
+                            </React.Fragment>
                         )
                     })}
                 </ul>
-            </div>
+            </main>
         </>
     )
 }

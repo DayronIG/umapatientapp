@@ -19,7 +19,7 @@ const History = (props) => {
   if (props.match.params.record) {
     return <Record dni={props.match.params.dni} aid={props.match.params.record} />
   } else {
-    return <MyRecords />
+    return <MyRecords /> 
   }
 }
 

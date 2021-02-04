@@ -24,7 +24,6 @@ export const getOneRecord = (patient) => ({
 
 export async function getFreeGuardia(test = false, country = false, type = false) {
 	let docQuery = []
-	console.log(`Country: ${country}, Type: ${type}, Test: ${test}`)
 	if(test === true) {
 		await firestore
 			.collection('assignations/guardia/test')
@@ -348,7 +347,7 @@ export function getPatientData(ws) {
 					}
 				})
 				.catch((err) => {
-					// console.log(err);
+					console.log(err);
 					dispatch({
 						type: 'ERROR',
 						payload: 'getPatientData for ' + ws + err,
@@ -361,6 +360,24 @@ export function getPatientData(ws) {
 	}
 }
 
+export function getPrescriptions(uid) {
+	try {
+		return dispatch => {
+			const query = firestore.collection('events/prescriptions/AR').where("uid", "==", uid).get()
+			.then(snap => {
+				let prescriptions = []
+				snap.forEach((el) => {
+					prescriptions.push(el.data())
+				})
+				dispatch({type: 'SET_PRESCRIPTIONS', payload: prescriptions})
+			})
+			.catch(err => console.log(err))
+		}
+	} catch(err) {
+		console.log(err)
+	}
+}
+
 export function getMedicalRecord(dni, ws){
     try {
         const usersQuery = firestore
@@ -370,11 +387,14 @@ export function getMedicalRecord(dni, ws){
             .where('patient.ws', '==', ws)
         return dispatch => {
             usersQuery.onSnapshot(subSnapshot => {
+				console.log("Dale bro")
+
                 var tempArray = [];
                 subSnapshot.forEach(content => {
                     tempArray.push(content.data());
                 });
-                let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+				let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+				console.log(result)
                 dispatch({
                     type: 'GET_MEDICAL_RECORD',
                     payload: result
@@ -384,7 +404,7 @@ export function getMedicalRecord(dni, ws){
             });
         }
     } catch (err) {
-        return { type: 'ERROR getMedicalRecord', err };
+        console.log('ERROR getMedicalRecord', err);
     }
 }
 

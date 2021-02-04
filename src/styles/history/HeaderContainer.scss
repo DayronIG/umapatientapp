@@ -1,0 +1,39 @@
+@import '../global/Vars.scss';
+
+.records-sections {
+    display: flex;
+    justify-content: center;
+    box-shadow: 0px 4px 24px #E6E6E6;
+    align-items: center;
+    height: 65px;
+    background-color: $white-color;
+    box-shadow: 0px 5px 12px 0px #E6E6E6;
+    position: relative;
+
+    .button-record {
+        font-weight: bold;
+        border: none;
+        text-transform: uppercase;
+        background-color: $white-color;
+        padding: 10px 5px;
+        color: $lighter-grey;
+        font-size: 14px;
+
+        &.active {
+            color: $uma-primary;
+        }
+
+        button {
+            border: none;
+            background-color: $white-color;
+        }
+
+    }
+
+}
+
+.record-not-completed {
+    text-align: center;
+    font-weight: bold;
+    margin: 40pz 10px;
+}

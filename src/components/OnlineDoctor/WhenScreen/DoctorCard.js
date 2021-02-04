@@ -27,7 +27,6 @@ const DoctorCard = (props) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		console.log(props)
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
 		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	}
@@ -115,16 +114,15 @@ const GuardCardComp = (props) => {
 
 	return (
 		<div className='doctorCard-container'>
-			<div className='doctorCard-firstRow' onClick={selectGuard}>
-				<div className='doctorCard-photoContainer'>
+			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
+				<div className='doctorCard-photoContainer guardia'>
 					<span className='guard-icon'>
 						<FontAwesomeIcon icon={faUserMd} />
 					</span>
 				</div>
 				<div className='doctorCard-doctorInfo'>
-					<div className='doctorName'>
+					<div className='doctorName guardia'>
 						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						{console.log(props.doctorsCount)}
 						<small>Hay {queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
 					</div>
 				</div>
