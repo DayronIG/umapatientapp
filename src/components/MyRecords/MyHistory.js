@@ -13,7 +13,7 @@ const MyHistory = () => {
         {
             sectionName: 'Recetas',
             icon: faFileAlt, 
-            url: `/recipes/${ws}`
+            url: `/recipes`
         },
         {
             sectionName: 'Consultas',

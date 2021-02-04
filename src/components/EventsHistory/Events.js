@@ -13,7 +13,7 @@ const Events = (props) => {
         {
             sectionName: 'Recetas',
             icon: faFileAlt, 
-            url: `/recipes/${ws}`
+            url: `/recipes`
         },
 /*         {
             sectionName: 'Órdenes y análisis',

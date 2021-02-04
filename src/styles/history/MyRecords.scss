@@ -22,14 +22,16 @@
         margin-bottom: 15px;
         text-align: center;
 
-        .button-patient {
-            border: none;
+        .select-beneficiary {
             width: 70%;
-            height: 30px;
-            color: white;
+            padding: 5px 30px;
+            background-color: $uma-primary;
+            color: $white-color;
             font-weight: bold;
-            background-color: $blue-button;
             border-radius: 5px;
+            &:focus {
+                outline: $dark-blue;
+            }
         }
     }
 
