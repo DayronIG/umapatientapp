@@ -3,7 +3,11 @@
 .recipe-container {
     min-height: 80vh;
     background-color: #fff;
+    .recipe-empty {
+        padding-top: 10%;
+        text-align: center;
 
+    }
     .history-recipe {
         display: flex;
         align-items: center;

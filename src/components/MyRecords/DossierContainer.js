@@ -72,9 +72,7 @@ const DossierContainer = (props) => {
 
             {
                 openModal && 
-        
                 <MobileModal title={ sendIssue ? '' : 'Reportar error'} callback={() =>setOpenModal(false) }>
-
                     {sendIssue ?
                     <div className='detail-modal-content'>
                         <h2>¡Gracias!</h2>
@@ -87,7 +85,6 @@ const DossierContainer = (props) => {
                         <button className='button' onClick={enviarReclamo}>Enviar problema</button> 
                     </div>
                     }
-
                 </MobileModal>
             }
         </>

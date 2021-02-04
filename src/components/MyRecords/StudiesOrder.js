@@ -70,7 +70,7 @@ function StudiesOrder({ att, doc }) {
                             <p><b>Afiliado: </b></p>
                             <span className='dossier-info'>{patient && patient.fullname}</span>
                             <hr />
-                            <p><b>DNI: </b></p>
+                            <p><b>Documento: </b></p>
                             <span className='dossier-info'>{patient && patient.dni}</span>
                             <hr />
                             <div className='date-prescription'>
@@ -86,7 +86,7 @@ function StudiesOrder({ att, doc }) {
                             <hr />
                             {(patient && 'obra_social' in patient && patient.obra_social) &&
                                 <>
-                                    <p><b>Obra social:</b> </p>
+                                    <p><b>Cobertura de salud:</b> </p>
                                     <span className='dossier-info'>{patient.obra_social}</span>
                                     <hr />
                                 </>

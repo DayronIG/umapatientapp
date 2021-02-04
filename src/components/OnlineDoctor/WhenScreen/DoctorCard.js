@@ -34,7 +34,6 @@ const DoctorCard = (props) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		console.log(props)
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
 		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
 	}
@@ -55,8 +54,9 @@ const DoctorCard = (props) => {
 								<div className='doctorStars'>
 									<StarRatings
 										rating={
-											props.doc?.metrics?.stars &&
+											(props.doc?.metrics?.stars &&
 											parseFloat(props.doc.metrics.stars)
+											)|| 5
 										}
 										starRatedColor='#F8BD1D'
 										numberOfStars={5}
