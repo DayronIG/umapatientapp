@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { faUserMd, faUserNurse } from '@fortawesome/free-solid-svg-icons';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import '../../styles/history/MyRecords.scss';
@@ -15,6 +15,7 @@ const MyRecords = () => {
     const records = useSelector(state => state.queries.medicalRecord)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
+
 
     useEffect(() => { 
         window.scroll(0, 0);
@@ -56,16 +57,29 @@ const MyRecords = () => {
                         Aún no se encontraron registros para esta persona.</div>}
                     {records && records.map((r, index) => {
                         return ( 
-                            r.mr.destino_final !== "USER CANCEL" &&
-                            (r.mr.destino_final !== "" || r.incidente_id !== 'auto') &&
+                            r.mr.destino_final !== 'USER CANCEL' && 
+                            r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
+                            r.mr.dt_cierre !== '' &&  r.incidente_id !== 'auto' &&
                             <React.Fragment key={index}>
+                                {console.log(r)}
                                 <li className="my-history-consultation">
                                         <Link to={`/history/${r.patient.dni}/${r.assignation_id}/${r.patient.ws}`} className="consult-link">
+                                            
                                                 <div className="left-icon">
+                                                {r.mr_preds.pre_clasif == "" ?
+                                                    <FontAwesomeIcon icon={faUserNurse} />
+                                                    : 
                                                     <FontAwesomeIcon icon={faUserMd} />
+                                                }
                                                 </div>
                                                 <section className="title-date"> 
-                                                    <p className="title-guardia">Guardia</p>
+                                                   
+                                                        {r.mr_preds.pre_clasif == "" ?
+                                                        <p className='title-guardia'>Guardia</p> //cambia title-guardia por otro nombre
+                                                        : 
+                                                        <p className='title-guardia'>Médico clínico</p>
+                                                        }
+                                                    
                                                     <p className="consult-date">{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
                                                 </section>
                                         </Link>
