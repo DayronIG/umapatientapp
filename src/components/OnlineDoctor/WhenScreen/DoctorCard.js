@@ -103,7 +103,7 @@ const GuardCardComp = (props) => {
 	};
 	
 	useEffect(() => {
-		let filters = [{field: 'status', value: 'ASSIGN', comparator: '=='}]
+		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
 		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
 			.then(res => {
 				if(res.length > 0) {

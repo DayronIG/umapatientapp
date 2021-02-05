@@ -387,14 +387,11 @@ export function getMedicalRecord(dni, ws){
             .where('patient.ws', '==', ws)
         return dispatch => {
             usersQuery.onSnapshot(subSnapshot => {
-				console.log("Dale bro")
-
                 var tempArray = [];
                 subSnapshot.forEach(content => {
                     tempArray.push(content.data());
                 });
 				let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
-				console.log(result)
                 dispatch({
                     type: 'GET_MEDICAL_RECORD',
                     payload: result
