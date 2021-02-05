@@ -154,11 +154,11 @@ const ConfirmAppointment = (props) => {
 					<div className="appointment__doctorIcon">
 						<FaUserMd />
 					</div>
-					<div className="appointment__detail">Médico de guardia</div>
+					<div className="appointment__detail">Guardia médica</div>
+					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
 				</div>
 			}
-			<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 			<div className="questionsContainer">
 				{
 					loading ? <div className="text-center"><Loader /></div>
