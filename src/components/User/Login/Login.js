@@ -6,7 +6,7 @@ import Logo from '../../../assets/logo.png';
 function Login() {
     return (
        <section className='login'>
-           {/* <img src={Logo} alt='Uma logo' style={{'width: 30px;'}}/> */}
+           <img className='login_logo' src={Logo} alt='Uma logo'/>
        </section>
     )
 }
