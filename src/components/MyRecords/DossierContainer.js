@@ -59,7 +59,7 @@ const DossierContainer = (props) => {
                                         />
                                     </button>
                                     <div onClick={()=> setOpenModal(true)} className='button-report'>
-                                        Reportar problema
+                                        Reportar un problema
                                     </div>
                                 </div>
                             }

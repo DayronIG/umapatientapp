@@ -14,6 +14,8 @@ const Record = (props) => {
     const [tab, setTab] = useState('resumen')
     const {recipe} = useParams()
 
+    console.log('recipe', recipe)
+
     useEffect(()=>{
         if(recipe) {
             setTab(recipe)

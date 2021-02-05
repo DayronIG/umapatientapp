@@ -204,129 +204,131 @@
 	word-break: break-word;
 }
 
-#receta {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: column;
-	padding: 0 2%;
 
-	.dossier-att-info {
+	#receta {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		padding: 0 2%;
 
-		.dossier-info {
-			font-size: 18px;
-			font-weight: bold;
+		.dossier-att-info {
+
+			.dossier-info {
+				font-size: 18px;
+				font-weight: bold;
+			}
+			.date-prescription {
+				display: flex;
+				justify-content: space-between;
+			}
+			.dossier-doc-info {
+				font-size: 18px;
+				font-weight: normal;
+			}
+			.doctor-signature {
+				text-align: center;
+			}
+
+			.download-qr {
+				text-align: center;
+			}
 		}
-		.date-prescription {
-			display: flex;
-			justify-content: space-between;
-		}
-		.dossier-doc-info {
-			font-size: 18px;
-			font-weight: normal;
-		}
-		.doctor-signature {
-			text-align: center;
-		}
 
-		.download-qr {
-			text-align: center;
-		}
-	}
-
-	.modal-medicacion {
-		margin: 0 auto;
-		width: 100%;
-		padding: 15px 25px;
-		box-shadow: 0px 2px 5px 0px #7E93A3;
-		border-radius: 5px;  
-		li {
-			margin-top: 5px;
-		}
-	}
-
-	ul {
-
-		li {
-			margin-top: 5px;
-		}
-	}
-
-	.recipe-number {
-		width: 100%;
-
-		#barcodeRecipe {
+		.modal-medicacion {
 			margin: 0 auto;
+			width: 100%;
+			padding: 15px 25px;
+			box-shadow: 0px 2px 5px 0px #7E93A3;
+			border-radius: 5px;  
+			li {
+				margin-top: 5px;
+			}
+		}
+
+		ul {
+
+			li {
+				margin-top: 5px;
+			}
+		}
+
+		.recipe-number {
+			width: 100%;
+
+			#barcodeRecipe {
+				margin: 0 auto;
+			}
+
+		}
+
+
+		#pedirPorRappi {
+			text-align: center;
+			width: 100%;
+
+			.rappi-link {
+				text-align: center;
+				font-weight: bold;
+				background-color: $uma-secondary;
+				border-radius: 15px;
+				align-items: center;
+				width: 80%;
+				height: 38px;
+				border: none;
+				transition: 0.2s ease-in-out;
+				margin-bottom: 15px;
+				&:hover {
+					background-color: #8935bd;
+				}
+				a {
+					color: $white-color;
+				}
+			}
 		}
 
 	}
 
-
-	#pedirPorRappi {
-		text-align: center;
+	.download-order {
 		width: 100%;
+		text-align: center;
+		margin-bottom: 20px;
 
-		.rappi-link {
-			text-align: center;
+		.button-d {
 			font-weight: bold;
-			background-color: $uma-secondary;
-			border-radius: 15px;
-			align-items: center;
+			border: none;
+			color: $white-color;
 			width: 80%;
 			height: 38px;
-			border: none;
-			transition: 0.2s ease-in-out;
-			margin-bottom: 15px;
-			&:hover {
-				background-color: #8935bd;
-			}
-			a {
-				color: $white-color;
-			}
-		}
-	}
-
-}
-
-.download-order {
-	width: 100%;
-	text-align: center;
-	margin-bottom: 20px;
-
-	.button-d {
-		font-weight: bold;
-		border: none;
-		color: $white-color;
-		width: 80%;
-		height: 38px;
-		background-color: $uma-primary;
-		border-radius: 15px;
-		margin-bottom: 15px;
-		transition: 0.2s ease-in-out;
-		
-		&:hover {
-			background-color: $secondary-background;
-		}
-	}
-
-	.button-report {
-		border: 2px solid $uma-primary;
-		height: 38px;
-		width: 80%;
-		color: $uma-primary;
-		font-weight: bold;
-		margin: 0 auto;
-		transition: 0.2s ease-in-out;
-		cursor: pointer;
-
-		&:hover {
 			background-color: $uma-primary;
-			color: $white-color;
+			border-radius: 15px;
+			margin-bottom: 15px;
+			transition: 0.2s ease-in-out;
+			
+			&:hover {
+				background-color: $secondary-background;
+			}
+		}
+
+		.button-report {
+			height: 28px;
+			width: 55%;
+			color: $uma-primary;
+			font-weight: bold;
+			margin: 0 auto;
+			cursor: pointer;
+			border-bottom: 2px solid $uma-primary;
+
 		}
 	}
-}
 
-.no-orders {
-	text-align: center;
-	margin: 50px 20px;
-	font-weight: bold;
-}
+	.no-orders {
+		height: 100vh;
+		text-align: center;
+		padding: 50px 20px;
+		font-weight: bold;
+		width: 100%;
+		background-color: #E9F8FF;
+		
+	}
+
+
