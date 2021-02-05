@@ -21,8 +21,6 @@ const RecipeSection = () => {
         }
     }, [patient])
 
-    console.log('prescrip', prescriptions, 'patient', patient.core_id)
-
     const getCards = (itemsArray) => {
         let divsPush = []
         itemsArray.forEach(el => {
