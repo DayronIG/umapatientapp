@@ -75,7 +75,6 @@ const MyRecords = () => {
                             r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
                             r.mr.dt_cierre !== '' &&  r.incidente_id !== 'auto' &&
                             <React.Fragment key={index}>
-                                {console.log(r)}
                                 <li className='my-history-consultation'>
                                         <Link to={`/history/${r.patient.dni}/${r.assignation_id}`} className='consult-link'>
                                             

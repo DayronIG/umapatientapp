@@ -58,9 +58,9 @@ const DossierContainer = (props) => {
                                             content={() => voucherRef.current}
                                         />
                                     </button>
-                                    <div onClick={()=> setOpenModal(true)} className='button-report'>
+{/*                                     <div onClick={()=> setOpenModal(true)} className='button-report'>
                                         Reportar un problema
-                                    </div>
+                                    </div> */}
                                 </div>
                             }
                         </>
@@ -69,7 +69,6 @@ const DossierContainer = (props) => {
                 :
                 <p className='no-orders'>Esta atención no se realizó o aún no fue cerrada por el médico</p>
             }
-
             {
                 openModal && 
                 <MobileModal title={ sendIssue ? '' : 'Reportar error'} callback={() =>setOpenModal(false) }>
