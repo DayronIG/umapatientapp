@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
-import LoginComponent from "./components/User/Login/Login";
-// import LoginAnterior from '../components/User/Login'
+// import LoginComponent from "./components/User/Login/Login";
+import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -23,8 +23,8 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <LoginComponent />
-        // <LoginAnterior/>
+        return <ForgottenPass/>
+        // <LoginComponent />
     } else {
         return <Loading />
     }

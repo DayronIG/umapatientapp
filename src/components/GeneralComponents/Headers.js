@@ -116,7 +116,7 @@ export const HistoryHeader = (props) => {
 export const BackButton = (props) => {
 	return (
 		<section className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'}>
-			<Link to={props.customTarget ? `${props.customTarget}` : '/'}>
+			<Link to={props.customTarget ? `${props.customTarget}` : '/'}> 
 				<IoIosArrowBack onClick={props.action? () => props.action(): () => console.log('')} icon={faArrowLeft} />
 			</Link>
 		</section>

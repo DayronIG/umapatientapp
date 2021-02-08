@@ -2,7 +2,7 @@
 @import './mixins.scss';
 
 .login {
-    height: 100vh;
+    min-height: 100vh;
     background-color: $white-color;
     position: relative;
 
@@ -29,81 +29,34 @@
         }
     }
 
-    .login__buttonGroup {
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-
-        .login__button {
-            margin: 0 15px;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: $white-color;
-            box-shadow: 0px 2px 5px 0 $lighter-grey;
-
-            img {
-                width: 30px;
-            }
-            &:nth-child(3) {
-                img {
-                    width: 35px;
-                }
-            }
-        }
-    }
-
     .login__lineSeparator {
-        @include d-flex-center;
         margin-top: 20px;
-        .login__lineSeparator--line {
+        text-align: center;
+       &:before {
+            content: "";
+            display: inline-block;
             margin: 0 5px;
             width: 25%;
             height: 2px;
             background-color: $lighter-grey;
-        }
+       }
+       &:after {
+        content: "";
+        display: inline-block;
+        margin: 0 5px;
+        width: 25%;
+        height: 2px;
+        background-color: $lighter-grey;
+       }
     }
 
-    .login__form {
-        @include d-flex-center;
-        flex-direction: column;
-        margin-top: 10px;
-        position: relative;
-        .login__form--label {
-            position: absolute;
-            left: 45px;
-            color: $when-dark;
-            top: 20%;
-            transition: 0.2s linear;
-            &.up {
-                top: 0%;
-                color: $uma-primary;
-            }
-        }
-        .login__form--label-contraseña {
-            margin-top: 3px;
-            position: absolute;
-            left: 45px;
-            color: $when-dark;
-            top: 70%;
-            transition: 0.2s linear;
-            &.up {
-                top: 50%;
-                color: $uma-primary;
-            }
-        }
-    }
-
-    .login__form--input {
-        margin-top: 28px;
-        width: 80%;
-        border: none;
-        border-bottom: 2px solid $uma-button;
-        transition: 0.3s linear;
-        &:focus {
-            outline: none;
-            border-bottom: 2px solid $uma-secondary;
+    .login_invalid {
+        margin: 10px auto;
+        max-width: 350px;
+        display: none;
+        p {
+            color: $uma-error;
+            margin: 5px;
         }
     }
 
@@ -132,16 +85,6 @@
         flex-direction: column;
         margin: 40px 0;
         text-align: center;
-        .login__actions--logInBtn {
-            width: 80%;
-            height: 44px;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            background-color: $uma-primary;
-            color: $white-color;
-            text-transform: uppercase;
-        }
         .login__actions__Registrer {
             margin: 10px 0 50px 0;
             .text {

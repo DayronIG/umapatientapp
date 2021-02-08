@@ -1,0 +1,30 @@
+@import '../../global/Vars.scss';
+@import '../mixins.scss';
+
+.forgottenPass {
+    min-height: 100vh;
+    background-color: $white-color;
+    @include d-flex-center;
+    flex-direction: column;
+    
+    .title {
+        font-size: 24px;
+        margin-bottom: 20%;
+        padding: 0 20%;
+    }
+
+    .forgottenPass_btns {
+        text-align: center;
+        :nth-child(1) {
+            margin-bottom: 20px;
+            width: 100%;
+            height: 58px;
+            text-transform: none;
+        }
+        :nth-child(2) {
+            text-transform: none;
+            width: 100%;
+            height: 58px;
+        }
+    }
+}
