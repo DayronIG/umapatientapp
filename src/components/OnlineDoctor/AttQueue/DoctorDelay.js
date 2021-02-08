@@ -37,9 +37,11 @@ const DoctorDelay = ({cuit, date, time}) => {
             .catch(err => console.log(err))
 		} else {
             let filters = [
-                {field: 'state', value: 'ASSIGN', comparator: '=='},
-                {field: 'time', value: time, comparator: '>'}
+                {field: 'state', value: 'ASSIGN', comparator: '=='}
             ]
+/*             if(time) {
+                filters.push({field: 'time', value: time, comparator: '>'})
+            } */
             getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
                     setQueue(res.length)
@@ -48,10 +50,10 @@ const DoctorDelay = ({cuit, date, time}) => {
     }, [cuit, date, time])
     
     return <div className="appointment__delay--container">
-        <div className="appointment__delay">
+{/*         <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
-        </div>
+        </div> */}
         {cuit && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">minutos de espera aprox.</span>

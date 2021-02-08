@@ -252,7 +252,6 @@ export function getFeedback(cuit) {
 		.collection('events')
 		.doc('feedback')
 		.collection(cuit);
-	// console.log(docQuery)
 	return new Promise((resolve, reject) => {
 		let feedback = [];
 		docQuery
