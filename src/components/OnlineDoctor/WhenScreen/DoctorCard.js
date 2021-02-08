@@ -51,7 +51,7 @@ const DoctorCard = (props) => {
 				</div>
 				<div className='doctorCard-secondRow'>
 					<div className='doctorAtts'>
-						<p>{props.doc.metrics ? props.doc.metrics.n_att : '0'}</p><span>atenciones</span>
+						<p>{props.doc.metrics ? props.doc.metrics.n_att : '0'}</p><span>Atenciones</span>
 					</div>
 					{props.doc.metrics && (
 						<div className='doctorStars'>

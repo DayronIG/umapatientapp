@@ -36,7 +36,10 @@ const DoctorDelay = ({cuit, date, time}) => {
                 })
             .catch(err => console.log(err))
 		} else {
-            let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
+            let filters = [
+                {field: 'state', value: 'ASSIGN', comparator: '=='},
+                {field: 'time', value: time, comparator: '>'}
+            ]
             getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
                     setQueue(res.length)
