@@ -1,4 +1,4 @@
-@import '../../styles/login/mixins.scss';
+@import '../../styles/login/_mixins.scss';
 @import '../global/Vars.scss';
 
 // Inputs 
@@ -48,6 +48,8 @@
     background-color: $uma-primary;
     color: $white-color;
     text-transform: uppercase;
+    margin: 10px 0;
+    cursor: pointer;
     &.white {
         background-color: $white-color;
         color: $uma-primary;
@@ -62,6 +64,10 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    &.column {
+        flex-direction: column;
+        align-items: center;
+    }
 
     .login__button {
         margin: 0 15px;
@@ -71,8 +77,28 @@
         border-radius: 50%;
         background-color: $white-color;
         box-shadow: 0px 2px 5px 0 $lighter-grey;
+        cursor: pointer;
         &.large {
-            // width: ;
+            border-radius: 5px;
+            width: 80%;
+            height: 40px;
+            display: flex;
+            line-height: -3px;
+            align-items: center;
+            margin-top: 12px;
+            p {
+                margin: 0 30px;
+            }
+            img {
+                margin-left: 20px;
+                width: 25px;
+            }
+            &:nth-child(3) { //El icono de Apple es mas grande que los demás
+                img {
+                    width: 30px;
+                    margin-left: 18px;
+                }
+            }
         }
         img {
             width: 30px;

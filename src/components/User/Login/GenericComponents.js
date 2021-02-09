@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
+import '../../../styles/login/genericComponents.scss';
 import showPass from '../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../assets/icons/eyeopenpass.png';
-import '../../../styles/login/genericComponents.scss';
 import Google from '../../../assets/logos/google.png';
 import Microsoft from '../../../assets/logos/microsoft.png';
 import Apple from '../../../assets/logos/ios.png';
 import Mobile from '../../../assets/logos/mobile.png';
+import Email from '../../../assets/logos/email.png';
 
 export const GenericInputs = (props) => {
     const [password, setPassword] = useState('')
@@ -42,13 +43,14 @@ export const GenericInputs = (props) => {
     return (
         <form className='form'>
             <input 
-                className='form--input' 
-                onChange={(e) => _validateForm(e)}
+            type={props.Password ? showPassword ? 'text' : 'password' : 'text'}
+            className='form--input' 
+            onChange={(e) => _validateForm(e)}
             />
             <label className='form--label'>
                  {props.label}
             </label>
-            {props.passwordEye ? 
+            {props.Password ? 
             <img 
             src={showPassword ? eyeOpenPass : showPass} 
             alt="password" 
@@ -70,11 +72,23 @@ export const GenericButton = ({color, children}) => {
 
 export const LoginButtons = (props) => {
     return (
-        <section className='login__buttonGroup'>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }><img src={Google} alt='Google logo'/></button> 
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }><img src={Microsoft} alt='Microsoft logo'/></button>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }><img src={Apple} alt='Apple logo'/></button>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }><img src={Mobile} alt='Mobile image'/></button>
+        <section className={props.circleBtn ? 'login__buttonGroup' : 'login__buttonGroup column'}>
+            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+                <img src={Google} alt='Google logo'/>
+                { props.circleBtn ? null : <p>Ingresar con Google</p> }
+            </button> 
+            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+                <img src={Microsoft} alt='Microsoft logo'/>
+                { props.circleBtn ? null : <p>Ingresar con Microsoft</p> }
+            </button>
+            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+                <img src={Apple} alt='Apple logo'/>
+                { props.circleBtn ? null : <p>Ingresar con Apple</p> }
+            </button>
+            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+                <img src={props.circleBtn ? Mobile : Email} alt='Mobile image'/>
+                { props.circleBtn ? null : <p>Ingresar con otra cuenta</p> }
+            </button>
         </section>
     )
-}
+};

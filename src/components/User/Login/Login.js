@@ -1,5 +1,5 @@
-import React, { useState, useCallback} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+// import { Link } from 'react-router-dom';
 import '../../../styles/login/login.scss';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import {GenericInputs, GenericButton, LoginButtons} from './GenericComponents';
@@ -74,7 +74,7 @@ const Login = () =>  {
                 <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
             </section>
             <GenericInputs label='Ingresa tu mail'/>
-            <GenericInputs label='Ingresa tu contraseña' passwordEye/>
+            <GenericInputs label='Ingresa tu contraseña' Password/>
            <section className='login__needHelp'>
                 <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>

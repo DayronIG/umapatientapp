@@ -2,8 +2,11 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
-// import LoginComponent from "./components/User/Login/Login";
+import LoginComponent from "./components/User/Login/Login";
+import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
 import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
+import ResetPass from './components/User/Login/ForgottenPass/ResetPass';
+import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -15,6 +18,7 @@ import { node_patient } from './config/endpoints';
 import version from './config/version.json';
 import moment from 'moment-timezone';
 
+
 const Login = () => {
     const [delay, setDelay] = useState(false)
 
@@ -23,8 +27,14 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <ForgottenPass/>
-        // <LoginComponent />
+        return <LoginComponent />
+        // ---{Forgot Password or Email}---
+            // <ResetPass/>
+            // <ConfirmAcc/>
+            // <ForgottenPass />
+            // <NeedHelp/>
+        // ---{Login}---
+            // <LoginComponent />
     } else {
         return <Loading />
     }
