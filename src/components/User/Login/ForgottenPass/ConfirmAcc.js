@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import '../../../../styles/login/forgottenPass/forgottenPass.scss';
+import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 import BackButton from '../../../GeneralComponents/Backbutton';
-import { LoginButtons } from '../GenericComponents';
+import { LoginButtons, TextAndLink } from '../GenericComponents';
 import ConfirmMail from '../../../../assets/illustrations/ConfirmMail.png'
 
 const ConfirmAcc = () => {
-    const [passW, setPassW] = useState(true)
+    const [passW, setPassW] = useState(false)
     
     return (
         <section className='needHelp'>
@@ -22,10 +22,10 @@ const ConfirmAcc = () => {
                         passW ?
                         <>
                             <LoginButtons />
-                            <p className='redirect'>O <a href='#' className='link'>registrate acá</a></p>
+                            <TextAndLink link='O registrate acá'/>
                         </>
                         :
-                        <a href='#' className='link'>Ir a inicio</a>
+                        <TextAndLink link='Ir al inicio'/>
                     }
                 </div>
             </section> 

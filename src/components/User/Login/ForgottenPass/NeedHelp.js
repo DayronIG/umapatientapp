@@ -1,7 +1,7 @@
 import React from 'react';
 import { GenericButton } from '../GenericComponents';
 import BackButton  from '../../../GeneralComponents/Backbutton';
-import '../../../../styles/login/forgottenPass/forgottenPass.scss';
+import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 
 const NeedHelp = () => {
     return (

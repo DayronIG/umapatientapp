@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../../../styles/login/forgottenPass/forgottenPass.scss';
+import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 import BackButton from '../../../GeneralComponents/Backbutton';
 import LoginIllustation from '../../../../assets/illustrations/Login-Illustration.png'
 import { GenericInputs, GenericButton } from '../GenericComponents';

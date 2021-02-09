@@ -1,8 +1,8 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
-import '../../../styles/login/login.scss';
+import '../../../styles/user/login.scss';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
-import {GenericInputs, GenericButton, LoginButtons} from './GenericComponents';
+import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import Logo from '../../../assets/logo.png';
 
 const Login = () =>  {
@@ -87,11 +87,7 @@ const Login = () =>  {
                 <GenericButton color='blue'>
                     Ingresar
                 </GenericButton>
-               <div className='login__actions__Registrer'>
-                   <p className='text'>¿Eres nuevo en UMA?</p>
-                    <a href='#' className='link'>Registrarme</a>
-                    {/* Link */}
-               </div>
+               <TextAndLink text='¿Eres nuevo en UMA?' link='Registrarme'/>
            </section>
        </section>
     )

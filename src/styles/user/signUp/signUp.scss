@@ -1,0 +1,25 @@
+@import '../../global/Vars.scss';
+@import '../_mixins';
+
+.signUp {
+    min-height: 100vh;
+    background-color: $white-color;
+    position: relative;
+
+    .signUp__logo {
+        width: 60px;
+        position: absolute;
+        left: 5px;
+        top: 0;
+    }
+
+    .signUp__content {
+        min-height: 90vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+
+}

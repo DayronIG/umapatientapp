@@ -2,12 +2,16 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
+// ----- Login
 import LoginComponent from "./components/User/Login/Login";
 import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
 import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
 import ResetPass from './components/User/Login/ForgottenPass/ResetPass';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
+// -------
+// import SignUp from './components/User/SignUp/SignUp';
+import Registrer from './components/User/SignUp/Registrer';
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -28,8 +32,10 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <ForgottenAccError/>
+        return <Registrer/>
+        //  <SignUp/>
         // ---{Forgot Password or Email}---
+            // <ForgottenAccError/>
             // <ResetPass/>
             // <ConfirmAcc/>
             // <ForgottenPass />

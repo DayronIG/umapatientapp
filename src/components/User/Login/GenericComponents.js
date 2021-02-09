@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import '../../../styles/login/genericComponents.scss';
+import '../../../styles/user/genericComponents.scss';
 import showPass from '../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../assets/icons/eyeopenpass.png';
 import Google from '../../../assets/logos/google.png';
@@ -92,3 +92,13 @@ export const LoginButtons = (props) => {
         </section>
     )
 };
+
+export const TextAndLink = (props) => {
+    // Cambian las rutas registrarme / ingresar
+    return(
+        <section className='textAndLink'>
+            <p>{props.text}</p>
+            <a href='#'>{props.link}</a>
+        </section>
+    )
+}
