@@ -10,7 +10,7 @@ import ResetPass from './components/User/Login/ForgottenPass/ResetPass';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
 // -------
-// import SignUp from './components/User/SignUp/SignUp';
+import SignUp from './components/User/SignUp/SignUp';
 import Registrer from './components/User/SignUp/Registrer';
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
@@ -33,6 +33,7 @@ const Login = () => {
     }, [])
     if (delay) {
         return <Registrer/>
+        // <Registrer/>
         //  <SignUp/>
         // ---{Forgot Password or Email}---
             // <ForgottenAccError/>

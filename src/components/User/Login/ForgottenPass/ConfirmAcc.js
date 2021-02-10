@@ -5,7 +5,7 @@ import { LoginButtons, TextAndLink } from '../GenericComponents';
 import ConfirmMail from '../../../../assets/illustrations/ConfirmMail.png'
 
 const ConfirmAcc = () => {
-    const [passW, setPassW] = useState(false)
+    const [passW, setPassW] = useState(true)
     
     return (
         <section className='needHelp'>

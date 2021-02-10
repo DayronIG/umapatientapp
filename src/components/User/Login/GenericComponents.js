@@ -64,6 +64,19 @@ export const GenericInputs = (props) => {
     )
 };
 
+export const ConditionButtons = () => {
+    return(
+        <section className='conditions'>
+            <div className='conditions__input'>
+                <input type='radio'/> <label>Mínimo 8 caracteres</label>
+            </div>
+            <div className='conditions__input'>
+                <input type='radio'/> <label>Mínimo 1 número</label>
+            </div>
+        </section>
+    )
+}
+
 export const GenericButton = ({color, children}) => {
     return (
         <button className={color == 'blue'? 'action-btn' : 'action-btn white'}>{children}</button>
