@@ -9,7 +9,7 @@
     position: relative;
     .form--label {
         position: absolute;
-        left: 45px;
+        left: 20px;
         pointer-events: none;
         color: $when-dark;
         top: 0;
@@ -18,12 +18,12 @@
     }
     .form--eyePass {
         position: absolute;
-        right: 45px;
+        right: 30px;
         bottom: 10px;
     }
     .form--input {
         margin-top: 30px;
-        width: 80%;
+        width: 90%;
         border: none;
         border-bottom: 2px solid $uma-button;
         transition: 0.3s linear;
@@ -43,7 +43,7 @@
     display: flex;
     flex-direction: column; 
     align-items: flex-start;
-    padding: 15px 10% 0 10%;
+    padding: 15px 5% 0 5%;
     :nth-child(1) {
         margin: 5px 0;
     }
@@ -126,7 +126,7 @@
 // Texto y Link
 
 .textAndLink {
-    margin-top: 20px;
+    margin: 10% 0;
     color: $uma-primary;
     text-align: center;
     p {
@@ -137,3 +137,48 @@
         border-bottom: 1px solid $uma-primary;
     }
 }
+
+.stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 50px 0;
+    max-width: 80%;
+    .step {
+        text-align: center;
+        position: relative;
+        width: 80%;
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background-color: $uma-input;
+            top: 15px;
+            left: 100%;
+        }
+        &::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: $uma-input;
+            position: absolute;
+            top: 13px;
+        }
+        &.complete::before, &.complete::after {
+            background-color: $uma-primary;
+        }
+        &.circle::before {
+            padding: 7px;
+            top: 7px;
+            border: 2px solid $uma-primary;
+        }
+        &:last-child::after {
+            display: none;
+        }
+    }
+}
+  
+  
+

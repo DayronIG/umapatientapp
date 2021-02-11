@@ -10,7 +10,7 @@
         width: 60px;
         position: absolute;
         left: 5px;
-        top: 0;
+        top: 5px;
     }
 
     .login__titleIllustration {
@@ -63,6 +63,7 @@
     .login__needHelp {
         @include d-flex-center;
         margin-top: 10px;
+        justify-content: space-around;
         .login__needHelp__activeSession {
             display: flex;
             align-items: center;
@@ -80,6 +81,7 @@
             margin-left: 2px;
         }
     }
+
     .login__actions {
         @include d-flex-center;
         flex-direction: column;

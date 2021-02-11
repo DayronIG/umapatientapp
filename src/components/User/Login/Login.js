@@ -73,8 +73,8 @@ const Login = () =>  {
                 <p>El mail o la contraseña son incorrectos.</p>
                 <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
             </section>
-            <GenericInputs label='Ingresa tu mail'/>
-            <GenericInputs label='Ingresa tu contraseña' Password/>
+            <GenericInputs label='Ingresa tu mail' type='email'/>
+            <GenericInputs label='Ingresa tu contraseña' type='password'/>
            <section className='login__needHelp'>
                 <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>

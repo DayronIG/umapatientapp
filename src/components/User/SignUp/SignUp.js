@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../styles/user/signUp/signUp.scss';
-import { LoginButtons, TextAndLink } from '../Login/GenericComponents';
+import { LoginButtons, TextAndLink, Stepper } from '../Login/GenericComponents';
 import Logo from '../../../assets/logo.png';
 
 const SignUp = () => {
@@ -8,7 +8,7 @@ const SignUp = () => {
         <section className='signUp'>
             <img className='signUp__logo' src={Logo} alt='UMA logo' />
             <section className='signUp__content'>
-                <p>--------</p>
+                <Stepper/>
                 <div>
                     <LoginButtons/>
                 </div>

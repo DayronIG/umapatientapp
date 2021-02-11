@@ -11,7 +11,9 @@ import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
 // -------
 import SignUp from './components/User/SignUp/SignUp';
-import Registrer from './components/User/SignUp/Registrer';
+import Register from './components/User/SignUp/Register';
+
+// -------
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -32,8 +34,8 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <Registrer/>
-        // <Registrer/>
+        return <Register/>
+        // <Register/>
         //  <SignUp/>
         // ---{Forgot Password or Email}---
             // <ForgottenAccError/>

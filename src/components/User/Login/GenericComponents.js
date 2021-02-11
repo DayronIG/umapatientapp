@@ -8,7 +8,7 @@ import Apple from '../../../assets/logos/ios.png';
 import Mobile from '../../../assets/logos/mobile.png';
 import Email from '../../../assets/logos/email.png';
 
-export const GenericInputs = (props) => {
+export const GenericInputs = ({label, type}) => {
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)    
     const [passValidation, setPassValidation] = useState({ validPass: false, validRepetition: false })
@@ -40,17 +40,21 @@ export const GenericInputs = (props) => {
         }
     }, [passValidation, password])
 
+    {console.log('esto es el mail', email)}
+
     return (
         <form className='form'>
             <input 
-            type={props.Password ? showPassword ? 'text' : 'password' : 'text'}
+            // type={Password ? showPassword ? 'text' : 'password' : 'text'}
+            type={showPassword ? 'text' : type}
             className='form--input' 
+            // name={Password ? 'pass' : 'email'}
             onChange={(e) => _validateForm(e)}
             />
             <label className='form--label'>
-                 {props.label}
+                {label}
             </label>
-            {props.Password ? 
+            {type === 'password' ? 
             <img 
             src={showPassword ? eyeOpenPass : showPass} 
             alt="password" 
@@ -83,35 +87,46 @@ export const GenericButton = ({color, children}) => {
     )
 };
 
-export const LoginButtons = (props) => {
+export const LoginButtons = ({circleBtn}) => {
     return (
-        <section className={props.circleBtn ? 'login__buttonGroup' : 'login__buttonGroup column'}>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+        <section className={circleBtn ? 'login__buttonGroup' : 'login__buttonGroup column'}>
+            <button className={circleBtn ? 'login__button' : 'login__button large' }>
                 <img src={Google} alt='Google logo'/>
-                { props.circleBtn ? null : <p>Ingresar con Google</p> }
+                { circleBtn ? null : <p>Ingresar con Google</p> }
             </button> 
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large' }>
                 <img src={Microsoft} alt='Microsoft logo'/>
-                { props.circleBtn ? null : <p>Ingresar con Microsoft</p> }
+                { circleBtn ? null : <p>Ingresar con Microsoft</p> }
             </button>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large' }>
                 <img src={Apple} alt='Apple logo'/>
-                { props.circleBtn ? null : <p>Ingresar con Apple</p> }
+                { circleBtn ? null : <p>Ingresar con Apple</p> }
             </button>
-            <button className={props.circleBtn ? 'login__button' : 'login__button large' }>
-                <img src={props.circleBtn ? Mobile : Email} alt='Mobile image'/>
-                { props.circleBtn ? null : <p>Ingresar con otra cuenta</p> }
+            <button className={circleBtn ? 'login__button' : 'login__button large' }>
+                <img src={circleBtn ? Mobile : Email} alt='Mobile image'/>
+                { circleBtn ? null : <p>Ingresar con otra cuenta</p> }
             </button>
         </section>
     )
 };
 
-export const TextAndLink = (props) => {
+export const TextAndLink = ({text, link}) => {
     // Cambian las rutas registrarme / ingresar
     return(
         <section className='textAndLink'>
-            <p>{props.text}</p>
-            <a href='#'>{props.link}</a>
+            <p>{text}</p>
+            <a href='#'>{link}</a>
         </section>
+    )
+}
+
+export const Stepper = () => {
+    return(
+        <ul class="stepper">
+            <li class="step complete"></li>
+            <li class="step circle"></li>
+            <li class="step"></li>
+            <li class="step"></li>
+        </ul>
     )
 }

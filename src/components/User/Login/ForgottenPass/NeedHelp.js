@@ -6,7 +6,7 @@ import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 const NeedHelp = () => {
     return (
         <section className='needHelp'>
-            <BackButton/>
+            <BackButton inlineButton/>
             {/* customTarget por props para backbutton */}
             <section className='needHelp__forgottenPass'>
                 <h1 className='title'>¿Tienes problemas para ingresar?</h1>

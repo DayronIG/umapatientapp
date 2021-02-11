@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../../../styles/user/forgottenPass/forgottenPass.scss';
-import BackButton from '../../../GeneralComponents/Backbutton';
+import { BackButton } from '../../../GeneralComponents/Headers';
 import { GenericInputs, GenericButton } from '../GenericComponents';
 
 const ForgottenPass = () => {
@@ -8,7 +8,7 @@ const ForgottenPass = () => {
 
     return (
         <section className='needHelp'>
-            <BackButton/>
+            <BackButton inlineButton/>
             <section className='needHelp__forgottenPass'>
                 <h1 className='title'>{ passW ? '¿Olvidaste tu mail?' : '¿Olvidaste tu contraseña?' }</h1>
                 <p className='subtitle'>{ passW ? 'Por favor, ingresa tu número de documento de identidad.' : 'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link para restablecer tu contraseña.' }</p>

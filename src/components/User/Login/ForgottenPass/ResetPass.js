@@ -8,7 +8,7 @@ const ResetPass = () => {
 
     return (
         <section className='needHelp'>
-            <BackButton/>
+            <BackButton inlineButton/>
             <section className='needHelp__forgottenPass'>
                 <img src={LoginIllustation} alt='Ilustracion de médicos'/>
                 <h1 className='title'>Restablecer mi contraseña</h1>

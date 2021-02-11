@@ -9,7 +9,7 @@ const ConfirmAcc = () => {
     
     return (
         <section className='needHelp'>
-            <BackButton/>
+            <BackButton inlineButton/>
             <section className='needHelp__forgottenPass'>
                 {passW ? null : <img src={ConfirmMail} alt='Mailbox' />}
                 <h1 className='title'>{ passW ? '¿Olvidaste tu mail?' : 'Te hemos enviado un mail' }</h1>

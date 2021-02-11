@@ -24,5 +24,8 @@
    a:hover {
       color: #B6B6B6;
    }
+   &.inlineButton {
+      box-shadow: none;
+   }
 }
 
