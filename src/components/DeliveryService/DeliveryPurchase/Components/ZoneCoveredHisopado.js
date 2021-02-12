@@ -8,6 +8,7 @@ import axios from "axios"
 import {mobility_address} from "../../../../config/endpoints"
 
 export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, isModal=false }) {
+    const isLocal = window.location.origin.includes('localhost');
     const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
     const patient = useSelector(state => state.user);
     const [showCongrats, setShowCongrats] = useState(false);
@@ -18,25 +19,28 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
 
     useEffect(() => {
         if (!isAddressValidForHisopado) {
-            window.gtag('event', 'select_content', {
+            if(!isLocal){
+                window.gtag('event', 'select_content', {
                 'content_type': 'OUT_OF_RANGE',
                 'item_id': 'Hisopado Antígeno',
-            });
+            });}
         } else {
-            window.gtag('event', 'select_content', {
+            if(!isLocal){
+                window.gtag('event', 'select_content', {
                 'content_type': 'IN_RANGE',
                 'item_id': 'Hisopado Antígeno',
-            });
+            });}
             history.push(`/hisopado/carrito/${patient.ws}`)
         }
         if (showCongrats) {
             notifyUserEndpoint()
+            if(!isLocal){
             window.gtag('event', 'add_to_wishlist', {
                 'items': 'Hisopado Antígeno',
                 'value': params?.price || '0',
                 'currency': 'ARS'
             });
-        }
+        }}
     }, [showCongrats, isAddressValidForHisopado])
 
     const notifyUserEndpoint = () => {

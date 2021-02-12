@@ -106,6 +106,7 @@ const PaymentCardMP = () => {
               setLoader(false)
             }
         } else {
+          if(['el lunes', 'mañana'].includes(params.delay)){
           const confirm = await swal({
             title: "¿Desea continuar?", 
             text: `Debido a la alta demanda en este momento el hisopado puede demorar más de lo habitual. Tiempo estimado: ${params.delay}`,
@@ -119,6 +120,10 @@ const PaymentCardMP = () => {
           } else {
             setLoader(false)
           }
+        } else {
+          const form = document.getElementsByTagName('form')[0]
+          window.Mercadopago.createToken(form, sdkResponseHandler)
+        }
         }
     }
 
@@ -172,7 +177,8 @@ const PaymentCardMP = () => {
             .then(res => {
               setLoader(false)
                 if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
-                  window.gtag('event', 'purchase', {
+                  if(!isLocal){
+                    window.gtag('event', 'purchase', {
                     'transaction_id': current.id,
                     'affiliation': user?.corporate_norm,
                     'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * hisopadosToPurchase.length,
@@ -187,7 +193,7 @@ const PaymentCardMP = () => {
                     window.gtag('event', 'conversion', {
                       'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
                       'transaction_id': current.id
-                    });
+                    });}
                     setStatus("approved")
                 } else if (res.data.body.status === "free") {
                   setStatus("approved")
