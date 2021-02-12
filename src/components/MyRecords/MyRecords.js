@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd, faUserNurse, faSortDown } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +11,6 @@ import '../../styles/history/MyRecords.scss';
 const MyRecords = () => {
     // const {category} = useParams();
     const dispatch = useDispatch()
-    const [tab, setTab] = useState(false)
     const records = useSelector(state => state.queries.medicalRecord)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
@@ -26,14 +25,9 @@ const MyRecords = () => {
     }, [patient])
 
     function selectBeneficiarieMr(p) {
-        console.log('esto es p', p)
         if (p === 'owner') {
-            console.log('owner')
-            setTab(false)
             dispatch(getMedicalRecord(beneficiaries?.[0]?.group, beneficiaries[0]?.ws))
         } else {
-            console.log('no owner')
-            setTab(p.fullname)
             dispatch(getMedicalRecord(p.split('-')[0], p.split('-')[1]))
         }
     }
@@ -48,22 +42,13 @@ const MyRecords = () => {
                 </div>
                 {/*  Beneficiary cambia de lugar con el nuevo diseño*/}
                 <div className='my-history-beneficiary'> 
-                    {/* <button className={tab === patient.fullname ? 'active button-patient' : 'button-patient'} 
-                            onClick={() => selectBeneficiarieMr('owner')}> {patient.fullname} </button>
-                    {beneficiaries.map((p, index) => {
-                        return <button className={tab === p.fullname ? 'active button-patient' : 'button-patient'}
-                            onClick={() => selectBeneficiarieMr(p)}
-                            key={index}> {p.fullname} </button>
-                    })} */}
                     <select className='select-beneficiary' onChange={(p) => selectBeneficiarieMr(p.target.value)}>
-                        <FontAwesomeIcon icon={faSortDown} />
                         <option value="owner"> {patient.fullname} </option>
                     {beneficiaries.map((p, index) => {
                         return <option key={index} value={`${p.dni}-${p.ws}`}> {p.fullname} </option>
                     })}
                     </select>
                 </div>
-                {/* --- */}
                 <ul>
                     {records && records.filter(r => r.mr.destino_final !== 'USER CANCEL' && 
                             r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
@@ -79,7 +64,7 @@ const MyRecords = () => {
                                         <Link to={`/history/${r.patient.dni}/${r.assignation_id}`} className='consult-link'>
                                             
                                                 <div className='left-icon'>
-                                                {r.mr_preds.pre_clasif == '' ?
+                                                {r.mr_preds.pre_clasif === '' ?
                                                     <FontAwesomeIcon icon={faUserNurse} />
                                                     : 
                                                     <FontAwesomeIcon icon={faUserMd} />

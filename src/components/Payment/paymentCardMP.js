@@ -123,6 +123,7 @@ const PaymentCardMP = () => {
     }
 
     function sdkResponseHandler(status, response) {
+        console.log(status, response)
         if (status !== 200 && status !== 201 && status !== 202) {
             swal("Verifique los datos ingresados", "Alguno de sus datos personales o de su tarjeta son inválidos" ,"error")
             setSubmit(false);
@@ -162,8 +163,6 @@ const PaymentCardMP = () => {
           clients: hisopadosToPurchase,
           mpaccount: isLocal ? 'sandbox' : 'ihsa'
         }
-
-        console.log(paymentData);
 
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
@@ -205,7 +204,7 @@ const PaymentCardMP = () => {
           .catch(err => {
             setLoader(false)
             console.error('Error tarjeta: ', err)
-            window.gtag('event', 'payment_failed', {
+            window.gtag('event', 'form_payment_failed', {
               'event_category' : 'warning',
               'event_label' : 'hisopado_payment'
             });

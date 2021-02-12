@@ -12,7 +12,6 @@ export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
 export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') } }
 
 export const user_online = `${URN_UMA}/user_online`;
-export const afiliado = `${URN_UMA}/afiliado`;
 export const make_appointment = `${URN_UMA}/make_appointment`;
 export const feedback = `${URN_UMA}/feedback`;
 export const get_labels = `${URN_UMA}/labels`;

@@ -33,9 +33,9 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore()
     const { currentUser } = useContext(AuthContext)
-    const user = useSelector(store => store.user)
+    const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
-    const { callRejected } = useSelector(store => store.call)
+    const { callRejected } = useSelector(state => state.call)
 	const token = useSelector(state => state.userActive.token)
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [user, firestore, callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (currentUser && currentUser.email) {
+		if (user.dni !== "" && currentUser && currentUser.email) {
 			DetectRTC.load(function () {
                     const ios = isIos()
                     if (!ios) {
@@ -80,7 +80,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, token])
+	}, [user, currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token

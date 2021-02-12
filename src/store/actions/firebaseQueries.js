@@ -362,17 +362,18 @@ export function getPatientData(ws) {
 export function getPrescriptions(uid) {
 	try {
 		return dispatch => {
-			const query = firestore.collection('events/prescriptions/AR').where("uid", "==", uid).get()
-			.then(snap => {
-				let prescriptions = []
-				snap.forEach((el) => {
-					prescriptions.push(el.data())
+			firestore.collection('events/prescriptions/AR').where("uid", "==", uid).get()
+				.then(snap => {
+					let prescriptions = []
+					snap.forEach((el) => {
+						prescriptions.push(el.data())
+					})
+					dispatch({type: 'SET_PRESCRIPTIONS', payload: prescriptions})
 				})
-				dispatch({type: 'SET_PRESCRIPTIONS', payload: prescriptions})
-			})
-			.catch(err => console.log(err))
-		}
-	} catch(err) {
+				.catch(err => console.log(err))
+			}
+	// eslint-disable-next-line no-unreachable
+	} catch (err){
 		console.log(err)
 	}
 }
