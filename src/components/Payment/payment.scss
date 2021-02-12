@@ -90,6 +90,9 @@
     }
     input {
       width: 80%;
+      &.invalid-input {
+        border: 1px solid $uma-error;
+      }
     }
   }
 }
