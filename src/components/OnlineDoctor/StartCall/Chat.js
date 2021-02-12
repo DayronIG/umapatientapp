@@ -52,7 +52,6 @@ const Chat = (props) => {
     useEffect(() => {
         if (current?.appointments || assignation) {
             let aid = current?.appointments?.[0]["14"] || assignation
-            console.log(assignation)
             let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", aid)
             query.onSnapshot({
                 includeMetadataChanges: true

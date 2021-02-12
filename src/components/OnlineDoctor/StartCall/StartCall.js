@@ -7,10 +7,11 @@ import Chat from './Chat';
 const StartCall = (props) => {
 	const dispatch = useDispatch();
 	const {session } = useSelector((state) => state.call);
-	const [, setCallRef] = useState({});
-	const [error, setError] = useState(null);
+	const [callRef, setCallRef] = useState({});
+	const [error, setError] = useState(false);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
+
 
 	const sessionEventHandlers = {
 		sessionConnected: () => {
@@ -84,6 +85,7 @@ const StartCall = (props) => {
 
 	const onPublish = () => {
 		dispatch({ type: 'SET_PUBLISH_STATUS', payload: 'SUCCESS' });
+		setError(false)
 	};
 
 	const onPublishError = (error) => {
@@ -93,6 +95,7 @@ const StartCall = (props) => {
 
 	const onSubscribe = () => {
 		dispatch({ type: 'SET_SUBSCRIBE_STATUS', payload: 'SUCCESS' });
+		setError(false)
 	};
 
 	const onSubscribeError = (error) => {
@@ -116,7 +119,8 @@ const StartCall = (props) => {
 
 	return (
 		<>
-			<Chat />
+			{!!error ? 
+			<Chat />: 
 			<OTSession
 				apiKey={'46424032'}
 				sessionId={props.sala}
@@ -159,6 +163,7 @@ const StartCall = (props) => {
 					</div>
 				</>
 			</OTSession>
+			}
 		</>
 	);
 };
