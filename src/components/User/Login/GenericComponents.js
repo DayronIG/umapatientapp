@@ -65,15 +65,6 @@ export const GenericInputs = ({label, type}) => {
             :
             null
             }
-            
-            {/* nuevo componente separar de input */}
-            {/* {select &&  <FontAwesomeIcon icon={faChevronDown} className='form--eyePass' onClick={()=> setSelectSwitch(!selectSwitch)}/>}
-            {selectSwitch && 
-            <select className='form--select'>
-                <option>Femenino</option>
-                <option>Masculino</option>
-                <option>Otro</option>
-            </select>} */}
         </form>
     )
 };
@@ -89,17 +80,14 @@ export const SelectOption = ({calendar, select}) => {
         {select && 
         <select className='select--sex'>
             <option selected disabled>Indica tu sexo</option>
-            <option>Femenino</option>
-            <option>Masculino</option>
-            <option>Otro</option>
+            <option value='femenino'>Femenino</option>
+            <option value='masculino'>Masculino</option>
+            <option value='otro'>Otro</option>
         </select>
         }
         </>
     )
 }
-
-
-
 
 export const ConditionButtons = () => {
     return(

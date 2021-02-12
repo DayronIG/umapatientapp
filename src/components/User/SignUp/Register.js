@@ -37,7 +37,6 @@ const Registrer = () => {
                         <GenericInputs label='Ingresa tu numero de identidad' type='number' />
                         <GenericInputs label='Ingresa tu numero de celular' type='number' />
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' />
-                        {/* <GenericInputs label='Selecciona tu sexo' type='text' select/> */}
                         <SelectOption calendar/>
                         <SelectOption select/>
                     </> 

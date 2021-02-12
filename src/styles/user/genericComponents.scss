@@ -79,8 +79,16 @@
 // Select sex
 .select--sex {
     background-color: $white-color;
+    color: $when-dark;
     width: 90%;
     border: none;
+    border-bottom: 2px solid $uma-primary;
+    &:focus {
+        outline: none;
+    }
+    option {
+        width: fit-content;
+    }
 }
 
 
