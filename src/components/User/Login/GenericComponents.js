@@ -7,6 +7,9 @@ import Microsoft from '../../../assets/logos/microsoft.png';
 import Apple from '../../../assets/logos/ios.png';
 import Mobile from '../../../assets/logos/mobile.png';
 import Email from '../../../assets/logos/email.png';
+import Calendar from '../../../assets/calendar.png';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 export const GenericInputs = ({label, type}) => {
     const [password, setPassword] = useState('')
@@ -14,9 +17,10 @@ export const GenericInputs = ({label, type}) => {
     const [passValidation, setPassValidation] = useState({ validPass: false, validRepetition: false })
     const [email, setEmail] = useState('')
     const [validEmail, setValidEmail] = useState(false)
+    const [selectSwitch, setSelectSwitch] = useState(false)
 
     const _validateForm = useCallback((e) => {
-        if (e.target.name === "email") {
+        if (e.target.name === 'email') {
             setEmail(e.target.value)
             let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
             if(valid) { 
@@ -24,14 +28,14 @@ export const GenericInputs = ({label, type}) => {
             } else {
                 setValidEmail(false)
             }
-        } else if (e.target.name === "pass") {
+        } else if (e.target.name === 'pass') {
             setPassword(e.target.value)
             if (e.target.value.length < 6) {
                 setPassValidation({ ...passValidation, validPass: false })
             } else {
                 setPassValidation({ ...passValidation, validPass: true })
             }
-        } else if (e.target.name === "passrepeat") {
+        } else if (e.target.name === 'passrepeat') {
             if (e.target.value !== password) {
                 setPassValidation({ ...passValidation, validRepetition: false })
             } else {
@@ -40,15 +44,11 @@ export const GenericInputs = ({label, type}) => {
         }
     }, [passValidation, password])
 
-    {console.log('esto es el mail', email)}
-
     return (
         <form className='form'>
             <input 
-            // type={Password ? showPassword ? 'text' : 'password' : 'text'}
             type={showPassword ? 'text' : type}
             className='form--input' 
-            // name={Password ? 'pass' : 'email'}
             onChange={(e) => _validateForm(e)}
             />
             <label className='form--label'>
@@ -57,16 +57,49 @@ export const GenericInputs = ({label, type}) => {
             {type === 'password' ? 
             <img 
             src={showPassword ? eyeOpenPass : showPass} 
-            alt="password" 
+            alt='password' 
             onClick={() => 
             setShowPassword(!showPassword)} 
             className='form--eyePass'
             />
             :
-            null}
+            null
+            }
+            
+            {/* nuevo componente separar de input */}
+            {/* {select &&  <FontAwesomeIcon icon={faChevronDown} className='form--eyePass' onClick={()=> setSelectSwitch(!selectSwitch)}/>}
+            {selectSwitch && 
+            <select className='form--select'>
+                <option>Femenino</option>
+                <option>Masculino</option>
+                <option>Otro</option>
+            </select>} */}
         </form>
     )
 };
+
+export const SelectOption = ({calendar, select}) => {
+    return (
+        <>
+        {calendar &&  
+        <section className='birth__date'>
+            <p className='text'>Selecciona tu fecha de nacimiento</p>
+            <img src={Calendar} alt='Icono de calendario' className='icon--calendar'/>
+        </section>}
+        {select && 
+        <select className='select--sex'>
+            <option selected disabled>Indica tu sexo</option>
+            <option>Femenino</option>
+            <option>Masculino</option>
+            <option>Otro</option>
+        </select>
+        }
+        </>
+    )
+}
+
+
+
 
 export const ConditionButtons = () => {
     return(
@@ -122,11 +155,11 @@ export const TextAndLink = ({text, link}) => {
 
 export const Stepper = () => {
     return(
-        <ul class="stepper">
-            <li class="step complete"></li>
-            <li class="step circle"></li>
-            <li class="step"></li>
-            <li class="step"></li>
+        <ul class='stepper'>
+            <li class='step complete'></li>
+            <li class='step circle'></li>
+            <li class='step'></li>
+            <li class='step'></li>
         </ul>
     )
 }

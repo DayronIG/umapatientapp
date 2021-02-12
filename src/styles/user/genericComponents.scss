@@ -21,6 +21,15 @@
         right: 30px;
         bottom: 10px;
     }
+    .form--select {
+       position: absolute;
+       bottom: -28px;
+       width: 90%;
+       &.focus {
+           outline: none;
+       }
+    }
+
     .form--input {
         margin-top: 30px;
         width: 90%;
@@ -29,13 +38,51 @@
         transition: 0.3s linear;
         &:focus {
             outline: none;
-            border-bottom: 2px solid $uma-secondary;
+            border-bottom: 2px solid $blue-button;
             & +.form--label {
-                transform: translateY(0);
+                transform: translateY(5px);
             }
         }
     }
 }
+// Select options
+
+// Birth date
+
+.birth__date {
+    position: relative;
+    @include d-flex-center;
+    width: 91%;
+    margin: 40px 0;
+    .text {
+        font-size: 18px;
+        margin: 0;
+        color: $when-dark;
+        position: absolute;
+        left: 5%;
+        width: 100%;
+        text-align: start;
+        &::after {
+            content: '';
+            display: block;
+            height: 2px;
+            background-color: $uma-button;
+        }
+    }
+    .icon--calendar {
+        position: absolute;
+        right: 0px;
+        bottom: -5px;
+    }
+}
+
+// Select sex
+.select--sex {
+    background-color: $white-color;
+    width: 90%;
+    border: none;
+}
+
 
 //Condition Buttons
 
@@ -172,7 +219,7 @@
         &.circle::before {
             padding: 7px;
             top: 7px;
-            border: 2px solid $uma-primary;
+            border: 1px solid $uma-primary;
         }
         &:last-child::after {
             display: none;

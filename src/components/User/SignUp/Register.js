@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 // import { Calendar } from 'react-big-calendar';
 import '../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../assets/logo.png';
-import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton } from '../Login/GenericComponents';
+import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
 
 const Registrer = () => {
-    const [switchContent, setSwitchContent] = useState('form')
+    // const [switchContent, setSwitchContent] = useState('')
+    const [switchContent, setSwitchContent] = useState('register')
 
     return (
         <section className='signUp'>
@@ -36,8 +37,9 @@ const Registrer = () => {
                         <GenericInputs label='Ingresa tu numero de identidad' type='number' />
                         <GenericInputs label='Ingresa tu numero de celular' type='number' />
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' />
-                        <GenericInputs label='Selecciona tu fecha de nacimiento' type='text'/>
-                        <GenericInputs label='Selecciona tu sexo' type='text'/>
+                        {/* <GenericInputs label='Selecciona tu sexo' type='text' select/> */}
+                        <SelectOption calendar/>
+                        <SelectOption select/>
                     </> 
                     }
                 </form>
