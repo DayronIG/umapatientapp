@@ -39,7 +39,7 @@ const AttachFile = ({ appoint, specialty }) => {
 	};
 
 
-	return <div className='input-file'>
+	return <div className='umaBtn input-file'>
 					<FaFileMedicalAlt size='1.5rem' />
 					<p>
 						{contador < 1

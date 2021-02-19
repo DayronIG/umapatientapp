@@ -1,0 +1,26 @@
+.umaBtn {
+    border-radius: 15px;
+    padding: 5px;
+    width: 90%;
+    margin: 0 5% 5px;
+    color: $white-color;
+    font-weight: 700;
+    border: none;
+    background: $uma-primary;
+    &.green {
+        background: $green-high;
+    }
+    &.secondary {
+        background: $uma-secondary;
+    }
+    &.secondary-outline {
+        background: none;
+        border: 1px solid $uma-secondary;
+        color: $uma-secondary;
+    }
+    &.primary-outline {
+        background: none;
+        border: 1px solid $uma-primary;
+        color: $uma-primary;
+    }
+}

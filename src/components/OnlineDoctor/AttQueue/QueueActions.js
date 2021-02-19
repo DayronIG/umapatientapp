@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Alert from '../../GeneralComponents/Alert/Alerts';
-import '../../../styles/questions.scss';
+import { useHistory } from 'react-router-dom';
 import { FaFileMedicalAlt } from 'react-icons/fa';
 import { uploadFileToFirebase } from '../../Utils/postBlobFirebase';
 import moment from 'moment-timezone';
 import swal from 'sweetalert';
+import '../../../styles/questions.scss';
 
 const QueueActions = (props) => {
-	const dispatch = useDispatch()
+	const history = useHistory()
 	const [contador, setContador] = useState(0);
-	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [File, setFile] = useState([]);
 	const auth = useSelector((state) => state.user);
-
-	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem('selectedAppointment'));
-		setSelectedAppointment(data);
-	}, []);
 
 	const uploadImage = e => {
 		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		let file = e.target.files[0];
 		let fileName = e.target.files[0].name;
-		uploadFileToFirebase(file, `${auth.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
+		uploadFileToFirebase(file, `${auth.dni}/attached/${props.id}/${dt}_${fileName}`)
 			.then(imgLink => {
 				setContador(contador + 1);
 				setFile([...File, imgLink]);
@@ -35,28 +28,33 @@ const QueueActions = (props) => {
 			})
 	}
 
+	const joinAppointment = () => {
+		history.replace(`/onlinedoctor/attention/${props.dni}`)
+	}
+
+	const antipanicAction = () => {
+		history.replace(`/support/guardia?id=${props.id}`)
+	}
+
     return (
 		<div className="questionsContainer">
-			{ 
-				props.calling &&
-				<Link to={`/onlinedoctor/attention/${props.dni}`} replace={true}>
-					<button className="btn-questions btn-calling">Ingresar al consultorio</button>
-				</Link>
-			}
-			<div className="input-file">
-					<FaFileMedicalAlt size="1.5rem" />
-					<p>{ contador < 1 ? 'Adjuntar archivo' : ( contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos` ) }</p>
-					<input type="file" onChange={uploadImage} />
+			{props.calling &&
+				<button 
+					className="umaBtn green" 
+					onClick={joinAppointment}>
+					Ingresar al consultorio
+				</button>}
+			<div className="umaBtn attachFile">
+				<FaFileMedicalAlt size="1.5rem" />
+				<p>{ contador < 1 ? 'Adjuntar archivo' : ( contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos` ) }</p>
+				<input type="file" onChange={uploadImage} />
 			</div>
-			{	
-				props.appState !== 'ATT' && props.appState !== 'DONE' && !props.calling && 
-				<button className="btn-questions btn-alert" onClick={() => props.setShowModalCancelOptions(true)}>Cancelar consulta</button>
-			}
-			{	
-				props.appState === 'DONE' && 
-				<h2>El médico ya cerró tu consulta.</h2>
-			}
-			<button className="btn-questions btn-claim" onClick={() => dispatch({ type: 'TOGGLE_DETAIL' })}>Realizar un reclamo</button>
+			{props.appState !== 'ATT' && props.appState !== 'DONE' && !props.calling && 
+				<button 
+					className="umaBtn secondary" 
+					onClick={antipanicAction}>
+					Necesito ayuda
+				</button>}
 		</div>
 	)
 }

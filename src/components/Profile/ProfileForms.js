@@ -43,7 +43,7 @@ export const ProfilePic = ({ user }) => {
 	return (
 		<>
 		<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div className='input-file'>
+			<div className='umaBtn input-file'>
 				<p>Buscar Imagen</p>
 				<FiUpload size='1.3rem' />
 				<input type='file' name='profile_pic' onChange={uploadImage} />

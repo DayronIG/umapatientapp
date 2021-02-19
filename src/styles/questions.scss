@@ -6,20 +6,13 @@
   width: 100%;
   text-align: center;
   overflow: hidden;
-  .input-file {
-    position: relative;
-    background: $uma-primary;
-    color: #fff;
+  .attachFile {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    width: 90%;
-    border-radius: 6px;
     font-weight: bold;  
     height: 40px;
-    margin: 5px auto;
-
     @media (max-height: 530px) {
       height: 38px;
     }
@@ -32,7 +25,7 @@
       right: 10px;
     }
     input {
-      position: absolute;
+      display: none;
       top: 0;
       right: 0;
       left: 0;

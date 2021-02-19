@@ -1,5 +1,6 @@
 @import './global/Vars.scss';
 @import './global/Fonts.scss';
+@import './global/buttons.scss';
 @import './mixins/wrappers.scss';
 @import './mixins/buttons.scss';
 
@@ -24,6 +25,13 @@
 			filter: contrast(0.6) !important;
 			outline: none;
 		}
+	}
+	h2 {
+		color: $uma-primary;
+		font-size: 1.3rem;
+		font-weight: 900;
+		text-align: center;
+		padding: 10px 0;
 	}
 	.bg-white {
 		background: $white-color;
@@ -305,12 +313,6 @@
 		background: $red-high;
 		cursor: pointer;
 		border: none;
-	}
-	.btn-calling {
-		padding: 5px;
-		background: $green-high !important;
-		width: 90% !important;
-		min-height: 50px;
 	}
 	.btn-waiting {
 		padding: 5px;

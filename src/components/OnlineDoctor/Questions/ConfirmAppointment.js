@@ -163,13 +163,13 @@ const ConfirmAppointment = (props) => {
 				{
 					loading ? <div className="text-center"><Loader /></div>
 					:
-					<div className="input-file">
+					<div className="umaBtn input-file">
 						<FaFileMedicalAlt size="1.5rem" />
 						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
 						<input type="file" onChange={uploadImage} />
 					</div>
 				}
-				<button className="btn-questions btn-normal" onClick={() => submitRequest()}>Confirmar turno</button>
+				<button className="umaBtn" onClick={() => submitRequest()}>Confirmar turno</button>
 			</div>
 		</>
 	);
