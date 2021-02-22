@@ -4,9 +4,8 @@ import { withRouter } from 'react-router-dom';
 import ForOther from './ForOther';
 import { capitalizeName } from '../../Utils/stringUtils';
 import BackButton from '../../GeneralComponents/Backbutton';
-import { PamiAffiliate } from '../../GeneralComponents/Affiliates/Affiliates';
 import moment from 'moment-timezone';
-import { getUserParentsFirebase, getPendingTraslate } from '../../../store/actions/firebaseQueries';
+import { getUserParentsFirebase } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
 import ImageFlow from '../../../assets/doctor-online.svg';
 import Loading from '../../GeneralComponents/Loading';
@@ -18,7 +17,6 @@ import '../../../styles/whoScreen.scss';
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const [affiliate, setAffiliate] = useState();
 	const [registerParent, setRegisterParent] = useState(false);
 	const [parents, setParents] = useState([]);
 	const { loading } = useSelector((state) => state.front);
@@ -26,13 +24,9 @@ const WhenScreen = (props) => {
 	const [userDni] = useState(user.dni ? user.dni : userDataToJson.dni);
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
 
-	useEffect(() => {
-		if (user.corporate_norm && user.corporate_norm === 'PAMI') {
-			setAffiliate(user.corporate_norm);
-		}
-	}, [user]);
 
 	useEffect(() => {
+		dispatch({ type: 'LOADING', payload: true });
 		(async function checkAssignations() {
 			if ('dni' in user) {
 				localStorage.removeItem('selectedAppointment');
@@ -47,6 +41,8 @@ const WhenScreen = (props) => {
 						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
+			} else {
+				dispatch({ type: 'LOADING', payload: false });
 			}
 		})();
 	}, [user]);
@@ -62,6 +58,7 @@ const WhenScreen = (props) => {
 	}, [user]);
 
 	async function selectWho(user) {
+		dispatch({ type: 'LOADING', payload: true });
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
 		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
@@ -100,8 +97,7 @@ const WhenScreen = (props) => {
 	return (
 		<div className='dinamic-template'>
 			<BackButton />
-			{affiliate && loading && <PamiAffiliate welcome={false} />}
-			{!affiliate && loading && <Loading centered={true} />}
+			{loading && <Loading centered={true} />}
 			{registerParent ? (
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (

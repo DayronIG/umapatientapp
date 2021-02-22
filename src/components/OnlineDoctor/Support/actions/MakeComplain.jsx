@@ -31,6 +31,7 @@ const SendComplain = ({ sendComplain }) => {
     }
 
     async function handleComplain(claim) {
+        dispatch({type: 'LOADING', payload: true})
         let data = {
             ws: patient.ws,
             dni: patient.dni,
@@ -40,17 +41,19 @@ const SendComplain = ({ sendComplain }) => {
             type: 'complain',
             complain: claim
         }
-        try {
-            currentUser.getIdToken().then(async token => {
-                let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
-                await axios.post(cx_action_create, data, headers)
-                swal('Enviado', 'El reclamo fué enviado con éxito. Será evaluado por nuestro equipo.', 'success')
-                return history.push(`/onlinedoctor/queue/${patient.dni}`)
-            })
-        } catch (error) {
-            dispatch({ type: 'TOGGLE_MODAL_ACTION', payload: false })
-            swal('Error', 'Hubo un error al enviar el reclamo, intenta nuevamente.', 'error')
-        }
+        currentUser.getIdToken().then(async token => {
+            let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
+            await axios.post(cx_action_create, data, headers)
+                .then(() => {
+                    dispatch({type: 'LOADING', payload: false})
+                    swal('Enviado', 'El reclamo fué enviado con éxito. Será evaluado por nuestro equipo.', 'success')
+                    return history.push(`/onlinedoctor/queue/${patient.dni}`)
+                })
+                .catch(()=> {
+                    dispatch({type: 'LOADING', payload: false})
+                    swal('Error', 'Hubo un error al enviar el reclamo, intenta nuevamente.', 'error')
+                })
+        })
     }
 
     return (

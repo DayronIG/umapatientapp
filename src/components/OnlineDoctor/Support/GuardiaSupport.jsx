@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 import {FaAngleRight} from 'react-icons/fa';
 import SendComplain from './actions/MakeComplain';
 import CancelAppointment from './actions/CancelAppointment';
+import Loading from '../../GeneralComponents/Loading';
 
 const GuardiaSupport = () =>{
     const [active, setActive] = useState('')
-
+    const {loading} = useSelector(state => state.front)
+    
     return (<>
+        {loading && <Loading />}
         {active === "cancel" && <CancelAppointment /> }
         {active === "complain" && <SendComplain />}
         <div className="issue__container" onClick={() => setActive("complain")}>
