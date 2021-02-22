@@ -3,11 +3,8 @@ import DBConnection from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
 import moment from 'moment-timezone';
-
-const d = new Date();
 const firestore = DBConnection.firestore();
 const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
-const currentDate = [d.getFullYear(), currentMonth].join('');
 const yearMonth = yearAndMonth();
 
 export function getAssignedAppointments(specialty, collectionName, doctors, userDni, date) {
@@ -33,7 +30,6 @@ export function getAssignedAppointments(specialty, collectionName, doctors, user
 						} else {
 							match = true;
 						}
-						// const now = new Date()
 						let fullDate = `${data.date} ${data.time}:00`;
 						let dt = new Date(fullDate);
 						// In case its IOS, parse the fulldate parts and re-create the date object.
@@ -41,7 +37,6 @@ export function getAssignedAppointments(specialty, collectionName, doctors, user
 							let arr = fullDate.split(/[- :]/);
 							dt = new Date(arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]);
 						}
-						// && dt.getTime() > now.getTime()
 						if (data && match) assigns.push(data);
 					});
 					const assigned = await assigns.find(function (assign) {

@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useLocation, useHistory} from 'react-router-dom';
 import moment from 'moment';
@@ -18,7 +18,7 @@ const CancelAppointment = () => {
     const {id} = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
 
-    async function cancelAppointment(type, claim = '') {
+    async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
         let path = localStorage.getItem('currentAppointment').slice(1,-1)
@@ -32,13 +32,13 @@ const CancelAppointment = () => {
                 assignation_id: id,
                 appointment_path: documentBuild || '',
                 type: 'cancel',
-                complain: claim.replace(/(\r\n|\n|\r)/gm, '').trim() || ''
+                complain: ''
             }
             // Verify if the attention is not canceled or closed
             await currentUser.getIdToken().then(async token => {
                 let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
                 await axios.post(user_cancel, data, {headers})
-                swal(`Consulta cancelada`, 
+                await swal(`Consulta cancelada`, 
                 `Será redireccionado/a al inicio`, 
                 'success')
             })
@@ -47,20 +47,18 @@ const CancelAppointment = () => {
             return history.push('/home')
         } catch (err) {
             console.error(err)
-            dispatch({ type: 'ERROR', payload: err })
-            dispatch({ type: 'RESET_ALL' })
+            await swal(`Ocurrió un error`, 
+                `No se pudo cancelar la consulta`, 
+                'error')
             dispatch({ type: 'LOADING', payload: false })
-            if (type === 'cancel') {
-                return history.push('/home')
-            }
         }
     }
 
     const verifyIfCanCancel = () => {
         if(assignedAppointment && (assignedAppointment.status === "ATT" || assignedAppointment.status === "DONE")) {
             swal(`No se puede cancelar esta atención`, 
-            `La atención ya fue iniciada por el médico.`, 
-            'warning')
+                `La atención ya fue iniciada por el médico.`, 
+                'warning')
             return true
         }
         return false
