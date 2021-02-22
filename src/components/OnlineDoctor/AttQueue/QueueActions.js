@@ -39,13 +39,13 @@ const QueueActions = (props) => {
     return (
 		<div className="questionsContainer">
 			{props.calling &&
-				<button 
-					className="umaBtn green" 
-					onClick={joinAppointment}>
-					Ingresar al consultorio
-				</button>}
+			<button 
+				className="umaBtn green" 
+				onClick={joinAppointment}>
+				Ingresar al consultorio
+			</button>}
 			<div className="umaBtn attachFile">
-				<FaFileMedicalAlt size="1.5rem" />
+				<FaFileMedicalAlt className="attachFile__icon" />
 				<p>{ contador < 1 ? 'Adjuntar archivo' : ( contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos` ) }</p>
 				<input type="file" onChange={uploadImage} />
 			</div>
