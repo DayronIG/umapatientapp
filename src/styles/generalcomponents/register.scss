@@ -34,6 +34,7 @@
    }
    .birthInputContainer {
       input {
+         margin-top: 0;
          width: 25% !important;
       }
       input:last-child {
@@ -61,7 +62,7 @@
    .enabled {
       height: 32px;
       .react-switch-bg {
-         background-color: $secondary-color !important;
+         background-color: $uma-primary !important;
       }
    }
    .disabled {
@@ -100,8 +101,8 @@
       }
    }
    .form-label {
-      margin-top: 15px;
-      margin-bottom: 10px;
+      margin-top: 5px;
+      margin-bottom: 2px;
    }
 }
 }
