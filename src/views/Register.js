@@ -60,6 +60,34 @@ const Register = props => {
         window.gtag('event', 'sign_up');
         event.preventDefault()
         window.scroll(0, 0)
+/* 
+        let data = {
+            dni: getId,
+            ws: urlWS,
+            email: ''
+        }            
+        let headers = { ContentType: 'Application/json' }
+        const exists = await axios.post(`${node_patient}/checkexists`, data, headers)
+        if(exists.data.exists) {
+            let text = `El usuario está registrado con el teléfono ${exists.data.ws} `
+            if(exists.data.email && exists.data.email !== '') {
+                text += ` y el email ${exists.data.email}`
+            }
+            const registeredAlert = await swal({
+                title: `Ya existe un usuario con este documento ¿estás seguro deseas volver a registrarte?`,
+                text: `${text}`,
+                icon: 'warning',
+                buttons: { 
+                    cancel: 'Si, registrarme', 
+                    catch: { text: 'No, ingresar con mi usuario', value: true }},
+                dangerMode: true,
+            })
+            if(registeredAlert) {
+                history.push(`/login`)
+                return ""
+            }
+        } */
+
         let dniAlert = await swal({
             title: `Confirma tu número de documento: ${getId}`,
             text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
