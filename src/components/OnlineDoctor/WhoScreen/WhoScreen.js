@@ -7,7 +7,7 @@ import BackButton from '../../GeneralComponents/Backbutton';
 import moment from 'moment-timezone';
 import { getUserParentsFirebase } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
-import ImageFlow from '../../../assets/doctor-online.svg';
+import ImageFlow from '../../../assets/online-doctor.png';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -102,10 +102,10 @@ const WhenScreen = (props) => {
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
 					<div className='dinamic-content-container whoAttention'>
-						<div className='when-question'>¿Para quién desea la atención?</div>
 						<div className='image-helper'>
 							<img src={ImageFlow} alt='medical' />
 						</div>
+						<h2>¿Para quién es la consulta?</h2>
 					</div>
 				)}
 			{!registerParent && (

@@ -197,7 +197,11 @@ export const genAppointmentID = (selectedAppointment, yearAndMonth) => {
 		let appointment;
 		try {
 			appointment = selectedAppointment?.date?.replace(/-/g, '').concat(selectedAppointment.time.replace(/:/g, ''));
-			id = `online_clinica_medica/${yearAndMonth}/${appointment}_${cuil}`;
+			if(!appointment) {
+				id = ''
+			} else {
+				id = `online_clinica_medica/${yearAndMonth}/${appointment}_${cuil}`;
+			}
 		} catch (err) {
 			console.error(err);
 		}
