@@ -22,7 +22,6 @@
 		}
 		button:focus,
 		button:active {
-			filter: contrast(0.6) !important;
 			outline: none;
 		}
 	}
@@ -101,6 +100,7 @@
 			flex-direction: column;
 			padding: 0 5% 0 6.5%;
 			width: 100%;
+			position: relative;
 			
 			.event-section	{
 				margin: 15px 0;
@@ -108,6 +108,14 @@
 				align-items: center;
 				justify-content: space-between;
 				padding: 2px 0;
+				&:nth-child(1):after {
+					width: 90%;
+					content: '';
+					height: 1px;
+					background-color: #D7D7D7;
+					position: absolute;
+					top: 60px;
+				}
 
 				.section-icon {
 
@@ -123,9 +131,6 @@
 						font-weight: 700;
 					}
 				}
-			}
-			.line {
-				border-top: 1px solid #D7D7D7;
 			}
 		}
 		.history-link {

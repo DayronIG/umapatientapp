@@ -699,43 +699,20 @@ const Recipe = ({ att, doc }) => {
 											<li>Presentación: </li>
 											<li>{item.presentationName}</li>
 											<hr/>
-											<li>Indicaciones: </li>
-											<li>{item.indicaciones}</li>
-											{mr.receta.length >= 2 && <li>---------------------------------</li>}
-											<hr/>
+											{item.indicaciones !== '' && 
+											<>
+												<li>Indicaciones: </li>
+												<li>{item.indicaciones}</li>
+											</>
+											}
 										</ul>
 									);
 								})}
 							</div>
-							<ul className="mt-4">
-								{mr.receta.map((item, index) => {
-										return (
-											<ul key={index}>
-												<li>Producto:</li>
-												<li>{item.productName}</li>
-												<hr/>
-												<li>Droga:</li> 
-												<li>{item.drugName}</li>
-												<hr/>
-												<li>Cantidad:</li>
-												<li>{item.cantidad}</li>
-												<hr/>
-												<li>Presentación: </li>
-												<li>{item.presentationName}</li>
-												<hr/>
-												<li>Indicaciones: </li>
-												<li>{item.indicaciones}</li>
-												{mr.receta.length >= 2 && <li>---------------------------------</li>}
-												<hr/>
-											</ul>
-										);
-									})
-								}
-							</ul>
 						</div>
 							<div className='orderToPrint__bottomContainer--barcode w-100'>
-								<p>
-									Número de receta
+								<p className='mt-4'>
+									Número de receta:
 								</p>
 								<div className='recipe-number'>
 									<canvas
