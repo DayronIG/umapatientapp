@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
-// import { Calendar } from 'react-big-calendar';
-import '../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../assets/logo.png';
 import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
+import '../../../styles/user/signUp/signUp.scss';
 
 const Registrer = () => {
-    // const [switchContent, setSwitchContent] = useState('')
     const [switchContent, setSwitchContent] = useState('register')
 
     return (
         <section className='signUp'>
             <img className='signUp__logo' src={Logo} alt='UMA logo' />
             <section className='signUp__content'>
-                <Stepper/>
+                {
+                    switchContent === 'register' && <Stepper complete={1}/>
+                }
+                {
+                    switchContent === 'form' && <Stepper complete={2}/>
+                }
                 <article className='signUp__content__mainText'>
                     <h1 className='title'>¡Te damos la bienvenida a ÜMA!</h1>
                     {switchContent === 'register' && 
@@ -53,7 +56,6 @@ const Registrer = () => {
                         <>
                         <GenericButton color='blue'>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>Al registrarte estás aceptando los <a href='#'>términos y condiciones</a></p>
-                        {/* <Calendar/> */}
                         </>
                         
                     }

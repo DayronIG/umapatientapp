@@ -12,7 +12,6 @@ import { FaCreditCard } from 'react-icons/fa';
 import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import mpicon from "../../assets/img/delivery/mp.jpg";
 import Cleave from 'cleave.js/react';
 import db from "../../config/DBConnection";
 
@@ -24,17 +23,18 @@ const PaymentCardMP = () => {
     const [loader, setLoader] = useState(false)
     const user = useSelector(state => state.user);
     const hisopadoPrice = parseInt(params?.price);
-    const [totalPayment, setTotalPayment] = useState(3499) 
+    const [totalPayment, setTotalPayment] = useState(3499);
+    const [paymentDni, setPaymentDni] = useState(user.dni);
     const [submit, setSubmit] = useState(false);
     const [coupon, setCoupon] = useState('')
     const [paymentStatus, setStatus] = useState(false);
     const [statusDetail, setStatusDetail] = useState("");
     const [creditCard, setCreditCard] = useState("");
     const [invalidYear, setInvalidYear] = useState(false);
+    const [invalidMonth, setInvalidMonth] = useState(false);
     const [hisopadosToPurchase, setHisopadosToPurchase] = useState([]);
+    const [expiry, setExpiry] = useState("12/25")
     const discountParam = useSelector(state => state.deliveryService.params.discount)
-    // const MERCADOPAGO_PUBLIC_KEY = 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231';
-    // const MERCADOPAGO_PUBLIC_KEY_MARCODINA = "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9";
     const MERCADOPAGO_PUBLIC_KEY = isLocal ? 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231' : "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
@@ -60,15 +60,8 @@ const PaymentCardMP = () => {
           })
       })
   }
-
-    // useEffect(() => {
-    //   console.log(hisopadosToPurchase)
-    // }, [])
-
     useEffect(() => {
-      // console.log(hisopadosToPurchase);
       if(hisopadosToPurchase && hisopadosToPurchase.length && !isNaN(hisopadoPrice)) {
-        // console.log(parseInt(hisopadoPrice), hisopadosToPurchase.length)
         setTotalPayment(parseInt(hisopadoPrice) * hisopadosToPurchase.length) 
       }
     }, [hisopadosToPurchase, hisopadoPrice])
@@ -87,44 +80,35 @@ const PaymentCardMP = () => {
     async function handleSubmit(event) {
         event.preventDefault()
         setLoader(true)
-        if(moment().format('dddd') === 'sábado'
-          || moment().format('dddd') === 'domingo'
-          || (moment().format('dddd') === 'viernes' && moment().format('HH') >= 18)
-          || moment().format('DD/MM') === "25/12"
-          || moment().format('DD/MM') === "01/01") {
-            const confirm = await swal({
-              title: "¿Desea continuar?", 
-              text: "Si abona su compra ahora, nuestro personal de salud acudirá el Lunes",
-              icon: "info",
-              buttons: true,
-              dangerMode: false,
-            })
-            if(confirm) {
-                const form = document.getElementsByTagName('form')[0]
-                window.Mercadopago.createToken(form, sdkResponseHandler)
-            } else {
-              setLoader(false)
-            }
+        const confirm = await swal({
+          title: "¿Desea continuar?", 
+          text: `Tiempo estimado: ${params.delay}`,
+          icon: "info",
+          buttons: true,
+          dangerMode: false,
+        })
+        if(confirm) {
+            const form = document.getElementsByTagName('form')[0]
+            window.Mercadopago.createToken(form, sdkResponseHandler)
         } else {
-          const confirm = await swal({
-            title: "¿Desea continuar?", 
-            text: `Debido a la alta demanda en este momento el hisopado puede demorar más de lo habitual. Tiempo estimado: ${params.delay}`,
-            icon: "info",
-            buttons: true,
-            dangerMode: false,
-          })
-          if(confirm) {
-              const form = document.getElementsByTagName('form')[0]
-              window.Mercadopago.createToken(form, sdkResponseHandler)
-          } else {
-            setLoader(false)
-          }
+          setLoader(false)
         }
     }
 
     function sdkResponseHandler(status, response) {
+        console.log(status, response)
         if (status !== 200 && status !== 201 && status !== 202) {
-            swal("Verifique los datos ingresados", "Alguno de sus datos personales o de su tarjeta son inválidos" ,"error")
+            let error = ""
+            response.cause.forEach(el => {
+              if(el.description === "invalid parameter cardExpirationMonth") {
+                error += "Mes de expiración inválido. "
+              } else if (el.description === "invalid parameter cardExpirationYear") {
+                error += "Año de expiración inválido. "
+              } else if (el.description === "invalid parameter cardNumber") {
+                error += "Tarjeta inválida. Verifica el número. "
+              }
+            })
+            swal("Verifique los datos ingresados", `Error: ${error}`, `error`)
             setSubmit(false);
             setLoader(false)
         } else {
@@ -151,7 +135,7 @@ const PaymentCardMP = () => {
           email: email.value || 'info@uma-health.com',
           paymentMethodId: cardId, 
           token: token,
-          dni: `${user.dni}`,
+          dni: `${paymentDni}`,
           uid: `${user.core_id}`,
           fullname: `${user.fullname}`,
           amount: parseInt(totalPayment),
@@ -163,8 +147,6 @@ const PaymentCardMP = () => {
           mpaccount: isLocal ? 'sandbox' : 'ihsa'
         }
 
-        console.log(paymentData);
-
         let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
         axios.patch(`${node_patient}/${user.dni}`, {newValues: {mail: email.value}}, {headers})
           .then(res => console.log("Ok"))
@@ -173,7 +155,8 @@ const PaymentCardMP = () => {
             .then(res => {
               setLoader(false)
                 if (res.data.body?.status === "approved" || res.data.body?.status === "in_process") {
-                  window.gtag('event', 'purchase', {
+                  if(!isLocal){
+                    window.gtag('event', 'purchase', {
                     'transaction_id': current.id,
                     'affiliation': user?.corporate_norm,
                     'value': parseInt(totalPayment) || parseInt(hisopadoPrice) * hisopadosToPurchase.length,
@@ -188,7 +171,7 @@ const PaymentCardMP = () => {
                     window.gtag('event', 'conversion', {
                       'send_to': 'AW-672038036/OXYCCNik3-gBEJT5ucAC',
                       'transaction_id': current.id
-                    });
+                    });}
                     setStatus("approved")
                 } else if (res.data.body.status === "free") {
                   setStatus("approved")
@@ -205,7 +188,7 @@ const PaymentCardMP = () => {
           .catch(err => {
             setLoader(false)
             console.error('Error tarjeta: ', err)
-            window.gtag('event', 'payment_failed', {
+            window.gtag('event', 'form_payment_failed', {
               'event_category' : 'warning',
               'event_label' : 'hisopado_payment'
             });
@@ -220,10 +203,18 @@ const PaymentCardMP = () => {
     }, [coupon, deliveryInfo, totalPayment, hisopadosToPurchase])
 
     const expirationYearCheck = (year) => {
-        if(year < moment().format("YY") && year !== ""){
-            setInvalidYear(true);
+      if(year < moment().format("YY") && year !== ""){
+          setInvalidYear(true);
+      } else {
+          setInvalidYear(false)
+      }
+    }
+    
+    const expirationMonthCheck = (month) => {
+        if(month.length > 1 && month !== ""){
+          setInvalidMonth(false)
         } else {
-            setInvalidYear(false)
+          setInvalidMonth(true);
         }
     }
 
@@ -262,17 +253,18 @@ const PaymentCardMP = () => {
         }
     }, [paymentStatus, history])
 
-    const [state, setState] = useState({
+    const [cardState, setCardState] = useState({
         number: '',
         name: '',
         cvc: '',
-        expiry: '',
-        focus: ''
+        focus: '',
+        month: '01',
+        yearh: '25'
       })
-      const { number, name, cvc, expiry, focus } = state;
+      const { number, month, year, name, cvc, focus } = cardState;
     
       const handleFocus = e => {
-        setState({ ...state, focus: e.target.name });
+        setCardState({ ...cardState, focus: e.target.name });
       }
 
       const validateDiscount = (e) => {
@@ -287,34 +279,16 @@ const PaymentCardMP = () => {
     
       const handleChange = e => {
         if(e.target){const { name, value } = e.target;
-        setState({ ...state, [name]: value?.trim() });}
+        setCardState({ ...cardState, [name]: value?.trim() });}
+        if(name && name === "year" || name === "month") {
+          setExpiry(`${month}/${year}`)
+        }
       }
     
       const properties = {
-        placeholders: { name: 'Tu nombre aquí' },
+        placeholders: { name: 'Tu nombre' },
         locale: { valid: 'válido hasta' }
       }
-
-/*       function mercadoPagoButton() {
-        swal({
-          buttons: {
-            cancel: "Cerrar",
-          },
-          content: (
-          <div>
-            <img src={mpicon} alt="mercadopago" style={{width: '100%'}} />
-            Si no cuentas con tarjeta de crédito o tu pago es rechazado puedes abonar con MercadoPago.<br />
-            Una vez realizado debes informar el pago a info@uma-health.com con el número de operación o comprobante. <br />
-            <a href="https://mpago.la/1VhVvc2" 
-              className="btn" style={{background: '#02b1ec', color: '#fff'}} 
-              target="_blank"
-              rel="noopener noreferrer">
-                Pagar con MercadoPago
-            </a>
-          </div>
-          )
-        })
-      } */
     
       return (
           <div className="payment-arg">
@@ -353,7 +327,6 @@ const PaymentCardMP = () => {
               options={{creditCard: true}}
               />
             </div>
-
             <div className="formulario-item">
               <small>Email</small>
               <input
@@ -367,9 +340,8 @@ const PaymentCardMP = () => {
                 onFocus={handleFocus}
               />
             </div>
-            
             <div className="formulario-item">
-              <small>Nombre</small>
+              <small>Nombre del titular</small>
               <input
                 autoComplete="on"
                 type="text"
@@ -382,14 +354,15 @@ const PaymentCardMP = () => {
                 onFocus={handleFocus}
               />
             </div>
-
-            <div>
+            <div className="formulario-item">
+                <small>Documento del titular</small>
                 <div className="document">
                 <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
                 <input 
                 autoComplete="off"
                 type="text" id="docNumber" defaultValue={user?.dni?.length <= 8? user.dni: "12345678"}
-                    data-checkout="docNumber" style={{ display: 'none' }}
+                    data-checkout="docNumber" 
+                    onChange={e => setPaymentDni(e.target.value)}
                     />
                 </div>
             </div>
@@ -399,31 +372,36 @@ const PaymentCardMP = () => {
                 <small>Vencimiento</small>
                 <div className="cardExpiration">
                 <input 
-                autoComplete="off"
-                type="text" id="cardExpirationMonth" 
-                data-checkout="cardExpirationMonth"
-                inputMode="numeric"
-                maxLength="2"
-                placeholder="Mes" className="mr-3"
-                onChange={handleChange}
-                onFocus={handleFocus}/>
+                  autoComplete="off"
+                  type="text" id="cardExpirationMonth" 
+                  data-checkout="cardExpirationMonth"
+                  inputMode="numeric"
+                  maxLength="2"
+                  name="month"
+                  className = {`${!invalidMonth? "": "invalid-input"}`}
+                  placeholder="Mes"
+                  onChange={e => {
+                    handleChange(e.target.value) 
+                    expirationMonthCheck(e.target.value)}}
+                  onFocus={handleFocus}/>
                 <input 
-                type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
-                className = {`${!invalidYear? "": "invalid-input"}`}
-                inputMode="numeric"
-                placeholder="Año" autoComplete="off"
-                maxLength="2"
-                onChange={e => {
-                  handleChange(e.target.value) 
-                  expirationYearCheck(e.target.value)}}
-                onFocus={handleFocus}/>
+                  type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
+                  className = {`${!invalidYear? "": "invalid-input"}`}
+                  inputMode="numeric"
+                  placeholder="Año" autoComplete="off"
+                  maxLength="2"
+                  name="yearh"
+                  onChange={e => {
+                    handleChange(e.target.value) 
+                    expirationYearCheck(e.target.value)}}
+                  onFocus={handleFocus}/>
                 </div>
               </div>
             </div>
               <div className="formulario-item">
                 <small>Código de seguridad</small>
                 <input
-                autoComplete="off"
+                  autoComplete="off"
                   id="securityCode" data-checkout="securityCode"
                   type="text"
                   className=""

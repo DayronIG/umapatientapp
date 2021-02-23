@@ -1,6 +1,7 @@
 @import '../global//Vars.scss';
 
 .call-container {
+    z-index: 5;
     .PatientContainerMedia {
         position: fixed;
         bottom: 12vh;

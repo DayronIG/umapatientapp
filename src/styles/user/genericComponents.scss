@@ -12,9 +12,13 @@
         left: 20px;
         pointer-events: none;
         color: $when-dark;
+        font-size: 16px;
         top: 0;
         transition: 0.2s linear;
         transform: translateY(30px);
+        &.up {
+            transform: translateY(5px);
+        }
     }
     .form--eyePass {
         position: absolute;
@@ -36,12 +40,12 @@
         border: none;
         border-bottom: 2px solid $uma-button;
         transition: 0.3s linear;
+        &.invalid {
+            border-bottom: 2px solid $uma-error;
+        }
         &:focus {
             outline: none;
             border-bottom: 2px solid $blue-button;
-            & +.form--label {
-                transform: translateY(5px);
-            }
         }
     }
 }
@@ -55,7 +59,7 @@
     width: 91%;
     margin: 40px 0;
     .text {
-        font-size: 18px;
+        font-size: 16px;
         margin: 0;
         color: $when-dark;
         position: absolute;
@@ -71,26 +75,50 @@
     }
     .icon--calendar {
         position: absolute;
-        right: 0px;
+        right: -10px;
         bottom: -5px;
     }
 }
 
 // Select sex
-.select--sex {
-    background-color: $white-color;
-    color: $when-dark;
+
+.container__select--sex {
     width: 90%;
-    border: none;
-    border-bottom: 2px solid $uma-primary;
-    &:focus {
-        outline: none;
-    }
-    option {
-        width: fit-content;
+    margin: 20px auto;
+    // padding: 30px 0 20px 0;
+    .select--sex {
+        background-color: $white-color;
+        color: $when-dark;
+        width: 100%;
+        border: none;
+        font-size: 16px;
+        border-bottom: 2px solid $uma-primary;
+        position: relative;
+        // .select--sex-default {
+        //     position: absolute;
+        //     bottom: -10px;
+        // }
+        // .options {
+            // visibility: hidden;
+            // opacity: 0;
+            // position: absolute;
+            // transition: all 0.5s ease;
+            // margin-top: 1rem;
+            // left: 0;
+            // display: none;
+        //     background-color: $white-color;
+        //     z-index: 100;
+        //     width: 100%;
+        // }
+        // &:focus {
+        //     .options {
+        //         visibility: visible;
+        //         opacity: 1;
+        //         display: block;
+        //     }
+        // }
     }
 }
-
 
 //Condition Buttons
 
@@ -115,8 +143,11 @@
     background-color: $uma-primary;
     color: $white-color;
     text-transform: uppercase;
-    margin: 10px 0;
+    margin: 10px auto;
     cursor: pointer;
+    &:nth-child(1) {
+        margin-top: 30px;
+    }
     &.white {
         background-color: $white-color;
         color: $uma-primary;
@@ -151,29 +182,24 @@
             height: 40px;
             margin-top: 12px;
             position: relative;
+            padding: 0 10px;
             p {
                 margin: 0 10px;
                 font-size: 16px;
+                bottom: 7px;
+                position: absolute;
+                left: 60px;
             }
             img {
                 width: 25px;
+                bottom: 7px;
                 position: absolute;
                 left: 20px;
-            }
-            &:nth-child(3) { //El icono de Apple es mas grande que los demás
-                img {
-                    width: 30px;
-                    bottom: 5px;
-                }
+                display: block;
             }
         }
         img {
             width: 30px;
-        }
-        &:nth-child(3) {
-            img {
-                width: 35px;
-            }
         }
     }
 }
@@ -192,6 +218,8 @@
         border-bottom: 1px solid $uma-primary;
     }
 }
+
+//Stepper
 
 .stepper {
     display: flex;
@@ -233,7 +261,84 @@
             display: none;
         }
     }
+    // .circle::before {
+    //     padding: 7px;
+    //     top: 7px;
+    //     background-color: transparent;
+    //     border: 1px solid $uma-primary;
+    // }
+
+
+    // calendar container 
 }
   
+
+.calendar__container {
+    display: block;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); 
+    .rbc-calendar {
+        background-color: $white-color;
+        margin: 0 auto;
+        margin-top: 100px;
+        width: 80%;
+        border-radius: 5px;
+        max-height: 300px;
+        padding: 20px;
+        .rbc-toolbar {
+            .rbc-btn-group {
+                display: none;
+            }
+            .rbc-toolbar-label {
+                color: $uma-text;
+                font-weight: bold;
+            }
+        }
+        .rbc-month-view {
+            .rbc-month-row {
+                border: none;
+                .rbc-month-header {
+                    .rbc-header {
+                        border: none;
+                    }
+                }
+                .rbc-row-bg {
+                   .rbc-day-bg {
+                        background-color: $white-color;
+                        border: none;
+                   }
+                }
+                .rbc-row-content {
+                    padding-top: 5px;
+                    .rbc-row {
+                        .rbc-date-cell {
+                            color: $uma-text;
+                            font-weight: bold;
+                            font-size: 11.68px;
+                            &.rbc-current {
+                              a {
+                                height: 20px;
+                                width: 20px;
+                                padding: 2px;
+                                border-radius: 100%;
+                                background-color: $uma-primary;
+                                color: $white-color;
+                              }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
   
 

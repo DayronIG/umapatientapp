@@ -1,19 +1,21 @@
-import React from 'react';
-import '../../../../styles/user/forgottenPass/forgottenPass.scss';
+import React, { useState } from 'react';
 import BackButton from '../../../GeneralComponents/Backbutton';
 import { LoginButtons } from '../GenericComponents';
+import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 
 const ForgottenAccError = () => {
+    const [typeError, setTypeError] = useState(false)
+    // true DNI, false telefono
+
     return (
        <section className='needHelp'>
            <BackButton/>
-           <section className='needHelp__forgottenPass'>
+           <article className='needHelp__forgottenPass'>
                <h1 className='title'>Lo sentimos</h1>
-               {/* Hacer dinamico para pantalla error con numero  */}
-               <p className='subtitle'>No hemos encontrado ninguna cuenta con ese DNI.</p> 
+               <p className='subtitle'>No hemos encontrado ninguna cuenta {typeError ? 'con ese DNI.' : 'asociada a ese celular.'}</p> 
                <p className='subtitle'>¿Deseas crear una cuenta?</p>
-           </section>
-           <LoginButtons/>
+           </article>
+           <LoginButtons signUp/>
        </section>
     )
 }

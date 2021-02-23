@@ -7,7 +7,6 @@ import './../../styles/history/Constancia.scss';
 
 const Constancia = ({att, socialWork, docData}) => {
 
-
     return <> 
     {socialWork !== 'dosuba' ?
         <main id='constancy'>
@@ -25,14 +24,16 @@ const Constancia = ({att, socialWork, docData}) => {
                     <p>{att.mr.diagnostico && att.mr.diagnostico.slice(0, -5)}</p>
                     {att && att.mr && att.mr.reposo && att.mr.reposo.toLowerCase() !== 'no' ? 
                     <p> Se sugiere reposo de {att.mr.reposo} hs.</p> : ''}
-                    {att && att.mr && att.mr.receta.map(item => {
-                        return(
-                            <section className="medication">
-                                <p>Medicación:</p>
-                                <p>{item.drugName}</p>
-                            </section>
-                        )
-                    })}
+                    {
+                    att.mr.receta == '' ?
+                     <p>No se adjuntaron recetas.</p> 
+                     :
+                     att.mr.receta.length >= 0 &&
+                     <section className="medication">
+                        <p>Medicación:</p>
+                       {att.mr.receta.map(item => <p>{item.drugName}</p>)}
+                    </section>
+                    }
                 </section>
             }
             <section className="text-emergencias">

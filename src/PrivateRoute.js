@@ -9,11 +9,18 @@ import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
 import ResetPass from './components/User/Login/ForgottenPass/ResetPass';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
-// -------
+// ------- SignUp
 import SignUp from './components/User/SignUp/SignUp';
 import Register from './components/User/SignUp/Register';
-
-// -------
+import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
+import ConfirmationMail from './components/User/SignUp/ConfirmationMail';
+import Status from './components/User/SignUp/Status';
+// ------- Login Phone Number
+import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
+import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain';
+//--------
+import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions';
+//--------
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -34,9 +41,16 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <Register/>
-        // <Register/>
-        //  <SignUp/>
+        return <LoginPhoneNumber/>
+        //---{Login Telefono}---
+            // <WelcomeAgain/>
+            // <LoginPhoneNumber/>
+        //---{Sign Up}---
+            // <Status/>
+            // <ConfirmationMail/>
+            // <ConfirmationCode/>
+            // <Register/>
+            //  <SignUp/>
         // ---{Forgot Password or Email}---
             // <ForgottenAccError/>
             // <ResetPass/>
@@ -55,9 +69,9 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore()
     const { currentUser } = useContext(AuthContext)
-    const user = useSelector(store => store.user)
+    const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
-    const { callRejected } = useSelector(store => store.call)
+    const { callRejected } = useSelector(state => state.call)
 	const token = useSelector(state => state.userActive.token)
 
     useEffect(() => {
@@ -91,22 +105,18 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [user, firestore, callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (currentUser && currentUser.email && user.dni) {
+		if (user.dni !== "" && currentUser && currentUser.email) {
 			DetectRTC.load(function () {
                     const ios = isIos()
-                    let now = moment()
-                    if(user.device?.uma_version !== version.users
-                        || moment(now).diff(user.device?.last_login, 'minutes') >= 1) {
-                        if (!ios) {
-                            messaginTokenUpdate(currentUser, DetectRTC, true)
-                        } else {
-                            messaginTokenUpdate(currentUser, DetectRTC, false)
-                        }
+                    if (!ios) {
+                        messaginTokenUpdate(currentUser, DetectRTC, true)
+                    } else {
+                        messaginTokenUpdate(currentUser, DetectRTC, false)
                     }
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUser, token])
+	}, [user, currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
@@ -147,7 +157,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     console.log(err);
                 });
             })
-    }, [user])
+    }, [user, currentUser])
     
     return (
 

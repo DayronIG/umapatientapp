@@ -8,33 +8,22 @@
     .needHelp__forgottenPass {
         @include d-flex-center;
         flex-direction: column;
-        margin-top: 50px;
+        margin-top: 40px;
         
         .title {
             font-size: 24px;
-            padding: 10px 20%;
+            padding: 40px 20%;
+            &.reset {
+                padding: 10px 20%;
+            }
         }
 
         .subtitle {
             text-align: center;
             margin-bottom: 15px;
-            max-width: 80%;
+            max-width: 90%;
         }
 
-        .needHelp--forgottenPass-actions {
-            text-align: center;
-            width: 100%;
-            .redirect {
-                margin-top: 20px;
-                color: $uma-primary;
-                .link { // esto cambia con el link
-                    margin-top: 100px;
-                    color: $uma-primary;
-                    border-bottom: 2px solid $uma-primary;
-                    font-weight: bold;
-                }
-            }
-        }
 
         .needHelp__forgottenPass_btns {
             margin-top: 20%;
@@ -49,6 +38,21 @@
                 text-transform: none;
                 width: 100%;
                 height: 58px;
+            }
+        }
+    }
+
+    .needHelp--forgottenPass-actions {
+        text-align: center;
+        width: 100%;
+        .redirect {
+            margin-top: 20px;
+            color: $uma-primary;
+            .link { // esto cambia con el link
+                margin-top: 100px;
+                color: $uma-primary;
+                border-bottom: 2px solid $uma-primary;
+                font-weight: bold;
             }
         }
     }

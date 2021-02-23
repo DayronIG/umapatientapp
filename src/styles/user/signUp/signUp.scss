@@ -23,47 +23,114 @@
         flex-direction: column;
         justify-content: space-around;
         text-align: center;
-    }
 
-    .signUp__actions {
-        margin-top: 20px;
-        .signUp__actions--button {
-            width: 150px;
-            height: 40px;
-            border: none;
-            margin: 0 5px;
-            font-weight: bold;
-            border-radius: 15px;
-        }
-        .back {
-            background-color: $white-color;
-            color: $uma-primary;
-        }
-        .foward {
-            background-color: $uma-primary;
-            color: $white-color;
-        }
-        .terms-and-conditions {
-            padding: 0 10%;
-            a {
-                color: $uma-text;
-                border-bottom: 1px solid $uma-text;
+        .signUp__content--illustration {
+            width: 220px;
+            margin: 0 auto;
+            &.error {
+                width: 150px;
             }
         }
-    }
-
-    .signUp__content__mainText {
-        @include d-flex-center;
-        flex-direction: column;
-        .title {
-            font-size: 24px;
-            padding: 10px 15%;
+    
+        .signUp__actions {
+            margin-top: 20px;
+            .signUp__actions--button {
+                width: 150px;
+                height: 40px;
+                border: none;
+                margin: 0 5px;
+                font-weight: bold;
+                border-radius: 15px;
+            }
+            .back {
+                background-color: $white-color;
+                color: $uma-primary;
+            }
+            .foward {
+                background-color: $uma-primary;
+                color: $white-color;
+            }
+            .terms-and-conditions {
+                padding: 0 10%;
+                a {
+                    color: $uma-text;
+                    border-bottom: 1px solid $uma-text;
+                }
+            }
         }
-        .subtitle {
-            text-align: center;
-            margin-bottom: 20px;
-            max-width: 80%;
-        }
-    }
 
+        .signUp__content__mainText {
+            @include d-flex-center;
+            flex-direction: column;
+            margin: 20px 0;
+            .title {
+                font-size: 24px;
+                padding: 10px 15%;
+                &.failed {
+                    color: $uma-error;
+                }
+            }
+            .subtitle {
+                text-align: center;
+                margin-bottom: 20px;
+                max-width: 80%;
+            }
+        }
+
+        .signUp__content__formGroup {
+            @include d-flex-center;
+            max-width: 90%;
+            margin: 0 auto;
+            .input-number {
+                margin: 0 5px;
+                width: 20px;
+                border: none;
+                border-bottom: 2px solid $uma-primary;
+                &:nth-child(3) {
+                    margin-right: 10px;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+    //     .signUp__content__form {
+    //         @include d-flex-center;
+    //         .signUp__content__form--inputs {
+    //             margin: 0 10px;
+    //             .input-number {
+    //                 margin: 0 5px;
+    //                 border: none;
+    //                 border-bottom: 2px solid $uma-primary;
+    //                 &:focus {
+    //                     outline: none;
+    //                 }
+    //             }
+    //         }
+    //     }
+    }
+}
+
+.dataSaved {
+    height: 100vh;
+    width: 100%;
+    clip-path: circle(100px at 90% -10%); // se posiciona un circulo de 100 px en una esquina de la pantalla
+    -webkit-clip-path: circle(100px at 0 -10%);
+    transition: all 1s ease-out;
+    pointer-events: none;
+    @include d-flex-center;
+    flex-direction: column;
+    &.open {
+        clip-path: circle(1000px at 90% -10%); // cuando termina el setTimeOut cambian el circulo a 1000px
+        -webkit-clip-path: circle(1000px at 90% -10%);
+        pointer-events: all;
+        background-color: $uma-primary;
+    }
+    .dataSaved--title {
+        color: $white-color;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
 }

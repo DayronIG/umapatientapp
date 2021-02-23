@@ -51,7 +51,7 @@ const DoctorCard = (props) => {
 				</div>
 				<div className='doctorCard-secondRow'>
 					<div className='doctorAtts'>
-						<p>{props.doc.metrics ? props.doc.metrics.n_att : '0'}</p><span>atenciones</span>
+						<p>{props.doc.metrics ? props.doc.metrics.n_att : '0'}</p><span>Atenciones</span>
 					</div>
 					{props.doc.metrics && (
 						<div className='doctorStars'>
@@ -103,7 +103,7 @@ const GuardCardComp = (props) => {
 	};
 	
 	useEffect(() => {
-		let filters = [{field: 'status', value: 'ASSIGN', comparator: '=='}]
+		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
 		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
 			.then(res => {
 				if(res.length > 0) {

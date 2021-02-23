@@ -11,9 +11,11 @@ const History = (props) => {
 
   useEffect(() => {
     let local = JSON.parse(localStorage.getItem('userData'))
-    let p = patient.group || local.dni
-    dispatch(getBenficiaries(p))
-    dispatch(getMedicalRecord(p, patient.ws))
+    let p = local.dni || patient.group
+    if(patient.ws !== "") {
+      dispatch(getBenficiaries(p))
+      dispatch(getMedicalRecord(p, patient.ws))
+    }
   }, [patient.dni, patient.ws])
 
   if (props.match.params.record) {

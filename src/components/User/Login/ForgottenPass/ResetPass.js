@@ -11,7 +11,7 @@ const ResetPass = () => {
             <BackButton inlineButton/>
             <section className='needHelp__forgottenPass'>
                 <img src={LoginIllustation} alt='Ilustracion de médicos'/>
-                <h1 className='title'>Restablecer mi contraseña</h1>
+                <h1 className='title reset'>Restablecer mi contraseña</h1>
                 <p className='subtitle'>Ingresa una nueva contraseña para poder iniciar sesión.</p>
             </section>
             <GenericInputs label='Ingresa tu nueva contraseña' Password/>

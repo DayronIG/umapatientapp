@@ -104,7 +104,7 @@ export const HistoryHeader = (props) => {
 	const history = useHistory()
 
 	return(
-		<section className='header-container history'>	
+		<section className={props.color === 'blue' ? 'header-container blue' : 'header-container history'}>	
 				<div onClick={() => history.goBack()} className='back-btn'>
 					<FontAwesomeIcon icon={faChevronLeft} /> 
 				</div>

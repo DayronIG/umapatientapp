@@ -12,6 +12,7 @@ import { BackButton } from '../../../GeneralComponents/Headers';
 import swal from 'sweetalert';
 
 export default function AskForBuyHisopado() {
+    const isLocal = window.location.origin.includes('localhost');
     const [termsConditions, setTermsConditions] = useState(false)
     const [frequentQuestions, setFrequentQuestions] = useState(false)
     const [narrowContactInfo, setNarrowContactInfo] = useState(false)
@@ -43,9 +44,11 @@ export default function AskForBuyHisopado() {
     }
 
     const startBuying = async () => {
+        if(!isLocal){
         window.gtag('event', 'select_item', {
             'item_list_name': 'Hisopado Antígeno'
           });
+        }
         if (!current?.status || current?.status === 'FREE') {
             let data = {
                 dni: patient.dni,

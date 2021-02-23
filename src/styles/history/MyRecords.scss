@@ -22,14 +22,16 @@
         margin-bottom: 15px;
         text-align: center;
 
-        .button-patient {
-            border: none;
-            width: 70%;
-            height: 30px;
-            color: white;
+        .select-beneficiary {
+            width: 100%;
+            padding: 5px 35px;
+            background-color: $uma-primary;
+            color: $white-color;
             font-weight: bold;
-            background-color: $blue-button;
             border-radius: 5px;
+            &:focus {
+                outline: $dark-blue;
+            }
         }
     }
 
@@ -49,15 +51,15 @@
                     font-size: 2rem;
                 }
             }
-
             .title-date {
                 margin-top: 10px;
-                .title-guardia {
+                .title-clasif {
                     font-size: 18px;
                     color: $text-super-dark;
                     font-weight: bold; 
                     margin: 0;
                     color: $text-super-dark;
+                    text-transform: capitalize;
                 }
                 .consult-date {
                     margin: 0;

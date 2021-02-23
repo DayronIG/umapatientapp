@@ -1,9 +1,8 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
-import '../../../styles/user/login.scss';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import Logo from '../../../assets/logo.png';
+import '../../../styles/user/login.scss';
 
 const Login = () =>  {
 
@@ -69,7 +68,7 @@ const Login = () =>  {
            <LoginButtons circleBtn />
             <div className='login__lineSeparator'>o</div>
             {/* email o password invalido? state ? section : null */}
-            <section className='login_invalid'>
+            <section className='login_invalid' style={{display: 'none'}}>
                 <p>El mail o la contraseña son incorrectos.</p>
                 <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
             </section>

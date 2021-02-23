@@ -8,9 +8,9 @@ const SignUp = () => {
         <section className='signUp'>
             <img className='signUp__logo' src={Logo} alt='UMA logo' />
             <section className='signUp__content'>
-                <Stepper/>
+                <Stepper complete={1}/>
                 <div>
-                    <LoginButtons/>
+                    <LoginButtons signUp/>
                 </div>
                 <TextAndLink text='¿Tienes cuenta?' link='Ingresa' />
             </section>

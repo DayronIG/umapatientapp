@@ -26,12 +26,35 @@
             font-weight: bold;
             color: $uma-primary;
             max-width: 260px;
+            &.mail {
+                margin-top: 80px;
+            }
+        }
+        p {
+            margin: 10px 15%;
+        }
+    }
+
+    .login__titleAndSub {
+        @include d-flex-center;
+        flex-direction: column;
+        padding-top: 100px;
+        text-align: center;
+        .title {
+            font-size: 25px;
+            font-weight: bold;
+            color: $uma-primary;
+        }
+        .subtitle {
+            max-width: 300px;
+            margin-bottom: 10px;
         }
     }
 
     .login__lineSeparator {
         margin-top: 20px;
         text-align: center;
+        color: $lighter-grey;
        &:before {
             content: "";
             display: inline-block;
@@ -51,9 +74,10 @@
     }
 
     .login_invalid {
-        margin: 10px auto;
+        margin: 10px 18px;
         max-width: 350px;
-        display: none;
+        text-align: center;
+        transition: 0.2s ease-in-out;
         p {
             color: $uma-error;
             margin: 5px;
@@ -64,6 +88,10 @@
         @include d-flex-center;
         margin-top: 10px;
         justify-content: space-around;
+        &.phone {
+            justify-content: start;
+            margin:10px 20px;
+        }
         .login__needHelp__activeSession {
             display: flex;
             align-items: center;
@@ -98,6 +126,42 @@
                 color: $uma-primary;
                 font-weight: bold;
             }
+        }
+    }
+
+    .login__mobile {
+        @include d-flex-center;
+        flex-direction: column;
+        .login__mobile__form {
+            min-width: 80%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            .login__mobile__form--label {
+                color: $gray-font;
+                margin: 10px 0 5px 0;
+            }
+            .login__mobile__form--input {
+                border: transparent;
+                box-shadow: 0px 2px 5px 0px #7E93A3;
+                border-radius: 5px;
+                padding: 10px;
+                margin-bottom: 15px;
+                &:focus {
+                    outline: transparent;
+                }
+            }
+            .login__mobile__form--img {
+                position: absolute;
+                top: 165px;
+                right: 10px;
+            }
+            // .login__mobile__form--img-confirm {
+            //     position: absolute;
+            //     right: 10px;
+            //     bottom: 15px;
+            // }
         }
     }
 }

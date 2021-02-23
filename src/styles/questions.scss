@@ -86,6 +86,7 @@
 .appointment__delay--container {
   display: flex;
   justify-content: center;
+  margin-top: 5px;
   .appointment__delay {
       background: $uma-input;
       color: $uma-button;

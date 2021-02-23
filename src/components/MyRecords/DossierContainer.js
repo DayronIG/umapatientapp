@@ -33,7 +33,7 @@ const DossierContainer = (props) => {
 
     return (
         <>
-            {att.mr.dt_cierre && att.mr.dt_cierre !== '' && att.mr.destino_final !== 'Anula el paciente' &&
+            {att.mr.destino_final !== '' && att.mr.destino_final !== 'Anula el paciente' &&
                 att.mr.destino_final !== 'Anula por falla de conexión' &&
                 att.mr.destino_final !== 'Paciente ausente' &&
                 att.mr.destino_final !== 'USER CANCEL' &&
@@ -58,9 +58,9 @@ const DossierContainer = (props) => {
                                             content={() => voucherRef.current}
                                         />
                                     </button>
-                                    <div onClick={()=> setOpenModal(true)} className='button-report'>
-                                        Reportar problema
-                                    </div>
+{/*                                     <div onClick={()=> setOpenModal(true)} className='button-report'>
+                                        Reportar un problema
+                                    </div> */}
                                 </div>
                             }
                         </>
@@ -69,7 +69,6 @@ const DossierContainer = (props) => {
                 :
                 <p className='no-orders'>Esta atención no se realizó o aún no fue cerrada por el médico</p>
             }
-
             {
                 openModal && 
                 <MobileModal title={ sendIssue ? '' : 'Reportar error'} callback={() =>setOpenModal(false) }>

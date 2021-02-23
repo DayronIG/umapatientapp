@@ -7,7 +7,6 @@ const NeedHelp = () => {
     return (
         <section className='needHelp'>
             <BackButton inlineButton/>
-            {/* customTarget por props para backbutton */}
             <section className='needHelp__forgottenPass'>
                 <h1 className='title'>¿Tienes problemas para ingresar?</h1>
                 <div className='needHelp__forgottenPass_btns'>
