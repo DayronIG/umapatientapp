@@ -11,6 +11,7 @@ function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState(() => db.auth().currentUser)
 
 	useEffect(() => {  // Get authorization changes
+		console.log(currentUser);
 		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)
 		dispatch({ type: 'SET_LOGED_ACTIVE', payload: currentUser })
 		if(currentUser) {

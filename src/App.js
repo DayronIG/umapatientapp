@@ -15,6 +15,8 @@ import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
+
+import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber'
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -85,6 +87,8 @@ function App(props) {
 		<div className='App'>
 			<Switch>
 				{/* LOGIN / REGISTER / RECOVERY */}
+				<Route exact path='/login/phone' component={LoginPhoneNumber} />
+
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />

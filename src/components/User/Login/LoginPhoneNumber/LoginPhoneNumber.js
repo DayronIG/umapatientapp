@@ -1,11 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../../../assets/logo.png';
 import LoginIllustration from '../../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../GenericComponents';
+import {node_patient} from '../../../../config/endpoints';
+import {checkNum} from '../../../Utils/stringUtils';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 import '../../../../styles/user/login.scss';
 
 const LoginPhoneNumber = () => { //Telefono -> false, mail
-    const [switchContent, setSwitchContent] = useState(true)
+    const [switchContent, setSwitchContent] = useState(false)
+    const [ws, setWs] = useState('')
+    const {phone} = useSelector(state => state.user)
+
+    useEffect(() => {
+        if(phone) {
+            setWs(phone);
+        }
+    }, [phone])
+
+    const handleCheckUserExists = () => {
+        if (ws) {
+            const config = { headers: { 'Content-Type': 'application/json' } }
+            const validPhone = checkNum(ws)
+            if (ws === "undefined" || validPhone === "NaN" || isNaN(validPhone)) {
+                // history.push('/login')
+            } else {
+                axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
+                    .then((res) => {
+                        console.log(res);
+                        if (res.data.redirect === 'register') {
+                            // history.replace(`/register/${validPhone}`)
+                        } else {
+                            // history.replace(`/login/${validPhone}`)
+                        }
+                    })
+                    .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
+            }
+        }
+    }
+
 
     return (
         <section className='login'>
@@ -22,7 +56,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                 <p>Por favor, ingresa tu número de celular</p>
                 }
             </section>
-            {!switchContent && <GenericInputs label='Ingresa tu número de celular'/> }
+            {!switchContent && <GenericInputs label='Ingresa tu número de celular' name='phone' /> }
             {switchContent ? 
             <>
                 <LoginButtons/>
@@ -37,7 +71,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                     </aside>
                 </section>
                 <section className='login__actions '>
-                    <GenericButton color='blue'>Ingresar</GenericButton>
+                        <GenericButton color='blue' action={handleCheckUserExists}>Ingresar</GenericButton>
                 </section>
             </>
             }

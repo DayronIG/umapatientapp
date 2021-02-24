@@ -41,28 +41,42 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <LoginPhoneNumber/>
-        //---{Login Telefono}---
-            // <WelcomeAgain/>
-            // <LoginPhoneNumber/>
-        //---{Sign Up}---
-            // <Status/>
-            // <ConfirmationMail/>
-            // <ConfirmationCode/>
-            // <Register/>
-            //  <SignUp/>
-        // ---{Forgot Password or Email}---
-            // <ForgottenAccError/>
-            // <ResetPass/>
-            // <ConfirmAcc/>
-            // <ForgottenPass />
-            // <NeedHelp/>
-        // ---{Login}---
-            // <LoginComponent />
+        return <LoginComponent />
     } else {
         return <Loading />
     }
 }
+
+// const Login = () => {
+//     const [delay, setDelay] = useState(false)
+
+//     useEffect(() => {
+//         let timeout = setTimeout(() => setDelay(true), 2000)
+//         return () => clearTimeout(timeout)
+//     }, [])
+//     if (delay) {
+//         return <LoginComponent/>
+//         //---{Login Telefono}---
+//             // <WelcomeAgain/>
+//             // <LoginPhoneNumber/>
+//         //---{Sign Up}---
+//             // <Status/>
+//             // <ConfirmationMail/>
+//             // <ConfirmationCode/>
+//             // <Register/>
+//             //  <SignUp/>
+//         // ---{Forgot Password or Email}---
+//             // <ForgottenAccError/>
+//             // <ResetPass/>
+//             // <ConfirmAcc/>
+//             // <ForgottenPass />
+//             // <NeedHelp/>
+//         // ---{Login}---
+//             // <LoginComponent />
+//     } else {
+//         return <Loading />
+//     }
+// }
 
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
