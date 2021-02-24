@@ -34,7 +34,7 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
         }
         if (showCongrats) {
             notifyUserEndpoint()
-            if(!isLocal){
+            if(!isLocal) {
             window.gtag('event', 'add_to_wishlist', {
                 'items': 'Hisopado Antígeno',
                 'value': params?.price || '0',
