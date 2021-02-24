@@ -90,12 +90,10 @@ const SelectReason = (props) => {
 					<>
 						{selectedSymptoms.length >= 1 ? (
 							selectedSymptoms.map((symptom, index) => {
-								return (
-									<div className='tag' key={index} onClick={(e) => deleteReason(symptom)}>
+								return symptom !== "" && <div className='tag' key={index} onClick={(e) => deleteReason(symptom)}>
 										<span className='tag-text'>{symptom}</span>
 										<FontAwesomeIcon icon={faTimesCircle} className='tag-delicon' />
 									</div>
-								);
 							})
 						) : (
 							<div className='tag-empty'>No ha agregado motivos</div>

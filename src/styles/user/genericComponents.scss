@@ -57,13 +57,14 @@
     position: relative;
     @include d-flex-center;
     width: 91%;
-    margin: 40px 0;
+    margin: 40px auto;
     .text {
         font-size: 16px;
         margin: 0;
         color: $when-dark;
         position: absolute;
-        left: 5%;
+        left: 0%;
+        // top: -px;
         width: 100%;
         text-align: start;
         &::after {
@@ -75,7 +76,7 @@
     }
     .icon--calendar {
         position: absolute;
-        right: -10px;
+        right: 5px;
         bottom: -5px;
     }
 }
@@ -94,29 +95,9 @@
         font-size: 16px;
         border-bottom: 2px solid $uma-primary;
         position: relative;
-        // .select--sex-default {
-        //     position: absolute;
-        //     bottom: -10px;
-        // }
-        // .options {
-            // visibility: hidden;
-            // opacity: 0;
-            // position: absolute;
-            // transition: all 0.5s ease;
-            // margin-top: 1rem;
-            // left: 0;
-            // display: none;
-        //     background-color: $white-color;
-        //     z-index: 100;
-        //     width: 100%;
-        // }
-        // &:focus {
-        //     .options {
-        //         visibility: visible;
-        //         opacity: 1;
-        //         display: block;
-        //     }
-        // }
+        &:focus {
+            outline: transparent;
+        }
     }
 }
 
@@ -268,77 +249,117 @@
     //     border: 1px solid $uma-primary;
     // }
 
-
-    // calendar container 
 }
   
 
 .calendar__container {
     display: block;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    position: fixed; 
+    z-index: 1; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100vh; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
+    width: 100%; 
+    height: 100vh; 
+    overflow: auto; 
     background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4); 
-    .rbc-calendar {
-        background-color: $white-color;
-        margin: 0 auto;
-        margin-top: 100px;
-        width: 80%;
+    background-color: rgba(0,0,0,0.4);
+    .modal__container {
+        background-color:$white-color;
+        max-width: 90%;
+        margin: 100px auto;
         border-radius: 5px;
-        max-height: 300px;
-        padding: 20px;
-        .rbc-toolbar {
-            .rbc-btn-group {
-                display: none;
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden;
+        .calendar__actions {
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-evenly;
+           .calendar__actions-btn {
+            border: none;
+            border-radius: 5px;
+            padding: 5px 20px;
+            background-color: $white-color;
+            &.done  {
+                background-color: $uma-primary;
+                color: $white-color;
             }
-            .rbc-toolbar-label {
-                color: $uma-text;
-                font-weight: bold;
-            }
-        }
-        .rbc-month-view {
-            .rbc-month-row {
-                border: none;
-                .rbc-month-header {
-                    .rbc-header {
-                        border: none;
-                    }
-                }
-                .rbc-row-bg {
-                   .rbc-day-bg {
-                        background-color: $white-color;
-                        border: none;
-                   }
-                }
-                .rbc-row-content {
-                    padding-top: 5px;
-                    .rbc-row {
-                        .rbc-date-cell {
-                            color: $uma-text;
-                            font-weight: bold;
-                            font-size: 11.68px;
-                            &.rbc-current {
-                              a {
-                                height: 20px;
-                                width: 20px;
-                                padding: 2px;
-                                border-radius: 100%;
-                                background-color: $uma-primary;
-                                color: $white-color;
-                              }
-                            }
-                        }
-                    }
-                }
-            }
+           }
+           .calendar__actions-btn-close {
+               position: absolute;
+               top: 3px;
+               right: 10px;
+               font-size: 22px;
+               font-weight: bold;
+               border: none;
+               background-color: $white-color;
+           }
+           .rdrCalendarWrapper {
+               .rdrMonthAndYearWrapper {
+                   max-width: 100px;
+               }
+           }
+        // }
+        // .rbc-calendar {
+        //     background-color: $white-color;
+        //     margin: 0 auto;
+        //     margin-top: 100px;
+        //     width: 90%;
+        //     border-radius: 5px;
+        //     max-height: 280px;
+        //     padding: 30px 20px 20px 20px;
+        //     .rbc-toolbar {
+        //         .rbc-btn-group {
+        //             display: none;
+        //         }
+        //         .rbc-toolbar-label {
+        //             color: $uma-text;
+        //             font-weight: bold;
+        //         }
+        //     }
+        //     .rbc-month-view {
+        //         border: none;
+        //         .rbc-month-row {
+        //             border: none;
+        //             .rbc-row .rbc-month-header {
+        //                 border: none;
+        //             }
+        //             .rbc-month-header {
+        //                 border: none;
+        //                 .rbc-header {
+        //                     border: none;
+        //                 }
+        //             }
+        //             .rbc-row-bg {
+        //             .rbc-day-bg {
+        //                     background-color: $white-color;
+        //                     border: none;
+        //             }
+        //             }
+        //             .rbc-row-content {
+        //                 padding-top: 5px;
+        //                 .rbc-row {
+        //                     .rbc-date-cell {
+        //                         color: $uma-text;
+        //                         font-weight: bold;
+        //                         font-size: 11.68px;
+        //                         &.rbc-current {
+        //                             a {
+        //                                 height: 20px;
+        //                                 width: 20px;
+        //                                 padding: 2px;
+        //                                 border-radius: 100%;
+        //                                 background-color: $uma-primary;
+        //                                 color: $white-color;
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
         }
     }
-
 }
   
 

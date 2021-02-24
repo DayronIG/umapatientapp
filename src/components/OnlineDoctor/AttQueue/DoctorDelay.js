@@ -54,7 +54,7 @@ const DoctorDelay = ({cuit, date, time}) => {
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div> */}
-        {cuit && <div className="appointment__delay">
+        {cuit && cuit.length > 5 && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">minutos de espera aprox.</span>
         </div>}
