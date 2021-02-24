@@ -123,7 +123,7 @@ const Pillbox = props => {
             case 'LIST':
                 return <PillList setRecipesFromFirebase={setRecipesFromFirebase} />
             case 'DETAIL':
-                return <PillDetail />
+                return <PillDetail deleteReminderDB={deleteReminderDB} />
             case 'CREATE':
                 return <PillCreate handleSaveReminder={handleSaveReminder} />
             default:
