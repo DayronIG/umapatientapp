@@ -26,26 +26,21 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		dispatch({ type: 'LOADING', payload: true });
 		(async function checkAssignations() {
 			if ('dni' in user) {
 				localStorage.removeItem('selectedAppointment');
 				enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
-					dispatch({ type: 'LOADING', payload: true });
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 					const assigned = await findAllAssignedAppointment(userDni, type);
-					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
-			} else {
-				dispatch({ type: 'LOADING', payload: false });
 			}
 		})();
-	}, [user]);
+	}, [user, userDni]);
 
 	useEffect(() => {
 		if (user.dni) {
@@ -58,7 +53,6 @@ const WhenScreen = (props) => {
 	}, [user]);
 
 	async function selectWho(user) {
-		dispatch({ type: 'LOADING', payload: true });
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
 		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
