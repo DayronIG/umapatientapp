@@ -7,7 +7,7 @@ import eyeOpenPass from '../../../../assets/icons/eyeopenpass.png';
 
 
 const WelcomeAgain = () => {
-    const [vincular, setVincular] = useState(false)
+    const [vincular, setVincular] = useState(true)
     const [showPassword, setShowPassword] = useState(false)  
 
     return (

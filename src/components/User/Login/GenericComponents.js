@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
 import Firebase from 'firebase/app';
 import db from '../../../config/DBConnection';
 import {useHistory} from 'react-router-dom';
@@ -183,26 +182,27 @@ export const GenericButton = ({color, children, action = () => {}}) => {
 
 export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     const history = useHistory();
-    // const handleClickGoogleLogin = () => {
-    //     const provider = new Firebase.auth.GoogleAuthProvider();
+    
+    const handleGoogleAccount = () => {
+        // const provider = new Firebase.auth.GoogleAuthProvider();
 
-    //     db.auth().signInWithRedirect(provider)
-    //     .then(result => {
-    //         const credential = result.credential;
-    //         const token = result.accessToken;
-    //         const user = result.user;
+        // db.auth().signInWithRedirect(provider)
+        // .then(result => {
+        //     const credential = result.credential;
+        //     const token = result.accessToken;
+        //     const user = result.user;
 
-    //     })
-    //     .catch(e => {
-    //         if (e.message === "The email address is already in use by another account.") {
-    //             console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
-    //         } else if (e.message === "User can only be linked to one identity for the given provider.") {
-    //             console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
-    //         } else if (e.message === "This credential is already associated with a different user account.") {
-    //             console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
-    //         }
-    //     })
-    // }
+        // })
+        // .catch(e => {
+        //     if (e.message === "The email address is already in use by another account.") {
+        //         console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+        //     } else if (e.message === "User can only be linked to one identity for the given provider.") {
+        //         console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
+        //     } else if (e.message === "This credential is already associated with a different user account.") {
+        //         console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
+        //     }
+        // })
+    }
 
     const handleAnotherAccount = () => {
         if (circleBtn) {
@@ -212,7 +212,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
     return (
         <section className={circleBtn ? 'login__buttonGroup' : 'login__buttonGroup column'}>
-            <button className={circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleGoogleAccount}>
                 <img src={Google} alt='Google logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Google</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Google </p> }
             </button> 
@@ -285,8 +285,10 @@ export const Stepper = ({complete}) => {
                 setSteps(newArr)
             }
             break;
+            default: 
+                return false;
         }
-    }, [complete, steps])
+    }, [complete])
 
     return(
         <ul className='stepper'>

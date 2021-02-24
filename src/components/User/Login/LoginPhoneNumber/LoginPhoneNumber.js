@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Logo from '../../../../assets/logo.png';
 import LoginIllustration from '../../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../GenericComponents';
-import {node_patient} from '../../../../config/endpoints';
+import { node_patient, send_user_code} from '../../../../config/endpoints';
 import {checkNum} from '../../../Utils/stringUtils';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
@@ -38,6 +38,18 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                                 if (res?.data[0]?.login) {
                                     setSwitchContent(true);
                                 } else {
+                                    try {
+                                        const data = { ws }
+                                        axios.post(`${send_user_code}/${ws}`, data, config)
+                                            .then(() => {
+                                                history.push('/login/code')
+                                            })
+                                            .catch((err) => {
+                                                console.log('Error al enviar el código', '', 'warning')
+                                            })
+                                    } catch (e) {
+                                        console.error(e);
+                                    }
                                     console.log('Te enviamos un código');
                                 }
                             })

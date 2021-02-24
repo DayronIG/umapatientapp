@@ -18,6 +18,8 @@ import Register from './views/Register';
 
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
+import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
+import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain'
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -92,6 +94,8 @@ function App(props) {
 				{/* LOGIN / REGISTER / RECOVERY */}
 				<Route exact path='/login/phone' component={LoginPhoneNumber} />
 				<Route exact path='/login/error' component={ForgottenAccError} />
+				<Route exact path='/login/code' component={ConfirmationCode} />
+				<Route exact path='/login/welcomeAgain' component={WelcomeAgain} />
 
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />

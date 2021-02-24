@@ -1,10 +1,25 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import {useSelector} from 'react-redux';
+import { Stepper, TextAndLink } from '../Login/GenericComponents';
+import {node_patient} from '../../../config/endpoints';
+import {useHistory} from 'react-router-dom';
+import db from '../../../config/DBConnection';
 import Confirm from '../../../assets/illustrations/ConfirmMail.png';
 import Logo from '../../../assets/logo.png';
-import { Stepper, TextAndLink } from '../Login/GenericComponents';
+import axios from 'axios';
 
 const ConfirmationCode = () => {
+    const history = useHistory();
     const [codeConfirm, setCodeConfirm] = useState('Mail')
+    const [code, setCode] = useState({
+        n1: 0,
+        n2: 0,
+        n3: 0,
+        n4: 0,
+        n5: 0,
+        n6: 0,
+    })
+    const ws = useSelector(state => state.user.phone)
     // Mail or number switch
     const num1 = useRef()
     const num2 = useRef()
@@ -12,6 +27,47 @@ const ConfirmationCode = () => {
     const num4 = useRef()
     const num5 = useRef()
     const num6 = useRef()
+
+    const handleCheckUserCode = async () => {
+        if (code.n1 === 0 || code.n2 === 0 || code.n3 === 0 || code.n4 === 0 || code.n5 === 0 || code.n6 === 0) return false;
+        
+        const finalCode = `${code.n1}${code.n2}${code.n3}${code.n4}${code.n5}${code.n6}`;
+        
+        console.log(finalCode);
+
+        try {
+            const config = { headers: { 'Content-Type': 'application/json' } }
+            let email, pass;
+            await axios.get(`${node_patient}/validatePassword/${ws}/${finalCode}`, {}, config)
+                .then((res) => {
+                    if (res.data.type !== "email") {
+                        email = `${ws}@${finalCode}.com`;
+                        pass = finalCode
+                    }
+                })
+            
+            db.auth().signInWithEmailAndPassword(email, pass)
+            .then((reg) => {
+                console.log(reg);
+                history.push(`/${ws}`)
+            })
+            .catch((err) => {
+                if (err.code === 'auth/user-not-found') {
+                    console.log('El código introducido no es válido o ya expiró.', '', 'warning')
+                } else if (err.code === 'auth/wrong-password') {
+                    console.log('El código introducido no es válido o ya expiró', '', 'warning')
+                }
+            })
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    useEffect(() => {
+        if (code.n6) {
+            handleCheckUserCode()
+        }
+    }, [code.n6])
 
     return (
         <section className='signUp'>
@@ -37,71 +93,94 @@ const ConfirmationCode = () => {
                 <form className='signUp__content__formGroup'>
                 {/* onChange={(e) => nextInput(e)} */}
                         <input 
-                        className='input-number' 
-                        onChange={(e) => {
-                        if(e.target.value.length === 1) num2.current.focus();
-                        }} 
-                        ref={num1} 
-                        type="text" 
-                        inputMode="numeric" 
-                        maxLength='1' 
-                        required />
+                            className='input-number' 
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n1: e.target.value})
+                                    num2.current.focus()
+                                }
+                            }} 
+                            ref={num1} 
+                            type="text" 
+                            inputMode="numeric" 
+                            maxLength='1' 
+                            required 
+                        />
 
                         <input 
-                        className='input-number' 
-                        onChange={(e) => {
-                        if(e.target.value.length === 1) num3.current.focus();
-                        if(e.target.value.length === 0) num1.current.focus()
-                        }} 
-                        ref={num2} 
-                        type="text" 
-                        inputMode="numeric" m
-                        axLength='1' 
-                        required />
+                            className='input-number' 
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n2: e.target.value })
+                                    num3.current.focus()
+                                }
+                                if(e.target.value.length === 0) num1.current.focus()
+                            }} 
+                            ref={num2} 
+                            type="text" 
+                            inputMode="numeric" m
+                            axLength='1' 
+                            required 
+                        />
 
                         <input className='input-number' 
-                        onChange={(e) => {
-                        if(e.target.value.length === 1) num4.current.focus();
-                        if(e.target.value.length === 0) num2.current.focus()
-                        }} 
-                        ref={num3} 
-                        type="text" 
-                        inputMode="numeric" 
-                        maxLength='1' 
-                        required />
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n3: e.target.value })
+                                    num4.current.focus()
+                                }
+                                if(e.target.value.length === 0) num2.current.focus()
+                            }} 
+                            ref={num3} 
+                            type="text" 
+                            inputMode="numeric" 
+                            maxLength='1' 
+                            required 
+                        />
 
                         <input className='input-number' 
-                        onChange={(e) => {
-                        if(e.target.value.length === 1) num5.current.focus();
-                        if(e.target.value.length === 0) num3.current.focus()
-                        }} 
-                        ref={num4} 
-                        type="text" 
-                        inputMode="numeric" 
-                        maxLength='1' 
-                        required />
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n4: e.target.value })
+                                    num5.current.focus()
+                                }
+                                if(e.target.value.length === 0) num3.current.focus()
+                            }} 
+                            ref={num4} 
+                            type="text" 
+                            inputMode="numeric" 
+                            maxLength='1' 
+                            required 
+                        />
 
                         <input className='input-number' 
-                        onChange={(e) => {
-                        if(e.target.value.length === 1) num6.current.focus();
-                        if(e.target.value.length === 0) num4.current.focus()
-                        }} 
-                        ref={num5} 
-                        type="text" 
-                        inputMode="numeric" 
-                        maxLength='1' 
-                        required />
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n5: e.target.value })
+                                    num6.current.focus()
+                                }
+                                if(e.target.value.length === 0) num4.current.focus()
+                            }} 
+                            ref={num5} 
+                            type="text" 
+                            inputMode="numeric" 
+                            maxLength='1' 
+                            required 
+                        />
 
                         <input className='input-number' 
-                        onChange={(e) => {
-                        // if(e.target.value.length === 1) num4.current.focus();
-                        if(e.target.value.length === 0) num5.current.focus()
-                        }} 
-                        ref={num6} 
-                        type="text" 
-                        inputMode="numeric" 
-                        maxLength='1' 
-                        required />
+                            onChange={(e) => {
+                                if(e.target.value.length === 1) {
+                                    setCode({ ...code, n6: e.target.value })
+                                }
+                                if(e.target.value.length === 0) num5.current.focus()
+                            }} 
+                            ref={num6} 
+                            type="text" 
+                            inputMode="numeric" 
+                            maxLength='1' 
+                            required 
+                        />
                 </form>
                 <TextAndLink text='¿No te llegó el código?' link='Enviar por otro medio'/>
             </section>
