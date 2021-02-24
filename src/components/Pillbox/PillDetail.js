@@ -5,7 +5,7 @@ import { BackButton } from '../GeneralComponents/Headers';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import {FaExclamationTriangle} from 'react-icons/fa'
 
-export default function PillDetail({handleSaveReminder}) {
+export default function PillDetail({deleteReminderDB}) {
     const { personalizedShifts, reminderToEdit} = useSelector(state => state.pillbox)
     const { ws } = useSelector(state => state.user)
     const [displayModalDelete, setDisplayModalDelete] = useState(false)
@@ -16,7 +16,7 @@ export default function PillDetail({handleSaveReminder}) {
     }
 
     const deleteReminder = () => {
-
+        deleteReminderDB(reminderToEdit)
     }
 
     const renderDay = (day) => {
@@ -98,7 +98,6 @@ export default function PillDetail({handleSaveReminder}) {
                             <div className='hourlist'>
                                 {reminderToEdit?.reminders?.mon.map((el, i) => {
                                 if(!!el && el.length > 0){
-                                    console.log(el, "el")
                                     return <p className='hour' key={i}>{el}</p>
                                 }}
                                 )}
