@@ -31,10 +31,10 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
             :
             <>
                 <section className='login__needHelp phone'>
-                    <aside className='login__needHelp__activeSession'>
+                    {/* <aside className='login__needHelp__activeSession'>
                         <input className='check' type='checkbox'/>
                         <p className='text'>Mantener sesión iniciada</p>
-                    </aside>
+                    </aside> */}
                 </section>
                 <section className='login__actions '>
                     <GenericButton color='blue'>Ingresar</GenericButton>

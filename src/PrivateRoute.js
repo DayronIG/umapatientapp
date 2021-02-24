@@ -41,7 +41,7 @@ const Login = () => {
         return () => clearTimeout(timeout)
     }, [])
     if (delay) {
-        return <LoginPhoneNumber/>
+        return <LoginComponent/>
         //---{Login Telefono}---
             // <WelcomeAgain/>
             // <LoginPhoneNumber/>

@@ -64,10 +64,10 @@ const ConfirmAppointment = (props) => {
 
 	const postData = async (bag = false) => {
 		dispatch({ type: 'LOADING', payload: true });
+		let symptoms = '', userVerified;
+		if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 		try {
-			let symptoms = '', userVerified;
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
-			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
 			let data = {
@@ -103,9 +103,8 @@ const ConfirmAppointment = (props) => {
 				return history.replace(`/onlinedoctor/queue/${userVerified.dni}`);
 			}
 		} catch (err) {
-			console.log(err)
-			if(err.data.fecha === '') {
-				return history.replace(`/onlinedoctor/who`);
+			if(err.response?.data?.fecha === '') {
+				return history.replace(`/onlinedoctor/who/${userVerified.dni}`);
 			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
@@ -129,6 +128,7 @@ const ConfirmAppointment = (props) => {
 			if (!confirmAction) {
 				return postData(true);
 			}
+			dispatch({ type: 'LOADING', payload: false });
 			return history.replace('/');
 		}
 	}, [selectedAppointment])
@@ -163,13 +163,13 @@ const ConfirmAppointment = (props) => {
 				{
 					loading ? <div className="text-center"><Loader /></div>
 					:
-					<div className="input-file">
-						<FaFileMedicalAlt size="1.5rem" />
+					<div className="umaBtn attachFile">
+						<FaFileMedicalAlt className="attachFile__icon" />
 						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
 						<input type="file" onChange={uploadImage} />
 					</div>
 				}
-				<button className="btn-questions btn-normal" onClick={() => submitRequest()}>Confirmar turno</button>
+				<button className="umaBtn" onClick={() => submitRequest()}>Confirmar turno</button>
 			</div>
 		</>
 	);

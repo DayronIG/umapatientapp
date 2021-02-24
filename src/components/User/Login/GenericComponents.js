@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+// import { Calendar, momentLocalizer } from 'react-big-calendar';
+import Modal from '../SignUp/Modal';
 import moment from 'moment-timezone';
 import showPass from '../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../assets/icons/eyeopenpass.png';
@@ -8,8 +9,11 @@ import Microsoft from '../../../assets/logos/microsoft.png';
 import Facebook from '../../../assets/logos/facebook.png';
 import Mobile from '../../../assets/logos/mobile.png';
 import Email from '../../../assets/logos/email.png';
-import CalendarIcon from '../../../assets/calendar.png';
+import CalendarIcon from '../../../assets/calendar.png'; 
 import '../../../styles/user/genericComponents.scss';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { Calendar } from 'react-date-range';
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -75,45 +79,50 @@ export const GenericInputs = ({label, type}) => {
 
 export const SelectOption = ({calendar, select}) => {
     const [showCalendar, setShowCalendar] = useState(false)
-    const [date, setDate] = useState(moment()
-    .tz('America/Argentina/Buenos_Aires')
-    .format());
+    const [date, setDate] = useState()
+    // moment()
+    // .tz('America/Argentina/Buenos_Aires')
+    // .format());
     const [loading, setLoading] = useState(true);
     const [filterDt, setFilterDt] = useState('');
     const [calendarAppoints, setCalendarAppoints] = useState([]);
-    const localizer = momentLocalizer(moment);
-    const dt_calendar = date;
-    const yearMonth = moment(date).format('YYYYMM');
+    // const localizer = momentLocalizer(moment);
+    // const dt_calendar = date;
+    // const yearMonth = moment(date).format('YYYYMM');
+    // const [startDate, setStartDate] = useState(new Date());
+
+
+    const handleDate = (e) => {
+        const momentDate = moment(e).format('DD-MM-YYYY')
+        const age = moment(e, 'YYYY');  
+        const diff = moment().diff(age, 'years')
+        if(diff >= 16) {
+            setDate(momentDate)
+            console.log(date)
+        } 
+    }
 
     return (
         <>
         {showCalendar && 
         <section className='calendar__container'>
+            <Modal>
             <Calendar
-                localizer={localizer}
-                onNavigate={(dateNav, view) => {
-                    const year = moment(date).format('YYYY');
-                    const month = moment(date)
-                    .format('MM');
-                    const day = moment(dateNav).format('DD');
-                    setFilterDt(`${year}-${month}-${day}`);
-                    
-                }}
-                events={calendarAppoints}
-                defaultView='month'
-                style={{ height: '80vh' }}
-                // components={{ toolbar: newToolbar }}
-                // dayPropGetter={customDaysPropGetter}
-                date={new Date(dt_calendar)}
-                startAccessor='start'
-                endAccessor='end'
+                date={new Date()}
+                onChange={(e) => handleDate(e)}
             />
+                <section className='calendar__actions'>
+                    <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn cancel'>Cancelar</button>
+                    <button className='calendar__actions-btn done'>Hecho</button>
+                    <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn-close'>x</button>
+                </section>
+            </Modal>
         </section>
         }
         {calendar &&  
-        <section className='birth__date'>
+        <section className='birth__date' onClick={() => setShowCalendar(!showCalendar)}  >
             <p className='text'>Selecciona tu fecha de nacimiento</p>
-            <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' onClick={() => setShowCalendar(!showCalendar)}/>
+            <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
         </section>}
         {select && 
         <div className='container__select--sex'>
@@ -123,14 +132,6 @@ export const SelectOption = ({calendar, select}) => {
                 <option value='masculino'>Masculino</option>
                 <option value='otro'>Otro</option>
             </select>
-            {/* <ul className="select--sex">
-                <p className='select--sex-default'>Selecciona tu sexo</p>
-                <ul className='options open'>
-                    <li>Femenino</li>
-                    <li>Masculino</li>
-                    <li>Otro</li>
-                </ul>
-            </ul> */}
         </div>
         }
         </>

@@ -76,6 +76,8 @@ import TransportRating from './components/Transport/TransportRating.js';
 import Vaccine from './components/Vaccine';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
+/* Support */
+import Support from './views/Support'
 /* IOMA */
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
@@ -158,53 +160,22 @@ function App(props) {
 				{/* Patient tracking */}
 				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}
-				<PrivateRoute
-					exact
-					path='/hisopado/listTracker/:ws?'
-					component={DeliveryListTracker}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/carrito/:ws?'
-					component={HisopadoCart}
-				/>
-				<Route
-					exact
-					path='/hisopado/cobertura/:ws?'
-					component={DeliveryCoverage}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/:ws?'
-					component={DeliveryPurchase}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopadoResult/:ws?'
-					component={DeliveryResults}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/payment/:ws?'
-					component={Payment}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/corporate/:ws?'
-					component={HisopadoCorporate}
-				/>
-				<PrivateRoute
-					exact
-					path='/hisopado/deliveryChat/:incidente_id'
-					component={DeliveryChat}
-				/>
+				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
+				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
+				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
+				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
+				<PrivateRoute exact path='/hisopado/payment/:ws?' component={Payment} />
+				<PrivateRoute exact path='/hisopado/corporate/:ws?' component={HisopadoCorporate} />
+				<PrivateRoute exact path='/hisopado/deliveryChat/:incidente_id' component={DeliveryChat} />
 				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* VACCINE */}
-				<Route exact path='/vacunacion/:id' component={Vaccine} />
-				{/* VACCINE */}
 				<Route exact path='/invitation/:id' component={Invitation} />
+				<Route exact path='/vacunacion/:id' component={Vaccine} />
 				{/* PILLBOX */}
 				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
+				{/* SUPPORT */}
+				<PrivateRoute exact path='/support/:section?' component={Support} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
