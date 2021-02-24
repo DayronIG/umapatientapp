@@ -12,7 +12,8 @@ const ForgottenAccError = () => {
            <BackButton/>
            <article className='needHelp__forgottenPass'>
                <h1 className='title'>Lo sentimos</h1>
-               <p className='subtitle'>No hemos encontrado ninguna cuenta {typeError ? 'con ese DNI.' : 'asociada a ese celular.'}</p> 
+                <p className='subtitle'>No hemos encontrado ninguna cuenta asociada a esos datos.</p>
+               {/* <p className='subtitle'>No hemos encontrado ninguna cuenta {typeError ? 'con ese DNI.' : 'asociada a ese celular.'}</p>  */}
                <p className='subtitle'>¿Deseas crear una cuenta?</p>
            </article>
            <LoginButtons signUp/>

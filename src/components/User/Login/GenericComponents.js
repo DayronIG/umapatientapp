@@ -58,6 +58,13 @@ export const GenericInputs = ({label, type, name = ''}) => {
             } else {
                 setPassValidation({ ...passValidation, validRepetition: true })
             }
+        } else if (e.target.name === 'dni') {
+            if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+                dispatch({ type: 'USER_FIRST_DNI', payload: e.target.value })
+                setPassValidation({ ...passValidation, validRepetition: false })
+            } else {
+                setPassValidation({ ...passValidation, validRepetition: true })
+            }
         }
     }, [passValidation, password])
 
@@ -223,10 +230,10 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     )
 };
 
-export const TextAndLink = ({text, link}) => {
+export const TextAndLink = ({text, link, action}) => {
     // Cambian las rutas registrarme / ingresar / enviar por otro medio
     return(
-        <section className='textAndLink'>
+        <section className='textAndLink' onClick={action}>
             <p>{text}</p>
             <a href='#'>{link}</a>
         </section>

@@ -5,13 +5,17 @@ import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../Gene
 import {node_patient} from '../../../../config/endpoints';
 import {checkNum} from '../../../Utils/stringUtils';
 import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
+import db from '../../../../config/DBConnection';
 import '../../../../styles/user/login.scss';
 
 const LoginPhoneNumber = () => { //Telefono -> false, mail
+    const history = useHistory();
     const [switchContent, setSwitchContent] = useState(false)
     const [ws, setWs] = useState('')
-    const {phone} = useSelector(state => state.user)
+    const {phone, dni} = useSelector(state => state.user)
+    const firestore = db.firestore();
 
     useEffect(() => {
         if(phone) {
@@ -20,22 +24,28 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
     }, [phone])
 
     const handleCheckUserExists = () => {
-        if (ws) {
+        if (ws && dni) {
             const config = { headers: { 'Content-Type': 'application/json' } }
             const validPhone = checkNum(ws)
-            if (ws === "undefined" || validPhone === "NaN" || isNaN(validPhone)) {
-                // history.push('/login')
-            } else {
+            try {
                 axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
                     .then((res) => {
-                        console.log(res);
                         if (res.data.redirect === 'register') {
-                            // history.replace(`/register/${validPhone}`)
+                            history.push('/login/error');
                         } else {
-                            // history.replace(`/login/${validPhone}`)
+                            axios.get(`${node_patient}/user/${validPhone}/${dni}`, {}, config)
+                            .then(res => {
+                                if (res?.data[0]?.login) {
+                                    setSwitchContent(true);
+                                } else {
+                                    console.log('Te enviamos un código');
+                                }
+                            })
                         }
                     })
                     .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
+            } catch (e) {
+                console.error(e);
             }
         }
     }
@@ -56,24 +66,21 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                 <p>Por favor, ingresa tu número de celular</p>
                 }
             </section>
-            {!switchContent && <GenericInputs label='Ingresa tu número de celular' name='phone' /> }
+            {!switchContent && 
+                <>
+                    <GenericInputs label='Ingresa tu número DNI' name='dni' />
+                    <GenericInputs label='Ingresa tu número de celular' name='phone' />
+                </> 
+            }
             {switchContent ? 
             <>
                 <LoginButtons/>
-                <TextAndLink link='O registrate acá'/>
+                <TextAndLink link='O registrate acá' action={() => history.push('/')} />
             </>
             :
-            <>
-                <section className='login__needHelp phone'>
-                    <aside className='login__needHelp__activeSession'>
-                        <input className='check' type='checkbox'/>
-                        <p className='text'>Mantener sesión iniciada</p>
-                    </aside>
-                </section>
-                <section className='login__actions '>
-                        <GenericButton color='blue' action={handleCheckUserExists}>Ingresar</GenericButton>
-                </section>
-            </>
+            <section className='login__actions '>
+                    <GenericButton color='blue' action={handleCheckUserExists}>Ingresar</GenericButton>
+            </section>
             }
         </section>
     )
