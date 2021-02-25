@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import { withRouter, Link, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
-import AddEmail from './AddEmail';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
 import EventsHistory from '../EventsHistory/index';
@@ -21,18 +20,12 @@ const ModulesMenu = () => {
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
 	const {plan} = useSelector((state) => state.queries.plan);
-	const {modal} = useSelector(state => state.front)
-	const censo = useSelector(state => state.deliveryService.params.censo)
-	const dispatch = useDispatch()
 
 	useEffect(()=> {
-        // if(!user.login || user.login === [] || user.login === "") {
-        //     dispatch({type: 'OPEN_MODAL', payload: true})
-        // } else {
-		// 	dispatch({type: 'CLOSE_MODAL'})
-		// }
-		if (!user.login || user.login === [] || user.login === "") {
-			history.push('/login/welcomeAgain');
+		if(user.core_id) {
+			if (!user.login || user.login === [] || user.login === "") {
+				history.push('/login/welcomeAgain');
+			}
 		}
 	}, [user])
 	
@@ -58,7 +51,6 @@ const ModulesMenu = () => {
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
-					{/* {modal === true && censo && <AddEmail />} */}
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

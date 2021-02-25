@@ -4,7 +4,7 @@ import LoginIllustration from '../../../../assets/illustrations/Login-Illustrati
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../GenericComponents';
 import { node_patient, send_user_code} from '../../../../config/endpoints';
 import {checkNum} from '../../../Utils/stringUtils';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import db from '../../../../config/DBConnection';
@@ -12,16 +12,33 @@ import '../../../../styles/user/login.scss';
 
 const LoginPhoneNumber = () => { //Telefono -> false, mail
     const history = useHistory();
+    const dispatch = useDispatch();
     const [switchContent, setSwitchContent] = useState(false)
     const [ws, setWs] = useState('')
-    const {phone, dni} = useSelector(state => state.user)
+    const {phone, dni, email} = useSelector(state => state.user)
     const firestore = db.firestore();
+    const [userEmail, setUserEmail] = useState('');
+
+    const hideEmail = (email) => {
+        const emailToShow = email.split('@')[0].slice(0, 4);
+        const emailToHide = email.split('@')[0].slice(4).replace(/./g, '*');
+        const domain = `@${email.split('@')[1]}`;
+
+        return `${emailToShow}${emailToHide}${domain}`;
+    };
 
     useEffect(() => {
         if(phone) {
             setWs(phone);
         }
     }, [phone])
+
+    useEffect(() => {
+        if(email) {
+            const finalEmail = hideEmail(email);
+            setUserEmail(finalEmail);
+        }
+    }, [email])
 
     const handleCheckUserExists = () => {
         if (ws && dni) {
@@ -36,6 +53,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                             axios.get(`${node_patient}/user/${validPhone}/${dni}`, {}, config)
                             .then(res => {
                                 if (res?.data[0]?.login) {
+                                    dispatch({ type: 'USER_FIRST_EMAIL', payload: res?.data[0]?.email})
                                     setSwitchContent(true);
                                 } else {
                                     try {
@@ -71,7 +89,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
                 <h1 className={switchContent? 'login__titleIllustration--title mail': 'login__titleIllustration--title'}>Ingresa con tu {switchContent? 'mail' : 'teléfono'}</h1>
                 {switchContent ? 
                 <article>
-                    <p>El teléfono ingresado está asociado a este email: asd****@gmail.com </p>
+                    <p>El teléfono ingresado está asociado a este email: {userEmail} </p>
                     <p>Si reconoces estos datos, puedes ingresar con tu mail.</p>
                 </article>
                 : 

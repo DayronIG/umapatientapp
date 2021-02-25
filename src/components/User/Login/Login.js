@@ -1,10 +1,12 @@
 import React from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
+import { useHistory } from 'react-router-dom';
 import Logo from '../../../assets/logo.png';
 import '../../../styles/user/login.scss';
 
 const Login = () =>  {
+    const history = useHistory();
 
     return (
        <section className='login'>
@@ -34,7 +36,7 @@ const Login = () =>  {
                 <GenericButton color='blue'>
                     Ingresar
                 </GenericButton>
-               <TextAndLink text='¿Eres nuevo en UMA?' link='Registrarme'/>
+                <TextAndLink text='¿Eres nuevo en UMA?' link='Registrarme' action={() => history.push('/signup')} />
            </section>
        </section>
     )

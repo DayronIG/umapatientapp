@@ -19,7 +19,10 @@ import Register from './views/Register';
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
 import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
-import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain'
+import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain';
+import SignUp from './components/User/SignUp/SignUp';
+import SignUpForm from './components/User/SignUp/Register';
+
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -96,6 +99,8 @@ function App(props) {
 				<Route exact path='/login/error' component={ForgottenAccError} />
 				<Route exact path='/login/code' component={ConfirmationCode} />
 				<Route exact path='/login/welcomeAgain' component={WelcomeAgain} />
+				<Route exact path='/signup' component={SignUp} />
+				<Route exact path='/signup/form/:screen' component={SignUpForm} />
 
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
