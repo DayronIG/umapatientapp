@@ -1,5 +1,6 @@
 const initialState = {
   address: "",
+  birthdate: "",
   city: "",
   core_id: "",
   country: 'AR',
@@ -9,8 +10,10 @@ const initialState = {
   dob: "",
   dt: "",
   email: "",
+  firstname: "",
   fullname: "",
   piso: "",
+  lastname: "",
   lat: "",
   lon: "",
   month: "",
@@ -35,6 +38,8 @@ export default function userReducers(state = initialState, action) {
   switch (action.type) {
     case 'GET_PATIENT':
       return {...state, ...action.payload };
+    case "USER_BIRTH_DATE":
+      return { ...state, birthdate: action.payload };
     case 'SET_USER_LOGIN':
       return {...state, login: action.payload}
     case "USER_FIRST_CORE":
@@ -56,13 +61,15 @@ export default function userReducers(state = initialState, action) {
     case "USER_FIRST_PISO":
       return { ...state, piso: action.payload };
     case "USER_FIRST_DEPTO":
-        return { ...state, depto: action.payload };
+      return { ...state, depto: action.payload };
     case "USER_FIRST_WS":
       return { ...state, ws: action.payload };
     case "USER_FIRST_DAY":
       return { ...state, day: action.payload };
     case "USER_FIRST_MONTH":
       return { ...state, month: action.payload };
+    case "USER_FIRST_NAME":
+      return { ...state, firstname: action.payload };
     case "USER_FIRST_YEAR":
       return { ...state, year: action.payload };
     case "USER_FIRST_DT":
@@ -73,8 +80,10 @@ export default function userReducers(state = initialState, action) {
       return { ...state, osNumber: action.payload };
     case "USER_FIRST_FULLNAME":
       return { ...state, fullname: action.payload };
+    case "USER_LAST_NAME":
+      return { ...state, lastname: action.payload };
     case "USER_PHONE_NUMBER":
-        return { ...state, phone: action.payload };
+      return { ...state, phone: action.payload };
     case "SET_COORDS":
       return { ...state, lat: action.payload.lat, lon: action.payload.lon };
     case "FILL_REGISTER":

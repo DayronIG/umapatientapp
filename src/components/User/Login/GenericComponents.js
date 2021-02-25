@@ -33,6 +33,13 @@ export const GenericInputs = ({label, type, name = ''}) => {
     const [validEmail, setValidEmail] = useState(false)
     const [selectSwitch, setSelectSwitch] = useState(false)
     const [labelUp, setLabelUp] = useState(false)
+    const [validations, setValidations] = useState([{
+        firstname: false,
+        lastname: false,
+        dni: false,
+        phone: false
+    }])
+
 
     const _validateForm = useCallback((e) => {
         if (e.target.name === 'email') {
@@ -60,19 +67,40 @@ export const GenericInputs = ({label, type, name = ''}) => {
             if (checkNum(e.target.value)) {
                 let num = checkNum(e.target.value)
                 dispatch({ type: 'USER_PHONE_NUMBER', payload: num })
-                setPassValidation({ ...passValidation, validRepetition: false })
+                setValidations({ ...validations, phone: true })
             } else {
-                setPassValidation({ ...passValidation, validRepetition: true })
+                setValidations({ ...validations})
             }
         } else if (e.target.name === 'dni') {
             if (e.target.value.length >= 7 && e.target.value.length <= 8) {
                 dispatch({ type: 'USER_FIRST_DNI', payload: e.target.value })
-                setPassValidation({ ...passValidation, validRepetition: false })
+                setValidations({ ...validations, dni: true })
             } else {
-                setPassValidation({ ...passValidation, validRepetition: true })
+                setValidations({ ...validations})
             }
+        } else if (e.target.name === 'firstname') {
+            let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+            if(valid) { 
+                dispatch({ type: 'USER_FIRST_NAME', payload: e.target.value }) 
+                setValidations({ ...validations, firstname: true })
+            } else {
+                setValidations({ ...validations})
+            }
+        } else if (e.target.name === 'lastname') {
+            let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+            if(valid) { 
+                dispatch({ type: 'USER_LAST_NAME', payload: e.target.value })
+                setValidations({ ...validations, lastname: true })
+            } else {
+                setValidations({ ...validations})
+            }
+        } else if (e.target.name === 'healthinsurance') {
+            dispatch({ type: 'USER_FIRST_OS', payload: e.target.value }) 
         }
-    }, [passValidation, password])
+
+    }, [passValidation, password, validations])
+
+    console.log(validations)
 
     return (
         <div className='form'>
@@ -104,26 +132,30 @@ export const GenericInputs = ({label, type, name = ''}) => {
 export const SelectOption = ({calendar, select}) => {
     const [showCalendar, setShowCalendar] = useState(false)
     const [date, setDate] = useState()
-    // moment()
-    // .tz('America/Argentina/Buenos_Aires')
-    // .format());
-    const [loading, setLoading] = useState(true);
-    const [filterDt, setFilterDt] = useState('');
-    const [calendarAppoints, setCalendarAppoints] = useState([]);
-    // const localizer = momentLocalizer(moment);
-    // const dt_calendar = date;
-    // const yearMonth = moment(date).format('YYYYMM');
-    // const [startDate, setStartDate] = useState(new Date());
-
+    const dispatch = useDispatch()
+    const [validations, setValidations] = useState([{
+        birthdate: false,
+        sex: false
+    }])
 
     const handleDate = (e) => {
         const momentDate = moment(e).format('DD-MM-YYYY')
-        const age = moment(e, 'YYYY');  
-        const diff = moment().diff(age, 'years')
-        if(diff >= 16) {
-            setDate(momentDate)
-            console.log(date)
-        } 
+        const olderThan = moment().diff(e, 'years') 
+        if(olderThan >= 16) {
+            dispatch({ type: 'USER_BIRTH_DATE', payload: momentDate })
+            setValidations({...validations, birthdate: true})
+        }else {
+            setValidations({...validations})
+        }
+    }
+
+    const getValue = (e) => {
+        if(e.target.value) {
+            dispatch({ type: 'USER_BIRTH_DATE', payload: e.target.value }) 
+            setValidations({ ...validations, sex: true })
+        } else {
+            setValidations({...validations})
+        }
     }
 
     return (
@@ -137,7 +169,7 @@ export const SelectOption = ({calendar, select}) => {
             />
                 <section className='calendar__actions'>
                     <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn cancel'>Cancelar</button>
-                    <button className='calendar__actions-btn done'>Hecho</button>
+                    <button className='calendar__actions-btn done' onClick={()=> setShowCalendar(!showCalendar)}>Hecho</button>
                     <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn-close'>x</button>
                 </section>
             </Modal>
@@ -150,7 +182,7 @@ export const SelectOption = ({calendar, select}) => {
         </section>}
         {select && 
         <div className='container__select--sex'>
-            <select className='select--sex' required >
+            <select className='select--sex' required onChange={(e)=>getValue(e)} >
                 <option selected disabled>Indica tu sexo</option>
                 <option value='femenino'>Femenino</option>
                 <option value='masculino'>Masculino</option>

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Logo from '../../../assets/logo.png';
+import {useSelector} from 'react-redux';
 import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
 import '../../../styles/user/signUp/signUp.scss';
@@ -8,9 +9,10 @@ const Registrer = () => {
     const {screen} = useParams();
     const history = useHistory();
     const [switchContent, setSwitchContent] = useState('1')
+    const userData = useSelector(state => state.user)
 
-    useEffect(() => {
-        if (screen) {
+    useEffect (()=> {
+    if (screen) {
             switch(screen) {
                 case '1': setSwitchContent('1')
                 break;
@@ -20,6 +22,21 @@ const Registrer = () => {
             }
         }
     }, [screen])
+
+    const validationForm = () => {
+        if(
+        userData.firstname !== '' 
+        && userData.lastname !== '' 
+        && userData.dni !== ''
+        && userData.phone !== ''
+        && userData.birthdate !== ''
+        && userData.sex !== ''
+        ) {
+            history.push('/')
+        } else {
+            console.log(Error)
+        }
+    }
 
     return (
         <section className='signUp'>
@@ -50,11 +67,11 @@ const Registrer = () => {
                     }
                     {switchContent === '2' &&
                     <>
-                        <GenericInputs label='¿Cual es tu nombre?' type='text' />
-                        <GenericInputs label='¿Cual es tu apellido?' type='text' />
-                        <GenericInputs label='Ingresa tu numero de identidad' type='number' />
-                        <GenericInputs label='Ingresa tu numero de celular' type='number' />
-                        <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' />
+                        <GenericInputs label='¿Cual es tu nombre?' type='text' name='firstname' />
+                        <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' />
+                        <GenericInputs label='Ingresa tu numero de identidad' type='number' name='dni' />
+                        <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone'/>
+                        <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance'/>
                         <SelectOption calendar/>
                         <SelectOption select/>
                     </> 
@@ -69,7 +86,7 @@ const Registrer = () => {
                     }
                     {switchContent === '2' && 
                         <>
-                        <GenericButton color='blue'>Registrarme</GenericButton>
+                        <GenericButton color='blue' action={validationForm}>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>Al registrarte estás aceptando los <a href='#'>términos y condiciones</a></p>
                         </>
                         
