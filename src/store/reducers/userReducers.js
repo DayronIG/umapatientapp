@@ -1,6 +1,5 @@
 const initialState = {
   address: "",
-  birthdate: "",
   city: "",
   core_id: "",
   country: 'AR',
@@ -19,6 +18,7 @@ const initialState = {
   month: "",
   os: "",
   osNumber: 0,
+  password: "",
   phone:"",
   userToFill: {
     dt_start: "",
@@ -38,8 +38,6 @@ export default function userReducers(state = initialState, action) {
   switch (action.type) {
     case 'GET_PATIENT':
       return {...state, ...action.payload };
-    case "USER_BIRTH_DATE":
-      return { ...state, birthdate: action.payload };
     case 'SET_USER_LOGIN':
       return {...state, login: action.payload}
     case "USER_FIRST_CORE":
@@ -82,6 +80,8 @@ export default function userReducers(state = initialState, action) {
       return { ...state, fullname: action.payload };
     case "USER_LAST_NAME":
       return { ...state, lastname: action.payload };
+    case "USER_PASSWORD":
+      return { ...state, password: action.payload };
     case "USER_PHONE_NUMBER":
       return { ...state, phone: action.payload };
     case "SET_COORDS":

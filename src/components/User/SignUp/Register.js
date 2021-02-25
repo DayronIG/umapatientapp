@@ -3,6 +3,9 @@ import Logo from '../../../assets/logo.png';
 import {useSelector} from 'react-redux';
 import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
+import Firebase from 'firebase/app';
+import axios from 'axios';
+import {node_patient} from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 
 const Registrer = () => {
@@ -23,18 +26,49 @@ const Registrer = () => {
         }
     }, [screen])
 
-    const validationForm = () => {
+    const validationForm = async () => {
+        console.log(userData);
         if(
-        userData.firstname !== '' 
+        userData.email !== '' 
+        && userData.password !== '' 
+        && userData.firstname !== '' 
         && userData.lastname !== '' 
         && userData.dni !== ''
         && userData.phone !== ''
-        && userData.birthdate !== ''
+        && userData.dob !== ''
         && userData.sex !== ''
         ) {
-            history.push('/')
+            await Firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password)
+            .then(async user => {
+                const uid = user.user.uid;
+                await Firebase.auth().currentUser.sendEmailVerification()
+                .then(async () => {
+                    await Firebase.auth().currentUser.getIdToken().then(async token => {
+                        let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                        let data = {
+                            newValues: {
+                                login: ['email'],
+                                email: userData.email || '',
+                                password: userData.password || '',
+                                fullname: `${userData.firstname} ${userData.lastname}` || '',
+                                dni: userData.dni || '',
+                                ws: userData.phone || '',
+                                sex: userData.sex || '',
+                                dob: userData.dob || '',
+                            }
+                        }
+                        // console.log(uid);
+                        await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
+                            .then(res => {
+                                history.push('/signUp/congrats')
+                            })
+                    })
+                })
+                .catch(e => console.error(e))
+            })
+            .catch(e => console.error(e))
         } else {
-            console.log(Error)
+            console.log('error')
         }
     }
 
@@ -60,9 +94,9 @@ const Registrer = () => {
                 <form className='signUp__content__form'>
                     {switchContent === '1' && 
                     <>
-                        <GenericInputs label='¿Cual es tu mail?' type='email' />
+                        <GenericInputs label='¿Cual es tu mail?' type='email' name='email' />
                         <ConditionButtons/>
-                        <GenericInputs label='Crea una contraseña' type='password' />
+                        <GenericInputs label='Crea una contraseña' type='password' name='pass' />
                     </>
                     }
                     {switchContent === '2' &&

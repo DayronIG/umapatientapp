@@ -15,6 +15,7 @@ import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
+import Status from './components/User/SignUp/Status';
 
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
@@ -93,6 +94,10 @@ import Invitation from './views/Invitation';
 function App(props) {
 	return (
 		<div className='App'>
+
+			// to do:  revisar login despues de pantalla status
+
+
 			<Switch>
 				{/* LOGIN / REGISTER / RECOVERY */}
 				<Route exact path='/login/phone' component={LoginPhoneNumber} />
@@ -101,6 +106,7 @@ function App(props) {
 				<Route exact path='/login/welcomeAgain' component={WelcomeAgain} />
 				<Route exact path='/signup' component={SignUp} />
 				<Route exact path='/signup/form/:screen' component={SignUpForm} />
+				<Route exact path='/signup/:status' component={Status} />
 
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />

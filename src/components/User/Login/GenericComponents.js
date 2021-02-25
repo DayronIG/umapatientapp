@@ -46,6 +46,7 @@ export const GenericInputs = ({label, type, name = ''}) => {
             setEmail(e.target.value)
             let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
             if(valid) { 
+                dispatch({ type: 'USER_FIRST_EMAIL', payload: e.target.value })
                 setValidEmail(true)
             } else {
                 setValidEmail(false)
@@ -55,12 +56,14 @@ export const GenericInputs = ({label, type, name = ''}) => {
             if (e.target.value.length < 6) {
                 setPassValidation({ ...passValidation, validPass: false })
             } else {
+                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
                 setPassValidation({ ...passValidation, validPass: true })
             }
         } else if (e.target.name === 'passrepeat') {
             if (e.target.value !== password) {
                 setPassValidation({ ...passValidation, validRepetition: false })
             } else {
+                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
                 setPassValidation({ ...passValidation, validRepetition: true })
             }
         } else if (e.target.name === 'phone') {
@@ -134,7 +137,7 @@ export const SelectOption = ({calendar, select}) => {
     const [date, setDate] = useState()
     const dispatch = useDispatch()
     const [validations, setValidations] = useState([{
-        birthdate: false,
+        dob: false,
         sex: false
     }])
 
@@ -142,8 +145,8 @@ export const SelectOption = ({calendar, select}) => {
         const momentDate = moment(e).format('DD-MM-YYYY')
         const olderThan = moment().diff(e, 'years') 
         if(olderThan >= 16) {
-            dispatch({ type: 'USER_BIRTH_DATE', payload: momentDate })
-            setValidations({...validations, birthdate: true})
+            dispatch({ type: 'USER_FIRST_DOB', payload: momentDate })
+            setValidations({...validations, dob: true})
         }else {
             setValidations({...validations})
         }
@@ -151,7 +154,7 @@ export const SelectOption = ({calendar, select}) => {
 
     const getValue = (e) => {
         if(e.target.value) {
-            dispatch({ type: 'USER_BIRTH_DATE', payload: e.target.value }) 
+            dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value }) 
             setValidations({ ...validations, sex: true })
         } else {
             setValidations({...validations})
