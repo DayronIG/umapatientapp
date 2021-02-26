@@ -36,24 +36,24 @@ const Record = (props) => {
         <>
             <HistoryHeader>Detalles de consulta</HistoryHeader>
             <div className='records-sections'>
-                <button className={tab === 'resumen' ? 'active button-record' : 'button-record'}
+                <button className={tab === 'resumen' ? 'focused button-record' : 'button-record'}
                     onClick={() => setTab('resumen')}>
                         Resumen
                 </button>
                 <ValidateAction action='not-clickable' field='constancy'>
-                    <button className={tab === 'constancia' ? 'active button-record' : 'button-record'}
+                    <button className={tab === 'constancia' ? 'focused button-record' : 'button-record'}
                         onClick={() => setTab('constancia')}>
                         Constancia
                     </button>
                 </ValidateAction>
                 <ValidateAction action='not-clickable' field='recipe'>
-                    <button className={tab === 'receta' ? 'active button-record' : 'button-record'}
+                    <button className={tab === 'receta' ? 'focused button-record' : 'button-record'}
                         onClick={() => setTab('receta')}>
                         Receta
                     </button>
                 </ValidateAction>
                 <ValidateAction action='not-clickable' field='lab_orders'>
-                    <button className={tab === 'ordenes' ? 'active button-record' : 'button-record'}
+                    <button className={tab === 'ordenes' ? 'focused button-record' : 'button-record'}
                         onClick={() => setTab('ordenes')}>
                         Órdenes
                     </button>

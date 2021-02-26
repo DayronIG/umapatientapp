@@ -7,7 +7,7 @@ import BackButton from '../../GeneralComponents/Backbutton';
 import moment from 'moment-timezone';
 import { getUserParentsFirebase } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
-import ImageFlow from '../../../assets/doctor-online.svg';
+import ImageFlow from '../../../assets/online-doctor.png';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -26,26 +26,21 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		dispatch({ type: 'LOADING', payload: true });
 		(async function checkAssignations() {
 			if ('dni' in user) {
 				localStorage.removeItem('selectedAppointment');
 				enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
-					dispatch({ type: 'LOADING', payload: true });
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 					const assigned = await findAllAssignedAppointment(userDni, type);
-					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
-			} else {
-				dispatch({ type: 'LOADING', payload: false });
 			}
 		})();
-	}, [user]);
+	}, [user, userDni]);
 
 	useEffect(() => {
 		if (user.dni) {
@@ -58,7 +53,6 @@ const WhenScreen = (props) => {
 	}, [user]);
 
 	async function selectWho(user) {
-		dispatch({ type: 'LOADING', payload: true });
 		localStorage.setItem('appointmentUserData', JSON.stringify(user));
 		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
@@ -102,10 +96,10 @@ const WhenScreen = (props) => {
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
 					<div className='dinamic-content-container whoAttention'>
-						<div className='when-question'>¿Para quién desea la atención?</div>
 						<div className='image-helper'>
 							<img src={ImageFlow} alt='medical' />
 						</div>
+						<h2>¿Para quién es la consulta?</h2>
 					</div>
 				)}
 			{!registerParent && (

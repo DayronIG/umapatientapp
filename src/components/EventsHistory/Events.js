@@ -28,7 +28,7 @@ const Events = (props) => {
     ]
 
     return (
-        <div className="event" >
+        <div className="event" > 
                 {
                     sectionEvents.map((item, index) => {
                         return(
@@ -40,7 +40,6 @@ const Events = (props) => {
                                     </div>
                                     <FontAwesomeIcon style={{color: "#719397"}} icon={faChevronRight}/> 
                                 </div>
-                                <div className='line'></div>
                             </React.Fragment>
                         )
                     })

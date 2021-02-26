@@ -60,6 +60,34 @@ const Register = props => {
         window.gtag('event', 'sign_up');
         event.preventDefault()
         window.scroll(0, 0)
+/* 
+        let data = {
+            dni: getId,
+            ws: urlWS,
+            email: ''
+        }            
+        let headers = { ContentType: 'Application/json' }
+        const exists = await axios.post(`${node_patient}/checkexists`, data, headers)
+        if(exists.data.exists) {
+            let text = `El usuario está registrado con el teléfono ${exists.data.ws} `
+            if(exists.data.email && exists.data.email !== '') {
+                text += ` y el email ${exists.data.email}`
+            }
+            const registeredAlert = await swal({
+                title: `Ya existe un usuario con este documento ¿estás seguro deseas volver a registrarte?`,
+                text: `${text}`,
+                icon: 'warning',
+                buttons: { 
+                    cancel: 'Si, registrarme', 
+                    catch: { text: 'No, ingresar con mi usuario', value: true }},
+                dangerMode: true,
+            })
+            if(registeredAlert) {
+                history.push(`/login`)
+                return ""
+            }
+        } */
+
         let dniAlert = await swal({
             title: `Confirma tu número de documento: ${getId}`,
             text: `Ten en cuenta que si es incorrecto, las fichas médicas/órdenes/recetas/constancias no tendrán validez y no se podrán modificar posteriormente.`,
@@ -264,51 +292,57 @@ const Register = props => {
                                 <input
                                     className='form-input' id='dni' placeholder='e.g. 99899899' autoComplete='on'
                                     onChange={e => handleDni(e.target.value)} value={getId} required />
-                                <div className='d-flex justify-content-start align-items-end'>
-                                    <div className='birthContainer w-50'>
-                                        <label className='form-label birthLabel'>
-                                            Fecha de nacimiento
-                                        </label>
-                                        <div className='d-flex birthInputContainer'>
-                                            <input className='form-mid-input mr-2'
-                                                onChange={e => onChangeDay(e)} type='number' min='1'
-                                                max='31' name='bday' id='dateDay' placeholder={getDay || "01"} maxLength='2'
-                                                required />
-                                            <input
-                                                className='form-mid-input mr-2' maxLength='2' ref={monthRef}
-                                                onChange={e => onChangeMonth(e)}
-                                                type='number' min='1' max='12'
-                                                name='bMonth' id='dateMonth'
-                                                placeholder={getMonth  || "01"}
-                                                required />
-                                            <input
-                                                className='form-mid-input mr-2' id='dateYear' placeholder={getYear || "2000"}
-                                                maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
-                                                onChange={e => dispatch({ type: 'USER_FIRST_YEAR', payload: e.target.value })}
-                                                required />
-                                        </div>
-                                    </div>
-                                    <div className='sexContainer w-50'>
-                                        <select
-                                            className='form-mid-input'
-                                            style={{ height: '65%' }}
-                                            id='gender'
-                                            onChange={e => dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value })}
-                                            placeholder={getSex}
-                                            required >
-                                            <option value=''>Género</option>
-                                            <option value='M'>Masculino</option>
-                                            <option value='F'>Femenino</option>
-                                            <option value='O'>Otro</option>
-                                        </select>
+                                <div className='birthContainer'>
+                                    <label className='form-label birthLabel' htmlFor='bday'>
+                                        Fecha de nacimiento
+                                    </label>
+                                    <div className='d-flex birthInputContainer'>
+                                        <input className='form-mid-input mr-1'
+                                            onChange={e => onChangeDay(e)} type='number' min='1'
+                                            max='31' name='bday' id='dateDay' placeholder={getDay || "01"} maxLength='2'
+                                            required />
+                                        <input
+                                            className='form-mid-input mr-1' maxLength='2' ref={monthRef}
+                                            onChange={e => onChangeMonth(e)}
+                                            type='number' min='1' max='12'
+                                            name='bMonth' id='dateMonth'
+                                            placeholder={getMonth  || "01"}
+                                            required />
+                                        <input
+                                            className='form-mid-input mr-1' id='dateYear' placeholder={getYear || "2000"}
+                                            maxLength='4' ref={yearRef} type='number' min='1900' max='2020' name='bYear'
+                                            onChange={e => dispatch({ type: 'USER_FIRST_YEAR', payload: e.target.value })}
+                                            required />
                                     </div>
                                 </div>
-                                {!ref && <input
+                                <div className='sexContainer'>
+                                    <label className='form-label' htmlFor='gender'>
+                                        Género
+                                    </label>
+                                    <select
+                                        className='form-mid-input'
+                                        style={{ height: '65%' }}
+                                        id='gender'
+                                        onChange={e => dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value })}
+                                        placeholder={getSex}
+                                        required >
+                                        <option value=''>Género</option>
+                                        <option value='M'>Masculino</option>
+                                        <option value='F'>Femenino</option>
+                                        <option value='O'>Otro</option>
+                                    </select>
+                                </div>
+                                {!ref && <>
+                                    <label className='form-label' htmlFor='os'>
+                                        Cobertura de salud / Seguro
+                                    </label>
+                                    <input
                                     className='form-input' id='os' placeholder='Cobertura / Seguro de Salud'
                                     autoComplete='off' type='text'
                                     onChange={e => dispatch({ type: 'USER_FIRST_OS', payload: e.target.value })}
                                     required
-                                />}
+                                />
+                                </>}
                             </div><br />
                             <div className='d-flex justify-content-between pl-3 pr-3'>
                                 <a href='https://uma-health.com/terminos_usuarios' target='_blank' rel="noopener noreferrer">
@@ -324,7 +358,7 @@ const Register = props => {
                                 </div>
                             </div>
                             <div className='text-right'>
-                                <button className='btn sendButtonStyles' type='submit'>
+                                <button className='umaBtn' type='submit'>
                                     Enviar
                                 </button>
                             </div>

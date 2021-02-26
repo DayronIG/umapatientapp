@@ -115,7 +115,7 @@ const ConfirmAppointment = (props) => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
-		if (appointId === '' || lastAssingState.state === 'FREE') {
+		if (appointId === '' || lastAssingState?.state === 'FREE') {
 			return postData();
 		} else {
 			dispatch({ type: 'LOADING', payload: false });
