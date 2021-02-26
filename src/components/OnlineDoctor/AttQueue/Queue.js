@@ -67,7 +67,7 @@ const Queue = (props) => {
                 .onSnapshot(res => {
                     if (mr && mr !== undefined) {
                         let mr = res.data() && res.data().mr
-                        if (mr.destino_final !== '' && mr.destino_final !== "USER CANCEL") {
+                        if (mr.destino_final !== '' && mr.destino_final !== "USER CANCEL" && mr.diagnostico === "") {
                             swal(`El médico cerró tu atencion.`, `Motivo: ${mr.destino_final}. Puedes tomar una nueva consulta.`, 'warning')
                             dispatch({ type: 'RESET_ALL' })
                         }
