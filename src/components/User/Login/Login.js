@@ -2,17 +2,19 @@ import React from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Firebase from 'firebase/app';
 import Logo from '../../../assets/logo.png';
 import '../../../styles/user/login.scss';
 
 const Login = () =>  {
     const history = useHistory();
+    const dispatch = useDispatch();
     const {email, password} = useSelector(state => state.user);
 
     const handleSignIn = () => {
         Firebase.auth().signInWithEmailAndPassword(email, password);
+        dispatch({ type: 'USER_PASSWORD', payload: '' });
     }
 
     return (

@@ -75,7 +75,7 @@ const Registrer = () => {
             })
             .catch(e => console.error(e))
         } else {
-            console.log('error')
+            console.log('Agregar errores en los inputs');
         }
     }
 
