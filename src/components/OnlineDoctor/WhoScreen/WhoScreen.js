@@ -26,20 +26,26 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		(async function checkAssignations() {
-			if ('dni' in user) {
+		let unmountTimeout = () => {}
+		if(user.dni && user.dni !== "") {
+			dispatch({ type: 'LOADING', payload: true });
+			(async function checkAssignations() {
 				localStorage.removeItem('selectedAppointment');
 				enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 					const assigned = await findAllAssignedAppointment(userDni, type);
+					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
-			}
-		})();
+			})();
+		} else {
+			unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)
+		}
+		return () => unmountTimeout
 	}, [user, userDni]);
 
 	useEffect(() => {
