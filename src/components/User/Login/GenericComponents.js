@@ -305,7 +305,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         } else if (signUp) {
             signInAndSignUpWithMicrosoft('/signup/form/2');
         } else {
-
+            signInAndSignUpWithMicrosoft('/');
         }
     }
 
@@ -317,7 +317,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         } else if (signUp) {
             history.push('/signup/form/1');
         } else {
-
+            history.push('/');
         }
     }
 
