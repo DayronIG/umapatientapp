@@ -108,8 +108,36 @@
     flex-direction: column; 
     align-items: flex-start;
     padding: 15px 5% 0 5%;
+    position: relative;
     :nth-child(1) {
         margin: 5px 0;
+    }
+    .conditions__group {
+        .characters {
+            margin-left: 25px;
+            &::before {
+                content: '';
+                display: block;
+                width: 18px;
+                height: 18px;
+                margin-top: 3px;
+                border-radius: 50%;
+                border: 1px solid $uma-primary;
+                background-color: $white-color;
+                position: absolute;
+                left: 15px;
+            }
+        }
+        .done {
+            left: 17px;
+            top: 25px;
+            font-size: 16px;
+            color: $uma-primary;
+            position: absolute;
+            &.number {
+                top: 68px;
+            }
+        }
     }
 }
 

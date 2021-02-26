@@ -102,14 +102,16 @@ const Registrer = () => {
                     {switchContent === '1' && 
                     <>
                         <GenericInputs label='¿Cual es tu mail?' type='email' name='email' />
-                        <ConditionButtons/>
                         <GenericInputs label='Crea una contraseña' type='password' name='pass' />
+                        <ConditionButtons/>
+                        <GenericInputs label='Ingresa nuevamente tu contraseña' type='password' name='passrepeat' />
                     </>
                     }
                     {switchContent === '2' &&
                     <>
                         <GenericInputs label='¿Cual es tu nombre?' type='text' name='firstname' />
                         <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' />
+                        
                         <GenericInputs label='Ingresa tu numero de identidad' type='number' name='dni' />
                         <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone'/>
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance'/>
