@@ -53,11 +53,13 @@ export const GenericInputs = ({label, type, name = ''}) => {
             }
         } else if (e.target.name === 'pass') {
             setPassword(e.target.value)
-            if (e.target.value.length < 6) {
-                setPassValidation({ ...passValidation, validPass: false })
-            } else {
+            let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
+            if (valid) {
                 dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
                 setPassValidation({ ...passValidation, validPass: true })
+            } else {
+                setPassValidation({ ...passValidation, validPass: false })
+                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
             }
         } else if (e.target.name === 'passrepeat') {
             if (e.target.value !== password) {
@@ -196,20 +198,37 @@ export const SelectOption = ({calendar, select}) => {
 }
 
 export const ConditionButtons = () => {
-    return(
+    const userData = useSelector(state => state.user)
+    const [validPass, setValidPass] = useState(false)
+    
+    const validate = () => {
+        let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(userData.password)
+        if(valid) {
+            setValidPass(true)
+        }else {
+            setValidPass(false)
+        }
+    }
+
+    useEffect(() => {
+       validate()
+    }, [userData.password])
+    
+        return(
         <section className='conditions'>
-            <div className='conditions__input'>
-                <input type='radio'/> <label>Mínimo 8 caracteres</label>
+            <div className='conditions__group'>
+                <p className='characters'>Mínimo 8 carácteres</p>
+                {validPass && <div className='done'>✔</div>}
             </div>
-            <div className='conditions__input'>
-                <input type='radio'/> <label>Mínimo 1 número</label>
+            <div className='conditions__group'>
+                <p className='characters'>Mínimo 1 número</p>
+                {validPass && <div className='done number'>✔</div>}
             </div>
         </section>
     )
 }
 
 export const GenericButton = ({color, children, action = () => {}}) => {
-    //Aciones de rutas
     return (
         <button className={color === 'blue' ? 'action-btn' : 'action-btn white'} onClick={action}>{children}</button>
     )
