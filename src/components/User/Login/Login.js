@@ -2,11 +2,18 @@ import React from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Firebase from 'firebase/app';
 import Logo from '../../../assets/logo.png';
 import '../../../styles/user/login.scss';
 
 const Login = () =>  {
     const history = useHistory();
+    const {email, password} = useSelector(state => state.user);
+
+    const handleSignIn = () => {
+        Firebase.auth().signInWithEmailAndPassword(email, password);
+    }
 
     return (
        <section className='login'>
@@ -22,8 +29,8 @@ const Login = () =>  {
                 <p>El mail o la contraseña son incorrectos.</p>
                 <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
             </section>
-            <GenericInputs label='Ingresa tu mail' type='email'/>
-            <GenericInputs label='Ingresa tu contraseña' type='password'/>
+            <GenericInputs label='Ingresa tu mail' type='email' name='email' />
+            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' />
            <section className='login__needHelp'>
                 <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>
@@ -33,7 +40,7 @@ const Login = () =>  {
                 {/* Link  */}
            </section>
            <section className='login__actions'>
-                <GenericButton color='blue'>
+                <GenericButton color='blue' action={handleSignIn}>
                     Ingresar
                 </GenericButton>
                 <TextAndLink text='¿Eres nuevo en UMA?' link='Registrarme' action={() => history.push('/signup')} />

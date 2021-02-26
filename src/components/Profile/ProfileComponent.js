@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useHistory } from 'react-router-dom';
 import DBConnection from '../../config/DBConnection';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
@@ -15,6 +15,7 @@ import { SignOut } from '../User/Login';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const db = DBConnection.firestore();
 	const auth = useSelector((state) => state.user);
 	const modal = useSelector((state) => state.front.openDetails);
@@ -129,7 +130,13 @@ const ProfileComponent = () => {
 						<b>Sexo:</b> {(auth.sex === 'M' && 'Hombre') || (auth.sex === 'F' && 'Mujer')}
 					</p>
 				</div>
-				<button onClick={() => SignOut()} className="btn-blue-lg">Salir</button>
+				<button 
+					onClick={async () => {
+						await SignOut();
+						history.replace('/');
+					}} 
+					className="btn-blue-lg"
+				>Salir</button>
 				{/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
 				<div className='umaVersion text-center'>
 					<Version />
