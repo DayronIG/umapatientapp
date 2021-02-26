@@ -103,8 +103,6 @@ export const GenericInputs = ({label, type, name = ''}) => {
 
     }, [passValidation, password, validations])
 
-    console.log(validations)
-
     return (
         <div className='form'>
             <input

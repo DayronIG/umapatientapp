@@ -163,7 +163,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
         currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
             Axios
-                .patch(`${node_patient}/${user.dni}`, data,  {headers: headers })
+                .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
                 .then((res) => {
                     console.log("UMA");
                 })

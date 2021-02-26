@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Logo from '../../../assets/logo.png';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
 import Firebase from 'firebase/app';
@@ -11,8 +11,10 @@ import '../../../styles/user/signUp/signUp.scss';
 const Registrer = () => {
     const {screen} = useParams();
     const history = useHistory();
+    const dispatch = useDispatch();
     const [switchContent, setSwitchContent] = useState('1')
     const userData = useSelector(state => state.user)
+    const userActive = useSelector(state => state.userActive)
 
     useEffect (()=> {
     if (screen) {
@@ -26,45 +28,50 @@ const Registrer = () => {
         }
     }, [screen])
 
+    const handleCreateUser = async () => {
+        if (userData.email !== '' && userData.password !== '') {
+            await Firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password)
+            .then(async user => {
+                dispatch({ type: 'USER_PASSWORD', payload: '' });
+                setSwitchContent('2');
+            })
+        }
+    }
+
     const validationForm = async () => {
-        console.log(userData);
-        if(
-        userData.email !== '' 
-        && userData.password !== '' 
-        && userData.firstname !== '' 
+        if( 
+        userData.firstname !== '' 
         && userData.lastname !== '' 
         && userData.dni !== ''
         && userData.phone !== ''
         && userData.dob !== ''
         && userData.sex !== ''
         ) {
-            await Firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password)
-            .then(async user => {
-                const uid = user.user.uid;
-                await Firebase.auth().currentUser.sendEmailVerification()
-                .then(async () => {
-                    await Firebase.auth().currentUser.getIdToken().then(async token => {
-                        let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-                        let data = {
-                            newValues: {
-                                login: ['email'],
-                                email: userData.email || '',
-                                password: userData.password || '',
-                                fullname: `${userData.firstname} ${userData.lastname}` || '',
-                                dni: userData.dni || '',
-                                ws: userData.phone || '',
-                                sex: userData.sex || '',
-                                dob: userData.dob || '',
-                            }
+            const uid = userActive.currentUser.uid;
+            await Firebase.auth().currentUser.sendEmailVerification()
+            .then(async () => {
+                await Firebase.auth().currentUser.getIdToken().then(async token => {
+                    let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    let data = {
+                        newValues: {
+                            login: ['email'],
+                            email: userData.email || '',
+                            password: userData.password || '',
+                            fullname: `${userData.firstname} ${userData.lastname}` || '',
+                            dni: userData.dni || '',
+                            ws: userData.phone || '',
+                            sex: userData.sex || '',
+                            dob: userData.dob || '',
                         }
-                        // console.log(uid);
-                        await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
-                            .then(res => {
-                                history.push('/signUp/congrats')
-                            })
-                    })
+                    }
+                    await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
+                        .then(res => {
+                            dispatch({ type: 'SET_USER_LOGIN', payload: ['email']})
+                            dispatch({ type: 'USER_FIRST_WS', payload: userData.phone})
+                            dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${userData.firstname} ${userData.lastname}`})
+                            history.push('/signUp/congrats');
+                        })
                 })
-                .catch(e => console.error(e))
             })
             .catch(e => console.error(e))
         } else {
@@ -115,7 +122,7 @@ const Registrer = () => {
                     {switchContent === '1' &&
                     <>
                         <button className='signUp__actions--button back'>Atras</button>
-                        <button className='signUp__actions--button foward' onClick={()=> setSwitchContent('2')}>Siguiente</button>
+                        <button className='signUp__actions--button foward' onClick={handleCreateUser}>Siguiente</button>
                     </>
                     }
                     {switchContent === '2' && 

@@ -91,13 +91,12 @@ import Support from './views/Support'
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
 
+// TODO:  revisar login despues de pantalla status
+// TODO: eliminar la contraseña  de redux una vez que se crea el usuario
+
 function App(props) {
 	return (
 		<div className='App'>
-
-			// to do:  revisar login despues de pantalla status
-
-
 			<Switch>
 				{/* LOGIN / REGISTER / RECOVERY */}
 				<Route exact path='/login/phone' component={LoginPhoneNumber} />
