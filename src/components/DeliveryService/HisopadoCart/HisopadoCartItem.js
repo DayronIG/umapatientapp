@@ -10,12 +10,11 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(state => state.user);
-    const { deliveryInfo, changeMarker, hisopadoDependantAddresses, dependantInfo } = useSelector(state => state.deliveryService);
-    const { address, piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
+    const { deliveryInfo, changeMarker, hisopadoDependantAddresses } = useSelector(state => state.deliveryService);
+    const { piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
-    const [showBtn, setShowBtn] = useState(true);
     const [isAddressValid, setIsAddressValid] = useState(true)
     const history = useHistory()
     const [data, setData] = useState({
@@ -45,52 +44,12 @@ const HisopadoCartItem = ({patient, index}) => {
         }
     }, [changeMarker])
 
-
-    // const [deliveryInfoToMap, setDeliveryInfoToMap] = useState([]) 
-
-    // useEffect(()=>{
-    //     deliveryInfo.map(patient => {
-    //         setDeliveryInfoToMap([...deliveryInfoToMap, {
-    //             title: patient.patient?.title || patient.patient?.user || patient.dependantData?.user,
-    //             fullname: patient.patient?.user || patient.dependantData?.user,
-    //             dni: patient.patient?.dni|| patient.dependantData?.dni,
-    //             ws: patient.patient?.ws|| patient.dependantData?.ws,
-    //             dob: patient.patient?.dob|| patient.dependantData?.dob,
-    //             sex: patient.patient?.sex|| patient.dependantData?.sex,
-    //             obs: '',
-    //             address: patient.destination?.user_address || patient.dependantDestination?.user_address || hisopadoUserAddress || address,
-    //             piso: patient.destination?.user_floor || patient.dependantDestination?.user_address || piso,
-    //             depto: patient.destination?.user_number || patient.dependantDestination?.user_number || depto,
-    //             lat: patient.destination?.user_lat || patient.dependantDestination?.user_lat || lat,
-    //             lng: patient.destination?.user_lon || patient.dependantDestination?.user_lon || lng
-    //         }])
-    //     })
-    // })
-
-    // useEffect(()=>{
-    //     console.log(openModal)
-    // },[openModal])
-
-
     useEffect(() => {
         setIsAddressValid(isAddressValidForHisopado)
     }, [isAddressValidForHisopado, changeMarker])
 
-    // useEffect(() => {
-    //     if(Object.entries(dependantInfo).length !== 1) {
-    //         setData({...data,
-    //         address: dependantInfo.address,
-    //         piso: dependantInfo.piso,
-    //         depto: dependantInfo.depto,
-    //         lat: dependantInfo.lat,
-    //         lng: dependantInfo.lng
-    //         });
-    //     }
-    // }, [dependantInfo])
-
     const handleConfirm = () => {
         if(!!data.sex && !!data.dob && !!data.dni && !!data.ws && !!data.fullname && !!data.address && !!data.lat && !!data.lng && isAddressValid) {
-            setShowBtn(false);
             setOpenUser(false);
             let sendData = {
                 dni,
@@ -239,20 +198,6 @@ const HisopadoCartItem = ({patient, index}) => {
                         </select>
                     </div>
                 </div>
-
-                <div>
-                    <label>Observaciones</label>
-                    <input 
-                        type="text"
-                        inputMode="text"
-                        placeholder="Aclaración para el personal médico" 
-                        value={data.obs || ''}
-                        onChange={(e) => {
-                            setData({...data, obs: e.target.value});
-                        }}
-                    />
-                </div>  
-
                 <div onClick={() => setOpenModal(true)} className={`${isAddressValid ? '' : 'error'}`}>
                     <label>Domicilio</label>
                     <input 
@@ -287,10 +232,22 @@ const HisopadoCartItem = ({patient, index}) => {
                         /> 
                     </div>
                 </div>
-                    <>
-                        <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
-                        <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
-                    </> 
+                <div>
+                    <label>Observaciones</label>
+                    <input 
+                        type="text"
+                        inputMode="text"
+                        placeholder="Aclaración para el personal" 
+                        value={data.obs || ''}
+                        onChange={(e) => {
+                            setData({...data, obs: e.target.value});
+                        }}
+                    />
+                </div>
+                <>
+                    <button className="HisopadoCart__btnAddress" onClick={() => setOpenModal(true)}>Cambiar domicilio</button>
+                    <button className="HisopadoCart__btnConfirm" onClick={handleConfirm}>Guardar</button>
+                </> 
                 <button className="HisopadoCart__btnDelete" onClick={removeItem}><FaTrashAlt /></button>
             </div>
             <div className="HisopadoCart__modal">
