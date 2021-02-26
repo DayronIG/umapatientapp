@@ -228,7 +228,21 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
-                console.log(result.user);
+                history.push(route);
+            })
+            .catch(e => {
+                console.log(e.code);
+            })
+    }
+
+    const signInAndSignUpWithMicrosoft = (route) => {
+        let microsoftProvider;
+        microsoftProvider = new Firebase.auth.OAuthProvider('microsoft.com');
+        microsoftProvider.addScope('mail.read');
+        microsoftProvider.addScope('calendars.read');
+
+        db.auth().signInWithPopup(microsoftProvider)
+            .then(result => {
                 history.push(route);
             })
             .catch(e => {
@@ -283,6 +297,18 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         }
     }
 
+    const handleMicrosoftAccount = () => {
+        if(circleBtn) {
+            signInAndSignUpWithMicrosoft('/');
+        } else if (vincular) {
+
+        } else if (signUp) {
+            signInAndSignUpWithMicrosoft('/signup/form/2');
+        } else {
+
+        }
+    }
+
     const handleAnotherAccount = () => {
         if (circleBtn) {
             history.push('/login/phone');
@@ -301,7 +327,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                 <img src={Google} alt='Google logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Google</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Google </p> }
             </button> 
-            <button className={circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleMicrosoftAccount}>
                 <img src={Microsoft} alt='Microsoft logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Microsoft</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Microsoft</p>  }
             </button>

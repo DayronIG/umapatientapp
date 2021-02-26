@@ -12,8 +12,8 @@ const Login = () =>  {
     const dispatch = useDispatch();
     const {email, password} = useSelector(state => state.user);
 
-    const handleSignIn = () => {
-        Firebase.auth().signInWithEmailAndPassword(email, password);
+    const handleSignIn = async () => {
+        await Firebase.auth().signInWithEmailAndPassword(email, password);
         dispatch({ type: 'USER_PASSWORD', payload: '' });
     }
 
