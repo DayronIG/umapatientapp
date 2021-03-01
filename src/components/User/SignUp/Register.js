@@ -66,19 +66,19 @@ const Registrer = () => {
             let data = {
                 newValues: {
                     login: [method],
-                    email: userData.email || '',
-                    fullname: `${userData.firstname} ${userData.lastname}` || '',
-                    dni: userData.dni || '',
-                    ws: userData.phone || '',
-                    sex: userData.sex || '',
-                    dob: userData.dob || '',
+                    email: email || '',
+                    fullname: `${firstname} ${lastname}` || '',
+                    dni: dni || '',
+                    ws: phone || '',
+                    sex: sex || '',
+                    dob: birthDate || '',
                 }
             }
             await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                 .then(res => {
                     dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
-                    dispatch({ type: 'USER_FIRST_WS', payload: userData.phone })
-                    dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${userData.firstname} ${userData.lastname}` })
+                    dispatch({ type: 'USER_FIRST_WS', payload: phone })
+                    dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${firstname} ${lastname}` })
                     history.push('/signUp/congrats');
                 })
         })
@@ -86,44 +86,19 @@ const Registrer = () => {
 
     const validationForm = async () => {
         if( 
-        firstname !== ''
-        && lastname !== '' 
-        && dni !== ''
-        && phone !== ''
-        && birthDate !== ''
-        && sex !== ''
+        validations.firstname
+        && validations.lastname 
+        && validations.dni
+        && validations.phone
+        && validations.dob
+        && validations.sex
         ) {
             const uid = userActive.currentUser.uid;
-<<<<<<< HEAD
-            await Firebase.auth().currentUser.sendEmailVerification()
-            .then(async () => {
-                await Firebase.auth().currentUser.getIdToken().then(async token => {
-                    let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-                    let data = {
-                        newValues: {
-                            login: ['email'],
-                            email: email || '',
-                            fullname: `${firstname} ${lastname}` || '',
-                            dni: dni || '',
-                            ws: phone || '',
-                            sex: sex || '',
-                            dob: birthDate || '',
-                        }
-                    }
-                    await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
-                        .then(res => {
-                            dispatch({ type: 'SET_USER_LOGIN', payload: ['email']})
-                            dispatch({ type: 'USER_FIRST_WS', payload: phone})
-                            dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${firstname} ${lastname}`})
-                            history.push('/signUp/congrats');
-                        })
-=======
 
-            if(userData.email && userData.password) {
+            if(email && password) {
                 await Firebase.auth().currentUser.sendEmailVerification()
                 .then(async () => {
                     updatePatient(uid, 'email');
->>>>>>> 61e3f86035e9d812fa88e62d2cbcc2afc30f5136
                 })
                 .catch(e => console.error(e))
             } else {
@@ -154,12 +129,10 @@ const Registrer = () => {
                     setPassword(e.target.value)
                     setValidations({ ...validations, password: true })
                 } else {
-                    console.log('cayo en el else', password)
                     setValidations({ ...validations, password: false })
                 }
             break;
             case 'passrepeat':
-                console.log(e.target.value, password)
                 if (e.target.value !== password) {
                     setValidations({ ...validations, passRepetition: false })
                 } else {
