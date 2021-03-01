@@ -104,6 +104,7 @@ const ConfirmationCode = () => {
                             type="text" 
                             inputMode="numeric" 
                             maxLength='1' 
+                            autoFocus
                             required 
                         />
 

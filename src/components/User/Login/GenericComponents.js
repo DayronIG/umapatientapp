@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Firebase from 'firebase/app';
 import db from '../../../config/DBConnection';
 import {useHistory} from 'react-router-dom';
-import {checkNum} from '../../Utils/stringUtils';
+// import {checkNum} from '../../Utils/stringUtils';
 import {useDispatch, useSelector} from 'react-redux';
 // import { Calendar, momentLocalizer } from 'react-big-calendar';
 import Modal from '../SignUp/Modal';
@@ -22,18 +22,22 @@ import { Calendar } from 'react-date-range';
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
-import {node_patient} from '../../../config/endpoints';
+import {node_patient} from '../../../config/endpoints'; 
 
-export const GenericInputs = ({label, type, name = ''}) => {
+export const GenericInputs = ({label, type, name = '', validate = () => {}}) => {
+    // validate
     const dispatch = useDispatch();
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)    
-    const [passValidation, setPassValidation] = useState({ validPass: false, validRepetition: false })
+    // const [passValidation, setPassValidation] = useState([{ email: false, validPass: false, validRepetition: false }])
     const [email, setEmail] = useState('')
     const [validEmail, setValidEmail] = useState(false)
     const [selectSwitch, setSelectSwitch] = useState(false)
     const [labelUp, setLabelUp] = useState(false)
     const [validations, setValidations] = useState([{
+        email: false,
+        password: false,
+        passRepetition: false,
         firstname: false,
         lastname: false,
         dni: false,
@@ -41,69 +45,77 @@ export const GenericInputs = ({label, type, name = ''}) => {
     }])
 
 
-    const _validateForm = useCallback((e) => {
-        if (e.target.name === 'email') {
-            setEmail(e.target.value)
-            let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
-            if(valid) { 
-                dispatch({ type: 'USER_FIRST_EMAIL', payload: e.target.value })
-                setValidEmail(true)
-            } else {
-                setValidEmail(false)
-            }
-        } else if (e.target.name === 'pass') {
-            setPassword(e.target.value)
-            let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
-            if (valid) {
-                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-                setPassValidation({ ...passValidation, validPass: true })
-            } else {
-                setPassValidation({ ...passValidation, validPass: false })
-                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-            }
-        } else if (e.target.name === 'passrepeat') {
-            if (e.target.value !== password) {
-                setPassValidation({ ...passValidation, validRepetition: false })
-            } else {
-                dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-                setPassValidation({ ...passValidation, validRepetition: true })
-            }
-        } else if (e.target.name === 'phone') {
-            if (checkNum(e.target.value)) {
-                let num = checkNum(e.target.value)
-                dispatch({ type: 'USER_PHONE_NUMBER', payload: num })
-                setValidations({ ...validations, phone: true })
-            } else {
-                setValidations({ ...validations})
-            }
-        } else if (e.target.name === 'dni') {
-            if (e.target.value.length >= 7 && e.target.value.length <= 8) {
-                dispatch({ type: 'USER_FIRST_DNI', payload: e.target.value })
-                setValidations({ ...validations, dni: true })
-            } else {
-                setValidations({ ...validations})
-            }
-        } else if (e.target.name === 'firstname') {
-            let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-            if(valid) { 
-                dispatch({ type: 'USER_FIRST_NAME', payload: e.target.value }) 
-                setValidations({ ...validations, firstname: true })
-            } else {
-                setValidations({ ...validations})
-            }
-        } else if (e.target.name === 'lastname') {
-            let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-            if(valid) { 
-                dispatch({ type: 'USER_LAST_NAME', payload: e.target.value })
-                setValidations({ ...validations, lastname: true })
-            } else {
-                setValidations({ ...validations})
-            }
-        } else if (e.target.name === 'healthinsurance') {
-            dispatch({ type: 'USER_FIRST_OS', payload: e.target.value }) 
-        }
+    // const _validateForm = useCallback((e) => {
+    //     if (e.target.name === 'email') {
+    //         setEmail(e.target.value)
+    //         let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
+    //         if(valid) { 
+    //             dispatch({ type: 'USER_FIRST_EMAIL', payload: e.target.value })
+    //             setValidEmail(true)
+    //             setValidations({ ...validations, email: true })
+    //             validate(validations)
+    //         } else {
+    //             setValidEmail(false)
+    //             setValidations({ ...validations, email: false })
+    //             validate(validations)
+    //         }
+    //     } else if (e.target.name === 'pass') {
+    //         setPassword(e.target.value)
+    //         let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
+    //         if (valid) {
+    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
+    //             setValidations({ ...validations, password: true })
+    //             validate(validations)
+    //         } else {
+    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
+    //             setValidations({ ...validations, password: false })
+    //             validate(validations)
+    //         }
+    //     } else if (e.target.name === 'passrepeat') {
+    //         if (e.target.value !== password) {
+    //             setValidations({ ...validations, passRepetition: false })
+    //         } else {
+    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
+    //             setValidations({ ...validations, passRepetition: true })
+    //         }
+    //     } else if (e.target.name === 'phone') {
+    //         if (checkNum(e.target.value)) {
+    //             let num = checkNum(e.target.value)
+    //             dispatch({ type: 'USER_PHONE_NUMBER', payload: num })
+    //             setValidations({ ...validations, phone: true })
+    //         } else {
+    //             setValidations({ ...validations})
+    //         }
+    //     } else if (e.target.name === 'dni') {
+    //         if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+    //             dispatch({ type: 'USER_FIRST_DNI', payload: e.target.value })
+    //             setValidations({ ...validations, dni: true })
+    //         } else {
+    //             setValidations({ ...validations})
+    //         }
+    //     } else if (e.target.name === 'firstname') {
+    //         let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+    //         if(valid) { 
+    //             dispatch({ type: 'USER_FIRST_NAME', payload: e.target.value }) 
+    //             setValidations({ ...validations, firstname: true })
+    //         } else {
+    //             setValidations({ ...validations})
+    //         }
+    //     } else if (e.target.name === 'lastname') {
+    //         let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+    //         if(valid) { 
+    //             dispatch({ type: 'USER_LAST_NAME', payload: e.target.value })
+    //             setValidations({ ...validations, lastname: true })
+    //         } else {
+    //             setValidations({ ...validations})
+    //         }
+    //     } else if (e.target.name === 'healthinsurance') {
+    //         dispatch({ type: 'USER_FIRST_OS', payload: e.target.value }) 
+    //     }
 
-    }, [passValidation, password, validations])
+    // }, [password, validations])
+    // passValidation, 
+
 
     return (
         <div className='form'>
@@ -111,7 +123,7 @@ export const GenericInputs = ({label, type, name = ''}) => {
                 name={name}
                 type={showPassword ? 'text' : type}
                 className='form--input' 
-                onChange={(e) => _validateForm(e)}
+                onChange={validate}
                 onClick={()=> setLabelUp(true)}
             />
             <label className={labelUp ? 'form--label up' : 'form--label'}>
@@ -132,33 +144,16 @@ export const GenericInputs = ({label, type, name = ''}) => {
     )
 };
 
-export const SelectOption = ({calendar, select}) => {
+export const SelectOption = ({calendar, select, action = () => {}}) => {
     const [showCalendar, setShowCalendar] = useState(false)
-    const [date, setDate] = useState()
-    const dispatch = useDispatch()
-    const [validations, setValidations] = useState([{
-        dob: false,
-        sex: false
-    }])
+    const [calendarValue, setCalendarValue] = useState('')
+    const [date, setDate] = useState(null);
 
-    const handleDate = (e) => {
+    const handleCalendar = (e) => {
+        setDate(e)
+        action(e)
         const momentDate = moment(e).format('DD-MM-YYYY')
-        const olderThan = moment().diff(e, 'years') 
-        if(olderThan >= 16) {
-            dispatch({ type: 'USER_FIRST_DOB', payload: momentDate })
-            setValidations({...validations, dob: true})
-        }else {
-            setValidations({...validations})
-        }
-    }
-
-    const getValue = (e) => {
-        if(e.target.value) {
-            dispatch({ type: 'USER_FIRST_SEX', payload: e.target.value }) 
-            setValidations({ ...validations, sex: true })
-        } else {
-            setValidations({...validations})
-        }
+        setCalendarValue(momentDate)
     }
 
     return (
@@ -167,25 +162,26 @@ export const SelectOption = ({calendar, select}) => {
         <section className='calendar__container'>
             <Modal>
             <Calendar
-                date={new Date()}
-                onChange={(e) => handleDate(e)}
+                date={date}
+                onChange={(e)=> handleCalendar(e)}
+
             />
                 <section className='calendar__actions'>
-                    <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn cancel'>Cancelar</button>
-                    <button className='calendar__actions-btn done' onClick={()=> setShowCalendar(!showCalendar)}>Hecho</button>
-                    <button onClick={()=> setShowCalendar(!showCalendar)} className='calendar__actions-btn-close'>x</button>
+                    <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
+                    <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
+                    <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
                 </section>
             </Modal>
         </section>
         }
         {calendar &&  
-        <section className='birth__date' onClick={() => setShowCalendar(!showCalendar)}  >
-            <p className='text'>Selecciona tu fecha de nacimiento</p>
+        <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
+            <p className='text'>{calendarValue !== '' ? calendarValue : 'Selecciona tu fecha de nacimiento'}</p>
             <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
         </section>}
         {select && 
         <div className='container__select--sex'>
-            <select className='select--sex' required onChange={(e)=>getValue(e)} >
+            <select className='select--sex' required onChange={action} >
                 <option selected disabled>Indica tu sexo</option>
                 <option value='femenino'>Femenino</option>
                 <option value='masculino'>Masculino</option>
@@ -197,7 +193,7 @@ export const SelectOption = ({calendar, select}) => {
     )
 }
 
-export const ConditionButtons = () => {
+export const ConditionButtons = () => { //no se dispacha a userData y no me trae el valor
     const userData = useSelector(state => state.user)
     const [validPass, setValidPass] = useState(false)
     
