@@ -41,7 +41,7 @@ const WhenScreen = (props) => {
 						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
 					}
 				}
-			})();
+			})()
 		} else {
 			unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)
 		}
