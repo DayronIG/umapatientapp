@@ -232,6 +232,7 @@ export const GenericButton = ({color, children, action = () => {}}) => {
 
 export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const { currentUser } = useSelector((state) => state.userActive);
 
@@ -243,11 +244,39 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
-                console.log(result.user);
                 history.push(route);
             })
             .catch(e => {
                 console.log(e.code);
+            })
+    }
+
+    const signInAndSignUpWithMicrosoft = (route) => {
+        let microsoftProvider;
+        microsoftProvider = new Firebase.auth.OAuthProvider('microsoft.com');
+        microsoftProvider.addScope('mail.read');
+        microsoftProvider.addScope('calendars.read');
+
+        db.auth().signInWithPopup(microsoftProvider)
+            .then(result => {
+                history.push(route);
+            })
+            .catch(e => {
+                console.log(e.code);
+            })
+    }
+
+    const signInAndSignUpWithFacebook = (route) => {
+        let facebookProvider;
+        facebookProvider = new Firebase.auth.FacebookAuthProvider();
+        facebookProvider.addScope('email');
+    
+        db.auth().signInWithPopup(facebookProvider)
+            .then(result => {
+                history.push(route);
+            })
+            .catch(e => {
+                console.log(e);
             })
     }
     
@@ -280,7 +309,10 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                         }
                         await result.user.updateProfile({ displayName: user.ws })
                         await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
-                            .then(res => console.log("Ok"))
+                            .then(res => {
+                                dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
+                                history.push('/')
+                            })
                     })
                 }).catch(function (err) {
                     if (err.message === "The email address is already in use by another account.") {
@@ -298,15 +330,114 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         }
     }
 
+    const handleMicrosoftAccount = async () => {
+        if(circleBtn) {
+            signInAndSignUpWithMicrosoft('/');
+        } else if (vincular) {
+            let provider
+            provider = new Firebase.auth.OAuthProvider('microsoft.com');
+            provider.addScope('mail.read');
+            provider.addScope('calendars.read');
+
+            await currentUser.linkWithPopup(provider)
+                .then(async function (result) {
+                    let credential = result.credential;
+                    let loginMethod = credential.providerId || 'social'
+                    await currentUser.getIdToken().then(async token => {
+                        let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                        let code = user.email.split('@')[1].slice(0, 6)
+                        if (parseInt(user.email.split('@')[1].slice(0, 6)).length < 5) {
+                            code = user.ws_code
+                        }
+                        let data = {
+                            newValues: {
+                                login: [loginMethod],
+                                ws_code: code,
+                                email: result.additionalUserInfo.profile.email || result.additionalUserInfo.profile.mail || provider.email || user.email,
+                                picture: result.additionalUserInfo.profile.picture
+                            }
+                        }
+                        await result.user.updateProfile({ displayName: user.ws })
+                        await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                            .then(res => {
+                                dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
+                                history.push('/')
+                            })
+                    })
+                }).catch(function (err) {
+                    if (err.message === "The email address is already in use by another account.") {
+                        console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                    } else if (err.message === "User can only be linked to one identity for the given provider.") {
+                        console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
+                    } else if (err.message === "This credential is already associated with a different user account.") {
+                        console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
+                    }
+                });
+        } else if (signUp) {
+            signInAndSignUpWithMicrosoft('/signup/form/2');
+        } else {
+            signInAndSignUpWithMicrosoft('/');
+        }
+    }
+
+    const handleFacebookAccount = async () => {
+        if (circleBtn) {
+            signInAndSignUpWithFacebook('/');
+        } else if (vincular) {
+            let provider
+            provider = new Firebase.auth.FacebookAuthProvider();
+            provider.addScope('email');
+
+            await currentUser.linkWithPopup(provider)
+                .then(async function (result) {
+                    let credential = result.credential;
+                    let loginMethod = credential.providerId || 'social'
+                    await currentUser.getIdToken().then(async token => {
+                        let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                        let code = user.email.split('@')[1].slice(0, 6)
+                        if (parseInt(user.email.split('@')[1].slice(0, 6)).length < 5) {
+                            code = user.ws_code
+                        }
+                        let data = {
+                            newValues: {
+                                login: [loginMethod],
+                                ws_code: code,
+                                email: result.additionalUserInfo.profile.email || result.additionalUserInfo.profile.mail || provider.email || user.email,
+                                picture: result.additionalUserInfo.profile.picture
+                            }
+                        }
+                        await result.user.updateProfile({ displayName: user.ws })
+                        await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                            .then(res => {
+                                dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
+                                history.push('/')
+                            })
+                    })
+                }).catch(function (err) {
+                    if (err.message === "The email address is already in use by another account.") {
+                        console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
+                    } else if (err.message === "User can only be linked to one identity for the given provider.") {
+                        console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
+                    } else if (err.message === "This credential is already associated with a different user account.") {
+                        console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
+                    }
+                });
+        } else if (signUp) {
+            signInAndSignUpWithFacebook('/signup/form/2');
+        } else {
+            signInAndSignUpWithFacebook('/');
+        }
+    }
+
     const handleAnotherAccount = () => {
         if (circleBtn) {
             history.push('/login/phone');
         } else if (vincular) {
-
+            history.push('/login/welcomeAgain/email');
         } else if (signUp) {
             history.push('/signup/form/1');
         } else {
-
+            history.push('/');
         }
     }
 
@@ -316,11 +447,11 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                 <img src={Google} alt='Google logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Google</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Google </p> }
             </button> 
-            <button className={circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleMicrosoftAccount}>
                 <img src={Microsoft} alt='Microsoft logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Microsoft</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Microsoft</p>  }
             </button>
-            <button className={circleBtn ? 'login__button' : 'login__button large' }>
+            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleFacebookAccount}>
                 <img src={Facebook} alt='Facebook logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Facebook</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Facebook</p>  }
             </button>

@@ -102,7 +102,7 @@ function App(props) {
 				<Route exact path='/login/phone' component={LoginPhoneNumber} />
 				<Route exact path='/login/error' component={ForgottenAccError} />
 				<Route exact path='/login/code' component={ConfirmationCode} />
-				<Route exact path='/login/welcomeAgain' component={WelcomeAgain} />
+				<Route exact path='/login/welcomeAgain/:method?' component={WelcomeAgain} />
 				<Route exact path='/signup' component={SignUp} />
 				<Route exact path='/signup/form/:screen' component={SignUpForm} />
 				<Route exact path='/signup/:status' component={Status} />

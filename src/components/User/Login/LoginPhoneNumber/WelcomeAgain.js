@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../../assets/logo.png';
 import { ConditionButtons, LoginButtons, GenericButton } from '../GenericComponents';
 import showPass from '../../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../../assets/icons/eyeopenpass.png';
-
+import {useParams} from 'react-router-dom';
 
 const WelcomeAgain = () => {
-    const [vincular, setVincular] = useState(true)
-    const [showPassword, setShowPassword] = useState(false)  
+    const [vincular, setVincular] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+    const {method} = useParams();
+
+    useEffect(() => {
+        if(method) {
+            setVincular(false);
+        }
+    }, [method])
 
     return (
         <section className='login'>
