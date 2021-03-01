@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
 import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
 import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
-import markerAddress from "../../../../assets/img/marker_address.svg"
 import axios from "axios"
 import {mobility_address} from "../../../../config/endpoints"
 
@@ -12,10 +11,8 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
     const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
     const patient = useSelector(state => state.user);
     const [showCongrats, setShowCongrats] = useState(false);
-    const delivery = useSelector(state => state.deliveryService.params)
     const { piso, depto, address, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm)
     const {id} = useSelector(state => state.deliveryService.current)
-    const {hisopadoUserAddress} = useSelector(state => state.deliveryService)
 
     useEffect(() => {
         if (!isAddressValidForHisopado) {

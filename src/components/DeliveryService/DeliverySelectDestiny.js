@@ -281,7 +281,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 						<input onChange={handleForm} placeholder='Piso' type='number' name='piso' id='piso' value={formState.piso} />
 						<input
 							onChange={handleForm}
-							placeholder='Depto'
+							placeholder='Depto y observaciones'
 							type='text'
 							name='depto'
 							id='depto'

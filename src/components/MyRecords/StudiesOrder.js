@@ -1,12 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import UMA_LOGO from '../../assets/icons/icon-168.png';
 import moment from 'moment-timezone';
+import db from '../../config/DBConnection';
 import '../../styles/orders.scss';
 
 class OrderPDF extends React.Component {
     render() {
-        const { patient, doctorInfo, mr } = this.props
+        const { patient, doctorInfo, mr, indications } = this.props
         return (
 					<div className='orderToPrint'>
 							<div className='orderToPrint__container'>
@@ -24,6 +25,12 @@ class OrderPDF extends React.Component {
 											{mr && mr.diagnostico && <li>Diagnóstico: {mr.diagnostico} </li>}
 									</ul>
 							</div>
+                            {indications && indications !== "" && <div className='orderToPrint__container mt-5'>
+                                    <hr />
+                                    <h2>Indicaciones:</h2>
+                                    <span>{indications}</span>
+                                    <hr />
+							</div>}
 							<div className='orderToPrint__container mt-5'>
 									<h2>Estudios:</h2>
 									<ul className='orderToPrint__container--list mt-2'>
@@ -53,14 +60,34 @@ class OrderPDF extends React.Component {
 
 
 function StudiesOrder({ att, doc }) {
+    const firebase = db.firestore();
     const { mr, patient } = att
+    const [order, setOrder] = useState({ indications: '' })
     const compRef = useRef()
     const dataToPrint = {
         patient: patient,
         doctorInfo: doc,
         ref: compRef,
-        mr
+        mr,
+        indications: order.indications || ''
     }
+
+    useEffect(() => {
+        console.log(`${att?.patient?.dni}/${att?.incidente_id}`, att.uid)
+        if(att?.uid) {
+            firebase.collection(`events/orders/AR`)
+                .where('uid', '==', att.uid)
+                .get()
+                .then(snap => {
+                    console.log(snap)
+                    snap.forEach((el) => {
+                        console.log(el.data())
+                        setOrder(el.data())
+                    })
+                })
+        }
+    }, [mr])
+
     return (
         <>
             {!!att && !!mr && !!mr.ordenes && mr.ordenes.length > 0 ?
@@ -98,6 +125,11 @@ function StudiesOrder({ att, doc }) {
                                     <hr/>
                                 </>
                             }
+                            {order.indications && order.indications !== "" && <div>
+                                <p><b>Indicaciones:</b></p>
+                                <span className='dossier-info'>{order.indications}</span>
+                                <hr />
+                            </div>}
                             <p><b>Diagnóstico</b></p>
                             <span className='dossier-info'>{mr.diagnostico}</span> 
                             <hr/>
@@ -107,7 +139,6 @@ function StudiesOrder({ att, doc }) {
                                     {mr.ordenes.map((item, index) => <li className='dossier-info' key={index}>Nombre: {item.nombre}</li>)}
                                 </ul>
                             </div>
-                            <hr />
                             <p><b>Médico</b><br /></p>
                             <span className='dossier-doc-info'><b>Nombre: </b> {doc.fullname || ''} </span><br />
                             <span className='dossier-doc-info'><b>Matrícula: </b> {doc.matricula || ''} </span><br />
