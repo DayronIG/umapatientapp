@@ -191,6 +191,7 @@ const Registrer = () => {
             case 'healthinsurance':
                     setHealthinsurance(e.target.value)
             break;
+            default: return false;
         }
     }
 

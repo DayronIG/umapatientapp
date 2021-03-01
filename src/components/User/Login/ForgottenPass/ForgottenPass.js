@@ -1,10 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BackButton } from '../../../GeneralComponents/Headers';
 import { GenericInputs, GenericButton } from '../GenericComponents';
+import {useParams, useHistory} from 'react-router-dom';
+import Firebase from 'firebase/app';
+import { checkNum } from '../../../Utils/stringUtils';
+import { node_patient } from '../../../../config/endpoints';
+import {useDispatch} from 'react-redux';
+import axios from 'axios';
 import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 
 const ForgottenPass = () => {
-    const [passW, setPassW] = useState(true)
+    const dispatch = useDispatch();
+    const [passW, setPassW] = useState(true);
+    const [email, setEmail] = useState('');
+    const [dni, setDni] = useState('');
+    const [ws, setWs] = useState('');
+    const { type } = useParams();
+    const history = useHistory();
+    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    useEffect(() => {
+        if(type) {
+            if(type === 'email') {
+                setPassW(true);
+            }
+            
+            if(type === 'password') {
+                setPassW(false);
+            }
+        }
+    }, [type])
+
+    const validateEmail = (e) => {
+        const isValid = isValidEmail.test(e.target.value);
+
+        if(isValid) {
+            setEmail(e.target.value);
+        }
+    }
+
+    const validateDni = (e) => {
+        if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+            setDni(e.target.value);
+        }
+    }
+
+    const validateWs = (e) => {
+        if (checkNum(e.target.value)) {
+            setWs(checkNum(e.target.value));
+        }
+    }
+
+    const hideEmail = (email) => {
+        const emailToShow = email.split('@')[0].slice(0, 4);
+        const emailToHide = email.split('@')[0].slice(4).replace(/./g, '*');
+        const domain = `@${email.split('@')[1]}`;
+
+        return `${emailToShow}${emailToHide}${domain}`;
+    };
+
+    const handleResetPassword = () => {
+        try {
+            Firebase.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                history.push('/forgot/finalStep/sendEmail');
+            })
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const handleCheckUser = () => {
+        const config = { headers: { 'Content-Type': 'application/json' } }
+        try {
+            axios.get(`${node_patient}/user/${ws}/${dni}`, {}, config)
+            .then(response => {
+                dispatch({ type: 'USER_FIRST_EMAIL', payload: hideEmail(response.data[0].email)});
+                history.push('/forgot/finalStep/login');
+            })
+            .catch(e => console.error(e))
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     return (
         <section className='needHelp'>
@@ -21,15 +99,31 @@ const ForgottenPass = () => {
                 {
                     passW ?
                     <>
-                        <GenericInputs label='Ingresa tu documento'/>
-                        <GenericButton color='blue'>
+                        <GenericInputs 
+                            label='Ingresa tu documento'
+                            type='number'
+                            name='dni'
+                            validate={validateDni}
+                        />
+                        <GenericInputs 
+                            label='Ingresa tu número de celular'
+                            type='text'
+                            name='ws'
+                            validate={validateWs}
+                        />
+                        <GenericButton color='blue' action={handleCheckUser}>
                             Continuar
                         </GenericButton>
                     </>
                     :
                     <>
-                        <GenericInputs label='Ingresa tu mail'/>
-                        <GenericButton color='blue'>
+                        <GenericInputs 
+                            label='Ingresa tu mail' 
+                            type='email' 
+                            name='email' 
+                            validate={validateEmail}
+                        />
+                        <GenericButton color='blue' action={handleResetPassword}>
                             Enviar Link
                         </GenericButton>
                     </>

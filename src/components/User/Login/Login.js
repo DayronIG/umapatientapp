@@ -33,14 +33,13 @@ const Login = () =>  {
             </section>
             <GenericInputs label='Ingresa tu mail' type='email' name='email' />
             <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' />
-           {/* <section className='login__needHelp'>
-                <aside className='login__needHelp__activeSession'>
+           <section className='login__needHelp'>
+                {/* <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>
                     <p className='text'>Mantener sesión iniciada</p>
-                </aside>
-                <button className='login__needHelp--btn'>Necesito ayuda</button>  */}
-                {/* Link  */}
-           {/* </section> */}
+                </aside> */}
+                <button className='login__needHelp--btn' onClick={() => history.push('/forgot')}>Necesito ayuda</button> 
+           </section>
            <section className='login__actions'>
                 <GenericButton color='blue' action={handleSignIn}>
                     Ingresar
