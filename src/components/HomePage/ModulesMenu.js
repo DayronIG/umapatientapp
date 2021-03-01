@@ -23,8 +23,12 @@ const ModulesMenu = () => {
 
 	useEffect(()=> {
 		if(user.core_id) {
-			if (!user.login || user.login === [] || user.login === "") {
-				history.push('/login/welcomeAgain');
+			if(user.phone || user.ws) {
+				if (!user.login || user.login === [] || user.login === "") {
+					history.push('/login/welcomeAgain');
+				}
+			} else {
+				history.push('/signup/form/2');
 			}
 		}
 	}, [user])
