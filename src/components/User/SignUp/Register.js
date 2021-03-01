@@ -271,8 +271,7 @@ const Registrer = () => {
                         
                     }
                 </section>
-                <TextAndLink text='¿Tienes cuenta?' link='Ingresa'/>
-                {/* action={history.push('/')} */}
+                <TextAndLink text='¿Tienes cuenta?' link='Ingresa' action={() => history.push('/')} />
             </section>
         </section>
     )
