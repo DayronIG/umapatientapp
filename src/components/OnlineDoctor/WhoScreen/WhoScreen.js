@@ -28,11 +28,11 @@ const WhenScreen = (props) => {
 	useEffect(() => {
 		let unmountTimeout = () => {}
 		if(user.dni && user.dni !== "") {
-			dispatch({ type: 'LOADING', payload: true });
 			(async function checkAssignations() {
 				localStorage.removeItem('selectedAppointment');
 				enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
+					dispatch({ type: 'LOADING', payload: true });
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 					const assigned = await findAllAssignedAppointment(userDni, type);
 					dispatch({ type: 'LOADING', payload: false });
