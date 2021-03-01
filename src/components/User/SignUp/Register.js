@@ -25,6 +25,7 @@ const Registrer = () => {
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
     const [sex, setSex] = useState('')
+    const [errorData, setErrorData] = useState([])
     const [validations, setValidations] = useState([{
         email: false,
         password: false,
@@ -72,6 +73,7 @@ const Registrer = () => {
                     ws: phone || '',
                     sex: sex || '',
                     dob: birthDate || '',
+                    healthinsurance: healthinsurance || ''
                 }
             }
             await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
@@ -94,7 +96,6 @@ const Registrer = () => {
         && validations.sex
         ) {
             const uid = userActive.currentUser.uid;
-
             if(email && password) {
                 await Firebase.auth().currentUser.sendEmailVerification()
                 .then(async () => {
@@ -106,7 +107,20 @@ const Registrer = () => {
                 updatePatient(uid, providerName);
             }
         } else {
-            console.log('Agregar errores en los inputs');
+            setErrorData([])
+            if(!validations.firstname) {
+                setErrorData((errorData) => [...errorData,'Nombre'])
+            }if(!validations.lastname) {
+                setErrorData((errorData) =>[...errorData,'Apellido'])
+            }if(!validations.dni) {
+                setErrorData((errorData) => [...errorData,'Documento de identidad'])
+            }if(!validations.phone) {
+                setErrorData((errorData) => [...errorData,'Telefono'])
+            } if(!validations.dob) {
+                setErrorData((errorData) => [...errorData,'Fecha de nacimiento'])
+            } if(!validations.sex) {
+                setErrorData((errorData) => [...errorData,'Sexo'])
+            }
         }
     }
 
@@ -129,6 +143,7 @@ const Registrer = () => {
                     setPassword(e.target.value)
                     setValidations({ ...validations, password: true })
                 } else {
+                    setPassword(e.target.value)
                     setValidations({ ...validations, password: false })
                 }
             break;
@@ -194,7 +209,6 @@ const Registrer = () => {
         if(e.target.value) {
             setSex(e.target.value)
             setValidations({ ...validations, sex: true })
-            console.log(validations)
         } else {
             setValidations({...validations, sex: false})
         }
@@ -224,14 +238,13 @@ const Registrer = () => {
                     <>
                         <GenericInputs label='¿Cual es tu mail?' type='email' name='email' validate={(e) =>handleInputsValidations(e)} />
                         <GenericInputs label='Crea una contraseña' type='password' name='pass' validate={(e) =>handleInputsValidations(e)} />
-                        {/* validate={(validations)=>validateInput(validations)}  */}
-                        <ConditionButtons/>
+                        <ConditionButtons check={password}/>
                         <GenericInputs label='Ingresa nuevamente tu contraseña' type='password' name='passrepeat' validate={(e) =>handleInputsValidations(e)}/>
-                        {/* validate={(validations)=>validateInput(validations)} */}
                     </>
                     }
                     {switchContent === '2' &&
                     <>
+                        {errorData.length !== 0 && <p className='signUp__content__form--error'>Los datos ingresados en el campo de: {errorData.join(', ')} son incorrectos. Por favor comprueba los datos ingresados.</p>}
                         <GenericInputs label='¿Cual es tu nombre?' type='text' name='firstname' validate={(e) =>handleInputsValidations(e)}/>
                         <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' validate={(e) =>handleInputsValidations(e)}/>
                         <GenericInputs label='Ingresa tu numero de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
@@ -258,6 +271,7 @@ const Registrer = () => {
                     }
                 </section>
                 <TextAndLink text='¿Tienes cuenta?' link='Ingresa'/>
+                {/* action={history.push('/')} */}
             </section>
         </section>
     )

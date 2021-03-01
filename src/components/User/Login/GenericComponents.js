@@ -25,97 +25,23 @@ import axios from 'axios';
 import {node_patient} from '../../../config/endpoints'; 
 
 export const GenericInputs = ({label, type, name = '', validate = () => {}}) => {
-    // validate
-    const dispatch = useDispatch();
-    const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)    
-    // const [passValidation, setPassValidation] = useState([{ email: false, validPass: false, validRepetition: false }])
-    const [email, setEmail] = useState('')
-    const [validEmail, setValidEmail] = useState(false)
-    const [selectSwitch, setSelectSwitch] = useState(false)
     const [labelUp, setLabelUp] = useState(false)
-    const [validations, setValidations] = useState([{
-        email: false,
-        password: false,
-        passRepetition: false,
-        firstname: false,
-        lastname: false,
-        dni: false,
-        phone: false
-    }])
-
-
-    // const _validateForm = useCallback((e) => {
-    //     if (e.target.name === 'email') {
-    //         setEmail(e.target.value)
-    //         let valid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
-    //         if(valid) { 
-    //             dispatch({ type: 'USER_FIRST_EMAIL', payload: e.target.value })
-    //             setValidEmail(true)
-    //             setValidations({ ...validations, email: true })
-    //             validate(validations)
-    //         } else {
-    //             setValidEmail(false)
-    //             setValidations({ ...validations, email: false })
-    //             validate(validations)
-    //         }
-    //     } else if (e.target.name === 'pass') {
-    //         setPassword(e.target.value)
-    //         let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
-    //         if (valid) {
-    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-    //             setValidations({ ...validations, password: true })
-    //             validate(validations)
-    //         } else {
-    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-    //             setValidations({ ...validations, password: false })
-    //             validate(validations)
-    //         }
-    //     } else if (e.target.name === 'passrepeat') {
-    //         if (e.target.value !== password) {
-    //             setValidations({ ...validations, passRepetition: false })
-    //         } else {
-    //             dispatch({ type: 'USER_PASSWORD', payload: e.target.value })
-    //             setValidations({ ...validations, passRepetition: true })
-    //         }
-    //     } else if (e.target.name === 'phone') {
-    //         if (checkNum(e.target.value)) {
-    //             let num = checkNum(e.target.value)
-    //             dispatch({ type: 'USER_PHONE_NUMBER', payload: num })
-    //             setValidations({ ...validations, phone: true })
-    //         } else {
-    //             setValidations({ ...validations})
-    //         }
-    //     } else if (e.target.name === 'dni') {
-    //         if (e.target.value.length >= 7 && e.target.value.length <= 8) {
-    //             dispatch({ type: 'USER_FIRST_DNI', payload: e.target.value })
-    //             setValidations({ ...validations, dni: true })
-    //         } else {
-    //             setValidations({ ...validations})
-    //         }
-    //     } else if (e.target.name === 'firstname') {
-    //         let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-    //         if(valid) { 
-    //             dispatch({ type: 'USER_FIRST_NAME', payload: e.target.value }) 
-    //             setValidations({ ...validations, firstname: true })
-    //         } else {
-    //             setValidations({ ...validations})
-    //         }
-    //     } else if (e.target.name === 'lastname') {
-    //         let valid = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-    //         if(valid) { 
-    //             dispatch({ type: 'USER_LAST_NAME', payload: e.target.value })
-    //             setValidations({ ...validations, lastname: true })
-    //         } else {
-    //             setValidations({ ...validations})
-    //         }
-    //     } else if (e.target.name === 'healthinsurance') {
-    //         dispatch({ type: 'USER_FIRST_OS', payload: e.target.value }) 
-    //     }
-
-    // }, [password, validations])
-    // passValidation, 
-
+    // const dispatch = useDispatch();
+    // const [password, setPassword] = useState('')
+    // const [passValidation, setPassValidation] = useState([{ email: false, validPass: false, validRepetition: false }])
+    // const [email, setEmail] = useState('')
+    // const [validEmail, setValidEmail] = useState(false)
+    // const [selectSwitch, setSelectSwitch] = useState(false)
+    // const [validations, setValidations] = useState([{
+    //     email: false,
+    //     password: false,
+    //     passRepetition: false,
+    //     firstname: false,
+    //     lastname: false,
+    //     dni: false,
+    //     phone: false
+    // }])
 
     return (
         <div className='form'>
@@ -193,12 +119,11 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
     )
 }
 
-export const ConditionButtons = () => { //no se dispacha a userData y no me trae el valor
-    const userData = useSelector(state => state.user)
+export const ConditionButtons = ({check}) => {
     const [validPass, setValidPass] = useState(false)
     
     const validate = () => {
-        let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(userData.password)
+        let valid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(check)
         if(valid) {
             setValidPass(true)
         }else {
@@ -208,19 +133,19 @@ export const ConditionButtons = () => { //no se dispacha a userData y no me trae
 
     useEffect(() => {
        validate()
-    }, [userData.password])
+    }, [check])
     
-        return(
-        <section className='conditions'>
-            <div className='conditions__group'>
-                <p className='characters'>Mínimo 8 carácteres</p>
-                {validPass && <div className='done'>✔</div>}
-            </div>
-            <div className='conditions__group'>
-                <p className='characters'>Mínimo 1 número</p>
-                {validPass && <div className='done number'>✔</div>}
-            </div>
-        </section>
+    return(
+    <section className='conditions'>
+        <div className='conditions__group'>
+            <p className='characters'>Mínimo 8 carácteres</p>
+            {validPass && <div className='done'>✔</div>}
+        </div>
+        <div className='conditions__group'>
+            <p className='characters'>Mínimo 1 número</p>
+            {validPass && <div className='done number'>✔</div>}
+        </div>
+    </section>
     )
 }
 
@@ -466,9 +391,9 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 export const TextAndLink = ({text, link, action}) => {
     // Cambian las rutas registrarme / ingresar / enviar por otro medio
     return(
-        <section className='textAndLink' onClick={action}>
+        <section className='textAndLink'>
             <p>{text}</p>
-            <a href='#'>{link}</a>
+            <a href='#' onClick={action}>{link}</a>
         </section>
     )
 }
