@@ -7,7 +7,6 @@ import {checkNum} from '../../../Utils/stringUtils';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
-import db from '../../../../config/DBConnection';
 import '../../../../styles/user/login.scss';
 
 const LoginPhoneNumber = () => { //Telefono -> false, mail
@@ -15,9 +14,9 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
     const dispatch = useDispatch();
     const [switchContent, setSwitchContent] = useState(false)
     const [ws, setWs] = useState('')
-    const {phone, dni, email} = useSelector(state => state.user)
-    const firestore = db.firestore();
+    const [dni, setDni] = useState('')
     const [userEmail, setUserEmail] = useState('');
+    const { email } = useSelector(state => state.user);
 
     const hideEmail = (email) => {
         const emailToShow = email.split('@')[0].slice(0, 4);
@@ -27,11 +26,17 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
         return `${emailToShow}${emailToHide}${domain}`;
     };
 
-    useEffect(() => {
-        if(phone) {
-            setWs(phone);
+    const validateDni = (e) => {
+        if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+            setDni(e.target.value);
         }
-    }, [phone])
+    }
+
+    const validateWs = (e) => {
+        if (checkNum(e.target.value)) {
+            setWs(checkNum(e.target.value));
+        }
+    }
 
     useEffect(() => {
         if(email) {
@@ -98,8 +103,8 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
             </section>
             {!switchContent && 
                 <>
-                    <GenericInputs label='Ingresa tu número DNI' name='dni' />
-                    <GenericInputs label='Ingresa tu número de celular' name='phone' />
+                <GenericInputs label='Ingresa tu número DNI' name='dni' validate={validateDni} />
+                <GenericInputs label='Ingresa tu número de celular' name='phone' validate={validateWs} />
                 </> 
             }
             {switchContent ? 

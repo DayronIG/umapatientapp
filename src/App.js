@@ -24,6 +24,10 @@ import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain'
 import SignUp from './components/User/SignUp/SignUp';
 import SignUpForm from './components/User/SignUp/Register';
 
+import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
+import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
+import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
+
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -91,9 +95,6 @@ import Support from './views/Support'
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
 
-// TODO:  revisar login despues de pantalla status
-// TODO: eliminar la contraseña  de redux una vez que se crea el usuario
-
 function App(props) {
 	return (
 		<div className='App'>
@@ -106,6 +107,9 @@ function App(props) {
 				<Route exact path='/signup' component={SignUp} />
 				<Route exact path='/signup/form/:screen' component={SignUpForm} />
 				<Route exact path='/signup/:status' component={Status} />
+				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
+				<Route exact path='/forgot/:type' component={ForgottenPass} />
+				<Route exact path='/forgot' component={NeedHelp} />
 
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
