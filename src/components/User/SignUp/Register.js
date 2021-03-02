@@ -10,12 +10,12 @@ import moment from 'moment-timezone';
 import {node_patient} from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 
-const Registrer = () => {
+const Register = () => {
     const {screen} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
-    const [switchContent, setSwitchContent] = useState('1')
     const userActive = useSelector(state => state.userActive)
+    const [switchContent, setSwitchContent] = useState('1')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstname, setFirstName] = useState('')
@@ -25,7 +25,7 @@ const Registrer = () => {
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
     const [sex, setSex] = useState('')
-    const [errorData, setErrorData] = useState([])
+    const [errorDataRegister, setErrorDataRegister] = useState([])
     const [validations, setValidations] = useState([{
         email: false,
         password: false,
@@ -37,7 +37,6 @@ const Registrer = () => {
         dob: false,
         sex: false
     }])
-
 
     useEffect (()=> {
         if (screen) {
@@ -58,6 +57,15 @@ const Registrer = () => {
                 dispatch({ type: 'USER_PASSWORD', payload: '' });
                 setSwitchContent('2');
             })
+        } else {
+            setErrorDataRegister([])
+            if(!validations.email) {
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'email'])
+            } if (!validations.password) {
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'password'])
+            } if(!validations.passRepetition) {
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'passwordRepeat'])
+            }
         }
     }
 
@@ -107,23 +115,22 @@ const Registrer = () => {
                 updatePatient(uid, providerName);
             }
         } else {
-            setErrorData([])
+            setErrorDataRegister([])
             if(!validations.firstname) {
-                setErrorData((errorData) => [...errorData,'Nombre'])
-            }if(!validations.lastname) {
-                setErrorData((errorData) =>[...errorData,'Apellido'])
-            }if(!validations.dni) {
-                setErrorData((errorData) => [...errorData,'Documento de identidad'])
-            }if(!validations.phone) {
-                setErrorData((errorData) => [...errorData,'Telefono'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'name'])
+            } if(!validations.lastname) {
+                setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'lastname'])
+            } if(!validations.dni) {
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'dni'])
+            } if(!validations.phone) {
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'phone'])
             } if(!validations.dob) {
-                setErrorData((errorData) => [...errorData,'Fecha de nacimiento'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'birth date'])
             } if(!validations.sex) {
-                setErrorData((errorData) => [...errorData,'Sexo'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'sex'])
             }
         }
     }
-
 
     const handleInputsValidations = (e) => {
         switch (e.target.name) {
@@ -134,7 +141,6 @@ const Registrer = () => {
                     setValidations({ ...validations, email: true })
                 } else {
                     setValidations({ ...validations, email: false })
-                    console.log(validations)
                 }
             break;
             case 'pass':
@@ -189,7 +195,7 @@ const Registrer = () => {
                 }
             break;
             case 'healthinsurance':
-                    setHealthinsurance(e.target.value)
+                setHealthinsurance(e.target.value)
             break;
             default: return false;
         }
@@ -237,44 +243,63 @@ const Registrer = () => {
                 <form className='signUp__content__form'>
                     {switchContent === '1' && 
                     <>
+                        {errorDataRegister.length !== 0 && 
+                        <>
+                            <p className='invalid-field'>Por favor comprueba los datos ingresados</p>
+                        </>
+                        } 
                         <GenericInputs label='¿Cual es tu mail?' type='email' name='email' validate={(e) =>handleInputsValidations(e)} />
+                        {errorDataRegister .map(item => item === 'email' && <p className='invalid-field'>La contraseña debe poseer un mínimo de 8 carácteres y al menos un número</p>)}
                         <GenericInputs label='Crea una contraseña' type='password' name='pass' validate={(e) =>handleInputsValidations(e)} />
+                        {errorDataRegister.map(item => item === 'password' && <p className='invalid-field'>La contraseña debe poseer un mínimo de 8 carácteres y al menos un número</p>)}
                         <ConditionButtons check={password}/>
                         <GenericInputs label='Ingresa nuevamente tu contraseña' type='password' name='passrepeat' validate={(e) =>handleInputsValidations(e)}/>
+                        {errorDataRegister.map(item => item === 'passwordRepeat' && <p className='invalid-field'>Las contraseñas ingresadas no coinciden</p>)}
                     </>
                     }
                     {switchContent === '2' &&
                     <>
-                        {errorData.length !== 0 && <p className='signUp__content__form--error'>Los datos ingresados en el campo de: {errorData.join(', ')} son incorrectos. Por favor comprueba los datos ingresados.</p>}
-                        <GenericInputs label='¿Cual es tu nombre?' type='text' name='firstname' validate={(e) =>handleInputsValidations(e)}/>
+                        {errorDataRegister.length !== 0 && 
+                            <p className='invalid-field'>Por favor comprueba los datos ingresados</p>
+                        } 
+                        {/* {errorDataRegister.length !== 0 && <p className='signUp__content__form--error'>Los datos ingresados en el campo de: {errorDataRegister.join(', ')} son incorrectos. Por favor comprueba los datos ingresados.</p>} */}
+                        <GenericInputs
+                            label='¿Cual es tu nombre?'
+                            type='text' name='firstname' 
+                            validate={(e) =>handleInputsValidations(e)}
+                        />
+                        {errorDataRegister.map(item => item === 'name' && <p className='invalid-field'>Campo incorrecto</p>)}
                         <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' validate={(e) =>handleInputsValidations(e)}/>
-                        <GenericInputs label='Ingresa tu numero de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
+                        {errorDataRegister.map(item => item === 'lastname' && <p className='invalid-field'>Campo incorrecto</p>)}
+                        <GenericInputs label='Ingresa tu número de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
+                        {errorDataRegister.map(item => item === 'dni' && <p className='invalid-field'>El numero de identidad debe tener al menos 7 números</p>)}
                         <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone' validate={(e) =>handleInputsValidations(e)}/>
+                        {errorDataRegister.map(item => item === 'phone' && <p className='invalid-field'>El número de telefono ingresado es invalido</p>)}
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance' validate={(e) =>handleInputsValidations(e)}/>
                         <SelectOption calendar action={(e)=>handleDate(e)}/>
+                        {errorDataRegister.map(item => item === 'birth date' && <p className='invalid-field'>Debes ser mayor de 16 años para utilizar la aplicación</p>)}
                         <SelectOption select action={(e) => getSexValue(e)}/>
+                        {errorDataRegister.map(item => item === 'sex' && <p className='invalid-field'>Por favor indique su sexo</p>)}
                     </> 
                     }
                 </form>
                 <section className='signUp__actions'>
                     {switchContent === '1' &&
                     <>
-                        <button className='signUp__actions--button back'>Atras</button>
+                        <button className='signUp__actions--button back' onClick={()=> history.push('/signup')}>Atras</button>
                         <button className='signUp__actions--button foward' onClick={handleCreateUser}>Siguiente</button>
                     </>
                     }
                     {switchContent === '2' && 
                         <>
                         <GenericButton color='blue' action={validationForm}>Registrarme</GenericButton>
-                        <p className='terms-and-conditions'>Al registrarte estás aceptando los <a href='#'>términos y condiciones</a></p>
+                        <p className='terms-and-conditions'>Al registrarte estás aceptando los <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a></p>
                         </>
-                        
                     }
                 </section>
-                <TextAndLink text='¿Tienes cuenta?' link='Ingresa' action={() => history.push('/')} />
             </section>
         </section>
     )
 } 
 
-export default Registrer;
+export default Register;

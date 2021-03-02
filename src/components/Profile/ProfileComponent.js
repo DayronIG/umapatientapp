@@ -136,7 +136,7 @@ const ProfileComponent = () => {
 						history.replace('/');
 					}} 
 					className="btn-blue-lg"
-				>Salir</button>
+				>Cerrar sesión</button>
 				{/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
 				<div className='umaVersion text-center'>
 					<Version />

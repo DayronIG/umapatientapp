@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
@@ -10,11 +10,47 @@ import '../../../styles/user/login.scss';
 const Login = () =>  {
     const history = useHistory();
     const dispatch = useDispatch();
-    const {email, password} = useSelector(state => state.user);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [errorData, setErrorData] = useState([]);
+    const [validations, setValidations] = useState([{
+        email: false,
+        password: false
+    }])
 
     const handleSignIn = async () => {
-        await Firebase.auth().signInWithEmailAndPassword(email, password);
-        dispatch({ type: 'USER_PASSWORD', payload: '' });
+        if(validations.email && validations.password) {
+            await Firebase.auth().signInWithEmailAndPassword(email, password);
+            dispatch({ type: 'USER_PASSWORD', payload: '' });
+        } else {
+            if(!validations.email) {
+                setErrorData((errorData) =>[...errorData,'Email'])
+            }
+            if(!validations.password) {
+                setErrorData((errorData) =>[...errorData,'Contraseña'])
+            }
+        }
+    }
+
+    const handleInputsValidations = (e) => {
+        if(e.target.name === 'email') {
+            let validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
+            if(validEmail) { 
+                setEmail(e.target.value)
+                setValidations({ ...validations, email: true })
+            } else {
+                setValidations({ ...validations, email: false })
+            }
+        } else if(e.target.name === 'pass') {
+            let validPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
+            if (validPass) {
+                setPassword(e.target.value)
+                setValidations({ ...validations, password: true })
+            } else {
+                setPassword(e.target.value)
+                setValidations({ ...validations, password: false })
+            }
+        }
     }
 
     return (
@@ -26,13 +62,14 @@ const Login = () =>  {
            </section>
            <LoginButtons circleBtn />
             <div className='login__lineSeparator'>o</div>
-            {/* email o password invalido? state ? section : null */}
-            <section className='login_invalid' style={{display: 'none'}}>
-                <p>El mail o la contraseña son incorrectos.</p>
-                <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
-            </section>
-            <GenericInputs label='Ingresa tu mail' type='email' name='email' />
-            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' />
+            {errorData.length !== 0 &&
+                <section className='login__invalid'>
+                    <p>El mail o la contraseña son incorrectos.</p>
+                    <p>Comprueba los datos ingresados o <a className='login__invalid--redirect' onClick={() => history.push('/signup')}>crea una cuenta</a></p>
+                </section>
+            }
+            <GenericInputs label='Ingresa tu mail' type='email' name='email' validate={(e) =>handleInputsValidations(e)}/>
+            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' validate={(e) =>handleInputsValidations(e)} />
            <section className='login__needHelp'>
                 {/* <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>

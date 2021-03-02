@@ -4,23 +4,6 @@ import { Route, withRouter } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
-import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
-import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
-import ResetPass from './components/User/Login/ForgottenPass/ResetPass';
-import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
-import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
-// ------- SignUp
-import SignUp from './components/User/SignUp/SignUp';
-import Register from './components/User/SignUp/Register';
-import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
-import ConfirmationMail from './components/User/SignUp/ConfirmationMail';
-import Status from './components/User/SignUp/Status';
-// ------- Login Phone Number
-import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
-import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain';
-//--------
-import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions';
-//--------
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -47,36 +30,6 @@ const Login = () => {
     }
 }
 
-// const Login = () => {
-//     const [delay, setDelay] = useState(false)
-
-//     useEffect(() => {
-//         let timeout = setTimeout(() => setDelay(true), 2000)
-//         return () => clearTimeout(timeout)
-//     }, [])
-//     if (delay) {
-//         return <LoginComponent/>
-//         //---{Login Telefono}---
-//             // <WelcomeAgain/>
-//             // <LoginPhoneNumber/>
-//         //---{Sign Up}---
-//             // <Status/>
-//             // <ConfirmationMail/>
-//             // <ConfirmationCode/>
-//             // <Register/>
-//             //  <SignUp/>
-//         // ---{Forgot Password or Email}---
-//             // <ForgottenAccError/>
-//             // <ResetPass/>
-//             // <ConfirmAcc/>
-//             // <ForgottenPass />
-//             // <NeedHelp/>
-//         // ---{Login}---
-//             // <LoginComponent />
-//     } else {
-//         return <Loading />
-//     }
-// }
 
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
