@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
@@ -10,7 +10,16 @@ import '../../../styles/user/login.scss';
 const Login = () =>  {
     const history = useHistory();
     const dispatch = useDispatch();
-    const {email, password} = useSelector(state => state.user);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const validateEmail = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const validatePassword = (e) => {
+        setPassword(e.target.value);
+    }
 
     const handleSignIn = async () => {
         await Firebase.auth().signInWithEmailAndPassword(email, password);
@@ -31,8 +40,8 @@ const Login = () =>  {
                 <p>El mail o la contraseña son incorrectos.</p>
                 <p>Comprueba los datos ingresados o <a href='#'>crea una cuenta</a></p>
             </section>
-            <GenericInputs label='Ingresa tu mail' type='email' name='email' />
-            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' />
+            <GenericInputs label='Ingresa tu mail' type='email' name='email' validate={validateEmail} />
+            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' validate={validatePassword} />
            <section className='login__needHelp'>
                 {/* <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>
