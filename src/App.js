@@ -94,6 +94,7 @@ import Support from './views/Support'
 /* IOMA */
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
+import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
 
 function App(props) {
 	return (
@@ -110,6 +111,7 @@ function App(props) {
 				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
 				<Route exact path='/forgot/:type' component={ForgottenPass} />
 				<Route exact path='/forgot' component={NeedHelp} />
+				<Route exact path='/termsconditions' component={TermsConditions} />
 
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />

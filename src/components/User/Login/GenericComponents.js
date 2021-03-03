@@ -2,9 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Firebase from 'firebase/app';
 import db from '../../../config/DBConnection';
 import {useHistory} from 'react-router-dom';
-// import {checkNum} from '../../Utils/stringUtils';
 import {useDispatch, useSelector} from 'react-redux';
-// import { Calendar, momentLocalizer } from 'react-big-calendar';
 import Modal from '../SignUp/Modal';
 import moment from 'moment-timezone';
 import showPass from '../../../assets/icons/showpassword.png';
@@ -19,29 +17,13 @@ import '../../../styles/user/genericComponents.scss';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { Calendar } from 'react-date-range';
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import es from 'date-fns/locale/es';
 import axios from 'axios';
 import {node_patient} from '../../../config/endpoints'; 
 
 export const GenericInputs = ({label, type, name = '', validate = () => {}}) => {
     const [showPassword, setShowPassword] = useState(false)    
     const [labelUp, setLabelUp] = useState(false)
-    // const dispatch = useDispatch();
-    // const [password, setPassword] = useState('')
-    // const [passValidation, setPassValidation] = useState([{ email: false, validPass: false, validRepetition: false }])
-    // const [email, setEmail] = useState('')
-    // const [validEmail, setValidEmail] = useState(false)
-    // const [selectSwitch, setSelectSwitch] = useState(false)
-    // const [validations, setValidations] = useState([{
-    //     email: false,
-    //     password: false,
-    //     passRepetition: false,
-    //     firstname: false,
-    //     lastname: false,
-    //     dni: false,
-    //     phone: false
-    // }])
 
     return (
         <div className='form'>
@@ -51,11 +33,11 @@ export const GenericInputs = ({label, type, name = '', validate = () => {}}) => 
                 className='form--input' 
                 onChange={validate}
                 onClick={()=> setLabelUp(true)}
+                autoComplete='off'
             />
             <label className={labelUp ? 'form--label up' : 'form--label'}>
                 {label}
             </label>
-
             {type === 'password' ? 
                 <img 
                     src={showPassword ? eyeOpenPass : showPass} 
@@ -63,9 +45,11 @@ export const GenericInputs = ({label, type, name = '', validate = () => {}}) => 
                     onClick={() => 
                     setShowPassword(!showPassword)} 
                     className='form--eyePass'
-                /> :
+                /> 
+                :
                 null
             }
+            
         </div>
     )
 };
@@ -84,37 +68,38 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
 
     return (
         <>
-        {showCalendar && 
-        <section className='calendar__container'>
-            <Modal>
-            <Calendar
-                date={date}
-                onChange={(e)=> handleCalendar(e)}
-
-            />
-                <section className='calendar__actions'>
-                    <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
-                    <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
-                    <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
+            {showCalendar && 
+                <section className='calendar__container'>
+                    <Modal>
+                    <Calendar
+                        date={date}
+                        onChange={(e)=> handleCalendar(e)}
+                        locale={es}
+                    />
+                        <section className='calendar__actions'>
+                            <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
+                            <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
+                            <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
+                        </section>
+                    </Modal>
                 </section>
-            </Modal>
-        </section>
-        }
-        {calendar &&  
-        <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
-            <p className='text'>{calendarValue !== '' ? calendarValue : 'Selecciona tu fecha de nacimiento'}</p>
-            <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
-        </section>}
-        {select && 
-        <div className='container__select--sex'>
-            <select className='select--sex' required onChange={action} >
-                <option selected disabled>Indica tu sexo</option>
-                <option value='femenino'>Femenino</option>
-                <option value='masculino'>Masculino</option>
-                <option value='otro'>Otro</option>
-            </select>
-        </div>
-        }
+            }
+            {calendar &&  
+                <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
+                    {calendarValue !== '' ? <p className='text date'>{calendarValue}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
+                    <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
+                </section>
+            }
+            {select && 
+                <div className='container__select--sex'>
+                    <select className='select--sex' required onChange={action} >
+                        <option selected disabled>Indica tu sexo</option>
+                        <option value='femenino'>Femenino</option>
+                        <option value='masculino'>Masculino</option>
+                        <option value='otro'>Otro</option>
+                    </select>
+                </div>
+            }
         </>
     )
 }
@@ -393,7 +378,7 @@ export const TextAndLink = ({text, link, action}) => {
     return(
         <section className='textAndLink'>
             <p>{text}</p>
-            <a href='#' onClick={action}>{link}</a>
+            <a onClick={action}>{link}</a>
         </section>
     )
 }

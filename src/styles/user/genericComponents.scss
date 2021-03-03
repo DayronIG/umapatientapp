@@ -57,14 +57,13 @@
     position: relative;
     @include d-flex-center;
     width: 91%;
-    margin: 40px auto;
+    margin: 40px auto 10px auto;
     .text {
         font-size: 16px;
         margin: 0;
         color: $when-dark;
         position: absolute;
         left: 0%;
-        // top: -px;
         width: 100%;
         text-align: start;
         &::after {
@@ -72,6 +71,10 @@
             display: block;
             height: 2px;
             background-color: $uma-button;
+        }
+        &.date {
+            color: black;
+            font-size: 18px;
         }
     }
     .icon--calendar {
@@ -85,18 +88,25 @@
 
 .container__select--sex {
     width: 90%;
-    margin: 20px auto;
+    margin: 40px auto 10px auto;
+   
     // padding: 30px 0 20px 0;
     .select--sex {
-        background-color: $white-color;
         color: $when-dark;
+        font-size: 16px;
+        background-color: $white-color;
         width: 100%;
         border: none;
-        font-size: 16px;
         border-bottom: 2px solid $uma-primary;
         position: relative;
-        &:focus {
+        &:target, &:focus{
             outline: transparent;
+            font-size: 18px;
+            color: black;
+        }
+        option {
+            font-size: 18px;
+            color: black;
         }
     }
 }
@@ -131,7 +141,7 @@
         .done {
             left: 17px;
             top: 25px;
-            font-size: 16px;
+            font-size: 15px;
             color: $uma-primary;
             position: absolute;
             &.number {
@@ -264,19 +274,13 @@
         &.circle::before {
             padding: 7px;
             top: 7px;
-            border: 1px solid $uma-primary;
+            top: 10px;
+            background-color: $uma-primary;
         }
         &:last-child::after {
             display: none;
         }
     }
-    // .circle::before {
-    //     padding: 7px;
-    //     top: 7px;
-    //     background-color: transparent;
-    //     border: 1px solid $uma-primary;
-    // }
-
 }
   
 

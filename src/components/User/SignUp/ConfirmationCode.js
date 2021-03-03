@@ -12,12 +12,12 @@ const ConfirmationCode = () => {
     const history = useHistory();
     const [codeConfirm, setCodeConfirm] = useState('Mail')
     const [code, setCode] = useState({
-        n1: 0,
-        n2: 0,
-        n3: 0,
-        n4: 0,
-        n5: 0,
-        n6: 0,
+        n1: null,
+        n2: null,
+        n3: null,
+        n4: null,
+        n5: null,
+        n6: null,
     })
     const ws = useSelector(state => state.user.phone)
     // Mail or number switch
@@ -29,11 +29,17 @@ const ConfirmationCode = () => {
     const num6 = useRef()
 
     const handleCheckUserCode = async () => {
-        if (code.n1 === 0 || code.n2 === 0 || code.n3 === 0 || code.n4 === 0 || code.n5 === 0 || code.n6 === 0) return false;
+        if (
+            code.n1 === null 
+            || code.n2 === null 
+            || code.n3 === null 
+            || code.n4 === null 
+            || code.n5 === null 
+            || code.n6 === null
+            ) 
+        return false;
         
         const finalCode = `${code.n1}${code.n2}${code.n3}${code.n4}${code.n5}${code.n6}`;
-        
-        console.log(finalCode);
 
         try {
             const config = { headers: { 'Content-Type': 'application/json' } }
@@ -183,7 +189,7 @@ const ConfirmationCode = () => {
                             required 
                         />
                 </form>
-                <TextAndLink text='¿No te llegó el código?' link='Enviar por otro medio'/>
+                {/* <TextAndLink text='¿No te llegó el código?' link='Enviar por otro medio'/> */}
             </section>
         </section>
     )

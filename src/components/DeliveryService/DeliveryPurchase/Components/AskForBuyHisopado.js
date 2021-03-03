@@ -139,9 +139,6 @@ export default function AskForBuyHisopado() {
                                 No lo cubren las obras sociales
                                 </li>
                                 <li>
-                                No emite certificado oficial
-                                </li>
-                                <li>
                                 Consulte con su destino la validez del test rápido para viajar
                                 </li>
                                 <li>

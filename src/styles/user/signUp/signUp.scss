@@ -16,7 +16,7 @@
     }
 
     .signUp__content {
-        padding-top: 15%;
+        padding: 15% 0;
         min-height: 100vh;
         width: 100vw;
         display: flex;
@@ -91,6 +91,18 @@
                 }
                 &:focus {
                     outline: none;
+                }
+            }
+        }
+
+        .signUp__content__form {
+            .invalid-field{
+                text-align: start;
+                font-size: 16px;
+                margin: 5px 5% 0 5%;
+                color: $uma-error;
+                &.date {
+                    margin-top: 20px;
                 }
             }
         }
