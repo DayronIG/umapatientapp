@@ -60,11 +60,11 @@ const Register = () => {
         } else {
             setErrorDataRegister([])
             if(!validations.email) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'email'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Email'])
             } if (!validations.password) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'password'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Contraseña'])
             } if(!validations.passRepetition) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'passwordRepeat'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Repetir contraseña'])
             }
         }
     }
@@ -117,17 +117,17 @@ const Register = () => {
         } else {
             setErrorDataRegister([])
             if(!validations.firstname) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'name'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Nombre'])
             } if(!validations.lastname) {
-                setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'lastname'])
+                setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'Apellido'])
             } if(!validations.dni) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'dni'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Número de identidad'])
             } if(!validations.phone) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'phone'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Teléfono'])
             } if(!validations.dob) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'birth date'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Fecha de nacimiento'])
             } if(!validations.sex) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'sex'])
+                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Sexo'])
             }
         }
     }
@@ -245,41 +245,32 @@ const Register = () => {
                     <>
                         {errorDataRegister.length !== 0 && 
                         <>
-                            <p className='invalid-field'>Por favor comprueba los datos ingresados</p>
+                            <p className='invalid-field'>Por favor comprueba los datos ingresados en el campo: {errorDataRegister.join(', ')}</p>
                         </>
                         } 
                         <GenericInputs label='¿Cual es tu mail?' type='email' name='email' validate={(e) =>handleInputsValidations(e)} />
-                        {errorDataRegister .map(item => item === 'email' && <p className='invalid-field'>La contraseña debe poseer un mínimo de 8 carácteres y al menos un número</p>)}
                         <GenericInputs label='Crea una contraseña' type='password' name='pass' validate={(e) =>handleInputsValidations(e)} />
-                        {errorDataRegister.map(item => item === 'password' && <p className='invalid-field'>La contraseña debe poseer un mínimo de 8 carácteres y al menos un número</p>)}
                         <ConditionButtons check={password}/>
                         <GenericInputs label='Ingresa nuevamente tu contraseña' type='password' name='passrepeat' validate={(e) =>handleInputsValidations(e)}/>
-                        {errorDataRegister.map(item => item === 'passwordRepeat' && <p className='invalid-field'>Las contraseñas ingresadas no coinciden</p>)}
                     </>
                     }
                     {switchContent === '2' &&
                     <>
                         {errorDataRegister.length !== 0 && 
-                            <p className='invalid-field'>Por favor comprueba los datos ingresados</p>
+                            <p className='invalid-field'>Por favor comprueba los datos ingresados en el campo: {errorDataRegister.join(', ')}</p>
                         } 
-                        {/* {errorDataRegister.length !== 0 && <p className='signUp__content__form--error'>Los datos ingresados en el campo de: {errorDataRegister.join(', ')} son incorrectos. Por favor comprueba los datos ingresados.</p>} */}
                         <GenericInputs
                             label='¿Cual es tu nombre?'
                             type='text' name='firstname' 
                             validate={(e) =>handleInputsValidations(e)}
                         />
-                        {errorDataRegister.map(item => item === 'name' && <p className='invalid-field'>Campo incorrecto</p>)}
                         <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' validate={(e) =>handleInputsValidations(e)}/>
-                        {errorDataRegister.map(item => item === 'lastname' && <p className='invalid-field'>Campo incorrecto</p>)}
                         <GenericInputs label='Ingresa tu número de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
-                        {errorDataRegister.map(item => item === 'dni' && <p className='invalid-field'>El numero de identidad debe tener al menos 7 números</p>)}
                         <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone' validate={(e) =>handleInputsValidations(e)}/>
-                        {errorDataRegister.map(item => item === 'phone' && <p className='invalid-field'>El número de telefono ingresado es invalido</p>)}
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance' validate={(e) =>handleInputsValidations(e)}/>
                         <SelectOption calendar action={(e)=>handleDate(e)}/>
-                        {errorDataRegister.map(item => item === 'birth date' && <p className='invalid-field'>Debes ser mayor de 16 años para utilizar la aplicación</p>)}
+                        {errorDataRegister.map(item => item === 'Fecha de nacimiento' && <p className='invalid-field date'>Debes ser mayor de 16 años para poder utilizar la aplicación</p>)}
                         <SelectOption select action={(e) => getSexValue(e)}/>
-                        {errorDataRegister.map(item => item === 'sex' && <p className='invalid-field'>Por favor indique su sexo</p>)}
                     </> 
                     }
                 </form>
@@ -291,10 +282,10 @@ const Register = () => {
                     </>
                     }
                     {switchContent === '2' && 
-                        <>
+                    <>
                         <GenericButton color='blue' action={validationForm}>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>Al registrarte estás aceptando los <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a></p>
-                        </>
+                    </>
                     }
                 </section>
             </section>
