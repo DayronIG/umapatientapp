@@ -35,6 +35,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
     const validateWs = (e) => {
         if (checkNum(e.target.value)) {
             setWs(checkNum(e.target.value));
+            dispatch({ type: 'USER_FIRST_WS', payload: checkNum(e.target.value)})
         }
     }
 

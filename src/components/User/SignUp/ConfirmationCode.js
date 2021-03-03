@@ -19,7 +19,7 @@ const ConfirmationCode = () => {
         n5: null,
         n6: null,
     })
-    const ws = useSelector(state => state.user.phone)
+    const ws = useSelector(state => state.user.ws)
     // Mail or number switch
     const num1 = useRef()
     const num2 = useRef()

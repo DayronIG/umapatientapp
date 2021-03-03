@@ -19,6 +19,7 @@ const Login = () =>  {
     }])
 
     const handleSignIn = async () => {
+        console.log(validations);
         if(validations.email && validations.password) {
             await Firebase.auth().signInWithEmailAndPassword(email, password);
             dispatch({ type: 'USER_PASSWORD', payload: '' });
