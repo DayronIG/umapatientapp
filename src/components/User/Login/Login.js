@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, {useState} from 'react';
-=======
 import React, { useState } from 'react';
->>>>>>> 8980a8b1bd79d0de5d3e8db39068fc2a0e6eb48a
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
