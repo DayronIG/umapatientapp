@@ -23,7 +23,7 @@ import {node_patient} from '../../../config/endpoints';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const GenericInputs = ({label, type, name = '', validate = () => {}, culo}) => {
+export const GenericInputs = ({label, type, name = '', inputRef}) => {
     const [showPassword, setShowPassword] = useState(false)    
     const [labelUp, setLabelUp] = useState(false)
 
@@ -33,10 +33,9 @@ export const GenericInputs = ({label, type, name = '', validate = () => {}, culo
                 name={name}
                 type={showPassword ? 'text' : type}
                 className='form--input' 
-                onChange={validate}
                 onClick={()=> setLabelUp(true)}
                 autoComplete='off'
-                ref={culo}
+                ref={inputRef}
             />
             <label className={labelUp ? 'form--label up' : 'form--label'}>
                 {label}
@@ -67,17 +66,33 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
 
 
     const handleChangeSex = (e) => {
-        setActive(true);
-        setSex(e.target.value);
-        action(e)
-        setShowOptions(false);
+        setActive(true)
+        setSex(e.target.value)
+        action(e.target.value)
+        setShowOptions(false)
     }
+
+        // const handleDate = (e) => {
+    //     const momentDate = moment(e).format('DD-MM-YYYY')
+    //     const olderThan = moment().diff(e, 'years') 
+    //     if(olderThan >= 16) {
+    //         setBirthDate(momentDate)
+    //         setValidations({...validations, dob: true})
+    //     }else {
+    //         setValidations({...validations, dob: false})
+    //     }
+    // }
 
     const handleCalendar = (e) => {
         setDate(e)
-        action(e)
         const momentDate = moment(e).format('DD-MM-YYYY')
-        setCalendarValue(momentDate)
+        const olderThan = moment().diff(e, 'years') 
+        if(olderThan >= 16) {
+            setCalendarValue(momentDate)
+            action(momentDate)
+        }else {
+            setCalendarValue('')
+        }
     }
 
     return (

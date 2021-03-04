@@ -17,6 +17,7 @@ const Register = () => {
     const dispatch = useDispatch();
 
     const { register, handleSubmit, errors } = useForm();
+    const onSubmit = data => console.log(data);
 
     const userActive = useSelector(state => state.userActive)
     const [switchContent, setSwitchContent] = useState('1')
@@ -54,35 +55,24 @@ const Register = () => {
         }
     }, [screen])
 
-    const handleCreateUser = async () => {
-        if (validations.email && validations.passRepetition) {
-            await Firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(async user => {
-                dispatch({ type: 'USER_PASSWORD', payload: '' });
-                setSwitchContent('2');
-            })
-        } else {
-            setErrorDataRegister([])
-            if(!validations.email) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Email'])
-            } if (!validations.password) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Contraseña'])
-            } if(!validations.passRepetition) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Repetir contraseña'])
-            }
-        }
+    const handleCreateUser = async (data) => {
+        await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+        .then(async user => {
+            dispatch({ type: 'USER_PASSWORD', payload: '' });
+            setSwitchContent('2');
+        })
     }
 
-    const updatePatient = async (uid, method) => {
+    const updatePatient = async (uid, method, dataVal) => {
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
             let data = {
                 newValues: {
                     login: [method],
-                    email: email || '',
-                    fullname: `${firstname} ${lastname}` || '',
-                    dni: dni || '',
-                    ws: phone || '',
+                    email: dataVal.email || '',
+                    fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
+                    dni: dataVal.dni || '',
+                    ws: dataVal.phone || '',
                     sex: sex || '',
                     dob: birthDate || '',
                     healthinsurance: healthinsurance || ''
@@ -91,140 +81,108 @@ const Register = () => {
             await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                 .then(res => {
                     dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
-                    dispatch({ type: 'USER_FIRST_WS', payload: phone })
-                    dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${firstname} ${lastname}` })
+                    dispatch({ type: 'USER_FIRST_WS', payload: dataVal.phone })
+                    dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${dataVal.firstname} ${dataVal.lastname}` })
                     history.push('/signUp/congrats');
                 })
         })
     }
 
-    const validationForm = async (data) => {
-        console.log(data);
-        // if( 
-        // validations.firstname
-        // && validations.lastname 
-        // && validations.dni
-        // && validations.phone
-        // && validations.dob
-        // && validations.sex
-        // ) {
-        //     const uid = userActive.currentUser.uid;
-        //     if(email && password) {
-        //         await Firebase.auth().currentUser.sendEmailVerification()
-        //         .then(async () => {
-        //             updatePatient(uid, 'email');
-        //         })
-        //         .catch(e => console.error(e))
-        //     } else {
-        //         const providerName = await Firebase.auth().currentUser.providerData[0].providerId;
-        //         updatePatient(uid, providerName);
-        //     }
-        // } else {
-        //     setErrorDataRegister([])
-        //     if(!validations.firstname) {
-        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Nombre'])
-        //     } if(!validations.lastname) {
-        //         setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'Apellido'])
-        //     } if(!validations.dni) {
-        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Número de identidad'])
-        //     } if(!validations.phone) {
-        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Teléfono'])
-        //     } if(!validations.dob) {
-        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Fecha de nacimiento'])
-        //     } if(!validations.sex) {
-        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Sexo'])
-        //     }
-        // }
-    }
-
-    const handleInputsValidations = (e) => {
-        switch (e.target.name) {
-            case 'email':
-                let validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
-                if(validEmail) { 
-                    setEmail(e.target.value)
-                    setValidations({ ...validations, email: true })
-                } else {
-                    setValidations({ ...validations, email: false })
-                }
-            break;
-            case 'pass':
-                let validPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
-                if (validPass) {
-                    setPassword(e.target.value)
-                    setValidations({ ...validations, password: true })
-                } else {
-                    setPassword(e.target.value)
-                    setValidations({ ...validations, password: false })
-                }
-            break;
-            case 'passrepeat':
-                if (e.target.value !== password) {
-                    setValidations({ ...validations, passRepetition: false })
-                } else {
-                    setValidations({ ...validations, passRepetition: true })
-                }
-            break;
-            case 'firstname':
-                let validName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-                if(validName) { 
-                    setFirstName(e.target.value)
-                    setValidations({ ...validations, firstname: true })
-                } else {
-                    setValidations({ ...validations, firstname: false})
-                }
-            break;
-            case 'lastname':
-                let validLastName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-                if(validLastName) { 
-                    setLastName(e.target.value)
-                    setValidations({ ...validations, lastname: true })
-                } else {
-                    setValidations({ ...validations, lastname: false})
-                }
-            break;
-            case 'phone':
-                if (checkNum(e.target.value)) {
-                    setPhone(e.target.value)
-                    setValidations({ ...validations, phone: true })
-                } else {
-                    setValidations({ ...validations, phone: false})
-                }
-            break;
-            case 'dni':
-                if (e.target.value.length >= 7 && e.target.value.length <= 8) {
-                    setDni(e.target.value)
-                    setValidations({ ...validations, dni: true })
-                } else {
-                    setValidations({ ...validations, dni: false})
-                }
-            break;
-            case 'healthinsurance':
-                setHealthinsurance(e.target.value)
-            break;
-            default: return false;
-        }
-    }
-
-    const handleDate = (e) => {
-        const momentDate = moment(e).format('DD-MM-YYYY')
-        const olderThan = moment().diff(e, 'years') 
-        if(olderThan >= 16) {
-            setBirthDate(momentDate)
-            setValidations({...validations, dob: true})
-        }else {
-            setValidations({...validations, dob: false})
-        }
-    }
-
-    const getSexValue = (e) => {
-        if(e.target.value) {
-            setSex(e.target.value)
-            setValidations({ ...validations, sex: true })
+    const validationForm = async (dataVal) => {
+        const uid = userActive.currentUser.uid;
+        if(dataVal.email && dataVal.password) {
+            await Firebase.auth().currentUser.sendEmailVerification()
+            .then(async () => {
+                updatePatient(uid, 'email', dataVal);
+            })
+            .catch(e => console.error(e))
         } else {
-            setValidations({...validations, sex: false})
+            const providerName = await Firebase.auth().currentUser.providerData[0].providerId;
+            updatePatient(uid, providerName, dataVal);
         }
     }
+
+    console.log(sex, birthDate)
+
+    // const handleInputsValidations = (e) => {
+    //     switch (e.target.name) {
+    //         case 'email':
+    //             let validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
+    //             if(validEmail) { 
+    //                 setEmail(e.target.value)
+    //                 setValidations({ ...validations, email: true })
+    //             } else {
+    //                 setValidations({ ...validations, email: false })
+    //             }
+    //         break;
+    //         case 'pass':
+    //             let validPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
+    //             if (validPass) {
+    //                 setPassword(e.target.value)
+    //                 setValidations({ ...validations, password: true })
+    //             } else {
+    //                 setPassword(e.target.value)
+    //                 setValidations({ ...validations, password: false })
+    //             }
+    //         break;
+    //         case 'passrepeat':
+    //             if (e.target.value !== password) {
+    //                 setValidations({ ...validations, passRepetition: false })
+    //             } else {
+    //                 setValidations({ ...validations, passRepetition: true })
+    //             }
+    //         break;
+    //         case 'firstname':
+    //             let validName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+    //             if(validName) { 
+    //                 setFirstName(e.target.value)
+    //                 setValidations({ ...validations, firstname: true })
+    //             } else {
+    //                 setValidations({ ...validations, firstname: false})
+    //             }
+    //         break;
+    //         case 'lastname':
+    //             let validLastName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
+    //             if(validLastName) { 
+    //                 setLastName(e.target.value)
+    //                 setValidations({ ...validations, lastname: true })
+    //             } else {
+    //                 setValidations({ ...validations, lastname: false})
+    //             }
+    //         break;
+    //         case 'phone':
+                // if (checkNum(e.target.value)) {
+                //     setPhone(e.target.value)
+                //     setValidations({ ...validations, phone: true })
+                // } else {
+                //     setValidations({ ...validations, phone: false})
+                // }
+    //         break;
+    //         case 'dni':
+    //             if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+    //                 setDni(e.target.value)
+    //                 setValidations({ ...validations, dni: true })
+    //             } else {
+    //                 setValidations({ ...validations, dni: false})
+    //             }
+    //         break;
+    //         case 'healthinsurance':
+    //             setHealthinsurance(e.target.value)
+    //         break;
+    //         default: return false;
+    //     }
+    // }
+
+    // const handleDate = (e) => {
+    //     const momentDate = moment(e).format('DD-MM-YYYY')
+    //     const olderThan = moment().diff(e, 'years') 
+    //     if(olderThan >= 16) {
+    //         setBirthDate(momentDate)
+    //         setValidations({...validations, dob: true})
+    //     }else {
+    //         setValidations({...validations, dob: false})
+    //     }
+    // }
 
     return (
         <section className='signUp'>
@@ -248,27 +206,60 @@ const Register = () => {
                 <form className='signUp__content__form'>
                     {switchContent === '1' && 
                     <>
-                        {errorDataRegister.length !== 0 && 
-                        <>
-                            <p className='invalid-field'>Por favor comprueba los datos ingresados en el campo: {errorDataRegister.join(', ')}</p>
-                        </>
-                        } 
-                        <GenericInputs label='¿Cual es tu mail?' type='email' name='email' validate={(e) =>handleInputsValidations(e)} />
-                        <GenericInputs label='Crea una contraseña' type='password' name='pass' validate={(e) =>handleInputsValidations(e)} />
+                        <GenericInputs 
+                            label='¿Cual es tu mail?' 
+                            type='email' 
+                            name='email'
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+                                    }
+                                )
+                            }
+                        />
+                        {errors.email && errors.email.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.email && errors.email.type === "pattern" && <span>Ingrese un mail válido</span>}
+                        <GenericInputs 
+                            label='Crea una contraseña' 
+                            type='password' 
+                            name='password'
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+                                    }
+                                )
+                            }
+                        />
+                        {errors.password && errors.password.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.password && errors.password.type === "pattern" && <span>La contraseña debe tener un minimo de 8 caracteres y al menos un número</span>}
                         <ConditionButtons check={password}/>
-                        <GenericInputs label='Ingresa nuevamente tu contraseña' type='password' name='passrepeat' validate={(e) =>handleInputsValidations(e)}/>
+                        <GenericInputs 
+                            label='Ingresa nuevamente tu contraseña' 
+                            type='password' 
+                            name='passrepeat' 
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+                                    }
+                                )
+                            }
+                        />
+                        {errors.passrepeat && errors.passrepeat.type === "required" && <span>Campo obligatorio</span>}
+                        {/* {errors.passrepeat && errors.passrepeat.type === "required" && <span>Las contraseñas no coinciden</span>} */}
                     </>
                     }
                     {switchContent === '2' &&
                     <>
-                        {errorDataRegister.length !== 0 && 
-                            <p className='invalid-field'>Por favor comprueba los datos ingresados en el campo: {errorDataRegister.join(', ')}</p>
-                        } 
                         <GenericInputs
                             label='¿Cual es tu nombre?'
                             type='text' name='firstname' 
-                            validate={(e) =>handleInputsValidations(e)}
-                            culo={
+                            inputRef={
                                 register(
                                     { 
                                         required: true, 
@@ -283,14 +274,63 @@ const Register = () => {
                             label='¿Cual es tu apellido?' 
                             type='text' 
                             name='lastname' 
-                            validate={(e) =>handleInputsValidations(e)}
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/ 
+                                    }
+                                )
+                            }
                         />
-                        <GenericInputs label='Ingresa tu número de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
-                        <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone' validate={(e) =>handleInputsValidations(e)}/>
-                        <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance' validate={(e) =>handleInputsValidations(e)}/>
-                        <SelectOption select action={(e) => getSexValue(e)}/>
-                        <SelectOption calendar action={(e)=>handleDate(e)}/>
-                        {errorDataRegister.map(item => item === 'Fecha de nacimiento' && <p className='invalid-field date'>Debes ser mayor de 16 años para poder utilizar la aplicación</p>)}
+                        {errors.lastname && errors.lastname.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.lastname && errors.lastname.type === "pattern" && <span>El formato no es válido</span>}
+                        <GenericInputs
+                            label='Ingresa tu número de identidad' 
+                            type='number' 
+                            name='dni' 
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        minLength: 7
+                                    }
+                                )
+                            } 
+                        />
+                        {errors.dni && errors.dni.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.dni && errors.dni.type === "minLength" && <span>El numero de identificacion debe tener al menos 7 números</span>}
+                        <GenericInputs
+                            label='Ingresa tu numero de celular'
+                            type='number' 
+                            name='phone'
+                            inputRef={
+                                register(
+                                    { 
+                                        required: true, 
+                                        minLength: 10
+                                    }
+                                )
+                            } 
+                        /> 
+                        {errors.phone && errors.phone.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.phone && errors.phone.type === "minLength" && <span>El número de teléfono debe tener al menos 10 números</span>}
+                        <GenericInputs 
+                            label='¿Cual es tu cobertura de salud?' 
+                            type='text' 
+                            name='healthinsurance'
+                            action={(e)=> setHealthinsurance(e)}
+                        />
+
+                        <SelectOption 
+                            select                          
+                            action={(e)=>setSex(e)}
+                        />
+                        {errors.sex && errors.sex.type === "required" && <span>Por favor indique su sexo</span>}
+                        <SelectOption 
+                            calendar
+                            action={(e)=>setBirthDate(e)}
+                        /> 
                     </> 
                     }
                 </form>
@@ -298,7 +338,7 @@ const Register = () => {
                     {switchContent === '1' &&
                     <>
                         <button className='signUp__actions--button back' onClick={()=> history.push('/signup')}>Atras</button>
-                        <button className='signUp__actions--button foward' onClick={handleCreateUser}>Siguiente</button>
+                        <button className='signUp__actions--button foward' onClick={handleSubmit(handleCreateUser)}>Siguiente</button>
                     </>
                     }
                     {switchContent === '2' && 
