@@ -62,12 +62,10 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
     const [date, setDate] = useState(null);
     const [sex, setSex] = useState(null);
     const [active, setActive] = useState(false);
-    // const [sexError, setSexError] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
 
 
     const handleChangeSex = (e) => {
-        // setSexError(false)
         setActive(true);
         setSex(e.target.value);
         action(e)
@@ -105,20 +103,8 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
                     <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
                 </section>
             }
-            {/* {select && 
-                <div className='container__select--sex'>
-                    <select className='select--sex' required onChange={action} >
-                        <option selected disabled>Indica tu sexo</option>
-                        <option value='femenino'>Femenino</option>
-                        <option value='masculino'>Masculino</option>
-                        <option value='otro'>Otro</option>
-                    </select>
-                </div>
-            } */}
             {select &&
                 <div className='container__select--sex'>
-                    {/* className={`${sexError ? 'error' : ''}`} */}
-                    {/* <p className="similLabel">Indica tu sexo</p> */}
                     <button 
                         className={`select--sex ${active ? 'active' : ''}`} 
                         onClick={(e) => {
@@ -143,7 +129,6 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
                             Otro
                         </label>
                     </div>
-                    {/* {sexError && <p className="error__message">Campo obligatorio</p>} */}
                 </div>
             }
         </>
