@@ -9,11 +9,15 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import {node_patient} from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
+import { useForm } from "react-hook-form";
 
 const Register = () => {
     const {screen} = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const { register, handleSubmit, errors } = useForm();
+
     const userActive = useSelector(state => state.userActive)
     const [switchContent, setSwitchContent] = useState('1')
     const [email, setEmail] = useState('')
@@ -94,42 +98,43 @@ const Register = () => {
         })
     }
 
-    const validationForm = async () => {
-        if( 
-        validations.firstname
-        && validations.lastname 
-        && validations.dni
-        && validations.phone
-        && validations.dob
-        && validations.sex
-        ) {
-            const uid = userActive.currentUser.uid;
-            if(email && password) {
-                await Firebase.auth().currentUser.sendEmailVerification()
-                .then(async () => {
-                    updatePatient(uid, 'email');
-                })
-                .catch(e => console.error(e))
-            } else {
-                const providerName = await Firebase.auth().currentUser.providerData[0].providerId;
-                updatePatient(uid, providerName);
-            }
-        } else {
-            setErrorDataRegister([])
-            if(!validations.firstname) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Nombre'])
-            } if(!validations.lastname) {
-                setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'Apellido'])
-            } if(!validations.dni) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Número de identidad'])
-            } if(!validations.phone) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Teléfono'])
-            } if(!validations.dob) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Fecha de nacimiento'])
-            } if(!validations.sex) {
-                setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Sexo'])
-            }
-        }
+    const validationForm = async (data) => {
+        console.log(data);
+        // if( 
+        // validations.firstname
+        // && validations.lastname 
+        // && validations.dni
+        // && validations.phone
+        // && validations.dob
+        // && validations.sex
+        // ) {
+        //     const uid = userActive.currentUser.uid;
+        //     if(email && password) {
+        //         await Firebase.auth().currentUser.sendEmailVerification()
+        //         .then(async () => {
+        //             updatePatient(uid, 'email');
+        //         })
+        //         .catch(e => console.error(e))
+        //     } else {
+        //         const providerName = await Firebase.auth().currentUser.providerData[0].providerId;
+        //         updatePatient(uid, providerName);
+        //     }
+        // } else {
+        //     setErrorDataRegister([])
+        //     if(!validations.firstname) {
+        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Nombre'])
+        //     } if(!validations.lastname) {
+        //         setErrorDataRegister((errorDataRegister) =>[...errorDataRegister,'Apellido'])
+        //     } if(!validations.dni) {
+        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Número de identidad'])
+        //     } if(!validations.phone) {
+        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Teléfono'])
+        //     } if(!validations.dob) {
+        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Fecha de nacimiento'])
+        //     } if(!validations.sex) {
+        //         setErrorDataRegister((errorDataRegister) => [...errorDataRegister,'Sexo'])
+        //     }
+        // }
     }
 
     const handleInputsValidations = (e) => {
@@ -263,7 +268,17 @@ const Register = () => {
                             label='¿Cual es tu nombre?'
                             type='text' name='firstname' 
                             validate={(e) =>handleInputsValidations(e)}
+                            culo={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/ 
+                                    }
+                                )
+                            }
                         />
+                        {errors.firstname && errors.firstname.type === "required" && <span>Campo obligatorio</span>}
+                        {errors.firstname && errors.firstname.type === "pattern" && <span>El formato no es válido</span>}
                         <GenericInputs 
                             label='¿Cual es tu apellido?' 
                             type='text' 
@@ -288,7 +303,7 @@ const Register = () => {
                     }
                     {switchContent === '2' && 
                     <>
-                        <GenericButton color='blue' action={validationForm}>Registrarme</GenericButton>
+                        <GenericButton color='blue' action={handleSubmit(validationForm)}>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>Al registrarte estás aceptando los <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a></p>
                     </>
                     }
