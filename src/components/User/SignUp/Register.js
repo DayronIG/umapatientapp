@@ -264,7 +264,12 @@ const Register = () => {
                             type='text' name='firstname' 
                             validate={(e) =>handleInputsValidations(e)}
                         />
-                        <GenericInputs label='¿Cual es tu apellido?' type='text' name='lastname' validate={(e) =>handleInputsValidations(e)}/>
+                        <GenericInputs 
+                            label='¿Cual es tu apellido?' 
+                            type='text' 
+                            name='lastname' 
+                            validate={(e) =>handleInputsValidations(e)}
+                        />
                         <GenericInputs label='Ingresa tu número de identidad' type='number' name='dni' validate={(e) =>handleInputsValidations(e)} />
                         <GenericInputs label='Ingresa tu numero de celular' type='number' name='phone' validate={(e) =>handleInputsValidations(e)}/>
                         <GenericInputs label='¿Cual es tu cobertura de salud?' type='text' name='healthinsurance' validate={(e) =>handleInputsValidations(e)}/>
