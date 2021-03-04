@@ -70,6 +70,11 @@ const ConfirmAppointment = (props) => {
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
+			let ruta = selectedAppointment.path?.split('assignations/')[1]
+			if(bag) {
+				category = "GUARDIA_RANDOM"
+				ruta = ''
+			}
 			let data = {
 				age: userVerified.age || '',
 				biomarker: biomarkers || [],
@@ -83,8 +88,7 @@ const ConfirmAppointment = (props) => {
 				msg: 'make_appointment',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
-				ruta: selectedAppointment.path?.split('assignations/')[1] || '',
-				// cuit: "2034109531",
+				ruta: ruta || '',
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
@@ -104,7 +108,7 @@ const ConfirmAppointment = (props) => {
 			}
 		} catch (err) {
 			if(err.response?.data?.fecha === '') {
-				return history.replace(`/onlinedoctor/who/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
 			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
@@ -125,11 +129,13 @@ const ConfirmAppointment = (props) => {
 				icon: 'warning',
 				buttons: true,
 			});
-			if (!confirmAction) {
-				return postData(true);
+			if (confirmAction) {
+				postData(true);
+			} else {
+				let userVerified = user.dni
+				if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
+				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
 			}
-			dispatch({ type: 'LOADING', payload: false });
-			return history.replace('/');
 		}
 	}, [selectedAppointment])
 
