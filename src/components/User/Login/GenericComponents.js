@@ -20,6 +20,8 @@ import { Calendar } from 'react-date-range';
 import es from 'date-fns/locale/es';
 import axios from 'axios';
 import {node_patient} from '../../../config/endpoints'; 
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const GenericInputs = ({label, type, name = '', validate = () => {}}) => {
     const [showPassword, setShowPassword] = useState(false)    
@@ -58,6 +60,19 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
     const [showCalendar, setShowCalendar] = useState(false)
     const [calendarValue, setCalendarValue] = useState('')
     const [date, setDate] = useState(null);
+    const [sex, setSex] = useState(null);
+    const [active, setActive] = useState(false);
+    // const [sexError, setSexError] = useState(false);
+    const [showOptions, setShowOptions] = useState(false);
+
+
+    const handleChangeSex = (e) => {
+        // setSexError(false)
+        setActive(true);
+        setSex(e.target.value);
+        action(e)
+        setShowOptions(false);
+    }
 
     const handleCalendar = (e) => {
         setDate(e)
@@ -90,7 +105,7 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
                     <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
                 </section>
             }
-            {select && 
+            {/* {select && 
                 <div className='container__select--sex'>
                     <select className='select--sex' required onChange={action} >
                         <option selected disabled>Indica tu sexo</option>
@@ -98,6 +113,37 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
                         <option value='masculino'>Masculino</option>
                         <option value='otro'>Otro</option>
                     </select>
+                </div>
+            } */}
+            {select &&
+                <div className='container__select--sex'>
+                    {/* className={`${sexError ? 'error' : ''}`} */}
+                    {/* <p className="similLabel">Indica tu sexo</p> */}
+                    <button 
+                        className={`select--sex ${active ? 'active' : ''}`} 
+                        onClick={(e) => {
+                            e.preventDefault();    
+                            setShowOptions(true);
+                        }}
+                    >
+                        {sex || 'Indica tu sexo'} 
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    </button>
+                    <div className={`show--options ${showOptions ? 'visible' : 'hiden'}`}>
+                        <label>
+                            <input type="radio" name="sexo" value="Femenino" onChange={handleChangeSex} />
+                            Femenino
+                        </label>
+                        <label>
+                            <input type="radio" name="sexo" value="Masculino" onChange={handleChangeSex} />
+                            Masculino
+                        </label>
+                        <label>
+                            <input type="radio" name="sexo" value="Otro" onChange={handleChangeSex} />
+                            Otro
+                        </label>
+                    </div>
+                    {/* {sexError && <p className="error__message">Campo obligatorio</p>} */}
                 </div>
             }
         </>
