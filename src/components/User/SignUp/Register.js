@@ -10,6 +10,8 @@ import moment from 'moment-timezone';
 import {node_patient} from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 import { useForm } from "react-hook-form";
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Register = () => {
     const {screen} = useParams();
@@ -22,7 +24,15 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
-    const [sex, setSex] = useState('')
+    // const [sex, setSex] = useState('')
+    // const [showCalendar, setShowCalendar] = useState(false)
+    // const [calendarValue, setCalendarValue] = useState('')
+    // const [date, setDate] = useState(null);
+    const [sex, setSex] = useState(null);
+    const [active, setActive] = useState(false);
+    const [showOptions, setShowOptions] = useState(false);
+
+
     // const [email, setEmail] = useState('')
     // const [firstname, setFirstName] = useState('')
     // const [lastname, setLastName] = useState('')
@@ -101,85 +111,12 @@ const Register = () => {
         }
     }
 
-    // const handleInputsValidations = (e) => {
-    //     switch (e.target.name) {
-    //         case 'email':
-    //             let validEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value)
-    //             if(validEmail) { 
-    //                 setEmail(e.target.value)
-    //                 setValidations({ ...validations, email: true })
-    //             } else {
-    //                 setValidations({ ...validations, email: false })
-    //             }
-    //         break;
-    //         case 'pass':
-    //             let validPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(e.target.value)
-    //             if (validPass) {
-    //                 setPassword(e.target.value)
-    //                 setValidations({ ...validations, password: true })
-    //             } else {
-    //                 setPassword(e.target.value)
-    //                 setValidations({ ...validations, password: false })
-    //             }
-    //         break;
-    //         case 'passrepeat':
-    //             if (e.target.value !== password) {
-    //                 setValidations({ ...validations, passRepetition: false })
-    //             } else {
-    //                 setValidations({ ...validations, passRepetition: true })
-    //             }
-    //         break;
-    //         case 'firstname':
-    //             let validName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-    //             if(validName) { 
-    //                 setFirstName(e.target.value)
-    //                 setValidations({ ...validations, firstname: true })
-    //             } else {
-    //                 setValidations({ ...validations, firstname: false})
-    //             }
-    //         break;
-    //         case 'lastname':
-    //             let validLastName = /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)?$/.test(e.target.value)
-    //             if(validLastName) { 
-    //                 setLastName(e.target.value)
-    //                 setValidations({ ...validations, lastname: true })
-    //             } else {
-    //                 setValidations({ ...validations, lastname: false})
-    //             }
-    //         break;
-    //         case 'phone':
-                // if (checkNum(e.target.value)) {
-                //     setPhone(e.target.value)
-                //     setValidations({ ...validations, phone: true })
-                // } else {
-                //     setValidations({ ...validations, phone: false})
-                // }
-    //         break;
-    //         case 'dni':
-    //             if (e.target.value.length >= 7 && e.target.value.length <= 8) {
-    //                 setDni(e.target.value)
-    //                 setValidations({ ...validations, dni: true })
-    //             } else {
-    //                 setValidations({ ...validations, dni: false})
-    //             }
-    //         break;
-    //         case 'healthinsurance':
-    //             setHealthinsurance(e.target.value)
-    //         break;
-    //         default: return false;
-    //     }
-    // }
-
-    // const handleDate = (e) => {
-    //     const momentDate = moment(e).format('DD-MM-YYYY')
-    //     const olderThan = moment().diff(e, 'years') 
-    //     if(olderThan >= 16) {
-    //         setBirthDate(momentDate)
-    //         setValidations({...validations, dob: true})
-    //     }else {
-    //         setValidations({...validations, dob: false})
-    //     }
-    // }
+    const handleChangeSex = (e) => {
+        setActive(true)
+        setSex(e.target.value)
+        // action(e.target.value)
+        setShowOptions(false)
+    }
 
     return (
         <section className='signUp'>
@@ -318,15 +255,47 @@ const Register = () => {
                             action={(e)=> setHealthinsurance(e)}
                         />
 
-                        <SelectOption 
+                        {/* <SelectOption 
                             select                          
                             action={(e)=>setSex(e)}
-                        />
+                        /> */}
+                        <div className='container__select--sex'>
+                            <button 
+                                className={`select--sex ${active ? 'active' : ''}`} 
+                                onClick={(e) => {
+                                    e.preventDefault();    
+                                    setShowOptions(true);
+                                }}
+                            >
+                                {sex || 'Indica tu sexo'} 
+                                <FontAwesomeIcon icon={faChevronDown} />
+                            </button>
+                            <div className={`show--options ${showOptions ? 'visible' : 'hiden'}`}>
+                                <label>
+                                    <input type="radio" name="sexo" value="Femenino" 
+                                    onChange={handleChangeSex} 
+                                    />
+                                    Femenino
+                                </label>
+                                <label>
+                                    <input type="radio" name="sexo" value="Masculino" 
+                                    onChange={handleChangeSex}
+                                     />
+                                    Masculino
+                                </label>
+                                <label>
+                                    <input type="radio" name="sexo" value="Otro" 
+                                    onChange={handleChangeSex} 
+                                    />
+                                    Otro
+                                </label>
+                            </div>
+                        </div>
                         {/* {errors.sex && errors.sex.type === "required" && <span>Por favor indique su sexo</span>} */}
-                        <SelectOption 
+                        {/* <SelectOption 
                             calendar
                             action={(e)=>setBirthDate(e)}
-                        /> 
+                        />  */}
                     </> 
                     }
                 </form>
