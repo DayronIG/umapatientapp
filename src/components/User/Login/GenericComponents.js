@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Firebase from 'firebase/app';
 import db from '../../../config/DBConnection';
 import {useHistory} from 'react-router-dom';
@@ -14,10 +14,10 @@ import Mobile from '../../../assets/logos/mobile.png';
 import Email from '../../../assets/logos/email.png';
 import CalendarIcon from '../../../assets/calendar.png'; 
 import '../../../styles/user/genericComponents.scss';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
-import { Calendar } from 'react-date-range';
-import es from 'date-fns/locale/es';
+// import 'react-date-range/dist/styles.css';
+// import 'react-date-range/dist/theme/default.css';
+// import { Calendar } from 'react-date-range';
+// import es from 'date-fns/locale/es';
 import axios from 'axios';
 import {node_patient} from '../../../config/endpoints'; 
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -37,7 +37,7 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
                 onChange={(e)=>action(e)}
                 autoComplete='off'
                 ref={inputRef}
-            />
+            />  
             <label className={labelUp ? 'form--label up' : 'form--label'}>
                 {label}
             </label>
@@ -57,21 +57,21 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
     )
 };
 
-export const SelectOption = ({calendar, select, action = () => {}}) => {
-    const [showCalendar, setShowCalendar] = useState(false)
-    const [calendarValue, setCalendarValue] = useState('')
-    const [date, setDate] = useState(null);
-    const [sex, setSex] = useState(null);
-    const [active, setActive] = useState(false);
-    const [showOptions, setShowOptions] = useState(false);
+// export const SelectOption = ({calendar, select, action = () => {}}) => {
+//     const [showCalendar, setShowCalendar] = useState(false)
+//     const [calendarValue, setCalendarValue] = useState('')
+//     const [date, setDate] = useState(null);
+//     const [sex, setSex] = useState(null);
+//     const [active, setActive] = useState(false);
+//     const [showOptions, setShowOptions] = useState(false);
 
 
-    const handleChangeSex = (e) => {
-        setActive(true)
-        setSex(e.target.value)
-        action(e.target.value)
-        setShowOptions(false)
-    }
+    // const handleChangeSex = (e) => {
+    //     setActive(true)
+    //     setSex(e.target.value)
+    //     action(e.target.value)
+    //     setShowOptions(false)
+    // }
 
         // const handleDate = (e) => {
     //     const momentDate = moment(e).format('DD-MM-YYYY')
@@ -84,21 +84,21 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
     //     }
     // }
 
-    const handleCalendar = (e) => {
-        setDate(e)
-        const momentDate = moment(e).format('DD-MM-YYYY')
-        const olderThan = moment().diff(e, 'years') 
-        if(olderThan >= 16) {
-            setCalendarValue(momentDate)
-            action(momentDate)
-        }else {
-            setCalendarValue('')
-        }
-    }
+    // const handleCalendar = (e) => {
+    //     setDate(e)
+    //     const momentDate = moment(e).format('DD-MM-YYYY')
+    //     const olderThan = moment().diff(e, 'years') 
+    //     if(olderThan >= 16) {
+    //         setCalendarValue(momentDate)
+    //         action(momentDate)
+    //     }else {
+    //         setCalendarValue('')
+    //     }
+    // }
 
-    return (
-        <>
-            {showCalendar && 
+    // return (
+        // <>
+            {/* {showCalendar && 
                 <section className='calendar__container'>
                     <Modal>
                     <Calendar
@@ -119,8 +119,8 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
                     {calendarValue !== '' ? <p className='text date'>{calendarValue}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
                     <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
                 </section>
-            }
-            {select &&
+            } */}
+            {/* {select &&
                 <div className='container__select--sex'>
                     <button 
                         className={`select--sex ${active ? 'active' : ''}`} 
@@ -150,7 +150,7 @@ export const SelectOption = ({calendar, select, action = () => {}}) => {
             }
         </>
     )
-}
+} */}
 
 export const ConditionButtons = ({check}) => {
     const [validPass, setValidPass] = useState(false)

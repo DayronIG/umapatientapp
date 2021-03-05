@@ -152,6 +152,38 @@
                     }
                 }
             }
+            
+            .birth__date {
+                position: relative;
+                @include d-flex-center;
+                width: 91%;
+                margin: 40px auto 10px auto;
+                .text {
+                    font-size: 16px;
+                    margin: 0;
+                    color: $when-dark;
+                    position: absolute;
+                    left: 0%;
+                    min-height: 31px;
+                    width: 100%;
+                    text-align: start;
+                    &::after {
+                        content: '';
+                        display: block;
+                        height: 2px;
+                        background-color: $uma-button;
+                    }
+                    &.date {
+                        color: black;
+                        font-size: 18px;
+                    }
+                }
+                .icon--calendar {
+                    position: absolute;
+                    right: 5px;
+                    bottom: -5px;
+                }
+            }
         }
 
     //     .signUp__content__form {

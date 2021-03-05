@@ -6,12 +6,18 @@ import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, S
 import { useHistory, useParams } from 'react-router-dom';
 import Firebase from 'firebase/app';
 import axios from 'axios';
+import Modal from '../SignUp/Modal';
 import moment from 'moment-timezone';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { Calendar } from 'react-date-range';
+import es from 'date-fns/locale/es';
 import {node_patient} from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 import { useForm } from "react-hook-form";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CalendarIcon from '../../../assets/calendar.png'; 
 
 const Register = () => {
     const {screen} = useParams();
@@ -24,15 +30,22 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
+    const [sex, setSex] = useState(null);
+    const [active, setActive] = useState(false);
+    const [showOptions, setShowOptions] = useState(false);
+    const [showCalendar, setShowCalendar] = useState(false)
+    // const [calendarValue, setCalendarValue] = useState('')
+    const [date, setDate] = useState(null);
+    const [showError, setshowError] = useState([{
+        dob: false,
+        sex: false
+    }])
+
+
     // const [sex, setSex] = useState('')
     // const [showCalendar, setShowCalendar] = useState(false)
     // const [calendarValue, setCalendarValue] = useState('')
     // const [date, setDate] = useState(null);
-    const [sex, setSex] = useState(null);
-    const [active, setActive] = useState(false);
-    const [showOptions, setShowOptions] = useState(false);
-
-
     // const [email, setEmail] = useState('')
     // const [firstname, setFirstName] = useState('')
     // const [lastname, setLastName] = useState('')
@@ -73,6 +86,8 @@ const Register = () => {
     }
 
     const updatePatient = async (uid, method, dataVal) => {
+        const phoneChecked = checkNum(dataVal.phone)
+        console.log(phoneChecked)
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
             let data = {
@@ -81,7 +96,7 @@ const Register = () => {
                     email: dataVal.email || '',
                     fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
                     dni: dataVal.dni || '',
-                    ws: dataVal.phone || '',
+                    ws: phoneChecked|| '',
                     sex: sex || '',
                     dob: birthDate || '',
                     healthinsurance: healthinsurance || ''
@@ -98,7 +113,7 @@ const Register = () => {
     }
 
     const validationForm = async (dataVal) => {
-        const uid = userActive.currentUser.uid;
+        const uid = userActive.currentUser.uid
         if(dataVal.email && dataVal.password) {
             await Firebase.auth().currentUser.sendEmailVerification()
             .then(async () => {
@@ -106,16 +121,26 @@ const Register = () => {
             })
             .catch(e => console.error(e))
         } else {
-            const providerName = await Firebase.auth().currentUser.providerData[0].providerId;
-            updatePatient(uid, providerName, dataVal);
+            const providerName = await Firebase.auth().currentUser.providerData[0].providerId
+            updatePatient(uid, providerName, dataVal)
         }
     }
 
     const handleChangeSex = (e) => {
         setActive(true)
         setSex(e.target.value)
-        // action(e.target.value)
         setShowOptions(false)
+    }
+
+    const handleCalendar = (e) => {
+        setDate(e)
+        const momentDate = moment(e).format('DD-MM-YYYY')
+        const olderThan = moment().diff(e, 'years') 
+        if(olderThan >= 16) {
+            setBirthDate(momentDate)
+        }else {
+            setshowError(true)
+        }
     }
 
     return (
@@ -291,11 +316,31 @@ const Register = () => {
                                 </label>
                             </div>
                         </div>
-                        {/* {errors.sex && errors.sex.type === "required" && <span>Por favor indique su sexo</span>} */}
                         {/* <SelectOption 
                             calendar
                             action={(e)=>setBirthDate(e)}
                         />  */}
+                    {showCalendar && 
+                    <section className='calendar__container'>
+                        <Modal>
+                        <Calendar
+                            date={date}
+                            onChange={(e)=> handleCalendar(e)}
+                            locale={es}
+                        />
+                            <section className='calendar__actions'>
+                                <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
+                                <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
+                                <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
+                            </section>
+                        </Modal>
+                    </section>
+                    }
+                    <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
+                        {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
+                        <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
+                    </section>
+                    {showError.dob && <p>Debes ser mayor de 16 años para utilizar la aplicación</p>}
                     </> 
                     }
                 </form>
