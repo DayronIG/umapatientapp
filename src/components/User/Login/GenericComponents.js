@@ -23,7 +23,7 @@ import {node_patient} from '../../../config/endpoints';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const GenericInputs = ({label, type, name = '', inputRef}) => {
+export const GenericInputs = ({label, type, name = '',action = () => {}, inputRef}) => {
     const [showPassword, setShowPassword] = useState(false)    
     const [labelUp, setLabelUp] = useState(false)
 
@@ -34,6 +34,7 @@ export const GenericInputs = ({label, type, name = '', inputRef}) => {
                 type={showPassword ? 'text' : type}
                 className='form--input' 
                 onClick={()=> setLabelUp(true)}
+                onChange={(e)=>action(e)}
                 autoComplete='off'
                 ref={inputRef}
             />

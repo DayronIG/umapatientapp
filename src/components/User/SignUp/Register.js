@@ -17,31 +17,30 @@ const Register = () => {
     const dispatch = useDispatch();
 
     const { register, handleSubmit, errors } = useForm();
-    const onSubmit = data => console.log(data);
-
     const userActive = useSelector(state => state.userActive)
     const [switchContent, setSwitchContent] = useState('1')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [firstname, setFirstName] = useState('')
-    const [lastname, setLastName] = useState('')
-    const [phone, setPhone] = useState('')
-    const [dni, setDni] = useState('')
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
     const [sex, setSex] = useState('')
-    const [errorDataRegister, setErrorDataRegister] = useState([])
-    const [validations, setValidations] = useState([{
-        email: false,
-        password: false,
-        passRepetition: false,
-        firstname: false,
-        lastname: false,
-        dni: false,
-        phone: false,
-        dob: false,
-        sex: false
-    }])
+    // const [email, setEmail] = useState('')
+    // const [firstname, setFirstName] = useState('')
+    // const [lastname, setLastName] = useState('')
+    // const [phone, setPhone] = useState('')
+    // const [dni, setDni] = useState('')
+    // const [errorDataRegister, setErrorDataRegister] = useState([])
+    // const [validations, setValidations] = useState([{
+    //     email: false,
+    //     password: false,
+    //     passRepetition: false,
+    //     firstname: false,
+    //     lastname: false,
+    //     dni: false,
+    //     phone: false,
+    //     dob: false,
+    //     sex: false
+    // }])
+
 
     useEffect (()=> {
         if (screen) {
@@ -101,8 +100,6 @@ const Register = () => {
             updatePatient(uid, providerName, dataVal);
         }
     }
-
-    console.log(sex, birthDate)
 
     // const handleInputsValidations = (e) => {
     //     switch (e.target.name) {
@@ -225,6 +222,7 @@ const Register = () => {
                             label='Crea una contraseña' 
                             type='password' 
                             name='password'
+                            action={(e)=> setPassword(e.target.value)}
                             inputRef={
                                 register(
                                     { 
@@ -244,14 +242,12 @@ const Register = () => {
                             inputRef={
                                 register(
                                     { 
-                                        required: true, 
-                                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+                                        validate: value => value === password || 'Las contraseñas no coinciden'
                                     }
                                 )
                             }
                         />
-                        {errors.passrepeat && errors.passrepeat.type === "required" && <span>Campo obligatorio</span>}
-                        {/* {errors.passrepeat && errors.passrepeat.type === "required" && <span>Las contraseñas no coinciden</span>} */}
+                        {errors.passrepeat && <p>{errors.passrepeat.message}</p>}
                     </>
                     }
                     {switchContent === '2' &&
@@ -326,7 +322,7 @@ const Register = () => {
                             select                          
                             action={(e)=>setSex(e)}
                         />
-                        {errors.sex && errors.sex.type === "required" && <span>Por favor indique su sexo</span>}
+                        {/* {errors.sex && errors.sex.type === "required" && <span>Por favor indique su sexo</span>} */}
                         <SelectOption 
                             calendar
                             action={(e)=>setBirthDate(e)}
