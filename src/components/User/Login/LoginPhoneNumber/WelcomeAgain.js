@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../../styles/user/signUp/signUp.scss';
+// import '../../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../../assets/logo.png';
 import { ConditionButtons, LoginButtons, GenericButton } from '../GenericComponents';
 import showPass from '../../../../assets/icons/showpassword.png';

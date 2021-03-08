@@ -35,7 +35,7 @@ const Register = () => {
     const [showOptions, setShowOptions] = useState(false)
     const [showCalendar, setShowCalendar] = useState(false)
     const [date, setDate] = useState(null)
-    const [showError, setshowError] = useState([{
+    const [showError, setShowError] = useState([{
         dob: false,
         sex: false
     }])
@@ -90,17 +90,24 @@ const Register = () => {
 
     const validationForm = async (dataVal) => {
         const uid = userActive.currentUser.uid
-            if(email !== '' && password !== '') {
-                console.log('entro al if')
-                await Firebase.auth().currentUser.sendEmailVerification()
-                .then(async () => {
-                    updatePatient(uid, 'email', dataVal);
-                })
-                .catch(e => console.error(e))
-            } else {
-                const providerName = await Firebase.auth().currentUser.providerData[0].providerId
-                updatePatient(uid, providerName, dataVal)
-            }
+        if(sex === '') {
+            setShowError({...showError, sex: true})  
+            return false
+        } 
+        if(birthDate === '') {
+            setShowError({...showError, dob: true})  
+            return false
+        } 
+        if(email !== '' && password !== '') {
+            await Firebase.auth().currentUser.sendEmailVerification()
+            .then(async () => {
+                updatePatient(uid, 'email', dataVal);
+            })
+            .catch(e => console.error(e))
+        } else {
+            const providerName = await Firebase.auth().currentUser.providerData[0].providerId
+            updatePatient(uid, providerName, dataVal)
+        }
     }
 
     const handleChangeSex = (e) => {
@@ -116,7 +123,7 @@ const Register = () => {
         if(olderThan >= 16) {
             setBirthDate(momentDate)
         }else {
-            setshowError({...showError, dob: true})
+            setShowError({...showError, dob: true})
         }
     }
 
@@ -288,8 +295,8 @@ const Register = () => {
                                     Otro
                                 </label>
                             </div>
+                            {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
                         </div>
-                        {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
                         {showCalendar && 
                         <section className='calendar__container'>
                             <Modal>

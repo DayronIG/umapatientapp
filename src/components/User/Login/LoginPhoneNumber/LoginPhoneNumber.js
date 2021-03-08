@@ -9,7 +9,7 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../../../styles/user/login.scss';
 
-const LoginPhoneNumber = () => { //Telefono -> false, mail
+const LoginPhoneNumber = () => { 
     const history = useHistory();
     const dispatch = useDispatch();
     const [switchContent, setSwitchContent] = useState(false)
@@ -47,6 +47,7 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
     }, [email])
 
     const handleCheckUserExists = () => {
+      
         if (ws && dni) {
             const config = { headers: { 'Content-Type': 'application/json' } }
             const validPhone = checkNum(ws)
@@ -83,6 +84,8 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
             } catch (e) {
                 console.error(e);
             }
+        }else {
+            console.error('Ocurrio un error');
         }
     }
 
@@ -104,8 +107,8 @@ const LoginPhoneNumber = () => { //Telefono -> false, mail
             </section>
             {!switchContent && 
                 <>
-                <GenericInputs label='Ingresa tu número DNI' name='dni' validate={validateDni} />
-                <GenericInputs label='Ingresa tu número de celular' name='phone' validate={validateWs} />
+                <GenericInputs label='Ingresa tu número DNI' name='dni' action={validateDni} />
+                <GenericInputs label='Ingresa tu número de celular' name='phone' action={validateWs} />
                 </> 
             }
             {switchContent ? 
