@@ -5,7 +5,7 @@ import {withRouter} from 'react-router-dom'
 import StarRatings from 'react-star-ratings';
 import moment from 'moment-timezone';
 import axios from 'axios';
-import {feedback } from '../../../config/endpoints'
+import { feedback } from '../../../config/endpoints'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faPhone } from "@fortawesome/free-solid-svg-icons";
 import Alert from '../../GeneralComponents/Alert/Alerts';

@@ -69,6 +69,7 @@ const WhenScreen = (props) => {
 			props.history.replace(`/appointmentsonline/${userToDerivate.dni}`);
 		} else {
 			let id = dependant ? userToDerivate.did: userToDerivate.uid 
+			if(dependant){localStorage.setItem('uid_dependant', userToDerivate.did)}
 			props.history.replace(`/onlinedoctor/when/${id}/${dependant}`);
 		}
 	}
