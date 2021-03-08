@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import Comments from './Comments.js';
+import DB from '../../../config/DBConnection'
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
 import { getUser, getFreeGuardia } from '../../../store/actions/firebaseQueries';
@@ -19,14 +20,38 @@ const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
+	const currentUser = useSelector((state) => state.userActive.currentUser);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
-	const [dni] = useState(props.match.params.dni);
+	const [dni, setDni] = useState('')
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
+	const { uidToDerivate, dependant } = useParams()
+
+	const setDniIfUserIsOrNotDependant = () => {
+		if(dependant === 'false'){
+			setDni(currentUser?.dni ?? user.dni)
+		} else {
+			DB.firestore()
+			.collection('user')
+			.doc(currentUser?.uid ?? user.core_id)
+			.collection('dependants')
+			.doc(uidToDerivate)
+			.get()
+			.then(dependant => {
+				setDni(dependant?.data()?.dni)
+			})
+		}
+	}
 
 	useEffect(() => {
-		if (dni !== undefined) {
+		if(user?.dni){
+			setDniIfUserIsOrNotDependant()
+		}
+	}, [user])
+
+	useEffect(() => {
+		if (uidToDerivate !== undefined && dni) {
 			dispatch({type: 'LOADING', payload: true})
 			getUser(dni)
 				.then((p) => {
@@ -41,7 +66,7 @@ const WhenScreen = (props) => {
 					return error;
 				});
 		}
-	}, []);
+	}, [dni]);
 
 
 	useEffect(() => {

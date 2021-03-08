@@ -138,16 +138,17 @@ export function getDoctors(condition) {
 	});
 }
 
-export function getUserParentsFirebase(group) {
+export function getUserParentsFirebase(uid) {
 	return new Promise(function(resolve, rejected) {
-		let queryUser = firestore.collection('users').where('group', '==', group);
+		let queryUser = firestore.collection('user').doc(uid).collection('dependants');
 		queryUser
 			.get()
 			.then(async (family) => {
 				let parentsTemp = [];
 				await family.forEach((p) => {
 					let data = p.data();
-					if (p.exists && data.dni !== group) parentsTemp.push(data);
+					let id = p.id
+					if (p.exists && data.dni !== uid) parentsTemp.push({ ...data, did: id});
 				});
 				if (parentsTemp.length > 0) resolve(parentsTemp);
 				else rejected('No hay parientes disponibles.');

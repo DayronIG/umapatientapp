@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import classnames from 'classnames';
 import StarRatings from 'react-star-ratings';
 import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
@@ -12,6 +12,7 @@ import moment from 'moment';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
+	const { uidToDerivate, dependant } = useParams()
 
 	function viewComments(doc) {
 		dispatch({ type: 'TOGGLE_DETAIL' });
@@ -28,7 +29,7 @@ const DoctorCard = (props) => {
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
+		props.history.replace(`/onlinedoctor/reason/${uidToDerivate}/${dependant}`);
 	}
 
 	return (
@@ -96,10 +97,11 @@ export default withRouter(DoctorCard);
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
 	const [queue, setQueue] = useState("0")
+	const { uidToDerivate, dependant } = useParams()
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
+		props.history.replace(`/onlinedoctor/reason/${uidToDerivate}/${dependant}`);
 	};
 	
 	useEffect(() => {
@@ -135,6 +137,7 @@ export const GuardCard = withRouter(GuardCardComp);
 
 const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 	const dispatch = useDispatch();
+	const { uidToDerivate, dependant } = useParams()
 	// const [comments, setComments] = useState([])
 	var timeDelay = classnames('timeDelay', {
 		verygood: doctor && doctor.metrics && doctor.metrics.punctuality <= 0.5,
@@ -144,7 +147,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/onlinedoctor/reason/${dni}`);
+		history.replace(`/onlinedoctor/reason/${uidToDerivate}/${dependant}`);
 	}
 
 	return (

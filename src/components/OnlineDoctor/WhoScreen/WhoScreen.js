@@ -17,6 +17,7 @@ import '../../../styles/whoScreen.scss';
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
+	const currentUser = useSelector((state) => state.userActive.currentUser);
 	const [registerParent, setRegisterParent] = useState(false);
 	const [parents, setParents] = useState([]);
 	const { loading } = useSelector((state) => state.front);
@@ -53,7 +54,7 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if (user.dni) {
-			getUserParentsFirebase(user.dni)
+			getUserParentsFirebase(user.core_id)
 				.then(function (userParents) {
 					setParents(userParents);
 				})
@@ -61,13 +62,14 @@ const WhenScreen = (props) => {
 		}
 	}, [user]);
 
-	async function selectWho(user) {
-		localStorage.setItem('appointmentUserData', JSON.stringify(user));
+	async function selectWho(userToDerivate, dependant) {
+		localStorage.setItem('appointmentUserData', JSON.stringify(userToDerivate));
 		await getCoverage(user.coverage)
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/appointmentsonline/${user.dni}`);
+			props.history.replace(`/appointmentsonline/${userToDerivate.dni}`);
 		} else {
-			props.history.replace(`/onlinedoctor/when/${user.dni}`);
+			let id = dependant ? userToDerivate.did: userToDerivate.uid 
+			props.history.replace(`/onlinedoctor/when/${id}/${dependant}`);
 		}
 	}
 
@@ -113,11 +115,11 @@ const WhenScreen = (props) => {
 				)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
-					<div className='btn btn-blue-lg' onClick={() => selectWho(user)} id="att_especislista_select_me">
+					<div className='btn btn-blue-lg' onClick={() => selectWho(currentUser, false)} id="att_especislista_select_me">
 						Para mi
 					</div>
 					{parents.map((p, index) => (
-						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)} id="att_especislista_select_other">
+						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p, true)} id="att_especislista_select_other">
 							Para {capitalizeName(p.fullname)}
 						</div>
 					))}

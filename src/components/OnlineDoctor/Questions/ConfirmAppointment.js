@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { yearAndMonth } from '../../Utils/dateUtils';
@@ -22,6 +22,7 @@ const ConfirmAppointment = (props) => {
 	const [File, setFile] = useState([]);
 	const [contador, setContador] = useState(0);
 	const biomarkers = useSelector(state => state.biomarkers)
+	const { uidToDerivate, dependant } = useParams()
 
 	useEffect(() => {
 		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
@@ -93,6 +94,7 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
 				uid: user.core_id,
+				uid_dependant: dependant === 'true' ? uidToDerivate : false,
 				category
 			};
 

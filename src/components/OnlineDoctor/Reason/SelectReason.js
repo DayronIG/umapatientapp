@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';
@@ -18,6 +18,7 @@ const SelectReason = (props) => {
 	const [otherSymptoms, setOtherSymptoms] = useState('');
 	const [recipeInputModal, setRecipeInputModal] = useState(false);
 	let scrollPosition = useScrollPosition();
+	const { uidToDerivate, dependant } = useParams()
 
 	useEffect(() => {
 		dispatch({ type: 'GET_QUESTIONS', payload: symptoms });
@@ -65,7 +66,7 @@ const SelectReason = (props) => {
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
-		props.history.replace(`/onlinedoctor/questions/${props.match.params.dni}`);
+		props.history.replace(`/onlinedoctor/questions/${uidToDerivate}/${dependant}`);
 	}
 	
 	function addOtherSympton(e){
@@ -84,7 +85,7 @@ const SelectReason = (props) => {
 						<RecipeInput callback={()=>recipeModalCheckout()}/>
 					</Modal>
 				}
-				<Backbutton customTarget={`/onlinedoctor/when/${props.match.params.dni}`} inlineButton={false} />
+				<Backbutton customTarget={`/onlinedoctor/when/${uidToDerivate}/${dependant}`} inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>

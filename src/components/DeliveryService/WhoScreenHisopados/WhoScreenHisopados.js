@@ -51,7 +51,7 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if (user.dni) {
-			getUserParentsFirebase(user.dni)
+			getUserParentsFirebase(user.core_id)
 				.then(function(userParents) {
 					setParents(userParents);
 				})
