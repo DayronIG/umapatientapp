@@ -64,11 +64,11 @@ const WhenScreen = (props) => {
 
 	async function selectWho(userToDerivate, dependant) {
 		localStorage.setItem('appointmentUserData', JSON.stringify(userToDerivate));
-		await getCoverage(user.coverage)
+		await getCoverage(userToDerivate.coverage)
+		let id = dependant ? userToDerivate.did: userToDerivate.uid 
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/appointmentsonline/${userToDerivate.dni}`);
+			props.history.replace(`/appointmentsonline/${id}/${dependant}`);
 		} else {
-			let id = dependant ? userToDerivate.did: userToDerivate.uid 
 			if(dependant){localStorage.setItem('uid_dependant', userToDerivate.did)}
 			props.history.replace(`/onlinedoctor/when/${id}/${dependant}`);
 		}

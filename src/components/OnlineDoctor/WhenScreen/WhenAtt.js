@@ -23,9 +23,9 @@ const WhenScreen = (props) => {
 	const currentUser = useSelector((state) => state.userActive.currentUser);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
-	const [dni, setDni] = useState('')
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
+	const [dni, setDni] = useState('')
 	const { uidToDerivate, dependant } = useParams()
 
 	const setDniIfUserIsOrNotDependant = () => {

@@ -18,6 +18,7 @@ const CancelAppointment = () => {
     const [cancelDescription, setCancelDescription] = useState('');
     const {id} = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
+    const uid_dependant = localStorage.getItem('uid_dependant')
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
@@ -41,7 +42,9 @@ const CancelAppointment = () => {
                 assignation_id: id,
                 appointment_path: documentBuild || '',
                 type: 'cancel',
-                complain: ''
+                complain: '',
+                uid: currentUser.uid,
+                uid_dependant: uid_dependant ?? false
             }
             // Verify if the attention is not canceled or closed
             await currentUser.getIdToken().then(async token => {

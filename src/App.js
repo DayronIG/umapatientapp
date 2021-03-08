@@ -136,7 +136,7 @@ function App(props) {
 				{/* Temp disabled the chats <PrivateRoute exact path='/chat/:specialty/:dni?' component={Chat} /> */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:dni' component={AppointmentsOnlineHistory} />
-				<PrivateRoute exact path='/appointmentsonline/:dni/' component={OnlineSpecialist} />
+				<PrivateRoute exact path='/appointmentsonline/:uidToDerivate?/:dependant?/' component={OnlineSpecialist} />
 				<PrivateRoute exact path='/appointmentsonline/specialty/:dni' component={ListSpecialties} />
 				<PrivateRoute exact path='/appointmentsonline/search-doctor/:dni' component={SearchDoctorOnline} />
 				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:dni' component={SelectSymptoms} />
