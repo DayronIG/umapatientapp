@@ -20,50 +20,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarIcon from '../../../assets/calendar.png'; 
 
 const Register = () => {
-    const {screen} = useParams();
-    const history = useHistory();
-    const dispatch = useDispatch();
-
+    const {screen} = useParams()
+    const history = useHistory()
+    const dispatch = useDispatch()
     const { register, handleSubmit, errors } = useForm();
     const userActive = useSelector(state => state.userActive)
     const [switchContent, setSwitchContent] = useState('1')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [healthinsurance, setHealthinsurance] = useState('')
     const [birthDate, setBirthDate] = useState('')
-    const [sex, setSex] = useState(null);
-    const [active, setActive] = useState(false);
-    const [showOptions, setShowOptions] = useState(false);
+    const [sex, setSex] = useState(null)
+    const [active, setActive] = useState(false)
+    const [showOptions, setShowOptions] = useState(false)
     const [showCalendar, setShowCalendar] = useState(false)
-    // const [calendarValue, setCalendarValue] = useState('')
-    const [date, setDate] = useState(null);
+    const [date, setDate] = useState(null)
     const [showError, setshowError] = useState([{
         dob: false,
         sex: false
     }])
-
-
-    // const [sex, setSex] = useState('')
-    // const [showCalendar, setShowCalendar] = useState(false)
-    // const [calendarValue, setCalendarValue] = useState('')
-    // const [date, setDate] = useState(null);
-    // const [email, setEmail] = useState('')
-    // const [firstname, setFirstName] = useState('')
-    // const [lastname, setLastName] = useState('')
-    // const [phone, setPhone] = useState('')
-    // const [dni, setDni] = useState('')
-    // const [errorDataRegister, setErrorDataRegister] = useState([])
-    // const [validations, setValidations] = useState([{
-    //     email: false,
-    //     password: false,
-    //     passRepetition: false,
-    //     firstname: false,
-    //     lastname: false,
-    //     dni: false,
-    //     phone: false,
-    //     dob: false,
-    //     sex: false
-    // }])
-
 
     useEffect (()=> {
         if (screen) {
@@ -78,22 +53,23 @@ const Register = () => {
     }, [screen])
 
     const handleCreateUser = async (data) => {
-        await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
-        .then(async user => {
-            dispatch({ type: 'USER_PASSWORD', payload: '' });
-            setSwitchContent('2');
-        })
+        if(data.email && data.password) {
+            await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+            .then(async user => {
+                dispatch({ type: 'USER_PASSWORD', payload: '' });
+                setSwitchContent('2');
+            })
+        }
     }
 
     const updatePatient = async (uid, method, dataVal) => {
         const phoneChecked = checkNum(dataVal.phone)
-        console.log(phoneChecked)
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
             let data = {
                 newValues: {
                     login: [method],
-                    email: dataVal.email || '',
+                    email: email || '',
                     fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
                     dni: dataVal.dni || '',
                     ws: phoneChecked|| '',
@@ -114,16 +90,19 @@ const Register = () => {
 
     const validationForm = async (dataVal) => {
         const uid = userActive.currentUser.uid
-        if(dataVal.email && dataVal.password) {
-            await Firebase.auth().currentUser.sendEmailVerification()
-            .then(async () => {
-                updatePatient(uid, 'email', dataVal);
-            })
-            .catch(e => console.error(e))
-        } else {
-            const providerName = await Firebase.auth().currentUser.providerData[0].providerId
-            updatePatient(uid, providerName, dataVal)
-        }
+        console.log('dataVal textito', dataVal)
+        // console.log(email, password)
+            // if(email !== '' && password !== '') {
+            //     console.log('entro al if')
+            //     await Firebase.auth().currentUser.sendEmailVerification()
+            //     .then(async () => {
+            //         updatePatient(uid, 'email', dataVal);
+            //     })
+            //     .catch(e => console.error(e))
+            // } else {
+            //     const providerName = await Firebase.auth().currentUser.providerData[0].providerId
+            //     updatePatient(uid, providerName, dataVal)
+            // }
     }
 
     const handleChangeSex = (e) => {
@@ -139,7 +118,7 @@ const Register = () => {
         if(olderThan >= 16) {
             setBirthDate(momentDate)
         }else {
-            setshowError(true)
+            setshowError({...showError, dob: true})
         }
     }
 
@@ -169,6 +148,7 @@ const Register = () => {
                             label='¿Cual es tu mail?' 
                             type='email' 
                             name='email'
+                            action={(e)=> setEmail(e.target.value)}
                             inputRef={
                                 register(
                                     { 
@@ -178,8 +158,8 @@ const Register = () => {
                                 )
                             }
                         />
-                        {errors.email && errors.email.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.email && errors.email.type === "pattern" && <span>Ingrese un mail válido</span>}
+                        {errors.email && errors.email.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.email && errors.email.type === "pattern" && <p className='invalidField'>Ingrese un mail válido</p>}
                         <GenericInputs 
                             label='Crea una contraseña' 
                             type='password' 
@@ -194,8 +174,8 @@ const Register = () => {
                                 )
                             }
                         />
-                        {errors.password && errors.password.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.password && errors.password.type === "pattern" && <span>La contraseña debe tener un minimo de 8 caracteres y al menos un número</span>}
+                        {errors.password && errors.password.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.password && errors.password.type === "pattern" && <p className='invalidField'>La contraseña debe tener un minimo de 8 caracteres y al menos un número</p>}
                         <ConditionButtons check={password}/>
                         <GenericInputs 
                             label='Ingresa nuevamente tu contraseña' 
@@ -209,7 +189,7 @@ const Register = () => {
                                 )
                             }
                         />
-                        {errors.passrepeat && <p>{errors.passrepeat.message}</p>}
+                        {errors.passrepeat && <p className='invalidField'>{errors.passrepeat.message}</p>}
                     </>
                     }
                     {switchContent === '2' &&
@@ -226,8 +206,8 @@ const Register = () => {
                                 )
                             }
                         />
-                        {errors.firstname && errors.firstname.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.firstname && errors.firstname.type === "pattern" && <span>El formato no es válido</span>}
+                        {errors.firstname && errors.firstname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.firstname && errors.firstname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>}
                         <GenericInputs 
                             label='¿Cual es tu apellido?' 
                             type='text' 
@@ -241,8 +221,8 @@ const Register = () => {
                                 )
                             }
                         />
-                        {errors.lastname && errors.lastname.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.lastname && errors.lastname.type === "pattern" && <span>El formato no es válido</span>}
+                        {errors.lastname && errors.lastname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.lastname && errors.lastname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>}
                         <GenericInputs
                             label='Ingresa tu número de identidad' 
                             type='number' 
@@ -256,8 +236,8 @@ const Register = () => {
                                 )
                             } 
                         />
-                        {errors.dni && errors.dni.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.dni && errors.dni.type === "minLength" && <span>El numero de identificacion debe tener al menos 7 números</span>}
+                        {errors.dni && errors.dni.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El numero de identificacion debe tener al menos 7 números</p>}
                         <GenericInputs
                             label='Ingresa tu numero de celular'
                             type='number' 
@@ -271,19 +251,14 @@ const Register = () => {
                                 )
                             } 
                         /> 
-                        {errors.phone && errors.phone.type === "required" && <span>Campo obligatorio</span>}
-                        {errors.phone && errors.phone.type === "minLength" && <span>El número de teléfono debe tener al menos 10 números</span>}
+                        {errors.phone && errors.phone.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                        {errors.phone && errors.phone.type === "minLength" && <p className='invalidField'>El número de teléfono debe tener al menos 10 números</p>}
                         <GenericInputs 
                             label='¿Cual es tu cobertura de salud?' 
                             type='text' 
                             name='healthinsurance'
                             action={(e)=> setHealthinsurance(e)}
                         />
-
-                        {/* <SelectOption 
-                            select                          
-                            action={(e)=>setSex(e)}
-                        /> */}
                         <div className='container__select--sex'>
                             <button 
                                 className={`select--sex ${active ? 'active' : ''}`} 
@@ -316,31 +291,28 @@ const Register = () => {
                                 </label>
                             </div>
                         </div>
-                        {/* <SelectOption 
-                            calendar
-                            action={(e)=>setBirthDate(e)}
-                        />  */}
-                    {showCalendar && 
-                    <section className='calendar__container'>
-                        <Modal>
-                        <Calendar
-                            date={date}
-                            onChange={(e)=> handleCalendar(e)}
-                            locale={es}
-                        />
-                            <section className='calendar__actions'>
-                                <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
-                                <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
-                                <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
-                            </section>
-                        </Modal>
-                    </section>
-                    }
-                    <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
-                        {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
-                        <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
-                    </section>
-                    {showError.dob && <p>Debes ser mayor de 16 años para utilizar la aplicación</p>}
+                        {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
+                        {showCalendar && 
+                        <section className='calendar__container'>
+                            <Modal>
+                            <Calendar
+                                date={date}
+                                onChange={(e)=> handleCalendar(e)}
+                                locale={es}
+                            />
+                                <section className='calendar__actions'>
+                                    <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
+                                    <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
+                                    <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
+                                </section>
+                            </Modal>
+                        </section>
+                        }
+                        <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
+                            {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
+                            <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
+                        </section>
+                        {showError.dob && <p className='invalidField'>Debes ser mayor de 16 años para utilizar la aplicación</p>}
                     </> 
                     }
                 </form>
