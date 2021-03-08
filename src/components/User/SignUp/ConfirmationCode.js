@@ -97,7 +97,6 @@ const ConfirmationCode = () => {
                     }
                 </article>
                 <form className='signUp__content__formGroup'>
-                {/* onChange={(e) => nextInput(e)} */}
                         <input 
                             className='input-number' 
                             onChange={(e) => {

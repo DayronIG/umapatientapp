@@ -59,17 +59,19 @@
             content: "";
             display: inline-block;
             margin: 0 5px;
-            width: 25%;
+            width: 15%;
             height: 2px;
             background-color: $lighter-grey;
+            margin-bottom: 3px;
        }
        &:after {
         content: "";
         display: inline-block;
         margin: 0 5px;
-        width: 25%;
+        width: 15%;
         height: 2px;
         background-color: $lighter-grey;
+        margin-bottom: 3px;
        }
     }
 
@@ -162,16 +164,31 @@
                     outline: transparent;
                 }
             }
-            .login__mobile__form--img {
-                position: absolute;
-                top: 165px;
-                right: 10px;
+            .login__mobile__form--pass {
+                width: 100%;
+                flex-direction: column;
+                display: flex;
+                position: relative;
+                .login__mobile__form--input--pass {
+                    border: transparent;
+                    box-shadow: 0px 2px 5px 0px #7E93A3;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    &:focus {
+                        outline: transparent;
+                    }
+                }
+                .login__mobile__form--img {
+                    position: absolute;
+                    top: 65px;
+                    right: 10px;
+                }
             }
-            // .login__mobile__form--img-confirm {
-            //     position: absolute;
-            //     right: 10px;
-            //     bottom: 15px;
-            // }
+        }
+        .invalidField {
+            color: $uma-error;
+            font-size: 16px;
         }
     }
 }

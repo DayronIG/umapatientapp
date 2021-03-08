@@ -30,7 +30,6 @@ const WelcomeAgain = () => {
         }
     }, [method])
 
-    console.log('user', user)
     // TODO: Agregar la acción de linkear cuenta con email y password
 
     const linkAccountWithEmailAndPassword = (dataVal) => {
@@ -113,31 +112,32 @@ const WelcomeAgain = () => {
                         }
                         // onChange={(e) => setEmail(e.target.value)}
                     />
-                    {errors.email && errors.email.type === "required" && <span>Campo obligatorio</span>}
-                    {errors.email && errors.email.type === "pattern" && <span>Ingrese un mail válido</span>}
-                    
-                    <label className='login__mobile__form--label'>Contraseña</label>
-                    <input 
-                        name='password'
-                        type={showPassword ? 'text' : 'password'} 
-                        className='login__mobile__form--input' 
-                        placeholder='password123'
-                        onChange={(e)=> setPassword(e.target.value)}
-                        ref={
-                            register(
-                                { 
-                                    required: true, 
-                                    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-                                }
-                            )
-                        }
-                        // value={password}
-                        // onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <img src={showPassword ? eyeOpenPass : showPass } onClick={()=> setShowPassword(!showPassword)} className='login__mobile__form--img' alt='Eye closed'/>
+                    {errors.email && errors.email.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                    {errors.email && errors.email.type === "pattern" && <p className='invalidField'>Ingrese un mail válido</p>}
+                    <div className='login__mobile__form--pass'>
+                        <label className='login__mobile__form--label'>Contraseña</label>
+                        <input 
+                            name='password'
+                            type={showPassword ? 'text' : 'password'} 
+                            className='login__mobile__form--input--pass' 
+                            placeholder='password123'
+                            onChange={(e)=> setPassword(e.target.value)}
+                            ref={
+                                register(
+                                    { 
+                                        required: true, 
+                                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+                                    }
+                                )
+                            }
+                            // value={password}
+                            // onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <img src={showPassword ? eyeOpenPass : showPass } onClick={()=> setShowPassword(!showPassword)} className='login__mobile__form--img' alt='Eye closed'/>
+                    </div>    
                     {/* <img src={showPassword ? eyeOpenPass : showPass } className='login__mobile__form--img-confirm' alt='Eye closed'/> */}
-                    {errors.password && errors.password.type === "required" && <span>Campo obligatorio</span>}
-                    {errors.password && errors.password.type === "pattern" && <span>La contraseña debe tener un minimo de 8 caracteres y al menos un número</span>}
+                    {errors.password && errors.password.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                    {errors.password && errors.password.type === "pattern" && <p className='invalidField'>La contraseña debe tener un minimo de 8 caracteres y al menos un número</p>}
                     <ConditionButtons check={password}/>
                     
                     <label className='login__mobile__form--label'>Confirmar contraseña</label>
@@ -153,10 +153,8 @@ const WelcomeAgain = () => {
                                 }
                             )
                         }
-                        // value={confirmPassword}
-                        // onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                    {errors.passrepeat && <p>{errors.passrepeat.message}</p>}
+                    {errors.passrepeat && <p className='invalidField'>{errors.passrepeat.message}</p>}
                 </form>
                 <GenericButton color='blue' action={handleSubmit(linkAccountWithEmailAndPassword)}>Confirmar datos</GenericButton>
             </section>

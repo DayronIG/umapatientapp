@@ -405,13 +405,13 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                 <img src={Google} alt='Google logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Google</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Google </p> }
             </button> 
-            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleMicrosoftAccount}>
-                <img src={Microsoft} alt='Microsoft logo'/>
-                { circleBtn ? null : signUp ? <p>Registrarme con Microsoft</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Microsoft</p>  }
-            </button>
             <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleFacebookAccount}>
                 <img src={Facebook} alt='Facebook logo'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con Facebook</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Facebook</p>  }
+            </button>
+            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleMicrosoftAccount}>
+                <img src={Microsoft} alt='Microsoft logo'/>
+                { circleBtn ? null : signUp ? <p>Registrarme con Microsoft</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Microsoft</p>  }
             </button>
             <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleAnotherAccount}>
                 <img src={circleBtn ? Mobile : Email} alt='Mobile image'/>

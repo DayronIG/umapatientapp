@@ -90,19 +90,17 @@ const Register = () => {
 
     const validationForm = async (dataVal) => {
         const uid = userActive.currentUser.uid
-        console.log('dataVal textito', dataVal)
-        // console.log(email, password)
-            // if(email !== '' && password !== '') {
-            //     console.log('entro al if')
-            //     await Firebase.auth().currentUser.sendEmailVerification()
-            //     .then(async () => {
-            //         updatePatient(uid, 'email', dataVal);
-            //     })
-            //     .catch(e => console.error(e))
-            // } else {
-            //     const providerName = await Firebase.auth().currentUser.providerData[0].providerId
-            //     updatePatient(uid, providerName, dataVal)
-            // }
+            if(email !== '' && password !== '') {
+                console.log('entro al if')
+                await Firebase.auth().currentUser.sendEmailVerification()
+                .then(async () => {
+                    updatePatient(uid, 'email', dataVal);
+                })
+                .catch(e => console.error(e))
+            } else {
+                const providerName = await Firebase.auth().currentUser.providerData[0].providerId
+                updatePatient(uid, providerName, dataVal)
+            }
     }
 
     const handleChangeSex = (e) => {
@@ -257,7 +255,7 @@ const Register = () => {
                             label='¿Cual es tu cobertura de salud?' 
                             type='text' 
                             name='healthinsurance'
-                            action={(e)=> setHealthinsurance(e)}
+                            action={(e)=> setHealthinsurance(e.target.value)}
                         />
                         <div className='container__select--sex'>
                             <button 

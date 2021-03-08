@@ -27,7 +27,7 @@ const Login = () =>  {
                 <h1 className='login__titleIllustration--title'>ÜMA, tu portal digital de salud</h1>
            </section>
            <LoginButtons circleBtn />
-            <div className='login__lineSeparator'>o</div>
+            <div className='login__lineSeparator'>o ingresá con tu cuenta</div>
             {errorData &&
                 <section className='login__invalid'>
                     <p>El mail o la contraseña son incorrectos.</p>
