@@ -4,12 +4,12 @@ import { LoginButtons } from '../GenericComponents';
 import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 
 const ForgottenAccError = () => {
-    const [typeError, setTypeError] = useState(false)
+    // const [typeError, setTypeError] = useState(false)
     // true DNI, false telefono
 
     return (
        <section className='needHelp'>
-           <BackButton/>
+           <BackButton inlineButton customTarget={`/login/phone`}/>
            <article className='needHelp__forgottenPass'>
                <h1 className='title'>Lo sentimos</h1>
                 <p className='subtitle'>No hemos encontrado ninguna cuenta asociada a esos datos.</p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BackButton } from '../../../GeneralComponents/Headers';
+import BackButton  from '../../../GeneralComponents/Backbutton';
 import { GenericInputs, GenericButton } from '../GenericComponents';
 import {useParams, useHistory} from 'react-router-dom';
 import Firebase from 'firebase/app';
@@ -86,13 +86,15 @@ const ForgottenPass = () => {
 
     return (
         <section className='needHelp'>
-            <BackButton inlineButton/>
+            <BackButton inlineButton customTarget={`/forgot`}/>
             <section className='needHelp__forgottenPass'>
                 <h1 className='title'>{ passW ? '¿Olvidaste tu mail?' : '¿Olvidaste tu contraseña?' }</h1>
                 <p className='subtitle'>
-                { passW ? 'Por favor, ingresa tu número de documento de identidad.'
+                { passW ? 
+                'Por favor, ingresa tu número de documento de identidad.'
                 : 
-                'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link para restablecer tu contraseña.' }</p>
+                'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link para restablecer tu contraseña.' }
+                </p>
                 <p className='subtitle'>{ passW ? null : 'Asegúrate de ingresar la direccion de correo con la que te registraste en ÜMA.' }</p>
             </section> 
             <div className='needHelp--forgottenPass-actions'>
@@ -103,13 +105,13 @@ const ForgottenPass = () => {
                             label='Ingresa tu documento'
                             type='number'
                             name='dni'
-                            validate={validateDni}
+                            action={validateDni}
                         />
                         <GenericInputs 
                             label='Ingresa tu número de celular'
                             type='text'
                             name='ws'
-                            validate={validateWs}
+                            action={validateWs}
                         />
                         <GenericButton color='blue' action={handleCheckUser}>
                             Continuar
@@ -121,7 +123,7 @@ const ForgottenPass = () => {
                             label='Ingresa tu mail' 
                             type='email' 
                             name='email' 
-                            validate={validateEmail}
+                            action={validateEmail}
                         />
                         <GenericButton color='blue' action={handleResetPassword}>
                             Enviar Link

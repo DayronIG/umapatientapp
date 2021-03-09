@@ -85,13 +85,13 @@ const ConfirmationCode = () => {
                     <h1 className='title'>Ingresa el código de verificación</h1>
                     { codeConfirm == 'Mail' &&
                     <>
-                        <p className='subtitle'>Para finalizar el registro, ingresa el código de 6 dígitos que te hemos enviado a tu mail.</p> 
+                        <p className='subtitle'>Ingresa el código de 6 dígitos que te hemos enviado a tu mail.</p> 
                         <p className='subtitle'>PD: ¡No olvides revisar el Spam!</p>
                     </>
                     }
                     { codeConfirm == 'Number' && 
                     <>
-                        <p className='subtitle'>Para finalizar el registro, ingresa el código de 6 dígitos que te hemos enviado al +5433682199.</p>
+                        <p className='subtitle'>Ingresa el código de 6 dígitos que te hemos enviado al +5433682199.</p>
                         <a href='#'>Modificar teléfono</a>
                     </>
                     }
