@@ -17,13 +17,14 @@ import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
 import Status from './components/User/SignUp/Status';
 
+// Login & Register
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
 import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
 import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain';
 import SignUp from './components/User/SignUp/SignUp';
 import SignUpForm from './components/User/SignUp/Register';
-
+import AlreadyExists from './components/User/SignUp/AlreadyExists';
 import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
 import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
@@ -108,6 +109,7 @@ function App(props) {
 				<Route exact path='/signup' component={SignUp} />
 				<Route exact path='/signup/form/:screen' component={SignUpForm} />
 				<Route exact path='/signup/:status' component={Status} />
+				<Route exact path='/signup/user/exists' component={AlreadyExists} />
 				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
 				<Route exact path='/forgot/:type' component={ForgottenPass} />
 				<Route exact path='/forgot' component={NeedHelp} />

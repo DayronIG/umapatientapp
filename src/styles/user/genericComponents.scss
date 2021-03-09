@@ -50,90 +50,88 @@
         }
     }
 }
-// Select options
 
-// Birth date
 
-.birth__date {
-    position: relative;
-    @include d-flex-center;
-    width: 91%;
-    margin: 40px auto 10px auto;
-    .text {
-        font-size: 16px;
-        margin: 0;
-        color: $when-dark;
-        position: absolute;
-        left: 0%;
-        min-height: 31px;
-        width: 100%;
-        text-align: start;
-        &::after {
-            content: '';
-            display: block;
-            height: 2px;
-            background-color: $uma-button;
-        }
-        &.date {
-            color: black;
-            font-size: 18px;
-        }
-    }
-    .icon--calendar {
-        position: absolute;
-        right: 5px;
-        bottom: -5px;
-    }
-}
+// .birth__date {
+//     position: relative;
+//     @include d-flex-center;
+//     width: 91%;
+//     margin: 40px auto 10px auto;
+//     .text {
+//         font-size: 16px;
+//         margin: 0;
+//         color: $when-dark;
+//         position: absolute;
+//         left: 0%;
+//         min-height: 31px;
+//         width: 100%;
+//         text-align: start;
+//         &::after {
+//             content: '';
+//             display: block;
+//             height: 2px;
+//             background-color: $uma-button;
+//         }
+//         &.date {
+//             color: black;
+//             font-size: 18px;
+//         }
+//     }
+//     .icon--calendar {
+//         position: absolute;
+//         right: 5px;
+//         bottom: -5px;
+//     }
+// }
 
 // Select sex
 
-.container__select--sex {
-    width: 90%;
-    margin: 28px auto 10px auto;
+// .container__select--sex {
+//     width: 90%;
+//     margin: 28px auto 10px auto;
 
-    .select--sex {
-        display: flex;
-        justify-content: space-between;
-        color: $when-dark;
-        font-size: 16px;
-        background-color: $white-color;
-        width: 100%;
-        border: none;
-        border-bottom: 2px solid $uma-primary;
-        &:target, &:focus{
-            outline: transparent;
-            font-size: 18px;
-            color: black;
-        }
-        &.active {
-            color: $uma-text;
-            font-size: 18px;
-        }
-    }
-    .show--options {
-        display: flex;
-        flex-direction: column;
-        color: $uma-text;
-        text-align: start;
-        box-shadow: 0px 2px 6px 3px rgba(73, 73, 73, 0.25);
-        &.hiden {
-            display: none;
-        }
-        &.active {
-            display: block;
-        }
-        label {
-            padding: 10px 0;
-            &:focus {
-                background-color: $uma-input;
-            }
-            input {
-                visibility: hidden;
-            }
-        }
-    }
-}
+//     .select--sex {
+//         display: flex;
+//         justify-content: space-between;
+//         color: $when-dark;
+//         font-size: 16px;
+//         background-color: $white-color;
+//         width: 100%;
+//         border: none;
+//         border-bottom: 2px solid $uma-primary;
+//         &:target, &:focus{
+//             outline: transparent;
+//             font-size: 18px;
+//             color: black;
+//         }
+//         &.active {
+//             color: $uma-text;
+//             font-size: 18px;
+//         }
+//     }
+//     .show--options {
+//         display: flex;
+//         flex-direction: column;
+//         color: $uma-text;
+//         text-align: start;
+//         box-shadow: 0px 2px 6px 3px rgba(73, 73, 73, 0.25);
+//         &.hiden {
+//             display: none;
+//         }
+//         &.active {
+//             display: block;
+//         }
+//         label {
+//             padding: 10px 0;
+//             &:focus {
+//                 background-color: $uma-input;
+//             }
+//             input {
+//                 visibility: hidden;
+//             }
+//         }
+//     }
+// }
 
 //Condition Buttons
 
