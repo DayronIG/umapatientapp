@@ -85,7 +85,7 @@ const LoginPhoneNumber = () => {
                             })  
                         }
                     })
-                .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
+                    .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
             } catch (e) {
                 console.error(e);
             }
@@ -118,18 +118,28 @@ const LoginPhoneNumber = () => {
                         <p className='invalidField'>Por favor, compruebe los datos ingresados. </p>
                     </>
                 }
-                <GenericInputs label='Ingresa tu número de identidad' name='dni' action={validateDni} />
-                <GenericInputs label='Ingresa tu número de celular' name='phone' action={validateWs} />
+                <GenericInputs 
+                    label='Ingresa tu número de identidad' 
+                    type='number' 
+                    name='dni' 
+                    action={(e)=>{validateDni(e); if(showError) setShowError(false)}} 
+                />
+                <GenericInputs 
+                    label='Ingresa tu número de celular'
+                    type='number' 
+                    name='phone' 
+                    action={(e) => {validateWs(e); if (showError) setShowError(false)}}
+                />
             </> 
             }
             {switchContent ? 
                 <>
                     <LoginButtons/>
-                    <TextAndLink link='O registrate acá' action={() => history.push('/')} />
+                    <TextAndLink link='O registrate acá' action={() => history.push('/signup')} styles />
                 </>
             :
             <section className='login__actions '>
-                    <GenericButton color='blue' action={handleCheckUserExists}>Ingresar</GenericButton>
+                    <GenericButton action={handleCheckUserExists}>Ingresar</GenericButton>
             </section>
             }
         </section>

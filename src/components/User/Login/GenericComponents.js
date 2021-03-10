@@ -182,9 +182,9 @@ export const ConditionButtons = ({check}) => {
     )
 }
 
-export const GenericButton = ({color, children, action = () => {}}) => {
+export const GenericButton = ({children, action = () => {}}) => {
     return (
-        <button className={color === 'blue' ? 'action-btn' : 'action-btn white'} onClick={action}>{children}</button>
+        <button className='action-btn' onClick={action}>{children}</button>
     )
 };
 
@@ -421,10 +421,10 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     )
 };
 
-export const TextAndLink = ({text, link, action}) => {
+export const TextAndLink = ({text, link, action, styles}) => {
     // Cambian las rutas registrarme / ingresar / enviar por otro medio
     return(
-        <section className='textAndLink'>
+        <section className={styles? 'textAndLink space' : 'textAndLink'}>
             <p>{text}</p>
             <a onClick={action}>{link}</a>
         </section>

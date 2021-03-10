@@ -18,7 +18,7 @@ const ResetPass = () => {
             <ConditionButtons/>
             <GenericInputs label='Confirma tu contraseña' Password />
             <div className='needHelp__confirm'>
-                <GenericButton color='blue'>Cambiar contraseña</GenericButton>
+                <GenericButton >Cambiar contraseña</GenericButton>
             </div>
         </section>
     )

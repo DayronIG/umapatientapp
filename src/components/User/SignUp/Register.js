@@ -35,6 +35,7 @@ const Register = () => {
     const [showOptions, setShowOptions] = useState(false)
     const [showCalendar, setShowCalendar] = useState(false)
     const [date, setDate] = useState(null)
+    const [emailExists, setEmailExists] = useState(false)
     const [showError, setShowError] = useState([{
         dob: false,
         sex: false
@@ -61,7 +62,7 @@ const Register = () => {
                     setSwitchContent('2');
                 })
             }catch {
-                console.error('El mail está en uso')
+                setEmailExists(true)
             }
         }
     }
@@ -98,7 +99,7 @@ const Register = () => {
 
     const validationForm = async (dataVal) => {
         const uid = userActive.currentUser.uid
-        if(sex === '') {
+        if(sex === null) {
             setShowError({...showError, sex: true})  
             return false
         } 
@@ -122,6 +123,7 @@ const Register = () => {
         setActive(true)
         setSex(e.target.value)
         setShowOptions(false)
+        setShowError({...showError, sex: false})
     }
 
     const handleCalendar = (e) => {
@@ -157,11 +159,12 @@ const Register = () => {
                 <form className='signUp__content__form'>
                     {switchContent === '1' && 
                     <>
+                    {emailExists && <p className='invalidField'>El mail ingresado se encuentra en uso</p>}
                         <GenericInputs 
                             label='¿Cual es tu mail?' 
                             type='email' 
                             name='email'
-                            action={(e)=> setEmail(e.target.value)}
+                            action={(e)=> {setEmail(e.target.value); setEmailExists(false)}}
                             inputRef={
                                 register(
                                     { 
@@ -303,8 +306,8 @@ const Register = () => {
                                     Otro
                                 </label>
                             </div>
-                            {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
                         </div>
+                        {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
                         {showCalendar && 
                         <section className='calendar__container'>
                             <Modal>
@@ -333,14 +336,21 @@ const Register = () => {
                 <section className='signUp__actions'>
                     {switchContent === '1' &&
                     <>
-                        <button className='signUp__actions--button back' onClick={()=> history.push('/signup')}>Atras</button>
-                        <button className='signUp__actions--button foward' onClick={handleSubmit(handleCreateUser)}>Siguiente</button>
+                        <button className='signUp__actions--button back' onClick={()=> history.push('/signup')}>
+                            Atrás
+                        </button>
+                        <button className='signUp__actions--button foward' onClick={handleSubmit(handleCreateUser)}>
+                            Siguiente
+                        </button>
                     </>
                     }
                     {switchContent === '2' && 
                     <>
-                        <GenericButton color='blue' action={handleSubmit(validationForm)}>Registrarme</GenericButton>
-                        <p className='terms-and-conditions'>Al registrarte estás aceptando los <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a></p>
+                        <GenericButton action={handleSubmit(validationForm)}>Registrarme</GenericButton>
+                        <p className='terms-and-conditions'>
+                            Al registrarte estás aceptando los 
+                            <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a>
+                        </p>
                     </>
                     }
                 </section>

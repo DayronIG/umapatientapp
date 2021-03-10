@@ -14,7 +14,7 @@ const ConfirmationMail = () => {
                     <p className='subtitle'>Ingresa tu número de teléfono celular para enviarte el código por SMS.</p>
                 </article>
                <GenericInputs type='text' label='Ingresa tu teléfono celular'/>
-               <GenericButton color='blue'>Enviar código</GenericButton>
+               <GenericButton>Enviar código</GenericButton>
             </section>
         </section>
     )

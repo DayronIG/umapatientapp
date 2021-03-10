@@ -27,10 +27,10 @@ const AlreadyExists = () =>  {
                     <p className='subtitle'>¿Deseas ingresar?</p>
                 </section>
                 <section>
-                    <GenericButton color='blue' action={()=> history.push('/')} >
+                    <GenericButton action={()=> history.push('/')} >
                         Ingresar
                     </GenericButton>
-                    <GenericButton color='blue' action={()=> history.push('/signup/form/2')}>
+                    <GenericButton action={()=> history.push('/signup/form/2')}>
                         Continuar registro
                     </GenericButton>
                 </section>

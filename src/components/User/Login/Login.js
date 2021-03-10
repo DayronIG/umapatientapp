@@ -34,20 +34,34 @@ const Login = () =>  {
                     <p>Comprueba los datos ingresados o <a className='login__invalid--redirect' onClick={() => history.push('/signup')}>crea una cuenta</a></p>
                 </section>
             }
-            <GenericInputs label='Ingresa tu mail' type='email' name='email' action={(e) => {setEmail(e.target.value); if(errorData) setErrorData(false)} }/>
-            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' action={(e) =>{setPassword(e.target.value); if(errorData) setErrorData(false)}} />
+            <GenericInputs 
+                label='Ingresa tu mail' 
+                type='email' 
+                name='email' 
+                action={(e) => {setEmail(e.target.value); 
+                if(errorData) setErrorData(false)} }
+            />
+            <GenericInputs 
+                label='Ingresa tu contraseña' 
+                type='password' 
+                name='pass' 
+                action={(e) =>{setPassword(e.target.value); 
+                if(errorData) setErrorData(false)}} 
+            />
            <section className='login__needHelp'>
                 {/* <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>
                     <p className='text'>Mantener sesión iniciada</p>
                 </aside> */}
-                <button className='login__needHelp--btn' onClick={() => history.push('/forgot')}>Necesito ayuda</button> 
+                <button className='login__needHelp--btn' onClick={() => history.push('/forgot')}>
+                    Necesito ayuda
+                </button> 
            </section>
            <section className='login__actions'>
-                <GenericButton color='blue' action={handleSignIn}>
+                <GenericButton action={handleSignIn}>
                     Ingresar
                 </GenericButton>
-                <TextAndLink text='¿Eres nuevo en UMA?' link='Registrarme' action={() => history.push('/signup')} />
+                <TextAndLink text='¿Eres nuevo en ÜMA?' link='Registrarme' action={() => history.push('/signup')} />
            </section>
        </section>
     )

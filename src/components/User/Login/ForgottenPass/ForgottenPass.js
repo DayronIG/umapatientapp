@@ -110,11 +110,11 @@ const ForgottenPass = () => {
                         />
                         <GenericInputs 
                             label='Ingresa tu número de celular'
-                            type='text'
+                            type='number'
                             name='ws'
                             action={validateWs}
                         />
-                        <GenericButton color='blue' action={handleCheckUser}>
+                        <GenericButton action={handleCheckUser} styles>
                             Continuar
                         </GenericButton>
                     </>
@@ -126,7 +126,7 @@ const ForgottenPass = () => {
                             name='email' 
                             action={validateEmail}
                         />
-                        <GenericButton color='blue' action={handleResetPassword}>
+                        <GenericButton action={handleResetPassword}>
                             Enviar 
                         </GenericButton>
                     </>

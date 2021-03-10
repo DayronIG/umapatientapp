@@ -156,7 +156,7 @@ const WelcomeAgain = () => {
                     />
                     {errors.passrepeat && <p className='invalidField'>{errors.passrepeat.message}</p>}
                 </form>
-                <GenericButton color='blue' action={handleSubmit(linkAccountWithEmailAndPassword)}>Confirmar datos</GenericButton>
+                <GenericButton action={handleSubmit(linkAccountWithEmailAndPassword)}>Confirmar datos</GenericButton>
             </section>
             }
         </section>

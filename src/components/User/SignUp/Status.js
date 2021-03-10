@@ -53,8 +53,15 @@ const Status = () => { // Congrats / Error / DataSaved
                     </>
                     }
                 </section>
-                {congratsOrError == 'congrats' && <GenericButton color='blue' action={()=> history.push('/')} >Ingresar</GenericButton>}
-                {congratsOrError == 'error' && <GenericButton color='blue'>Intentar de nuevo</GenericButton>}
+                {congratsOrError == 'congrats' && 
+                    <GenericButton action={()=> history.push('/')} >
+                        Ingresar
+                    </GenericButton>
+                }
+                {congratsOrError == 'error' && 
+                    <GenericButton>
+                        Intentar de nuevo
+                    </GenericButton>}
             </section>
         </section>
 
