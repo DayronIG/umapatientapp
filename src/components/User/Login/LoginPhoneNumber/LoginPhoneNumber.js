@@ -17,6 +17,7 @@ const LoginPhoneNumber = () => {
     const [dni, setDni] = useState('')
     const [userEmail, setUserEmail] = useState('');
     const { email } = useSelector(state => state.user);
+    const [showError, setShowError] = useState(false)
 
     const hideEmail = (email) => {
         const emailToShow = email.split('@')[0].slice(0, 4);
@@ -59,33 +60,37 @@ const LoginPhoneNumber = () => {
                         } else {
                             axios.get(`${node_patient}/user/${validPhone}/${dni}`, {}, config)
                             .then(res => {
-                                if (res?.data[0]?.login) {
-                                    dispatch({ type: 'USER_FIRST_EMAIL', payload: res?.data[0]?.email})
-                                    setSwitchContent(true);
-                                } else {
-                                    try {
-                                        const data = { ws }
-                                        axios.post(`${send_user_code}/${ws}`, data, config)
-                                            .then(() => {
-                                                history.push('/login/code')
-                                            })
-                                            .catch((err) => {
-                                                console.log('Error al enviar el código', '', 'warning')
-                                            })
-                                    } catch (e) {
-                                        console.error(e);
+                                if(res?.data.length) {
+                                    if (res?.data[0]?.login) {
+                                        dispatch({ type: 'USER_FIRST_EMAIL', payload: res?.data[0]?.email})
+                                        setSwitchContent(true);
+                                    } else {
+                                        try {
+                                            const data = { ws }
+                                            axios.post(`${send_user_code}/${ws}`, data, config)
+                                                .then(() => {
+                                                    history.push('/login/code')
+                                                })
+                                                .catch((err) => {
+                                                    console.log('Error al enviar el código', '', 'warning')
+                                                })
+                                        } catch (e) {
+                                            console.error(e);
+                                        }
+                                        console.log('Te enviamos un código');
                                     }
-                                    console.log('Te enviamos un código');
+                                }else {
+                                    setShowError(true)
                                 }
-                            })
+                            })  
                         }
                     })
-                    .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
+                .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
             } catch (e) {
                 console.error(e);
             }
         }else {
-            console.error('Ocurrio un error');
+            setShowError(true)
         }
     }
 
@@ -106,16 +111,22 @@ const LoginPhoneNumber = () => {
                 }
             </section>
             {!switchContent && 
-                <>
-                <GenericInputs label='Ingresa tu número DNI' name='dni' action={validateDni} />
+            <>
+                {showError && 
+                    <>
+                        <p className='invalidField'>El número de identificación o teléfono son incorrectos. </p>
+                        <p className='invalidField'>Por favor, compruebe los datos ingresados. </p>
+                    </>
+                }
+                <GenericInputs label='Ingresa tu número de identidad' name='dni' action={validateDni} />
                 <GenericInputs label='Ingresa tu número de celular' name='phone' action={validateWs} />
-                </> 
+            </> 
             }
             {switchContent ? 
-            <>
-                <LoginButtons/>
-                <TextAndLink link='O registrate acá' action={() => history.push('/')} />
-            </>
+                <>
+                    <LoginButtons/>
+                    <TextAndLink link='O registrate acá' action={() => history.push('/')} />
+                </>
             :
             <section className='login__actions '>
                     <GenericButton color='blue' action={handleCheckUserExists}>Ingresar</GenericButton>

@@ -54,11 +54,15 @@ const Register = () => {
 
     const handleCreateUser = async (data) => {
         if(data.email && data.password) {
-            await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
-            .then(async user => {
-                dispatch({ type: 'USER_PASSWORD', payload: '' });
-                setSwitchContent('2');
-            })
+            try {
+                await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+                .then(async user => {
+                    dispatch({ type: 'USER_PASSWORD', payload: '' });
+                    setSwitchContent('2');
+                })
+            }catch {
+                console.error('El mail está en uso')
+            }
         }
     }
 
@@ -75,13 +79,17 @@ const Register = () => {
                     ws: phoneChecked|| '',
                     sex: sex || '',
                     dob: birthDate || '',
-                    healthinsurance: healthinsurance || ''
+                    os: healthinsurance || ''
                 }
             }
             await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                 .then(res => {
                     dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
                     dispatch({ type: 'USER_FIRST_WS', payload: dataVal.phone })
+                    dispatch({ type: 'USER_FIRST_DOB', payload: birthDate })
+                    dispatch({ type: 'USER_FIRST_SEX', payload: sex })
+                    dispatch({ type: 'USER_FIRST_OS', payload: healthinsurance })
+                    dispatch({ type: 'USER_FIRST_DNI', payload: dataVal.dni })
                     dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${dataVal.firstname} ${dataVal.lastname}` })
                     history.push('/signUp/congrats');
                 })
@@ -143,7 +151,7 @@ const Register = () => {
                     <p className='subtitle'>Para crear tu cuenta, primero necesitamos que nos indiques un mail y una contraseña</p>
                     }
                     {switchContent === '2' && 
-                    <p className='subtitle'>Ahora, necesitamos saber un poco más de vos</p> 
+                    <p className='subtitle'>Ahora, necesitamos que completes la siguiente información</p> 
                     }
                 </article>
                 <form className='signUp__content__form'>
@@ -242,7 +250,7 @@ const Register = () => {
                             } 
                         />
                         {errors.dni && errors.dni.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
-                        {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El numero de identificacion debe tener al menos 7 números</p>}
+                        {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El número de identificación debe tener al menos 7 números</p>}
                         <GenericInputs
                             label='Ingresa tu numero de celular'
                             type='number' 
@@ -302,6 +310,7 @@ const Register = () => {
                             <Modal>
                             <Calendar
                                 date={date}
+                                maxDate={new Date('12-29-2021')}
                                 onChange={(e)=> handleCalendar(e)}
                                 locale={es}
                             />

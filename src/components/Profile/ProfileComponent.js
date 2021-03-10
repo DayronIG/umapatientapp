@@ -133,6 +133,7 @@ const ProfileComponent = () => {
 				<button 
 					onClick={async () => {
 						await SignOut();
+						dispatch({ type: 'RESET_USER_DATA' });
 						history.replace('/');
 					}} 
 					className="btn-blue-lg"

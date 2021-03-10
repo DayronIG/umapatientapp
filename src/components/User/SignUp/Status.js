@@ -42,7 +42,7 @@ const Status = () => { // Congrats / Error / DataSaved
                     {congratsOrError == 'congrats' && 
                     <>
                         <h1 className='title'>¡Felicitaciones!</h1>
-                        <p className='subtitle'>Ya eres parte de UMA. Te hemos enviado un mail de verificacion.</p>
+                        <p className='subtitle'>Ya eres parte de UMA. Te hemos enviado un mail de verificación.</p>
                     </>
                     }
                     {congratsOrError == 'error' &&

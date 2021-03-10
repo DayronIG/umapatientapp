@@ -137,7 +137,7 @@ const WelcomeAgain = () => {
                     </div>    
                     {/* <img src={showPassword ? eyeOpenPass : showPass } className='login__mobile__form--img-confirm' alt='Eye closed'/> */}
                     {errors.password && errors.password.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
-                    {errors.password && errors.password.type === "pattern" && <p className='invalidField'>La contraseña debe tener un minimo de 8 caracteres y al menos un número</p>}
+                    {errors.password && errors.password.type === "pattern" && <p className='invalidField'>La contraseña debe tener un mínimo de 8 carácteres y al menos un número</p>}
                     <ConditionButtons check={password}/>
                     
                     <label className='login__mobile__form--label'>Confirmar contraseña</label>

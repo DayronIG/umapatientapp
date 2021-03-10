@@ -86,6 +86,8 @@ export default function userReducers(state = initialState, action) {
       return { ...state, phone: action.payload };
     case "SET_COORDS":
       return { ...state, lat: action.payload.lat, lon: action.payload.lon };
+    case "RESET_USER_DATA":
+      return initialState;
     case "FILL_REGISTER":
       if (action.payload) {
         return { ...state, userToFill: action.payload };

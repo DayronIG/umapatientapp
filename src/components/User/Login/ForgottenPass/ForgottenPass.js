@@ -93,9 +93,10 @@ const ForgottenPass = () => {
                 { passW ? 
                 'Por favor, ingresa tu número de documento de identidad.'
                 : 
-                'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link para restablecer tu contraseña.' }
+                'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link al que debes ingresar para restablecer tu contraseña.' }
                 </p>
                 <p className='subtitle'>{ passW ? null : 'Asegúrate de ingresar la direccion de correo con la que te registraste en ÜMA.' }</p>
+                <p className='subtitle'>{ passW ? null : 'PD: ¡No te olvides de revisar en Spam!' }</p>
             </section> 
             <div className='needHelp--forgottenPass-actions'>
                 {
@@ -126,7 +127,7 @@ const ForgottenPass = () => {
                             action={validateEmail}
                         />
                         <GenericButton color='blue' action={handleResetPassword}>
-                            Enviar Link
+                            Enviar 
                         </GenericButton>
                     </>
                 }

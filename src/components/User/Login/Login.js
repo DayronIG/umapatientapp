@@ -34,8 +34,8 @@ const Login = () =>  {
                     <p>Comprueba los datos ingresados o <a className='login__invalid--redirect' onClick={() => history.push('/signup')}>crea una cuenta</a></p>
                 </section>
             }
-            <GenericInputs label='Ingresa tu mail' type='email' name='email' validate={(e) =>setEmail(e.target.value)}/>
-            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' validate={(e) =>setPassword(e.target.value)} />
+            <GenericInputs label='Ingresa tu mail' type='email' name='email' action={(e) => {setEmail(e.target.value); if(errorData) setErrorData(false)} }/>
+            <GenericInputs label='Ingresa tu contraseña' type='password' name='pass' action={(e) =>{setPassword(e.target.value); if(errorData) setErrorData(false)}} />
            <section className='login__needHelp'>
                 {/* <aside className='login__needHelp__activeSession'>
                     <input className='check' type='checkbox'/>

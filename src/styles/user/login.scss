@@ -13,6 +13,13 @@
         top: 5px;
     }
 
+    .invalidField {
+        font-size: 16px;
+        color: $uma-error;
+        padding: 0 20px;
+        margin: 2px;
+    }
+
     .login__titleIllustration {
         @include d-flex-center;
         flex-direction: column;
