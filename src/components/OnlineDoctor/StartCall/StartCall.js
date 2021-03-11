@@ -7,7 +7,6 @@ import Chat from './Chat';
 const StartCall = (props) => {
 	const dispatch = useDispatch();
 	const {session } = useSelector((state) => state.call);
-	const [callRef, setCallRef] = useState({});
 	const [error, setError] = useState(false);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
@@ -39,7 +38,7 @@ const StartCall = (props) => {
 			// console.log(`Publisher stream destroyed because: ${reason}`);
 			// console.log(reason, props.sala);
 			if (props.sala === '' || reason === 'unpublished') {
-				props.history.replace(`/feedback`);
+				props.history.replace(`/feedback?activeUid=${props.activeUid}&dependant=${props.dependant}`);
 			}
 			/* callRef.sessionHelper.session.off() */
 		},
@@ -127,7 +126,6 @@ const StartCall = (props) => {
 				token={props.token}
 				onError={onSessionError}
 				eventHandlers={sessionEventHandlers}
-				ref={(instance) => setCallRef(instance)}
 				className='opentok'>
 				<>
 					<div className='PatientContainerMedia'>

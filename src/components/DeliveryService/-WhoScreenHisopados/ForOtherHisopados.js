@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { node_patient } from "../../../config/endpoints";
 import Alert from "../../GeneralComponents/Alert/Alerts";
 import Loading from "../../GeneralComponents/Loading";
-import BackButton from './../../GeneralComponents/Backbutton';
+import BackButton from '../../GeneralComponents/Backbutton';
 import swal from 'sweetalert';
 import "../../../styles/generalcomponents/register.scss";
 import '../../../styles/deliveryService/forOtherHisopados.scss';

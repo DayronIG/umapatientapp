@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import StarRatings from 'react-star-ratings';
 import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import axios from 'axios';
+import queryString from 'query-string';
 import { feedback } from '../../../config/endpoints';
 import { getMedicalRecord } from '../../../store/actions/firebaseQueries';
 
-const Rating = (props) => {
+const Rating = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const [ratingApp, setRatingApp] = useState(0);
 	const [ratingMed, setRatingMed] = useState(0);
 	const [notes, setNotes] = useState('');
@@ -17,6 +19,8 @@ const Rating = (props) => {
 	const patient = useSelector((state) => state.user);
 	const mr = useSelector((state) => state.queries.medicalRecord);
     const uid = useSelector(state => state.userActive?.currentUser?.uid)
+	const location = useLocation()
+    const { dependant, activeUid } = queryString.parse(location.search)
 
     React.useEffect(() => {
         let local = JSON.parse(localStorage.getItem('appointmentUserData'))
@@ -38,7 +42,7 @@ const Rating = (props) => {
 				mr[0].mr.destino_final === 'Anula por falla de conexión')
 		) {
 			dispatch({ type: 'RESET_ALL' });
-			props.history.push('/home');
+			history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Paciente ausente') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -46,7 +50,7 @@ const Rating = (props) => {
 				'Motivo: Paciente ausente. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/home');
+			history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Anula el paciente') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -54,7 +58,7 @@ const Rating = (props) => {
 				'Motivo: Anula el paciente. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/home');
+			history.push('/home');
 		} else if (mr[0] && mr[0].mr.destino_final === 'Anula por falla de conexión') {
 			dispatch({ type: 'RESET_ALL' });
 			swal(
@@ -62,7 +66,7 @@ const Rating = (props) => {
 				'Motivo: Anula por falla de conexión. Puede realizar una nueva consulta.',
 				'warning'
 			);
-			props.history.push('/home');
+			history.push('/home');
 		}
 	}, [mr]);
 
@@ -86,16 +90,17 @@ const Rating = (props) => {
 					'uma_eval': ratingApp.toString(),
 					'doc_eval': ratingMed.toString(),
 					'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim(),
-					'uid': uid
+					'uid': uid,
+					'uid_dependant': dependant === 'true' ? activeUid : false
 				}
 				if (!mr[0] && mr[0].assignation_id) {
 					data = { ...data, 'assignation_id': mr[0].assignation_id, }
 				}
 				await axios.post(feedback, data, headers)
-				props.history.push('/home')
+				history.push('/home')
 			} catch (err) {
 				console.error(err)
-				props.history.push('/home')
+				history.push('/home')
 			}
 		},
 		[ratingApp, ratingMed],
@@ -131,4 +136,4 @@ const Rating = (props) => {
 		)
 }
 
-export default withRouter(Rating);
+export default Rating;

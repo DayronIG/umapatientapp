@@ -23,7 +23,6 @@ const WhenScreen = (props) => {
 	const { loading } = useSelector((state) => state.front);
 	const [userDataToJson] = useState(JSON.parse(localStorage.getItem('userData')));
 	const [userDni] = useState(user.dni ? user.dni : userDataToJson.dni);
-	const [userUid] = useState(user.uid ? user.uid : userDataToJson.uid);
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
 
 	useEffect(() => {
@@ -40,7 +39,11 @@ const WhenScreen = (props) => {
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-						return props.history.replace(`/onlinedoctor/queue/${assigned.activeUid}?dependant=${assigned.dependant}`);
+						if(assigned.patient.uid_dependant) {
+							return props.history.replace(`/onlinedoctor/queue/${assigned.patient.uid_dependant}?dependant=true`);
+						} else {
+							return props.history.replace(`/onlinedoctor/queue/${currentUser.uid}?dependant=false`);
+						}
 					}
 				} else {
 					unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)			

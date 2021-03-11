@@ -21,13 +21,11 @@ import Profile from './views/Profile';
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
 import When from './components/OnlineDoctor/WhenScreen/WhenAtt';
 import Reason from './components/OnlineDoctor/Reason/';
-import Rating from './components/OnlineDoctor/Rating/Rating';
 import AttQueue from './components/OnlineDoctor/AttQueue';
 import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
 // Survey and Transport 
-import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
 import TransportRegister from './components/Transport/TransportRegister';
 import TransportUserActive from './components/Transport/TransportUserActive';
@@ -119,8 +117,6 @@ function App(props) {
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
 				<PrivateRoute exact path='/onlinedoctor/attention/:activeUid?' component={CallContainer} />
-				<PrivateRoute exact path='/:activeUid?/onlinedoctor/attention' component={CallContainer} /> 
-				<PrivateRoute exact path='/onlinedoctor/rating/:ws/:activeUid?' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
@@ -141,7 +137,6 @@ function App(props) {
 				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:activeUid?/' component={SelectSymptoms} />
 				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:activeUid?/' component={CalendarOnline} />
 				{/* TRASLADOS */}
-				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
 				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />
 				<PrivateRoute exact path='/:ws/transportRegister' component={TransportRegister} />
 				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />

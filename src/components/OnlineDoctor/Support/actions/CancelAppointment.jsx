@@ -16,9 +16,8 @@ const CancelAppointment = () => {
     const { assignedAppointment } = useSelector(state => state.queries)
     const [cancelOptions, setCancelOptions] = useState('')
     const [cancelDescription, setCancelDescription] = useState('');
-    const { id, dependant } = queryString.parse(location.search)
+    const { id, dependant, activeUid } = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
-    const { activeUid } = useParams()
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })

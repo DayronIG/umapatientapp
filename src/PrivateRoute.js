@@ -21,6 +21,7 @@ const Login = () => {
         let timeout = setTimeout(() => setDelay(true), 2000)
         return () => clearTimeout(timeout)
     }, [])
+    
     if (delay) {
         return <LoginComponent />
     } else {
@@ -35,20 +36,28 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const { currentUser } = useContext(AuthContext)
     const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
-    const { callRejected } = useSelector(state => state.call)
-	const token = useSelector(state => state.userActive.token)
+    const call = useSelector(state => state.call)
+	const {token} = useSelector(state => state.userActive)
 
     useEffect(() => {
         if (user.ws) {
             try {
-                let subscription, queryUser = firestore.doc(`auth/${user.ws}`)
+                let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
-                    if (data && data?._start_date !== '' && data._start_date) {
-                        let calldata = data?._start_date?.split('///')
-                        if (!callRejected && !rest.path.includes('/attention/')) {
+                    if (data && data?.call?.room !== '') {
+                        if (!call.callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: calldata?.[0], token: calldata?.[1], assignation: calldata?.[2] } })
+                            dispatch({ 
+                                type: 'SET_CALL_ROOM', 
+                                payload: { 
+                                    room: data.call.room,
+                                    token: data.call.token, 
+                                    assignation: data.call.assignation_id,
+                                    dependant: data.call.dependant,
+                                    activeUid: data.call.activeUid
+                                } 
+                            })
                         }
                     } else {
                         setNotification(false)
@@ -130,7 +139,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 <ToastNotification
                     title={'LLAMADA ENTRANTE...'}
                     button={'Contestar'}
-                    action={`/onlinedoctor/attention/${user.dni}`}
+                    action={`/onlinedoctor/attention/${call.activeUid}?dependant=${call.dependant}`}
                     unsetNotification={setNotification}
                     audio={tone}
                 />
