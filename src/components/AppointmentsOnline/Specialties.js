@@ -14,9 +14,9 @@ const db = DB.firestore();
 const Specialties = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const {uid} = useSelector(state => state.activeUser.currentUser)
+	const currentUser = useSelector(state => state.userActive.currentUser)
 	const [arraySpecialties, setArraySpecialties] = useState([]);
-	const { loading } = useSelector((state) => state.front);
+	const { loading } = useSelector(state => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
 	const mesActual = moment().format('YYYYMM');
 	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
@@ -25,15 +25,16 @@ const Specialties = (props) => {
 	const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if(activeUid && activeUid !== uid) {
-			getDependant(uid, activeUid)
+		console.log(currentUser)
+		if(activeUid && activeUid !== currentUser?.uid) {
+			getDependant(currentUser, activeUid)
 				.then((user) => {
 					const pediatric = moment().diff(user.dob, 'years') <= 16;
 					setAgePediatry(pediatric)
 				})
 				.catch((error) => console.log(error));
 		}
-	}, []);
+	}, [currentUser, activeUid]);
 
 	useEffect(() => {
 		getSpecialtiesTurns();

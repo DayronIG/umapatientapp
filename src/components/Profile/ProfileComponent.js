@@ -16,7 +16,7 @@ import { SignOut } from '../User/Login';
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
 	const db = DBConnection.firestore();
-	const {currentUser} = useSelector(state => state.activeUser)
+	const {currentUser} = useSelector(state => state.userActive)
 	const modal = useSelector((state) => state.front.openDetails);
 	const { section } = useSelector((state) => state.front);
 	const patient = useSelector(state => state.user);

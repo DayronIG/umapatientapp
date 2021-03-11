@@ -28,7 +28,7 @@ const Queue = (props) => {
     const assessment = useSelector(state => state.assessment)
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
-    const {currentUser} = useSelector(state => state.activeUser)
+    const {currentUser} = useSelector(state => state.userActive)
     const mr = useSelector(state => state.queries.medicalRecord[0])
     const {activeUid} = useParams()
     const history = useHistory()

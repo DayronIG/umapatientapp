@@ -20,7 +20,7 @@ import '../../styles/TurnoConsultorio.scss';
 const AppointmentsOnlineHistory = (props) => {
 	const dispatch = useDispatch()
 	const token = useSelector(state => state.userActive.token)
-	const { uid } = useSelector(state => state.userActive.currentUser)
+	const currentUser = useSelector(state => state.userActive.currentUser)
 	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
@@ -30,15 +30,15 @@ const AppointmentsOnlineHistory = (props) => {
     const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if (activeUid && activeUid !== uid) {
-			getDependant(uid, activeUid)
+		if (activeUid && activeUid !== currentUser.uid) {
+			getDependant(currentUser.uid, activeUid)
 				.then(res => {
 					findMR(dni, res.ws)
 					dispatch({ type: 'GET_PATIENT', payload: res })
 				})
 				.catch(err => console.log(err))
 		}
-	}, [])
+	}, [currentUser])
 
 	useEffect(() => {
 		try {
@@ -105,7 +105,7 @@ const AppointmentsOnlineHistory = (props) => {
 					appointment_path: `assignations/${medicalRecord[0].path}` || '',
 					type: 'cancel',
 					complain: '',
-					uid: uid,
+					uid: currentUser.uid,
 					uid_dependant: params.dependant === 'true' ? activeUid: false
 				}
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})

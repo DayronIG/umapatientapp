@@ -15,7 +15,7 @@ const Specialties = () => {
 	const history = useHistory();
 	const { activeUid } = useParams();
 	const user = useSelector((state) => state.user);
-	const {currentUser} = useSelector(state => state.activeUser)
+	const {currentUser} = useSelector(state => state.userActive)
 	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
