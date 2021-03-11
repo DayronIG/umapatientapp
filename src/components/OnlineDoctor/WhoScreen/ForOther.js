@@ -44,17 +44,8 @@ const RegisterDependant = props => {
       ws: user.ws || "",
     }
     try {
-      //CAMBIAR-SANTI -> Devolver dato en el response (back)
-      let activeUid = ''  
       const res = await axios.post(`${node_patient}/dependant`, { dependant: data })
-      const registeredDependant = await DB.firestore()
-        .collection(`user/${uid}/dependants`)
-        .where('dni', '==', dependant.document)
-        .get()
-      registeredDependant.forEach((p) => {
-        let id = p.id
-        activeUid = id
-      })
+      const activeUid = res.data.uploadedDependantId
       if (props.redirectToConsultory === 'true') {
         history.replace(`/appointmentsonline/${activeUid}?dependant=true`)
       } else {
