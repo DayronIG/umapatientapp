@@ -14,19 +14,21 @@ const MyRecords = () => {
     const records = useSelector(state => state.queries.medicalRecord)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
+    const {currentUser} = useSelector(state => state.userActive)
 
     useEffect(() => { 
         window.scroll(0, 0);
         if(patient.dni) {
-            dispatch(getBenficiaries(patient.dni))
-            dispatch(getMedicalRecord(patient.dni, patient.ws))
+            dispatch(getBenficiaries(currentUser.uid))
+            dispatch(getMedicalRecord(currentUser.uid, false))
         }
     }, [patient])
 
     function selectBeneficiarieMr(p) {
         if (p === 'owner') {
-            dispatch(getMedicalRecord(beneficiaries?.[0]?.group, beneficiaries[0]?.ws))
+            dispatch(getMedicalRecord(currentUser.uid, false))
         } else {
+            // to do -> Dependant medical record
             dispatch(getMedicalRecord(p.split('-')[0], p.split('-')[1]))
         }
     }
@@ -42,7 +44,6 @@ const MyRecords = () => {
                 {/*  Beneficiary cambia de lugar con el nuevo diseño*/}
                 <div className='my-history-beneficiary'> 
                     <select className='select-beneficiary' onChange={(p) => selectBeneficiarieMr(p.target.value)}>
-                        <option value="owner"> {patient.fullname} </option>
                     {beneficiaries.map((p, index) => {
                         return <option key={index} value={`${p.dni}-${p.ws}`}> {p.fullname} </option>
                     })}

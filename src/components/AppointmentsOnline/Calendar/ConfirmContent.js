@@ -157,6 +157,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					motivo_de_consulta: selectedSymptomsString,
 					msg: 'make_appointment',
 					ruta: id,
+					cuit: `${doctor.cuit}`,
 					specialty: `${doctor.matricula_especialidad}`,
 					sex: patient.sex || '',
 					ws: patient.ws,
@@ -174,7 +175,6 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					return history.replace(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 				}
 			} catch (error) {
-				//console.log(error)
 				dispatch({ type: 'LOADING', payload: false });
 				await swal({
 					title: 'Error',

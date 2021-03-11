@@ -22,7 +22,7 @@ const CancelAppointment = () => {
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
-        let path = localStorage.getItem('currentAppointment').slice(1,-1)
+        let path = localStorage.getItem('currentAppointment')?.slice(1,-1)
         let documentBuild = `assignations/${path}`
         if(assignedAppointment.path) {
             documentBuild = assignedAppointment.path

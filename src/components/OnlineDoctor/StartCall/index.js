@@ -39,18 +39,18 @@ const CallContainer = (props) => {
 					subscription = queryUser.onSnapshot(async function (doc) {
 						let data = doc.data()
 						if (data && data?.call?.room !== '') {
-								dispatch(
-									{ 
-										type: 'SET_CALL_ROOM', 
-										payload: { 
-											activeUid: data.call.activeUid,
-											assignation_id: data.call.assignation_id,
-											dependant: data.call.dependant,
-											date: data.call.date,
-											room: data.call.room, 
-											token: data.call.token, 
-										} 
-									})
+							dispatch(
+								{ 
+									type: 'SET_CALL_ROOM', 
+									payload: { 
+										activeUid: data.call.activeUid,
+										assignation_id: data.call.assignation_id,
+										dependant: data.call.dependant,
+										date: data.call.date,
+										room: data.call.room, 
+										token: data.call.token, 
+									} 
+								})
 						}
 					})
 					return () => {

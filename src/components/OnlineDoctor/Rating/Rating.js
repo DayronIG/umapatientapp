@@ -25,8 +25,8 @@ const Rating = () => {
     React.useEffect(() => {
         let local = JSON.parse(localStorage.getItem('appointmentUserData'))
         try {
-            let p = local.dni || patient.dni
-            dispatch(getMedicalRecord(p, patient.ws))
+			let dependant = activeUid === uid ? false : true
+            dispatch(getMedicalRecord(activeUid, dependant))
         } catch (err) {
             console.log(err)
         }

@@ -90,6 +90,7 @@ const ConfirmAppointment = (props) => {
 				lat: coordinates.lat || '', 
 				lon: coordinates.lng || '',
 				msg: 'make_appointment',
+				cuit: `${selectedAppointment.cuit}`,
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
 				ruta: ruta || '',

@@ -157,17 +157,16 @@ export function getUserParentsFirebase(uid) {
 	});
 }
 // TO DO -> HERE ARE TWO FUNCTIONS DOING EXACTLY THE SAME
-export function getBenficiaries(group) {
-	let queryUser = firestore.collection('users').where('group', '==', group);
+export function getBenficiaries(uid) {
+	let queryUser = firestore.collection(`user/${uid}/dependants`).where('dni', '>', '');
 	return (dispatch) => {
 		queryUser.get()
 			.then((beneficiaries) => {
 				let parentsTemp = [];
 				beneficiaries.forEach((p) => {
 					let data = p.data();
-					if (p.exists && data.dni !== group) {
-						parentsTemp.push(data);
-					}
+					if(!parentsTemp.find(el => el.dni !== data.dni))
+					parentsTemp.push(data);
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
 			})
@@ -347,31 +346,33 @@ export function getPrescriptions(uid) {
 	}
 }
 
-export function getMedicalRecord(dni, ws){
-    try {
-        const usersQuery = firestore
-            .collection('events')
-            .doc('mr')
-            .collection(dni)
-            .where('patient.ws', '==', ws)
-        return dispatch => {
-            usersQuery.onSnapshot(subSnapshot => {
-                var tempArray = [];
-                subSnapshot.forEach(content => {
-                    tempArray.push(content.data());
-                });
-				let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
-                dispatch({
-                    type: 'GET_MEDICAL_RECORD',
-                    payload: result
-                });
-            }, function(error) {
-               console.log(error)
-            });
-        }
-    } catch (err) {
-        console.log('ERROR getMedicalRecord', err);
-    }
+export function getMedicalRecord(uid, dependant = false){
+	return dispatch => {
+		try {
+			const usersQuery = firestore
+				.collection(`user/${uid}/medical_records`)
+			if(!dependant) {
+				usersQuery.where('patient.uid', '==', uid)
+			} else {
+				usersQuery.where('patient.uid_dependant', '==', uid)
+			}
+				usersQuery.onSnapshot(subSnapshot => {
+					var tempArray = [];
+					subSnapshot.forEach(content => {
+						tempArray.push(content.data());
+					});
+					let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+					dispatch({
+						type: 'GET_MEDICAL_RECORD',
+						payload: result
+					});
+				}, function(error) {
+				   console.log(error)
+				});
+		} catch (err) {
+			console.log('ERROR getMedicalRecord', err);
+		}
+	}
 }
 
 export async function getUserMedicalRecord(dni, ws) {
