@@ -26,9 +26,9 @@ const Queue = (props) => {
     const [calling, setCalling] = useState(false)
     const { loading } = useSelector(state => state.front)
     const assessment = useSelector(state => state.assessment)
-    const {dni} = useSelector(state => state.user)
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
+    const {currentUser} = useSelector(state => state.activeUser)
     const mr = useSelector(state => state.queries.medicalRecord[0])
     const {activeUid} = useParams()
     const history = useHistory()
@@ -39,15 +39,20 @@ const Queue = (props) => {
         (async function checkAssignedAppointment() {
             if (Object.keys(assignedAppointment).length === 0) {
                 dispatch({ type: 'LOADING', payload: true })
-                const user = await getDocumentFB(`users/${dni}`)
+                let user = {}
+                if(params.dependant) {
+                    user = await getDocumentFB(`user/${currentUser.uid}/dependants/${activeUid}`)
+                } else {
+                    user = await getDocumentFB(`user/${currentUser.uid}`)
+                }
                 const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
-                const assigned = await findAllAssignedAppointment(dni, type)
+                const assigned = await findAllAssignedAppointment(currentUser.uid, type)
                 dispatch({ type: 'LOADING', payload: false })
                 if (assigned) {
                     dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
                 } else {
                     return history.replace(`/home`)
-                }
+                } 
             }
         })()
     }, [])
@@ -66,8 +71,8 @@ const Queue = (props) => {
     }, [assignedAppointment])
 
     useEffect(() => {
-        if (dni && assignation) {
-            firestore.doc(`events/mr/${dni}/${assignation}`)
+        if (patient.dni && assignation) {
+            firestore.doc(`events/mr/${patient.dni}/${assignation}`)
                 .onSnapshot(res => {
                     if (mr && mr !== undefined) {
                         let mr = res.data() && res.data().mr
@@ -207,7 +212,7 @@ const Queue = (props) => {
                 patient.ws = assignedAppointment.appointments?.['0']?.['6']
             }
             if(patient.ws && patient.ws !== "") {
-                let queryUser = firestore.collection('auth').doc(patient.ws)
+                let queryUser = firestore.collection('user').doc(patient.ws)
                 return queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()._start_date
                     dispatch({ type: 'LOADING', payload: false })

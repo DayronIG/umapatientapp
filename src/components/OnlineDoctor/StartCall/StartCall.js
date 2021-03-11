@@ -28,19 +28,10 @@ const StartCall = (props) => {
 	};
 
 	const publisherEventHandlers = {
-		accessDenied: () => {
-			// console.log('User denied access to media source');
-		},
-		streamCreated: (e) => {
-			// console.log(e)
-		},
 		streamDestroyed: ({ reason }) => {
-			// console.log(`Publisher stream destroyed because: ${reason}`);
-			// console.log(reason, props.sala);
 			if (props.sala === '' || reason === 'unpublished') {
 				props.history.replace(`/feedback?activeUid=${props.activeUid}&dependant=${props.dependant}`);
 			}
-			/* callRef.sessionHelper.session.off() */
 		},
 	};
 
@@ -54,7 +45,6 @@ const StartCall = (props) => {
 	};
 
 	useEffect(() => {
-		// let vid = document.querySelectorAll('.OTSubscriberContainer .OT_video-element');
 		setDni(dni);
 		navigator.getUserMedia =
 			navigator.getUserMedia ||

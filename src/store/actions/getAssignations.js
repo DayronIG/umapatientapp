@@ -7,14 +7,14 @@ const firestore = DBConnection.firestore();
 const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
 const yearMonth = yearAndMonth();
 
-export function getAssignedAppointments(specialty, collectionName, doctors, userDni, date) {
+export function getAssignedAppointments(specialty, collectionName, doctors, uid, date) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			const assigns = [];
 			firestore
 				.collection(`assignations/${specialty}/${collectionName}`)
 				.where('date', '==', date)
-				.where('appointments.0', 'array-contains', userDni)
+				.where('patient.uid', '==', uid)
 				.get()
 				.then(async function (snapshot) {
 					snapshot.forEach((subDoc) => {
