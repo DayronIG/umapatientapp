@@ -40,7 +40,7 @@ const WhenScreen = (props) => {
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-						return props.history.replace(`/onlinedoctor/queue/${userUid}?dependant=false`);
+						return props.history.replace(`/onlinedoctor/queue/${assigned.activeUid}?dependant=${assigned.dependant}`);
 					}
 				} else {
 					unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)			

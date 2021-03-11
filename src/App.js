@@ -113,7 +113,7 @@ function App(props) {
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
-				<PrivateRoute exact path='/onlinedoctor/who/:ws?' component={Who} />
+				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
 				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?' component={When} />
 				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
