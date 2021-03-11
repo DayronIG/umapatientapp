@@ -45,7 +45,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
-                    if (data && data?.call?.room !== '') {
+                    if (data.call?.room && data?.call?.room !== '') {
                         if (!call.callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
                             dispatch({ 
@@ -75,7 +75,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 console.log(error)
             }
         }
-    }, [user, firestore, callRejected, rest.path])
+    }, [user, firestore, call.callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
 		if (user.dni !== "" && currentUser && currentUser.email) {

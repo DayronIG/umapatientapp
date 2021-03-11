@@ -214,13 +214,21 @@ const Queue = (props) => {
             if(patient.ws && patient.ws !== "") {
                 let queryUser = firestore.collection('user').doc(patient.ws)
                 return queryUser.onSnapshot(async function (doc) {
-                    let data = doc.data()._start_date
+                    let data = doc.data()
                     dispatch({ type: 'LOADING', payload: false })
-                    if (data !== '' && data !== "geo") {
-                        let callRoom = data?.split('///')
-                        if(callRoom) {
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1], assignation: callRoom?.[2]  } })
-                        }
+                    if (data.call?.room && data.call?.room !== '' && data !== "geo") {
+                        dispatch(
+                            { 
+                                type: 'SET_CALL_ROOM', 
+                                payload: { 
+                                    activeUid: data.call.activeUid,
+                                    assignation_id: data.call.assignation_id,
+                                    dependant: data.call.dependant,
+                                    date: data.call.date,
+                                    room: data.call.room, 
+                                    token: data.call.token, 
+                                } 
+                            })
                     } else {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
                     }

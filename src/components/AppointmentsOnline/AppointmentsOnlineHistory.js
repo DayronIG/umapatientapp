@@ -12,9 +12,8 @@ import moment from 'moment-timezone';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { user_cancel } from '../../config/endpoints';
-import { getUser } from '../../store/actions/firebaseQueries';
+import { getDependant } from '../../store/actions/firebaseQueries';
 import tone from '../../assets/ring.mp3';
-import db from '../../config/DBConnection';
 import '../../styles/TurnoConsultorio.scss';
 
 
@@ -31,8 +30,8 @@ const AppointmentsOnlineHistory = (props) => {
     const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if (dni) {
-			getUser(dni)
+		if (activeUid && activeUid !== uid) {
+			getDependant(uid, activeUid)
 				.then(res => {
 					findMR(dni, res.ws)
 					dispatch({ type: 'GET_PATIENT', payload: res })

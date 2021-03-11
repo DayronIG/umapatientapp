@@ -267,10 +267,13 @@ export function getFeedback(cuit) {
 	});
 }
 
-export function getUser(dni) {
+export function getDependant(uid, dependant = false) {
 	return new Promise((resolve, reject) => {
 		try {
-			const authQuery = firestore.collection('users').doc(dni);
+			const authQuery = firestore.doc(`user/${uid}`)
+			if(dependant) {
+				authQuery.doc(`dependants/${dependant}`)
+			}
 			authQuery
 				.get()
 				.then((user) => {
@@ -323,41 +326,6 @@ export function getBills(dni) {
 			})
 			.catch((err) => reject(err));
 	});
-}
-
-export function getPatientData(ws) {
-	try {
-		const usersQuery = firestore
-			.collection('auth')
-			.doc(ws)
-			.get();
-		return (dispatch) => {
-			dispatch({ type: 'LOADING', payload: true });
-			usersQuery
-				.then(function(doc) {
-					if (doc.exists) {
-						let data = doc.data();
-						dispatch(getPatient(data));
-						dispatch({ type: 'LOADING', payload: false });
-						return 'exist';
-					} else {
-						dispatch({ type: 'ERROR', payload: 'No se encontraron usuarios' });
-						dispatch({ type: 'LOADING', payload: false });
-						return 'doesnt exist';
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-					dispatch({
-						type: 'ERROR',
-						payload: 'getPatientData for ' + ws + err,
-					});
-					dispatch({ type: 'LOADING', payload: false });
-				});
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: ' getPatientData for ' + ws + err };
-	}
 }
 
 export function getPrescriptions(uid) {

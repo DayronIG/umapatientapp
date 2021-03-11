@@ -49,7 +49,6 @@ const CallContainer = (props) => {
 											date: data.call.date,
 											room: data.call.room, 
 											token: data.call.token, 
-
 										} 
 									})
 						}

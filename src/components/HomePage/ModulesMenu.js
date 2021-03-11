@@ -58,19 +58,19 @@ const ModulesMenu = () => {
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
-								`/onlinedoctor/who/${user.ws}`,
+								`/onlinedoctor/who`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
 							)}
 							{returnModule(
-								`/${user.ws}/autonomous`,
+								`/autonomous/${user.ws}`,
 								'autonomous',
 								iconAutodiagnostico,
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${user.ws}/wellness`,
+								`/wellness/${user.ws}`,
 								'wellness',
 								iconEstudios,
 								'Estudios'

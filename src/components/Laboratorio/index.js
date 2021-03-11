@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Backbutton from '../GeneralComponents/Backbutton';
 import { GenericHeader } from "../GeneralComponents/Headers";
-import logo from '../../assets/icon.png';
 import LoadAnalysis from "./Lab/Buttons";
 import "../../styles/wellness/ocr.scss";
 

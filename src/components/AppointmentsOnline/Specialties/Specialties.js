@@ -7,7 +7,7 @@ import DB from '../../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { Loader } from '../../global/Spinner/Loaders';
-import { getUser } from '../../../store/actions/firebaseQueries';
+import { getDependant } from '../../../store/actions/firebaseQueries';
 const db = DB.firestore();
 
 const Specialties = () => {
@@ -15,6 +15,7 @@ const Specialties = () => {
 	const history = useHistory();
 	const { activeUid } = useParams();
 	const user = useSelector((state) => state.user);
+	const {currentUser} = useSelector(state => state.activeUser)
 	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
@@ -25,15 +26,16 @@ const Specialties = () => {
 		.format('YYYYMM');
 	const location = useLocation()
 	const params = queryString.parse(location.search)
-	// const agePediatry = moment().diff(user.dob, 'years') <= 16;
 
 	useEffect(() => {
-		getUser(dni)
-			.then((user) => {
-				const pediatric = moment().diff(user.dob, 'years') <= 16;
-				setAgePediatry(pediatric);
-			})
-			.catch((error) => console.log(error));
+		if(activeUid && activeUid !== currentUser) {
+			getDependant(currentUser, activeUid)
+				.then((user) => {
+					const pediatric = moment().diff(user.dob, 'years') <= 16;
+					setAgePediatry(pediatric);
+				})
+				.catch((error) => console.log(error));
+		}
 	}, []);
 
 	useEffect(() => {

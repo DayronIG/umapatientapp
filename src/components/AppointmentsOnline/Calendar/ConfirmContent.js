@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import queryString from 'query-string'
-import { getDoctor, getUser } from '../../../store/actions/firebaseQueries';
+import { getDoctor, getDependant } from '../../../store/actions/firebaseQueries';
 import { CustomUmaLoader } from '../../global/Spinner/Loaders';
 import { make_appointment } from '../../../config/endpoints';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
@@ -18,14 +18,14 @@ import swal from 'sweetalert';
 import '../../../styles/map/mapSidebar.scss';
 
 const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) => {
+	const dispatch = useDispatch();
 	const [doctor, setDoctor] = useState({});
 	const [coordinates, setCoordinates] = useState({ lat: '', lon: '' });
 	const { selectedSymptomsString } = useSelector((state) => state.assessment);
 	const { upNumAff_store } = useSelector((state) => state.queries);
 	const { loading } = useSelector((state) => state.front);
-	const dispatch = useDispatch();
-	const { dni } = useSelector((state) => state.user);
-	const token = useSelector((state) => state.userActive.token);
+	const patient = useSelector((state) => state.user);
+	const {token, currentUser} = useSelector((state) => state.userActive);
 	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
@@ -125,11 +125,13 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 			dispatch({ type: 'LOADING', payload: true });
 			try {
 				const upNumAff = upNumAff_store || localStorage.getItem('up_affNum');
-				const userData = await getUser(dni);
+				if(activeUid && activeUid !== currentUser.uid) {
+					await getDependant(currentUser.uid, activeUid);
+				}
 				const sendData = {
-					ws: userData.ws,
-					dni: userData.dni,
-					obra_social: userData.corporate_norm || '',
+					ws: patient.ws,
+					dni: patient.dni,
+					obra_social: patient.corporate_norm || '',
 					n_afiliado: upNumAff,
 					plan: '',
 					services: '',
@@ -140,8 +142,8 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					'YYYYMM'
 				)}/${appFullDt}_${doctor.cuit}`;
 				let data = {
-					age: userData.age || '',
-					dni: userData.dni,
+					age: patient.age || '',
+					dni: patient.dni,
 					dt: [
 						'TurnoConsultorioOnline',
 						`${doctor.fullname}`,
@@ -156,9 +158,9 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					msg: 'make_appointment',
 					ruta: id,
 					specialty: `${doctor.matricula_especialidad}`,
-					sex: userData.sex || '',
-					ws: userData.ws,
-					uid: userData.core_id,
+					sex: patient.sex || '',
+					ws: patient.ws,
+					uid: currentUser.uid,
 					uid_dependant: params.dependant === 'true' ? activeUid: false
 				};
 				const res = await post(make_appointment, data, {

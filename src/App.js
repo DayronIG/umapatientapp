@@ -11,7 +11,6 @@ import Welcome from './views/Welcome';
 import Reset from './views/Reset';
 import Feedback from './views/Feedback';
 import Login from './components/User/Login';
-import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
@@ -91,7 +90,6 @@ function App(props) {
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/login/:ws?' component={Login} />
-				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				<Route exact path='/register/:ws/:ref?' component={Register} />
 				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
 				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
@@ -147,10 +145,10 @@ function App(props) {
 				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
 				<PrivateRoute exact path='/:ws/transportRating/:assignation_id' component={TransportRating} />
 				{/* AUTONOMOUS */}
-				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
-				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
+				<PrivateRoute exact path='/autonomous/:dni' component={Autonomous} />
+				<PrivateRoute exact path='/laboratorio/:dni' component={Laboratorio} />
 				{/* Wellness */}
-				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
+				<PrivateRoute exact path='/wellness/:ws?' component={Wellness} />
 				{/* Patient tracking */}
 				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}

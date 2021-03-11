@@ -7,13 +7,10 @@ import {
   faDeaf,
   faFileMedicalAlt,
   faInfo,
-  faAllergies,
-  faBriefcaseMedical
 } from "@fortawesome/free-solid-svg-icons";
 import FooterBtn from "../GeneralComponents/FooterBtn";
 import MobileModal from "../GeneralComponents/Modal/MobileModal";
 import FileService from "../GeneralComponents/SelectService/FileService";
-import lungs from "../../assets/icons/lungs.svg";
 import WellnessCard from "../../assets/checkout/wellness.png";
 import "../../styles/wellness/wellness.scss";
 

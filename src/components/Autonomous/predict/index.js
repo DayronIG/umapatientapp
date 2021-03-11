@@ -60,11 +60,11 @@ const Predict = ({predicted, history})=>{
 
     const restartAll = () => {
         dispatch({type:'AUTONOMOUS_RESET'})
-        history.push(`/${patient.ws}/`)
+        history.push(`/home`)
     }
 
     function redirectNow() {
-        window.location.href = `/onlinedoctor/who/${patient.ws}`;
+        window.location.href = `/onlinedoctor/who`;
     }
 
     async function _getOnlineAppointment() {

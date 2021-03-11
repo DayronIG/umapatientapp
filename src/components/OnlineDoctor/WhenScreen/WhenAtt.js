@@ -3,17 +3,16 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
-import Comments from './Comments.js';
-import DB from '../../../config/DBConnection'
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser, getFreeGuardia } from '../../../store/actions/firebaseQueries';
-import enablePermissions from '../../Utils/enableVidAudPerms';
-import DinamicScreen from '../../GeneralComponents/DinamicScreen';
+import Comments from './Comments.js';
 import { Loader } from '../../GeneralComponents/Loading';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
+import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import Backbutton from '../../GeneralComponents/Backbutton';
+import { getDependant, getFreeGuardia } from '../../../store/actions/firebaseQueries';
+import enablePermissions from '../../Utils/enableVidAudPerms';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import 'moment/locale/es';
 
@@ -26,37 +25,14 @@ const WhenScreen = (props) => {
 	const [assignations, setAssignations] = useState([]);
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
-	const [dni, setDni] = useState('')
 	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
-	const setDniIfUserIsOrNotDependant = () => {
-		if(params.dependant === 'false'){
-			setDni(currentUser?.dni ?? user.dni)
-		} else {
-			DB.firestore()
-			.collection('user')
-			.doc(currentUser?.uid ?? user.core_id)
-			.collection('dependants')
-			.doc(activeUid)
-			.get()
-			.then(dependantDoc => {
-				setDni(dependantDoc?.data()?.dni)
-			})
-		}
-	}
-
 	useEffect(() => {
-		if(user?.dni){
-			setDniIfUserIsOrNotDependant()
-		}
-	}, [user])
-
-	useEffect(() => {
-		if (activeUid !== undefined && dni) {
+		if (activeUid && activeUid !== currentUser.uid) {
 			dispatch({type: 'LOADING', payload: true})
-			getUser(dni)
+			getDependant(currentUser, activeUid)
 				.then((p) => {
 					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
 					setPediatric(type);
@@ -69,7 +45,7 @@ const WhenScreen = (props) => {
 					return error;
 				});
 		}
-	}, [dni]);
+	}, [currentUser, activeUid]);
 
 
 	useEffect(() => {
@@ -105,9 +81,6 @@ const WhenScreen = (props) => {
 		try {
 			let freeAppoints =  []
 			freeAppoints = await getFreeGuardia(test, user.country, type); // WIP
-			// Get free appointments from firebase.
-			// let freeAppoints = await findAllFreeAppointments(type);
-			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
 				return setAction('Doctors');
@@ -148,10 +121,9 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					<GuardCard pediatric={pediatric} dni={dni} doctorsCount={assignations.length} />
+					<GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} />
 					{action === 'Loading' && (
-						<div
-							className='when__loading'>
+						<div className='when__loading'>
 							<Loader />
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
@@ -162,7 +134,7 @@ const WhenScreen = (props) => {
 								<DoctorCard
 									{...assignation}
 									key={index}
-									dni={dni}
+									dni={user.dni}
 								/>
 							))}
 						</div>
