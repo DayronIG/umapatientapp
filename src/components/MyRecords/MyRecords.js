@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserMd, faUserNurse, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { faUserMd, faUserNurse } from '@fortawesome/free-solid-svg-icons';
 import { HistoryHeader } from '../GeneralComponents/Headers';
 import { getMedicalRecord, getBenficiaries } from '../../store/actions/firebaseQueries';
 import '../../styles/history/MyRecords.scss';
@@ -14,7 +14,6 @@ const MyRecords = () => {
     const records = useSelector(state => state.queries.medicalRecord)
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
-
 
     useEffect(() => { 
         window.scroll(0, 0);
