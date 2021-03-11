@@ -29,12 +29,9 @@ const Specialties = () => {
 
 	useEffect(() => {
 		if(activeUid && activeUid !== currentUser) {
-			getDependant(currentUser, activeUid)
-				.then((user) => {
-					const pediatric = moment().diff(user.dob, 'years') <= 16;
-					setAgePediatry(pediatric);
-				})
-				.catch((error) => console.log(error));
+			dispatch(getDependant(currentUser, activeUid))
+		/* const pediatric = moment().diff(user.dob, 'years') <= 16;
+		setAgePediatry(pediatric); */
 		}
 	}, []);
 

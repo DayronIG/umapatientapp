@@ -268,7 +268,7 @@ export function getFeedback(cuit) {
 }
 
 export function getDependant(uid, dependant = false) {
-	return new Promise((resolve, reject) => {
+	return dispatch => {
 		try {
 			const authQuery = firestore.doc(`user/${uid}`)
 			if(dependant) {
@@ -277,15 +277,15 @@ export function getDependant(uid, dependant = false) {
 			authQuery
 				.get()
 				.then((user) => {
-					return resolve(user.data());
+					dispatch({type: 'GET_PATIENT', payload: user.data()});
 				})
 				.catch(function(error) {
 					throw error;
 				});
 		} catch (error) {
-			reject(error);
+			console.log(error);
 		}
-	});
+	};
 }
 
 export function getAuth(uid) {

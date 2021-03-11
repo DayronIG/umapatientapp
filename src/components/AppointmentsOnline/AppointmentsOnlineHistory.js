@@ -31,12 +31,8 @@ const AppointmentsOnlineHistory = (props) => {
 
 	useEffect(() => {
 		if (activeUid && activeUid !== currentUser.uid) {
-			getDependant(currentUser.uid, activeUid)
-				.then(res => {
-					findMR(dni, res.ws)
-					dispatch({ type: 'GET_PATIENT', payload: res })
-				})
-				.catch(err => console.log(err))
+			dispatch(getDependant(currentUser.uid, activeUid))
+			// TO DO: findMR(dni, res.ws)
 		}
 	}, [currentUser])
 

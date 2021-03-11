@@ -126,7 +126,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 			try {
 				const upNumAff = upNumAff_store || localStorage.getItem('up_affNum');
 				if(activeUid && activeUid !== currentUser.uid) {
-					await getDependant(currentUser.uid, activeUid);
+					await dispatch(getDependant(currentUser.uid, activeUid))
 				}
 				const sendData = {
 					ws: patient.ws,

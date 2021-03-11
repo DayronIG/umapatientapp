@@ -30,23 +30,11 @@ const WhenScreen = (props) => {
     const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if (activeUid && activeUid !== currentUser.uid) {
-			dispatch({type: 'LOADING', payload: true})
-			getDependant(currentUser, activeUid)
-				.then((p) => {
-					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
-					setPediatric(type);
-					let test = p.context === "temp" ? true : false
-					findAssignedAppointments(p, type, test);
-					dispatch({type: 'LOADING', payload: false})
-				})
-				.catch(function(error) {
-					dispatch({type: 'LOADING', payload: false})
-					return error;
-				});
+		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
+			console.log("Entra 1 vez")
+			dispatch(getDependant(currentUser.uid, activeUid))
 		}
 	}, [currentUser, activeUid]);
-
 
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
@@ -58,13 +46,24 @@ const WhenScreen = (props) => {
 		});
 	}, []);
 
+	useEffect(() => {
+		if(user) {
+			let test = user.context === "temp" ? true : false
+			const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
+			setPediatric(type);
+			findAssignedAppointments(user, type, test);
+		}
+	}, [user])
+
 	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
 			let assigned = undefined;
 			if (person.group !== person.dni) {
+				console.log(person)
 				assigned = await findAllAssignedAppointment(person.dni, type);
 			}
+			console.log(assigned)
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
