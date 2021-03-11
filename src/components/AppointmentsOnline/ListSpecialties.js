@@ -7,7 +7,7 @@ import Specialties from './Specialties/Specialties';
 import '../../styles/appointmentsonline/listSpecialties.scss';
 
 const ListSpecialties = (props) => {
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
@@ -22,7 +22,7 @@ const ListSpecialties = (props) => {
 				</div>
 			</div>
 			<div className='searchByDoctor'>
-				<Link to={`/appointmentsonline/search-doctor/${uidToDerivate}?dependant=${params.dependant}`}>BUSCAR POR MEDICO</Link>
+				<Link to={`/appointmentsonline/search-doctor/${activeUid}?dependant=${params.dependant}`}>BUSCAR POR MEDICO</Link>
 				<FaUserMd />
 			</div>
 		</>

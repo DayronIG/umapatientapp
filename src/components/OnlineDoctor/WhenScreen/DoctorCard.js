@@ -12,7 +12,7 @@ import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
@@ -31,7 +31,7 @@ const DoctorCard = (props) => {
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/onlinedoctor/reason/${uidToDerivate}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	}
 
 	return (
@@ -99,13 +99,13 @@ export default withRouter(DoctorCard);
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
 	const [queue, setQueue] = useState("0")
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${uidToDerivate}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	};
 	
 	useEffect(() => {
@@ -141,7 +141,7 @@ export const GuardCard = withRouter(GuardCardComp);
 
 const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 	const dispatch = useDispatch();
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	
@@ -154,7 +154,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/onlinedoctor/reason/${uidToDerivate}?dependant=${params.dependant}`);
+		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	}
 
 	return (

@@ -45,7 +45,7 @@ const RegisterDependant = props => {
     }
     try {
       //CAMBIAR-SANTI
-      let uidToDerivate = ''  
+      let activeUid = ''  
       const res = await axios.post(`${node_patient}/dependant`, { dependant: data })
       console.log("done 1", dependant.document, res)
       const registeredDependant = await DB.firestore()
@@ -55,15 +55,15 @@ const RegisterDependant = props => {
       console.log("done 2", registeredDependant)
       registeredDependant.forEach((p) => {
         let id = p.id
-        uidToDerivate = id
+        activeUid = id
       })
-      console.log("done 3", uidToDerivate)
+      console.log("done 3", activeUid)
       if (props.redirectToConsultory === 'true') {
-        history.replace(`/appointmentsonline/${uidToDerivate}?dependant=true`)
+        history.replace(`/appointmentsonline/${activeUid}?dependant=true`)
       } else {
         let userData = { ...user, dni, dob, sex, fullname }
         localStorage.setItem('appointmentUserData', JSON.stringify(userData))
-        history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=true`)
+        history.replace(`/onlinedoctor/when/${activeUid}?dependant=true`)
       }
       dispatch({ type: "LOADING", payload: false })
     } catch(error) {

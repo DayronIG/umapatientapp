@@ -30,7 +30,7 @@ const Queue = (props) => {
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord[0])
-    const {uidToDerivate} = useParams()
+    const {activeUid} = useParams()
     const history = useHistory()
     const location = useLocation()
     const params = queryString.parse(location.search)
@@ -237,7 +237,7 @@ const Queue = (props) => {
             {calling ?
                 <>
                     <div className='ico-calling'>
-                        <Link to={`/onlinedoctor/attention/${uidToDerivate}?dependant=${params.dependant}`} replace={true}>
+                        <Link to={`/onlinedoctor/attention/${activeUid}?dependant=${params.dependant}`} replace={true}>
                             <FontAwesomeIcon icon={faPhoneAlt} />
                         </Link>
                     </div>
@@ -255,7 +255,7 @@ const Queue = (props) => {
                 id={assignedAppointment?.appointments?.[0][14]}
                 calling={calling} 
                 appState={appointment.state}
-                uidToDerivate={uidToDerivate}
+                activeUid={activeUid}
                 dependant={params.dependant}
             />
             {calling && <audio src={tone} id='toneAudio' autoPlay />}

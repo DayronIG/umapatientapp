@@ -20,7 +20,7 @@ const Specialties = (props) => {
 	const [agePediatry, setAgePediatry] = useState(false);
 	const mesActual = moment().format('YYYYMM');
 	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
@@ -97,7 +97,7 @@ const Specialties = (props) => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		props.history.push(`/appointmentsonline/${specialty}/calendar/${uidToDerivate}?dependant=${params.dependant}`);
+		props.history.push(`/appointmentsonline/${specialty}/calendar/${activeUid}?dependant=${params.dependant}`);
 		// pushPage(speciality);
 	};
 

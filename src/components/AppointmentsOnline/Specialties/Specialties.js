@@ -13,7 +13,7 @@ const db = DB.firestore();
 const Specialties = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const { uidToDerivate } = useParams();
+	const { activeUid } = useParams();
 	const user = useSelector((state) => state.user);
 	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
@@ -108,7 +108,7 @@ const Specialties = () => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		return history.push(`/appointmentsonline/${value}/calendar/${uidToDerivate}?dependant=${params.dependant}`);
+		return history.push(`/appointmentsonline/${value}/calendar/${activeUid}?dependant=${params.dependant}`);
 
 		// pushPage(speciality);
 	};

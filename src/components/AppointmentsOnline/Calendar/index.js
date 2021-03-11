@@ -33,7 +33,7 @@ const MyCalendar = () => {
 	const localizer = momentLocalizer(moment);
 	const dt_calendar = date;
 	const yearMonth = moment(date).format('YYYYMM');
-	const { condition, uidToDerivate } = useParams();
+	const { condition, activeUid } = useParams();
 	const history = useHistory();
 	const location = useLocation()
 	const params = queryString.parse(location.search)
@@ -191,7 +191,7 @@ const MyCalendar = () => {
 					<div className='calendar__legend'>
 						<FontAwesomeIcon icon={faUserMd} /> Turnos disponibles este día
 					</div>
-					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${uidToDerivate}?dependant=${params.dependant}`)} />
+					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${activeUid}?dependant=${params.dependant}`)} />
 				</>
 			) : (
 					<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />

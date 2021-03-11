@@ -18,7 +18,7 @@ const CancelAppointment = () => {
     const [cancelDescription, setCancelDescription] = useState('');
     const { id, dependant } = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
-    const { uidToDerivate } = useParams()
+    const { activeUid } = useParams()
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
@@ -44,7 +44,7 @@ const CancelAppointment = () => {
                 type: 'cancel',
                 complain: '',
                 uid: currentUser.uid,
-                uid_dependant: dependant === 'true' ? uidToDerivate : false 
+                uid_dependant: dependant === 'true' ? activeUid : false 
             }
             // Verify if the attention is not canceled or closed
             await currentUser.getIdToken().then(async token => {

@@ -19,7 +19,7 @@ const SelectReason = (props) => {
 	const [otherSymptoms, setOtherSymptoms] = useState('');
 	const [recipeInputModal, setRecipeInputModal] = useState(false);
 	let scrollPosition = useScrollPosition();
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
@@ -69,7 +69,7 @@ const SelectReason = (props) => {
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
-		props.history.replace(`/onlinedoctor/questions/${uidToDerivate}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/questions/${activeUid}?dependant=${params.dependant}`);
 	}
 	
 	function addOtherSympton(e){
@@ -88,7 +88,7 @@ const SelectReason = (props) => {
 						<RecipeInput callback={()=>recipeModalCheckout()}/>
 					</Modal>
 				}
-				<Backbutton customTarget={`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`} inlineButton={false} />
+				<Backbutton customTarget={`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`} inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>

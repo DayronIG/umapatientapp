@@ -114,13 +114,13 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/who/:ws?' component={Who} />
-				<PrivateRoute exact path='/onlinedoctor/when/:uidToDerivate?' component={When} />
-				<PrivateRoute exact path='/onlinedoctor/questions/:uidToDerivate?' component={Questions} />
-				<PrivateRoute exact path='/onlinedoctor/reason/:uidToDerivate?' component={Reason} />
-				<PrivateRoute exact path='/onlinedoctor/queue/:uidToDerivate?' component={AttQueue} />
-				<PrivateRoute exact path='/onlinedoctor/attention/:uidToDerivate?' component={CallContainer} />
-				<PrivateRoute exact path='/:uidToDerivate?/onlinedoctor/attention' component={CallContainer} /> 
-				<PrivateRoute exact path='/onlinedoctor/rating/:ws/:uidToDerivate?' component={Rating} />
+				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
+				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
+				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:activeUid?' component={CallContainer} />
+				<PrivateRoute exact path='/:activeUid?/onlinedoctor/attention' component={CallContainer} /> 
+				<PrivateRoute exact path='/onlinedoctor/rating/:ws/:activeUid?' component={Rating} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
@@ -134,12 +134,12 @@ function App(props) {
 				{/* APPOINTMENTS ONLINE */}
 				{/* Temp disabled the chats <PrivateRoute exact path='/chat/:specialty/:dni?' component={Chat} /> */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
-				<PrivateRoute exact path='/appointmentsonline/pending/:uidToDerivate?/' component={AppointmentsOnlineHistory} />
-				<PrivateRoute exact path='/appointmentsonline/:uidToDerivate?/' component={OnlineSpecialist} />
-				<PrivateRoute exact path='/appointmentsonline/specialty/:uidToDerivate?/' component={ListSpecialties} />
-				<PrivateRoute exact path='/appointmentsonline/search-doctor/:uidToDerivate?/' component={SearchDoctorOnline} />
-				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:uidToDerivate?/' component={SelectSymptoms} />
-				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:uidToDerivate?/' component={CalendarOnline} />
+				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />
+				<PrivateRoute exact path='/appointmentsonline/:activeUid?/' component={OnlineSpecialist} />
+				<PrivateRoute exact path='/appointmentsonline/specialty/:activeUid?/' component={ListSpecialties} />
+				<PrivateRoute exact path='/appointmentsonline/search-doctor/:activeUid?/' component={SearchDoctorOnline} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:activeUid?/' component={SelectSymptoms} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:activeUid?/' component={CalendarOnline} />
 				{/* TRASLADOS */}
 				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
 				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />

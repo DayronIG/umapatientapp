@@ -23,7 +23,7 @@ const ConfirmAppointment = (props) => {
 	const [File, setFile] = useState([]);
 	const [contador, setContador] = useState(0);
 	const biomarkers = useSelector(state => state.biomarkers)
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 
@@ -97,7 +97,7 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
 				uid: user.core_id,
-				uid_dependant: params.dependant === 'true' ? uidToDerivate : false,
+				uid_dependant: params.dependant === 'true' ? activeUid : false,
 				category
 			};
 
@@ -105,15 +105,15 @@ const ConfirmAppointment = (props) => {
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/onlinedoctor/queue/${uidToDerivate}?dependant=${params.dependant}`);
+				return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			}
 		} catch (err) {
 			if(err.response?.data?.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
@@ -139,7 +139,7 @@ const ConfirmAppointment = (props) => {
 			} else {
 				let userVerified = user.dni
 				if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
-				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			}
 		}
 	}, [selectedAppointment])

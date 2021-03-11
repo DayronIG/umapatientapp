@@ -17,7 +17,7 @@ const SearchDoctor = (props) => {
 	const [filteredDocs, setFilteredDocs] = useState([])
 	const [loading, setLoading] = useState(false)
 	const { dni } = useSelector(state => state.user)
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	
@@ -63,7 +63,7 @@ const SearchDoctor = (props) => {
 		<>
 			<GenericHeader children='Buscar médico' />
 			<div className='searchDoctor_container'>
-				<BackButton customTarget={`/appointmentsonline/specialty/${uidToDerivate}?dependant=${params.dependant}`} />
+				<BackButton customTarget={`/appointmentsonline/specialty/${activeUid}?dependant=${params.dependant}`} />
 				<div className='searchDoctor__input'>
 					<input type='text' name='search-doctor' placeholder='Ingrese el nombre del médico'
 						onChange={(e) => handleSearch(e.target.value)}
@@ -76,7 +76,7 @@ const SearchDoctor = (props) => {
 						{!!(filteredDocs.length > 0) && filteredDocs.map((doc, index) => {
 							return (
 								<div className='searchDoctor_results' key={index}
-									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${uidToDerivate}?dependant=${params.dependant}`)}>
+									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${activeUid}?dependant=${params.dependant}`)}>
 									<DoctorCardOffice doctor={doc} dni={dni} />
 								</div>
 							)

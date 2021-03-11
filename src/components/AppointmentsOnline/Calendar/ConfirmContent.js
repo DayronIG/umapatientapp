@@ -26,7 +26,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 	const dispatch = useDispatch();
 	const { dni } = useSelector((state) => state.user);
 	const token = useSelector((state) => state.userActive.token);
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
@@ -159,7 +159,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					sex: userData.sex || '',
 					ws: userData.ws,
 					uid: userData.core_id,
-					uid_dependant: params.dependant === 'true' ? uidToDerivate: false
+					uid_dependant: params.dependant === 'true' ? activeUid: false
 				};
 				const res = await post(make_appointment, data, {
 					headers: { 'Content-Type': 'application/json', 'Authorization': token },
@@ -169,7 +169,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					throw new Error('La cita que escogió ya está ocupada');
 				} else {
 					localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-					return history.replace(`/appointmentsonline/pending/${uidToDerivate}?dependant=${params.dependant}`);
+					return history.replace(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 				}
 			} catch (error) {
 				//console.log(error)

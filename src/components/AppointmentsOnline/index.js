@@ -16,7 +16,7 @@ const OnlineSpecialist = ({ match, history }) => {
 	const { loading } = useSelector((state) => state.front);
 	const { plan } = useSelector((state) => state.queries.plan);
 	const dispatch = useDispatch();
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
@@ -59,7 +59,7 @@ const OnlineSpecialist = ({ match, history }) => {
 						}
 					});
 					if (hasAppoint) {
-						return history.push(`/appointmentsonline/pending/${uidToDerivate}?dependant=${params.dependant}`);
+						return history.push(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 					}
 				}
 				render(redirect);
@@ -73,9 +73,9 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const render = (redirect) => {
 		if (user.first_time && user.first_time.length >= 1) {
-			history.push(`/appointmentsonline/${user.first_time}/calendar/${uidToDerivate}?dependant=${params.dependant}`);
+			history.push(`/appointmentsonline/${user.first_time}/calendar/${activeUid}?dependant=${params.dependant}`);
 		} else if (redirect) {
-			history.push(`/appointmentsonline/specialty/${uidToDerivate}?dependant=${params.dependant}`);
+			history.push(`/appointmentsonline/specialty/${activeUid}?dependant=${params.dependant}`);
 		} else {
 			// console.log('No')
 		}

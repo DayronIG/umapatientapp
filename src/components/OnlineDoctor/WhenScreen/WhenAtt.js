@@ -27,7 +27,7 @@ const WhenScreen = (props) => {
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
 	const [dni, setDni] = useState('')
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
@@ -39,7 +39,7 @@ const WhenScreen = (props) => {
 			.collection('user')
 			.doc(currentUser?.uid ?? user.core_id)
 			.collection('dependants')
-			.doc(uidToDerivate)
+			.doc(activeUid)
 			.get()
 			.then(dependantDoc => {
 				setDni(dependantDoc?.data()?.dni)
@@ -54,7 +54,7 @@ const WhenScreen = (props) => {
 	}, [user])
 
 	useEffect(() => {
-		if (uidToDerivate !== undefined && dni) {
+		if (activeUid !== undefined && dni) {
 			dispatch({type: 'LOADING', payload: true})
 			getUser(dni)
 				.then((p) => {
@@ -91,7 +91,7 @@ const WhenScreen = (props) => {
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				return props.history.replace(`/onlinedoctor/queue/${uidToDerivate}?dependant=${params.dependant}`);
+				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			} else {
 				return findFreeAppointments(person, type, test);
 			}

@@ -5,10 +5,10 @@ import {GenericHeader, BackButton} from '../components/GeneralComponents/Headers
 import '../styles/appointments/Office.scss'
 
 const Specialties = (props) => {
-  const { uidToDerivate } = useParams()
+  const { activeUid } = useParams()
     return (
 			<>
-        <GenericHeader onClick={() => {props.history.go(`/${uidToDerivate}/`)}}>Especialidades</GenericHeader>
+        <GenericHeader onClick={() => {props.history.go(`/${activeUid}/`)}}>Especialidades</GenericHeader>
         <BackButton />
         <div className="cal-fullheight">
             <List />

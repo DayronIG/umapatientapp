@@ -26,7 +26,7 @@ const AppointmentsOnlineHistory = (props) => {
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
 	const { dni } = useSelector(state => state.user)
-	const { uidToDerivate } = useParams()
+	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
@@ -107,7 +107,7 @@ const AppointmentsOnlineHistory = (props) => {
 					type: 'cancel',
 					complain: '',
 					uid: uid,
-					uid_dependant: params.dependant === 'true' ? uidToDerivate: false
+					uid_dependant: params.dependant === 'true' ? activeUid: false
 				}
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
@@ -152,7 +152,7 @@ const AppointmentsOnlineHistory = (props) => {
 					{incomingCall &&
 						<div style={{ textAlign: 'center', color: 'green' }}>
 							<small>Su médico ya lo está esperando en la sala</small>
-							<Link to={`/onlinedoctor/attention/${uidToDerivate}?dependant=${params.dependant}`} replace={true}>
+							<Link to={`/onlinedoctor/attention/${activeUid}?dependant=${params.dependant}`} replace={true}>
 								<button
 									type="button"
 									className="btn btn-blue-lg btn-calling">

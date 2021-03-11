@@ -29,11 +29,11 @@ const QueueActions = (props) => {
 	}
 
 	const joinAppointment = () => {
-		history.replace(`/onlinedoctor/attention/${props.uidToDerivate}?dependant=${props.dependant}`)
+		history.replace(`/onlinedoctor/attention/${props.activeUid}?dependant=${props.dependant}`)
 	}
 
 	const antipanicAction = () => {
-		history.replace(`/support/guardia?id=${props.id}`)
+		history.replace(`/support/guardia?id=${props.id}&dependant=${props.dependant}&activeUid=${props.activeUid}`)
 	}
 
     return (
