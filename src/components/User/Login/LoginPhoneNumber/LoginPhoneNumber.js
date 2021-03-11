@@ -10,13 +10,13 @@ import axios from 'axios';
 import '../../../../styles/user/login.scss';
 
 const LoginPhoneNumber = () => { 
-    const history = useHistory();
-    const dispatch = useDispatch();
+    const history = useHistory()
+    const dispatch = useDispatch()
     const [switchContent, setSwitchContent] = useState(false)
     const [ws, setWs] = useState('')
     const [dni, setDni] = useState('')
-    const [userEmail, setUserEmail] = useState('');
-    const { email } = useSelector(state => state.user);
+    const [userEmail, setUserEmail] = useState('')
+    const { email } = useSelector(state => state.user)
     const [showError, setShowError] = useState(false)
 
     const hideEmail = (email) => {

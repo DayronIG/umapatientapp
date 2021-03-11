@@ -203,10 +203,15 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
                 const headers = { 'Content-type': 'application/json' };
-                axios.post(`${node_patient}/emailexists`, {email: 'federico.mirandaa@gmail.com'}, headers)
-                .then(res => console.log(res))
+                axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
+                .then(res => {
+                    if(res.data.exists) {
+                        history.push('/signup/user/exists')
+                    }else {
+                        history.push(route)
+                    }
+                })
                 .catch(e => console.error(e))
-                // history.push(route);
             })
             .catch(e => {
                 console.log(e.code);
@@ -220,12 +225,21 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         microsoftProvider.addScope('calendars.read');
 
         db.auth().signInWithPopup(microsoftProvider)
-            .then(result => {
-                history.push(route);
+        .then(result => {
+            const headers = { 'Content-type': 'application/json' };
+            axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
+            .then(res => {
+                if(res.data.exists) {
+                    history.push('/signup/user/exists')
+                }else {
+                    history.push(route)
+                }
             })
-            .catch(e => {
-                console.log(e.code);
-            })
+            .catch(e => console.error(e))
+        })
+        .catch(e => {
+            console.log(e.code);
+        })
     }
 
     const signInAndSignUpWithFacebook = (route) => {
@@ -234,12 +248,21 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         facebookProvider.addScope('email');
     
         db.auth().signInWithPopup(facebookProvider)
-            .then(result => {
-                history.push(route);
+        .then(result => {
+            const headers = { 'Content-type': 'application/json' };
+            axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
+            .then(res => {
+                if(res.data.exists) {
+                    history.push('/signup/user/exists')
+                }else {
+                    history.push(route)
+                }
             })
-            .catch(e => {
-                console.log(e);
-            })
+            .catch(e => console.error(e))
+        })
+        .catch(e => {
+            console.log(e.code);
+        })
     }
     
     const handleGoogleAccount = async () => {

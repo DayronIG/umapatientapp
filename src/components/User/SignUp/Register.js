@@ -58,9 +58,19 @@ const Register = () => {
             try {
                 await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
                 .then(async user => {
-                    dispatch({ type: 'USER_PASSWORD', payload: '' });
-                    setSwitchContent('2');
-                })
+                    // const headers = { 'Content-type': 'application/json' };
+                    // axios.post(`${node_patient}/emailexists`, {email: user?.user?.providerData[0]?.email}, headers)
+                    // .then(res => {
+                    //     if(res.data.exists) {
+                    //         history.push('/signup/user/exists')
+                    //     }else {
+                            dispatch({ type: 'USER_PASSWORD', payload: '' });
+                            setSwitchContent('2');
+                    //     }
+                        console.log(user)
+                    })
+                // .catch(e => console.error(e))
+                // })
             }catch {
                 setEmailExists(true)
             }
@@ -348,8 +358,8 @@ const Register = () => {
                     <>
                         <GenericButton action={handleSubmit(validationForm)}>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>
-                            Al registrarte estás aceptando los 
-                            <a onClick={()=>history.push('/termsconditions')}>términos y condiciones</a>
+                            Al registrarte estás aceptando los
+                            <a onClick={()=>history.push('/termsconditions')}> términos y condiciones</a>
                         </p>
                     </>
                     }
