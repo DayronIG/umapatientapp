@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import DB from '../../config/DBConnection';
 import moment from 'moment-timezone';
 import swal from 'sweetalert';
@@ -13,12 +14,15 @@ const db = DB.firestore();
 const Specialties = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const dni = props.match.params.dni;
+	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
 	const mesActual = moment().format('YYYYMM');
 	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
+	const { uidToDerivate } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	useEffect(() => {
 		getUser(dni)
@@ -93,7 +97,7 @@ const Specialties = (props) => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
+		props.history.push(`/appointmentsonline/${specialty}/calendar/${uidToDerivate}?dependant=${params.dependant}`);
 		// pushPage(speciality);
 	};
 

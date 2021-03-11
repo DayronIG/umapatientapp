@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter, useParams } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { yearAndMonth } from '../../Utils/dateUtils';
@@ -22,7 +23,9 @@ const ConfirmAppointment = (props) => {
 	const [File, setFile] = useState([]);
 	const [contador, setContador] = useState(0);
 	const biomarkers = useSelector(state => state.biomarkers)
-	const { uidToDerivate, dependant } = useParams()
+	const { uidToDerivate } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	useEffect(() => {
 		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
@@ -94,7 +97,7 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
 				uid: user.core_id,
-				uid_dependant: dependant === 'true' ? uidToDerivate : false,
+				uid_dependant: params.dependant === 'true' ? uidToDerivate : false,
 				category
 			};
 
@@ -102,15 +105,15 @@ const ConfirmAppointment = (props) => {
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/onlinedoctor/queue/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/queue/${uidToDerivate}?dependant=${params.dependant}`);
 			}
 		} catch (err) {
 			if(err.response?.data?.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
 			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
@@ -136,7 +139,7 @@ const ConfirmAppointment = (props) => {
 			} else {
 				let userVerified = user.dni
 				if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
-				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
+				return history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=${params.dependant}`);
 			}
 		}
 	}, [selectedAppointment])

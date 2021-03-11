@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { useParams, useHistory } from 'react-router-dom';
+import queryString from 'query-string'
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { GenericHeader } from '../../GeneralComponents/Headers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faUserMd } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +22,7 @@ import './styles.scss';
 
 const MyCalendar = () => {
 	const patient = useSelector((state) => state.user);
+	const { dni } = useSelector(state => state.user)
 	const [appointmentsOnline, setAppointmentsOnline] = useState([]);
 	const [date, setDate] = useState(moment()
 			.tz('America/Argentina/Buenos_Aires')
@@ -31,8 +33,10 @@ const MyCalendar = () => {
 	const localizer = momentLocalizer(moment);
 	const dt_calendar = date;
 	const yearMonth = moment(date).format('YYYYMM');
-	const { dni, condition } = useParams();
+	const { condition, uidToDerivate } = useParams();
 	const history = useHistory();
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	moment.locale('es');
 
@@ -187,7 +191,7 @@ const MyCalendar = () => {
 					<div className='calendar__legend'>
 						<FontAwesomeIcon icon={faUserMd} /> Turnos disponibles este día
 					</div>
-					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${dni}`)} />
+					<FooterBtn text='Volver' callback={() => history.replace(`/appointmentsonline/specialty/${uidToDerivate}?dependant=${params.dependant}`)} />
 				</>
 			) : (
 					<ListTurns appoints={appointmentsOnline} filterDt={filterDt} unsetDate={() => setFilterDt('')} />

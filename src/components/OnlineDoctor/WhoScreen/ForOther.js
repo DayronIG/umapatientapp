@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
+import DB from '../../../config/DBConnection.js'
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { node_patient } from "../../../config/endpoints";
@@ -14,6 +15,7 @@ const RegisterDependant = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(state => state.user);
+  const {uid} = useSelector(state => state.userActive.currentUser);
   const front = useSelector(state => state.front);
   const loading = useSelector(state => state.front.loading);
   const [dependant, setDependant] = useState({ document: '', fullname: '', day: '', month: '', year: '', sex: '', cobertura: '' })
@@ -22,7 +24,7 @@ const RegisterDependant = props => {
   const monthRef = useRef();
   const yearRef = useRef();
 
-  let handleSignUp = (event, dependant) => {
+  let handleSignUp = async (event, dependant) => {
     event.preventDefault();
     window.scroll(0, 0);
     dispatch({ type: "LOADING", payload: true });
@@ -41,23 +43,50 @@ const RegisterDependant = props => {
       sex: dependant.sex || "",
       ws: user.ws || "",
     }
-
-    axios
-      .post(`${node_patient}/dependant`, { dependant: data })
-      .then(res => {
-        if (props.redirectToConsultory === 'true') {
-          history.replace(`/appointmentsonline/${dni}`)
-        } else {
-          let userData = { ...user, dni, dob, sex, fullname }
-          localStorage.setItem('appointmentUserData', JSON.stringify(userData))
-          history.replace(`/onlinedoctor/when/${data.dni}`)
-        }
-        dispatch({ type: "LOADING", payload: false })
+    try {
+      //CAMBIAR-SANTI
+      let uidToDerivate = ''  
+      const res = await axios.post(`${node_patient}/dependant`, { dependant: data })
+      console.log("done 1", dependant.document, res)
+      const registeredDependant = await DB.firestore()
+      .collection(`user/${uid}/dependants`)
+      .where('dni', '==', dependant.document)
+      .get()
+      console.log("done 2", registeredDependant)
+      registeredDependant.forEach((p) => {
+        let id = p.id
+        uidToDerivate = id
       })
-      .catch(function (error) {
+      console.log("done 3", uidToDerivate)
+      if (props.redirectToConsultory === 'true') {
+        history.replace(`/appointmentsonline/${uidToDerivate}?dependant=true`)
+      } else {
+        let userData = { ...user, dni, dob, sex, fullname }
+        localStorage.setItem('appointmentUserData', JSON.stringify(userData))
+        history.replace(`/onlinedoctor/when/${uidToDerivate}?dependant=true`)
+      }
+      dispatch({ type: "LOADING", payload: false })
+    } catch(error) {
+        console.log(error)
         swal("No se pudo registrar", `No se pudo completar tu registro. ${JSON.stringify(error?.response?.data?.message)}`, "warning")
         dispatch({ type: "LOADING", payload: false })
-      })
+    }
+    // axios
+    //   .post(`${node_patient}/dependant`, { dependant: data })
+    //   .then(res => {
+    //     if (props.redirectToConsultory === 'true') {
+    //       history.replace(`/appointmentsonline/${dni}`)
+    //     } else {
+    //       let userData = { ...user, dni, dob, sex, fullname }
+    //       localStorage.setItem('appointmentUserData', JSON.stringify(userData))
+    //       history.replace(`/onlinedoctor/when/${data.dni}`)
+    //     }
+    //     dispatch({ type: "LOADING", payload: false })
+    //   })
+      // .catch(function (error) {
+      //   swal("No se pudo registrar", `No se pudo completar tu registro. ${JSON.stringify(error?.response?.data?.message)}`, "warning")
+      //   dispatch({ type: "LOADING", payload: false })
+      // })
   }
 
   const onChangeDay = e => {

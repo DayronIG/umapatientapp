@@ -47,7 +47,7 @@ const SendComplain = ({ sendComplain }) => {
                 .then(() => {
                     dispatch({type: 'LOADING', payload: false})
                     swal('Enviado', 'El reclamo fué enviado con éxito. Será evaluado por nuestro equipo.', 'success')
-                    return history.push(`/onlinedoctor/queue/${patient.dni}`)
+                    return history.push(`/onlinedoctor/queue/${patient.uid}?dependant=false`)
                 })
                 .catch(()=> {
                     dispatch({type: 'LOADING', payload: false})

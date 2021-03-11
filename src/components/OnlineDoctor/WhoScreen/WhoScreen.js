@@ -23,13 +23,13 @@ const WhenScreen = (props) => {
 	const { loading } = useSelector((state) => state.front);
 	const [userDataToJson] = useState(JSON.parse(localStorage.getItem('userData')));
 	const [userDni] = useState(user.dni ? user.dni : userDataToJson.dni);
+	const [userUid] = useState(user.uid ? user.uid : userDataToJson.uid);
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
-
 
 	useEffect(() => {
 		let unmountTimeout = () => {}
 		dispatch({ type: 'LOADING', payload: true });
-		if(user.dni && user.dni !== "") {
+		if(user.dni) {
 			(async function checkAssignations() {
 				dispatch({ type: 'LOADING', payload: true });
 				localStorage.removeItem('selectedAppointment');
@@ -40,7 +40,7 @@ const WhenScreen = (props) => {
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-						return props.history.replace(`/onlinedoctor/queue/${userDni}`);
+						return props.history.replace(`/onlinedoctor/queue/${userUid}?dependant=false`);
 					}
 				} else {
 					unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)			
@@ -67,10 +67,9 @@ const WhenScreen = (props) => {
 		await getCoverage(userToDerivate.coverage)
 		let id = dependant ? userToDerivate.did: userToDerivate.uid 
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/appointmentsonline/${id}/${dependant}`);
+			props.history.replace(`/appointmentsonline/specialty/${id}?dependant=${dependant}`);
 		} else {
-			if(dependant){localStorage.setItem('uid_dependant', userToDerivate.did)}
-			props.history.replace(`/onlinedoctor/when/${id}/${dependant}`);
+			props.history.replace(`/onlinedoctor/when/${id}?dependant=${dependant}`);
 		}
 	}
 

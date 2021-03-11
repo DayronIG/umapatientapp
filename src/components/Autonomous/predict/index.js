@@ -15,6 +15,7 @@ import { make_appointment } from '../../../config/endpoints';
 const Predict = ({predicted, history})=>{
     const dispatch = useDispatch();
     const token = useSelector(state => state.userActive.token)
+    const { uid } = useSelector(state => state.userActive.currentUser)
     const patient = useSelector(state => state.user)
     const autonomous = useSelector(state => state.autonomous)
     const [top, setTop] = useState(predicted.respuesta.replace(/"/g,' ').split("#", 6)); // .replace(/'"'])
@@ -38,7 +39,9 @@ const Predict = ({predicted, history})=>{
                 'assignation_id': 'umadoc',
                 'uma_eval': `${ratingApp.toString()}#${autonomous.final_predict.boton}`,
                 'doc_eval': top[1],
-                'notes': predicted.epicrisis
+                'notes': predicted.epicrisis,
+                'uid': uid,
+                'uid_dependant': false
             }
             axios.post(feedback, data, headers)
                 .then((res) => {
@@ -86,6 +89,7 @@ const Predict = ({predicted, history})=>{
 				specialty: 'online_clinica_medica',
                 ws: patient.ws,
                 uid: patient.core_id,
+                uid_dependant: false,
                 category: 'GUARDIA_AUTONOMOUS'
 			};
 			const headers = { 'Content-type': 'application/json' };
@@ -94,7 +98,7 @@ const Predict = ({predicted, history})=>{
             localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
             localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
             dispatch({type: 'TOGGLE_DETAIL', payload: false})
-            return history.replace(`/onlinedoctor/queue/${patient.dni}`);
+            return history.replace(`/onlinedoctor/queue/${patient.uid}?dependant=false`);
 		} catch (err) {
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');

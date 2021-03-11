@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation, useHistory, useParams} from 'react-router-dom';
 import { getAppointmentByDni } from '../../../../store/actions/firebaseQueries';
 import moment from 'moment';
 import { user_cancel } from '../../../../config/endpoints';
@@ -16,9 +16,9 @@ const CancelAppointment = () => {
     const { assignedAppointment } = useSelector(state => state.queries)
     const [cancelOptions, setCancelOptions] = useState('')
     const [cancelDescription, setCancelDescription] = useState('');
-    const {id} = queryString.parse(location.search)
+    const { id, dependant } = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
-    const uid_dependant = localStorage.getItem('uid_dependant')
+    const { uidToDerivate } = useParams()
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
@@ -44,7 +44,7 @@ const CancelAppointment = () => {
                 type: 'cancel',
                 complain: '',
                 uid: currentUser.uid,
-                uid_dependant: uid_dependant ?? false
+                uid_dependant: dependant === 'true' ? uidToDerivate : false 
             }
             // Verify if the attention is not canceled or closed
             await currentUser.getIdToken().then(async token => {

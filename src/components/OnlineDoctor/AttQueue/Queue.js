@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import queryString from 'query-string'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Link, withRouter, useHistory, useLocation, useParams } from 'react-router-dom';
 import { calcReaminingHrsMins } from '../../Utils/dateUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
@@ -25,11 +26,14 @@ const Queue = (props) => {
     const [calling, setCalling] = useState(false)
     const { loading } = useSelector(state => state.front)
     const assessment = useSelector(state => state.assessment)
-    const [dni] = useState(props.match.params.dni)
+    const {dni} = useSelector(state => state.user)
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
     const mr = useSelector(state => state.queries.medicalRecord[0])
+    const {uidToDerivate} = useParams()
     const history = useHistory()
+    const location = useLocation()
+    const params = queryString.parse(location.search)
 
     useEffect(() => {
         (async function checkAssignedAppointment() {
@@ -233,7 +237,7 @@ const Queue = (props) => {
             {calling ?
                 <>
                     <div className='ico-calling'>
-                        <Link to={`/onlinedoctor/attention/${dni}`} replace={true}>
+                        <Link to={`/onlinedoctor/attention/${uidToDerivate}?dependant=${params.dependant}`} replace={true}>
                             <FontAwesomeIcon icon={faPhoneAlt} />
                         </Link>
                     </div>
@@ -251,6 +255,8 @@ const Queue = (props) => {
                 id={assignedAppointment?.appointments?.[0][14]}
                 calling={calling} 
                 appState={appointment.state}
+                uidToDerivate={uidToDerivate}
+                dependant={params.dependant}
             />
             {calling && <audio src={tone} id='toneAudio' autoPlay />}
         </>

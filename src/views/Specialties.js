@@ -1,13 +1,14 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import List from '../components/Appointments/Specialties/List';
 import {GenericHeader, BackButton} from '../components/GeneralComponents/Headers';
 import '../styles/appointments/Office.scss'
 
 const Specialties = (props) => {
+  const { uidToDerivate } = useParams()
     return (
 			<>
-        <GenericHeader onClick={() => {props.history.go(`/${props.match.params.dni}/`)}}>Especialidades</GenericHeader>
+        <GenericHeader onClick={() => {props.history.go(`/${uidToDerivate}/`)}}>Especialidades</GenericHeader>
         <BackButton />
         <div className="cal-fullheight">
             <List />

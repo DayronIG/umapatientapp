@@ -29,7 +29,7 @@ const QueueActions = (props) => {
 	}
 
 	const joinAppointment = () => {
-		history.replace(`/onlinedoctor/attention/${props.dni}`)
+		history.replace(`/onlinedoctor/attention/${props.uidToDerivate}?dependant=${props.dependant}`)
 	}
 
 	const antipanicAction = () => {

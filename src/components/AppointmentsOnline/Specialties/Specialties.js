@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
+import queryString from 'query-string'
 // import specialties from '../../../config/specialties';
 import DB from '../../../config/DBConnection';
 import moment from 'moment';
@@ -12,8 +13,9 @@ const db = DB.firestore();
 const Specialties = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const { dni } = useParams();
+	const { uidToDerivate } = useParams();
 	const user = useSelector((state) => state.user);
+	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
@@ -21,6 +23,8 @@ const Specialties = () => {
 	const mesSiguiente = moment()
 		.add(1, 'month')
 		.format('YYYYMM');
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 	// const agePediatry = moment().diff(user.dob, 'years') <= 16;
 
 	useEffect(() => {
@@ -104,7 +108,7 @@ const Specialties = () => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		return history.push(`/appointmentsonline/${value}/calendar/${dni}`);
+		return history.push(`/appointmentsonline/${value}/calendar/${uidToDerivate}?dependant=${params.dependant}`);
 
 		// pushPage(speciality);
 	};

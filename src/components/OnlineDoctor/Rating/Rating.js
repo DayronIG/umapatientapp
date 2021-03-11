@@ -16,6 +16,7 @@ const Rating = (props) => {
 	const token = useSelector((state) => state.userActive.token);
 	const patient = useSelector((state) => state.user);
 	const mr = useSelector((state) => state.queries.medicalRecord);
+    const uid = useSelector(state => state.userActive?.currentUser?.uid)
 
     React.useEffect(() => {
         let local = JSON.parse(localStorage.getItem('appointmentUserData'))
@@ -84,7 +85,8 @@ const Rating = (props) => {
 					'assignation_id': mr[0].assignation_id,
 					'uma_eval': ratingApp.toString(),
 					'doc_eval': ratingMed.toString(),
-					'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim()
+					'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim(),
+					'uid': uid
 				}
 				if (!mr[0] && mr[0].assignation_id) {
 					data = { ...data, 'assignation_id': mr[0].assignation_id, }

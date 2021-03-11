@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import { GenericHeader } from '../GeneralComponents/Headers';
 import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
 import { Loader } from '../global/Spinner/Loaders';
@@ -20,10 +21,14 @@ import '../../styles/TurnoConsultorio.scss';
 const AppointmentsOnlineHistory = (props) => {
 	const dispatch = useDispatch()
 	const token = useSelector(state => state.userActive.token)
+	const { uid } = useSelector(state => state.userActive.currentUser)
 	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
-	const { dni } = props.match.params
+	const { dni } = useSelector(state => state.user)
+	const { uidToDerivate } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	useEffect(() => {
 		if (dni) {
@@ -100,7 +105,9 @@ const AppointmentsOnlineHistory = (props) => {
 					assignation_id: medicalRecord[0].mr.assignation_id || '',
 					appointment_path: `assignations/${medicalRecord[0].path}` || '',
 					type: 'cancel',
-					complain: ''
+					complain: '',
+					uid: uid,
+					uid_dependant: params.dependant === 'true' ? uidToDerivate: false
 				}
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
@@ -145,7 +152,7 @@ const AppointmentsOnlineHistory = (props) => {
 					{incomingCall &&
 						<div style={{ textAlign: 'center', color: 'green' }}>
 							<small>Su médico ya lo está esperando en la sala</small>
-							<Link to={`/onlinedoctor/attention/${dni}`} replace={true}>
+							<Link to={`/onlinedoctor/attention/${uidToDerivate}?dependant=${params.dependant}`} replace={true}>
 								<button
 									type="button"
 									className="btn btn-blue-lg btn-calling">

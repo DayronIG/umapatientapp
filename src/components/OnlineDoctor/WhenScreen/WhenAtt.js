@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter, useParams } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import Comments from './Comments.js';
 import DB from '../../../config/DBConnection'
 import moment from 'moment';
@@ -26,10 +27,12 @@ const WhenScreen = (props) => {
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
 	const [dni, setDni] = useState('')
-	const { uidToDerivate, dependant } = useParams()
+	const { uidToDerivate } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	const setDniIfUserIsOrNotDependant = () => {
-		if(dependant === 'false'){
+		if(params.dependant === 'false'){
 			setDni(currentUser?.dni ?? user.dni)
 		} else {
 			DB.firestore()
@@ -38,8 +41,8 @@ const WhenScreen = (props) => {
 			.collection('dependants')
 			.doc(uidToDerivate)
 			.get()
-			.then(dependant => {
-				setDni(dependant?.data()?.dni)
+			.then(dependantDoc => {
+				setDni(dependantDoc?.data()?.dni)
 			})
 		}
 	}
@@ -88,7 +91,7 @@ const WhenScreen = (props) => {
 			}
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				return props.history.replace(`/onlinedoctor/queue/${person.dni}`);
+				return props.history.replace(`/onlinedoctor/queue/${uidToDerivate}?dependant=${params.dependant}`);
 			} else {
 				return findFreeAppointments(person, type, test);
 			}

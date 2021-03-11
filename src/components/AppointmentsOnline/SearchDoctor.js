@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams, useLocation } from 'react-router-dom'
+import queryString from 'query-string';
 import { GenericHeader, BackButton } from '../GeneralComponents/Headers';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { DoctorCardOffice } from '../OnlineDoctor/WhenScreen/DoctorCard';
@@ -14,7 +16,11 @@ const SearchDoctor = (props) => {
 	const [doctors, setDoctors] = useState([])
 	const [filteredDocs, setFilteredDocs] = useState([])
 	const [loading, setLoading] = useState(false)
-	const { dni } = props.match.params
+	const { dni } = useSelector(state => state.user)
+	const { uidToDerivate } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
+	
 
 	useEffect(() => {
 		if (!!patient) {
@@ -57,7 +63,7 @@ const SearchDoctor = (props) => {
 		<>
 			<GenericHeader children='Buscar médico' />
 			<div className='searchDoctor_container'>
-				<BackButton customTarget={`/appointmentsonline/specialty/${dni}`} />
+				<BackButton customTarget={`/appointmentsonline/specialty/${uidToDerivate}?dependant=${params.dependant}`} />
 				<div className='searchDoctor__input'>
 					<input type='text' name='search-doctor' placeholder='Ingrese el nombre del médico'
 						onChange={(e) => handleSearch(e.target.value)}
@@ -70,7 +76,7 @@ const SearchDoctor = (props) => {
 						{!!(filteredDocs.length > 0) && filteredDocs.map((doc, index) => {
 							return (
 								<div className='searchDoctor_results' key={index}
-									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${dni}`)}>
+									onClick={() => props.history.push(`/appointmentsonline/${doc.cuit}/calendar/${uidToDerivate}?dependant=${params.dependant}`)}>
 									<DoctorCardOffice doctor={doc} dni={dni} />
 								</div>
 							)
