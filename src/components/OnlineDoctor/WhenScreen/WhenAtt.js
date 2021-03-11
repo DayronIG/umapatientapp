@@ -63,7 +63,6 @@ const WhenScreen = (props) => {
 				console.log(person)
 				assigned = await findAllAssignedAppointment(person.dni, type);
 			}
-			console.log(assigned)
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);

@@ -84,34 +84,6 @@ export function searchActiveProviders(service = 'online', type = '', social_work
     });
 }
 
-export function listenAppointments(specialty) {
-	try {
-		var appointments = [];
-		specialty = 'online_clinica_medica'; // Temporal, luego habrá más especialidades
-		const appointmentsQuery = firestore
-			.collection('assignations')
-			.doc(specialty)
-			.collection(currentDate)
-			.where('state', '==', 'ASSIGN');
-		return (dispatch) => {
-			appointmentsQuery.onSnapshot(
-				{
-					includeMetadataChanges: true,
-				},
-				function(snapshot) {
-					snapshot.forEach((subDoc) => {
-						let data = subDoc.data();
-						appointments.push(data);
-					});
-					dispatch(getAppointments(appointments));
-				}
-			);
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: 'listenAppointments' + err };
-	}
-}
-
 export function getDoctors(condition) {
 	return new Promise((resolve, reject) => {
 		try {
@@ -156,7 +128,7 @@ export function getUserParentsFirebase(uid) {
 			.catch((err) => console.log(err));
 	});
 }
-// TO DO -> HERE ARE TWO FUNCTIONS DOING EXACTLY THE SAME
+
 export function getBenficiaries(uid) {
 	let queryUser = firestore.collection(`user/${uid}/dependants`).where('dni', '>', '');
 	return (dispatch) => {
@@ -174,61 +146,6 @@ export function getBenficiaries(uid) {
 				console.log(err)
 			})
 	};
-}
-
-export function getPendingTraslate(dni) {
-	let daysAgo = moment()
-		.subtract(3, 'days')
-		.format('YYYY-MM-DD 00:00:00');
-	return new Promise(function(resolve, rejected) {
-		let queryUser = firestore
-			.collection('events/requests/online')
-			.where('dni', '==', dni)
-			.where('att_date', '>=', daysAgo)
-			.where('destino_final', '==', 'Traslado protocolo pandemia');
-		queryUser
-			.get()
-			.then(async (pending) => {
-				await pending.forEach((query) => {
-					let data = query.data();
-					if (data.corporate && data.corporate.toUpperCase() === 'IOMA') {
-						resolve(true);
-					} else {
-						resolve(false);
-					}
-				});
-			})
-			.catch((err) => rejected(false));
-	});
-}
-
-export function getfirstAppointment(user, specialty) {
-	try {
-		var appointments = [];
-		specialty = 'online_clinica_medica'; // Temporal, luego habrá más especialidades
-		const appointmentsQuery = firestore
-			.collection('assignations')
-			.doc(specialty)
-			.collection(currentDate)
-			.where('state', 'in', ['ASSIGN', 'ATT'])
-			.where('appointments.0', 'array-contains', user);
-		return (dispatch) => {
-			appointmentsQuery.onSnapshot(
-				{
-					includeMetadataChanges: true,
-				},
-				function(snapshot) {
-					snapshot.forEach((subDoc) => {
-						let data = subDoc.data();
-						appointments.push(data);
-					});
-					dispatch({ type: 'SET_FIRST_APPOINTMENT', payload: appointments[0] });
-				}
-			);
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: 'listenAppointments' + err };
-	}
 }
 
 export function getDoctor(cuit) {
@@ -304,26 +221,6 @@ export function getAuth(uid) {
 			console.log(error)
 			return reject(error);
 		}
-	});
-}
-
-export function getBills(dni) {
-	return new Promise((resolve, reject) => {
-		let bills = [];
-		const authQuery = firestore
-			.collection('services')
-			.doc('bills')
-			.collection(dni);
-		authQuery
-			.get()
-			.then((doc) => {
-				doc.forEach((d) => {
-					bills.push(d.data());
-					// console.log(d)
-				});
-				return resolve(bills);
-			})
-			.catch((err) => reject(err));
 	});
 }
 

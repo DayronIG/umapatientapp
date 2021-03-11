@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { withRouter, useParams, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -17,7 +17,9 @@ import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
+	const {symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
+	const history = useHistory();
+	const dispatch = useDispatch();
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
@@ -68,7 +70,7 @@ const ConfirmAppointment = (props) => {
 
 	const postData = async (bag = false) => {
 		dispatch({ type: 'LOADING', payload: true });
-		let symptoms = '', userVerified;
+		let symptoms = '', userVerified = user;
 		if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 		try {
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
@@ -187,4 +189,4 @@ const ConfirmAppointment = (props) => {
 	);
 };
 
-export default withRouter(ConfirmAppointment);
+export default ConfirmAppointment;

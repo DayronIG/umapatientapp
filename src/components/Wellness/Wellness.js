@@ -53,7 +53,7 @@ const Wellness = props => {
           <div className="biomarkers__container--list">
             <ul className="markers">
               <li className="markers__item">
-                <Link to={`/${dni}/laboratorio`}>
+                <Link to={`/laboratorio/${dni}`}>
                   <div className="markers__item--icon active__marker">
                     <FontAwesomeIcon icon={faFileMedicalAlt} />
                     <div className="markers__item--info">

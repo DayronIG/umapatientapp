@@ -132,9 +132,6 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
                             <div className="">Si lo desea puede consultar a un médico online haciendo click aquí</div>
                         </Link>
                     </div>
-                    {/* <div className="record__trigger--btn styleButton">
-                        <span onClick={() => finalAction()}>Volver</span>
-                    </div> */}
                 </>
             }
         </div>
