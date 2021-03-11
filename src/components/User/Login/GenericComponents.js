@@ -202,7 +202,11 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
-                history.push(route);
+                const headers = { 'Content-type': 'application/json' };
+                axios.post(`${node_patient}/emailexists`, {email: 'federico.mirandaa@gmail.com'}, headers)
+                .then(res => console.log(res))
+                .catch(e => console.error(e))
+                // history.push(route);
             })
             .catch(e => {
                 console.log(e.code);
