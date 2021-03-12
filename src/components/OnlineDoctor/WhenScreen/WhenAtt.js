@@ -13,6 +13,7 @@ import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
+import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
@@ -21,6 +22,7 @@ const WhenScreen = (props) => {
 	const user = useSelector((state) => state.user);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
+	const [queue, setQueue] = useState("1")
 	const [dni] = useState(props.match.params.dni);
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
@@ -92,6 +94,17 @@ const WhenScreen = (props) => {
 		}
 	}, [pediatric])
 
+	useEffect(() => {
+		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
+		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
+			.then(res => {
+				if(res.length > 0) {
+					setQueue(res.length)
+				}
+			})
+	}, [])
+
+
 	return (
 		<>
 			{permissions === 'disabled' && (
@@ -120,7 +133,10 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					<GuardCard pediatric={pediatric} dni={dni} doctorsCount={assignations.length} />
+					<GuardCard 
+						pediatric={pediatric} dni={dni} 
+						qieie={queue}
+						doctorsCount={assignations.length} />
 					{action === 'Loading' && (
 						<div
 							className='when__loading'>
