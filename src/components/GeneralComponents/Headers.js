@@ -62,7 +62,7 @@ export const GenericHeader = (props) => {
         </div> */}
 				{ws && !props.profileDisabled ? (
 					<div className='hamburguer-menu'>
-						<Link to={`/${ws}/profile`}>
+						<Link to={`/profile/${ws}`}>
 							{profile_pic ? (
 								<div className='profile_pic'>
 									<img src={profile_pic} alt='Profile Pic' />

@@ -124,7 +124,7 @@ function App(props) {
 				<PrivateRoute exact path='/history/:dni?/:record?/:recipe?' component={History} /> 
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
-				<PrivateRoute path='/:ws?/profile/' component={Profile} />
+				<PrivateRoute path='/profile/:ws?' component={Profile} />
 				{/* APPOINTMENTS ONLINE */}
 				{/* Temp disabled the chats <PrivateRoute exact path='/chat/:specialty/:dni?' component={Chat} /> */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />

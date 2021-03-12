@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import DBConnection from '../../config/DBConnection';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
@@ -9,12 +9,11 @@ import { FaArrowLeft, FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import moment from 'moment-timezone';
 import '../../styles/profile.scss';
-import Loading from '../GeneralComponents/Loading';
-import {Loader} from '../GeneralComponents/Loading';
 import { SignOut } from '../User/Login';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const db = DBConnection.firestore();
 	const {currentUser} = useSelector(state => state.userActive)
 	const modal = useSelector((state) => state.front.openDetails);
@@ -63,7 +62,6 @@ const ProfileComponent = () => {
 
 	return (
 		<>
-			{/* {loading && !patient.fullname && <Loading />} */}
 			{modal && (
 				<MobileModal title='Editar datos'
 				callback={()=>{dispatch({type:"TOGGLE_DETAIL", payload:false})}}>
@@ -71,7 +69,7 @@ const ProfileComponent = () => {
 				</MobileModal>
 			)}
 			<div className='profile-container'>
-				<div className='profile-top-icons'>
+				<div className='profile-top-icons' onClick={history.push('/')}>
 					<FaArrowLeft color='#fff' size='1.5rem' />
 				</div>
 				<div>
