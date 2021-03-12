@@ -182,7 +182,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					icon: 'warning',
 					dangerMode: true,
 				});
-				return history.replace('/');
+				return history.replace('/onlinedoctor/who');
 			}
 		}
 	}

@@ -36,26 +36,10 @@ const Queue = (props) => {
     const params = queryString.parse(location.search)
 
     useEffect(() => {
-        (async function checkAssignedAppointment() {
-            if (Object.keys(assignedAppointment).length === 0) {
-                dispatch({ type: 'LOADING', payload: true })
-                let user = {}
-                if(params.dependant) {
-                    user = await getDocumentFB(`user/${currentUser.uid}/dependants/${activeUid}`)
-                } else {
-                    user = await getDocumentFB(`user/${currentUser.uid}`)
-                }
-                const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
-                const assigned = await findAllAssignedAppointment(currentUser.uid, type)
-                dispatch({ type: 'LOADING', payload: false })
-                if (assigned) {
-                    dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
-                } else {
-                    return history.replace(`/home`)
-                } 
-            }
-        })()
-    }, [])
+        if(currentUser?.uid) {
+            checkAssignedAppointment(currentUser.uid)
+        }
+    }, [currentUser])
 
     useEffect(() => {
         (async function () {
@@ -84,6 +68,26 @@ const Queue = (props) => {
                 })
         }
     }, [assignation, mr])
+
+    async function checkAssignedAppointment(uid) {
+        if (Object.keys(assignedAppointment).length === 0) {
+            dispatch({ type: 'LOADING', payload: true })
+            let user = {}
+            if(params.dependant !== "false") {
+                user = await getDocumentFB(`user/${uid}/dependants/${activeUid}`)
+            } else {
+                user = await getDocumentFB(`user/${uid}`)
+            }
+            const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
+            const assigned = await findAllAssignedAppointment(uid, type)
+            dispatch({ type: 'LOADING', payload: false })
+            if (assigned) {
+                dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
+            } else {
+                return history.replace(`/home`)
+            } 
+        }
+    }
 
     const calculateRemainingTime = (assgnAppnt) => {
         let now = moment(new Date()).format('HHmm')
@@ -212,7 +216,7 @@ const Queue = (props) => {
                 patient.ws = assignedAppointment.appointments?.['0']?.['6']
             }
             if(patient.ws && patient.ws !== "") {
-                let queryUser = firestore.collection('user').doc(patient.ws)
+                let queryUser = firestore.collection('user').doc(currentUser.uid)
                 return queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     dispatch({ type: 'LOADING', payload: false })
