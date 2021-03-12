@@ -8,7 +8,6 @@ import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
-import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
@@ -98,7 +97,6 @@ export default withRouter(DoctorCard);
 
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
-	const [queue, setQueue] = useState("0")
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
@@ -108,16 +106,6 @@ const GuardCardComp = (props) => {
 		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	};
 	
-	useEffect(() => {
-		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
-		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
-			.then(res => {
-				if(res.length > 0) {
-					setQueue(res.length)
-				}
-			})
-	}, [])
-
 	return (
 		<div className='doctorCard-container'>
 			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
@@ -129,7 +117,7 @@ const GuardCardComp = (props) => {
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
 						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						<small>Hay {queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
+						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
 					</div>
 				</div>
 			</div>

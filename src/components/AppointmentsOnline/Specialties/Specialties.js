@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory, useParams, useLocation} from 'react-router-dom';
 import queryString from 'query-string'
-// import specialties from '../../../config/specialties';
 import DB from '../../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
@@ -16,7 +15,6 @@ const Specialties = () => {
 	const { activeUid } = useParams();
 	const user = useSelector((state) => state.user);
 	const {currentUser} = useSelector(state => state.userActive)
-	const { dni } = useSelector((state) => state.user);
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
@@ -30,8 +28,8 @@ const Specialties = () => {
 	useEffect(() => {
 		if(activeUid && activeUid !== currentUser) {
 			dispatch(getDependant(currentUser, activeUid))
-		/* const pediatric = moment().diff(user.dob, 'years') <= 16;
-		setAgePediatry(pediatric); */
+			const pediatric = moment().diff(user.dob, 'years') <= 16;
+			setAgePediatry(pediatric);
 		}
 	}, []);
 
@@ -108,7 +106,6 @@ const Specialties = () => {
 			return;
 		}
 		return history.push(`/appointmentsonline/${value}/calendar/${activeUid}?dependant=${params.dependant}`);
-
 		// pushPage(speciality);
 	};
 
