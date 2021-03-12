@@ -81,6 +81,7 @@ const Register = () => {
         const phoneChecked = checkNum(dataVal.phone)
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+            console.log('sex', sex)
             let data = {
                 newValues: {
                     login: [method],
@@ -272,7 +273,8 @@ const Register = () => {
                                 register(
                                     { 
                                         required: true, 
-                                        minLength: 10
+                                        minLength: 10,
+                                        maxLenght: 13
                                     }
                                 )
                             } 
@@ -290,7 +292,7 @@ const Register = () => {
                                 className={`select--sex ${active ? 'active' : ''}`} 
                                 onClick={(e) => {
                                     e.preventDefault();    
-                                    setShowOptions(true);
+                                    setShowOptions(!showOptions);
                                 }}
                             >
                                 {sex || 'Indica tu sexo'} 
