@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Firebase from 'firebase/app';
 import db from '../../../config/DBConnection';
-import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import Modal from '../SignUp/Modal';
-import moment from 'moment-timezone';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { node_patient } from '../../../config/endpoints'; 
 import showPass from '../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../assets/icons/eyeopenpass.png';
 import Google from '../../../assets/logos/google.png';
@@ -12,16 +11,8 @@ import Microsoft from '../../../assets/logos/microsoft.png';
 import Facebook from '../../../assets/logos/facebook.png';
 import Mobile from '../../../assets/logos/mobile.png';
 import Email from '../../../assets/logos/email.png';
-import CalendarIcon from '../../../assets/calendar.png'; 
-import '../../../styles/user/genericComponents.scss';
-// import 'react-date-range/dist/styles.css';
-// import 'react-date-range/dist/theme/default.css';
-// import { Calendar } from 'react-date-range';
-// import es from 'date-fns/locale/es';
 import axios from 'axios';
-import {node_patient} from '../../../config/endpoints'; 
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import '../../../styles/user/genericComponents.scss';
 
 export const GenericInputs = ({label, type, name = '',action = () => {}, inputRef}) => {
     const [showPassword, setShowPassword] = useState(false)    
@@ -57,100 +48,6 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
     )
 };
 
-// export const SelectOption = ({calendar, select, action = () => {}}) => {
-//     const [showCalendar, setShowCalendar] = useState(false)
-//     const [calendarValue, setCalendarValue] = useState('')
-//     const [date, setDate] = useState(null);
-//     const [sex, setSex] = useState(null);
-//     const [active, setActive] = useState(false);
-//     const [showOptions, setShowOptions] = useState(false);
-
-
-    // const handleChangeSex = (e) => {
-    //     setActive(true)
-    //     setSex(e.target.value)
-    //     action(e.target.value)
-    //     setShowOptions(false)
-    // }
-
-        // const handleDate = (e) => {
-    //     const momentDate = moment(e).format('DD-MM-YYYY')
-    //     const olderThan = moment().diff(e, 'years') 
-    //     if(olderThan >= 16) {
-    //         setBirthDate(momentDate)
-    //         setValidations({...validations, dob: true})
-    //     }else {
-    //         setValidations({...validations, dob: false})
-    //     }
-    // }
-
-    // const handleCalendar = (e) => {
-    //     setDate(e)
-    //     const momentDate = moment(e).format('DD-MM-YYYY')
-    //     const olderThan = moment().diff(e, 'years') 
-    //     if(olderThan >= 16) {
-    //         setCalendarValue(momentDate)
-    //         action(momentDate)
-    //     }else {
-    //         setCalendarValue('')
-    //     }
-    // }
-
-    // return (
-        // <>
-            {/* {showCalendar && 
-                <section className='calendar__container'>
-                    <Modal>
-                    <Calendar
-                        date={date}
-                        onChange={(e)=> handleCalendar(e)}
-                        locale={es}
-                    />
-                        <section className='calendar__actions'>
-                            <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
-                            <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
-                            <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
-                        </section>
-                    </Modal>
-                </section>
-            }
-            {calendar &&  
-                <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
-                    {calendarValue !== '' ? <p className='text date'>{calendarValue}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
-                    <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
-                </section>
-            } */}
-            {/* {select &&
-                <div className='container__select--sex'>
-                    <button 
-                        className={`select--sex ${active ? 'active' : ''}`} 
-                        onClick={(e) => {
-                            e.preventDefault();    
-                            setShowOptions(true);
-                        }}
-                    >
-                        {sex || 'Indica tu sexo'} 
-                        <FontAwesomeIcon icon={faChevronDown} />
-                    </button>
-                    <div className={`show--options ${showOptions ? 'visible' : 'hiden'}`}>
-                        <label>
-                            <input type="radio" name="sexo" value="Femenino" onChange={handleChangeSex} />
-                            Femenino
-                        </label>
-                        <label>
-                            <input type="radio" name="sexo" value="Masculino" onChange={handleChangeSex} />
-                            Masculino
-                        </label>
-                        <label>
-                            <input type="radio" name="sexo" value="Otro" onChange={handleChangeSex} />
-                            Otro
-                        </label>
-                    </div>
-                </div>
-            }
-        </>
-    )
-} */}
 
 export const ConditionButtons = ({check}) => {
     const [validPass, setValidPass] = useState(false)
@@ -169,16 +66,16 @@ export const ConditionButtons = ({check}) => {
     }, [check])
     
     return(
-    <section className='conditions'>
-        <div className='conditions__group'>
-            <p className='characters'>Mínimo 8 carácteres</p>
-            {validPass && <div className='done'>✔</div>}
-        </div>
-        <div className='conditions__group'>
-            <p className='characters'>Mínimo 1 número</p>
-            {validPass && <div className='done number'>✔</div>}
-        </div>
-    </section>
+        <section className='conditions'>
+            <div className='conditions__group'>
+                <p className='characters'>Mínimo 8 carácteres</p>
+                {validPass && <div className='done'>✔</div>}
+            </div>
+            <div className='conditions__group'>
+                <p className='characters'>Mínimo 1 número</p>
+                {validPass && <div className='done number'>✔</div>}
+            </div>
+        </section>
     )
 }
 
@@ -211,7 +108,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                         history.push(route)
                     }
                 })
-                .catch(e => console.error(e))
+                .catch(() => history.push(route))
             })
             .catch(e => {
                 console.log(e.code);
@@ -235,7 +132,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                     history.push(route)
                 }
             })
-            .catch(e => console.error(e))
+            .catch(() => history.push(route))
         })
         .catch(e => {
             console.log(e.code);
@@ -258,7 +155,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                     history.push(route)
                 }
             })
-            .catch(e => console.error(e))
+            .catch(() => history.push(route))
         })
         .catch(e => {
             console.log(e.code);

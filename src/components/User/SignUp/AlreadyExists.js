@@ -14,12 +14,12 @@ const AlreadyExists = () =>  {
     const [hiddenEmail, setHiddenEmail] = useState('')
     const user = db.auth().currentUser
 
-    const logMethod = (user) => {
-        const method = user.providerData[0].providerId
-        const res = method.replace(/\..+/g,"$'")
-        const upper = res.charAt(0).toUpperCase() + res.slice(1)
-        setAccMethod(upper)
-    }
+    // const logMethod = (user) => {
+    //     const method = user.providerData[0].providerId
+    //     const res = method.replace(/\..+/g,"$'")
+    //     const upper = res.charAt(0).toUpperCase() + res.slice(1)
+    //     setAccMethod(upper)
+    // }
 
     const hideEmail = (user) => {
         const userHidde = user.providerData[0].email
@@ -31,7 +31,7 @@ const AlreadyExists = () =>  {
     
     useEffect(() => {
        hideEmail(user)
-       logMethod(user)
+    //    logMethod(user)
     }, [user])
 
     const handleSignIn = () => {
@@ -50,8 +50,8 @@ const AlreadyExists = () =>  {
                 <img src={Exclamation} alt='exclamation mark' className='signUp__content--illustration exclamation' />
                 <section className='signUp__content__mainText'>
                     <h1 className='title exists'>Este mail se encuentra en uso</h1>
-                    {/* <p className='subtitle'>Ya existe un usuario registrado con el mail {hiddenEmail} </p> */}
-                    <p className='subtitle'>El mail {hiddenEmail} está asociado a una cuenta de {accMethod} </p>
+                    <p className='subtitle'>Ya existe un usuario registrado con el mail {hiddenEmail} </p>
+                    {/* <p className='subtitle'>El mail {hiddenEmail} está asociado a una cuenta de {accMethod} </p> */}
                     <p className='subtitle'>¿Deseas ingresar?</p>
                 </section>
                 <section>

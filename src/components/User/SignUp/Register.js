@@ -81,7 +81,6 @@ const Register = () => {
         const phoneChecked = checkNum(dataVal.phone)
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-            console.log('sex', sex)
             let data = {
                 newValues: {
                     login: [method],
@@ -94,6 +93,7 @@ const Register = () => {
                     os: healthinsurance || ''
                 }
             }
+            
             await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                 .then(res => {
                     dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
