@@ -269,11 +269,10 @@ const PaymentCardMP = () => {
 
       const validateDiscount = (e) => {
         setCoupon(e.target.value)
-        console.log(e.target.value)
         if(e.target.value === discountParam.code){
           setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
         } else {
-          setTotalPayment(totalPayment)
+          setTotalPayment(3499)
         }
       }
     
