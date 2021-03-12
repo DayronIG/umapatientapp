@@ -17,7 +17,7 @@ import '../../../styles/whoScreen.scss';
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const currentUser = useSelector((state) => state.userActive.currentUser);
+	const {currentUser} = useSelector((state) => state.userActive);
 	const [registerParent, setRegisterParent] = useState(false);
 	const [parents, setParents] = useState([]);
 	const { loading } = useSelector((state) => state.front);
@@ -35,7 +35,7 @@ const WhenScreen = (props) => {
 				await enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
-					const assigned = await findAllAssignedAppointment(userDni, type);
+					const assigned = await findAllAssignedAppointment(currentUser.uid, type);
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });

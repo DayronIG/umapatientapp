@@ -22,7 +22,7 @@ const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
-	const currentUser = useSelector((state) => state.userActive.currentUser);
+	const {currentUser} = useSelector((state) => state.userActive);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
 	const [pediatric, setPediatric] = useState(false);
@@ -34,7 +34,6 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
-			console.log("Entra 1 vez")
 			dispatch(getDependant(currentUser.uid, activeUid))
 		}
 	}, [currentUser, activeUid]);
@@ -61,11 +60,7 @@ const WhenScreen = (props) => {
 	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
-			let assigned = undefined;
-			if (person.group !== person.dni) {
-				console.log(person)
-				assigned = await findAllAssignedAppointment(person.dni, type);
-			}
+			let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
 				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
