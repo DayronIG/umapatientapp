@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
 import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
-import moment from 'moment';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
