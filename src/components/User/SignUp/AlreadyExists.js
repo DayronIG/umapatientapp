@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GenericButton } from '../Login/GenericComponents';
-// import Firebase from 'firebase/app';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import db from '../../../config/DBConnection';
 import Exclamation from '../../../assets/illustrations/exclamation.png';
 import '../../../styles/user/signUp/signUp.scss';
@@ -10,19 +9,12 @@ import '../../../styles/user/signUp/signUp.scss';
 const AlreadyExists = () =>  {
     const history = useHistory()
     const dispatch = useDispatch()
-    const [accMethod, setAccMethod] = useState('')
     const [hiddenEmail, setHiddenEmail] = useState('')
-    const user = db.auth().currentUser
-
-    // const logMethod = (user) => {
-    //     const method = user.providerData[0].providerId
-    //     const res = method.replace(/\..+/g,"$'")
-    //     const upper = res.charAt(0).toUpperCase() + res.slice(1)
-    //     setAccMethod(upper)
-    // }
+    const user = useSelector(state => state.userActive?.currentUser);
 
     const hideEmail = (user) => {
-        const userHidde = user.providerData[0].email
+        if(!user.email) return false;
+        const userHidde = user.email
         const emailToShow = userHidde.split('@')[0].slice(0, 2)
         const emailToHide = userHidde.split('@')[0].slice(2).replace(/./g, '*')
         const domain = `@${userHidde.split('@')[1]}`
@@ -30,8 +22,9 @@ const AlreadyExists = () =>  {
     }
     
     useEffect(() => {
-       hideEmail(user)
-    //    logMethod(user)
+        if(user) {
+            hideEmail(user)
+        }
     }, [user])
 
     const handleSignIn = () => {
@@ -50,8 +43,11 @@ const AlreadyExists = () =>  {
                 <img src={Exclamation} alt='exclamation mark' className='signUp__content--illustration exclamation' />
                 <section className='signUp__content__mainText'>
                     <h1 className='title exists'>Este mail se encuentra en uso</h1>
-                    <p className='subtitle'>Ya existe un usuario registrado con el mail {hiddenEmail} </p>
-                    {/* <p className='subtitle'>El mail {hiddenEmail} está asociado a una cuenta de {accMethod} </p> */}
+                    {
+                        user?.email ? 
+                        <p className='subtitle'>Ya existe un usuario registrado con el mail {hiddenEmail}</p> :
+                        <p className='subtitle'>Ya existe un usuario registrado con el mail seleccionado</p>
+                    }
                     <p className='subtitle'>¿Deseas ingresar?</p>
                 </section>
                 <section>
