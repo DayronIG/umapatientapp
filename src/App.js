@@ -109,7 +109,7 @@ function App(props) {
 				<Route exact path='/signup' component={SignUp} />
 				<Route exact path='/signup/form/:screen' component={SignUpForm} />
 				<Route exact path='/signup/:status' component={Status} />
-				<Route exact path='/signup/user/exists' component={AlreadyExists} />
+				<Route exact path='/signup/user/exists/:method?' component={AlreadyExists} />
 				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
 				<Route exact path='/forgot/:type' component={ForgottenPass} />
 				<Route exact path='/forgot' component={NeedHelp} />

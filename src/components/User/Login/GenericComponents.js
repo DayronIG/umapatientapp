@@ -95,7 +95,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     const user = useSelector((state) => state.user);
     const { currentUser } = useSelector((state) => state.userActive);
 
-    const signInAndSignUpWithGoogle = (route) => {
+    const signInAndSignUpWithGoogle = () => {
         let googleProvider;
         googleProvider = new Firebase.auth.GoogleAuthProvider();
         googleProvider.addScope('profile');
@@ -103,23 +103,14 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
-                const headers = { 'Content-type': 'application/json' };
-                axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
-                .then(res => {
-                    if(res.data.exists) {
-                        history.push('/signup/user/exists')
-                    }else {
-                        history.push(route)
-                    }
-                })
-                .catch(() => history.push(route))
+                history.push('/');
             })
             .catch(e => {
-                console.log(e.code);
+                console.error(e);
             })
     }
 
-    const signInAndSignUpWithMicrosoft = (route) => {
+    const signInAndSignUpWithMicrosoft = () => {
         let microsoftProvider;
         microsoftProvider = new Firebase.auth.OAuthProvider('microsoft.com');
         microsoftProvider.addScope('mail.read');
@@ -127,19 +118,31 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(microsoftProvider)
         .then(result => {
-            const headers = { 'Content-type': 'application/json' };
-            axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
-            .then(res => {
-                if(res.data.exists) {
-                    history.push('/signup/user/exists')
-                }else {
-                    history.push(route)
-                }
-            })
-            .catch(() => history.push(route))
+            history.push('/')
         })
         .catch(e => {
-            console.log(e.code);
+            if (e.code === 'auth/email-already-in-use' || e.code === 'auth/account-exists-with-different-credential') {
+                const headers = { 'Content-type': 'application/json' };
+                axios.post(`${node_patient}/emailexists`, { email: e.email }, headers)
+                    .then(res => {
+                        switch (res?.data?.details[0]?.providerId) {
+                            case 'microsoft.com':
+                                history.push('/signup/user/exists/microsoft');
+                                break;
+                            case 'google.com':
+                                history.push('/signup/user/exists/google');
+                                break;
+                            case 'facebook.com':
+                                history.push('/signup/user/exists/facebook');
+                                break;
+                            case 'password':
+                                history.push('/signup/user/exists/password');
+                                break;
+                            default:
+                                history.push('/signup/user/exists');
+                        }
+                    })
+            }
         })
     }
 
@@ -168,7 +171,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
     
     const handleGoogleAccount = async () => {
         if (circleBtn) {
-            signInAndSignUpWithGoogle('/');
+            signInAndSignUpWithGoogle();
         } else if(vincular) {
             let provider
             provider = new Firebase.auth.GoogleAuthProvider();
@@ -210,15 +213,15 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                     }
                 });
         } else if (signUp) {
-            signInAndSignUpWithGoogle('/signup/form/2');
+            signInAndSignUpWithGoogle();
         } else {
-            signInAndSignUpWithGoogle('/');
+            signInAndSignUpWithGoogle();
         }
     }
 
     const handleMicrosoftAccount = async () => {
         if(circleBtn) {
-            signInAndSignUpWithMicrosoft('/');
+            signInAndSignUpWithMicrosoft();
         } else if (vincular) {
             let provider
             provider = new Firebase.auth.OAuthProvider('microsoft.com');
@@ -260,9 +263,9 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                     }
                 });
         } else if (signUp) {
-            signInAndSignUpWithMicrosoft('/signup/form/2');
+            signInAndSignUpWithMicrosoft();
         } else {
-            signInAndSignUpWithMicrosoft('/');
+            signInAndSignUpWithMicrosoft();
         }
     }
 
