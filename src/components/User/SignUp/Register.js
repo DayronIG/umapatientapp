@@ -131,6 +131,7 @@ const Register = () => {
     const validationForm = async (e, dataVal) => {
         if(e) {
             e.preventDefault()
+            setModalWarning(false)
         }
 
         const uid = userActive.currentUser.uid
