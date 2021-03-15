@@ -109,7 +109,7 @@ const ProfileComponent = () => {
 						<EditButton section='personal' className='btn-edit' clase='personal' />
 						<p className='fullName'>{auth.fullname}</p>
 						<p>{auth.dni}</p>
-						<p>{auth.corporate}</p>
+						<p>{auth.corporate || auth.os}</p>
 						<p>{moment(auth.dob).format('DD-MM-YYYY')}</p>
 					</div>
 				</div>

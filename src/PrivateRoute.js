@@ -119,7 +119,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 Axios
                     .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
                     .then((res) => {
-                        console.log("UMA");
+                        // console.log("UMA");
                     })
                     .catch((err) => {
                         console.log(err);
