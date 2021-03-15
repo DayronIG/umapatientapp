@@ -99,6 +99,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
         db.auth().signInWithPopup(googleProvider)
             .then(result => {
+                console.log(result);
                 const headers = { 'Content-type': 'application/json' };
                 axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
                 .then(res => {
