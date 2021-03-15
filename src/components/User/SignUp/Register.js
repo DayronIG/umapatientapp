@@ -59,19 +59,9 @@ const Register = () => {
             try {
                 await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
                 .then(async user => {
-                    // const headers = { 'Content-type': 'application/json' };
-                    // axios.post(`${node_patient}/emailexists`, {email: user?.user?.providerData[0]?.email}, headers)
-                    // .then(res => {
-                    //     if(res.data.exists) {
-                    //         history.push('/signup/user/exists')
-                    //     }else {
-                            dispatch({ type: 'USER_PASSWORD', payload: '' });
                             setSwitchContent('2');
-                    //     }
                         console.log(user)
                     })
-                // .catch(e => console.error(e))
-                // })
             }catch {
                 setEmailExists(true)
             }
