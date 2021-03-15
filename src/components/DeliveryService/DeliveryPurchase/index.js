@@ -48,7 +48,7 @@ export default function HisopadosPurchase() {
             case "PAYMENT":
                 return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})           
             default: 
-                console.log("DEFAULT")
+                return dispatch({type: 'SET_DELIVERY_STEP', payload: "ASK_FOR_BUY"})        
         }
     }
 

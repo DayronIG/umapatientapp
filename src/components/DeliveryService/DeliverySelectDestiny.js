@@ -26,7 +26,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, addressObservations, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: user?.piso || '',
 		depto: user?.depto || '',
@@ -235,6 +235,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 			dispatch({type: 'SET_HISOPADO_DEPENDANT_ADDRESSES', payload: dependantAddressesToDispatch})
 			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
+			dispatch({type: 'SET_DELIVERY_ALL', payload:{...deliveryInfo, patient: deliveryInfo.paient, obs: addressObservations}})
 			if(isAddressValidForHisopado){finalAction()}
 		}
 	}, [hisopadoUserAddress, formState, isAddressValidForHisopado]);
@@ -290,6 +291,18 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 					</div>
 				</div>
 			</div>}
+			</div>
+			<div className={`observacionesContainer ${isModal? '': 'marginBottomObservaciones'}`}>
+				<input 
+					type="text"
+					inputMode="text"
+					placeholder="Aclaraciones para el personal" 
+					className='observationsInput'
+					value={addressObservations || ''}
+					onChange={(e) => {
+						dispatch({type: 'SET_ADDRESS_OBSERVATIONS', payload: e.target.value})
+					}}
+				/>
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
                 Seleccionar

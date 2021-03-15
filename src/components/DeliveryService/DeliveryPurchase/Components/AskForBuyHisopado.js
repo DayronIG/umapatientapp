@@ -10,6 +10,7 @@ import {create_delivery, config} from '../../../../config/endpoints';
 import db from "../../../../config/DBConnection";
 import { BackButton } from '../../../GeneralComponents/Headers';
 import swal from 'sweetalert';
+import umaLogo from '../../../../assets/logo_original.png'
 
 export default function AskForBuyHisopado() {
     const isLocal = window.location.origin.includes('localhost');
@@ -101,6 +102,7 @@ export default function AskForBuyHisopado() {
                     {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
                     {/* <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p> */}
                     <div className="price-center-aligner">
+                        <img src={umaLogo} className='uma_logo_hisopados'/>
                         <h2 className="price-title">Test rápido de antígenos</h2>
                         <div className="price-container">
                             <div className="discount-container">

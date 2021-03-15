@@ -10,7 +10,7 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(state => state.user);
-    const { deliveryInfo, changeMarker, hisopadoDependantAddresses } = useSelector(state => state.deliveryService);
+    const { deliveryInfo, changeMarker, hisopadoDependantAddresses, addressObservations } = useSelector(state => state.deliveryService);
     const { piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
@@ -25,7 +25,7 @@ const HisopadoCartItem = ({patient, index}) => {
         dob: patient.patient?.dob,
         sex: patient.patient?.sex,
         uid: patient.patient?.uid,
-        obs: '',
+        obs: addressObservations,
         address: patient.destination?.user_address,
         piso: patient.destination?.user_floor || piso,
         depto: patient.destination?.user_number  || depto,
@@ -59,6 +59,7 @@ const HisopadoCartItem = ({patient, index}) => {
                     sex: data.sex,
                     dob: data.dob,
                     dni: data.dni,
+                    obs: addressObservations,
                     ws: data.ws,
                     user: data.fullname,
                     uid: data.uid
@@ -77,6 +78,7 @@ const HisopadoCartItem = ({patient, index}) => {
             localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace.filter(el=>el.status)))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
             dispatch({type: "CHANGE_MARKER"})
+            console.log(sendData)
             // let headers = { 'Content-Type': 'Application/Json' }
             // axios.post(create_delivery, sendData, headers)
             //     .then(res => console.log(res))
@@ -238,9 +240,9 @@ const HisopadoCartItem = ({patient, index}) => {
                         type="text"
                         inputMode="text"
                         placeholder="Aclaración para el personal" 
-                        value={data.obs || ''}
+                        value={addressObservations || ''}
                         onChange={(e) => {
-                            setData({...data, obs: e.target.value});
+                            dispatch({type: 'SET_ADDRESS_OBSERVATIONS', payload: e.target.value});
                         }}
                     />
                 </div>

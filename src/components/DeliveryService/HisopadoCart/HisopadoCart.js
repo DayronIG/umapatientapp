@@ -10,7 +10,7 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const user = useSelector(store => store.user);
-  const { params, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
+  const { params, deliveryInfo, changeMarker, hisopadoUserAddress, addressObservations } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
   
   useEffect(() => {
@@ -35,8 +35,6 @@ const HisopadoCart = (props) => {
   }
 
   const handleAddHisopado = useCallback(() => {
-    console.log('asd');
-
     dispatch({
       type: 'SET_DELIVERY',
       payload: {
@@ -46,6 +44,7 @@ const HisopadoCart = (props) => {
           dni: '',
           ws: '',
           dob: '',
+          obs: addressObservations,
           sex: '',
           address: '',
           piso: '',
