@@ -110,20 +110,22 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	}
 	
 	const handleSubmit = useCallback((device) => {
-		let data = {
-			newValues: { device },
-        };
-        currentUser.getIdToken().then(async token => {
-            let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-            Axios
-                .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
-                .then((res) => {
-                    console.log("UMA");
+        setTimeout(() => {
+            let data = {
+                newValues: { device },
+            };
+            currentUser.getIdToken().then(async token => {
+                let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                Axios
+                    .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
+                    .then((res) => {
+                        console.log("UMA");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
-            })
+        }, 1500);
     }, [user, currentUser])
     
     return (

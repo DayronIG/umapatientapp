@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarIcon from '../../../assets/calendar.png'; 
+import swal from 'sweetalert';
 
 const Register = () => {
     const {screen} = useParams()
@@ -58,19 +59,9 @@ const Register = () => {
             try {
                 await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
                 .then(async user => {
-                    // const headers = { 'Content-type': 'application/json' };
-                    // axios.post(`${node_patient}/emailexists`, {email: user?.user?.providerData[0]?.email}, headers)
-                    // .then(res => {
-                    //     if(res.data.exists) {
-                    //         history.push('/signup/user/exists')
-                    //     }else {
-                            dispatch({ type: 'USER_PASSWORD', payload: '' });
                             setSwitchContent('2');
-                    //     }
                         console.log(user)
                     })
-                // .catch(e => console.error(e))
-                // })
             }catch {
                 setEmailExists(true)
             }
@@ -84,7 +75,7 @@ const Register = () => {
             let data = {
                 newValues: {
                     login: [method],
-                    email: email || '',
+                    email: email || Firebase.auth().currentUser?.providerData[0]?.email || '',
                     fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
                     dni: dataVal.dni || '',
                     ws: phoneChecked|| '',
@@ -109,6 +100,33 @@ const Register = () => {
     }
 
     const validationForm = async (dataVal) => {
+        let data = {
+            dni: dataVal.dni,
+        }
+        let headers = { ContentType: 'Application/json' }
+        const exists = await axios.post(`${node_patient}/checkexists`, data, headers)
+
+        if (exists.data.exists) {
+            let text = `El usuario está registrado con el teléfono ${exists.data.ws} `
+            if (exists.data.email && exists.data.email !== '') {
+                text += ` y el email ${exists.data.email}`
+            }
+            const registeredAlert = await swal({
+                title: `Ya existe un usuario con este documento ¿estás seguro deseas volver a registrarte?`,
+                text: `${text}`,
+                icon: 'warning',
+                buttons: {
+                    cancel: 'Si, registrarme',
+                    catch: { text: 'No, ingresar con mi usuario', value: true }
+                },
+                dangerMode: true,
+            })
+            if (registeredAlert) {
+                Firebase.auth().currentUser.delete()
+                .then(res => history.push('/'))
+            }
+        }
+
         const uid = userActive.currentUser.uid
         if(sex === null) {
             setShowError({...showError, sex: true})  

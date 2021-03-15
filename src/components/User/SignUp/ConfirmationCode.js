@@ -53,9 +53,24 @@ const ConfirmationCode = () => {
                 })
             
             db.auth().signInWithEmailAndPassword(email, pass)
-            .then((reg) => {
-                console.log(reg);
-                history.push(`/${ws}`)
+            .then(async (user) => {
+                db.auth().currentUser.getIdToken().then(async token => {
+                    let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                    let data = {
+                        newValues: {
+                            ws_code: pass,
+                        }
+                    }
+
+                    let uid = db.auth().currentUser.uid;
+
+                    await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
+                        .then(res => {
+                            console.log(res);
+                            history.push('/');
+                        })
+                        .catch(e => console.error(e));
+                })
             })
             .catch((err) => {
                 if (err.code === 'auth/user-not-found') {
