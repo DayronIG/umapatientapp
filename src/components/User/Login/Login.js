@@ -58,9 +58,12 @@ const Login = () =>  {
                 </button> 
            </section>
            <section className='login__actions'>
-                <GenericButton action={handleSignIn}>
+               <button className='login__actions--btnlog' onClick={handleSignIn}>
+                   Ingresar
+               </button>
+                {/* <GenericButton action={handleSignIn}>
                     Ingresar
-                </GenericButton>
+                </GenericButton> */}
                 <TextAndLink text='¿Eres nuevo en ÜMA?' link='Registrarme' action={() => history.push('/signup')} />
            </section>
        </section>

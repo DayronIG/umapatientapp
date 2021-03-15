@@ -31,7 +31,6 @@ const AlreadyExists = () =>  {
     
     useEffect(() => {
        hideEmail(user)
-    //    logMethod(user)
     }, [user])
 
     const handleSignIn = () => {

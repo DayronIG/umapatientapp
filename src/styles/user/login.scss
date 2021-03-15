@@ -146,6 +146,18 @@
                 font-weight: bold;
             }
         }
+        .login__actions--btnlog {
+            width: 80%;
+            height: 44px;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            background-color: $uma-primary;
+            color: $white-color;
+            text-transform: uppercase;
+            margin: 10px auto;
+            cursor: pointer;
+        }
     }
 
     .login__mobile {

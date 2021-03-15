@@ -75,6 +75,10 @@ export const ConditionButtons = ({check}) => {
                 <p className='characters'>Mínimo 1 número</p>
                 {validPass && <div className='done number'>✔</div>}
             </div>
+            <div className='conditions__group'>
+                <p className='characters'>Mínimo 1 letra</p>
+                {validPass && <div className='done letter'>✔</div>}
+            </div>
         </section>
     )
 }
