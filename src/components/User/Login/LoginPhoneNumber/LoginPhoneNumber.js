@@ -4,7 +4,7 @@ import LoginIllustration from '../../../../assets/illustrations/Login-Illustrati
 import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../GenericComponents';
 import { node_patient, send_user_code} from '../../../../config/endpoints';
 import {checkNum} from '../../../Utils/stringUtils';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../../../styles/user/login.scss';
@@ -16,7 +16,7 @@ const LoginPhoneNumber = () => {
     const [ws, setWs] = useState('')
     const [dni, setDni] = useState('')
     const [userEmail, setUserEmail] = useState('')
-    const { email } = useSelector(state => state.user)
+    const [email, setEmail] = useState('');
     const [showError, setShowError] = useState(false)
 
     const hideEmail = (email) => {
@@ -48,44 +48,35 @@ const LoginPhoneNumber = () => {
     }, [email])
 
     const handleCheckUserExists = () => {
-      
         if (ws && dni) {
             const config = { headers: { 'Content-Type': 'application/json' } }
             const validPhone = checkNum(ws)
             try {
-                axios.get(`${node_patient}/exists/${validPhone}`, {}, config)
-                    .then((res) => {
-                        if (res.data.redirect === 'register') {
-                            history.push('/login/error');
+                axios.get(`${node_patient}/user/${validPhone}/${dni}`, {}, config)
+                .then(res => {
+                    if (res?.data.length) {
+                        if (res?.data[0]?.login) {
+                            setEmail(res?.data[0]?.email)
+                            setSwitchContent(true);
                         } else {
-                            axios.get(`${node_patient}/user/${validPhone}/${dni}`, {}, config)
-                            .then(res => {
-                                if(res?.data.length) {
-                                    if (res?.data[0]?.login) {
-                                        dispatch({ type: 'USER_FIRST_EMAIL', payload: res?.data[0]?.email})
-                                        setSwitchContent(true);
-                                    } else {
-                                        try {
-                                            const data = { ws }
-                                            axios.post(`${send_user_code}/${ws}`, data, config)
-                                                .then(() => {
-                                                    history.push('/login/code')
-                                                })
-                                                .catch((err) => {
-                                                    console.log('Error al enviar el código', '', 'warning')
-                                                })
-                                        } catch (e) {
-                                            console.error(e);
-                                        }
-                                        console.log('Te enviamos un código');
-                                    }
-                                }else {
-                                    setShowError(true)
-                                }
-                            })  
+                            try {
+                                const data = { ws }
+                                axios.post(`${send_user_code}/${ws}`, data, config)
+                                    .then(() => {
+                                        history.push('/login/code')
+                                    })
+                                    .catch((err) => {
+                                        console.log('Error al enviar el código', '', 'warning')
+                                    })
+                            } catch (e) {
+                                console.error(e);
+                            }
                         }
-                    })
-                    .catch(err => console.error('Ocurrió un error en el Login', `${err}`, 'warning'))
+                    } else {
+                        history.push('/login/error');
+                    }
+                })
+                .catch(e => console.error(e))
             } catch (e) {
                 console.error(e);
             }

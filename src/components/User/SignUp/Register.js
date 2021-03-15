@@ -64,9 +64,32 @@ const Register = () => {
             try {
                 await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
                 .then(async user => {
-                            setSwitchContent('2');
-                        console.log(user)
-                    })
+                    setSwitchContent('2');
+                })
+                .catch(e => {
+                    if (e.code === 'auth/email-already-in-use' || e.code === 'auth/account-exists-with-different-credential') {
+                        const headers = { 'Content-type': 'application/json' };
+                        axios.post(`${node_patient}/emailexists`, { email: data.email }, headers)
+                        .then(res => {
+                            switch (res?.data?.details[0]?.providerId) {
+                                case 'microsoft.com':
+                                    history.push('/signup/user/exists/microsoft');
+                                    break;
+                                case 'google.com':
+                                    history.push('/signup/user/exists/google');
+                                    break;
+                                case 'facebook.com':
+                                    history.push('/signup/user/exists/facebook');
+                                    break;
+                                case 'email':
+                                    history.push('/signup/user/exists/email');
+                                    break;
+                                default:
+                                    history.push('/signup/user/exists');
+                            }
+                        })
+                    }
+                });
             }catch {
                 setEmailExists(true)
             }
