@@ -7,6 +7,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import Firebase from 'firebase/app';
 import axios from 'axios';
 import Modal from '../SignUp/Modal';
+import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import moment from 'moment-timezone';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -18,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarIcon from '../../../assets/calendar.png'; 
+import Exclamation from '../../../assets/illustrations/exclamation.png';
 import swal from 'sweetalert';
 
 const Register = () => {
@@ -37,6 +39,9 @@ const Register = () => {
     const [showCalendar, setShowCalendar] = useState(false)
     const [date, setDate] = useState(null)
     const [emailExists, setEmailExists] = useState(false)
+    const [modalWarning, setModalWarning] = useState(false)
+    const [textModal, setTextModal] = useState('')
+    const [dataForm, setDataForm] = useState('')
     const [showError, setShowError] = useState([{
         dob: false,
         sex: false
@@ -99,33 +104,8 @@ const Register = () => {
         })
     }
 
-    const validationForm = async (dataVal) => {
-        let data = {
-            dni: dataVal.dni,
-        }
-        let headers = { ContentType: 'Application/json' }
-        const exists = await axios.post(`${node_patient}/checkexists`, data, headers)
-
-        if (exists.data.exists) {
-            let text = `El usuario está registrado con el teléfono ${exists.data.ws} `
-            if (exists.data.email && exists.data.email !== '') {
-                text += ` y el email ${exists.data.email}`
-            }
-            const registeredAlert = await swal({
-                title: `Ya existe un usuario con este documento ¿estás seguro deseas volver a registrarte?`,
-                text: `${text}`,
-                icon: 'warning',
-                buttons: {
-                    cancel: 'Si, registrarme',
-                    catch: { text: 'No, ingresar con mi usuario', value: true }
-                },
-                dangerMode: true,
-            })
-            if (registeredAlert) {
-                Firebase.auth().currentUser.delete()
-                .then(res => history.push('/'))
-            }
-        }
+    const validationForm = async (e, dataVal) => {
+        e.preventDefault()
 
         const uid = userActive.currentUser.uid
         if(sex === null) {
@@ -146,6 +126,37 @@ const Register = () => {
             const providerName = await Firebase.auth().currentUser.providerData[0].providerId
             updatePatient(uid, providerName, dataVal)
         }
+    }
+
+    const validateDni = async(dataVal) => {
+        let data = {
+            dni: dataVal.dni,
+        }
+
+        let headers = { ContentType: 'Application/json' }
+        const exists = await axios.post(`${node_patient}/checkexists`, data, headers)
+        
+        if(exists.data.exists) {
+            setModalWarning(true)
+            let text = `El usuario está registrado con el teléfono ${exists.data.ws}`
+            if (exists.data.email && exists.data.email !== '') {
+                text += ` y el email ${exists.data.email}`
+            }
+            setTextModal(text)
+            setDataForm(dataVal)
+
+        }else {
+            validationForm(dataVal)
+        }
+    }
+
+    const redirectUserHome = (e) => {
+        e.preventDefault()
+        Firebase.auth().currentUser.delete()
+        .then(res => {
+            dispatch({ type: 'RESET_USER_DATA' });
+            history.push('/')
+        })
     }
 
     const handleChangeSex = (e) => {
@@ -281,6 +292,16 @@ const Register = () => {
                                 )
                             } 
                         />
+                        {modalWarning && 
+                            <MobileModal hideCloseButton hideTitle >
+                                <img src={Exclamation} className='modal__img' alt='Simbolo de exclamacion'/>
+                                <p className='modal__text'>{textModal}</p>
+                                <div className='actionModal__btns'>
+                                    <button className='button-action log' onClick={(e)=>redirectUserHome(e)}>Ingresar</button>
+                                    <button className='button-action next' onClick={(e)=>validationForm(e, dataForm)}>Continuar</button>
+                                </div>
+                            </MobileModal>
+                        } 
                         {errors.dni && errors.dni.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
                         {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El número de identificación debe tener al menos 7 números</p>}
                         <GenericInputs
@@ -376,7 +397,7 @@ const Register = () => {
                     }
                     {switchContent === '2' && 
                     <>
-                        <GenericButton action={handleSubmit(validationForm)}>Registrarme</GenericButton>
+                        <GenericButton action={handleSubmit(validateDni)}>Registrarme</GenericButton>
                         <p className='terms-and-conditions'>
                             Al registrarte estás aceptando los
                             <a onClick={()=>history.push('/termsconditions')}> términos y condiciones</a>

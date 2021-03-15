@@ -325,6 +325,60 @@
 
 // Calendar  
 
+.modal__dni {
+    display: block;
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100vh; 
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    .modal__container-dni {
+        background-color:$white-color;
+        max-width: 90%;
+        margin: 100px auto;
+        border-radius: 5px;
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        @include d-flex-center;
+        .modal__img {
+            width: 100px;
+            margin: 20px 0;
+        }
+        .modal__text {
+            color: $uma-text;
+            font-size: 18px;
+            margin: 30px 0;
+        }
+        .actionModal__btns {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px 0;
+            .button-action {
+                margin: 0 10px;
+                border: none;
+                border-radius: 5px;
+                height: 35px;
+                width: 120px;
+                color: $white-color;
+                &.cancel {
+                    background-color: $uma-error;
+                }
+                &.next {
+                    color: $uma-primary;
+                    border: 1px solid $uma-primary;
+                }
+            }
+        }
+    }
+}
+
 .calendar__container {
     display: block;
     position: fixed; 
