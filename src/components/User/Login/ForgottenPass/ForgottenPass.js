@@ -60,6 +60,7 @@ const ForgottenPass = () => {
     };
 
     const handleResetPassword = () => {
+        window.gtag('event', 'forgot_password_confirm')
         try {
             Firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
@@ -71,6 +72,7 @@ const ForgottenPass = () => {
     }
 
     const handleCheckUser = () => {
+        window.gtag('event', 'forgot_email_confirm')
         const config = { headers: { 'Content-Type': 'application/json' } }
         try {
             axios.get(`${node_patient}/user/${ws}/${dni}`, {}, config)

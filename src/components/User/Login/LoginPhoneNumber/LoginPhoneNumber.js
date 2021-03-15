@@ -56,6 +56,7 @@ const LoginPhoneNumber = () => {
                 .then(res => {
                     if (res?.data.length) {
                         if (res?.data[0]?.login) {
+                            window.gtag('event', 'login_phone_number_already_linked')
                             setEmail(res?.data[0]?.email)
                             setSwitchContent(true);
                         } else {
@@ -63,16 +64,18 @@ const LoginPhoneNumber = () => {
                                 const data = { ws }
                                 axios.post(`${send_user_code}/${ws}`, data, config)
                                     .then(() => {
+                                        window.gtag('event', 'login_phone_number_send_code')
                                         history.push('/login/code')
                                     })
                                     .catch((err) => {
-                                        console.log('Error al enviar el código', '', 'warning')
+                                        console.error('Error al enviar el código')
                                     })
                             } catch (e) {
                                 console.error(e);
                             }
                         }
                     } else {
+                        window.gtag('event', 'login_phone_number_not_found')
                         history.push('/login/error');
                     }
                 })
@@ -98,7 +101,7 @@ const LoginPhoneNumber = () => {
                     <p>Si reconoces estos datos, puedes ingresar con tu mail.</p>
                 </article>
                 : 
-                <p>Por favor, ingresa tu número de celular</p>
+                <p>Por favor, ingresa tus datos</p>
                 }
             </section>
             {!switchContent && 

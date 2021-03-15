@@ -13,8 +13,22 @@ const NeedHelp = () => {
             <section className='needHelp__forgottenPass'>
                 <h1 className='title'>¿Tienes problemas para ingresar?</h1>
                 <div className='needHelp__forgottenPass_btns'>
-                    <GenericButton action={() => history.push('/forgot/email')}>Olvidé mi mail</GenericButton>
-                    <GenericButton action={() => history.push('/forgot/password')}>Olvidé mi contraseña</GenericButton>
+                    <GenericButton 
+                        action={() => {
+                            window.gtag('event', 'forgot_email')
+                            history.push('/forgot/email')
+                        }}
+                    >
+                        Olvidé mi mail
+                    </GenericButton>
+                    <GenericButton 
+                        action={() => {
+                            window.gtag('event', 'forgot_password')
+                            history.push('/forgot/password')
+                        }}
+                    >
+                        Olvidé mi contraseña
+                    </GenericButton>
                 </div>
             </section>
         </section>

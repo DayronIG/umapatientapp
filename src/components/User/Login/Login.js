@@ -53,7 +53,13 @@ const Login = () =>  {
                     <input className='check' type='checkbox'/>
                     <p className='text'>Mantener sesión iniciada</p>
                 </aside> */}
-                <button className='login__needHelp--btn' onClick={() => history.push('/forgot')}>
+                <button 
+                    className='login__needHelp--btn' 
+                    onClick={() => {
+                        window.gtag('event', 'need_help_login')
+                        history.push('/forgot')
+                    }}
+                >
                     Necesito ayuda
                 </button> 
            </section>
@@ -64,7 +70,14 @@ const Login = () =>  {
                 {/* <GenericButton action={handleSignIn}>
                     Ingresar
                 </GenericButton> */}
-                <TextAndLink text='¿Eres nuevo en ÜMA?' link='Registrarme' action={() => history.push('/signup')} />
+                <TextAndLink 
+                    text='¿Eres nuevo en ÜMA?' 
+                    link='Registrarme' 
+                    action={() => {
+                        window.gtag('event', 'login_screen_register_btn')
+                        history.push('/signup')
+                    }}
+                />
            </section>
        </section>
     )

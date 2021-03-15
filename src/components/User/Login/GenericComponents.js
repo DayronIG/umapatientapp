@@ -332,6 +332,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
 
     const handleAnotherAccount = () => {
         if (circleBtn) {
+            window.gtag('event', 'login_phone_number')
             history.push('/login/phone');
         } else if (vincular) {
             history.push('/login/welcomeAgain/email');
@@ -357,7 +358,7 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
                 { circleBtn ? null : signUp ? <p>Registrarme con Microsoft</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con Microsoft</p>  }
             </button>
             <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleAnotherAccount}>
-                <img src={circleBtn ? Mobile : Email} alt='Mobile image'/>
+                <img src={circleBtn ? Mobile : Email} alt='Mobile'/>
                 { circleBtn ? null : signUp ? <p>Registrarme con otra cuenta</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con otra cuenta</p>  }
             </button> 
         </section>
