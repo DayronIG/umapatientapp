@@ -100,6 +100,7 @@ const Register = () => {
         const phoneChecked = checkNum(dataVal.phone)
         await Firebase.auth().currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+            let finalSex = sex === 'Masculino' ? 'M' : sex === 'Femenino' ? 'F' : 'Otro';
             let data = {
                 newValues: {
                     login: [method],
@@ -107,9 +108,9 @@ const Register = () => {
                     fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
                     dni: dataVal.dni || '',
                     ws: phoneChecked|| '',
-                    sex: sex || '',
+                    sex: finalSex || '',
                     dob: birthDate || '',
-                    os: healthinsurance || ''
+                    corporate: healthinsurance || ''
                 }
             }
             
@@ -118,7 +119,7 @@ const Register = () => {
                     dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
                     dispatch({ type: 'USER_FIRST_WS', payload: dataVal.phone })
                     dispatch({ type: 'USER_FIRST_DOB', payload: birthDate })
-                    dispatch({ type: 'USER_FIRST_SEX', payload: sex })
+                    dispatch({ type: 'USER_FIRST_SEX', payload: finalSex })
                     dispatch({ type: 'USER_FIRST_OS', payload: healthinsurance })
                     dispatch({ type: 'USER_FIRST_DNI', payload: dataVal.dni })
                     dispatch({ type: 'USER_FIRST_FULLNAME', payload: `${dataVal.firstname} ${dataVal.lastname}` })
@@ -128,7 +129,9 @@ const Register = () => {
     }
 
     const validationForm = async (e, dataVal) => {
-        e.preventDefault()
+        if(e) {
+            e.preventDefault()
+        }
 
         const uid = userActive.currentUser.uid
         if(sex === null) {
@@ -169,7 +172,7 @@ const Register = () => {
             setDataForm(dataVal)
 
         }else {
-            validationForm(dataVal)
+            validationForm(null, dataVal)
         }
     }
 
@@ -191,7 +194,7 @@ const Register = () => {
 
     const handleCalendar = (e) => {
         setDate(e)
-        const momentDate = moment(e).format('DD-MM-YYYY')
+        const momentDate = moment(e).format('YYYY-MM-DD')
         const olderThan = moment().diff(e, 'years') 
         if(olderThan >= 16) {
             setBirthDate(momentDate)
