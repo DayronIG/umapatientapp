@@ -120,18 +120,18 @@ function App(props) {
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
-				<Route exact path='/login/:ws?' component={Login} />
+				<Route exact path='/old_login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/register/:ws/:ref?' component={Register} />
-				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
-				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
+				{/* <Route exact path='/register/:ws/:ref?' component={Register} /> */}
+				{/* <Route exact path='/:ws?/login' component={Login} /> To be deleted */}
+				{/* <Route exact path='/:ws/register/:ref?' component={Register} /> To be deleted */}
 				<PrivateRoute exact path='/umacare/:ws?' component={UmaCare} />
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
-				<Route exact path='/newregister/:ref?' component={RegisterNew} />
-				<Route exact path='/referredregister/:ref?' component={RegisterNew} />
+				{/* <Route exact path='/newregister/:ref?' component={RegisterNew} /> */}
+				{/* <Route exact path='/referredregister/:ref?' component={RegisterNew} /> */}
 				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
-				<Route exact path='/registersuccess' component={RegisterSuccess} />
+				{/* <Route exact path='/registersuccess' component={RegisterSuccess} /> */}
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}
