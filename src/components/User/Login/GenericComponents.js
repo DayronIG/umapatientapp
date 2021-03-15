@@ -146,26 +146,38 @@ export const LoginButtons = ({circleBtn, signUp, vincular}) => {
         })
     }
 
-    const signInAndSignUpWithFacebook = (route) => {
+    const signInAndSignUpWithFacebook = () => {
         let facebookProvider;
         facebookProvider = new Firebase.auth.FacebookAuthProvider();
         facebookProvider.addScope('email');
     
         db.auth().signInWithPopup(facebookProvider)
         .then(result => {
-            const headers = { 'Content-type': 'application/json' };
-            axios.post(`${node_patient}/emailexists`, {email: result?.user?.providerData[0]?.email}, headers)
-            .then(res => {
-                if(res.data.exists) {
-                    history.push('/signup/user/exists')
-                }else {
-                    history.push(route)
-                }
-            })
-            .catch(() => history.push(route))
+            history.push('/')
         })
         .catch(e => {
-            console.log(e.code);
+            if (e.code === 'auth/email-already-in-use' || e.code === 'auth/account-exists-with-different-credential') {
+                const headers = { 'Content-type': 'application/json' };
+                axios.post(`${node_patient}/emailexists`, { email: e.email }, headers)
+                    .then(res => {
+                        switch (res?.data?.details[0]?.providerId) {
+                            case 'microsoft.com':
+                                history.push('/signup/user/exists/microsoft');
+                                break;
+                            case 'google.com':
+                                history.push('/signup/user/exists/google');
+                                break;
+                            case 'facebook.com':
+                                history.push('/signup/user/exists/facebook');
+                                break;
+                            case 'password':
+                                history.push('/signup/user/exists/password');
+                                break;
+                            default:
+                                history.push('/signup/user/exists');
+                        }
+                    })
+            }
         })
     }
     
