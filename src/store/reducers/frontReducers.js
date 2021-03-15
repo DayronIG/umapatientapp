@@ -1,4 +1,6 @@
 const initialState = {
+    active_guardia: true,
+    active_list: true,
     alert: {
         active: false,
         type: 'success',
@@ -115,6 +117,8 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, vmdStage: action.payload };
         case 'SET_CAM_MIC_PERMISSIONS':
             return { ...state, mic_cam_permissions: action.payload };
+        case 'SET_GUARDIA_VARIABLES':
+            return {...state, ...action.payload}
         case 'SET_ORIGIN_TRANSLATE_MONDAY':
             return { ...state, origin_translate_monday: action.payload };
         case 'SET_ORIGIN_TRANSLATE_TUESDAY':

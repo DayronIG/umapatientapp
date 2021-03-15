@@ -13,11 +13,12 @@ import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import Backbutton from '../../GeneralComponents/Backbutton';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
-import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
+import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
+	const {active_guardia, active_list} = useSelector((state) => state.front);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
 	const [action, setAction] = useState('Loading');
@@ -26,6 +27,17 @@ const WhenScreen = (props) => {
 	const [dni] = useState(props.match.params.dni);
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		// get params
+		try {
+			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
+				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
+			})
+		} catch(err) {
+			console.log(err)
+		}
+	}, [])
 
 	useEffect(() => {
 		if (dni !== undefined) {
@@ -79,9 +91,6 @@ const WhenScreen = (props) => {
 		try {
 			let freeAppoints =  []
 			freeAppoints = await getFreeGuardia(test, user.country, type); // WIP
-			// Get free appointments from firebase.
-			// let freeAppoints = await findAllFreeAppointments(type);
-			// Filter doctors by cuil
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
 				return setAction('Doctors');
@@ -133,10 +142,10 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					<GuardCard 
+					{active_guardia && <GuardCard 
 						pediatric={pediatric} dni={dni} 
 						qieie={queue}
-						doctorsCount={assignations.length} />
+						doctorsCount={assignations.length} />}
 					{action === 'Loading' && (
 						<div
 							className='when__loading'>
@@ -144,7 +153,7 @@ const WhenScreen = (props) => {
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
 					)}
-					{action === 'Doctors' && (
+					{action === 'Doctors' && active_list && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
