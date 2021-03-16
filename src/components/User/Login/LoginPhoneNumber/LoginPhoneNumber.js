@@ -113,7 +113,7 @@ const LoginPhoneNumber = () => {
                     </>
                 }
                 <GenericInputs 
-                    label='Ingresa tu número de identidad' 
+                    label='Ingresa tu número de documento' 
                     type='number' 
                     name='dni' 
                     action={(e)=>{validateDni(e); if(showError) setShowError(false)}} 

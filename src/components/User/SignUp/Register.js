@@ -206,7 +206,7 @@ const Register = () => {
 
     return (
         <section className='signUp'>
-            <img className='signUp__logo' src={Logo} alt='UMA logo' />
+            <img className='signUp__logo' src={Logo} alt='UMA logo' onClick={() => history.push('./')}/>
             <section className='signUp__content'>
                 {
                     switchContent === '1' && <Stepper complete={1}/>
@@ -223,7 +223,7 @@ const Register = () => {
                     <p className='subtitle'>Ahora, necesitamos que completes la siguiente información</p> 
                     }
                 </article>
-                <form className='signUp__content__form'>
+                <form className='signUp__content__form' autoComplete="dontrememberthis">
                     {switchContent === '1' && 
                     <>
                     {emailExists && <p className='invalidField'>El mail ingresado se encuentra en uso</p>}
@@ -307,7 +307,7 @@ const Register = () => {
                         {errors.lastname && errors.lastname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
                         {errors.lastname && errors.lastname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>}
                         <GenericInputs
-                            label='Ingresa tu número de identidad' 
+                            label='Ingresa tu número de documento' 
                             type='number' 
                             name='dni' 
                             inputRef={

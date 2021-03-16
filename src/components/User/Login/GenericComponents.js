@@ -25,8 +25,9 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
                 type={showPassword ? 'text' : type}
                 className='form--input' 
                 onClick={()=> setLabelUp(true)}
+                onFocus={()=> setLabelUp(true)}
                 onChange={(e)=>action(e)}
-                autoComplete='off'
+                autoComplete='new-password'
                 ref={inputRef}
             />  
             <label className={labelUp ? 'form--label up' : 'form--label'}>

@@ -117,7 +117,7 @@ const ForgottenPass = () => {
                 <h1 className='title'>{ passW ? '¿Olvidaste tu mail?' : '¿Olvidaste tu contraseña?' }</h1>
                 <p className='subtitle'>
                 { passW ? 
-                'Por favor, ingresa tu número de documento de identidad.'
+                'Por favor, ingresa tu número de documento de documento.'
                 : 
                 'Por favor, ingresa tu direccion de correo electrónico. Te enviaremos un mail con un link al que debes ingresar para restablecer tu contraseña.' }
                 </p>
