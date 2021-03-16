@@ -62,7 +62,7 @@ export default function AskForBuyHisopado() {
                         db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
                         .get()
                         .then(async query => {
-                            console.log(query, query.data())
+                            // console.log(query, query.data())
                             let data = {
                                 ...query.data(),
                                 id: res.data.id

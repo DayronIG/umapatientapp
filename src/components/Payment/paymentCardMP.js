@@ -272,7 +272,7 @@ const PaymentCardMP = () => {
       if(discountParam[inputCode]){
         setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam[inputCode].discount) / 100))
       } else {
-        setTotalPayment(3499)
+        setTotalPayment(3499 * hisopadosToPurchase.length)
       }
     }
     

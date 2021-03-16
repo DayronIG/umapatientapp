@@ -12,12 +12,18 @@ const HisopadoCart = (props) => {
   const user = useSelector(store => store.user);
   const { params, deliveryInfo, changeMarker, hisopadoUserAddress, addressObservations } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
-  
+
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-    if(deliveryInfo.length < multiple_clients?.length){
-      dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+    if (deliveryInfo.length < multiple_clients?.length) {
+      dispatch({ type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients })
     }
+    // if (addressObservations && deliveryInfo.length === 1) {
+    //   console.log(addressObservations)
+    //   dispatch({ type: 'SET_DELIVERY_FROM_ZERO', payload: [{ ...deliveryInfo[0], patient: { ...deliveryInfo[0].patient, obs: addressObservations }}]})
+    //   dispatch({ type: 'SET_ADDRESS_OBSERVATIONS', payload: '' })
+    //   console.log("dispatching")
+    // }
   }, [deliveryInfo])
 
   useEffect(() => {

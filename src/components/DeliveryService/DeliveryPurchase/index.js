@@ -35,14 +35,13 @@ export default function HisopadosPurchase() {
                     goPrevious = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})}
                     finalAction = {() => dispatch({type: 'SET_DELIVERY_STEP', payload: "PAYMENT"})}/>
                 default: 
-                    console.log("DEFAULT")
+                    return <AskForBuyHisopado />
+
         }
     }
 
     const goBackButton = () => {
         switch(step){
-            case "ADDRESS_PICKER":
-                return dispatch({type: 'SET_DELIVERY_STEP', payload: "ASK_FOR_BUY"})        
             case "ZONE_COVERED":
                 return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
             case "PAYMENT":

@@ -40,7 +40,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 
 	useEffect(() => {
         if(user.dni) {
-            getCurrentService()
+			getCurrentService()
         }
     }, [user])
 
@@ -195,7 +195,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 			return swal('Error', 'Por favor, seleccione una altura para su dirección.', 'warning');
 		}
 		dispatch({ type: 'LOADING', payload: true });
-		dispatch(handleDeliveryForm(formState));
+		dispatch(handleDeliveryForm({...formState, user_obs: addressObservations}));
 		if(!isModal){
 			const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 			const data = {
@@ -209,7 +209,8 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'floor': `${formState.piso}`,
 				'number': `${formState.depto}`,
 				'incidente_id': current.id || deliveryInfo?.[0]?.id,
-				'range': isAddressValidForHisopado || false
+				'range': isAddressValidForHisopado || false,
+				'user_obs': addressObservations
 			};
 			try {
 				await Axios.post(mobility_address, data, {headers});
@@ -227,18 +228,18 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				format_address: hisopadoUserAddress,
 				user_address: hisopadoUserAddress,
 				address: hisopadoUserAddress,
-				isAddressValidForHisopado: isAddressValidForHisopado
+				isAddressValidForHisopado: isAddressValidForHisopado,
+				addressObservations: addressObservations
 			}
 			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
 			const dependantAddressesToDispatch = hisopadoDependantAddresses
-			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon}
+			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon, user_obs: addressObservations}
 			dispatch({type: 'SET_HISOPADO_DEPENDANT_ADDRESSES', payload: dependantAddressesToDispatch})
 			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
-			dispatch({type: 'SET_DELIVERY_ALL', payload:{...deliveryInfo, patient: deliveryInfo.paient, obs: addressObservations}})
 			if(isAddressValidForHisopado){finalAction()}
 		}
-	}, [hisopadoUserAddress, formState, isAddressValidForHisopado]);
+	}, [hisopadoUserAddress, formState, isAddressValidForHisopado, addressObservations]);
 
 
 	return (
