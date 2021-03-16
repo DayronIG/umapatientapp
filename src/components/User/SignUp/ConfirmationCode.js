@@ -92,7 +92,7 @@ const ConfirmationCode = () => {
 
     return (
         <section className='signUp'>
-            <img className='signUp__logo' src={Logo}/>
+            <img className='signUp__logo' onClick={() => history.push('/')} src={Logo} alt="uma" />
             <section className='signUp__content'>
                 <Stepper complete={4}/>
                 <img src={Confirm} className='signUp__content--illustration' alt='Mailbox'/>

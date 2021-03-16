@@ -1,12 +1,15 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import Logo from '../../../assets/logo.png';
 import { GenericInputs, GenericButton, Stepper } from '../Login/GenericComponents';
 
 
 const ConfirmationMail = () => {
+    const history = useHistory();
+    
     return (
         <section className='signUp'>
-            <img className='signUp__logo' src={Logo}/>
+            <img className='signUp__logo' src={Logo} alt="uma" onClick={() => history.push('/')}/>
             <section className='signUp__content'>
                 <Stepper complete={4}/>
                 <article className='signUp__content__mainText'>

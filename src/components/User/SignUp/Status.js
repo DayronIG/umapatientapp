@@ -30,7 +30,7 @@ const Status = () => { // Congrats / Error / DataSaved
     return (
         <>
         <section className='signUp' style={congratsOrError == 'dataSaved' ? {display: 'none'} : null}>
-            <img src={Logo} className='signUp__logo' alt='UMA logo'/>
+            <img src={Logo} className='signUp__logo' alt='UMA logo' onClick={() => history.push('/')}/>
             <section className='signUp__content'>
                 {congratsOrError == 'congrats' &&
                     <img src={Balloons} className='signUp__content--illustration' alt='Balloons'/>
