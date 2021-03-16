@@ -9,7 +9,7 @@ const SignUp = () => {
 
     return (
         <section className='signUp'>
-            <img className='signUp__logo' src={Logo} alt='UMA logo' />
+            <img className='signUp__logo' src={Logo} alt='UMA logo' onClick={() => history.push('/')} />
             <section className='signUp__content'>
                 <Stepper complete={1}/>
                 <div>
