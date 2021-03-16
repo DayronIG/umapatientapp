@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Logo from '../../../assets/logo.png';
 import {checkNum} from '../../Utils/stringUtils';
 import {useSelector, useDispatch} from 'react-redux';
@@ -46,6 +46,7 @@ const Register = () => {
         dob: false,
         sex: false
     }])
+    const [calendarDay, setCalendarDay] = useState(moment().format('DD'))
 
     useEffect (()=> {
         if (screen) {
@@ -193,16 +194,22 @@ const Register = () => {
         setShowError({...showError, sex: false})
     }
 
-    const handleCalendar = (e) => {
+    const handleCalendar = useCallback((e, changeDay) => {
         setDate(e)
-        const momentDate = moment(e).format('YYYY-MM-DD')
+        let date =  moment(e).format('YYYY-MM-DD')
+        if(changeDay) {
+            setCalendarDay(moment(e).format('DD'))
+        } else {
+            date = moment(`${date.slice(9, 10)}${calendarDay}`).format('YYYY-MM-DD')
+        }   
+        const momentDate = moment(date).format('YYYY-MM-DD')
         const olderThan = moment().diff(e, 'years') 
         if(olderThan >= 16) {
             setBirthDate(momentDate)
         }else {
             setShowError({...showError, dob: true})
         }
-    }
+    }, [calendarDay])
 
     return (
         <section className='signUp'>
@@ -396,6 +403,10 @@ const Register = () => {
                                 date={date}
                                 maxDate={new Date('12-29-2021')}
                                 onChange={(e)=> handleCalendar(e)}
+                                showSelectionPreview={true}
+                                onShownDateChange={e => handleCalendar(e, false)}
+                                /* initialFocusedRange={e => console.log("aca", e)}
+                                focusedRange={e => console.log('ahi', e)} */
                                 locale={es}
                             />
                                 <section className='calendar__actions'>
