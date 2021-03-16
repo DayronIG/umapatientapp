@@ -13,7 +13,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { Calendar } from 'react-date-range';
 import es from 'date-fns/locale/es';
-import {node_patient} from '../../../config/endpoints';
+import { node_patient } from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 import { useForm } from "react-hook-form";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -200,6 +200,7 @@ const Register = () => {
         if(olderThan >= 16) {
             setBirthDate(momentDate)
         }else {
+            setBirthDate('')
             setShowError({...showError, dob: true})
         }
     }
@@ -394,6 +395,7 @@ const Register = () => {
                                 maxDate={new Date('12-29-2021')}
                                 onChange={(e)=> handleCalendar(e)}
                                 locale={es}
+                                
                             />
                                 <section className='calendar__actions'>
                                     <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
