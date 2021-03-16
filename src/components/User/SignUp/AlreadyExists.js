@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { GenericButton } from '../Login/GenericComponents';
-import { useDispatch, useSelector } from 'react-redux';
+import { GenericButton, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../Login/GenericComponents';
 import Exclamation from '../../../assets/illustrations/exclamation.png';
 import '../../../styles/user/signUp/signUp.scss';
 
 const AlreadyExists = () =>  {
     const history = useHistory()
-    const dispatch = useDispatch()
-    // const [hiddenEmail, setHiddenEmail] = useState('')
-    // const user = useSelector(state => state.userActive?.currentUser);
     const {method} = useParams();
-
-    // const hideEmail = (user) => {
-    //     if(!user.email) return false;
-    //     const userHidde = user.email
-    //     const emailToShow = userHidde.split('@')[0].slice(0, 2)
-    //     const emailToHide = userHidde.split('@')[0].slice(2).replace(/./g, '*')
-    //     const domain = `@${userHidde.split('@')[1]}`
-    //     setHiddenEmail(`${emailToShow}${emailToHide}${domain}`)
-    // }
-    
-    // useEffect(() => {
-    //     if(user) {
-    //         hideEmail(user)
-    //     }
-    // }, [user])
 
     const handleSignIn = () => {
         history.push('/')
+    }
+
+    const renderButton = (method) => {
+        switch (method) {
+            case 'google': return <GoogleButton />;
+            case 'facebook': return <FacebookButton />;
+            case 'microsoft': return <MicrosoftButton />;
+            default: return;
+        }
     }
 
     return (
@@ -42,17 +32,18 @@ const AlreadyExists = () =>  {
                             <p className='subtitle'>Ya existe un usuario registrado con el  método <strong>{method === 'password' ? 'mail y contraseña' : method}</strong></p> :
                             <p className='subtitle'>Ya existe un usuario registrado con el mail seleccionado</p>
                     }
-                    {/* {
-                        user?.email ? 
-                        <p className='subtitle'>Ya existe un usuario registrado con el mail {hiddenEmail}</p> :
-                        <p className='subtitle'>Ya existe un usuario registrado con el mail seleccionado</p>
-                    } */}
                     <p className='subtitle'>¿Deseas ingresar?</p>
                 </section>
                 <section>
-                    <GenericButton action={handleSignIn} >
-                        Ingresar
-                    </GenericButton>
+                    {
+                        method && method !== 'password' ?
+                        <section className="login__buttonGroup column center">
+                            {renderButton(method)}
+                        </section> :
+                        <GenericButton action={handleSignIn} >
+                            Ingresar
+                        </GenericButton>
+                    }
                     <GenericButton action={()=> history.push('/signup')}>
                         Registrar otro mail
                     </GenericButton>

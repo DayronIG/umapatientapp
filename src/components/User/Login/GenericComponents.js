@@ -390,35 +390,6 @@ export const EmailButton = ({circleBtn, signUp, vincular}) => {
     )
 };
 
-export const LoginButtons = ({circleBtn, signUp, vincular}) => {
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
-    const { currentUser } = useSelector((state) => state.userActive);
-
-    const handleAnotherAccount = () => {
-        if (circleBtn) {
-            window.gtag('event', 'login_phone_number')
-            history.push('/login/phone');
-        } else if (vincular) {
-            history.push('/login/welcomeAgain/email');
-        } else if (signUp) {
-            history.push('/signup/form/1');
-        } else {
-            history.push('/');
-        }
-    }
-
-    return (
-        <section className={circleBtn ? 'login__buttonGroup' : 'login__buttonGroup column'}>
-            <button className={circleBtn ? 'login__button' : 'login__button large'} onClick={handleAnotherAccount}>
-                <img src={circleBtn ? Mobile : Email} alt='Mobile'/>
-                { circleBtn ? null : signUp ? <p>Registrarme con otra cuenta</p> : <p>{vincular ? 'Vincular' : 'Ingresar'} con otra cuenta</p>  }
-            </button> 
-        </section>
-    )
-};
-
 export const TextAndLink = ({text, link, action, styles}) => {
     // Cambian las rutas registrarme / ingresar / enviar por otro medio
     return(
