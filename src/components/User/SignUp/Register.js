@@ -213,7 +213,7 @@ const Register = () => {
 
     return (
         <section className='signUp'>
-            <img className='signUp__logo' src={Logo} alt='UMA logo' onClick={() => history.push('./')}/>
+            <img className='signUp__logo' src={Logo} alt='UMA logo'/>
             <section className='signUp__content'>
                 {
                     switchContent === '1' && <Stepper complete={1}/>
