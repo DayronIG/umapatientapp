@@ -20,7 +20,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarIcon from '../../../assets/calendar.png'; 
 import Exclamation from '../../../assets/illustrations/exclamation.png';
-import swal from 'sweetalert';
 
 const Register = () => {
     const {screen} = useParams()
@@ -194,6 +193,7 @@ const Register = () => {
     }
 
     const handleCalendar = (e) => {
+        setShowError({...showError, dob: false})
         setDate(e)
         const momentDate = moment(e).format('YYYY-MM-DD')
         const olderThan = moment().diff(e, 'years') 
@@ -249,7 +249,7 @@ const Register = () => {
                             name='password'
                             action={(e)=> setPassword(e.target.value)}
                             inputRef={
-                                register(
+                                register( 
                                     { 
                                         required: true, 
                                         pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
