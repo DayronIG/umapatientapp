@@ -59,6 +59,30 @@ const ForgottenPass = () => {
         return `${emailToShow}${emailToHide}${domain}`;
     };
 
+    const handleCheckUserMethod = () => {
+        const headers = { 'Content-type': 'application/json' };
+        axios.post(`${node_patient}/emailexists`, { email: email }, headers)
+            .then(res => {
+                switch (res?.data?.details[0]?.providerId) {
+                    case 'microsoft.com':
+                        history.push('/forgot/error/microsoft');
+                        break;
+                    case 'google.com':
+                        history.push('/forgot/error/google');
+                        break;
+                    case 'facebook.com':
+                        history.push('/forgot/error/facebook');
+                        break;
+                    case 'password':
+                        handleResetPassword();
+                        break;
+                    default:
+                        handleResetPassword();
+                }
+            })
+            .catch(e => console.error(e));
+    }
+
     const handleResetPassword = () => {
         window.gtag('event', 'forgot_password_confirm')
         try {
@@ -128,7 +152,7 @@ const ForgottenPass = () => {
                             name='email' 
                             action={validateEmail}
                         />
-                        <GenericButton action={handleResetPassword}>
+                        <GenericButton action={handleCheckUserMethod}>
                             Enviar 
                         </GenericButton>
                     </>

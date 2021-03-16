@@ -27,6 +27,7 @@ import SignUpForm from './components/User/SignUp/Register';
 import AlreadyExists from './components/User/SignUp/AlreadyExists';
 import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
 import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
+import ForgottenPassError from './components/User/Login/ForgottenPass/ForgottenPassError';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 
 /* Profile */
@@ -112,6 +113,7 @@ function App(props) {
 				<Route exact path='/signup/user/exists/:method?' component={AlreadyExists} />
 				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
 				<Route exact path='/forgot/:type' component={ForgottenPass} />
+				<Route exact path='/forgot/error/:method' component={ForgottenPassError} />
 				<Route exact path='/forgot' component={NeedHelp} />
 				<Route exact path='/termsconditions' component={TermsConditions} />
 
