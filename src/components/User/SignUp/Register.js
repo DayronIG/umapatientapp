@@ -367,19 +367,22 @@ const Register = () => {
                             <div className={`show--options ${showOptions ? 'visible' : 'hiden'}`}>
                                 <label>
                                     <input type="radio" name="sexo" value="Femenino" 
-                                    onChange={handleChangeSex} 
+                                    onChange={handleChangeSex}
+                                    autoComplete="off"
                                     />
                                     Femenino
                                 </label>
                                 <label>
                                     <input type="radio" name="sexo" value="Masculino" 
                                     onChange={handleChangeSex}
+                                    autoComplete="off"
                                      />
                                     Masculino
                                 </label>
                                 <label>
                                     <input type="radio" name="sexo" value="Otro" 
-                                    onChange={handleChangeSex} 
+                                    onChange={handleChangeSex}
+                                    autoComplete="off"
                                     />
                                     Otro
                                 </label>
