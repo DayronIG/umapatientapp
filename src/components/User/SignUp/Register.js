@@ -186,10 +186,33 @@ const Register = () => {
 
     const redirectUserHome = (e) => {
         e.preventDefault()
+
         Firebase.auth().currentUser.delete()
-        .then(res => {
+        .then(() => {
             dispatch({ type: 'RESET_USER_DATA' });
             history.push('/')
+        })
+        .catch(e => {
+            if (e.code === 'auth/requires-recent-login') {
+                const user = Firebase.auth().currentUser;
+                let credential = Firebase.auth.EmailAuthProvider.credential(email, password);
+    
+                user.reauthenticateWithCredential(credential)
+                    .then(() => {
+                        Firebase.auth().currentUser.delete()
+                        .then(res => {
+                            dispatch({ type: 'RESET_USER_DATA' });
+                            history.push('/')
+                        })
+                    })
+                    .catch(() => {
+                        dispatch({ type: 'RESET_USER_DATA' });
+                        history.push('/')
+                    });
+            } else {
+                dispatch({ type: 'RESET_USER_DATA' });
+                history.push('/')
+            }
         })
     }
 
