@@ -351,7 +351,7 @@ const Register = () => {
                                 {errors.lastname && errors.lastname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
                                 {errors.lastname && errors.lastname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>}
                                 <GenericInputs
-                                    label='Ingresa tu número de identidad' 
+                                    label='Ingresa tu número de documento' 
                                     type='number' 
                                     name='dni' 
                                     inputRef={
