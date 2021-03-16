@@ -60,6 +60,19 @@
             }
         }
 
+        .cancelSignUp {
+            width: 80%;
+            height: 44px;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            background: $uma-input;
+            color: $uma-text;
+            text-transform: uppercase;
+            margin: 10px auto;
+            cursor: pointer;
+        }
+
         .signUp__content__mainText {
             @include d-flex-center;
             flex-direction: column;
