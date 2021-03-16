@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../styles/user/signUp/signUp.scss';
-import { LoginButtons, TextAndLink, Stepper } from '../Login/GenericComponents';
+import { GoogleButton, FacebookButton, MicrosoftButton, EmailButton, TextAndLink, Stepper } from '../Login/GenericComponents';
 import { useHistory } from 'react-router-dom';
 import Logo from '../../../assets/logo.png';
 
@@ -13,7 +13,12 @@ const SignUp = () => {
             <section className='signUp__content'>
                 <Stepper complete={1}/>
                 <div>
-                    <LoginButtons signUp/>
+                    <section className="login__buttonGroup column">
+                        <GoogleButton signUp />
+                        <FacebookButton signUp />
+                        <MicrosoftButton signUp />
+                        <EmailButton signUp />
+                    </section>
                 </div>
                 <TextAndLink text='¿Tienes cuenta?' link='Ingresa' action={() => history.push('/')} />
             </section>

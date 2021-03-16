@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../../../../assets/logo.png';
 import LoginIllustration from '../../../../assets/illustrations/Login-Illustration.png';
-import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from '../GenericComponents';
+import { GenericInputs, GenericButton, TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../GenericComponents';
 import { node_patient, send_user_code} from '../../../../config/endpoints';
 import {checkNum} from '../../../Utils/stringUtils';
 import {useDispatch} from 'react-redux';
@@ -128,7 +128,12 @@ const LoginPhoneNumber = () => {
             }
             {switchContent ? 
                 <>
-                    <LoginButtons/>
+                    <section className="login__buttonGroup column">
+                        <GoogleButton />
+                        <FacebookButton />
+                        <MicrosoftButton />
+                        <EmailButton />
+                    </section>
                     <TextAndLink link='O registrate acá' action={() => history.push('/signup')} styles />
                 </>
             :

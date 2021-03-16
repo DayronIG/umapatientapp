@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BackButton from '../../../GeneralComponents/Backbutton';
-import { LoginButtons } from '../GenericComponents';
+import { GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../GenericComponents';
 import '../../../../styles/user/forgottenPass/forgottenPass.scss';
 
 const ForgottenAccError = () => {
@@ -16,7 +16,12 @@ const ForgottenAccError = () => {
                {/* <p className='subtitle'>No hemos encontrado ninguna cuenta {typeError ? 'con ese DNI.' : 'asociada a ese celular.'}</p>  */}
                <p className='subtitle'>¿Deseas crear una cuenta?</p>
            </article>
-           <LoginButtons signUp/>
+            <section className="login__buttonGroup column">
+                <GoogleButton signUp />
+                <FacebookButton signUp />
+                <MicrosoftButton signUp />
+                <EmailButton signUp />
+            </section>
        </section>
     )
 }

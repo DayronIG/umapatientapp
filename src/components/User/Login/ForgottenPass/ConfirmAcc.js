@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BackButton from '../../../GeneralComponents/Backbutton';
-import { LoginButtons, TextAndLink } from '../GenericComponents';
+import { TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../GenericComponents';
 import { useParams, useHistory} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ConfirmMail from '../../../../assets/illustrations/ConfirmMail.png';
@@ -38,7 +38,12 @@ const ConfirmAcc = () => {
                 {
                     passW ?
                     <>
-                        <LoginButtons />
+                        <section className="login__buttonGroup column">
+                            <GoogleButton />
+                            <FacebookButton />
+                            <MicrosoftButton />
+                            <EmailButton />
+                        </section>
                         <TextAndLink link='O registrate acá' action={() => history.push('/signup')} />
                     </>
                     :

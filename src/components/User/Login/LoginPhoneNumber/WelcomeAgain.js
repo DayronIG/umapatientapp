@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import '../../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../../assets/logo.png';
-import { ConditionButtons, LoginButtons, GenericButton } from '../GenericComponents';
+import { ConditionButtons, GenericButton, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../GenericComponents';
 import showPass from '../../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../../assets/icons/eyeopenpass.png';
 import {useParams, useHistory} from 'react-router-dom';
@@ -90,7 +90,12 @@ const WelcomeAgain = () => {
                 <p className='subtitle'>Esto te servirá para recuperar tu cuenta o contraseña en caso que las olvides.</p>
             </section>
             {vincular ? 
-            <LoginButtons vincular/>
+            <section className="login__buttonGroup column">
+                <GoogleButton vincular />
+                <FacebookButton vincular />
+                <MicrosoftButton vincular />
+                <EmailButton vincular />
+            </section>
             :
             <section className='login__mobile'> 
                 {/* teléfono */}

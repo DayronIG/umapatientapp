@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
-import { GenericInputs, GenericButton, LoginButtons, TextAndLink } from './GenericComponents';
+import { GenericInputs, GenericButton, TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Firebase from 'firebase/app';
@@ -26,7 +26,14 @@ const Login = () =>  {
                 <img className='login__titleIllustration--illustration' src={LoginIllustation} alt='Ilustracion de médicos'/>
                 <h1 className='login__titleIllustration--title'>ÜMA, tu portal digital de salud</h1>
            </section>
-           <LoginButtons circleBtn />
+
+            <section className="login__buttonGroup">
+                <GoogleButton circleBtn />
+                <FacebookButton circleBtn />
+                <MicrosoftButton circleBtn />
+                <EmailButton circleBtn />
+            </section>
+
             <div className='login__lineSeparator'>o ingresá con tu cuenta</div>
             {errorData &&
                 <section className='login__invalid'>
