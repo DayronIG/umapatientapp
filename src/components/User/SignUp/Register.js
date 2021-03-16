@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarIcon from '../../../assets/calendar.png'; 
 import Exclamation from '../../../assets/illustrations/exclamation.png';
 import Loading from '../../GeneralComponents/Loading';
+import isIos from '../../Utils/isIos';
 
 const Register = () => {
     const {screen} = useParams()
@@ -238,11 +239,24 @@ const Register = () => {
         const olderThan = moment().diff(newDate, 'years') 
         if(olderThan >= 16) {
             setBirthDate(momentDate)
+            setShowError({ ...showError, dob: false })
         }else {
             setBirthDate('')
             setShowError({...showError, dob: true})
         }
     }, [calendarDay])
+
+    const handleDob = (value) => {
+        const momentDate = moment(value).format('YYYY-MM-DD')
+        const olderThan = moment().diff(value, 'years')
+        if (olderThan >= 16) {
+            setBirthDate(momentDate)
+            setShowError({ ...showError, dob: false })
+        } else {
+            setBirthDate('')
+            setShowError({ ...showError, dob: true })
+        }
+    }
 
     const cancelSignUp = () => {
         Firebase.auth().currentUser.delete()
@@ -481,11 +495,28 @@ const Register = () => {
                                         </Modal>
                                     </section>
                                 }
-                                <section className='birth__date' onClick={() => setShowCalendar(true)}  >
-                                    {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
-                                    <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
-                                </section>
-                                {showError.dob && <p className='invalidField'>Debes ser mayor de 16 años para utilizar la aplicación</p>}
+                                {
+                                    !isIos &&
+                                    <>
+                                        <section className='birth__date' onClick={() => setShowCalendar(true)}  >
+                                            {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
+                                            <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
+                                        </section>
+                                        {showError.dob && <p className='invalidField'>Debes ser mayor de 16 años para utilizar la aplicación</p>}
+                                    </>
+                                }
+                                {
+                                    isIos && 
+                                        <>
+                                            <GenericInputs
+                                                label='Selecciona tu fecha de nacimiento'
+                                                type='date'
+                                                name='dob'
+                                                action={(e) => handleDob(e.target.value)}
+                                            />
+                                            {showError.dob && <p className='invalidField'>Debes ser mayor de 16 años para utilizar la aplicación</p>}
+                                        </>
+                                }
                                 </>
                             }
                         </form>
