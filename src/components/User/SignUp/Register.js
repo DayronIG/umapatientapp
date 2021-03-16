@@ -13,7 +13,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { Calendar } from 'react-date-range';
 import es from 'date-fns/locale/es';
-import {node_patient} from '../../../config/endpoints';
+import { node_patient } from '../../../config/endpoints';
 import '../../../styles/user/signUp/signUp.scss';
 import { useForm } from "react-hook-form";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -231,6 +231,7 @@ const Register = () => {
         if(olderThan >= 16) {
             setBirthDate(momentDate)
         }else {
+            setBirthDate('')
             setShowError({...showError, dob: true})
         }
     }
@@ -421,52 +422,63 @@ const Register = () => {
                                     </div>
                                 </div>
                                 {showError.sex && <p className='invalidField'>Campo obligatorio</p>}
-                                {showCalendar && 
-                                <section className='calendar__container'>
-                                    <Modal>
-                                    <Calendar
-                                        date={date}
-                                        maxDate={new Date('12-29-2021')}
-                                        onChange={(e)=> handleCalendar(e)}
-                                        locale={es}
-                                    />
-                                        <section className='calendar__actions'>
-                                            <button onClick={()=> setShowCalendar(()=>setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
-                                            <button className='calendar__actions-btn done' onClick={(e)=> {e.preventDefault(); setShowCalendar(false)}}>Hecho</button>
-                                            <button onClick={()=>setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
-                                        </section>
-                                    </Modal>
-                                </section>
+                                {showCalendar &&
+                                    <section className='calendar__container'>
+                                        <Modal>
+                                            <Calendar
+                                                date={date}
+                                                maxDate={new Date('12-29-2021')}
+                                                onChange={(e) => handleCalendar(e)}
+                                                locale={es}
+
+                                            />
+                                            <section className='calendar__actions'>
+                                                <button onClick={() => setShowCalendar(() => setShowCalendar(false))} className='calendar__actions-btn cancel'>Cancelar</button>
+                                                <button className='calendar__actions-btn done' onClick={(e) => { e.preventDefault(); setShowCalendar(false) }}>Hecho</button>
+                                                <button onClick={() => setShowCalendar(false)} className='calendar__actions-btn-close'>x</button>
+                                            </section>
+                                        </Modal>
+                                    </section>
                                 }
-                                <section className='birth__date' onClick={()=>setShowCalendar(true)}  >
+                                <section className='birth__date' onClick={() => setShowCalendar(true)}  >
                                     {birthDate !== '' ? <p className='text date'>{birthDate}</p> : <p className='text'>Selecciona tu fecha de nacimiento</p>}
                                     <img src={CalendarIcon} alt='Icono de calendario' className='icon--calendar' />
                                 </section>
                                 {showError.dob && <p className='invalidField'>Debes ser mayor de 16 años para utilizar la aplicación</p>}
-                            </> 
+                                </>
                             }
                         </form>
                         <section className='signUp__actions'>
                             {switchContent === '1' &&
-                            <>
-                                <button className='signUp__actions--button back' onClick={()=> history.push('/signup')}>
-                                    Atrás
-                                </button>
-                                <button className='signUp__actions--button foward' onClick={handleSubmit(handleCreateUser)}>
-                                    Siguiente
-                                </button>
-                            </>
+                                <>
+                                    <button 
+                                        className='signUp__actions--button back' 
+                                        onClick={() => history.push('/signup')}
+                                    >
+                                        Atrás
+                                    </button>
+                                    <button 
+                                        className='signUp__actions--button foward' 
+                                        onClick={handleSubmit(handleCreateUser)}
+                                    >
+                                        Siguiente
+                                    </button>
+                                </>
                             }
-                            {switchContent === '2' && 
-                            <>
-                                <GenericButton action={handleSubmit(validateDni)}>Registrarme</GenericButton>
-                                <p className='terms-and-conditions'>
-                                    Al registrarte estás aceptando los
-                                    <a onClick={()=>history.push('/termsconditions')}> términos y condiciones</a>
-                                </p>
-                            </>
+                            {switchContent === '2' &&
+                                <>
+                                    <GenericButton 
+                                        action={handleSubmit(validateDni)}
+                                    >
+                                        Registrarme
+                                    </GenericButton>
+                                    <p className='terms-and-conditions'>
+                                        Al registrarte estás aceptando los
+                                        <a onClick={() => history.push('/termsconditions')}> términos y condiciones</a>
+                                    </p>
+                                </>
                             }
-                        </section>
+                       </section>
                     </section>
                 </section>
             }
