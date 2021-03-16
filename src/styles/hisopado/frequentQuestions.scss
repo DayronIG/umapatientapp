@@ -6,6 +6,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    .terms-conditions {
+        padding: 10px !important;
+    }
 }
 
 .title-terms-frequent-container{

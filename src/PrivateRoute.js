@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
-import LoginComponent from "./components/User/Login";
+// ----- Login
+import LoginComponent from "./components/User/Login/Login";
 import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
@@ -13,6 +14,7 @@ import Axios from "axios";
 import { node_patient } from './config/endpoints';
 import version from './config/version.json';
 import moment from 'moment-timezone';
+
 
 const Login = () => {
     const [delay, setDelay] = useState(false)
@@ -27,6 +29,7 @@ const Login = () => {
         return <Loading />
     }
 }
+
 
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
@@ -107,20 +110,22 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	}
 	
 	const handleSubmit = useCallback((device) => {
-		let data = {
-			newValues: { device },
-        };
-        currentUser.getIdToken().then(async token => {
-            let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-            Axios
-                .patch(`${node_patient}/${user.dni}`, data,  {headers: headers })
-                .then((res) => {
-                    console.log("UMA");
+        setTimeout(() => {
+            let data = {
+                newValues: { device },
+            };
+            currentUser.getIdToken().then(async token => {
+                let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                Axios
+                    .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
+                    .then((res) => {
+                        // console.log("UMA");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
-            })
+        }, 1500);
     }, [user, currentUser])
     
     return (

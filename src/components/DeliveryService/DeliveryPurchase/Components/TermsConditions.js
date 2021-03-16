@@ -1,14 +1,26 @@
 import React, {useEffect} from 'react'
+import {useHistory} from 'react-router-dom';
 import { MdKeyboardArrowLeft } from "react-icons/md"
 
 export default function TermsConditions({goBack}) {
+    const history = useHistory()
+
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
+
+      const goBackFunction = () => {
+          if(goBack) {
+              goBack()
+          }else {
+              history.goBack()
+          }
+      }
+
     return (
         <div className="allwhite-hisopados-background">
             <div className="title-terms-frequent-container">
-                <p onClick={() => goBack()} className="icon" ><MdKeyboardArrowLeft/></p>
+                <p onClick={goBackFunction} className="icon" ><MdKeyboardArrowLeft/></p>
                 <p className="title">Términos y condiciones</p>
             </div>
             <div className="terms-conditions">{`Por favor, lea y acepte los TÉRMINOS Y CONDICIONES que regulan la contratación de servicios para realizar HISOPADOS MEDIANTE TESTEOS RÁPIDOS DE ANTÍGENOS. El servicio es válido para zonas del Área Metropolitana de Buenos Aires (AMBA) donde ÜMA Health tenga zona de cobertura. Los Usuarios se encontrarán sujetos a estos Términos y Condiciones, junto con todas las demás políticas que rigen a ÜMA Health y que son incorporados al presente por referencia. ESTOS TÉRMINOS Y CONDICIONES SON OBLIGATORIOS Y VINCULANTES PARA QUIENES USEN EL SERVICIO. CUALQUIER PERSONA QUE NO ACEPTE PODRÁ ELEGIR NO CONTRATAR EL SERVICIO.`}

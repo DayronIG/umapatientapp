@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DBConnection from "../config/DBConnection";
 import Register from "./Register";
-import Login from "../components/User/Login";
+import LoginComponent from "../components/User/Login/Login";
+// import LoginAnterior from '../components/User/Login'
 import Loading from "../components/GeneralComponents/Loading";
 
 const Redirect = props => {
@@ -44,7 +45,8 @@ const Redirect = props => {
     getUser();
   }, []);
   return (
-    <div>{loading ? <Loading /> : isRegistered ? <Login /> : <Register />}</div>
+    <div>{loading ? <Loading /> : isRegistered ? <LoginComponent /> : <Register />}</div>
+    // <LoginAnterior/>
   );
 };
 export default Redirect;

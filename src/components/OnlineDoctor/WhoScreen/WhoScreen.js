@@ -24,7 +24,6 @@ const WhenScreen = (props) => {
 	const [userDni] = useState(user.dni ? user.dni : userDataToJson.dni);
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
 
-
 	useEffect(() => {
 		let unmountTimeout = () => {}
 		dispatch({ type: 'LOADING', payload: true });

@@ -144,7 +144,7 @@ const WhenScreen = (props) => {
 				<div className='when__container'>
 					{active_guardia && <GuardCard 
 						pediatric={pediatric} dni={dni} 
-						qieie={queue}
+						queue={queue}
 						doctorsCount={assignations.length} />}
 					{action === 'Loading' && (
 						<div
