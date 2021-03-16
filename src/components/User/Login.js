@@ -15,8 +15,8 @@ import swal from 'sweetalert';
 import 'react-phone-input-2/lib/bootstrap.css';
 import '../../styles/generalcomponents/Login.scss';
 
-export const SignOut = () => {
-    db.auth().signOut()
+export const SignOut = async () => {
+    await db.auth().signOut()
     return null
 }
 

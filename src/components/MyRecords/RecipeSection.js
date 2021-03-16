@@ -37,7 +37,7 @@ const RecipeSection = () => {
     return(
         <>
             <HistoryHeader> Recetas </HistoryHeader>
-{/*             <HeaderContainer> 
+{/*             Container> 
                 <ValidateAction action='not-clickable' field='recipe'>
                     <button className={tab === 'todas' ? 'active button-record' : 'button-record'} onClick={() => setTab('todas')}>
                         Todas

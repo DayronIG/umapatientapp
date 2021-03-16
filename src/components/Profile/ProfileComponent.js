@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useHistory } from 'react-router-dom';
 import DBConnection from '../../config/DBConnection';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
@@ -15,6 +15,7 @@ import { SignOut } from '../User/Login';
 
 const ProfileComponent = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const db = DBConnection.firestore();
 	const auth = useSelector((state) => state.user);
 	const modal = useSelector((state) => state.front.openDetails);
@@ -108,7 +109,7 @@ const ProfileComponent = () => {
 						<EditButton section='personal' className='btn-edit' clase='personal' />
 						<p className='fullName'>{auth.fullname}</p>
 						<p>{auth.dni}</p>
-						<p>{auth.corporate}</p>
+						<p>{auth.corporate || auth.os}</p>
 						<p>{moment(auth.dob).format('DD-MM-YYYY')}</p>
 					</div>
 				</div>
@@ -129,7 +130,14 @@ const ProfileComponent = () => {
 						<b>Sexo:</b> {(auth.sex === 'M' && 'Hombre') || (auth.sex === 'F' && 'Mujer')}
 					</p>
 				</div>
-				<button onClick={() => SignOut()} className="btn-blue-lg">Salir</button>
+				<button 
+					onClick={async () => {
+						await SignOut();
+						dispatch({ type: 'RESET_USER_DATA' });
+						history.replace('/');
+					}} 
+					className="btn-blue-lg"
+				>Cerrar sesión</button>
 				{/* <button onClick={() => _unlinkProvider(user.login)} className="btn btn-lg-blue">Desvincular</button> */}
 				<div className='umaVersion text-center'>
 					<Version />

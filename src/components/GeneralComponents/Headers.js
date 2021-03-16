@@ -104,7 +104,7 @@ export const HistoryHeader = (props) => {
 	const history = useHistory()
 
 	return(
-		<section className='header-container history'>	
+		<section className={props.color === 'blue' ? 'header-container blue' : 'header-container history'}>	
 				<div onClick={() => history.goBack()} className='back-btn'>
 					<FontAwesomeIcon icon={faChevronLeft} /> 
 				</div>
@@ -116,7 +116,7 @@ export const HistoryHeader = (props) => {
 export const BackButton = (props) => {
 	return (
 		<section className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'}>
-			<Link to={props.customTarget ? `${props.customTarget}` : '/'}>
+			<Link to={props.customTarget ? `${props.customTarget}` : '/'}> 
 				<IoIosArrowBack onClick={props.action? () => props.action(): () => console.log('')} icon={faArrowLeft} />
 			</Link>
 		</section>

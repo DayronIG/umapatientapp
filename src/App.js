@@ -15,6 +15,21 @@ import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import RegisterNew from './views/RegisterNew';
 import Register from './views/Register';
+import Status from './components/User/SignUp/Status';
+
+// Login & Register
+import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
+import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
+import ConfirmationCode from './components/User/SignUp/ConfirmationCode';
+import WelcomeAgain from './components/User/Login/LoginPhoneNumber/WelcomeAgain';
+import SignUp from './components/User/SignUp/SignUp';
+import SignUpForm from './components/User/SignUp/Register';
+import AlreadyExists from './components/User/SignUp/AlreadyExists';
+import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
+import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
+import ForgottenPassError from './components/User/Login/ForgottenPass/ForgottenPassError';
+import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
+
 /* Profile */
 import Profile from './views/Profile';
 /* Online Doctor */
@@ -81,29 +96,44 @@ import Support from './views/Support'
 /* IOMA */
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
+import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
 
 function App(props) {
 	return (
 		<div className='App'>
 			<Switch>
 				{/* LOGIN / REGISTER / RECOVERY */}
+				<Route exact path='/login/phone' component={LoginPhoneNumber} />
+				<Route exact path='/login/error' component={ForgottenAccError} />
+				<Route exact path='/login/code' component={ConfirmationCode} />
+				<Route exact path='/login/welcomeAgain/:method?' component={WelcomeAgain} />
+				<Route exact path='/signup' component={SignUp} />
+				<Route exact path='/signup/form/:screen' component={SignUpForm} />
+				<Route exact path='/signup/:status' component={Status} />
+				<Route exact path='/signup/user/exists/:method?' component={AlreadyExists} />
+				<Route exact path='/forgot/finalStep/:method' component={ConfirmAcc} />
+				<Route exact path='/forgot/:type' component={ForgottenPass} />
+				<Route exact path='/forgot/error/:method' component={ForgottenPassError} />
+				<Route exact path='/forgot' component={NeedHelp} />
+				<Route exact path='/termsconditions' component={TermsConditions} />
+
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
-				<Route exact path='/login/:ws?' component={Login} />
+				<Route exact path='/old_login/:ws?' component={Login} />
 				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
-				<Route exact path='/register/:ws/:ref?' component={Register} />
-				<Route exact path='/:ws?/login' component={Login} /> {/* To be deleted */}
-				<Route exact path='/:ws/register/:ref?' component={Register} /> {/* To be deleted */}
+				{/* <Route exact path='/register/:ws/:ref?' component={Register} /> */}
+				{/* <Route exact path='/:ws?/login' component={Login} /> To be deleted */}
+				{/* <Route exact path='/:ws/register/:ref?' component={Register} /> To be deleted */}
 				<PrivateRoute exact path='/umacare/:ws?' component={UmaCare} />
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
-				<Route exact path='/newregister/:ref?' component={RegisterNew} />
-				<Route exact path='/referredregister/:ref?' component={RegisterNew} />
+				{/* <Route exact path='/newregister/:ref?' component={RegisterNew} /> */}
+				{/* <Route exact path='/referredregister/:ref?' component={RegisterNew} /> */}
 				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
-				<Route exact path='/registersuccess' component={RegisterSuccess} />
+				{/* <Route exact path='/registersuccess' component={RegisterSuccess} /> */}
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* General */}
