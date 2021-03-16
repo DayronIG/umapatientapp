@@ -139,6 +139,17 @@ const LoginPhoneNumber = () => {
             :
             <section className='login__actions '>
                     <GenericButton action={handleCheckUserExists}>Ingresar</GenericButton>
+                    <section className='login__needHelp'>
+                        <button
+                            className='login__needHelp--btn'
+                            onClick={() => {
+                                window.gtag('event', 'need_help_login')
+                                history.push('/forgot')
+                            }}
+                        >
+                            Necesito ayuda
+                        </button>
+                    </section>
             </section>
             }
         </section>
