@@ -244,6 +244,36 @@ const Register = () => {
         }
     }, [calendarDay])
 
+    const cancelSignUp = () => {
+        Firebase.auth().currentUser.delete()
+            .then(() => {
+                dispatch({ type: 'RESET_USER_DATA' });
+                history.push('/')
+            })
+            .catch(e => {
+                if (e.code === 'auth/requires-recent-login') {
+                    const user = Firebase.auth().currentUser;
+                    let credential = Firebase.auth.EmailAuthProvider.credential(email, password);
+
+                    user.reauthenticateWithCredential(credential)
+                        .then(() => {
+                            Firebase.auth().currentUser.delete()
+                                .then(res => {
+                                    dispatch({ type: 'RESET_USER_DATA' });
+                                    history.push('/')
+                                })
+                        })
+                        .catch(() => {
+                            dispatch({ type: 'RESET_USER_DATA' });
+                            history.push('/')
+                        });
+                } else {
+                    dispatch({ type: 'RESET_USER_DATA' });
+                    history.push('/')
+                }
+            })
+    }
+
     return (
         <>
             {
@@ -483,6 +513,12 @@ const Register = () => {
                                     >
                                         Registrarme
                                     </GenericButton>
+                                    <button 
+                                        className="cancelSignUp"
+                                        onClick={cancelSignUp}
+                                    >
+                                        Cancelar registro
+                                    </button>
                                     <p className='terms-and-conditions'>
                                         Al registrarte estás aceptando los
                                         <a onClick={() => history.push('/termsconditions')}> términos y condiciones</a>
