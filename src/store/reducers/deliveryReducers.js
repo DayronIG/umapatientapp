@@ -2,6 +2,7 @@ import { HANDLE_SELECTHOME_FORM, ADDRESS_VALID_FOR_HISOPADO, SET_ADDRESS_LAT_LON
 
 const initialState = {
 	addressLatLongHisopado: "",
+	addressObservations: "",
 	changeMarker: 0,
 	coverage: [],
 	current: {},
@@ -72,6 +73,8 @@ export default (state = initialState, { type, payload }) => {
 			return {...state, changeMarker: state.changeMarker + 1}
 		case "SET_DELIVERY_LAT_LONG_PROVIDERS":
 			return {...state, deliveryLatLongProviders: payload}
+		case "SET_ADDRESS_OBSERVATIONS":
+			return {...state, addressObservations: payload}
 		default:
 			return state;
 	}
