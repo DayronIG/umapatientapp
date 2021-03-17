@@ -208,7 +208,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'lon': formState.lng,
 				'floor': `${formState.piso}`,
 				'number': `${formState.depto}`,
-				'incidente_id': current.id || deliveryInfo?.[0]?.id,
+				'incidente_id': deliveryInfo?.[0]?.id,
 				'range': isAddressValidForHisopado || false,
 				'user_obs': addressObservations
 			};
@@ -305,7 +305,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 					}}
 				/>
 			</div>
-			<div onClick={(e) => handleSubmit(e)} className="map-button">
+			<div onClick={(e) => {if(deliveryInfo?.[0]?.id) handleSubmit(e)}} className={`map-button ${!deliveryInfo?.[0]?.id && 'disabled-map-button'}`}>
                 Seleccionar
             </div>
 			</div>
