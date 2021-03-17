@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useHistory, useParams} from 'react-router-dom';
-// import specialties from '../../../config/specialties';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
+import queryString from 'query-string'
 import DB from '../../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { Loader } from '../../global/Spinner/Loaders';
-import { getUser } from '../../../store/actions/firebaseQueries';
+import { getDependant } from '../../../store/actions/firebaseQueries';
 const db = DB.firestore();
 
 const Specialties = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const { dni } = useParams();
+	const { activeUid } = useParams();
 	const user = useSelector((state) => state.user);
+	const {currentUser} = useSelector(state => state.userActive)
 	const [arraySpecialties, setArraySpecialties] = useState([]);
 	const { loading } = useSelector((state) => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
@@ -21,15 +22,15 @@ const Specialties = () => {
 	const mesSiguiente = moment()
 		.add(1, 'month')
 		.format('YYYYMM');
-	// const agePediatry = moment().diff(user.dob, 'years') <= 16;
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		getUser(dni)
-			.then((user) => {
-				const pediatric = moment().diff(user.dob, 'years') <= 16;
-				setAgePediatry(pediatric);
-			})
-			.catch((error) => console.log(error));
+		if(activeUid && activeUid !== currentUser) {
+			dispatch(getDependant(currentUser, activeUid))
+			const pediatric = moment().diff(user.dob, 'years') <= 16;
+			setAgePediatry(pediatric);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -104,8 +105,7 @@ const Specialties = () => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		return history.push(`/appointmentsonline/${value}/calendar/${dni}`);
-
+		return history.push(`/appointmentsonline/${value}/calendar/${activeUid}?dependant=${params.dependant}`);
 		// pushPage(speciality);
 	};
 

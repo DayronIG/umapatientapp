@@ -1,16 +1,19 @@
 const initialState = {
-	salatoken: { sala: '', token: '' },
+	activeUid: '',
+	assignation_id: '',
 	call: false,
 	callRejected: false,
+	date: '',
+	dependant: false,
 	publish: 'PENDING',
-	subscribe: 'PENDING',
-	session: 'PENDING'
+	room: '',
+	token: '',
+	session: 'PENDING',
+	subscribe: 'PENDING'
 }
 
 export default function callReducers(state = initialState, action) {
 	switch (action.type) {
-		case 'SET_SALATOKEN':
-			return { ...state, salatoken: action.payload };
 		case 'CALL_REJECTED':
 			return { ...state, callRejected: action.payload };
 		case 'START_CALL':
@@ -25,6 +28,8 @@ export default function callReducers(state = initialState, action) {
 			return { ...state, session: action.payload }
 		case 'SET_CALL_STATUS':
 			return { ...state, status: action.payload }
+		case 'SET_CALL_ROOM':
+			return { ...state, ...action.payload };
 		default:
 			return state;
 	}

@@ -1,9 +1,5 @@
 import DBConnection from '../../config/DBConnection';
 import moment from 'moment-timezone';
-
-var d = new Date();
-var currentMonth = ('0' + (d.getMonth() + 1)).substr(-2);
-const currentDate = [d.getFullYear(), currentMonth].join('');
 const firestore = DBConnection.firestore();
 
 export const getAppointments = (apoint) => ({
@@ -84,34 +80,6 @@ export function searchActiveProviders(service = 'online', type = '', social_work
     });
 }
 
-export function listenAppointments(specialty) {
-	try {
-		var appointments = [];
-		specialty = 'online_clinica_medica'; // Temporal, luego habrá más especialidades
-		const appointmentsQuery = firestore
-			.collection('assignations')
-			.doc(specialty)
-			.collection(currentDate)
-			.where('state', '==', 'ASSIGN');
-		return (dispatch) => {
-			appointmentsQuery.onSnapshot(
-				{
-					includeMetadataChanges: true,
-				},
-				function(snapshot) {
-					snapshot.forEach((subDoc) => {
-						let data = subDoc.data();
-						appointments.push(data);
-					});
-					dispatch(getAppointments(appointments));
-				}
-			);
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: 'listenAppointments' + err };
-	}
-}
-
 export function getDoctors(condition) {
 	return new Promise((resolve, reject) => {
 		try {
@@ -138,16 +106,17 @@ export function getDoctors(condition) {
 	});
 }
 
-export function getUserParentsFirebase(group) {
+export function getUserParentsFirebase(uid) {
 	return new Promise(function(resolve, rejected) {
-		let queryUser = firestore.collection('users').where('group', '==', group);
+		let queryUser = firestore.collection('user').doc(uid).collection('dependants');
 		queryUser
 			.get()
 			.then(async (family) => {
 				let parentsTemp = [];
 				await family.forEach((p) => {
 					let data = p.data();
-					if (p.exists && data.dni !== group) parentsTemp.push(data);
+					let id = p.id
+					if (p.exists && data.dni !== uid) parentsTemp.push({ ...data, did: id});
 				});
 				if (parentsTemp.length > 0) resolve(parentsTemp);
 				else rejected('No hay parientes disponibles.');
@@ -155,18 +124,17 @@ export function getUserParentsFirebase(group) {
 			.catch((err) => console.log(err));
 	});
 }
-// TO DO -> HERE ARE TWO FUNCTIONS DOING EXACTLY THE SAME
-export function getBenficiaries(group) {
-	let queryUser = firestore.collection('users').where('group', '==', group);
+
+export function getBenficiaries(uid) {
+	let queryUser = firestore.collection(`user/${uid}/dependants`).where('dni', '>', '');
 	return (dispatch) => {
 		queryUser.get()
 			.then((beneficiaries) => {
 				let parentsTemp = [];
 				beneficiaries.forEach((p) => {
 					let data = p.data();
-					if (p.exists && data.dni !== group) {
-						parentsTemp.push(data);
-					}
+					if(!parentsTemp.find(el => el.dni !== data.dni))
+					parentsTemp.push(data);
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
 			})
@@ -174,61 +142,6 @@ export function getBenficiaries(group) {
 				console.log(err)
 			})
 	};
-}
-
-export function getPendingTraslate(dni) {
-	let daysAgo = moment()
-		.subtract(3, 'days')
-		.format('YYYY-MM-DD 00:00:00');
-	return new Promise(function(resolve, rejected) {
-		let queryUser = firestore
-			.collection('events/requests/online')
-			.where('dni', '==', dni)
-			.where('att_date', '>=', daysAgo)
-			.where('destino_final', '==', 'Traslado protocolo pandemia');
-		queryUser
-			.get()
-			.then(async (pending) => {
-				await pending.forEach((query) => {
-					let data = query.data();
-					if (data.corporate && data.corporate.toUpperCase() === 'IOMA') {
-						resolve(true);
-					} else {
-						resolve(false);
-					}
-				});
-			})
-			.catch((err) => rejected(false));
-	});
-}
-
-export function getfirstAppointment(user, specialty) {
-	try {
-		var appointments = [];
-		specialty = 'online_clinica_medica'; // Temporal, luego habrá más especialidades
-		const appointmentsQuery = firestore
-			.collection('assignations')
-			.doc(specialty)
-			.collection(currentDate)
-			.where('state', 'in', ['ASSIGN', 'ATT'])
-			.where('appointments.0', 'array-contains', user);
-		return (dispatch) => {
-			appointmentsQuery.onSnapshot(
-				{
-					includeMetadataChanges: true,
-				},
-				function(snapshot) {
-					snapshot.forEach((subDoc) => {
-						let data = subDoc.data();
-						appointments.push(data);
-					});
-					dispatch({ type: 'SET_FIRST_APPOINTMENT', payload: appointments[0] });
-				}
-			);
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: 'listenAppointments' + err };
-	}
 }
 
 export function getDoctor(cuit) {
@@ -266,22 +179,25 @@ export function getFeedback(cuit) {
 	});
 }
 
-export function getUser(dni) {
-	return new Promise((resolve, reject) => {
+export function getDependant(uid, dependant = false) {
+	return dispatch => {
 		try {
-			const authQuery = firestore.collection('users').doc(dni);
+			const authQuery = firestore.doc(`user/${uid}`)
+			if(dependant) {
+				authQuery.doc(`dependants/${dependant}`)
+			}
 			authQuery
 				.get()
 				.then((user) => {
-					return resolve(user.data());
+					dispatch({type: 'GET_PATIENT', payload: user.data()});
 				})
 				.catch(function(error) {
 					throw error;
 				});
 		} catch (error) {
-			reject(error);
+			console.log(error);
 		}
-	});
+	};
 }
 
 export function getAuth(uid) {
@@ -304,61 +220,6 @@ export function getAuth(uid) {
 	});
 }
 
-export function getBills(dni) {
-	return new Promise((resolve, reject) => {
-		let bills = [];
-		const authQuery = firestore
-			.collection('services')
-			.doc('bills')
-			.collection(dni);
-		authQuery
-			.get()
-			.then((doc) => {
-				doc.forEach((d) => {
-					bills.push(d.data());
-					// console.log(d)
-				});
-				return resolve(bills);
-			})
-			.catch((err) => reject(err));
-	});
-}
-
-export function getPatientData(ws) {
-	try {
-		const usersQuery = firestore
-			.collection('auth')
-			.doc(ws)
-			.get();
-		return (dispatch) => {
-			dispatch({ type: 'LOADING', payload: true });
-			usersQuery
-				.then(function(doc) {
-					if (doc.exists) {
-						let data = doc.data();
-						dispatch(getPatient(data));
-						dispatch({ type: 'LOADING', payload: false });
-						return 'exist';
-					} else {
-						dispatch({ type: 'ERROR', payload: 'No se encontraron usuarios' });
-						dispatch({ type: 'LOADING', payload: false });
-						return 'doesnt exist';
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-					dispatch({
-						type: 'ERROR',
-						payload: 'getPatientData for ' + ws + err,
-					});
-					dispatch({ type: 'LOADING', payload: false });
-				});
-		};
-	} catch (err) {
-		return { type: 'ERROR', payload: ' getPatientData for ' + ws + err };
-	}
-}
-
 export function getPrescriptions(uid) {
 	try {
 		return dispatch => {
@@ -378,31 +239,33 @@ export function getPrescriptions(uid) {
 	}
 }
 
-export function getMedicalRecord(dni, ws){
-    try {
-        const usersQuery = firestore
-            .collection('events')
-            .doc('mr')
-            .collection(dni)
-            .where('patient.ws', '==', ws)
-        return dispatch => {
-            usersQuery.onSnapshot(subSnapshot => {
-                var tempArray = [];
-                subSnapshot.forEach(content => {
-                    tempArray.push(content.data());
-                });
-				let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
-                dispatch({
-                    type: 'GET_MEDICAL_RECORD',
-                    payload: result
-                });
-            }, function(error) {
-               console.log(error)
-            });
-        }
-    } catch (err) {
-        console.log('ERROR getMedicalRecord', err);
-    }
+export function getMedicalRecord(uid, dependant = false){
+	return dispatch => {
+		try {
+			const usersQuery = firestore
+				.collection(`user/${uid}/medical_records`)
+			if(!dependant) {
+				usersQuery.where('patient.uid', '==', uid)
+			} else {
+				usersQuery.where('patient.uid_dependant', '==', uid)
+			}
+				usersQuery.onSnapshot(subSnapshot => {
+					var tempArray = [];
+					subSnapshot.forEach(content => {
+						tempArray.push(content.data());
+					});
+					let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+					dispatch({
+						type: 'GET_MEDICAL_RECORD',
+						payload: result
+					});
+				}, function(error) {
+				   console.log(error)
+				});
+		} catch (err) {
+			console.log('ERROR getMedicalRecord', err);
+		}
+	}
 }
 
 export async function getUserMedicalRecord(dni, ws) {

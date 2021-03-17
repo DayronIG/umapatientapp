@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useLocation, useHistory, useParams} from 'react-router-dom';
 import { getAppointmentByDni } from '../../../../store/actions/firebaseQueries';
 import moment from 'moment';
 import { user_cancel } from '../../../../config/endpoints';
@@ -16,13 +16,13 @@ const CancelAppointment = () => {
     const { assignedAppointment } = useSelector(state => state.queries)
     const [cancelOptions, setCancelOptions] = useState('')
     const [cancelDescription, setCancelDescription] = useState('');
-    const {id} = queryString.parse(location.search)
+    const { id, dependant, activeUid } = queryString.parse(location.search)
     const { currentUser } = useSelector((state) => state.userActive)
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
-        let path = localStorage.getItem('currentAppointment').slice(1,-1)
+        let path = localStorage.getItem('currentAppointment')?.slice(1,-1)
         let documentBuild = `assignations/${path}`
         if(assignedAppointment.path) {
             documentBuild = assignedAppointment.path
@@ -41,7 +41,9 @@ const CancelAppointment = () => {
                 assignation_id: id,
                 appointment_path: documentBuild || '',
                 type: 'cancel',
-                complain: ''
+                complain: '',
+                uid: currentUser.uid,
+                uid_dependant: dependant === 'true' ? activeUid : false 
             }
             // Verify if the attention is not canceled or closed
             await currentUser.getIdToken().then(async token => {

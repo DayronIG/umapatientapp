@@ -14,6 +14,7 @@ const SurveyComponent = (props) => {
 	const starsValue = useSelector((state) => state.survey.stars);
 	const starsValueDriver = useSelector((state) => state.survey.starsDriver);
 	const commentsValue = useSelector((state) => state.survey.comments);
+	const { uid } = useSelector(state => state.userActive.currentUser)
 
 	function setRatingApp(value) {
 		dispatch({ type: 'ADD_STARS_SURVEY', payload: value });
@@ -31,7 +32,8 @@ const SurveyComponent = (props) => {
 			'assignation_id': props.match.params.asid,
 			'uma_eval': starsValue.toString(),
 			'doc_eval': starsValueDriver.toString(),
-			'notes': commentsValue
+			'notes': commentsValue,
+			'uid': uid
 		}, { headers: { 'Content-Type': 'application/json;charset=UTF-8'/* , 'Authorization': token */ } })
 			.then(function (response) {
 				setModalDisplay(true);
