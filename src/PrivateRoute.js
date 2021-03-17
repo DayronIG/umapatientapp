@@ -39,12 +39,12 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
     const { callRejected } = useSelector(state => state.call)
-	const token = useSelector(state => state.userActive.token)
+	const {token} = useSelector(state => state.userActive)
 
     useEffect(() => {
         if (user.ws) {
             try {
-                let subscription, queryUser = firestore.doc(`auth/${user.ws}`)
+                let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data && data?._start_date !== '' && data._start_date) {

@@ -142,10 +142,10 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{active_guardia && <GuardCard 
+					{(active_guardia || assignations.length < 1) && (<GuardCard 
 						pediatric={pediatric} dni={dni} 
 						queue={queue}
-						doctorsCount={assignations.length} />}
+						doctorsCount={assignations.length} />)}
 					{action === 'Loading' && (
 						<div
 							className='when__loading'>
@@ -153,7 +153,7 @@ const WhenScreen = (props) => {
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
 					)}
-					{action === 'Doctors' && active_list && (
+					{action === 'Doctors' && (active_list || user.context === 'temp') && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard

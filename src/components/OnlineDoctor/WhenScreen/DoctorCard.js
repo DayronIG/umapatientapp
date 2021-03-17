@@ -55,10 +55,8 @@ const DoctorCard = (props) => {
 					{props.doc.metrics && (
 						<div className='doctorStars'>
 							<StarRatings
-								rating={
-									(props.doc?.metrics?.stars &&
-									parseFloat(props.doc.metrics.stars)) || 5
-								}
+								rating={(props.doc?.metrics?.stars &&
+									parseFloat(props.doc.metrics.stars)) || 5}
 								starRatedColor='#0A6DD7'
 								numberOfStars={5}
 								name='rating'
@@ -68,19 +66,6 @@ const DoctorCard = (props) => {
 							<span>Valoraciones</span>
 						</div>
 						)}
-					{props.doc.metrics && (
-						<div className='doctorPunctuality'>
-							<p>
-								{props.doc.metrics && props.doc.metrics.punctuality <= 0.5 && 'Muy buena'}
-								{props.doc.metrics &&
-									props.doc.metrics.punctuality > 0.5 &&
-									props.doc.metrics.punctuality < 1.5 &&
-									'Buena'}
-								{props.doc.metrics && props.doc.metrics.punctuality >= 1.5 && 'Regular'}
-							</p>
-							<span>Puntualidad</span>
-						</div>
-					)}
 				</div>
 				<div className='doctorCard-comments' onClick={() => viewComments(props.cuit)}>
 					Ver comentarios
