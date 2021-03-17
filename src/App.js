@@ -13,8 +13,6 @@ import Feedback from './views/Feedback';
 import Login from './components/User/Login';
 import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
-import RegisterNew from './views/RegisterNew';
-import Register from './views/Register';
 import Status from './components/User/SignUp/Status';
 
 // Login & Register
@@ -79,7 +77,6 @@ import HisopadoCart from './components/DeliveryService/HisopadoCart/HisopadoCart
 import Referred from "./components/DeliveryService/Referred"
 import AccessDenied from './components/GeneralComponents/AccessDenied';
 import Install from './views/Install.js';
-import RegisterSuccess from './views/RegisterSuccess.js';
 import RedirectWs from './views/RedirectWs.js';
 import Whatsapp from './views/Whatsapp.js';
 import Payment from "./components/Payment"
@@ -116,7 +113,6 @@ function App(props) {
 				<Route exact path='/forgot/error/:method' component={ForgottenPassError} />
 				<Route exact path='/forgot' component={NeedHelp} />
 				<Route exact path='/termsconditions' component={TermsConditions} />
-
 				<Route exact path='/reset' component={Reset} />
 				<Route exact path='/accessDenied' component={AccessDenied} />
 				<Route exact path='/:ws?/welcome' component={Welcome} />

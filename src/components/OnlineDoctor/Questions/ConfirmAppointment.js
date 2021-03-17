@@ -123,15 +123,15 @@ const ConfirmAppointment = (props) => {
 			return postData();
 		} else {
 			dispatch({ type: 'LOADING', payload: false });
-			const confirmAction = await swal({
+			/* const confirmAction =  */await swal({
 				title: 'El especialista que escogió ya no está disponible',
 				text: 'Podemos asignarte a otro médico con disponibilidad. Deseas que te asignemos el primero disponible?',
 				icon: 'warning',
 				buttons: true,
 			});
-			if (confirmAction) {
-				postData(true);
-			} else {
+			if (true /* confirmAction */) {
+/* 				postData(true);
+			} else { */
 				let userVerified = user.dni
 				if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 				return history.replace(`/onlinedoctor/when/${userVerified.dni}`);
