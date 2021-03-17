@@ -30,12 +30,8 @@ const WelcomeAgain = () => {
         }
     }, [method])
 
-    // TODO: Agregar la acción de linkear cuenta con email y password
-
     const linkAccountWithEmailAndPassword = (dataVal) => {
-
         if(dataVal.password !== dataVal.passrepeat) {
-            console.error('Las contraseñas no coinciden');
             return false;
         }
 
