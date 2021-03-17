@@ -73,15 +73,12 @@ function StudiesOrder({ att, doc }) {
     }
 
     useEffect(() => {
-        console.log(`${att?.patient?.dni}/${att?.incidente_id}`, att.uid)
         if(att?.uid) {
             firebase.collection(`events/orders/AR`)
                 .where('uid', '==', att.uid)
                 .get()
                 .then(snap => {
-                    console.log(snap)
                     snap.forEach((el) => {
-                        console.log(el.data())
                         setOrder(el.data())
                     })
                 })

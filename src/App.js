@@ -11,7 +11,6 @@ import Welcome from './views/Welcome';
 import Reset from './views/Reset';
 import Feedback from './views/Feedback';
 import Login from './components/User/Login';
-import LoginWithCore from './components/User/LoginWithCore';
 import Home from './views/Home';
 import Status from './components/User/SignUp/Status';
 
@@ -34,13 +33,11 @@ import Profile from './views/Profile';
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
 import When from './components/OnlineDoctor/WhenScreen/WhenAtt';
 import Reason from './components/OnlineDoctor/Reason/';
-import Rating from './components/OnlineDoctor/Rating/Rating';
 import AttQueue from './components/OnlineDoctor/AttQueue';
 import CallContainer from './components/OnlineDoctor/StartCall/';
 import ComingSoon from './components/GeneralComponents/ComingSoon';
 import NotFound from './components/GeneralComponents/NotFound';
 // Survey and Transport 
-import Survey from './components/Transport/Survey';
 import TransportMain from './components/Transport/TransportMain';
 import TransportRegister from './components/Transport/TransportRegister';
 import TransportUserActive from './components/Transport/TransportUserActive';
@@ -119,7 +116,6 @@ function App(props) {
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/old_login/:ws?' component={Login} />
-				<Route exact path='/:ws?/core/:core?' component={LoginWithCore} />
 				{/* <Route exact path='/register/:ws/:ref?' component={Register} /> */}
 				{/* <Route exact path='/:ws?/login' component={Login} /> To be deleted */}
 				{/* <Route exact path='/:ws/register/:ref?' component={Register} /> To be deleted */}
@@ -139,15 +135,12 @@ function App(props) {
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
-				<PrivateRoute exact path='/onlinedoctor/when/:dni' component={When} />
-				<PrivateRoute exact path='/onlinedoctor/who/:dni' component={Who} />
-				<PrivateRoute exact path='/onlinedoctor/questions/:dni' component={Questions} />
-				<PrivateRoute exact path='/onlinedoctor/reason/:dni' component={Reason} />
-				<PrivateRoute exact path='/onlinedoctor/queue/:dni' component={AttQueue} />
-				<PrivateRoute exact path='/onlinedoctor/attention/:dni?' component={CallContainer} />
-				<PrivateRoute exact path='/onlinedoctor/attention/:dni?' component={CallContainer} />
-				<PrivateRoute exact path='/:dni?/onlinedoctor/attention' component={CallContainer} /> 
-				<PrivateRoute exact path='/onlinedoctor/rating/:ws' component={Rating} />
+				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
+				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
+				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
+				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
+				<PrivateRoute exact path='/onlinedoctor/attention/:activeUid?' component={CallContainer} />
 				{/* CUIDADOS DOMICILIARIOS */}
 				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
@@ -157,18 +150,17 @@ function App(props) {
 				<PrivateRoute exact path='/history/:dni?/:record?/:recipe?' component={History} /> 
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
-				<PrivateRoute path='/:ws?/profile/' component={Profile} />
+				<PrivateRoute path='/profile/:ws?' component={Profile} />
 				{/* APPOINTMENTS ONLINE */}
 				{/* Temp disabled the chats <PrivateRoute exact path='/chat/:specialty/:dni?' component={Chat} /> */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
-				<PrivateRoute exact path='/appointmentsonline/pending/:dni' component={AppointmentsOnlineHistory} />
-				<PrivateRoute exact path='/appointmentsonline/:dni/' component={OnlineSpecialist} />
-				<PrivateRoute exact path='/appointmentsonline/specialty/:dni' component={ListSpecialties} />
-				<PrivateRoute exact path='/appointmentsonline/search-doctor/:dni' component={SearchDoctorOnline} />
-				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:dni' component={SelectSymptoms} />
-				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:dni' component={CalendarOnline} />
+				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />
+				<PrivateRoute exact path='/appointmentsonline/:activeUid?/' component={OnlineSpecialist} />
+				<PrivateRoute exact path='/appointmentsonline/specialty/:activeUid?/' component={ListSpecialties} />
+				<PrivateRoute exact path='/appointmentsonline/search-doctor/:activeUid?/' component={SearchDoctorOnline} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/selectsymptoms/:activeUid?/' component={SelectSymptoms} />
+				<PrivateRoute exact path='/appointmentsonline/:condition/calendar/:activeUid?/' component={CalendarOnline} />
 				{/* TRASLADOS */}
-				<PrivateRoute exact path='/survey/ws=:ws&:asid=:asid&dni=:dni' component={Survey} />
 				<PrivateRoute exact path='/:ws/transport' component={TransportMain} />
 				<PrivateRoute exact path='/:ws/transportRegister' component={TransportRegister} />
 				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
@@ -179,10 +171,10 @@ function App(props) {
 				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
 				<PrivateRoute exact path='/:ws/transportRating/:assignation_id' component={TransportRating} />
 				{/* AUTONOMOUS */}
-				<PrivateRoute exact path='/:dni/autonomous' component={Autonomous} />
-				<PrivateRoute exact path='/:dni/laboratorio' component={Laboratorio} />
+				<PrivateRoute exact path='/autonomous/:dni' component={Autonomous} />
+				<PrivateRoute exact path='/laboratorio/:dni' component={Laboratorio} />
 				{/* Wellness */}
-				<PrivateRoute exact path='/:ws?/wellness' component={Wellness} />
+				<PrivateRoute exact path='/wellness/:ws?' component={Wellness} />
 				{/* Patient tracking */}
 				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* Delivery Service */}

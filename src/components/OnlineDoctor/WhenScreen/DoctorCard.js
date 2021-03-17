@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import classnames from 'classnames';
 import StarRatings from 'react-star-ratings';
 import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
-import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	function viewComments(doc) {
 		dispatch({ type: 'TOGGLE_DETAIL' });
@@ -27,7 +30,7 @@ const DoctorCard = (props) => {
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	}
 
 	return (
@@ -55,10 +58,8 @@ const DoctorCard = (props) => {
 					{props.doc.metrics && (
 						<div className='doctorStars'>
 							<StarRatings
-								rating={
-									(props.doc?.metrics?.stars &&
-									parseFloat(props.doc.metrics.stars)) || 5
-								}
+								rating={(props.doc?.metrics?.stars &&
+									parseFloat(props.doc.metrics.stars)) || 5}
 								starRatedColor='#0A6DD7'
 								numberOfStars={5}
 								name='rating'
@@ -68,19 +69,6 @@ const DoctorCard = (props) => {
 							<span>Valoraciones</span>
 						</div>
 						)}
-					{props.doc.metrics && (
-						<div className='doctorPunctuality'>
-							<p>
-								{props.doc.metrics && props.doc.metrics.punctuality <= 0.5 && 'Muy buena'}
-								{props.doc.metrics &&
-									props.doc.metrics.punctuality > 0.5 &&
-									props.doc.metrics.punctuality < 1.5 &&
-									'Buena'}
-								{props.doc.metrics && props.doc.metrics.punctuality >= 1.5 && 'Regular'}
-							</p>
-							<span>Puntualidad</span>
-						</div>
-					)}
 				</div>
 				<div className='doctorCard-comments' onClick={() => viewComments(props.cuit)}>
 					Ver comentarios
@@ -94,23 +82,15 @@ export default withRouter(DoctorCard);
 
 const GuardCardComp = (props) => {
 	const dispatch = useDispatch();
-	const [queue, setQueue] = useState("0")
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${props.dni}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	};
 	
-	useEffect(() => {
-		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
-		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
-			.then(res => {
-				if(res.length > 0) {
-					setQueue(res.length)
-				}
-			})
-	}, [])
-
 	return (
 		<div className='doctorCard-container'>
 			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
@@ -122,7 +102,7 @@ const GuardCardComp = (props) => {
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
 						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						<small>Hay {queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
+						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
 					</div>
 				</div>
 			</div>
@@ -134,6 +114,10 @@ export const GuardCard = withRouter(GuardCardComp);
 
 const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 	const dispatch = useDispatch();
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
+	
 	// const [comments, setComments] = useState([])
 	var timeDelay = classnames('timeDelay', {
 		verygood: doctor && doctor.metrics && doctor.metrics.punctuality <= 0.5,
@@ -143,7 +127,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/onlinedoctor/reason/${dni}`);
+		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	}
 
 	return (

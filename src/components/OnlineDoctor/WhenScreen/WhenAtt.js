@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Comments from './Comments.js';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser, getFreeGuardia } from '../../../store/actions/firebaseQueries';
-import enablePermissions from '../../Utils/enableVidAudPerms';
-import DinamicScreen from '../../GeneralComponents/DinamicScreen';
+import Comments from './Comments.js';
 import { Loader } from '../../GeneralComponents/Loading';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
 import DoctorCard, { GuardCard } from './DoctorCard';
+import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import Backbutton from '../../GeneralComponents/Backbutton';
+import { getDependant, getFreeGuardia } from '../../../store/actions/firebaseQueries';
+import enablePermissions from '../../Utils/enableVidAudPerms';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
@@ -21,42 +22,21 @@ const WhenScreen = (props) => {
 	const {active_guardia, active_list} = useSelector((state) => state.front);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
+	const {currentUser} = useSelector((state) => state.userActive);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
 	const [queue, setQueue] = useState("1")
-	const [dni] = useState(props.match.params.dni);
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
+	const { activeUid } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		// get params
-		try {
-			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
-				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
-			})
-		} catch(err) {
-			console.log(err)
+		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
+			dispatch(getDependant(currentUser.uid, activeUid))
 		}
-	}, [])
-
-	useEffect(() => {
-		if (dni !== undefined) {
-			dispatch({type: 'LOADING', payload: true})
-			getUser(dni)
-				.then((p) => {
-					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
-					setPediatric(type);
-					let test = p.context === "temp" ? true : false
-					findAssignedAppointments(p, type, test);
-					dispatch({type: 'LOADING', payload: false})
-				})
-				.catch(function(error) {
-					dispatch({type: 'LOADING', payload: false})
-					return error;
-				});
-		}
-	}, []);
-
+	}, [currentUser, activeUid]);
 
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
@@ -68,16 +48,22 @@ const WhenScreen = (props) => {
 		});
 	}, []);
 
+	useEffect(() => {
+		if(user) {
+			let test = user.context === "temp" ? true : false
+			const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
+			setPediatric(type);
+			findAssignedAppointments(user, type, test);
+		}
+	}, [user])
+
 	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
-			let assigned = undefined;
-			if (person.group !== person.dni) {
-				assigned = await findAllAssignedAppointment(person.dni, type);
-			}
+			let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				return props.history.replace(`/onlinedoctor/queue/${person.dni}`);
+				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			} else {
 				return findFreeAppointments(person, type, test);
 			}
@@ -142,24 +128,20 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{active_guardia && <GuardCard 
-						pediatric={pediatric} dni={dni} 
-						queue={queue}
-						doctorsCount={assignations.length} />}
+					{(active_guardia || assignations.length < 1) &&  <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
 					{action === 'Loading' && (
-						<div
-							className='when__loading'>
+						<div className='when__loading'>
 							<Loader />
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
 					)}
-					{action === 'Doctors' && active_list && (
+					{action === 'Doctors' && (active_list || user.context === 'temp') && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
 									{...assignation}
 									key={index}
-									dni={dni}
+									dni={user.dni}
 								/>
 							))}
 						</div>

@@ -92,10 +92,6 @@ export default (state = initialState, action) => {
                 ...state,
                 geolocation: action.payload
             };
-        case 'SET_CALL_ROOM':
-            return Object.assign({}, state, {
-                callSettings: action.payload
-            });
         case 'SET_AMBULANCE_HAVEDURATION':
             return { ...state, ambulanceHaveDuration: action.payload };
         case 'SET_AMBULANCE_DURATION':

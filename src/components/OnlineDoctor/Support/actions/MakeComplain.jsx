@@ -16,7 +16,7 @@ const SendComplain = ({ sendComplain }) => {
     const patient = useSelector(state => state.user)
 	const { currentUser } = useSelector((state) => state.userActive)
     const location = useLocation();
-    const {id} = queryString.parse(location.search)
+    const {id, dependant, activeUid} = queryString.parse(location.search)
 
     const onSubmitButton = () => {
         if (!claim.trim()) {
@@ -47,7 +47,7 @@ const SendComplain = ({ sendComplain }) => {
                 .then(() => {
                     dispatch({type: 'LOADING', payload: false})
                     swal('Enviado', 'El reclamo fué enviado con éxito. Será evaluado por nuestro equipo.', 'success')
-                    return history.push(`/onlinedoctor/queue/${patient.dni}`)
+                    return history.push(`/onlinedoctor/queue/${activeUid}?dependant=${dependant}`)
                 })
                 .catch(()=> {
                     dispatch({type: 'LOADING', payload: false})

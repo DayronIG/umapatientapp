@@ -10,8 +10,8 @@ import ZoneCoveredHisopado from "../DeliveryPurchase/Components/ZoneCoveredHisop
 const HisopadoCartItem = ({patient, index}) => {
     const dispatch = useDispatch()
     const { dni } = useSelector(state => state.user);
-    const { deliveryInfo, changeMarker, hisopadoDependantAddresses } = useSelector(state => state.deliveryService);
-    const { piso, depto, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm);
+    const { deliveryInfo, changeMarker, hisopadoUserAddress, hisopadoDependantAddresses, addressObservations } = useSelector(state => state.deliveryService);
+    const { piso, depto, lat, lng, user_obs } = useSelector(state => state.deliveryService.selectHomeForm);
     const { isAddressValidForHisopado } = useSelector(state => state.deliveryService.dependantInfo);
     const [openUser, setOpenUser] = useState(patient.isOpen);
     const [openModal, setOpenModal] = useState(false);
@@ -25,8 +25,8 @@ const HisopadoCartItem = ({patient, index}) => {
         dob: patient.patient?.dob,
         sex: patient.patient?.sex,
         uid: patient.patient?.uid,
-        obs: '',
-        address: patient.destination?.user_address,
+        obs: patient.destination?.user_obs || user_obs,
+        address: patient.destination?.user_address || hisopadoUserAddress,
         piso: patient.destination?.user_floor || piso,
         depto: patient.destination?.user_number  || depto,
         lat: patient.destination?.user_lat || lat,
@@ -40,7 +40,7 @@ const HisopadoCartItem = ({patient, index}) => {
 
     useEffect(() => {
         if(hisopadoDependantAddresses[index]){
-            setData({...data, address: hisopadoDependantAddresses[index].address, lat: hisopadoDependantAddresses[index].lat, lon: hisopadoDependantAddresses[index].lon})
+            setData({...data, address: hisopadoDependantAddresses[index].address, lat: hisopadoDependantAddresses[index].lat, lon: hisopadoDependantAddresses[index].lon, user_obs: hisopadoDependantAddresses[index].user_obs})
         }
     }, [changeMarker])
 
@@ -68,7 +68,8 @@ const HisopadoCartItem = ({patient, index}) => {
                     user_floor: data.piso,
                     user_number: data.depto,
                     user_lat: data.lat,
-                    user_lon: data.lng
+                    user_lon: data.lng, 
+                    user_obs: data.obs
                 },
                 status: "FREE"
             }
@@ -77,6 +78,7 @@ const HisopadoCartItem = ({patient, index}) => {
             localStorage.setItem("multiple_clients", JSON.stringify(deliveryInfoToReplace.filter(el=>el.status)))
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: deliveryInfoToReplace})
             dispatch({type: "CHANGE_MARKER"})
+            console.log(sendData)
             // let headers = { 'Content-Type': 'Application/Json' }
             // axios.post(create_delivery, sendData, headers)
             //     .then(res => console.log(res))

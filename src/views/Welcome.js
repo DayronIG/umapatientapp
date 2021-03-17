@@ -13,7 +13,7 @@ const Welcome = props => {
   const dispatch = useDispatch()
   const [install, setInstall] = React.useState(true)
   const user = useSelector(state => state.user)
-  const { currentUser } = useSelector(state => state.userActive)
+  const {currentUser} = useSelector(state => state.userActive)
 
   useEffect(() => {
     DetectRTC.load(function () {
@@ -29,15 +29,16 @@ const Welcome = props => {
         await props.showInstallPrompt()
       }
       let userAuth = await getAuth(currentUser.uid)
-      const plan = await getCoverage(currentUser.uid)
+      const plan = await getCoverage(user)
       const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
-      await getDeliveryInfo(user.ws)
+      await getDeliveryInfo(user)
       dispatch({ type: 'GET_PATIENT', payload: userAuth })
       dispatch({ type: 'SET_DELIVERY_PARAMS', payload: params })
       dispatch({ type: 'SET_PLAN_DATA', payload: plan })
       history.push('/home')
     } catch (err) {
       console.error(err)
+      history.push('/home')
     }
   }
 

@@ -26,7 +26,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, addressObservations, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: user?.piso || '',
 		depto: user?.depto || '',
@@ -40,7 +40,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 
 	useEffect(() => {
         if(user.dni) {
-            getCurrentService()
+			getCurrentService()
         }
     }, [user])
 
@@ -195,7 +195,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 			return swal('Error', 'Por favor, seleccione una altura para su dirección.', 'warning');
 		}
 		dispatch({ type: 'LOADING', payload: true });
-		dispatch(handleDeliveryForm(formState));
+		dispatch(handleDeliveryForm({...formState, user_obs: addressObservations}));
 		if(!isModal){
 			const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 			const data = {
@@ -209,7 +209,8 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'floor': `${formState.piso}`,
 				'number': `${formState.depto}`,
 				'incidente_id': current.id || deliveryInfo?.[0]?.id,
-				'range': isAddressValidForHisopado || false
+				'range': isAddressValidForHisopado || false,
+				'user_obs': addressObservations
 			};
 			try {
 				await Axios.post(mobility_address, data, {headers});
@@ -227,17 +228,18 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				format_address: hisopadoUserAddress,
 				user_address: hisopadoUserAddress,
 				address: hisopadoUserAddress,
-				isAddressValidForHisopado: isAddressValidForHisopado
+				isAddressValidForHisopado: isAddressValidForHisopado,
+				addressObservations: addressObservations
 			}
 			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
 			const dependantAddressesToDispatch = hisopadoDependantAddresses
-			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon}
+			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon, user_obs: addressObservations}
 			dispatch({type: 'SET_HISOPADO_DEPENDANT_ADDRESSES', payload: dependantAddressesToDispatch})
 			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
 			if(isAddressValidForHisopado){finalAction()}
 		}
-	}, [hisopadoUserAddress, formState, isAddressValidForHisopado]);
+	}, [hisopadoUserAddress, formState, isAddressValidForHisopado, addressObservations]);
 
 
 	return (
@@ -290,6 +292,18 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 					</div>
 				</div>
 			</div>}
+			</div>
+			<div className={`observacionesContainer ${isModal? '': 'marginBottomObservaciones'}`}>
+				<input 
+					type="text"
+					inputMode="text"
+					placeholder="Aclaraciones para el personal" 
+					className='observationsInput'
+					value={addressObservations || ''}
+					onChange={(e) => {
+						dispatch({type: 'SET_ADDRESS_OBSERVATIONS', payload: e.target.value})
+					}}
+				/>
 			</div>
 			<div onClick={(e) => handleSubmit(e)} className="map-button">
                 Seleccionar

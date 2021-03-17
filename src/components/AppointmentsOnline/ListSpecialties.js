@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import { GenericHeader, BackButton } from '../GeneralComponents/Headers';
 import { FaUserMd } from 'react-icons/fa';
 import Specialties from './Specialties/Specialties';
 import '../../styles/appointmentsonline/listSpecialties.scss';
 
 const ListSpecialties = (props) => {
-	const dni = props.match.params.dni;
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	return (
 		<>
@@ -19,7 +22,7 @@ const ListSpecialties = (props) => {
 				</div>
 			</div>
 			<div className='searchByDoctor'>
-				<Link to={`/appointmentsonline/search-doctor/${dni}`}>BUSCAR POR MEDICO</Link>
+				<Link to={`/appointmentsonline/search-doctor/${activeUid}?dependant=${params.dependant}`}>BUSCAR POR MEDICO</Link>
 				<FaUserMd />
 			</div>
 		</>

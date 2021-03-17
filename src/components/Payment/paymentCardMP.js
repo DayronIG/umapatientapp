@@ -34,7 +34,7 @@ const PaymentCardMP = () => {
     const [invalidMonth, setInvalidMonth] = useState(false);
     const [hisopadosToPurchase, setHisopadosToPurchase] = useState([]);
     const [expiry, setExpiry] = useState("12/25")
-    const discountParam = useSelector(state => state.deliveryService.params.discount)
+    const discountParam = useSelector(state => state.deliveryService.params.coupon)
     const MERCADOPAGO_PUBLIC_KEY = isLocal ? 'TEST-f7f404fb-d7d3-4c26-9ed4-bdff901c8231' : "APP_USR-17c898bc-f614-48eb-9cda-0da7d791a0e7"
 
     useEffect(() => {
@@ -123,8 +123,6 @@ const PaymentCardMP = () => {
             postData(form, response.id)
         }
     }
-
-    // console.log(current.id);
 
     const postData = useCallback((form, token) => {
       setLoader(true)
@@ -261,179 +259,181 @@ const PaymentCardMP = () => {
         month: '01',
         yearh: '25'
       })
-      const { number, month, year, name, cvc, focus } = cardState;
-    
-      const handleFocus = e => {
-        setCardState({ ...cardState, focus: e.target.name });
-      }
 
-      const validateDiscount = (e) => {
-        setCoupon(e.target.value)
-        if(e.target.value === discountParam.code){
-          setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam.value) / 100))
-        } else {
-          setTotalPayment(3499)
-        }
-      }
+    const { number, month, year, name, cvc, focus } = cardState;
     
-      const handleChange = e => {
-        if(e.target){const { name, value } = e.target;
-        setCardState({ ...cardState, [name]: value?.trim() });}
-        if(name && name === "year" || name === "month") {
-          setExpiry(`${month}/${year}`)
-        }
-      }
-    
-      const properties = {
-        placeholders: { name: 'Tu nombre' },
-        locale: { valid: 'válido hasta' }
-      }
-    
-      return (
-          <div className="payment-arg">
-          {loader && <CustomUmaLoader />}        
-          <div className="tarjeta-credito">
-            <Cards
-              cvc={cvc}
-              expiry={expiry}
-              focused={focus}
-              name={name}
-              number={number}
-              callback={(a, b) => {
-                setCreditCard(a.issuer)
-              }}
-              {...properties}
-            />
-          </div>
-          <form 
-          className="formulario-credito"
-          method="post"
-          id="pay"
-          name="pay"
-          onSubmit={(e) => handleSubmit(e)}
-          >
-            <div className="formulario-item">
-              <small>Número de la tarjeta</small>
-              <Cleave 
-                autoComplete="off"
-                id="cardNumber" data-checkout="cardNumber"
-                name="number"
-                placeholder="xxxx-xxxx-xxxx-xxxx"
-                onChange={(e) => {
-                  handleChange(e)
-                }}
-              onFocus={handleFocus}
-              options={{creditCard: true}}
-              />
-            </div>
-            <div className="formulario-item">
-              <small>Email</small>
-              <input
-                autoComplete="on"
-                type="email"
-                name="email"
-                placeholder="nombre@email.com"
-                id="email"
-                data-checkout="email"
-                onChange={handleChange}
-                onFocus={handleFocus}
-              />
-            </div>
-            <div className="formulario-item">
-              <small>Nombre del titular</small>
-              <input
-                autoComplete="on"
-                type="text"
-                name="name"
-                maxLength="30"
-                placeholder="María Hernandez"
-                id="cardholderName"
-                data-checkout="cardholderName"
-                onChange={handleChange}
-                onFocus={handleFocus}
-              />
-            </div>
-            <div className="formulario-item">
-                <small>Documento del titular</small>
-                <div className="document">
-                <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
-                <input 
-                autoComplete="off"
-                type="text" id="docNumber" defaultValue={user?.dni?.length <= 8? user.dni: "12345678"}
-                    data-checkout="docNumber" 
-                    onChange={e => setPaymentDni(e.target.value)}
-                    />
-                </div>
-            </div>
-    
-            <div className="formulario-vencimiento">
-              <div>
-                <small>Vencimiento</small>
-                <div className="cardExpiration">
-                <input 
-                  autoComplete="off"
-                  type="text" id="cardExpirationMonth" 
-                  data-checkout="cardExpirationMonth"
-                  inputMode="numeric"
-                  maxLength="2"
-                  name="month"
-                  className = {`${!invalidMonth? "": "invalid-input"}`}
-                  placeholder="Mes"
-                  onChange={e => {
-                    handleChange(e.target.value) 
-                    expirationMonthCheck(e.target.value)}}
-                  onFocus={handleFocus}/>
-                <input 
-                  type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
-                  className = {`${!invalidYear? "": "invalid-input"}`}
-                  inputMode="numeric"
-                  placeholder="Año" autoComplete="off"
-                  maxLength="2"
-                  name="yearh"
-                  onChange={e => {
-                    handleChange(e.target.value) 
-                    expirationYearCheck(e.target.value)}}
-                  onFocus={handleFocus}/>
-                </div>
-              </div>
-            </div>
-              <div className="formulario-item">
-                <small>Código de seguridad</small>
-                <input
-                  autoComplete="off"
-                  id="securityCode" data-checkout="securityCode"
-                  type="text"
-                  className=""
-                  name="cvc"
-                  maxLength="4"
-                  placeholder="123"
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                />
-              </div>
-              <div className="formulario-item last__input">
-                <small>Código de descuento</small>
-                <input
-                    autoComplete="off"
-                    id="discount" data-checkout="discount"
-                    type="text"
-                    className=""
-                    name="discount"
-                    placeholder="CÓDIGO"
-                    onChange={
-                      (e) => {
-                        validateDiscount(e)
-                        handleChange(e)
-                      }
-                    }
-                    onFocus={handleFocus}
-                />
-              </div>
-              <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-            <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${totalPayment}</p></button>
-          </form>
-        </div>
-      )
+    const handleFocus = e => {
+      setCardState({ ...cardState, focus: e.target.name });
     }
 
-    export default PaymentCardMP
+    const validateDiscount = (e) => {
+      const inputCode = e.target.value
+      setCoupon(inputCode)
+      if(discountParam[inputCode]){
+        setTotalPayment(totalPayment - totalPayment * (parseInt(discountParam[inputCode].discount) / 100))
+      } else {
+        setTotalPayment(3499 * hisopadosToPurchase.length)
+      }
+    }
+    
+    const handleChange = e => {
+      if(e.target){const { name, value } = e.target;
+        setCardState({ ...cardState, [name]: value?.trim() });}
+      if(name && name === "year" || name === "month") {
+        setExpiry(`${month}/${year}`)
+      }
+    }
+  
+    const properties = {
+      placeholders: { name: 'Tu nombre' },
+      locale: { valid: 'válido hasta' }
+    }
+    
+    return (
+        <div className="payment-arg">
+        {loader && <CustomUmaLoader />}        
+        <div className="tarjeta-credito">
+          <Cards
+            cvc={cvc}
+            expiry={expiry}
+            focused={focus}
+            name={name}
+            number={number}
+            callback={(a, b) => {
+              setCreditCard(a.issuer)
+            }}
+            {...properties}
+          />
+        </div>
+        <form 
+        className="formulario-credito"
+        method="post"
+        id="pay"
+        name="pay"
+        onSubmit={(e) => handleSubmit(e)}
+        >
+          <div className="formulario-item">
+            <small>Número de la tarjeta</small>
+            <Cleave 
+              autoComplete="off"
+              id="cardNumber" data-checkout="cardNumber"
+              name="number"
+              placeholder="xxxx-xxxx-xxxx-xxxx"
+              onChange={(e) => {
+                handleChange(e)
+              }}
+            onFocus={handleFocus}
+            options={{creditCard: true}}
+            />
+          </div>
+          <div className="formulario-item">
+            <small>Email</small>
+            <input
+              autoComplete="on"
+              type="email"
+              name="email"
+              placeholder="nombre@email.com"
+              id="email"
+              data-checkout="email"
+              onChange={handleChange}
+              onFocus={handleFocus}
+            />
+          </div>
+          <div className="formulario-item">
+            <small>Nombre del titular</small>
+            <input
+              autoComplete="on"
+              type="text"
+              name="name"
+              maxLength="30"
+              placeholder="María Hernandez"
+              id="cardholderName"
+              data-checkout="cardholderName"
+              onChange={handleChange}
+              onFocus={handleFocus}
+            />
+          </div>
+          <div className="formulario-item">
+              <small>Documento del titular</small>
+              <div className="document">
+              <select id="dni" data-checkout="docType" style={{ display: 'none' }} ></select>
+              <input 
+              autoComplete="off"
+              type="text" id="docNumber" defaultValue={user?.dni?.length <= 8? user.dni: "12345678"}
+                  data-checkout="docNumber" 
+                  onChange={e => setPaymentDni(e.target.value)}
+                  />
+              </div>
+          </div>
+  
+          <div className="formulario-vencimiento">
+            <div>
+              <small>Vencimiento</small>
+              <div className="cardExpiration">
+              <input 
+                autoComplete="off"
+                type="text" id="cardExpirationMonth" 
+                data-checkout="cardExpirationMonth"
+                inputMode="numeric"
+                maxLength="2"
+                name="month"
+                className = {`${!invalidMonth? "": "invalid-input"}`}
+                placeholder="Mes"
+                onChange={e => {
+                  handleChange(e.target.value) 
+                  expirationMonthCheck(e.target.value)}}
+                onFocus={handleFocus}/>
+              <input 
+                type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" 
+                className = {`${!invalidYear? "": "invalid-input"}`}
+                inputMode="numeric"
+                placeholder="Año" autoComplete="off"
+                maxLength="2"
+                name="yearh"
+                onChange={e => {
+                  handleChange(e.target.value) 
+                  expirationYearCheck(e.target.value)}}
+                onFocus={handleFocus}/>
+              </div>
+            </div>
+          </div>
+            <div className="formulario-item">
+              <small>Código de seguridad</small>
+              <input
+                autoComplete="off"
+                id="securityCode" data-checkout="securityCode"
+                type="text"
+                className=""
+                name="cvc"
+                maxLength="4"
+                placeholder="123"
+                onChange={handleChange}
+                onFocus={handleFocus}
+              />
+            </div>
+            <div className="formulario-item last__input">
+              <small>Código de descuento</small>
+              <input
+                  autoComplete="off"
+                  id="discount" data-checkout="discount"
+                  type="text"
+                  className=""
+                  name="discount"
+                  placeholder="CÓDIGO"
+                  onChange={
+                    (e) => {
+                      validateDiscount(e)
+                      handleChange(e)
+                    }
+                  }
+                  onFocus={handleFocus}
+              />
+            </div>
+            <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
+          <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${totalPayment}</p></button>
+        </form>
+      </div>
+    )
+  }
+
+  export default PaymentCardMP

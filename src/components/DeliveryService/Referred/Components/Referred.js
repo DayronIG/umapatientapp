@@ -27,7 +27,7 @@ export default function ReferredInvitation({finalAction}) {
                         <FaArrowRight className="icon-arrow" />
                     </div>
                     <div className="results-menu-map-item"
-                    onClick={() => history.push(`/onlinedoctor/who/${patient.ws}`)}
+                    onClick={() => history.push(`/onlinedoctor/who`)}
                     >
                         <div>
                             <FaUserNurse className="icon" />
@@ -42,7 +42,7 @@ export default function ReferredInvitation({finalAction}) {
                         </div>
                         <FaArrowRight className="icon-arrow" />
                     </div> */}
-                    <div className="results-menu-map-item" onClick={()=>history.push(`/${patient.ws}`)}>
+                    <div className="results-menu-map-item" onClick={()=>history.push(`/home`)}>
                         <div>
                             <FaHome className="icon" />
                                 Ir al inicio
@@ -50,7 +50,7 @@ export default function ReferredInvitation({finalAction}) {
                             <FaArrowRight className="icon-arrow" />
                         </div>
                     <div className="results-menu-map-item"
-                    onClick={() => history.push(`/${patient.ws}/autonomous`)}
+                    onClick={() => history.push(`/autonomous/${patient.ws}`)}
                     >
                         <div>
                             <FaPencilAlt className="icon" />

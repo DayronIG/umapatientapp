@@ -9,6 +9,7 @@ const Support = () => {
     const history = useHistory()
     const {section} = useParams()
     const patient = useSelector(state => state.user)
+    
     const renderSection = () => {
         switch(section){
             case 'guardia':

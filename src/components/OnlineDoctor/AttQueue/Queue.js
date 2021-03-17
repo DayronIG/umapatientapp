@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import queryString from 'query-string'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Link, withRouter, useHistory, useLocation, useParams } from 'react-router-dom';
 import { calcReaminingHrsMins } from '../../Utils/dateUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
@@ -25,28 +26,20 @@ const Queue = (props) => {
     const [calling, setCalling] = useState(false)
     const { loading } = useSelector(state => state.front)
     const assessment = useSelector(state => state.assessment)
-    const [dni] = useState(props.match.params.dni)
     const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
+    const {currentUser} = useSelector(state => state.userActive)
     const mr = useSelector(state => state.queries.medicalRecord[0])
+    const {activeUid} = useParams()
     const history = useHistory()
+    const location = useLocation()
+    const params = queryString.parse(location.search)
 
     useEffect(() => {
-        (async function checkAssignedAppointment() {
-            if (Object.keys(assignedAppointment).length === 0) {
-                dispatch({ type: 'LOADING', payload: true })
-                const user = await getDocumentFB(`users/${dni}`)
-                const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
-                const assigned = await findAllAssignedAppointment(dni, type)
-                dispatch({ type: 'LOADING', payload: false })
-                if (assigned) {
-                    dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
-                } else {
-                    return history.replace(`/home`)
-                }
-            }
-        })()
-    }, [])
+        if(currentUser?.uid) {
+            checkAssignedAppointment(currentUser.uid)
+        }
+    }, [currentUser])
 
     useEffect(() => {
         (async function () {
@@ -62,8 +55,8 @@ const Queue = (props) => {
     }, [assignedAppointment])
 
     useEffect(() => {
-        if (dni && assignation) {
-            firestore.doc(`events/mr/${dni}/${assignation}`)
+        if (patient.dni && assignation) {
+            firestore.doc(`events/mr/${patient.dni}/${assignation}`)
                 .onSnapshot(res => {
                     if (mr && mr !== undefined) {
                         let mr = res.data() && res.data().mr
@@ -75,6 +68,26 @@ const Queue = (props) => {
                 })
         }
     }, [assignation, mr])
+
+    async function checkAssignedAppointment(uid) {
+        if (Object.keys(assignedAppointment).length === 0) {
+            dispatch({ type: 'LOADING', payload: true })
+            let user = {}
+            if(params.dependant !== "false") {
+                user = await getDocumentFB(`user/${uid}/dependants/${activeUid}`)
+            } else {
+                user = await getDocumentFB(`user/${uid}`)
+            }
+            const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
+            const assigned = await findAllAssignedAppointment(uid, type)
+            dispatch({ type: 'LOADING', payload: false })
+            if (assigned) {
+                dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
+            } else {
+                return history.replace(`/home`)
+            } 
+        }
+    }
 
     const calculateRemainingTime = (assgnAppnt) => {
         let now = moment(new Date()).format('HHmm')
@@ -203,15 +216,23 @@ const Queue = (props) => {
                 patient.ws = assignedAppointment.appointments?.['0']?.['6']
             }
             if(patient.ws && patient.ws !== "") {
-                let queryUser = firestore.collection('auth').doc(patient.ws)
+                let queryUser = firestore.collection('user').doc(currentUser.uid)
                 return queryUser.onSnapshot(async function (doc) {
-                    let data = doc.data()._start_date
+                    let data = doc.data()
                     dispatch({ type: 'LOADING', payload: false })
-                    if (data !== '' && data !== "geo") {
-                        let callRoom = data?.split('///')
-                        if(callRoom) {
-                            dispatch({ type: 'SET_CALL_ROOM', payload: { room: callRoom?.[0], token: callRoom?.[1], assignation: callRoom?.[2]  } })
-                        }
+                    if (data.call?.room && data.call?.room !== '' && data !== "geo") {
+                        dispatch(
+                            { 
+                                type: 'SET_CALL_ROOM', 
+                                payload: { 
+                                    activeUid: data.call.activeUid,
+                                    assignation_id: data.call.assignation_id,
+                                    dependant: data.call.dependant,
+                                    date: data.call.date,
+                                    room: data.call.room, 
+                                    token: data.call.token, 
+                                } 
+                            })
                     } else {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
                     }
@@ -233,7 +254,7 @@ const Queue = (props) => {
             {calling ?
                 <>
                     <div className='ico-calling'>
-                        <Link to={`/onlinedoctor/attention/${dni}`} replace={true}>
+                        <Link to={`/onlinedoctor/attention/${activeUid}?dependant=${params.dependant}`} replace={true}>
                             <FontAwesomeIcon icon={faPhoneAlt} />
                         </Link>
                     </div>
@@ -251,6 +272,8 @@ const Queue = (props) => {
                 id={assignedAppointment?.appointments?.[0][14]}
                 calling={calling} 
                 appState={appointment.state}
+                activeUid={activeUid}
+                dependant={params.dependant}
             />
             {calling && <audio src={tone} id='toneAudio' autoPlay />}
         </>

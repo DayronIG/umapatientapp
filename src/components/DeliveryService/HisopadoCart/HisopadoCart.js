@@ -10,13 +10,13 @@ const HisopadoCart = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const user = useSelector(store => store.user);
-  const { params, deliveryInfo, changeMarker, hisopadoUserAddress } = useSelector(store => store.deliveryService);
+  const { params, deliveryInfo, changeMarker, hisopadoUserAddress, addressObservations } = useSelector(store => store.deliveryService);
   const [price, setPrice] = useState(params.price);
-  
+
   useEffect(() => {
     const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-    if(deliveryInfo.length < multiple_clients?.length){
-      dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
+    if (deliveryInfo.length < multiple_clients?.length) {
+      dispatch({ type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients })
     }
   }, [deliveryInfo])
 
@@ -35,8 +35,6 @@ const HisopadoCart = (props) => {
   }
 
   const handleAddHisopado = useCallback(() => {
-    console.log('asd');
-
     dispatch({
       type: 'SET_DELIVERY',
       payload: {
@@ -46,6 +44,7 @@ const HisopadoCart = (props) => {
           dni: '',
           ws: '',
           dob: '',
+          obs: addressObservations,
           sex: '',
           address: '',
           piso: '',
