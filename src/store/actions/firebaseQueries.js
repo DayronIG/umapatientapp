@@ -134,7 +134,7 @@ export function getBenficiaries(uid) {
 				beneficiaries.forEach((p) => {
 					let data = p.data();
 					if(!parentsTemp.find(el => el.dni !== data.dni))
-					parentsTemp.push(data);
+					parentsTemp.push({...data, id: p.ref.id} );
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
 			})
@@ -182,9 +182,9 @@ export function getFeedback(cuit) {
 export function getDependant(uid, dependant = false) {
 	return dispatch => {
 		try {
-			const authQuery = firestore.doc(`user/${uid}`)
-			if(dependant) {
-				authQuery.doc(`dependants/${dependant}`)
+			let authQuery = firestore.doc(`user/${uid}`)
+			if(dependant){
+				authQuery = firestore.doc(`user/${uid}/dependants/${dependant}`)
 			}
 			authQuery
 				.get()
@@ -244,18 +244,15 @@ export function getMedicalRecord(uid, dependant = false){
 		try {
 			const usersQuery = firestore
 				.collection(`user/${uid}/medical_records`)
-			if(!dependant) {
-				usersQuery.where('patient.uid', '==', uid)
-			} else {
-				usersQuery.where('patient.uid_dependant', '==', uid)
-			}
 				usersQuery.onSnapshot(subSnapshot => {
 					var tempArray = [];
 					subSnapshot.forEach(content => {
-						tempArray.push(content.data());
+						let data = content.data()
+						if(dependant === data.patient.dependant_uid) {
+							tempArray.push(data);
+						}
 					});
 					let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
-					console.log(tempArray)
 					dispatch({
 						type: 'GET_MEDICAL_RECORD',
 						payload: result

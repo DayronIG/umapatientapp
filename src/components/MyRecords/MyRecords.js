@@ -24,12 +24,11 @@ const MyRecords = () => {
         }
     }, [patient])
 
-    function selectBeneficiarieMr(p) {
-        if (p === 'owner') {
+    function selectBeneficiarieMr(active) {
+        if (active === 'owner') {
             dispatch(getMedicalRecord(currentUser.uid, false))
         } else {
-            // to do -> Dependant medical record
-            dispatch(getMedicalRecord(p.split('-')[0], p.split('-')[1]))
+            dispatch(getMedicalRecord(currentUser.uid, active))
         }
     }
 
@@ -39,13 +38,12 @@ const MyRecords = () => {
             <main className='my-history-container'> 
                 <div className='title-icon'>
                     <p className='font-weight-bold'>Consultas médicas</p>
-                    {/* <button><FaSlidersH/></button> */}
                 </div>
-                {/*  Beneficiary cambia de lugar con el nuevo diseño*/}
                 <div className='my-history-beneficiary'> 
                     <select className='select-beneficiary' onChange={(p) => selectBeneficiarieMr(p.target.value)}>
+                        <option key={123} value={`owner`}> {patient.fullname} </option>
                     {beneficiaries.map((p, index) => {
-                        return <option key={index} value={`${p.dni}-${p.ws}`}> {p.fullname} </option>
+                        return <option key={index} value={`${p.id}`}> {p.fullname} </option>
                     })}
                     </select>
                 </div>
@@ -74,10 +72,10 @@ const MyRecords = () => {
                                                         {typeof r.mr_preds.pre_clasif === 'string' ?
                                                         <p className='title-clasif'>Guardia</p> 
                                                         : 
-                                                        <p className='title-clasif'>{r.mr_preds.pre_clasif[2] || 'Médico clínico'}</p>
+                                                        <p className='title-clasif'>{r.mr_preds?.pre_clasif?.[2] || 'Médico clínico'}</p>
                                                         }
                                                     
-                                                    <p className='consult-date'>{!!r.mr && moment(r.mr.dt_cierre).format('DD-MM-YYYY')}</p>
+                                                    <p className='consult-date'>{!!r.mr && moment(r.mr?.dt_cierre).format('DD-MM-YYYY')}</p>
                                                 </section>
                                         </Link>
                                     </li>

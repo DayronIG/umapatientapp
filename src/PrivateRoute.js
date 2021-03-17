@@ -48,7 +48,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
-                    if (data.call?.room && data?.call?.room !== '') {
+                    if (data?._start_date && data._start_date !== '') {
                         if (!call.callRejected && !rest.path.includes('/attention/')) {
                             setNotification(true)
                             dispatch({ 

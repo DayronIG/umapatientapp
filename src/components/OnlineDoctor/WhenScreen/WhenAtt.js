@@ -48,6 +48,19 @@ const WhenScreen = (props) => {
 		});
 	}, []);
 
+
+	useEffect(() => {
+		// get params
+		try {
+			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
+				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
+			})
+		} catch(err) {
+			console.log(err)
+		}
+	}, [])
+
+
 	useEffect(() => {
 		if(user) {
 			let test = user.context === "temp" ? true : false
@@ -68,7 +81,7 @@ const WhenScreen = (props) => {
 				return findFreeAppointments(person, type, test);
 			}
 		} catch (error) {
-			// console.error(error)
+			console.error(error)
 			return props.history.replace('/');
 		}
 	}
@@ -128,8 +141,8 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{(active_guardia || action === 'Empty') && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
-					{active_list && action === 'Doctors' && (
+					{(active_guardia || user.country !== "AR" || pediatric) && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
+					{((active_list && action === 'Doctors') || user.context === "temp") && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
@@ -140,15 +153,6 @@ const WhenScreen = (props) => {
 								))}
 						</div>
 					)}
-					{user.context === "temp" &&  <div>
-							{assignations?.map((assignation, index) => (
-								<DoctorCard
-									{...assignation}
-									key={index}
-									dni={user.dni}
-								/>
-								))}
-						</div>}
 					{action === 'Loading' && (
 						<div className='when__loading'>
 							<Loader />
