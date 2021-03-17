@@ -34,7 +34,7 @@ const Login = () =>  {
                 <EmailButton circleBtn />
             </section>
 
-            <div className='login__lineSeparator'>o ingresá con tu cuenta</div>
+            <div className='login__lineSeparator'>o ingresa con un mail</div>
             {errorData &&
                 <section className='login__invalid'>
                     <p>El mail o la contraseña son incorrectos.</p>

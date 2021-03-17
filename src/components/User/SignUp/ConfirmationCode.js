@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {useSelector} from 'react-redux';
-import { Stepper, TextAndLink } from '../Login/GenericComponents';
+import { Stepper } from '../Login/GenericComponents';
 import {node_patient} from '../../../config/endpoints';
 import {useHistory} from 'react-router-dom';
 import db from '../../../config/DBConnection';
@@ -10,7 +10,6 @@ import axios from 'axios';
 
 const ConfirmationCode = () => {
     const history = useHistory();
-    const [codeConfirm, setCodeConfirm] = useState('Mail')
     const [code, setCode] = useState({
         n1: null,
         n2: null,
@@ -98,18 +97,7 @@ const ConfirmationCode = () => {
                 <img src={Confirm} className='signUp__content--illustration' alt='Mailbox'/>
                 <article className='signUp__content__mainText'>
                     <h1 className='title'>Ingresa el código de verificación</h1>
-                    { codeConfirm == 'Mail' &&
-                    <>
-                        <p className='subtitle'>Ingresa el código de 6 dígitos que te hemos enviado a tu mail.</p> 
-                        <p className='subtitle'>PD: ¡No olvides revisar el Spam!</p>
-                    </>
-                    }
-                    { codeConfirm == 'Number' && 
-                    <>
-                        <p className='subtitle'>Ingresa el código de 6 dígitos que te hemos enviado al +5433682199.</p>
-                        <a href='#'>Modificar teléfono</a>
-                    </>
-                    }
+                    <p className='subtitle'>Ingresa el código que te hemos enviado por whatsapp.</p>
                 </article>
                 <form className='signUp__content__formGroup'>
                         <input 
