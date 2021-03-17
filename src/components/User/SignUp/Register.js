@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Logo from '../../../assets/logo.png';
 import {checkNum} from '../../Utils/stringUtils';
 import {useSelector, useDispatch} from 'react-redux';
-import { ConditionButtons, GenericInputs, TextAndLink, Stepper, GenericButton, SelectOption } from '../Login/GenericComponents';
+import { ConditionButtons, GenericInputs, Stepper, GenericButton } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
 import Firebase from 'firebase/app';
 import axios from 'axios';
@@ -22,6 +22,7 @@ import CalendarIcon from '../../../assets/calendar.png';
 import Exclamation from '../../../assets/illustrations/exclamation.png';
 import Loading from '../../GeneralComponents/Loading';
 import isIos from '../../Utils/isIos';
+import {getCountry} from '../../Utils/getCountry'
 
 const Register = () => {
     const {screen} = useParams()
@@ -29,6 +30,7 @@ const Register = () => {
     const dispatch = useDispatch()
     const { register, handleSubmit, errors } = useForm();
     const userActive = useSelector(state => state.userActive)
+    const { country } = useSelector(state => state.user)
     const [loading, setLoading] = useState(false);
     const [switchContent, setSwitchContent] = useState('1')
     const [email, setEmail] = useState('')
@@ -118,7 +120,8 @@ const Register = () => {
                     ws: phoneChecked|| '',
                     sex: finalSex || '',
                     dob: birthDate || '',
-                    corporate: healthinsurance || ''
+                    corporate: healthinsurance || '',
+                    country: country || 'AR',
                 }
             }
             
@@ -137,11 +140,21 @@ const Register = () => {
         })
     }
 
+    async function getCountryCode(ws) {
+        if (ws) {
+            const phoneChecked = checkNum(ws)
+            let code = await getCountry(phoneChecked)
+            dispatch({ type: 'USER_FIRST_COUNTRY', payload: code })
+        }
+    }
+
     const validationForm = async (e, dataVal) => {
         if(e) {
             e.preventDefault()
             setModalWarning(false)
         }
+
+        getCountryCode(dataVal.phone);
 
         const uid = userActive.currentUser.uid
         if(sex === null) {
