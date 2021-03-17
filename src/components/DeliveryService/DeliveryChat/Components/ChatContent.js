@@ -50,9 +50,6 @@ export default ({ bubble }) => {
 	// }
 
 	function postDataConversation(inputValue) {
-		/*         if (!current?.cuil || !current?.appointments[0]["14"]) {
-					window.location.reload();
-				} */
 				let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
 				// 'Accept': 'text/plain' 
 	      		const userInternal = user.replace('-', '')

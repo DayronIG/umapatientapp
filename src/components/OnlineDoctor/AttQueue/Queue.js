@@ -62,6 +62,7 @@ const Queue = (props) => {
                         let mr = res.data() && res.data().mr
                         if (mr.destino_final !== '' && mr.destino_final !== "USER CANCEL") {
                             swal(`El médico cerró tu atencion.`, `Motivo: ${mr.destino_final}. Puedes tomar una nueva consulta.`, 'warning')
+                            history.push('/')
                             dispatch({ type: 'RESET_ALL' })
                         }
                     }

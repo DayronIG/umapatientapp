@@ -1,8 +1,9 @@
 const isLocal = window.location.origin.includes('localhost');
-const URN_UMA = `https://uma-v2.uc.r.appspot.com`  // `https://uma-v2.uc.r.appspot.com`; // `https://test-dot-uma-v2.uc.r.appspot.com` 
-const NODE_DEV = `http://localhost:8080`; // https://20200924t180300-dot-nodeserver-dot-uma-v2.uc.r.appspot.com
+const NODE_DEV = `http://localhost:8080`;
+// default
+const URN_UMA = isLocal ? `https://v2uid-dot-uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com` 
+// node
 const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
-const EVENTS = `https://gps-dot-uma-v2.appspot.com/v1/users`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;
 const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';

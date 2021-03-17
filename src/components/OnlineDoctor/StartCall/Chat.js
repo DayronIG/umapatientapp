@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import  { useParams } from 'react-router-dom';
+import  { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import { transcription } from '../../../config/endpoints';
@@ -11,20 +11,23 @@ import { Loader } from '../../GeneralComponents/Loading';
 import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
 import db from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
+import queryString from 'query-string';
 
 const Chat = (props) => {
     const dispatch = useDispatch()
-    const { dni } = useParams()
-    const { ws } = useSelector((state) => state.user)
+    const { ws, dni } = useSelector((state) => state.user)
     const current = useSelector(state => state.assignations.current)
     const loading = useSelector(state => state.front.loading)
     const [, setMedicalRecord] = useState([])
     const { assignation } = useSelector(state => state.queries.callSettings)
-    const { token} = useSelector(state => state.userActive.token)
+    const { token, currentUser } = useSelector(state => state.userActive)
     const [dataChat, setDataChat] = useState([])
     const [inputValue, setInputValue] = useState('')
     const chatRef = useRef()
     const firestore = db.firestore()
+    const {activeUid} = useParams()
+    const location = useLocation()
+    const dependant = queryString.parse(location.search)
 
     useEffect(() => {
         setInterval(() => {
@@ -33,8 +36,8 @@ const Chat = (props) => {
     }, [chatRef])
 
     useEffect(() => {
-        if (dni) {
-            getAppointmentByDni(dni).then((appoint) => {
+        if (activeUid) {
+            getAppointmentByUid(activeUid, dependant).then((appoint) => {
                 if (appoint) {
                     dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: appoint })
                 } else {
@@ -47,15 +50,16 @@ const Chat = (props) => {
                 }
             })
         }
-    }, [dni])
+    }, [activeUid])
 
     useEffect(() => {
-        if (current?.appointments || assignation) {
-            let aid = current?.appointments?.[0]["14"] || assignation
-            let query = firestore.collection('events').doc('messages').collection(dni).where("assignation_id", "==", aid)
-            query.onSnapshot({
-                includeMetadataChanges: true
-            },
+        if (current?.appointments) {
+            firestore.doc('events/messages')
+                .collection(current?.patient.dni)
+                .where("assignation_id", "==", current?.assignation_id)
+                .onSnapshot({
+                    includeMetadataChanges: true
+                },
                 function (snapshot) {
                     var tempArray = []
                     snapshot.forEach((content) => {
@@ -101,17 +105,17 @@ const Chat = (props) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    async function getAppointmentByDni(dni) {
-        if (dni !== "") {
+    async function getAppointmentByUid(uid) {
+        if (uid !== "") {
             let currentDate = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYYMM')
             let compareDate = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD')
             let specialty = 'online_clinica_medica' // Temporal, luego habrá más especialidades
             try {
                 const query = await db.firestore().collection('assignations').doc(specialty).collection(currentDate)
-                    .where('appointments.0', 'array-contains', dni)
+                    .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
                 const bagQuery = await db.firestore().collection('assignations').doc(specialty).collection("bag")
-                    .where('appointments.0', 'array-contains', dni)
+                    .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
                 return new Promise((resolve, reject) => {
                     query.get()
@@ -142,7 +146,7 @@ const Chat = (props) => {
     }
 
 
-    function postDataConversation(postValue) {
+    function postDataConversation() {
         dispatch({ type: 'LOADING', payload: true })
         let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
         // 'Accept': 'text/plain' 
@@ -151,10 +155,11 @@ const Chat = (props) => {
                 'ws': ws,
                 'dni': dni,
                 'dt': date,
-                'cuil': current?.cuil || '',
-                'assignation_id': current?.appointments && (current?.appointments[0]["14"] || assignation),
+                'cuil': current?.cuit || '',
+                'assignation_id': current?.appointments && (current?.assignation_id || current?.appointments[0]["14"]),
                 'rol': 'patient',
-                'text': inputValue || ''
+                'text': inputValue || '',
+                'uid': currentUser.uid
             }
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
             axios.post(transcription, data, { headers })

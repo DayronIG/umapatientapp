@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useLocation, useHistory, useParams} from 'react-router-dom';
-import { getAppointmentByDni } from '../../../../store/actions/firebaseQueries';
+import { getAppointmentByUid } from '../../../../store/actions/firebaseQueries';
 import moment from 'moment';
 import { user_cancel } from '../../../../config/endpoints';
 import swal from 'sweetalert';
@@ -27,7 +27,7 @@ const CancelAppointment = () => {
         if(assignedAppointment.path) {
             documentBuild = assignedAppointment.path
         } else if (path === "" || path === undefined) {
-            const appointment = await getAppointmentByDni(patient.dni, 'bag')
+            const appointment = await getAppointmentByUid(currentUser.uid, 'bag')
             documentBuild = appointment && `assignations/online_clinica_medica/bag/${appointment.appointments[0][14]}`
         } else if(path === "" || path === undefined) {
             return history.push('/home')

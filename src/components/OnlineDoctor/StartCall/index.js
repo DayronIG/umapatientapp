@@ -20,7 +20,7 @@ const CallContainer = (props) => {
 	const call = useSelector((state) => state.call);
 	const {activeUid} = useParams()
 	const location = useLocation()
-	const {dependant} = queryString(location.search)
+	const {dependant} = queryString.parse(location.search)
 	const { loading } = useSelector((state) => state.front);
 	const { currentUser } = useSelector(state => state.userActive)
 

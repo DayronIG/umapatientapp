@@ -16,27 +16,27 @@ const Rating = () => {
 	const [ratingMed, setRatingMed] = useState(0);
 	const [notes, setNotes] = useState('');
 	const token = useSelector((state) => state.userActive.token);
-	const patient = useSelector((state) => state.user);
 	const mr = useSelector((state) => state.queries.medicalRecord);
     const uid = useSelector(state => state.userActive?.currentUser?.uid)
 	const location = useLocation()
-    const { dependant, activeUid } = queryString.parse(location.search)
+    const { dependant, activeUid, assignation_id } = queryString.parse(location.search)
 
     React.useEffect(() => {
         let local = JSON.parse(localStorage.getItem('appointmentUserData'))
         try {
 			let dependant = activeUid === uid ? false : true
+			console.log(dependant)
             dispatch(getMedicalRecord(activeUid, dependant))
         } catch (err) {
             console.log(err)
         }
-    }, [dispatch, patient])
+    }, [dispatch, activeUid])
 
 	useEffect(() => {
 		if (
 			mr[0] &&
-			(mr[0].mr_preds.temperatura !== '' ||
-				mr[0].mr_preds.traslado !== '' ||
+			(mr[0].mr_preds?.temperatura >= 1 ||
+				mr[0].mr_preds?.traslado >= 1 ||
 				mr[0].mr.destino_final === 'Paciente Ausente' ||
 				mr[0].mr.destino_final === 'Anula Paciente' ||
 				mr[0].mr.destino_final === 'Anula por falla de conexión')
@@ -86,24 +86,20 @@ const Rating = () => {
 					'ws': u.ws,
 					'dni': u.dni,
 					'dt': date,
-					'assignation_id': mr[0].assignation_id,
+					'assignation_id': assignation_id,
 					'uma_eval': ratingApp.toString(),
 					'doc_eval': ratingMed.toString(),
 					'notes': notes.replace(/(\r\n|\n|\r)/gm, "").trim(),
 					'uid': uid,
 					'uid_dependant': dependant === 'true' ? activeUid : false
 				}
-				if (!mr[0] && mr[0].assignation_id) {
-					data = { ...data, 'assignation_id': mr[0].assignation_id, }
-				}
 				await axios.post(feedback, data, headers)
 				history.push('/home')
 			} catch (err) {
 				console.error(err)
-				history.push('/home')
 			}
 		},
-		[ratingApp, ratingMed],
+		[ratingApp, ratingMed, notes],
 	)
        
     

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { OTSession, OTPublisher, OTStreams, OTSubscriber, preloadScript } from 'opentok-react';
 import Chat from './Chat';
 
 const StartCall = (props) => {
 	const dispatch = useDispatch();
-	const {session } = useSelector((state) => state.call);
+	const history = useHistory()
+	const { session, assignation_id } = useSelector((state) => state.call);
 	const [error, setError] = useState(false);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
@@ -30,7 +31,8 @@ const StartCall = (props) => {
 	const publisherEventHandlers = {
 		streamDestroyed: ({ reason }) => {
 			if (props.sala === '' || reason === 'unpublished') {
-				props.history.replace(`/feedback?activeUid=${props.activeUid}&dependant=${props.dependant}`);
+				console.log('')
+				history.replace(`/feedback?assignation_id=${assignation_id}&activeUid=${props.activeUid}&dependant=${props.dependant}`);
 			}
 		},
 	};
@@ -156,4 +158,4 @@ const StartCall = (props) => {
 	);
 };
 
-export default preloadScript(withRouter(StartCall));
+export default preloadScript(StartCall);

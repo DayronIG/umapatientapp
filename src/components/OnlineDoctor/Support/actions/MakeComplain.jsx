@@ -39,7 +39,8 @@ const SendComplain = ({ sendComplain }) => {
             assignation_id: id,
             appointment_path: '',
             type: 'complain',
-            complain: claim
+            complain: claim,
+            uid: currentUser.uid
         }
         currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }

@@ -22,7 +22,7 @@ const ProfileComponent = () => {
 
 	useEffect(() => {
 		let unsubscribe;
-		if (currentUser.uid) {
+		if (currentUser?.uid) {
 			unsubscribe = db
 				.collection('user')
 				.doc(currentUser.uid)
@@ -69,7 +69,7 @@ const ProfileComponent = () => {
 				</MobileModal>
 			)}
 			<div className='profile-container'>
-				<div className='profile-top-icons' onClick={history.push('/')}>
+				<div className='profile-top-icons' onClick={() => history.push('/')}>
 					<FaArrowLeft color='#fff' size='1.5rem' />
 				</div>
 				<div>

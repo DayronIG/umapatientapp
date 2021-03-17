@@ -128,14 +128,8 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{(active_guardia || assignations.length < 1) &&  <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
-					{action === 'Loading' && (
-						<div className='when__loading'>
-							<Loader />
-							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
-						</div>
-					)}
-					{action === 'Doctors' && (active_list || user.context === 'temp') && (
+					{(active_guardia || action === 'Empty') && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
+					{active_list && action === 'Doctors' && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
@@ -143,7 +137,22 @@ const WhenScreen = (props) => {
 									key={index}
 									dni={user.dni}
 								/>
-							))}
+								))}
+						</div>
+					)}
+					{user.context === "temp" &&  <div>
+							{assignations?.map((assignation, index) => (
+								<DoctorCard
+									{...assignation}
+									key={index}
+									dni={user.dni}
+								/>
+								))}
+						</div>}
+					{action === 'Loading' && (
+						<div className='when__loading'>
+							<Loader />
+							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
 						</div>
 					)}
 					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/home')}>

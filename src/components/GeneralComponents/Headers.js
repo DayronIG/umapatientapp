@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLaptopMedical, faArrowLeft, faUserCircle, faCheck, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
@@ -23,46 +23,38 @@ export const OnlineDoctorHeader = () => {
 };
 
 export const GenericHeader = (props) => {
+	const history = useHistory()
 	const { ws, profile_pic } = useSelector((state) => state.user);
+	const {currentUser} = useSelector(state => state.userActive) 
 	const [displayNews] = useState(false);
+
 	return (
 		<section className='header-container'>
 			<div className='contentWrapper'>
 				{props.logo === 'umacare' ? (
 					<>
 						<div className='logo-container'>
-							<Link to='/'>
-								<div className='logo'>
+								<div className='logo' onClick={() => history.push('/')}>
 									<img src={umacare} alt='UMA CARE' />
 								</div>
-							</Link>
 						</div>
 					</>
 				) : (
 					<>
 						<div className='logo-container'>
-							<Link to='/'>
-								<div className='logo'>
+								<div className='logo' onClick={() => history.push('/')}> 
 									<img src={logo} alt='UMA HEALTH' />
 								</div>
-							</Link>
 						</div>
 					</>
 				)}
 				{props.back ? (
-					<Link to='/'>
-						<FontAwesomeIcon className='mt-2 pt-1' icon={faArrowLeft} />
-					</Link>
+						<FontAwesomeIcon className='mt-2 pt-1' icon={faArrowLeft} onClick={() => history.push('/')} />
 				) : (
 					<p className='header-title'>{props.children}</p>
 				)}
-				{/* <div className={displayNews ? 'bell-menu active' : 'bell-menu'} onClick={() => setDisplayNews(!displayNews)}>
-          <div className='notifications'>2</div>
-          <FontAwesomeIcon className='menu-profile' icon={faBell} />
-        </div> */}
 				{ws && !props.profileDisabled ? (
-					<div className='hamburguer-menu'>
-						<Link to={`/profile/${ws}`}>
+					<div className='hamburguer-menu' onClick={() => history.push(`/profile/${currentUser.uid}`)}>
 							{profile_pic ? (
 								<div className='profile_pic'>
 									<img src={profile_pic} alt='Profile Pic' />
@@ -70,7 +62,6 @@ export const GenericHeader = (props) => {
 							) : (
 								<FontAwesomeIcon className='menu-profile' icon={faUserCircle} />
 							)}
-						</Link>
 					</div>
 				) : (
 					<div style={{ width: '50px' }}></div>
@@ -114,11 +105,13 @@ export const HistoryHeader = (props) => {
 }
 
 export const BackButton = (props) => {
+	const history = useHistory();
+	
 	return (
-		<section className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'}>
-			<Link to={props.customTarget ? `${props.customTarget}` : '/'}> 
+		<section 
+			onClick={() => history.push(props.customTarget ? `${props.customTarget}` : '/')}
+			className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'} >
 				<IoIosArrowBack onClick={props.action? () => props.action(): () => console.log('')} icon={faArrowLeft} />
-			</Link>
 		</section>
 	);
 };

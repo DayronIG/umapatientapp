@@ -255,6 +255,7 @@ export function getMedicalRecord(uid, dependant = false){
 						tempArray.push(content.data());
 					});
 					let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
+					console.log(tempArray)
 					dispatch({
 						type: 'GET_MEDICAL_RECORD',
 						payload: result
@@ -332,8 +333,8 @@ export function getVoucherById(user, aid) {
 }
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
-export function getAppointmentByDni(dni, collectionName) {
-	if (dni !== '') {
+export function getAppointmentByUid(uid, collectionName) {
+	if (uid !== '') {
 		let appointments = [];
 		let currentDate = moment(new Date())
 			.tz('America/Argentina/Buenos_Aires')
@@ -346,7 +347,7 @@ export function getAppointmentByDni(dni, collectionName) {
 			.collection('assignations')
 			.doc(specialty)
 			.collection(collectionName || currentDate)
-			.where('appointments.0', 'array-contains', dni)
+			.where('patient.uid', '==', uid)
 			.where('state', '==', 'ASSIGN');
 		return new Promise((resolve, reject) => {
 			query
