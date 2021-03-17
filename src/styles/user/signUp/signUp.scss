@@ -13,6 +13,10 @@
         top: 5px;
     }
 
+    .modal_code_content {
+        text-align: center;
+    }
+
     .signUp__content {
         padding: 15% 0;
         min-height: 100vh;
@@ -95,17 +99,21 @@
         }
 
         .signUp__content__formGroup {
-            @include d-flex-center;
-            max-width: 90%;
+            width: 90%;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
             .input-number {
-                margin: 0 5px;
-                width: 20px;
+                margin: 0 5px 20px;
+                width: 150px;
                 border: none;
                 border-bottom: 2px solid $uma-primary;
-                &:nth-child(3) {
-                    margin-right: 10px;
-                }
+                font-size: 1.3rem;
+                text-align: center;
+                letter-spacing: 0.3rem;
+
                 &:focus {
                     outline: none;
                 }
