@@ -205,7 +205,7 @@ const Register = () => {
         Firebase.auth().currentUser.delete()
         .then(() => {
             dispatch({ type: 'RESET_USER_DATA' });
-            history.push('/')
+            history.push('/');
         })
         .catch(e => {
             if (e.code === 'auth/requires-recent-login') {

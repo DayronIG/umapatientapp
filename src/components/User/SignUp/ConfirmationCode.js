@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { Stepper, GenericButton } from '../Login/GenericComponents';
 import {node_patient} from '../../../config/endpoints';
 import {useHistory} from 'react-router-dom';
@@ -11,6 +11,7 @@ import Exclamation from '../../../assets/illustrations/exclamation.png';
 import axios from 'axios';
 
 const ConfirmationCode = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const [code, setCode] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -100,7 +101,10 @@ const ConfirmationCode = () => {
                         <img src={Exclamation} className='modal__img' alt='Simbolo de exclamacion' />
                         <p className='modal__text'>{modalMessage}</p>
                         <div className='actionModal__btns'>
-                            <button className='button-action log' onClick={() => setShowModal(false)}>Continuar</button>
+                            <button className='button-action log' onClick={() => {
+                                dispatch({ type: 'RESET_USER_DATA' });
+                                history.push('/');
+                            }}>Continuar</button>
                         </div>
                     </div>
                 </MobileModal>
