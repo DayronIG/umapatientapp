@@ -28,6 +28,7 @@ const ConfirmAppointment = (props) => {
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
+	const {currentUser} = useSelector(state => state.activeUser)
 
 	useEffect(() => {
 		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
@@ -99,7 +100,7 @@ const ConfirmAppointment = (props) => {
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
-				uid: user.core_id,
+				uid: currentUser.uid,
 				uid_dependant: params.dependant === 'true' ? activeUid : false,
 				category
 			};

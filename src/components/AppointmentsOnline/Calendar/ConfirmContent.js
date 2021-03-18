@@ -162,6 +162,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					sex: patient.sex || '',
 					ws: patient.ws,
 					uid: currentUser.uid,
+					category: "MI_ESPECIALISTA",
 					uid_dependant: params.dependant === 'true' ? activeUid: false
 				};
 				const res = await post(make_appointment, data, {

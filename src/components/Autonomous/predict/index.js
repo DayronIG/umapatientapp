@@ -14,7 +14,7 @@ import { make_appointment } from '../../../config/endpoints';
 
 const Predict = ({predicted, history})=>{
     const dispatch = useDispatch();
-    const token = useSelector(state => state.userActive.token)
+    const {token, currentUser} = useSelector(state => state.userActive)
     const { uid } = useSelector(state => state.userActive.currentUser)
     const patient = useSelector(state => state.user)
     const autonomous = useSelector(state => state.autonomous)
@@ -88,7 +88,7 @@ const Predict = ({predicted, history})=>{
 				sex: patient.sex || '',
 				specialty: 'online_clinica_medica',
                 ws: patient.ws,
-                uid: patient.core_id,
+                uid: currentUser.uid,
                 uid_dependant: false,
                 category: 'GUARDIA_AUTONOMOUS'
 			};

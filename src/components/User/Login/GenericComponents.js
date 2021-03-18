@@ -120,6 +120,8 @@ export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
             provider.addScope('profile');
             provider.addScope('email');
 
+            const uid = currentUser.uid;
+
             await currentUser.linkWithPopup(provider)
                 .then(async function (result) {
                     let credential = result.credential;
@@ -139,7 +141,7 @@ export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')
@@ -218,6 +220,8 @@ export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
             provider = new Firebase.auth.FacebookAuthProvider();
             provider.addScope('email');
 
+            const uid = currentUser.uid;
+
             await currentUser.linkWithPopup(provider)
                 .then(async function (result) {
                     let credential = result.credential;
@@ -237,7 +241,7 @@ export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')
@@ -318,6 +322,8 @@ export const MicrosoftButton = ({ circleBtn, signUp, vincular }) => {
             provider.addScope('mail.read');
             provider.addScope('calendars.read');
 
+            const uid = currentUser.uid;
+
             await currentUser.linkWithPopup(provider)
                 .then(async function (result) {
                     let credential = result.credential;
@@ -337,7 +343,7 @@ export const MicrosoftButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')

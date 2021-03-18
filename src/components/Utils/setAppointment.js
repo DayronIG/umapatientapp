@@ -26,7 +26,6 @@ export default function (user, firstAppointment, medicalConsultReason, coords) {
       lat: coords.lat || '-34.5633155',
       lon: coords.lng || '-58.4739184', // Coordenadas de Melian si no hay location
       uid: userVerified.core_id
-
     }
     localStorage.setItem('currentAppointment', JSON.stringify(data.ruta))
     Axios

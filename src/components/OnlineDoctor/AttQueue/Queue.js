@@ -55,12 +55,13 @@ const Queue = (props) => {
     }, [assignedAppointment])
 
     useEffect(() => {
+        let snapshot = () => {}
         if (patient.dni && assignation) {
-            firestore.doc(`events/mr/${patient.dni}/${assignation}`)
+            snapshot = firestore.doc(`events/mr/${patient.dni}/${assignation}`)
                 .onSnapshot(res => {
                     if (mr && mr !== undefined) {
                         let mr = res.data() && res.data().mr
-                        if (mr.destino_final !== '' && mr.destino_final !== "USER CANCEL") {
+                        if (mr.destino_final !== '' && mr.destino_final !== "USER CANCEL" && history.location.pathname.includes('onlinedoctor')) {
                             swal(`El médico cerró tu atencion.`, `Motivo: ${mr.destino_final}. Puedes tomar una nueva consulta.`, 'warning')
                             history.push('/')
                             dispatch({ type: 'RESET_ALL' })
@@ -68,6 +69,7 @@ const Queue = (props) => {
                     }
                 })
         }
+        return () =>  snapshot
     }, [assignation, mr])
 
     async function checkAssignedAppointment(uid) {
