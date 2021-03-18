@@ -28,7 +28,7 @@ const ConfirmAppointment = (props) => {
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
-	const {currentUser} = useSelector(state => state.activeUser)
+	const {currentUser} = useSelector(state => state.userActive)
 
 	useEffect(() => {
 		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {

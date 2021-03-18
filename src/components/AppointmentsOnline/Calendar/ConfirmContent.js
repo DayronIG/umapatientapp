@@ -136,7 +136,8 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					plan: '',
 					services: '',
 				};
-				writeOSData(sendData);
+				/* writeOSData(sendData); */
+				/* TO DO: hacer un patch desde el node a coverage en lugar de writeOSData */
 				const appFullDt = `${appoint.date.replace('-', '').replace('-', '')}${appoint.time.replace(/:/g, '')}`;
 				const id = `online_${doctor.matricula_especialidad}/${moment(appoint.date).format(
 					'YYYYMM'
