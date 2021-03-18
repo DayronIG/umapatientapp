@@ -19,9 +19,11 @@ export const ProfilePic = ({ user }) => {
 		};
 		await currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+			console.log(data)
 			await axios
-				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
+					console.log(res)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
 				.catch((err) => {
@@ -35,7 +37,7 @@ export const ProfilePic = ({ user }) => {
 	const uploadImage = (e) => {
 		let dt = moment().format('YYYYMMDDHHmmss');
 		let fieldName = e.target.name;
-		uploadFileToFirebase(e.target.files[0], `${user.dni}/profile_pic/${dt}`).then((imgLink) => {
+		uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
 			setUserData({ ...userData, [fieldName]: imgLink });
 		});
 	};
@@ -46,7 +48,7 @@ export const ProfilePic = ({ user }) => {
 			<div className='umaBtn attachFile'>
 				<FiUpload className='attachFile__icon' />
 				<p>Buscar Imagen</p>
-				<input type='file' name='profile_pic' onChange={uploadImage} />
+				<input type='file' name='profile_pic' onChange={(e) => uploadImage(e)} />
 			</div>
 			<button className='btn btn-blue-lg' type='submit'>
 				Subir
@@ -65,6 +67,8 @@ export const PersonalData = ({ user }) => {
 		dob: user.dob || '',
 	});
 
+	console.log("Ok")
+	
 	const handleChange = (e) => {
 		setUserData({ ...userData, [e.target.name]: e.target.value });
 	};
@@ -77,7 +81,7 @@ export const PersonalData = ({ user }) => {
 		await currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
 			await axios
-				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
@@ -132,7 +136,7 @@ export const ContactData = ({ user }) => {
 		currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
 			await axios
-				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
@@ -178,7 +182,7 @@ export const HealtData = ({ user }) => {
 		currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
 			await axios
-				.patch(`${node_patient}/${user.dni}`, data, {headers})
+				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})

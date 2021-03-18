@@ -139,7 +139,7 @@ export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')
@@ -237,7 +237,7 @@ export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')
@@ -337,7 +337,7 @@ export const MicrosoftButton = ({ circleBtn, signUp, vincular }) => {
                             }
                         }
                         await result.user.updateProfile({ displayName: user.ws })
-                        await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                        await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
                             .then(res => {
                                 dispatch({ type: 'SET_USER_LOGIN', payload: [loginMethod] })
                                 history.push('/')

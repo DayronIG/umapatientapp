@@ -55,7 +55,7 @@ const WelcomeAgain = () => {
                             password: dataVal.password
                         }
                     }
-                    await axios.patch(`${node_patient}/${user.dni}`, data, { headers })
+                    await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, { headers })
                         .then(res => {
                             dispatch({ type: 'SET_USER_LOGIN', payload: ['email'] })
                             history.push('/')

@@ -81,7 +81,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [user, firestore, call.callRejected, rest.path])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
-		if (user.dni !== "" && currentUser && currentUser.email) {
+		if (currentUser && currentUser.email) {
 			DetectRTC.load(function () {
                     const ios = isIos()
                     if (!ios) {
@@ -92,7 +92,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 				})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user, currentUser, token])
+	}, [currentUser, token])
 
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
@@ -128,14 +128,14 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 Axios
                     .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
                     .then((res) => {
-                        // console.log("UMA");
+                        console.log("UMA");
                     })
                     .catch((err) => {
                         console.log(err);
                     });
                 })
         }, 1500);
-    }, [user, currentUser])
+    }, [currentUser])
     
     return (
 

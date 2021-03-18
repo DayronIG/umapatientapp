@@ -76,7 +76,7 @@ const EmailForm = (props) => {
                             email: email || user.email,
                             password: password
                         }}
-                    await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
+                    await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
                         .then(res => {
                             dispatch({type: 'CLOSE_MODAL'})
                             dispatch({type: 'SET_USER_LOGIN', payload: 'email'})
@@ -207,7 +207,7 @@ const Advice = ({setAdvice}) => {
                             picture: result.additionalUserInfo.profile.picture
                         }}
                 await result.user.updateProfile({displayName: user.ws})
-                await axios.patch(`${node_patient}/${user.dni}`, data, {headers})
+                await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
                     .then(res => console.log("Ok"))
                 })
                 dispatch({type: 'CLOSE_MODAL'})
