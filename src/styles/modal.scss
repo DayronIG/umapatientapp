@@ -99,18 +99,19 @@
   }
   .actionModal__btns {
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
     margin: 20px 0;
       .button-action {
-        margin: 0 10px;
+        margin: auto;
         border: none;
         border-radius: 5px;
-        height: 35px;
-        width: 120px;
+        height: 45px;
+        width: 90%;
         color: $white-color;
         &.log {
             background-color: $uma-primary;
             color: $white-color;
+            margin-bottom: 20px;
         }
         &.next {
             color: $uma-primary;
