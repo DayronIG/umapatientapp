@@ -28,7 +28,6 @@ const DossierContainer = (props) => {
 
     const enviarReclamo = () => {
         setSendIssue(true)
-        return console.log('Reclamo enviado')
     }
 
     console.log(att.mr, docData)

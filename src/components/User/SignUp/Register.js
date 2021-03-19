@@ -187,7 +187,7 @@ const Register = () => {
         
         if(exists.data.exists) {
             setModalWarning(true)
-            let text = `El usuario está registrado con el teléfono ${exists.data.ws}`
+            let text = `Ya existe un usuario registrado con el teléfono ${exists.data.ws}`
             if (exists.data.email && exists.data.email !== '') {
                 text += ` y el email ${exists.data.email}`
             }
@@ -425,8 +425,8 @@ const Register = () => {
                                         <img src={Exclamation} className='modal__img' alt='Simbolo de exclamacion'/>
                                         <p className='modal__text'>{textModal}</p>
                                         <div className='actionModal__btns'>
-                                            <button className='button-action log' onClick={(e)=>redirectUserHome(e)}>Ingresar</button>
-                                            <button className='button-action next' onClick={(e)=>validationForm(e, dataForm)}>Continuar</button>
+                                            <button className='button-action log' onClick={(e)=>redirectUserHome(e)}>Ingresar con esa cuenta</button>
+                                            <button className='button-action next' onClick={(e)=>validationForm(e, dataForm)}>Continuar registro</button>
                                         </div>
                                     </MobileModal>
                                 } 
