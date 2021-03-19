@@ -30,7 +30,6 @@ const DossierContainer = (props) => {
         setSendIssue(true)
     }
 
-    console.log(att.mr, docData)
     return (
         <>
             {att.mr.destino_final !== '' && att.mr.destino_final !== 'Anula el paciente' &&

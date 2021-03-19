@@ -126,15 +126,18 @@ export function getUserParentsFirebase(uid) {
 }
 
 export function getBenficiaries(uid) {
-	let queryUser = firestore.collection(`user/${uid}/dependants`).where('dni', '>', '');
+	let queryUser = firestore.collection(`user/${uid}/dependants`);
 	return (dispatch) => {
 		queryUser.get()
 			.then((beneficiaries) => {
 				let parentsTemp = [];
 				beneficiaries.forEach((p) => {
 					let data = p.data();
-					if(!parentsTemp.find(el => el.dni !== data.dni))
-					parentsTemp.push({...data, id: p.ref.id} );
+					if(parentsTemp.length === 0 || parentsTemp.find(el => {
+						return el.dni !== data.dni
+					})){
+						parentsTemp.push({...data, id: p.ref.id} );
+					}
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
 			})
@@ -316,9 +319,9 @@ export function getVoucher(user) {
 export function getVoucherById(user, aid) {
 	try {
 		const usersQuery = firestore
-			.collection('events')
-			.doc('mr')
-			.collection(user)
+			.collection('user')
+			.doc(user)
+			.collection('medical_records')
 			.doc(aid);
 		return (dispatch) => {
 			usersQuery.onSnapshot((doc) => {

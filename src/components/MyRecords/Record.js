@@ -11,6 +11,7 @@ import './../../styles/history/HeaderContainer.scss';
 const Record = (props) => {
     const dispatch = useDispatch()
     const att = useSelector((state) => state.queries.voucher)
+    const {currentUser} = useSelector(state => state.userActive)
     const [tab, setTab] = useState('resumen')
     const {recipe} = useParams()
 
@@ -21,8 +22,10 @@ const Record = (props) => {
     },[recipe])
 
     useEffect(() => {
-        dispatch(getVoucherById(props.dni, props.aid))
-    }, [props.aid])
+        if(currentUser){
+        dispatch(getVoucherById(currentUser.uid, props.aid))
+    }
+    }, [props.aid, currentUser])
 
     useEffect(() => {
         document.addEventListener('keydown', (e) => {

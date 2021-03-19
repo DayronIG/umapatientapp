@@ -27,6 +27,7 @@ const MyRecords = () => {
     }, [patient])
 
     function selectBeneficiarieMr(active) {
+        console.log(active)
         if (active === 'owner') {
             dispatch(getMedicalRecord(currentUser.uid, false))
             setSelected(patient.dni)
@@ -36,6 +37,8 @@ const MyRecords = () => {
             setSelected(currentDependant.dni)
         }
     }
+
+    console.log(selected)
 
     return (
         <>
