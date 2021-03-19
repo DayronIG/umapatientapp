@@ -31,6 +31,7 @@ const DossierContainer = (props) => {
         return console.log('Reclamo enviado')
     }
 
+    console.log(att.mr, docData)
     return (
         <>
             {att.mr.destino_final !== '' && att.mr.destino_final !== 'Anula el paciente' &&

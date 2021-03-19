@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
@@ -15,20 +15,25 @@ const MyRecords = () => {
     const {beneficiaries} = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
     const {currentUser} = useSelector(state => state.userActive)
+    const [selected, setSelected] = useState(patient.dni)
 
     useEffect(() => { 
         window.scroll(0, 0);
         if(patient.dni) {
             dispatch(getBenficiaries(currentUser.uid))
             dispatch(getMedicalRecord(currentUser.uid, false))
+            setSelected(patient.dni)
         }
     }, [patient])
 
     function selectBeneficiarieMr(active) {
         if (active === 'owner') {
             dispatch(getMedicalRecord(currentUser.uid, false))
+            setSelected(patient.dni)
         } else {
             dispatch(getMedicalRecord(currentUser.uid, active))
+            let currentDependant = beneficiaries.find(p => p.id === active)
+            setSelected(currentDependant.dni)
         }
     }
 
@@ -57,6 +62,7 @@ const MyRecords = () => {
                             r.mr.destino_final !== 'USER CANCEL' && 
                             r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
                             r.mr.dt_cierre !== '' &&  r.incidente_id !== 'auto' &&
+                            r.patient.dni === selected &&
                             <React.Fragment key={index}>
                                 <li className='my-history-consultation'>
                                         <Link to={`/history/${r.patient.dni}/${r.assignation_id}`} className='consult-link'>
