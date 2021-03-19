@@ -250,6 +250,8 @@ export function getMedicalRecord(uid, dependant = false){
 						let data = content.data()
 						if(dependant === data.patient.dependant_uid) {
 							tempArray.push(data);
+						} else if(!dependant) {
+							tempArray.push(data);
 						}
 					});
 					let result = tempArray.sort((a, b) => new Date(b.created_dt) - new Date(a.created_dt))
