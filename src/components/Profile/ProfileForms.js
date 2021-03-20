@@ -65,6 +65,8 @@ export const PersonalData = ({ user }) => {
 		corporate: user.corporate || '',
 		fullname: user.fullname || '',
 		dob: user.dob || '',
+		dni: user.dni || '',
+		ws: user.ws || ''
 	});
 
 	console.log("Ok")
@@ -106,7 +108,11 @@ export const PersonalData = ({ user }) => {
 				/>
 			</div>
 			<div>
-				<small>Obra Social</small>
+				<small>Documento de identidad</small>
+				<input value={userData.dni} type='text' name='dni' onChange={handleChange} />
+			</div>
+			<div>
+				<small>Obra Social o cobertura de salud</small>
 				<input value={userData.corporate} type='text' name='corporate' onChange={handleChange} />
 			</div>
 			<div>
@@ -126,6 +132,7 @@ export const ContactData = ({ user }) => {
 	const [userData, setUserData] = useState({
 		address: user.address || '',
 		piso: user.piso || '',
+		ws: user.ws || ''
 	});
 	const handleSubmit = (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
@@ -154,6 +161,10 @@ export const ContactData = ({ user }) => {
 
 	return (
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+			<div>
+				<small>Teléfono</small>
+				<input value={userData.ws} type='text' name='ws' onChange={handleChange} />
+			</div>
 			<div>
 				<small>Dirección</small>
 				<input value={userData.address} type='text' name='address' onChange={handleChange} />

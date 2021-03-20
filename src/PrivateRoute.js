@@ -131,7 +131,12 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                         console.log("UMA");
                     })
                     .catch((err) => {
-                        console.log(err);
+                        if(err.response.data.message === "user not found") {
+                            db.auth().signOut()
+                            console.log("Signed out")
+                            // Si falla el usuario para que no quede en login eterno se lo desloguea
+                        }
+                        console.log(err.response.data);
                     });
                 })
         }, 1500);
