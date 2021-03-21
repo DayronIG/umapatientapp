@@ -165,7 +165,6 @@ export const ContactData = ({ user }) => {
 	return (
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
 			<div>
-				<small>Teléfono</small>
 				<GenericInputs
 					label='Ingresa tu numero de celular'
 					type='number' 
