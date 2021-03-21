@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
+import { useForm } from "react-hook-form";
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
+import { GenericInputs } from '../User/Login/GenericComponents';
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
@@ -129,6 +131,7 @@ export const PersonalData = ({ user }) => {
 export const ContactData = ({ user }) => {
 	const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive)
+	const { register, errors } = useForm();
 	const [userData, setUserData] = useState({
 		address: user.address || '',
 		piso: user.piso || '',
@@ -163,7 +166,21 @@ export const ContactData = ({ user }) => {
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
 			<div>
 				<small>Teléfono</small>
-				<input value={userData.ws} type='text' name='ws' onChange={handleChange} />
+				<GenericInputs
+					label='Ingresa tu numero de celular'
+					type='number' 
+					name='ws'
+					action={e=>handleChange(e)}
+					inputRef={
+						register(
+							{ 
+								required: false, 
+								minLength: 10,
+								maxLenght: 13
+							}
+						)
+					} 
+				/> 
 			</div>
 			<div>
 				<small>Dirección</small>
