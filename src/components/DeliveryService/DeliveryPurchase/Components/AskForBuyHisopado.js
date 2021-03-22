@@ -19,6 +19,7 @@ export default function AskForBuyHisopado() {
     const [narrowContactInfo, setNarrowContactInfo] = useState(false)
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.user)
+    const userActive = useSelector(state => state.userActive)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -53,6 +54,7 @@ export default function AskForBuyHisopado() {
         if (!current?.status || current?.status === 'FREE') {
             let data = {
                 dni: patient.dni,
+                uid: userActive.currentUser.uid,
                 dependant: false,
                 service: 'HISOPADO'
             }
@@ -72,7 +74,7 @@ export default function AskForBuyHisopado() {
                             dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
     
                         })
-                    }, 1500)
+                    }, 1000)
                 })
                 .catch(err =>{ 
                     swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")

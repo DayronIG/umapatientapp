@@ -23,9 +23,10 @@ export default function ResultReveal({finalAction}) {
         console.log(result)
         if(docId !== undefined && result !== 'CANCEL') {
             showConstancy(true);
-            if(hisopado.dt_cierre && hisopado.dt_cierre !== "") {
-                console.log(docId?.split("_")[1].slice(0,8), hisopado.dt_cierre.toDate(), moment(new Date(hisopado.dt_cierre.toDate())).format('DD-MM-YYYY'))
-                setDate(hisopado.dt_cierre.toDate())
+            console.log(hisopado.dt_arrived)
+            if(hisopado.dt_arrived && hisopado.dt_arrived !== "") {
+                console.log(docId?.split("_")[1].slice(0,8), hisopado.dt_arrived.toDate(), moment(new Date(hisopado.dt_arrived.toDate())).format('DD-MM-YYYY'))
+                setDate(hisopado.dt_arrived.toDate())
             }
         }
     }, [docId])
