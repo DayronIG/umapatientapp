@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import ComingSoon from '../GeneralComponents/ComingSoon';
 import Loading from '../GeneralComponents/Loading';
-import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
+import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { validateUPAff_byDocType, /* transcELG */ } from '../../store/actions/UPActions';
 import { getDocumentFB } from '../Utils/firebaseUtils';
 
@@ -16,6 +16,7 @@ const OnlineSpecialist = ({ match, history }) => {
 	const { loading } = useSelector((state) => state.front);
 	const { plan } = useSelector((state) => state.queries.plan);
 	const dispatch = useDispatch();
+	const currentUser = useSelector(state => state.userActive.currentUser)
 	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
@@ -26,15 +27,15 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const checkPatientPermission = useCallback(
 		async () => {
+			console.log("Entro al check")
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
 			if(plan && plan.my_specialist === false) {
-				console.log(plan)
 				dispatch({ type: 'LOADING', payload: false });
 				return false
 			}
 			try {
-				const medicRecs = await getUserMedicalRecord(user.dni, user.ws);
+				const medicRecs = await getMedicalRecord(currentUser.uid, activeUid);
 				let redirect = false;
 				const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
 				if (user?.corporate_norm?.toLowerCase() === 'union personal') {
@@ -49,15 +50,20 @@ const OnlineSpecialist = ({ match, history }) => {
 				) {
 					redirect = true;
 				}
+				console.log(medicRecs)
 				if (!!medicRecs && medicRecs.length) {
 					const hasAppoint = medicRecs.some(function (mr) {
-						const scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
+						let scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
+						if(mr.category && mr.category === "MI_ESPECIALISTA") {
+							scheduledTurn = 'TurnoConsultorioOnline'
+						}
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === '') {
 							return true;
 						} else {
 							return false
 						}
 					});
+					console.log("Check appointment", hasAppoint)
 					if (hasAppoint) {
 						return history.push(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 					}

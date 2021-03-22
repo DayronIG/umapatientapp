@@ -251,6 +251,7 @@ export function getMedicalRecord(uid, dependant = false){
 					var tempArray = [];
 					subSnapshot.forEach(content => {
 						let data = content.data()
+						// Esta condición que sigue puede ser confusa pero está bien, dejarla
 						if(dependant === data.patient.dependant_uid) {
 							tempArray.push(data);
 						} else if(!dependant) {
@@ -271,9 +272,10 @@ export function getMedicalRecord(uid, dependant = false){
 	}
 }
 
-export async function getUserMedicalRecord(dni, ws) {
+export async function getUserMedicalRecord(uid, ws) {
 	try {
-		const query = firestore.collection(`events/mr/${dni}`).where('patient.ws', '==', ws);
+		
+		const query = firestore.collection(`user/${uid}/medical_records`).where('patient.ws', '==', ws);
 		let arr = []
 		await query.get()
 			.then(async (res) => {

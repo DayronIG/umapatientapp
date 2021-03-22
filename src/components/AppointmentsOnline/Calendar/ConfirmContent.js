@@ -25,10 +25,12 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 	const { upNumAff_store } = useSelector((state) => state.queries);
 	const { loading } = useSelector((state) => state.front);
 	const patient = useSelector((state) => state.user);
-	const {token, currentUser} = useSelector((state) => state.userActive);
+const {token, currentUser} = useSelector((state) => state.userActive);
 	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
+
+	console.log("Ahora sí")
 
 	const watchError = () => console.log('Hubo un error al rastrear la posición');
 

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, Link, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
 import { GenericHeader } from '../GeneralComponents/Headers';
-import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
+import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { Loader } from '../global/Spinner/Loaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -20,11 +20,10 @@ import '../../styles/TurnoConsultorio.scss';
 const AppointmentsOnlineHistory = (props) => {
 	const dispatch = useDispatch()
 	const token = useSelector(state => state.userActive.token)
-	const currentUser = useSelector(state => state.userActive.currentUser)
 	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
 	const [loading, setLoading] = useState(false)
 	const { incomingCall } = useSelector(state => state.call)
-	const { dni } = useSelector(state => state.user)
+	const currentUser = useSelector(state => state.userActive.currentUser)
 	const { activeUid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
@@ -32,7 +31,7 @@ const AppointmentsOnlineHistory = (props) => {
 	useEffect(() => {
 		if (activeUid && activeUid !== currentUser.uid) {
 			dispatch(getDependant(currentUser.uid, activeUid))
-			// TO DO: findMR(dni, res.ws)
+			findMR(currentUser.uid, activeUid)
 		}
 	}, [currentUser])
 
@@ -55,20 +54,23 @@ const AppointmentsOnlineHistory = (props) => {
 	}, [incomingCall, dispatch])
 
 
-	async function findMR(dni, ws) {
+	async function findMR(uid, dependant) {
 		setLoading(true)
 		try {
-			const medicRecs = await getUserMedicalRecord(dni, ws)
+			const medicRecs = await getMedicalRecord(uid, dependant)
 			if (!!medicRecs && medicRecs.length) {
 				let filteredRecords = []
 				medicRecs.forEach(function (mr) {
 					if (mr.mr_preds) {
-						const scheduledTurn = mr.mr_preds.pre_clasif[0]
+						let scheduledTurn = mr.mr_preds.pre_clasif[0]
 						const doctorName = mr.mr_preds.pre_clasif[1]
 						const specialty = mr.mr_preds.pre_clasif[2]
 						const date = mr.mr_preds.pre_clasif[3]
 						const time = mr.mr_preds.pre_clasif[4]
 						const path = mr.mr_preds.pre_clasif[5]
+						if(mr.category && mr.category === "MI_ESPECIALISTA") {
+							scheduledTurn = 'TurnoConsultorioOnline'
+						}
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === "") {
 							filteredRecords.push({ doctorName, specialty, date, time, mr, path })
 						}
