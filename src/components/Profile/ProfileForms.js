@@ -62,6 +62,7 @@ export const ProfilePic = ({ user }) => {
 
 export const PersonalData = ({ user }) => {
 	const dispatch = useDispatch();
+	const { register, errors } = useForm();
 	const { currentUser } = useSelector((state) => state.userActive)
 	const [userData, setUserData] = useState({
 		corporate: user.corporate || '',
@@ -76,6 +77,7 @@ export const PersonalData = ({ user }) => {
 	const handleChange = (e) => {
 		setUserData({ ...userData, [e.target.name]: e.target.value });
 	};
+
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
@@ -100,28 +102,65 @@ export const PersonalData = ({ user }) => {
 	return (
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
 			<div>
-				<small>Nombre</small>
-				<input
+				{/* <small>Nombre</small> */}
+				{/* <input
 					value={userData.fullname}
 					type='text'
 					className='form-control'
 					name='fullname'
 					onChange={handleChange}
+				/> */}
+					<GenericInputs
+					label='Nombre'
+					type='text' 
+					name='fullname'
+					action={e=>handleChange(e)}
+					value={userData.fullname}
+					inputRef={
+						register(
+							{ 
+								required: true, 
+							}
+						)
+					} 
+					/>
+					{/* {errors.fullname && errors.fullname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                    {errors.fullname && errors.fullname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>} */}
+			</div>
+			<div>
+				{/* <small>Documento de identidad</small> */}
+				{/* <input value={userData.dni} type='text' name='dni' onChange={handleChange} /> */}
+				<GenericInputs
+					label='Documento de identidad'
+					type='text' 
+					name='dni'
+					value={userData.dni}
+					action={e=>handleChange(e)}
 				/>
 			</div>
 			<div>
-				<small>Documento de identidad</small>
-				<input value={userData.dni} type='text' name='dni' onChange={handleChange} />
+				{/* <small>Obra Social o cobertura de salud</small>
+				<input value={userData.corporate} type='text' name='corporate' onChange={handleChange} /> */}
+				<GenericInputs
+					label='Obra social o cobertura de salud'
+					type='text' 
+					name='corporate'
+					value={userData.corporate}
+					action={e=>handleChange(e)}
+				/>
 			</div>
 			<div>
-				<small>Obra Social o cobertura de salud</small>
-				<input value={userData.corporate} type='text' name='corporate' onChange={handleChange} />
+				{/* <small>Fecha de nacimiento</small>
+				<input value={userData.dob} type='date' name='dob' onChange={handleChange} /> */}
+				<GenericInputs
+					label='Selecciona tu fecha de nacimiento'
+					type='date'
+					name='dob'
+					value={userData.dob}
+					action={(e) => handleChange(e)}
+				/>
 			</div>
-			<div>
-				<small>Fecha de nacimiento</small>
-				<input value={userData.dob} type='date' name='dob' onChange={handleChange} />
-			</div>
-			<button className='btn btn-blue-lg m-2' type='submit'>
+			<button className='btn btn-blue-lg' type='submit'>
 				Editar
 			</button>
 		</form>
@@ -169,6 +208,7 @@ export const ContactData = ({ user }) => {
 					label='Ingresa tu numero de celular'
 					type='number' 
 					name='ws'
+					value={userData.ws}
 					action={e=>handleChange(e)}
 					inputRef={
 						register(
@@ -182,14 +222,28 @@ export const ContactData = ({ user }) => {
 				/> 
 			</div>
 			<div>
-				<small>Dirección</small>
-				<input value={userData.address} type='text' name='address' onChange={handleChange} />
+				{/* <small>Dirección</small>
+				<input value={userData.address} type='text' name='address' onChange={handleChange} /> */}
+				<GenericInputs
+					label='Dirección'
+					type='text' 
+					name='address'
+					value={userData.address}
+					action={e=>handleChange(e)}
+				/>
 			</div>
 			<div>
-				<small>Piso/Dpto</small>
-				<input value={userData.piso} type='text' name='piso' onChange={handleChange} />
+				{/* <small>Piso/Dpto</small>
+				<input value={userData.piso} type='text' name='piso' onChange={handleChange} /> */}
+				<GenericInputs
+					label='Piso/Dpto'
+					type='text' 
+					name='piso'
+					value={userData.piso}
+					action={e=>handleChange(e)}
+				/>
 			</div>
-			<button className='btn btn-blue-lg m-2' type='submit'>
+			<button className='btn btn-blue-lg' type='submit'>
 				Editar
 			</button>
 		</form>
@@ -224,14 +278,15 @@ export const HealtData = ({ user }) => {
 	return (
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
 			<div>
-				<small>Sexo</small>
+				<label>Sexo</label>
 				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
 					<option value={user.sex}>Seleccione</option>
 					<option value='M'>Hombre</option>
 					<option value='F'>Mujer</option>
+					<option value='O'>Otro</option>
 				</select>
 			</div>
-			<button className='btn btn-blue-lg m-2' type='submit'>
+			<button className='btn btn-blue-lg' type='submit'>
 				Editar
 			</button>
 		</form>

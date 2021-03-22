@@ -14,7 +14,7 @@ import Email from '../../../assets/logos/email.png';
 import axios from 'axios';
 import '../../../styles/user/genericComponents.scss';
 
-export const GenericInputs = ({label, type, name = '',action = () => {}, inputRef}) => {
+export const GenericInputs = ({label, type, name = '',action = () => {}, inputRef, value}) => {
     const [showPassword, setShowPassword] = useState(false)    
     const [labelUp, setLabelUp] = useState(false)
 
@@ -22,6 +22,7 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
         <div className='form'>
             <input
                 name={name}
+                value={value ? value : ''}
                 type={showPassword ? 'text' : type}
                 className='form--input' 
                 onClick={()=> setLabelUp(true)}
@@ -30,7 +31,7 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
                 autoComplete='new-password'
                 ref={inputRef}
             />  
-            <label className={labelUp ? 'form--label up' : 'form--label'}>
+            <label className={labelUp || value ? 'form--label up' : 'form--label'}>
                 {label}
             </label>
             {type === 'password' ? 

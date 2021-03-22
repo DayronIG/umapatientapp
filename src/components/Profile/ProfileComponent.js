@@ -93,8 +93,8 @@ const ProfileComponent = () => {
 						<p className='profile-section-title'>Datos de contacto</p>
 						<p><b>Teléfono: </b> {patient.ws} </p>
 						<p><b>Dirección: </b> {patient.address} </p>
-						{patient.piso && <p> <b>Piso/Dpto: </b> {patient.piso} </p>}
-						<p><b>Suscripción: </b> {patient.subscription} </p>
+						<p> <b>Piso/Dpto: </b> {patient.piso} </p>
+						{/* <p><b>Suscripción: </b> {patient.subscription} </p> */}
 					</div>
 				</div>
 				<div className='profile-section section'>
