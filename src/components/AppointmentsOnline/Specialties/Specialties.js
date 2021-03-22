@@ -26,8 +26,8 @@ const Specialties = () => {
 	const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if(activeUid && activeUid !== currentUser) {
-			dispatch(getDependant(currentUser, activeUid))
+		if(currentUser && activeUid && activeUid !== currentUser) {
+			dispatch(getDependant(currentUser.uid, activeUid))
 			const pediatric = moment().diff(user.dob, 'years') <= 16;
 			setAgePediatry(pediatric);
 		}
@@ -35,14 +35,20 @@ const Specialties = () => {
 
 	useEffect(() => {
 		if (user.corporate_norm) {
-			db.doc(`/parametros/specialties`).get().then(res => {
-				Promise.all(res.data().specialties_list.map((specialty) => getSpecialties(specialty))).then((data) => {
-					let ordenado = data.sort((a, b) => b.active - a.active);
-					setArraySpecialties(ordenado);
-				});
-			})
+			searchActiveSpecialties()
 		}
 	}, [user]);
+
+	async function searchActiveSpecialties() {
+		dispatch({ type: 'LOADING', payload: true });
+		await db.doc(`/parametros/specialties`).get().then(async res => {
+			await Promise.all(res.data().specialties_list.map((specialty) => getSpecialties(specialty))).then((data) => {
+				let ordenado = data.sort((a, b) => b.active - a.active);
+				setArraySpecialties(ordenado);
+			});
+		})
+		dispatch({ type: 'LOADING', payload: false });
+	}
 
 	function getCorporates() {
 		let corporates = []
@@ -54,7 +60,6 @@ const Specialties = () => {
 	}
 
 	const getSpecialties = async ({ value, label }) => {
-		dispatch({ type: 'LOADING', payload: true });
 		let currentMonth = [],
 			nextMonth = [];
 		let corporates = await getCorporates()
@@ -68,7 +73,6 @@ const Specialties = () => {
 			.where('social_work', 'array-contains-any', corporates)
 			.where('state', '==', 'FREE')
 			.get();
-		dispatch({ type: 'LOADING', payload: false });
 		if (!currentMonth.empty | !nextMonth.empty) {
 			const algo = currentMonth.docs;
 			const algo2 = nextMonth.docs;
@@ -106,24 +110,8 @@ const Specialties = () => {
 			return;
 		}
 		return history.push(`/appointmentsonline/${value}/calendar/${activeUid}?dependant=${params.dependant}`);
-		// pushPage(speciality);
 	};
 
-/* 	const pushPage = (specialty) => {
-		if (
-			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return history.push(`/chat/${specialty}/${dni}`);
-		} else if (
-			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return history.push(`/chat/${specialty}/${dni}`);
-		} else {
-			return history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
-		}
-	}; */
 
 	return (
 		<>

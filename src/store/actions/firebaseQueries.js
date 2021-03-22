@@ -195,7 +195,7 @@ export function getDependant(uid, dependant = false) {
 					dispatch({type: 'GET_PATIENT', payload: user.data()});
 				})
 				.catch(function(error) {
-					throw error;
+					console.log(error)
 				});
 		} catch (error) {
 			console.log(error);
@@ -337,7 +337,8 @@ export function getVoucherById(user, aid) {
 }
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
-export function getAppointmentByUid(uid, collectionName) {
+export function getAppointmentByUid(uid, collectionName, specialty = 'online_clinica_medica') {
+	console.log(uid, collectionName, specialty)
 	if (uid !== '') {
 		let appointments = [];
 		let currentDate = moment(new Date())
@@ -346,7 +347,6 @@ export function getAppointmentByUid(uid, collectionName) {
 		let compareDate = moment(new Date())
 			.tz('America/Argentina/Buenos_Aires')
 			.format('YYYY-MM-DD');
-		let specialty = 'online_clinica_medica'; // Temporal, luego habrá más especialidades
 		const query = firestore
 			.collection('assignations')
 			.doc(specialty)

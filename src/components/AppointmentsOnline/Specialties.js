@@ -25,7 +25,6 @@ const Specialties = (props) => {
 	const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		console.log(currentUser)
 		if(activeUid && activeUid !== currentUser?.uid) {
 			getDependant(currentUser, activeUid)
 				.then((user) => {
@@ -103,23 +102,6 @@ const Specialties = (props) => {
 		props.history.push(`/appointmentsonline/${specialty}/calendar/${activeUid}?dependant=${params.dependant}`);
 		// pushPage(speciality);
 	};
-
-// Temp disabled the chats
-/* 	const pushPage = (specialty) => {
-		if (
-			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return props.history.push(`/chat/${specialty}/${dni}`);
-		} else if (
-			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return props.history.push(`/chat/${specialty}/${dni}`);
-		} else {
-			return props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
-		}
-	}; */
 
 	return (
 		<>

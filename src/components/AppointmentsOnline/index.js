@@ -50,11 +50,10 @@ const OnlineSpecialist = ({ match, history }) => {
 				) {
 					redirect = true;
 				}
-				console.log(medicRecs)
 				if (!!medicRecs && medicRecs.length) {
 					const hasAppoint = medicRecs.some(function (mr) {
 						let scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
-						if(mr.category && mr.category === "MI_ESPECIALISTA") {
+						if(mr.att_category && mr.att_category === "MI_ESPECIALISTA") {
 							scheduledTurn = 'TurnoConsultorioOnline'
 						}
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === '') {
@@ -63,7 +62,6 @@ const OnlineSpecialist = ({ match, history }) => {
 							return false
 						}
 					});
-					console.log("Check appointment", hasAppoint)
 					if (hasAppoint) {
 						return history.push(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 					}
