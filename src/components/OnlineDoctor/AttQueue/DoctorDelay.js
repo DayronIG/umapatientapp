@@ -23,7 +23,7 @@ const DoctorDelay = ({cuit, date, time}) => {
 			]
 			getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
 				.then(res => {
-					setQueue(res.length || 1)
+					setQueue(res.length || 0)
                     let pendingTime = moment(`${date} ${time}:00`).diff(new Date(), 'minutes')
                     if(pendingTime <= 0) {
                         pendingTime = 5
@@ -42,13 +42,13 @@ const DoctorDelay = ({cuit, date, time}) => {
             ]
             getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
-                    setQueue(res.length || 1)
+                    setQueue(res.length || 0)
                 })
         }
     }, [cuit])
     
     return <div className="appointment__delay--container">
-        {(!cuit || cuit?.length < 5) && <div className="appointment__delay">
+        {(queue && queue.length > 0) && <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div>}
