@@ -112,7 +112,6 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 						dispatch(handleAddressValidForHisopado(false))
 					}
 				}, 800)
-
             }
 			fetchData();
 		}

@@ -427,7 +427,7 @@ const PaymentCardMP = () => {
               />
             </div>
             <input type="hidden" name="paymentMethodId" id="paymentMethodId" defaultValue={creditCard} />
-          <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${totalPayment}</p></button>
+          <button className="payment-button" type="submit" form="pay"><p className="button-text"><FaCreditCard className="icon"/> Pagar ${Math.round(totalPayment)}</p></button>
         </form>
       </div>
     )
