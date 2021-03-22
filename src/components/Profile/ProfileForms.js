@@ -206,8 +206,6 @@ export const ContactData = ({ user }) => {
 				/> 
 			</div>
 			<div>
-				{/* <small>Dirección</small>
-				<input value={userData.address} type='text' name='address' onChange={handleChange} /> */}
 				<GenericInputs
 					label='Dirección'
 					type='text' 
@@ -217,8 +215,6 @@ export const ContactData = ({ user }) => {
 				/>
 			</div>
 			<div>
-				{/* <small>Piso/Dpto</small>
-				<input value={userData.piso} type='text' name='piso' onChange={handleChange} /> */}
 				<GenericInputs
 					label='Piso/Dpto'
 					type='text' 
