@@ -51,30 +51,30 @@ export default function AskForBuyHisopado() {
             'item_list_name': 'Hisopado Antígeno'
           });
         }
-        if (!current?.status || current?.status === 'FREE') {
+        if (!current?.status) {
             let data = {
                 dni: patient.dni,
                 uid: userActive.currentUser.uid,
                 dependant: false,
                 service: 'HISOPADO'
             }
+            console.log("ASD1")
             await axios.post(create_delivery, data, config)
                 .then(async res => {
-                    setTimeout(() => {
-                        db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
-                        .get()
-                        .then(async query => {
-                            // console.log(query, query.data())
-                            let data = {
-                                ...query.data(),
-                                id: res.data.id
-                            }
-                            localStorage.setItem("multiple_clients", JSON.stringify([data]))
-                            dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
-                            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
-    
-                        })
-                    }, 1000)
+                    console.log(res ,"ASD")
+                    db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                    .get()
+                    .then(async query => {
+                        // console.log(query, query.data())
+                        let data = {
+                            ...query.data(),
+                            id: res.data.id
+                        }
+                        localStorage.setItem("multiple_clients", JSON.stringify([data]))
+                        dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
+                        dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+
+                    })
                 })
                 .catch(err =>{ 
                     swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")

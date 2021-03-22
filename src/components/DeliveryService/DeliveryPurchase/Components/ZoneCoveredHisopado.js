@@ -12,7 +12,6 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
     const patient = useSelector(state => state.user);
     const [showCongrats, setShowCongrats] = useState(false);
     const { piso, depto, address, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm)
-    const {id} = useSelector(state => state.deliveryService.current)
 
     useEffect(() => {
         if (!isAddressValidForHisopado) {
@@ -46,13 +45,13 @@ export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, 
             "key": "HISOPADO",
             "ws": patient.ws,
             "dni": patient.dni,
+            "uid": patient.core_id,
             "format_address": address,
             "user_address": address,
             "lat": lat,
             "lon": lng,
             "floor": piso,
             "number": depto,
-            "incidente_id": id,
             "notify": true
         }
         axios.post(mobility_address, data, {headers})

@@ -201,13 +201,13 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'key': deliveryType || 'HISOPADO',
 				'ws': ws,
 				'dni': user.dni,
+				'uid': user.core_id,
 				'format_address': hisopadoUserAddress,
 				'user_address': hisopadoUserAddress,
 				'lat': formState.lat,
 				'lon': formState.lng,
 				'floor': `${formState.piso}`,
 				'number': `${formState.depto}`,
-				'incidente_id': deliveryInfo?.[0]?.id,
 				'range': isAddressValidForHisopado || false,
 				'user_obs': addressObservations
 			};
