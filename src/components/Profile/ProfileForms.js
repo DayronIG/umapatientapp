@@ -102,15 +102,7 @@ export const PersonalData = ({ user }) => {
 	return (
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
 			<div>
-				{/* <small>Nombre</small> */}
-				{/* <input
-					value={userData.fullname}
-					type='text'
-					className='form-control'
-					name='fullname'
-					onChange={handleChange}
-				/> */}
-					<GenericInputs
+				<GenericInputs
 					label='Nombre'
 					type='text' 
 					name='fullname'
@@ -123,13 +115,9 @@ export const PersonalData = ({ user }) => {
 							}
 						)
 					} 
-					/>
-					{/* {errors.fullname && errors.fullname.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
-                    {errors.fullname && errors.fullname.type === "pattern" && <p className='invalidField'>El formato no es válido</p>} */}
+				/>
 			</div>
 			<div>
-				{/* <small>Documento de identidad</small> */}
-				{/* <input value={userData.dni} type='text' name='dni' onChange={handleChange} /> */}
 				<GenericInputs
 					label='Documento de identidad'
 					type='text' 
@@ -139,8 +127,6 @@ export const PersonalData = ({ user }) => {
 				/>
 			</div>
 			<div>
-				{/* <small>Obra Social o cobertura de salud</small>
-				<input value={userData.corporate} type='text' name='corporate' onChange={handleChange} /> */}
 				<GenericInputs
 					label='Obra social o cobertura de salud'
 					type='text' 
@@ -150,8 +136,6 @@ export const PersonalData = ({ user }) => {
 				/>
 			</div>
 			<div>
-				{/* <small>Fecha de nacimiento</small>
-				<input value={userData.dob} type='date' name='dob' onChange={handleChange} /> */}
 				<GenericInputs
 					label='Selecciona tu fecha de nacimiento'
 					type='date'
