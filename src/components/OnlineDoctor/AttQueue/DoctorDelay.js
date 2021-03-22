@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import {useSelector} from 'react-redux';
 import moment from 'moment';
 import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
 const DoctorDelay = ({cuit, date, time}) => {
+    const appointment = useSelector(state=> state.queries.assignedAppointment)
     const [queue, setQueue] = useState('1');
     const [delay, setDelay] = useState('5');
 
@@ -35,21 +37,23 @@ const DoctorDelay = ({cuit, date, time}) => {
 					}
                 })
             .catch(err => console.log(err))
-		} else {
+		} else if (appointment && appointment.datetime) {
             let filters = [
                 {field: 'state', value: 'ASSIGN', comparator: '=='},
-                {field: 'datetime', value: '202103220558', comparator: '<='}
+                {field: 'datetime', value: `${appointment.datetime}`, comparator: '<='}
             ]
             getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
                     setQueue(res.length || 1)
                 })
                 .catch(err => setQueue(0))
+        } else {
+            setQueue(0)
         }
     }, [cuit])
     
     return <div className="appointment__delay--container">
-        {(queue && queue.length >= 1) && <div className="appointment__delay">
+        {queue >= 1 && <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div>}

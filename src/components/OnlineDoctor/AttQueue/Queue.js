@@ -10,6 +10,7 @@ import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { BackButton } from '../../GeneralComponents/Headers';
 import QueueActions from './QueueActions';
+import Advice from './Advice';
 import DoctorDelay from './DoctorDelay';
 import DBConnection from '../../../config/DBConnection';
 import Slider from './Slider';
@@ -21,6 +22,7 @@ import 'moment/locale/es';
 
 const Queue = (props) => {
     const firestore = DBConnection.firestore();
+    const {guardia_advice} = useSelector((state) => state.front);
     const dispatch = useDispatch();
     const [assignation, setAssignation] = useState('')
     const [calling, setCalling] = useState(false)
@@ -254,6 +256,7 @@ const Queue = (props) => {
         <>
             <BackButton action={()=> history.push(`/`)} />
             {loading && <Loading />}
+            {guardia_advice && <Advice text={guardia_advice} />}
             {calling ?
                 <>
                     <div className='ico-calling'>
