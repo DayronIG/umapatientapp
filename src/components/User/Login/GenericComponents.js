@@ -22,12 +22,12 @@ export const GenericInputs = ({label, type, name = '',action = () => {}, inputRe
         <div className='form'>
             <input
                 name={name}
-                value={value ? value : ''}
+                defaultValue={value ? value : ''}
                 type={showPassword ? 'text' : type}
                 className='form--input' 
                 onClick={()=> setLabelUp(true)}
                 onFocus={()=> setLabelUp(true)}
-                onChange={(e)=>action(e)}
+                onChange={(e) => action(e)}
                 autoComplete='new-password'
                 ref={inputRef}
             />  
