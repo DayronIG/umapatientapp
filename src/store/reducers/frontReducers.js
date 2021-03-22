@@ -9,10 +9,10 @@ const initialState = {
     },
     biomarker: { open: true, status: 0 },
     error: '',
+    guardia_advice: false,
     loading: false,
     checkStatus: false,
     dinamic: { whenDinamic: false, queueDinamic: true },
-    sidebar: { first: false, second: false },
     modal: false,
     otherReason: false,
     answerQuestions: false,
@@ -23,8 +23,9 @@ const initialState = {
     openDetails: false,
     modalAction: false,
     mic_cam_permissions: '',
+    remainingText: '',
+    sidebar: { first: false, second: false },
     vmdStage: 'who',
-    remainingText: ''
 }
 
 export default function frontReducers(state = initialState, action) {
@@ -118,6 +119,8 @@ export default function frontReducers(state = initialState, action) {
         case 'SET_CAM_MIC_PERMISSIONS':
             return { ...state, mic_cam_permissions: action.payload };
         case 'SET_GUARDIA_VARIABLES':
+            return {...state, ...action.payload}
+        case 'SET_GUARDIA_STATS':
             return {...state, ...action.payload}
         case 'SET_ORIGIN_TRANSLATE_MONDAY':
             return { ...state, origin_translate_monday: action.payload };

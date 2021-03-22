@@ -3,7 +3,7 @@ import moment from 'moment';
 import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
 
 const DoctorDelay = ({cuit, date, time}) => {
-    const [queue, setQueue] = useState('0');
+    const [queue, setQueue] = useState('1');
     const [delay, setDelay] = useState('5');
 
     useEffect(() => {
@@ -16,14 +16,14 @@ const DoctorDelay = ({cuit, date, time}) => {
 
     const getDelayAndQueue = useCallback(() => {
         let dt = moment().format('YYYYMM');
-        if(cuit && cuit !== ''){
+        if(cuit && cuit !== '' && cuit !== 'bag'){
 			let filters = [
 				{field: 'cuit', value: cuit, comparator: '=='},
 				{field: 'status', value: 'ASSIGN', comparator: '=='}			
 			]
 			getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
 				.then(res => {
-					setQueue(res.length)
+					setQueue(res.length || 1)
                     let pendingTime = moment(`${date} ${time}:00`).diff(new Date(), 'minutes')
                     if(pendingTime <= 0) {
                         pendingTime = 5
@@ -37,23 +37,21 @@ const DoctorDelay = ({cuit, date, time}) => {
             .catch(err => console.log(err))
 		} else {
             let filters = [
-                {field: 'state', value: 'ASSIGN', comparator: '=='}
+                {field: 'state', value: 'ASSIGN', comparator: '=='},
+                {field: 'datetime', value: '202103220558', comparator: '<='}
             ]
-/*             if(time) {
-                filters.push({field: 'time', value: time, comparator: '>'})
-            } */
             getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
-                    setQueue(res.length)
+                    setQueue(res.length || 1)
                 })
         }
-    }, [cuit, date, time])
+    }, [cuit])
     
     return <div className="appointment__delay--container">
-{/*         <div className="appointment__delay">
+        {(!cuit || cuit?.length < 5) && <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
-        </div> */}
+        </div>}
         {cuit && cuit.length > 5 && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">minutos de espera aprox.</span>

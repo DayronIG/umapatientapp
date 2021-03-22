@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
 import classnames from 'classnames';
@@ -85,6 +85,8 @@ const GuardCardComp = (props) => {
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
+	const { active_doctors } = useSelector((state) => state.front);
+
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
@@ -102,7 +104,7 @@ const GuardCardComp = (props) => {
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
 						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? props.doctorsCount : "1" } médicos atendiendo</small>
+						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? active_doctors : "1" } médicos atendiendo</small>
 					</div>
 				</div>
 			</div>

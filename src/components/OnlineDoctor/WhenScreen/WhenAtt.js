@@ -8,6 +8,7 @@ import * as DetectRTC from 'detectrtc';
 import Comments from './Comments.js';
 import { Loader } from '../../GeneralComponents/Loading';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
+import Advice from '../AttQueue/Advice';
 import DoctorCard, { GuardCard } from './DoctorCard';
 import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import Backbutton from '../../GeneralComponents/Backbutton';
@@ -19,7 +20,7 @@ import 'moment/locale/es';
 
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
-	const {active_guardia, active_list} = useSelector((state) => state.front);
+	const {active_guardia, active_list, guardia_advice} = useSelector((state) => state.front);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
 	const {currentUser} = useSelector((state) => state.userActive);
@@ -54,6 +55,10 @@ const WhenScreen = (props) => {
 		try {
 			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
 				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
+			})
+			getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires')
+			.format('YYYYMMDDHHmm')}`).then(res => {
+				dispatch({type: 'SET_GUARDIA_STATS', payload: res})
 			})
 		} catch(err) {
 			console.log(err)
@@ -141,6 +146,7 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
+					{guardia_advice && <Advice text={guardia_advice} />}
 					{(active_guardia || user.country !== "AR" || pediatric) && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
 					{((active_list && action === 'Doctors') || user.context === "temp") && (
 						<div>
