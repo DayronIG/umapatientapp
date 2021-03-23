@@ -62,7 +62,6 @@ export default function AskForBuyHisopado() {
         setLoading(true)
         await axios.post(create_delivery, data, config)
             .then(async res => {
-                console.log(res.data, "DATA PAPA")
                 db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
                 .get()
                 .then(async query => {
