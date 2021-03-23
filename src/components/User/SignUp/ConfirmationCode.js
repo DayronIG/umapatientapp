@@ -82,7 +82,7 @@ const ConfirmationCode = () => {
                             className='input-number' 
                             onChange={e => setCode(e.target.value)}
                             type='text'
-                            inputMode='numeric'
+                            inputMode='text'
                             minLength='6'
                             maxLength='6'
                             autoFocus
