@@ -49,7 +49,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 		let deliveryInfo = []
         await db.firestore().collection('events/requests/delivery')
         .where('patient.uid', '==', user.core_id)
-        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'FREE:DEPENDANT', "DEPENDANT", 'IN_PROCESS'])
+        .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'IN_PROCESS'])
         .get()
         .then(async res => {
             res.forEach(services => {
@@ -201,6 +201,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'key': deliveryType || 'HISOPADO',
 				'ws': ws,
 				'dni': user.dni,
+				'uid': user.core_id,
 				'format_address': hisopadoUserAddress,
 				'user_address': hisopadoUserAddress,
 				'lat': formState.lat,
@@ -238,7 +239,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 			dispatch({ type: 'LOADING', payload: false });
 			if(isAddressValidForHisopado){finalAction()}
 		}
-	}, [hisopadoUserAddress, formState, isAddressValidForHisopado, addressObservations]);
+	}, [hisopadoUserAddress, formState, isAddressValidForHisopado, addressObservations, user]);
 
 
 	return (

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom"
 import { FaCartPlus} from "react-icons/fa"
+import Loading from '../../../GeneralComponents/Loading'
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
@@ -20,6 +21,7 @@ export default function AskForBuyHisopado() {
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.user)
     const userActive = useSelector(state => state.userActive)
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -58,26 +60,26 @@ export default function AskForBuyHisopado() {
                 dependant: false,
                 service: 'HISOPADO'
             }
+            setLoading(true)
             await axios.post(create_delivery, data, config)
                 .then(async res => {
-                    setTimeout(() => {
-                        db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
-                        .get()
-                        .then(async query => {
-                            // console.log(query, query.data())
-                            let data = {
-                                ...query.data(),
-                                id: res.data.id
-                            }
-                            localStorage.setItem("multiple_clients", JSON.stringify([data]))
-                            dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
-                            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
-    
-                        })
-                    }, 1000)
+                    db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                    .get()
+                    .then(async query => {
+                        // console.log(query, query.data())
+                        let data = {
+                            ...query.data(),
+                            id: res.data.id
+                        }
+                        localStorage.setItem("multiple_clients", JSON.stringify([data]))
+                        dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
+                        dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+                        setLoading(false)
+                    })
                 })
                 .catch(err =>{ 
                     swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
+                    setLoading(false)
                     console.log(err)
                 })
         } else {
@@ -205,6 +207,8 @@ export default function AskForBuyHisopado() {
     
     return <>
             {!termsConditions && !frequentQuestions && <BackButton inlineButton={true} customTarget={patient.ws} action={()=>goBackButton()} />}
-            {renderContent()}
+            {loading ? 
+            <Loading /> : 
+            renderContent()}
            </>
 }
