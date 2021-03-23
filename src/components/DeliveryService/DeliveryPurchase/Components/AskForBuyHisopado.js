@@ -53,38 +53,35 @@ export default function AskForBuyHisopado() {
             'item_list_name': 'Hisopado Antígeno'
           });
         }
-        if (!current?.status) {
-            let data = {
-                dni: patient.dni,
-                uid: userActive.currentUser.uid,
-                dependant: false,
-                service: 'HISOPADO'
-            }
-            setLoading(true)
-            await axios.post(create_delivery, data, config)
-                .then(async res => {
-                    db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
-                    .get()
-                    .then(async query => {
-                        // console.log(query, query.data())
-                        let data = {
-                            ...query.data(),
-                            id: res.data.id
-                        }
-                        localStorage.setItem("multiple_clients", JSON.stringify([data]))
-                        dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
-                        dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
-                        setLoading(false)
-                    })
-                })
-                .catch(err =>{ 
-                    swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
-                    setLoading(false)
-                    console.log(err)
-                })
-        } else {
-            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+        let data = {
+            dni: patient.dni,
+            uid: userActive.currentUser.uid,
+            dependant: false,
+            service: 'HISOPADO'
         }
+        setLoading(true)
+        await axios.post(create_delivery, data, config)
+            .then(async res => {
+                console.log(res.data, "DATA PAPA")
+                db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                .get()
+                .then(async query => {
+                    // console.log(query, query.data())
+                    let data = {
+                        ...query.data(),
+                        id: res.data.id
+                    }
+                    localStorage.setItem("multiple_clients", JSON.stringify([data]))
+                    dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
+                    dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+                    setLoading(false)
+                })
+            })
+            .catch(err =>{ 
+                swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
+                setLoading(false)
+                console.log(err)
+            })
     }
 
     const renderContent = () => {
