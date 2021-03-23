@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import swal from 'sweetalert';
 
-export default async function (dni) {
+export default async function () {
     let headers = { 'Content-Type': 'Application/Json'/* , 'Authorization': localStorage.getItem('token') */ }
     navigator.getUserMedia =
         navigator.getUserMedia ||

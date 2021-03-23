@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import DB from '../../config/DBConnection';
 import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import { Loader } from '../global/Spinner/Loaders';
-import { getUser } from '../../store/actions/firebaseQueries';
+import { getDependant } from '../../store/actions/firebaseQueries';
 import { getDocumentFB } from '../Utils/firebaseUtils';
 
 const db = DB.firestore();
@@ -13,21 +14,26 @@ const db = DB.firestore();
 const Specialties = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const dni = props.match.params.dni;
+	const currentUser = useSelector(state => state.userActive.currentUser)
 	const [arraySpecialties, setArraySpecialties] = useState([]);
-	const { loading } = useSelector((state) => state.front);
+	const { loading } = useSelector(state => state.front);
 	const [agePediatry, setAgePediatry] = useState(false);
 	const mesActual = moment().format('YYYYMM');
 	const mesSiguiente = moment().add(1, 'month').format('YYYYMM');
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		getUser(dni)
-			.then((user) => {
-				const pediatric = moment().diff(user.dob, 'years') <= 16;
-				setAgePediatry(pediatric);
-			})
-			.catch((error) => console.log(error));
-	}, []);
+		if(activeUid && activeUid !== currentUser?.uid) {
+			getDependant(currentUser, activeUid)
+				.then((user) => {
+					const pediatric = moment().diff(user.dob, 'years') <= 16;
+					setAgePediatry(pediatric)
+				})
+				.catch((error) => console.log(error));
+		}
+	}, [currentUser, activeUid]);
 
 	useEffect(() => {
 		getSpecialtiesTurns();
@@ -93,26 +99,9 @@ const Specialties = (props) => {
 			swal('Aviso', 'No hay turnos disponibles para esta especialidad', 'warning');
 			return;
 		}
-		props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
+		props.history.push(`/appointmentsonline/${specialty}/calendar/${activeUid}?dependant=${params.dependant}`);
 		// pushPage(speciality);
 	};
-
-// Temp disabled the chats
-/* 	const pushPage = (specialty) => {
-		if (
-			(specialty === 'psicologia' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return props.history.push(`/chat/${specialty}/${dni}`);
-		} else if (
-			(specialty === 'nutricionista' && !user.chatbotOnboarding) ||
-			(user.chatbotOnboarding && user.chatbotOnboarding[specialty] !== 'complete')
-		) {
-			return props.history.push(`/chat/${specialty}/${dni}`);
-		} else {
-			return props.history.push(`/appointmentsonline/${specialty}/calendar/${dni}`);
-		}
-	}; */
 
 	return (
 		<>

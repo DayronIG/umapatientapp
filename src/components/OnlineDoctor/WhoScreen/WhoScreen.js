@@ -4,11 +4,10 @@ import { withRouter } from 'react-router-dom';
 import ForOther from './ForOther';
 import { capitalizeName } from '../../Utils/stringUtils';
 import BackButton from '../../GeneralComponents/Backbutton';
-import { PamiAffiliate } from '../../GeneralComponents/Affiliates/Affiliates';
 import moment from 'moment-timezone';
-import { getUserParentsFirebase, getPendingTraslate } from '../../../store/actions/firebaseQueries';
+import { getUserParentsFirebase } from '../../../store/actions/firebaseQueries';
 import enablePermissions from '../../Utils/enableVidAudPerms';
-import ImageFlow from '../../../assets/doctor-online.svg';
+import ImageFlow from '../../../assets/online-doctor.png';
 import Loading from '../../GeneralComponents/Loading';
 import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
@@ -18,7 +17,7 @@ import '../../../styles/whoScreen.scss';
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const [affiliate, setAffiliate] = useState();
+	const {currentUser} = useSelector((state) => state.userActive);
 	const [registerParent, setRegisterParent] = useState(false);
 	const [parents, setParents] = useState([]);
 	const { loading } = useSelector((state) => state.front);
@@ -27,33 +26,38 @@ const WhenScreen = (props) => {
 	const [redirectToConsultory] = useState(props.location.search.split('redirectConsultory=')[1]);
 
 	useEffect(() => {
-		if (user.corporate_norm && user.corporate_norm === 'PAMI') {
-			setAffiliate(user.corporate_norm);
-		}
-	}, [user]);
-
-	useEffect(() => {
-		(async function checkAssignations() {
-			if ('dni' in user) {
+		let unmountTimeout = () => {}
+		dispatch({ type: 'LOADING', payload: true });
+		if(user.dni) {
+			(async function checkAssignations() {
+				dispatch({ type: 'LOADING', payload: true });
 				localStorage.removeItem('selectedAppointment');
-				enablePermissions(userDni);
+				await enablePermissions(userDni);
 				if (redirectToConsultory !== 'true') {
-					dispatch({ type: 'LOADING', payload: true });
 					const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
-					const assigned = await findAllAssignedAppointment(userDni, type);
+					const assigned = await findAllAssignedAppointment(currentUser.uid, type);
 					dispatch({ type: 'LOADING', payload: false });
 					if (assigned) {
 						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-						return props.history.replace(`/${userDni}/onlinedoctor/queue`);
+						if(assigned.patient.uid_dependant) {
+							return props.history.replace(`/onlinedoctor/queue/${assigned.patient.uid_dependant}?dependant=true`);
+						} else {
+							return props.history.replace(`/onlinedoctor/queue/${currentUser.uid}?dependant=false`);
+						}
 					}
+				} else {
+					unmountTimeout = setTimeout(dispatch({ type: 'LOADING', payload: false }), 5000)			
 				}
-			}
-		})();
-	}, [user]);
+			})()
+		} else {
+			unmountTimeout = setTimeout(() => dispatch({ type: 'LOADING', payload: false }), 5000)
+		}
+		return () => clearTimeout(unmountTimeout)
+	}, [user, userDni]);
 
 	useEffect(() => {
 		if (user.dni) {
-			getUserParentsFirebase(user.dni)
+			getUserParentsFirebase(user.core_id)
 				.then(function (userParents) {
 					setParents(userParents);
 				})
@@ -61,13 +65,14 @@ const WhenScreen = (props) => {
 		}
 	}, [user]);
 
-	async function selectWho(user) {
-		localStorage.setItem('appointmentUserData', JSON.stringify(user));
-		await getCoverage(user.coverage)
+	async function selectWho(userToDerivate, dependant) {
+		localStorage.setItem('appointmentUserData', JSON.stringify(userToDerivate));
+		await getCoverage(userToDerivate.coverage)
+		let id = dependant ? userToDerivate.did: userToDerivate.uid 
 		if (redirectToConsultory === 'true') {
-			props.history.replace(`/appointmentsonline/${user.dni}`);
+			props.history.replace(`/appointmentsonline/specialty/${id}?dependant=${dependant}`);
 		} else {
-			props.history.replace(`/${user.dni}/onlinedoctor/when`);
+			props.history.replace(`/onlinedoctor/when/${id}?dependant=${dependant}`);
 		}
 	}
 
@@ -100,25 +105,24 @@ const WhenScreen = (props) => {
 	return (
 		<div className='dinamic-template'>
 			<BackButton />
-			{affiliate && loading && <PamiAffiliate welcome={false} />}
-			{!affiliate && loading && <Loading centered={true} />}
+			{loading && <Loading centered={true} />}
 			{registerParent ? (
 				<ForOther redirectToConsultory={redirectToConsultory} />
 			) : (
 					<div className='dinamic-content-container whoAttention'>
-						<div className='when-question'>¿Para quién desea la atención?</div>
 						<div className='image-helper'>
 							<img src={ImageFlow} alt='medical' />
 						</div>
+						<h2>¿Para quién es la consulta?</h2>
 					</div>
 				)}
 			{!registerParent && (
 				<div className='dinamic-answer'>
-					<div className='btn btn-blue-lg' onClick={() => selectWho(user)} id="att_especislista_select_me">
+					<div className='btn btn-blue-lg' onClick={() => selectWho(currentUser, false)} id="att_especislista_select_me">
 						Para mi
 					</div>
 					{parents.map((p, index) => (
-						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p)} id="att_especislista_select_other">
+						<div className='btn btn-blue-lg' key={index} onClick={() => selectWho(p, true)} id="att_especislista_select_other">
 							Para {capitalizeName(p.fullname)}
 						</div>
 					))}

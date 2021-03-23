@@ -1,10 +1,10 @@
-import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import { withRouter, Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
 import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import Loading from '../GeneralComponents/Loading';
-import EventsHistory from '../EventsHistory/';
+import EventsHistory from '../EventsHistory/index';
 import BuyHisopado from '../DeliveryService/BuyButton'
 import ValidateAction from '../ValidateAction';
 import UmaCareHome from '../UmaCare/Home';
@@ -16,10 +16,23 @@ import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 
 const ModulesMenu = () => {
+	const history = useHistory();
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
 	const {plan} = useSelector((state) => state.queries.plan);
 
+	useEffect(()=> {
+		if(user.core_id) {
+			if(user.phone || user.ws) {
+				if (!user.login || user.login === [] || user.login === "") {
+					history.push('/login/welcomeAgain');
+				}
+			} else {
+				history.push('/signup/form/2');
+			}
+		}
+	}, [user])
+	
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
@@ -45,19 +58,19 @@ const ModulesMenu = () => {
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
-								`/${user.ws}/onlinedoctor/who`,
+								`/onlinedoctor/who`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
 							)}
 							{returnModule(
-								`/${user.ws}/autonomous`,
+								`/autonomous/${user.ws}`,
 								'autonomous',
 								iconAutodiagnostico,
 								'Auto Diagnóstico'
 							)}
 							{returnModule(
-								`/${user.ws}/wellness`,
+								`/wellness/${user.ws}`,
 								'wellness',
 								iconEstudios,
 								'Estudios'

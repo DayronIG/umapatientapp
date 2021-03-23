@@ -1,21 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import queryString from 'query-string';
 import ComingSoon from '../GeneralComponents/ComingSoon';
 import Loading from '../GeneralComponents/Loading';
-import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
+import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { validateUPAff_byDocType, /* transcELG */ } from '../../store/actions/UPActions';
 import { getDocumentFB } from '../Utils/firebaseUtils';
 
-const docTypesUP = [2, 3, 4, 5, 7, 1]; // Ordenados por prioridad: DNI, LE, LC, Passport, DNI EXT, CED.
+const docTypesUP = [2, 3, 4, 5, 7, 1]; // Ordenados por prioridad: user.DNI, LE, LC, Passport, user.DNI EXT, CED.
 
 const OnlineSpecialist = ({ match, history }) => {
 	const user = useSelector((state) => state.user);
 	const { loading } = useSelector((state) => state.front);
 	const { plan } = useSelector((state) => state.queries.plan);
-	const { dni } = match.params;
 	const dispatch = useDispatch();
+	const currentUser = useSelector(state => state.userActive.currentUser)
+	const { activeUid } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	useEffect(() => {
 		checkPatientPermission();
@@ -23,6 +27,7 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const checkPatientPermission = useCallback(
 		async () => {
+			console.log("Entro al check")
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
 			if(plan && plan.my_specialist === false) {
@@ -30,11 +35,11 @@ const OnlineSpecialist = ({ match, history }) => {
 				return false
 			}
 			try {
-				const medicRecs = await getUserMedicalRecord(dni, user.ws);
+				const medicRecs = await getMedicalRecord(currentUser.uid, activeUid);
 				let redirect = false;
 				const { social_work } = await getDocumentFB('/parametros/userapp/variables/specialist');
 				if (user?.corporate_norm?.toLowerCase() === 'union personal') {
-					const credNum = await validateUPAff_byDocType(dni, docTypesUP).catch((e) => console.error(e));
+					const credNum = await validateUPAff_byDocType(user.dni, docTypesUP).catch((e) => console.error(e));
 					// const isValid = transcELG(credNum || '').catch((e) => console.error(e));
 					localStorage.setItem('up_affNum', credNum || '');
 					dispatch({ type: 'SET_UP_NUMAFF', payload: credNum || '' });
@@ -47,7 +52,10 @@ const OnlineSpecialist = ({ match, history }) => {
 				}
 				if (!!medicRecs && medicRecs.length) {
 					const hasAppoint = medicRecs.some(function (mr) {
-						const scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
+						let scheduledTurn = mr.mr_preds && mr.mr_preds.pre_clasif && mr.mr_preds.pre_clasif[0];
+						if(mr.att_category && mr.att_category === "MI_ESPECIALISTA") {
+							scheduledTurn = 'TurnoConsultorioOnline'
+						}
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === '') {
 							return true;
 						} else {
@@ -55,7 +63,7 @@ const OnlineSpecialist = ({ match, history }) => {
 						}
 					});
 					if (hasAppoint) {
-						return history.push(`/appointmentsonline/pending/${dni}`);
+						return history.push(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 					}
 				}
 				render(redirect);
@@ -69,9 +77,9 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const render = (redirect) => {
 		if (user.first_time && user.first_time.length >= 1) {
-			history.push(`/appointmentsonline/${user.first_time}/calendar/${dni}`);
+			history.push(`/appointmentsonline/${user.first_time}/calendar/${activeUid}?dependant=${params.dependant}`);
 		} else if (redirect) {
-			history.push(`/appointmentsonline/specialty/${dni}`);
+			history.push(`/appointmentsonline/specialty/${activeUid}?dependant=${params.dependant}`);
 		} else {
 			// console.log('No')
 		}

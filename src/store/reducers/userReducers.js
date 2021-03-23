@@ -1,23 +1,25 @@
 const initialState = {
-  core_id: "",
-  country: null,
-  email: "",
-  dni: "",
-  sex: "",
-  dob: "",
   address: "",
   city: "",
-  piso: "",
-  depto: "",
-  ws: "",
+  core_id: "",
+  country: 'AR',
   day: "",
-  month: "",
-  year: "",
+  depto: "",
+  dni: "",
+  dob: "",
   dt: "",
-  os: "",
-  phone:"",
-  osNumber: 0,
+  email: "",
+  firstname: "",
   fullname: "",
+  piso: "",
+  lastname: "",
+  lat: "",
+  lon: "",
+  month: "",
+  os: "",
+  osNumber: 0,
+  password: "",
+  phone:"",
   userToFill: {
     dt_start: "",
     fullname: "",
@@ -26,13 +28,18 @@ const initialState = {
     dob: "",
     sex: "",
     corporate: ""
-  }
+  },
+  sex: "",
+  year: "",
+  ws: "",
 };
 
 export default function userReducers(state = initialState, action) {
   switch (action.type) {
     case 'GET_PATIENT':
       return {...state, ...action.payload };
+    case 'SET_USER_LOGIN':
+      return {...state, login: action.payload}
     case "USER_FIRST_CORE":
       return { ...state, core_id: action.payload };
     case "USER_FIRST_EMAIL":
@@ -52,13 +59,15 @@ export default function userReducers(state = initialState, action) {
     case "USER_FIRST_PISO":
       return { ...state, piso: action.payload };
     case "USER_FIRST_DEPTO":
-        return { ...state, depto: action.payload };
+      return { ...state, depto: action.payload };
     case "USER_FIRST_WS":
       return { ...state, ws: action.payload };
     case "USER_FIRST_DAY":
       return { ...state, day: action.payload };
     case "USER_FIRST_MONTH":
       return { ...state, month: action.payload };
+    case "USER_FIRST_NAME":
+      return { ...state, firstname: action.payload };
     case "USER_FIRST_YEAR":
       return { ...state, year: action.payload };
     case "USER_FIRST_DT":
@@ -69,8 +78,16 @@ export default function userReducers(state = initialState, action) {
       return { ...state, osNumber: action.payload };
     case "USER_FIRST_FULLNAME":
       return { ...state, fullname: action.payload };
+    case "USER_LAST_NAME":
+      return { ...state, lastname: action.payload };
+    case "USER_PASSWORD":
+      return { ...state, password: action.payload };
     case "USER_PHONE_NUMBER":
-        return { ...state, phone: action.payload };
+      return { ...state, phone: action.payload };
+    case "SET_COORDS":
+      return { ...state, lat: action.payload.lat, lon: action.payload.lon };
+    case "RESET_USER_DATA":
+      return initialState;
     case "FILL_REGISTER":
       if (action.payload) {
         return { ...state, userToFill: action.payload };

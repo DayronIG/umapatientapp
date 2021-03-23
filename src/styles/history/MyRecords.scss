@@ -1,0 +1,74 @@
+@import '../../styles/global/Vars.scss';
+
+.my-history-container {
+
+    .title-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+
+        p {
+            margin: 0;
+        }
+
+        button {
+            border: none;
+            background-color: $white-color;
+        }
+    }
+
+    .my-history-beneficiary {
+        margin-bottom: 15px;
+        text-align: center;
+
+        .select-beneficiary {
+            width: 100%;
+            padding: 5px 35px;
+            background-color: $uma-primary;
+            color: $white-color;
+            font-weight: bold;
+            border-radius: 5px;
+            &:focus {
+                outline: $dark-blue;
+            }
+        }
+    }
+
+    .no-records {
+        text-align: center;
+        margin: 50px;
+    }
+
+    .my-history-consultation {
+
+        .consult-link {
+            display: flex;
+            align-items: center;
+            .left-icon {
+                margin-right: 20px;
+                svg {
+                    font-size: 2rem;
+                }
+            }
+            .title-date {
+                margin-top: 10px;
+                .title-clasif {
+                    font-size: 18px;
+                    color: $text-super-dark;
+                    font-weight: bold; 
+                    margin: 0;
+                    color: $text-super-dark;
+                    text-transform: capitalize;
+                }
+                .consult-date {
+                    margin: 0;
+                    color: $text-super-dark;
+                }
+            }
+            
+        }
+
+    }
+
+}

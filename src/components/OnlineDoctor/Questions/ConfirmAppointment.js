@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import { make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { yearAndMonth } from '../../Utils/dateUtils';
@@ -16,16 +17,27 @@ import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
 
 const ConfirmAppointment = (props) => {
-	const { dispatch, history, symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
+	const {symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
+	const history = useHistory();
+	const dispatch = useDispatch();
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [File, setFile] = useState([]);
 	const [contador, setContador] = useState(0);
 	const biomarkers = useSelector(state => state.biomarkers)
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
+	const {currentUser} = useSelector(state => state.userActive)
 
 	useEffect(() => {
-		const data = JSON.parse(localStorage.getItem('selectedAppointment'));
-		setSelectedAppointment(data);
+		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
+			const data = JSON.parse(localStorage.getItem('selectedAppointment'));
+			delete data.history
+			delete data.location
+			delete data.match
+			setSelectedAppointment(data);
+		}
 	}, []);
 
 	const uploadImage = e => {
@@ -59,14 +71,16 @@ const ConfirmAppointment = (props) => {
 
 	const postData = async (bag = false) => {
 		dispatch({ type: 'LOADING', payload: true });
+		let symptoms = '', userVerified = user;
+		if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 		try {
-			let symptoms = '', userVerified;
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
-			if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
-			let appointmentId = genAppointmentID(selectedAppointment, yearAndMonth());
-			if (bag === true) {
-				appointmentId = ''
+			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
+			let ruta = selectedAppointment.path?.split('assignations/')[1]
+			if(bag) {
+				category = "GUARDIA_RANDOM"
+				ruta = ''
 			}
 			let data = {
 				age: userVerified.age || '',
@@ -76,70 +90,78 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || user.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '', // Coordenadas de Melian si no hay location
+				lat: coordinates.lat || '', 
 				lon: coordinates.lng || '',
 				msg: 'make_appointment',
+				cuit: `${selectedAppointment.cuit}`,
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
-				ruta: appointmentId || '',
+				ruta: ruta || '',
 				sex: userVerified.sex || '',
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || user.ws,
+				uid: currentUser.uid,
+				uid_dependant: params.dependant === 'true' ? activeUid : false,
+				category
 			};
 
 			const headers = { 'Content-type': 'application/json' };
 			const res = await axios.post(make_appointment, data, headers);
 			dispatch({ type: 'LOADING', payload: false });
 			if (res.data.fecha === '') {
-				return history.replace(`/${userVerified.dni}/onlinedoctor/who`);
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			} else {
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/${userVerified.dni}/onlinedoctor/queue`);
+				return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			}
 		} catch (err) {
-			console.log(err)
+			if(err.response?.data?.fecha === '') {
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
+			}
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 		}
 	};
 
-	const submitRequest = async () => {
+	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
-		const lastAssingState = await getDocumentFB(`assignations/${appointId}`);
-		if (appointId === '' || lastAssingState.state === 'FREE') {
+		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
+		if (appointId === '' || lastAssingState?.state === 'FREE') {
 			return postData();
 		} else {
 			dispatch({ type: 'LOADING', payload: false });
-			const confirmAction = await swal({
+			/* const confirmAction =  */await swal({
 				title: 'El especialista que escogió ya no está disponible',
 				text: 'Podemos asignarte a otro médico con disponibilidad. Deseas que te asignemos el primero disponible?',
 				icon: 'warning',
 				buttons: true,
 			});
-			if (!confirmAction) {
-				return postData(true);
+			if (true /* confirmAction */) {
+/* 				postData(true);
+			} else { */
+				let userVerified = user.dni
+				if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
+				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			}
-			return history.replace('/');
 		}
-	};
+	}, [selectedAppointment])
 
 	return (
 		<>
-			{selectedAppointment ?
+			{selectedAppointment.doc?.path_profile_pic ?
 				<div className='appointment'>
 					<h5>Información del turno</h5>
 					<div>
 						<div className="appointment__doctorIcon">
-							<img src={selectedAppointment.path_profile_pic} alt="Doctor" />
+							<img src={selectedAppointment.doc?.path_profile_pic} alt="Doctor" />
 						</div>
-						<div className="appointment__detail">Doctor: <b>{selectedAppointment.fullname}</b></div>
+						<div className="appointment__detail">Doctor: <b>{selectedAppointment.doc?.fullname}</b></div>
 						<div className="appointment__detail">Hora: <b>{selectedAppointment.time}</b></div>
 						<div className="appointment__detail">Fecha: <b>{selectedAppointment.date}</b></div>
 					</div>
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
-					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 				</div>
 				:
 				<div className='appointment'>
@@ -147,24 +169,25 @@ const ConfirmAppointment = (props) => {
 					<div className="appointment__doctorIcon">
 						<FaUserMd />
 					</div>
-					<div className="appointment__detail">Médico de guardia</div>
+					<div className="appointment__detail">Guardia médica</div>
+					<DoctorDelay cuit={selectedAppointment.cuit} time={selectedAppointment.time} date={selectedAppointment.date} />
 					<p>Presione <strong>"Confirmar turno"</strong> <br /> para agendar.</p>
 				</div>
 			}
 			<div className="questionsContainer">
 				{
 					loading ? <div className="text-center"><Loader /></div>
-						:
-						<div className="input-file">
-							<FaFileMedicalAlt size="1.5rem" />
-							<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
-							<input type="file" onChange={uploadImage} />
-						</div>
+					:
+					<div className="umaBtn attachFile">
+						<FaFileMedicalAlt className="attachFile__icon" />
+						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
+						<input type="file" onChange={uploadImage} />
+					</div>
 				}
-				<button className="btn-questions btn-normal" onClick={() => submitRequest()}>Confirmar turno</button>
+				<button className="umaBtn" onClick={() => submitRequest()}>Confirmar turno</button>
 			</div>
 		</>
 	);
 };
 
-export default withRouter(ConfirmAppointment);
+export default ConfirmAppointment;

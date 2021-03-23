@@ -84,7 +84,6 @@ export function checkNum(phone) {
     } else if (phone.length >= 11) {
         return phone
     } else {
-        console.log("Teléfono inválido")
         return false;
     }
     return validPhone

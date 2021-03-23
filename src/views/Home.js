@@ -7,11 +7,12 @@ import ModulesMenu from '../components/HomePage/ModulesMenu';
 const HomePage = () => {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
+	const { currentUser } = useSelector(state=> state.userActive);
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
 	useEffect(() => {
 		if (user && user.dni !== "") {
-			dispatch(getMedicalRecord(user.dni, user.ws))
+			dispatch(getMedicalRecord(currentUser.uid, false))
 		}
 	}, [dispatch, user])
 

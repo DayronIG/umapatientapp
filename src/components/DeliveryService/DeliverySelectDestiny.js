@@ -26,7 +26,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	const [marker, setMarker] = useState({ lat: 0, lng: 0, text: '' });
 	const user = useSelector(state => state.user);
 	const { loading } = useSelector(state => state.front);
-	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
+	const { hisopadoUserAddress, hisopadoDependantAddresses, addressLatLongHisopado, addressObservations, isAddressValidForHisopado, params, deliveryInfo, current, deliveryType } = useSelector(state => state.deliveryService);
 	const [formState, setFormState] = useState({
 		piso: user?.piso || '',
 		depto: user?.depto || '',
@@ -40,7 +40,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 
 	useEffect(() => {
         if(user.dni) {
-            getCurrentService()
+			getCurrentService()
         }
     }, [user])
 
@@ -64,36 +64,54 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 	useEffect(() => {
 		if(mapApi && mapInstance){
 			async function fetchData() {
-                let coords = [];
-                if(params.zones?.caba) {
-                    // eslint-disable-next-line array-callback-return
-                    params.zones.caba.map(coord => {
-                        let coordToNumber = {
-                            lat: Number(coord.lat),
-                            lng: Number(coord.lng)
-                        }
-                        coords.push(coordToNumber);
-                    })
-                }
-                let coverage = new mapApi.Polygon({
-                    paths: coords,
-                    strokeColor: "#009042",
-                    strokeOpacity: 0,
-                    fillColor: "#009042",
-                    fillOpacity: 0
-				  });
+				let coords = [];
+				let coordsArray = []
+                if(params.zones) {
+					// eslint-disable-next-line array-callback-return
+					Object.keys(params.zones).map(zone => {
+						let coordsArrayByZone = []
+						params.zones[zone].map(coord => {
+							let coordToNumber = {
+								lat: Number(coord.lat),
+								lng: Number(coord.lng)
+							}
+							coordsArrayByZone.push(coordToNumber);
+						})
+						coordsArray.push(coordsArrayByZone)
+					})
+				}
+				
+				let coveragesArray = []
+
+				coordsArray.map(arr => {
+					let coverage = new mapApi.Polygon({
+						paths: arr,
+						strokeColor: "#009042",
+						strokeOpacity: 0,
+						fillColor: "#009042",
+						fillOpacity: 0
+					  });
+					  coveragesArray.push(coverage)
+				})
 
 				dispatch({type: "SET_DELIVERY_COVERAGE", payload: coords})
 
 				let resultPath;
+				let isValid = [];
 				setTimeout(()=>{
-					resultPath = mapApi.geometry?.poly.containsLocation(
-						new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
-						coverage
-					)
-					dispatch(handleAddressValidForHisopado(resultPath))
+					coveragesArray.map((cov) => {
+						resultPath = mapApi.geometry?.poly.containsLocation(
+							new mapApi.LatLng(addressLatLongHisopado.lat, addressLatLongHisopado.lng),
+							cov
+						)
+						isValid.push(resultPath)
+					})
+					if(isValid.includes(true)){
+						dispatch(handleAddressValidForHisopado(true))
+					} else {
+						dispatch(handleAddressValidForHisopado(false))
+					}
 				}, 800)
-
             }
 			fetchData();
 		}
@@ -176,7 +194,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 			return swal('Error', 'Por favor, seleccione una altura para su dirección.', 'warning');
 		}
 		dispatch({ type: 'LOADING', payload: true });
-		dispatch(handleDeliveryForm(formState));
+		dispatch(handleDeliveryForm({...formState, user_obs: addressObservations}));
 		if(!isModal){
 			const headers = { 'Content-Type': 'Application/json', 'Authorization': localStorage.getItem('token') };
 			const data = {
@@ -189,8 +207,9 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				'lon': formState.lng,
 				'floor': `${formState.piso}`,
 				'number': `${formState.depto}`,
-				'incidente_id': deliveryInfo?.[0]?.id || current.id,
-				'range': isAddressValidForHisopado || false
+				'incidente_id': deliveryInfo?.[0]?.id,
+				'range': isAddressValidForHisopado || false,
+				'user_obs': addressObservations
 			};
 			try {
 				await Axios.post(mobility_address, data, {headers});
@@ -208,17 +227,18 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				format_address: hisopadoUserAddress,
 				user_address: hisopadoUserAddress,
 				address: hisopadoUserAddress,
-				isAddressValidForHisopado: isAddressValidForHisopado
+				isAddressValidForHisopado: isAddressValidForHisopado,
+				addressObservations: addressObservations
 			}
 			dispatch({type: "SET_DEPENDANT_INFO", payload: data})
 			const dependantAddressesToDispatch = hisopadoDependantAddresses
-			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon}
+			dependantAddressesToDispatch[dependantIndex] = {address: hisopadoUserAddress, lat: formState.lat, lon: formState.lon, user_obs: addressObservations}
 			dispatch({type: 'SET_HISOPADO_DEPENDANT_ADDRESSES', payload: dependantAddressesToDispatch})
 			dispatch({type: "CHANGE_MARKER"})
 			dispatch({ type: 'LOADING', payload: false });
 			if(isAddressValidForHisopado){finalAction()}
 		}
-	}, [hisopadoUserAddress, formState, isAddressValidForHisopado]);
+	}, [hisopadoUserAddress, formState, isAddressValidForHisopado, addressObservations]);
 
 
 	return (
@@ -262,7 +282,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 						<input onChange={handleForm} placeholder='Piso' type='number' name='piso' id='piso' value={formState.piso} />
 						<input
 							onChange={handleForm}
-							placeholder='Depto'
+							placeholder='Depto y observaciones'
 							type='text'
 							name='depto'
 							id='depto'
@@ -272,7 +292,19 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				</div>
 			</div>}
 			</div>
-			<div onClick={(e) => handleSubmit(e)} className="map-button">
+			<div className={`observacionesContainer ${isModal? '': 'marginBottomObservaciones'}`}>
+				<input 
+					type="text"
+					inputMode="text"
+					placeholder="Aclaraciones para el personal" 
+					className='observationsInput'
+					value={addressObservations || ''}
+					onChange={(e) => {
+						dispatch({type: 'SET_ADDRESS_OBSERVATIONS', payload: e.target.value})
+					}}
+				/>
+			</div>
+			<div onClick={(e) => {if(deliveryInfo?.[0]?.id) handleSubmit(e)}} className={`map-button ${!deliveryInfo?.[0]?.id && 'disabled-map-button'}`}>
                 Seleccionar
             </div>
 			</div>

@@ -1,44 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Comments from './Comments.js';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import moment from 'moment';
 import * as DetectRTC from 'detectrtc';
-import { getUser } from '../../../store/actions/firebaseQueries';
-import enablePermissions from '../../Utils/enableVidAudPerms';
-import DinamicScreen from '../../GeneralComponents/DinamicScreen';
+import Comments from './Comments.js';
 import { Loader } from '../../GeneralComponents/Loading';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
+import Advice from '../AttQueue/Advice';
 import DoctorCard, { GuardCard } from './DoctorCard';
+import DinamicScreen from '../../GeneralComponents/DinamicScreen';
 import Backbutton from '../../GeneralComponents/Backbutton';
-import { findAllAssignedAppointment, findAllFreeAppointments } from '../../Utils/appointmentsUtils';
+import { getDependant, getFreeGuardia } from '../../../store/actions/firebaseQueries';
+import enablePermissions from '../../Utils/enableVidAudPerms';
+import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
+import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
+	const {active_guardia, active_list, guardia_advice} = useSelector((state) => state.front);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
+	const {currentUser} = useSelector((state) => state.userActive);
 	const [action, setAction] = useState('Loading');
 	const [assignations, setAssignations] = useState([]);
-	const [dni] = useState(props.match.params.dni);
+	const [queue, setQueue] = useState("1")
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
+	const { activeUid } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if (dni !== undefined) {
-			getUser(dni)
-				.then((p) => {
-					const type = moment().diff(p.dob, 'years') <= 16 ? 'pediatria' : '';
-					setPediatric(type ? true : false);
-					findAssignedAppointments(p, type);
-				})
-				.catch(function(error) {
-					return error;
-				});
+		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
+			dispatch(getDependant(currentUser.uid, activeUid))
 		}
-	}, []);
-
+	}, [currentUser, activeUid]);
 
 	useEffect(() => {
 		let hasWebcam, hasMicrophone;
@@ -50,33 +49,52 @@ const WhenScreen = (props) => {
 		});
 	}, []);
 
-	async function findAssignedAppointments(person, type) {
+
+	useEffect(() => {
+		// get params
+		try {
+			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
+				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
+			})
+			getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires')
+			.format('YYYYMMDDHHmm')}`).then(res => {
+				dispatch({type: 'SET_GUARDIA_STATS', payload: res})
+			})
+		} catch(err) {
+			console.log(err)
+		}
+	}, [])
+
+
+	useEffect(() => {
+		if(user) {
+			let test = user.context === "temp" ? true : false
+			const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
+			setPediatric(type);
+			findAssignedAppointments(user, type, test);
+		}
+	}, [user])
+
+	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
-			let assigned = undefined;
-			if (person.group !== person.dni) {
-				assigned = await findAllAssignedAppointment(person.dni, type);
-			}
+			let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
 			if (assigned) {
 				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				console.log("Assigned check", assigned)
-				return props.history.replace(`/${person.dni}/onlinedoctor/queue`);
+				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			} else {
-				console.log("No assigned")
-				return findFreeAppointments(person, type);
+				return findFreeAppointments(person, type, test);
 			}
 		} catch (error) {
-			// console.error(error)
+			console.error(error)
 			return props.history.replace('/');
 		}
 	}
 
-	async function findFreeAppointments(person, type) {
+	const findFreeAppointments = useCallback(async (person, type, test) => {
 		try {
-			// Get free appointments from firebase.
-			let freeAppoints = await findAllFreeAppointments(type);
-			console.log("Freeappoints", freeAppoints)
-			// Filter doctors by cuil
+			let freeAppoints =  []
+			freeAppoints = await getFreeGuardia(test, user.country, type); // WIP
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
 				return setAction('Doctors');
@@ -84,9 +102,21 @@ const WhenScreen = (props) => {
 				return setAction('Empty');
 			}
 		} catch (error) {
+			console.log(error)
 			return props.history.replace('/');
 		}
-	}
+	}, [pediatric])
+
+	useEffect(() => {
+		let filters = [{field: 'state', value: 'ASSIGN', comparator: '=='}]
+		getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
+			.then(res => {
+				if(res.length > 0) {
+					setQueue(res.length)
+				}
+			})
+	}, [])
+
 
 	return (
 		<>
@@ -116,39 +146,23 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					<div className='mb-4'>
-						<GuardCard pediatric={pediatric} dni={dni} />
-					</div>
-					<div className='when-question'>O elija un {pediatric ? 'pediatra' : 'médico'}</div>
-					{action === 'Doctors' && (
+					{guardia_advice && <Advice text={guardia_advice} />}
+					{(active_guardia || user.country !== "AR" || pediatric) && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
+					{((active_list && action === 'Doctors') || user.context === "temp") && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
-									remaining={assignation.remaining}
-									doctor={assignation}
-									dni={dni}
+									{...assignation}
 									key={index}
+									dni={user.dni}
 								/>
-							))}
+								))}
 						</div>
 					)}
 					{action === 'Loading' && (
-						<div
-							style={{
-								margin: 'auto',
-								width: '85vw',
-								backgroundColor: 'white',
-								borderRadius: '6px',
-								minHeight: '360px',
-							}}
-							className='d-flex align-items-center justify-content-center flex-column mb-3'>
+						<div className='when__loading'>
 							<Loader />
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
-						</div>
-					)}
-					{action === 'Empty' && (
-						<div className='dinamic-time  text-center'>
-							En este momento no hay especialistas con agenda disponible, seleccione médico de guardia y será atendido por el primer especialista disponible.
 						</div>
 					)}
 					<div className='btn btn-blue-lg mb-5' onClick={() => props.history.push('/home')}>

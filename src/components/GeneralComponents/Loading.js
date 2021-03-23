@@ -17,8 +17,9 @@ export default function CustomUmaLoader() {
 		</div>
 	);
 }
-export function Loader() {
-	return <div className='loader'></div>;
+export function Loader(props) {
+	// La prop cover cubre todo el background del contenedor del spinner
+	return <div className={`loader ${props.cover && 'coverScreen'}`}></div>;
 }
 
 export function DeliveryCustomLoader() {

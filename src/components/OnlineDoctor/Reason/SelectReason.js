@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Backbutton from '../../GeneralComponents/Backbutton';
@@ -18,6 +19,9 @@ const SelectReason = (props) => {
 	const [otherSymptoms, setOtherSymptoms] = useState('');
 	const [recipeInputModal, setRecipeInputModal] = useState(false);
 	let scrollPosition = useScrollPosition();
+	const { activeUid } = useParams()
+	const location = useLocation()
+	const params = queryString.parse(location.search)
 
 	useEffect(() => {
 		dispatch({ type: 'GET_QUESTIONS', payload: symptoms });
@@ -61,12 +65,13 @@ const SelectReason = (props) => {
 		enableScrolling()
 		redirect()
 	}
+
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
-
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
-		props.history.replace(`/${props.match.params.dni}/onlinedoctor/questions`);
+		props.history.replace(`/onlinedoctor/questions/${activeUid}?dependant=${params.dependant}`);
 	}
+	
 	function addOtherSympton(e){
 		if(e.key === 'Enter'){ 
 			dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms })
@@ -83,18 +88,16 @@ const SelectReason = (props) => {
 						<RecipeInput callback={()=>recipeModalCheckout()}/>
 					</Modal>
 				}
-				<Backbutton inlineButton={false} />
+				<Backbutton customTarget={`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`} inlineButton={false} />
 				<span className='question-title'>Motivo de la consulta</span>
 				<div className={`${scrollPosition > 90 ? 'tags-container-sticky' : 'tags-container'} `}>
 					<>
 						{selectedSymptoms.length >= 1 ? (
 							selectedSymptoms.map((symptom, index) => {
-								return (
-									<div className='tag' key={index} onClick={(e) => deleteReason(symptom)}>
+								return symptom !== "" && <div className='tag' key={index} onClick={(e) => deleteReason(symptom)}>
 										<span className='tag-text'>{symptom}</span>
 										<FontAwesomeIcon icon={faTimesCircle} className='tag-delicon' />
 									</div>
-								);
 							})
 						) : (
 							<div className='tag-empty'>No ha agregado motivos</div>

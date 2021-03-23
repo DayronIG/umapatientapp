@@ -1,0 +1,44 @@
+@import '../global/Vars.scss';
+
+.my-history-container {
+    width: 100%;
+    min-height: 90vh;
+    margin: auto;
+    padding: 8%;
+    background-color: $white-color;
+
+    .link-to {
+        color: $uma-text;
+
+        .section {
+            font-size: 1rem;
+            font-weight: bold;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            .section-name-icon {
+                display: flex;
+
+                .left-icon {
+                    margin-right: 22px;
+
+                    svg {
+                        height: 40px;
+                        width: 30px;
+                        color: $uma-primary;
+                    }
+
+                }
+
+                 p {
+                    margin-top: 5px;
+                 }
+
+            }
+
+        }
+
+    }
+
+}

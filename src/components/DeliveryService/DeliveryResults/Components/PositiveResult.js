@@ -58,14 +58,14 @@ export default function PositiveResult({finalAction}) {
                             </div>
                             <FaArrowRight className="icon-arrow" />
                         </div>
-                        <div className="results-menu-map-item" onClick={() => history.push(`/${patient.ws}/onlinedoctor/who`)}>
+                        <div className="results-menu-map-item" onClick={() => history.push(`/onlinedoctor/who`)}>
                             <div>
                             <FaUserNurse className="icon" />
                                 Quiero una consulta médica
                             </div>
                             <FaArrowRight className="icon-arrow" />
                         </div>
-                        <div className="results-menu-map-item" onClick={() => history.push(`/${patient.ws}/autonomous`)}>
+                        <div className="results-menu-map-item" onClick={() => history.push(`/autonomous/${patient.ws}`)}>
                             <div>
                             <FaStethoscope className="icon" />
                                 Hacer autodiagnóstico

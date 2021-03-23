@@ -333,32 +333,6 @@
 					}
 				}
 			}
-
-			// &.fullOpen {
-			// 	@media screen and (max-width: 320px) {
-			// 		height: calc(95vh - 44px);
-			// 	}
-
-			// 	@media screen and (min-width: 321px) {
-			// 		height: calc(85vh - 44px);
-			// 	}
-
-			// 	@media screen and (min-width: 400px) {
-			// 		height: calc(85vh - 44px);
-			// 	}
-			// }
-
-			// &.showBtn {
-			// 	height: calc(100vh - 44px);
-			// 	border-radius: 0;
-			// }
-
-			// &:not(.fullOpen) {
-			// 	.tracking__stepperBar {
-			// 		top: 50px;
-			// 	}
-			// }
-
 			&.showIndications {
 				.tracking__indications {
 					height: auto;
@@ -368,21 +342,6 @@
 					height: 320px;
 				}
 			}
-
-			// .stepper__toggle {
-			// 	position: absolute;
-			// 	bottom: 0;
-			// 	left: 0;
-			// 	border: none;
-			// 	width: 100%;
-			// 	text-align: center;
-			// 	margin-top: 20px;
-			// 	font-size: 1.5rem;
-			// 	background: none;
-			// 	color: $uma-text-secondary;
-			// 	outline: none;
-			// }
-
 			.stepper__btn {
 				width: 100%;
 				border: none;

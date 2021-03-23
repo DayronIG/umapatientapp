@@ -31,14 +31,10 @@ const AnswerComplain = ({ responseAction: { response, action } }) => {
 
     return (
         <>
-            {!response ? <Loading /> :
-                <div className='detail-modal-content'>
-                    {/* Respuesta harcodeada comentada */}
-                    {/* <p className="response">¡Gracias por comunicarte con ÜMA! Nuestro equipo revisará tu reclamo y nos pondremos en contacto contigo en caso de ser necesario.</p>  */}
-                    <p className="response">{response}</p>
-                    {showActionComponent()}
-                </div>
-            }
+            <div className='detail-modal-content'>
+                <p className="response">{response}</p>
+                {showActionComponent()}
+            </div>
         </>
     )
 }

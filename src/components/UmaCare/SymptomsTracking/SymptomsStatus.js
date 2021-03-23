@@ -1,11 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { make_appointment } from '../../../config/endpoints';
+import axios from 'axios';
 import umacare from '../../../assets/umacare.png';
 import Switch from 'react-switch';
 import NotifyFriends from './NotifyFriends';
+import moment from 'moment';
+import swal from 'sweetalert';
 
 export const SymptomsOk = ({ history }) => {
     return (
@@ -73,6 +77,46 @@ export const Disclaimer = ({ history }) => {
 
 export const SymptomsWarning = ({ history }) => {
     const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    async function _getOnlineAppointment() {
+        dispatch({ type: 'LOADING', payload: true });
+		try {
+			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
+			let data = {
+				age: user.dob || '',
+				biomarker: [],
+				destino_final: '',
+				diagnostico: '',
+				dt,
+				dni: user.dni,
+				epicrisis: '',
+				lat: user.lat || '', // Coordenadas de Melian si no hay location
+				lon: user.lon || '',
+				msg: 'make_appointment',
+				motivo_de_consulta: 'Empeoramiento de síntomas en Umacare (seguimiento de COVID)',
+				alertas: '',
+				ruta: '',
+				sex: user.sex || '',
+				specialty: 'online_clinica_medica',
+                ws: user.ws,
+                uid: user.core_id,
+                uid_dependant: false,
+                category: 'GUARDIA_UMACARE'
+			};
+			const headers = { 'Content-type': 'application/json' };
+            const res = await axios.post(make_appointment, data, headers);
+			dispatch({ type: 'LOADING', payload: false });
+            localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
+            localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
+            return history.replace(`/onlinedoctor/queue/${user.uid}?dependant=false`);
+		} catch (err) {
+			console.log(err)
+			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
+			dispatch({ type: 'LOADING', payload: false });
+		}
+    }
+
     return (
         <>
             <div className='symptomsStatus'>
@@ -88,7 +132,7 @@ export const SymptomsWarning = ({ history }) => {
                 </div>
                 <div className='symptomsStatus__container'>
                     <button className='symptomsStatus__container--btn'
-                        onClick={() => history.replace(`/${user.dni}/onlinedoctor/when`)}
+                        onClick={() => _getOnlineAppointment()}
                     >
                         realizar consulta online
                     </button>

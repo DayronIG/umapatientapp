@@ -18,27 +18,37 @@ const HisopadosCoverage = () => {
         handleApiLoaded(setUserLocation);
 
         let auxiliaryCoords = [];
+        let coordsArray = []
 
         if(!allCoords.length) {
             const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
-            params.zones.caba.forEach(coord => {
-                let coordToNumber = {
-                    lat: Number(coord.lat),
-                    lng: Number(coord.lng)
-                }
-                auxiliaryCoords.push(coordToNumber);
-            });
-        }
+            Object.keys(params.zones).map(zone => {
+                let coordsArrayByZone = []
+                params.zones[zone].forEach(coord => {
+                    let coordToNumber = {
+                        lat: Number(coord.lat),
+                        lng: Number(coord.lng)
+                    }
+                    coordsArrayByZone.push(coordToNumber);
+                });
+                coordsArray.push(coordsArrayByZone)
+        })}
+
+        let coveragesArray = []
+
+        coordsArray.map(arr => {
+            let coverage = new maps.Polygon({
+                paths: arr,
+                strokeColor: "#009042",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#009042",
+                fillOpacity: 0.35
+              });
+              coveragesArray.push(coverage)
+        })
       
-        let coverage = new maps.Polygon({
-          paths: allCoords.length ? allCoords : auxiliaryCoords,
-          strokeColor: "#009042",
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: "#009042",
-          fillOpacity: 0.35
-        });
-        coverage.setMap(map);
+        coveragesArray.map(cov => cov.setMap(map))
       };
     
     return (

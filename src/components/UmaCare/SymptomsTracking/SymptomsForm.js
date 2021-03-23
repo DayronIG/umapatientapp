@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import isIos from '../../Utils/isIos';
 import CovidSymptomsQuestions from './CovidSymptomsQuestions';
 import CovidMainQuestions from './CovidMainQuestions';
+import axios from 'axios';
+import { node_patient } from '../../../config/endpoints';
 
 const SymptomsTracking = ({ sendTracking }) => {
+    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state.userActive.currentUser)
+    const user = useSelector(state => state.user)
     const [faces, setFaces] = useState()
     const [fever, setFever] = useState()
     const [dyspnoea, setDyspnoea] = useState()
@@ -19,10 +25,31 @@ const SymptomsTracking = ({ sendTracking }) => {
     const watchError = () => console.log('Hubo un error al rastrear la posición')
 
     const currentPos = ({ coords }) => {
+        dispatch({type: "SET_COORDS", payload:
+            {
+                lat: coords.latitude.toString() || '',
+                lon: coords.longitude.toString() || ''
+            }})
         setCoordinates({
             lat: coords.latitude.toString() || '',
             lon: coords.longitude.toString() || '',
         })
+        currentUser.getIdToken().then(async token => {
+            let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+            let data = {
+                newValues: {
+                    lat: coords.latitude.toString() || '',
+                    lon: coords.latitude.toString() || '',
+                }}
+            axios
+                .patch(`${node_patient}/update/${currentUser.uid}`, data,  {headers: headers })
+                .then((res) => {
+                    console.log("UMA");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            })
     }
 
     useEffect(() => {
@@ -58,11 +85,12 @@ const SymptomsTracking = ({ sendTracking }) => {
             })
         }
     }, [])
+    
 
     return (
         <>
             {askQuestions ?
-                <CovidSymptomsQuestions setAskQuestions={setAskQuestions} />
+                <CovidSymptomsQuestions questionsHandler={setAskQuestions} />
                 :
                 <>
                     <CovidMainQuestions

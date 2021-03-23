@@ -1,0 +1,61 @@
+.umaBtn {
+    border-radius: 15px;
+    padding: 5px;
+    width: 90%;
+    height: 45px;
+    margin: 0 5% 5px;
+    color: $white-color;
+    font-weight: 700;
+    border: none;
+    background: $uma-primary;
+    &.green {
+        background: $green-high;
+    }
+    &.secondary {
+        background: $uma-secondary;
+    }
+    &.secondary-outline {
+        background: none;
+        border: 1px solid $uma-secondary;
+        color: $uma-secondary;
+    }
+    &.primary-outline {
+        background: none;
+        border: 1px solid $uma-primary;
+        color: $uma-primary;
+    }
+    &.attachFile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: bold;  
+        height: 45px;
+        position: relative;
+        .attachFile__icon {
+          font-size: 1.5rem;
+          margin: 0 5px;
+        }
+        @media (max-height: 530px) {
+          height: 38px;
+        }
+        p {
+          margin: 0;
+          padding: 0;
+        }
+        svg {
+          position: relative;
+          right: 10px;
+        }
+        input {
+          position: absolute;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+        }
+      }
+}

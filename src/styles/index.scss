@@ -1,10 +1,12 @@
 @import './global/Vars.scss';
 @import './global/Fonts.scss';
+@import './global/buttons.scss';
 @import './mixins/wrappers.scss';
 @import './mixins/buttons.scss';
 
 @media (min-width: 220px) {
 	body {
+		font-size: 18px;
 		margin: 0;
 		padding: 0;
 		min-height: 100vh;
@@ -20,9 +22,15 @@
 		}
 		button:focus,
 		button:active {
-			filter: contrast(0.6) !important;
 			outline: none;
 		}
+	}
+	h2 {
+		color: $uma-primary;
+		font-size: 1.3rem;
+		font-weight: 900;
+		text-align: center;
+		padding: 10px 0;
 	}
 	.bg-white {
 		background: $white-color;
@@ -33,7 +41,6 @@
 	.App {
 		max-height: 100%;
 		height: auto;
-		// background: $reduced-back-gradient;
 		background-repeat: no-repeat;
 	}
 	.route {
@@ -80,7 +87,7 @@
 
 		h5 {
 			padding: 1.2rem;
-			font-size: 14px;
+			font-size: 16px;
 			border-bottom: 2px dashed $light-grey-border;
 			width: 100%;
 			font-weight: bold;
@@ -90,32 +97,40 @@
 		}
 		.event {
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			flex-direction: column;
 			padding: 0 5% 0 6.5%;
 			width: 100%;
-			height: 60px;
-
-			div	 {
+			position: relative;
+			
+			.event-section	{
+				margin: 15px 0;
 				display: flex;
 				align-items: center;
-
-				svg {
-					color: $uma-primary;
-					font-size: 1.8rem;
+				justify-content: space-between;
+				padding: 2px 0;
+				&:nth-child(1):after {
+					width: 90%;
+					content: '';
+					height: 1px;
+					background-color: #D7D7D7;
+					position: absolute;
+					top: 60px;
 				}
 
-				span {
-					margin-left: 2rem;
-					font-size: 14px;
-					color: $text-super-dark;
-					font-weight: 700;
-				}
-			}
+				.section-icon {
 
-			strong {
-				color: $text-gray-blue;
-				font-size: 14px;
+					svg {
+						color: $uma-primary;
+						font-size: 1.5rem;
+					}
+	
+					span {
+						margin-left: 2rem;
+						font-size: 16px;
+						color: $text-super-dark;
+						font-weight: 700;
+					}
+				}
 			}
 		}
 		.history-link {
@@ -241,18 +256,47 @@
 			background: $gray-body-background;
 		}
 	}
+	.btn {
+		width: 90% !important;
+		font-size: 1rem;
+		margin: 5px 5%;
+		padding: 10px 0;
+		height: 35px;
+		border-radius: $regular-borders;
+		color: $uma-text;
+		cursor: pointer;
+		box-shadow: 0px 2px 4px 1px rgba(99, 99, 99, 0.25);
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		.btn__socialImg {
+            width: 70px;
+			img {
+				height: 20px;
+				margin: 0 10px;
+			}
+		}
+		&.social {
+			margin-bottom: 15px;
+			justify-content: flex-start;
+		}
+		&:hover {
+			background: $primary-color !important;
+		}
 
+	}
 	.btn-blue-lg {
 		width: 90% !important;
 		font-size: 1.2rem;
 		font-weight: 700;
 		padding: 10px 0;
 		margin: 5px 5%;
-		min-height: 40px;
-		border-radius: $regular-borders;
+		height: 44px;
+		border-radius: 15px;
 		color: $white-color;
 		background: $uma-primary;
 		cursor: pointer;
+		border: none;
 		&.disabled,
 		.disabled {
 			background: $gray-body-background;
@@ -263,16 +307,17 @@
 		}
 	}
 	.btn-alert {
-		padding: 5px;
+		width: 90% !important;
+		font-size: 1.2rem;
+		font-weight: 700;
+		padding: 10px 0;
+		margin: 15px 5%;
+		height: 44px;
+		border-radius: 15px;
+		color: $white-color;		
 		background: $red-high;
-		width: 90% !important;
-		min-height: 50px;
-	}
-	.btn-calling {
-		padding: 5px;
-		background: $green-high !important;
-		width: 90% !important;
-		min-height: 50px;
+		cursor: pointer;
+		border: none;
 	}
 	.btn-waiting {
 		padding: 5px;
@@ -350,7 +395,7 @@
 	}
 }
 
-@media (min-width: 320px) {
+@media (min-width: 200px) {
 	%shadows {
 		box-shadow: 0 1px 4px rgba(46, 46, 46, 0.16), 0 3px 6px rgba(104, 104, 104, 0.23);
 	}
@@ -366,15 +411,16 @@
 		justify-content: center;
 		.btn-secondary {
 			margin: 2px;
-			width: auto;
-			background-color: #a3bdcc;
 			border: none;
-			padding: 7px;
+			padding: 0 15px;
 			font-size: 13px;
 			font-weight: bold;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+			background-color: #a3bdcc;
+			width: auto !important;
+			color: $white-color;
 		}
 		.active {
 			background-color: $primary-color !important;
@@ -687,6 +733,7 @@
 
 	.dossier-container {
 		line-height: 1.2rem;
+		background-color: #fff;
 		h2 {
 			font-size: 1.2rem;
 			text-align: center;
@@ -702,11 +749,18 @@
 			height: 100px;
 		}
 		b {
-			color: $deep-blue;
+			color: #1E1E1E;
+			font-size: 14px;
 		}
 		.dossier-att-info {
-			padding: 6%;
-			color: $gray-font;
+			padding: 5%;
+			color: #1E1E1E;
+
+			.dossier-patient-name, .dossier-doctor-dni, .dossier-diagnosis, .dossier-patient-date {
+				font-size: 18px;
+				font-weight: bold;
+			}
+
 		}
 		.dossier-action-ico {
 			background-color: $primary-color;
@@ -723,9 +777,11 @@
 	}
 
 	.myhistory-container {
-		width: 90%;
+		width: 100%;
 		min-height: 90vh;
 		margin: auto;
+		padding: 8%;
+		background-color: #fff;
 		.myHistoryTitle {
 			font-weight: 600;
 			margin-top: 10px;
@@ -737,7 +793,6 @@
 				background: #2d7fc1;
 			}
 			font-size: 1rem;
-			background: $white-color;
 			margin: 15px 0 10px 0;
 			border-radius: $regular-borders;
 			padding: 10px 18px;
@@ -752,13 +807,14 @@
 				.leftIcon {
 					margin-right: 22px;
 					svg {
-						height: 43px;
-						width: 33px;
-						color: $lighter-grey;
+						height: 40px;
+						width: 30px;
+						color: #0A6DD7;
 					}
 				}
 				p {
-					color: $lighter-grey;
+					color: #1E1E1E;
+					margin: 0;
 				}
 			}
 			.my-autonomous {

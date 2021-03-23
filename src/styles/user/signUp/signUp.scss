@@ -1,0 +1,238 @@
+@import '../../global/Vars.scss';
+@import '../_mixins';
+
+.signUp {
+    min-height: 100vh;
+    background-color: $white-color;
+    position: relative;
+
+    .signUp__logo {
+        width: 60px;
+        position: absolute;
+        left: 5px;
+        top: 5px;
+    }
+
+    .modal_code_content {
+        text-align: center;
+    }
+
+    .signUp__content {
+        padding: 15% 0;
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        text-align: center;
+
+        .signUp__content--illustration {
+            width: 220px;
+            margin: 0 auto;
+            &.exclamation {
+                width: 115px;
+            }
+            &.error {
+                width: 150px;
+            }
+        }
+    
+        .signUp__actions {
+            margin: 20px 0;
+            .signUp__actions--button {
+                width: 150px;
+                height: 40px;
+                border: none;
+                margin: 0 5px;
+                font-weight: bold;
+                border-radius: 15px;
+            }
+            .back {
+                background-color: $white-color;
+                color: $uma-primary;
+            }
+            .foward {
+                background-color: $uma-primary;
+                color: $white-color;
+            }
+            .terms-and-conditions {
+                padding: 0 10%;
+                a {
+                    color: $uma-text;
+                    border-bottom: 1px solid $uma-text;
+                }
+            }
+        }
+
+        .cancelSignUp {
+            width: 80%;
+            height: 44px;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            background: $uma-input;
+            color: $uma-text;
+            text-transform: uppercase;
+            margin: 10px auto;
+            cursor: pointer;
+        }
+
+        .signUp__content__mainText {
+            @include d-flex-center;
+            flex-direction: column;
+            margin: 20px 0;
+            .title {
+                font-size: 24px;
+                padding: 10px 10%;
+                &.failed {
+                    color: $uma-error;
+                }
+                &.exists {
+                    padding: 10px 70px;
+                }
+            }
+            .subtitle {
+                text-align: center;
+                margin-bottom: 20px;
+                max-width: 80%;
+            }
+        }
+
+        .signUp__content__formGroup {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .input-number {
+                margin: 0 5px 20px;
+                width: 150px;
+                border: none;
+                border-bottom: 2px solid $uma-primary;
+                font-size: 1.3rem;
+                text-align: center;
+                letter-spacing: 0.3rem;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .signUp__content__form {
+            .invalidField{
+                text-align: start;
+                font-size: 16px;
+                margin: 5px 5% 0 5%;
+                color: $uma-error;
+                &.date {
+                    margin-top: 20px;
+                }
+            }
+
+            .container__select--sex {
+                width: 90%;
+                margin: 28px auto 10px auto;
+            
+                .select--sex {
+                    display: flex;
+                    justify-content: space-between;
+                    color: $when-dark;
+                    font-size: 16px;
+                    background-color: $white-color;
+                    width: 100%;
+                    border: none;
+                    border-bottom: 2px solid $uma-primary;
+                    padding: 0 2px;
+                    &:target, &:focus{
+                        outline: transparent;
+                        font-size: 18px;
+                        color: black;
+                    }
+                    &.active {
+                        color: $uma-text;
+                        font-size: 18px;
+                    }
+                }
+                .show--options {
+                    display: flex;
+                    flex-direction: column;
+                    color: $uma-text;
+                    text-align: start;
+                    box-shadow: 0px 2px 6px 3px rgba(73, 73, 73, 0.25);
+                    &.hiden {
+                        display: none;
+                    }
+                    &.active {
+                        display: block;
+                    }
+                    label {
+                        padding: 10px 0;
+                        &:focus {
+                            background-color: $uma-input;
+                        }
+                        input {
+                            visibility: hidden;
+                        }
+                    }
+                }
+            }
+            
+            .birth__date {
+                position: relative;
+                @include d-flex-center;
+                width: 91%;
+                margin: 40px auto 10px auto;
+                .text {
+                    font-size: 16px;
+                    margin: 0;
+                    color: $when-dark;
+                    position: absolute;
+                    left: 0%;
+                    min-height: 31px;
+                    width: 100%;
+                    text-align: start;
+                    &::after {
+                        content: '';
+                        display: block;
+                        height: 2px;
+                        background-color: $uma-button;
+                    }
+                    &.date {
+                        color: black;
+                        font-size: 18px;
+                    }
+                }
+                .icon--calendar {
+                    position: absolute;
+                    right: 5px;
+                    bottom: -5px;
+                }
+            }
+        }
+    }
+}
+
+.dataSaved {
+    height: 100vh;
+    width: 100%;
+    clip-path: circle(100px at 90% -10%); // se posiciona un circulo de 100 px en una esquina de la pantalla
+    -webkit-clip-path: circle(100px at 0 -10%);
+    transition: all 1s ease-out;
+    pointer-events: none;
+    @include d-flex-center;
+    flex-direction: column;
+    &.open {
+        clip-path: circle(1000px at 90% -10%); // cuando termina el setTimeOut cambian el circulo a 1000px
+        -webkit-clip-path: circle(1000px at 90% -10%);
+        pointer-events: all;
+        background-color: $uma-primary;
+    }
+    .dataSaved--title {
+        color: $white-color;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+}

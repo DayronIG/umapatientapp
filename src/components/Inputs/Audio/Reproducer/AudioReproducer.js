@@ -91,10 +91,12 @@ const AudioReproducer = ({
             {!onPlay ?
             <div onClick={play}  className = "record__trigger--btn styleButton">
                 <FaPlay className="icon" />
+                Reproducir
 			</div>
             :
             <div onClick={canPause ? pause: () => ""} className = {` record__trigger--btn styleButton ${canPause? "":"disabled"}`}>
                 <FaPause className="icon" />
+                Pausar
 			</div>}
 		</div>
 		</div>

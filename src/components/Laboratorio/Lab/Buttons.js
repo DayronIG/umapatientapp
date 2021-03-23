@@ -250,15 +250,13 @@ function LoadAnalysis(props) {
               </div>
             </tr>
             <div className="graficosTitulo">
-              {resPost && (
+              {resPost?.tags.length >= 1 && (
                 <h5>
-                  {" "}
-                  Diagnostico: <br></br>
-                  {resPost.tags[0]}{" "}
+                  Diagnostico: {resPost.tags[0]}
                 </h5>
               )}
             </div>
-            <Link to={`/${patient.ws}/onlinedoctor/`}>
+            <Link to={`/onlinedoctor/${patient.ws}`}>
             <div className="">Si desea puede consultar a un médico online haciendo click aquí</div>
             </Link>
           </table>

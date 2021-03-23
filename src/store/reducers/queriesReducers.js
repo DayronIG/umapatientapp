@@ -5,13 +5,14 @@ const initialState = {
     attempts: 1,
     beneficiaries: [],
     bills: [],
-    callSettings: { room: '', token: '' },
+    callSettings: { room: '', token: '', assignation: '' },
     country: "",
     dniFront: '',
     dniBack: '',
     feedback: [],
     geolocation: { lat: '', lng: '' },
     medicalRecord: [],
+    prescriptions: [],
     patient: { ws: '', },
     plan: {
         onlinedoctor: {
@@ -74,6 +75,10 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 country: action.payload
             })
+        case 'SET_USER_LOGIN':
+            return Object.assign({}, state, {
+                login: action.payload
+            })
         case 'GET_BILLS':
             return Object.assign({}, state, {
                 bills: action.payload
@@ -87,10 +92,6 @@ export default (state = initialState, action) => {
                 ...state,
                 geolocation: action.payload
             };
-        case 'SET_CALL_ROOM':
-            return Object.assign({}, state, {
-                callSettings: action.payload
-            });
         case 'SET_AMBULANCE_HAVEDURATION':
             return { ...state, ambulanceHaveDuration: action.payload };
         case 'SET_AMBULANCE_DURATION':
@@ -99,6 +100,8 @@ export default (state = initialState, action) => {
             return { ...state, upNumAff_store: action.payload };
         case 'SET_ASSIGNED_APPOINTMENT':
             return { ...state, assignedAppointment: action.payload }
+        case 'SET_PRESCRIPTIONS':
+            return { ...state, prescriptions: action.payload}
         case 'SET_UMACARE':
             return { ...state, umacare: action.payload }
         case 'SET_UMACARE_STATUS':

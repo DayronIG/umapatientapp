@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getDoctor, getUser } from '../../../store/actions/firebaseQueries';
+import queryString from 'query-string'
+import { getDoctor, getDependant } from '../../../store/actions/firebaseQueries';
 import { CustomUmaLoader } from '../../global/Spinner/Loaders';
 import { make_appointment } from '../../../config/endpoints';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
@@ -17,14 +18,19 @@ import swal from 'sweetalert';
 import '../../../styles/map/mapSidebar.scss';
 
 const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) => {
+	const dispatch = useDispatch();
 	const [doctor, setDoctor] = useState({});
 	const [coordinates, setCoordinates] = useState({ lat: '', lon: '' });
 	const { selectedSymptomsString } = useSelector((state) => state.assessment);
 	const { upNumAff_store } = useSelector((state) => state.queries);
 	const { loading } = useSelector((state) => state.front);
-	const dispatch = useDispatch();
-	const { dni } = match.params;
-	const token = useSelector((state) => state.userActive.token);
+	const patient = useSelector((state) => state.user);
+const {token, currentUser} = useSelector((state) => state.userActive);
+	const { activeUid } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
+
+	console.log("Ahora sí")
 
 	const watchError = () => console.log('Hubo un error al rastrear la posición');
 
@@ -121,23 +127,26 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 			dispatch({ type: 'LOADING', payload: true });
 			try {
 				const upNumAff = upNumAff_store || localStorage.getItem('up_affNum');
-				const userData = await getUser(dni);
+				if(activeUid && activeUid !== currentUser.uid) {
+					await dispatch(getDependant(currentUser.uid, activeUid))
+				}
 				const sendData = {
-					ws: userData.ws,
-					dni: userData.dni,
-					obra_social: userData.corporate_norm || '',
+					ws: patient.ws,
+					dni: patient.dni,
+					obra_social: patient.corporate_norm || '',
 					n_afiliado: upNumAff,
 					plan: '',
 					services: '',
 				};
-				writeOSData(sendData);
+				/* writeOSData(sendData); */
+				/* TO DO: hacer un patch desde el node a coverage en lugar de writeOSData */
 				const appFullDt = `${appoint.date.replace('-', '').replace('-', '')}${appoint.time.replace(/:/g, '')}`;
 				const id = `online_${doctor.matricula_especialidad}/${moment(appoint.date).format(
 					'YYYYMM'
 				)}/${appFullDt}_${doctor.cuit}`;
 				let data = {
-					age: userData.age || '',
-					dni: userData.dni,
+					age: patient.age || '',
+					dni: patient.dni,
 					dt: [
 						'TurnoConsultorioOnline',
 						`${doctor.fullname}`,
@@ -151,9 +160,13 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					motivo_de_consulta: selectedSymptomsString,
 					msg: 'make_appointment',
 					ruta: id,
+					cuit: `${doctor.cuit}`,
 					specialty: `${doctor.matricula_especialidad}`,
-					sex: userData.sex || '',
-					ws: userData.ws,
+					sex: patient.sex || '',
+					ws: patient.ws,
+					uid: currentUser.uid,
+					category: "MI_ESPECIALISTA",
+					uid_dependant: params.dependant === 'true' ? activeUid: false
 				};
 				const res = await post(make_appointment, data, {
 					headers: { 'Content-Type': 'application/json', 'Authorization': token },
@@ -163,10 +176,9 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					throw new Error('La cita que escogió ya está ocupada');
 				} else {
 					localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-					return history.replace(`/appointmentsonline/pending/${userData.dni}`);
+					return history.replace(`/appointmentsonline/pending/${activeUid}?dependant=${params.dependant}`);
 				}
 			} catch (error) {
-				//console.log(error)
 				dispatch({ type: 'LOADING', payload: false });
 				await swal({
 					title: 'Error',
@@ -174,7 +186,7 @@ const SidebarContent = ({ match, appoint, history, unsetSelected, specialty }) =
 					icon: 'warning',
 					dangerMode: true,
 				});
-				return history.replace('/');
+				return history.replace('/onlinedoctor/who');
 			}
 		}
 	}

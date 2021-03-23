@@ -3,40 +3,41 @@ import { useSelector } from "react-redux";
 import { FaHome } from "react-icons/fa"
 import hisopadoTic from "../../../../assets/img/hisopados_tic.svg"
 import hisopadoCross from "../../../../assets/img/hisopados_cross.svg"
-import markerAddress from "../../../../assets/img/marker_address.svg"
 import axios from "axios"
 import {mobility_address} from "../../../../config/endpoints"
 
 export default function ZoneCoveredDelivery({ finalAction, history, goPrevious, isModal=false }) {
+    const isLocal = window.location.origin.includes('localhost');
     const { isAddressValidForHisopado, params } = useSelector(state => state.deliveryService);
     const patient = useSelector(state => state.user);
     const [showCongrats, setShowCongrats] = useState(false);
-    const delivery = useSelector(state => state.deliveryService.params)
     const { piso, depto, address, lat, lng } = useSelector(state => state.deliveryService.selectHomeForm)
     const {id} = useSelector(state => state.deliveryService.current)
-    const {hisopadoUserAddress} = useSelector(state => state.deliveryService)
 
     useEffect(() => {
         if (!isAddressValidForHisopado) {
-            window.gtag('event', 'select_content', {
+            if(!isLocal){
+                window.gtag('event', 'select_content', {
                 'content_type': 'OUT_OF_RANGE',
                 'item_id': 'Hisopado Antígeno',
-            });
+            });}
         } else {
-            window.gtag('event', 'select_content', {
+            if(!isLocal){
+                window.gtag('event', 'select_content', {
                 'content_type': 'IN_RANGE',
                 'item_id': 'Hisopado Antígeno',
-            });
+            });}
             history.push(`/hisopado/carrito/${patient.ws}`)
         }
         if (showCongrats) {
             notifyUserEndpoint()
+            if(!isLocal) {
             window.gtag('event', 'add_to_wishlist', {
                 'items': 'Hisopado Antígeno',
                 'value': params?.price || '0',
                 'currency': 'ARS'
             });
-        }
+        }}
     }, [showCongrats, isAddressValidForHisopado])
 
     const notifyUserEndpoint = () => {

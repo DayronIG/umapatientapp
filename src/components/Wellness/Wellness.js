@@ -7,13 +7,10 @@ import {
   faDeaf,
   faFileMedicalAlt,
   faInfo,
-  faAllergies,
-  faBriefcaseMedical
 } from "@fortawesome/free-solid-svg-icons";
 import FooterBtn from "../GeneralComponents/FooterBtn";
 import MobileModal from "../GeneralComponents/Modal/MobileModal";
 import FileService from "../GeneralComponents/SelectService/FileService";
-import lungs from "../../assets/icons/lungs.svg";
 import WellnessCard from "../../assets/checkout/wellness.png";
 import "../../styles/wellness/wellness.scss";
 
@@ -56,7 +53,7 @@ const Wellness = props => {
           <div className="biomarkers__container--list">
             <ul className="markers">
               <li className="markers__item">
-                <Link to={`/${dni}/laboratorio`}>
+                <Link to={`/laboratorio/${dni}`}>
                   <div className="markers__item--icon active__marker">
                     <FontAwesomeIcon icon={faFileMedicalAlt} />
                     <div className="markers__item--info">

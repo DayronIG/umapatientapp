@@ -27,10 +27,12 @@ export const HiddenCacheClearer = ({ platform }) => {
     }, []);
 
     useEffect(() => {
+        console.log("need update?")
         if(version_number?.patients?.replace(/\./g, "") < actual_version?.patients?.replace(/\./g, "")) {
             console.log("Need update")
             setNeedUpdate(true)
         } else {
+            console.log("Up to date")
             setNeedUpdate(false)
         }
     }, [actual_version])

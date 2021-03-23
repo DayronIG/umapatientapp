@@ -44,9 +44,10 @@ class ConstancyHisopado extends React.Component {
                 <br/>
                 <p>Resultados validados electrónicamente por Dr. Fernando Luis Raffo Bioquímico M. N. 6.925</p>
                 
+                {id && 
                 <div className="constancy-qr">
                     <QRCode value={`http://uma-health.com/delivery/${id}`} />
-                </div>
+                </div>}
             </div>
         )
     }

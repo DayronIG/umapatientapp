@@ -130,7 +130,7 @@ const Audiometry = ({modal = true}) => {
 			rightEarResults = {plot("rightEar")}
 			freqs = {plot("freqs")}
 			modal={modal}
-			linkConsulta={`/${ws}/onlinedoctor/who`} />
+			linkConsulta={`/onlinedoctor/who`} />
 			</> 
 			: ""}
 		</div>}

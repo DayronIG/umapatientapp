@@ -18,7 +18,7 @@
         padding: 2rem 0;
 
         .vaccineIllustration {
-            width: 80%;
+            width: 50%;
             display: block;
             margin: auto;
         }
@@ -72,6 +72,15 @@
                     background: $uma-primary;
                 }
             }
+        }
+        .vaccineReportProblem{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            color: $uma-primary;
+            width: 100%;
+            align-items: center;
+            margin-top: 50px;
         }
 
         .vaccineLink {

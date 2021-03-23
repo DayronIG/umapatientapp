@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
 import { GenericHeader } from '../GeneralComponents/Headers';
-import { getUserMedicalRecord } from '../../store/actions/firebaseQueries';
+import { getMedicalRecord, getAppointmentByUid } from '../../store/actions/firebaseQueries';
 import { Loader } from '../global/Spinner/Loaders';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -11,30 +12,35 @@ import moment from 'moment-timezone';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { user_cancel } from '../../config/endpoints';
-import { getUser } from '../../store/actions/firebaseQueries';
+import { getDependant } from '../../store/actions/firebaseQueries';
 import tone from '../../assets/ring.mp3';
-import db from '../../config/DBConnection';
 import '../../styles/TurnoConsultorio.scss';
 
 
 const AppointmentsOnlineHistory = (props) => {
 	const dispatch = useDispatch()
-	const token = useSelector(state => state.userActive.token)
-	const [medicalRecord, setMedicalRecord] = useState(props.mr || [])
+	const mrs = useSelector(state => state.queries.medicalRecord)
 	const [loading, setLoading] = useState(false)
+	const [filteredMrs, setFilteredMrs] = useState([])
 	const { incomingCall } = useSelector(state => state.call)
-	const { dni } = props.match.params
+	const {currentUser, token} = useSelector(state => state.userActive)
+	const { activeUid } = useParams()
+	const location = useLocation()
+    const params = queryString.parse(location.search)
 
 	useEffect(() => {
-		if (dni) {
-			getUser(dni)
-				.then(res => {
-					findMR(dni, res.ws)
-					dispatch({ type: 'GET_PATIENT', payload: res })
-				})
-				.catch(err => console.log(err))
+		if (currentUser && activeUid) {
+			let dependant = params.dependant === "false" ? false : params.dependant
+			dispatch(getDependant(activeUid, dependant))
+			dispatch(getMedicalRecord(activeUid, dependant))
 		}
-	}, [])
+	}, [currentUser])
+
+	useEffect(() => {
+		if (currentUser && activeUid) {
+			findMR(currentUser.uid, activeUid)
+		}
+	}, [mrs])
 
 	useEffect(() => {
 		try {
@@ -55,27 +61,30 @@ const AppointmentsOnlineHistory = (props) => {
 	}, [incomingCall, dispatch])
 
 
-	async function findMR(dni, ws) {
+	async function findMR(uid, dependant) {
 		setLoading(true)
 		try {
-			const medicRecs = await getUserMedicalRecord(dni, ws)
-			if (!!medicRecs && medicRecs.length) {
+			if (mrs && mrs.length) {
 				let filteredRecords = []
-				medicRecs.forEach(function (mr) {
-					if (mr.mr_preds) {
-						const scheduledTurn = mr.mr_preds.pre_clasif[0]
-						const doctorName = mr.mr_preds.pre_clasif[1]
-						const specialty = mr.mr_preds.pre_clasif[2]
-						const date = mr.mr_preds.pre_clasif[3]
-						const time = mr.mr_preds.pre_clasif[4]
-						const path = mr.mr_preds.pre_clasif[5]
+				mrs.forEach(function (mr) {
+					if (mr.mr_preds.pre_clasif?.length > 0 || mr.att_category === "MI_ESPECIALISTA") {
+						let appointment = getAppointmentByUid(uid, undefined, `online_${mr.especialidad}`)
+						let scheduledTurn = mr.mr_preds.pre_clasif?.[0]
+						const doctorName = mr.mr_preds.pre_clasif?.[1] || appointment.fullname
+						const specialty = mr.mr_preds.pre_clasif?.[2] || mr.especialidad
+						const date = mr.mr_preds.pre_clasif?.[3] || mr.date
+						const time = mr.mr_preds.pre_clasif?.[4] || mr.time
+						const path = mr.mr_preds.pre_clasif?.[5] 
+						if(mr.att_category && mr.att_category === "MI_ESPECIALISTA") {
+							scheduledTurn = 'TurnoConsultorioOnline'
+						}
 						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === "") {
 							filteredRecords.push({ doctorName, specialty, date, time, mr, path })
 						}
 					}
 				})
-				setMedicalRecord(filteredRecords)
 				setLoading(false)
+				setFilteredMrs(filteredRecords)
 			}
 		} catch (error) {
 			console.log(error)
@@ -94,13 +103,15 @@ const AppointmentsOnlineHistory = (props) => {
 			try {
 				let date = moment().format('YYYY-MM-DD HH:mm:ss')
 				let data = {
-					ws: medicalRecord[0].mr.patient.ws,
-					dni: medicalRecord[0].mr.patient.dni || '',
+					ws: mrs[0].mr.patient.ws,
+					dni: mrs[0].mr.patient.dni || '',
 					dt: date || '',
-					assignation_id: medicalRecord[0].mr.assignation_id || '',
-					appointment_path: `assignations/${medicalRecord[0].path}` || '',
+					assignation_id: mrs[0].mr.assignation_id || '',
+					appointment_path: `assignations/${mrs[0].path}` || '',
 					type: 'cancel',
-					complain: ''
+					complain: '',
+					uid: currentUser.uid,
+					uid_dependant: params.dependant === 'true' ? activeUid: false
 				}
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
@@ -128,13 +139,13 @@ const AppointmentsOnlineHistory = (props) => {
 					<span className="successScheduledContainer__container--text">No olvides acudir a tu cita</span>
 				</div>
 			</div>
-			{(!!medicalRecord && medicalRecord.length > 0) &&
+			{(!!filteredMrs && filteredMrs.length > 0) &&
 				<>
 					<div className="listScheduledAppoints">
 						<ul className="listScheduledAppoints__list">
-							{medicalRecord.map((mr, index) => (
-								<li key={index} className="listScheduledAppoints__list--item">
-									<span className="name">Doctor: <b>{mr.doctorName}</b></span> <br />
+							{filteredMrs.map((mr, index) => (
+								mr.att_category === "MI_ESPECIALISTA" && <li key={index} className="listScheduledAppoints__list--item">
+									<span className="name">Doctor: <b>{mr.provider.fullname}</b></span> <br />
 									<span className="specialty">Especialidad: {mr.specialty}</span><br />
 									<span className="date">Fecha: {mr.date}</span> <br />
 									<span className="time">Hora: {mr.time}</span> <br />
@@ -145,7 +156,7 @@ const AppointmentsOnlineHistory = (props) => {
 					{incomingCall &&
 						<div style={{ textAlign: 'center', color: 'green' }}>
 							<small>Su médico ya lo está esperando en la sala</small>
-							<Link to={`/${dni}/onlinedoctor/attention/`} replace={true}>
+							<Link to={`/onlinedoctor/attention/${activeUid}?dependant=${params.dependant}`} replace={true}>
 								<button
 									type="button"
 									className="btn btn-blue-lg btn-calling">

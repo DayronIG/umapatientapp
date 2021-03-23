@@ -10,6 +10,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
 	.selectDestiny__header {
 		background-color: #fff;
 		margin-top: 3vh;
@@ -275,4 +276,26 @@
 		height: 5vh;
 		color: #FFFFFF;
 	}
+}
+
+.marginBottomObservaciones{
+	margin-bottom: -4vh;
+}
+
+.observacionesContainer{
+	.observationsInput {
+		display: block;
+		width: 65vw;
+		border: none;
+		border-bottom: 0.1rem solid $uma-input;
+		padding: 1.5rem 0.3rem 0.5rem;
+		outline: none;
+		color: $uma-text;
+		font-size: 0.9rem;
+		background: none;
+	}
+}
+
+.disabled-map-button{
+    background-color: grey !important;
 }
