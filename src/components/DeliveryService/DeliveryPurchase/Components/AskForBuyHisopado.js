@@ -53,7 +53,7 @@ export default function AskForBuyHisopado() {
             'item_list_name': 'Hisopado Antígeno'
           });
         }
-        if (!current?.status || current?.status === 'FREE') {
+        if (!current?.status) {
             let data = {
                 dni: patient.dni,
                 uid: userActive.currentUser.uid,
@@ -106,7 +106,7 @@ export default function AskForBuyHisopado() {
                     {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
                     {/* <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p> */}
                     <div className="price-center-aligner">
-                        <img src={umaLogo} className='uma_logo_hisopados'/>
+                        <img src={umaLogo} alt='uma_logo' className='uma_logo_hisopados'/>
                         <h2 className="price-title">Test rápido de antígenos</h2>
                         <div className="price-container">
                             <div className="discount-container">
