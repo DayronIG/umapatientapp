@@ -15,7 +15,6 @@ export const ProfilePic = ({ user }) => {
 
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
-		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
 		};
@@ -41,21 +40,19 @@ export const ProfilePic = ({ user }) => {
 		let fieldName = e.target.name;
 		uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
 			setUserData({ ...userData, [fieldName]: imgLink });
+			handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink })
 		});
 	};
 
 	return (
 		<>
-		<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+		<div>
 			<div className='umaBtn attachFile'>
 				<FiUpload className='attachFile__icon' />
 				<p>Buscar Imagen</p>
 				<input type='file' name='profile_pic' onChange={(e) => uploadImage(e)} />
 			</div>
-			<button className='btn btn-blue-lg' type='submit'>
-				Subir
-			</button>
-		</form>
+		</div>
 		</>
 	);
 };
@@ -81,6 +78,7 @@ export const PersonalData = ({ user }) => {
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
+		console.log(userData)
 		let data = {
 			newValues: { ...userData },
 		};
