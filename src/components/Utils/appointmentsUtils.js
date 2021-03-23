@@ -42,7 +42,7 @@ export function getLatestAppointments(assignations) {
 				break;
 			}
 		}
-		latestAppointments = latestAppointments.map(function(appoint) {
+		latestAppointments = latestAppointments.map(function (appoint) {
 			let first = appoint.date + 'T' + appoint.time;
 			return (appoint = { ...appoint, time2: new Date(first) });
 		});
@@ -76,7 +76,7 @@ export async function setRemainingTimes(assignations) {
 			.tz('America/Argentina/Buenos_Aires')
 			.format('YYYY-MM-DD');
 		now = convertTimeToMins(now);
-		const assignsWithRemaining = assignations.map(function(assignation) {
+		const assignsWithRemaining = assignations.map(function (assignation) {
 			if (assignation.time) {
 				let assignTime = convertTimeToMins(assignation.time);
 				const remainingTime = assignTime - now;
@@ -144,7 +144,7 @@ export async function shuffleAppoints(assignations) {
 
 export function searchDisabledDoctors(availableDocs, appoints) {
 	let dayNumber = 0;
-	const appointsCuils = appoints.map(function(app) {
+	const appointsCuils = appoints.map(function (app) {
 		return app.cuil;
 	});
 	if (dayName === 'Mon') dayNumber = 0;
@@ -216,6 +216,7 @@ export const findAllAssignedAppointment = async (uid, type = '') => {
 	const assignedTomorrow = getAssignedAppointments('online_clinica_medica', yearMonth, doctors, uid, dtNextDay);
 	const resolve = await Promise.all([assignedBag, assignedToday, assignedTomorrow]);
 	const assigned = resolve.find((res) => !!res && res);
+	console.log(assigned)
 	return assigned;
 };
 

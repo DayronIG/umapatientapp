@@ -10,24 +10,24 @@ const DoctorDelay = ({cuit, date, time}) => {
 
     useEffect(() => {
         getDelayAndQueue()
-		let interval = setInterval(()=> {
+        let interval = setInterval(() => {
             getDelayAndQueue()
         }, 60000)
         return () => interval
     }, [cuit]);
 
     const getDelayAndQueue = useCallback(() => {
-        let dt = moment().format('YYYYMM');
-        if(cuit && cuit !== '' && cuit !== 'bag'){
-			let filters = [
-				{field: 'cuit', value: cuit, comparator: '=='},
-				{field: 'status', value: 'ASSIGN', comparator: '=='}			
-			]
-			getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
-				.then(res => {
-					setQueue(res.length || 1)
+        if (cuit && cuit !== '') {
+            let dt = moment().format('YYYYMM');
+            let filters = [
+                { field: 'cuit', value: cuit, comparator: '==' },
+                { field: 'status', value: 'ASSIGN', comparator: '==' }
+            ]
+            getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
+                .then(res => {
+                    setQueue(res.length)
                     let pendingTime = moment(`${date} ${time}:00`).diff(new Date(), 'minutes')
-                    if(pendingTime <= 0) {
+                    if (pendingTime <= 0) {
                         pendingTime = 5
                     }
 					if(res.length >= 1){ 
