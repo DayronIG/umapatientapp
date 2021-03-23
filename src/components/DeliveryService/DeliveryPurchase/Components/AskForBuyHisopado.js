@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory } from "react-router-dom"
 import { FaCartPlus} from "react-icons/fa"
+import Loading from '../../../GeneralComponents/Loading'
 import TermsConditions from "./TermsConditions"
 import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
@@ -20,6 +21,7 @@ export default function AskForBuyHisopado() {
     const {params, current} = useSelector(state => state.deliveryService)
     const patient = useSelector(state => state.user)
     const userActive = useSelector(state => state.userActive)
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
 
@@ -51,38 +53,34 @@ export default function AskForBuyHisopado() {
             'item_list_name': 'Hisopado Antígeno'
           });
         }
-        if (!current?.status || current?.status === 'FREE') {
-            let data = {
-                dni: patient.dni,
-                uid: userActive.currentUser.uid,
-                dependant: false,
-                service: 'HISOPADO'
-            }
-            await axios.post(create_delivery, data, config)
-                .then(async res => {
-                    setTimeout(() => {
-                        db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
-                        .get()
-                        .then(async query => {
-                            // console.log(query, query.data())
-                            let data = {
-                                ...query.data(),
-                                id: res.data.id
-                            }
-                            localStorage.setItem("multiple_clients", JSON.stringify([data]))
-                            dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
-                            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
-    
-                        })
-                    }, 1000)
-                })
-                .catch(err =>{ 
-                    swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
-                    console.log(err)
-                })
-        } else {
-            dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+        let data = {
+            dni: patient.dni,
+            uid: userActive.currentUser.uid,
+            dependant: false,
+            service: 'HISOPADO'
         }
+        setLoading(true)
+        await axios.post(create_delivery, data, config)
+            .then(async res => {
+                db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                .get()
+                .then(async query => {
+                    // console.log(query, query.data())
+                    let data = {
+                        ...query.data(),
+                        id: res.data.id
+                    }
+                    localStorage.setItem("multiple_clients", JSON.stringify([data]))
+                    dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
+                    dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+                    setLoading(false)
+                })
+            })
+            .catch(err =>{ 
+                swal("Algo salió mal", `No pudimos acceder al servicio en este momento. Intenta más tarde.`, "error")
+                setLoading(false)
+                console.log(err)
+            })
     }
 
     const renderContent = () => {
@@ -104,7 +102,7 @@ export default function AskForBuyHisopado() {
                     {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
                     {/* <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p> */}
                     <div className="price-center-aligner">
-                        <img src={umaLogo} className='uma_logo_hisopados'/>
+                        <img src={umaLogo} alt='uma_logo' className='uma_logo_hisopados'/>
                         <h2 className="price-title">Test rápido de antígenos</h2>
                         <div className="price-container">
                             <div className="discount-container">
@@ -205,6 +203,8 @@ export default function AskForBuyHisopado() {
     
     return <>
             {!termsConditions && !frequentQuestions && <BackButton inlineButton={true} customTarget={patient.ws} action={()=>goBackButton()} />}
-            {renderContent()}
+            {loading ? 
+            <Loading /> : 
+            renderContent()}
            </>
 }
