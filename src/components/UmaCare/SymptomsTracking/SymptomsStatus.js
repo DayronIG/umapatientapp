@@ -112,7 +112,7 @@ export const SymptomsWarning = ({ history }) => {
             return history.replace(`/onlinedoctor/queue/${user.uid}?dependant=false`);
 		} catch (err) {
 			console.log(err)
-			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
+			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente.', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 		}
     }
