@@ -57,7 +57,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
 				deliveryInfo.push(document)
 				dispatch({type: 'SET_DELIVERY_CURRENT', payload: document})
             })
-        })
+		})
         dispatch({type: 'SET_DELIVERY_ALL', payload: deliveryInfo})}
 	}
 	
