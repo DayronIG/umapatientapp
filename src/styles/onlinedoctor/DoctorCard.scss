@@ -17,6 +17,7 @@
         overflow: hidden;
         color: $uma-primary;
         border-bottom: 0.5px solid #D7D7D7;
+        min-height: 150px;
         &.guardia {
             color: $white-color;
             background: $uma-secondary;
@@ -63,7 +64,7 @@
                 font-weight: 400;
                 p {
                     font-weight: 700;
-                    margin: 3px;
+                    margin: 3px 0px;
                 }
                 small {
                     font-size: 0.8rem;
