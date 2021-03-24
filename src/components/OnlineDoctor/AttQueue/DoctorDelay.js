@@ -46,7 +46,7 @@ const DoctorDelay = ({cuit, date, time}) => {
                     return res.length
                 })
                 .catch(err => setQueue(0))
-            await getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires')
+            await getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires').subtract(1, 'minutes')
                     .format('YYYYMMDDHHmm')}`).then(res => {
                         if(res) {
                             setActive(res.active_doctors)

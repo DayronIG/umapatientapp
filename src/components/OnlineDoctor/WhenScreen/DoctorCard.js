@@ -102,9 +102,10 @@ const GuardCardComp = (props) => {
 				</div>
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
-						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? active_doctors : "1" } médicos atendiendo</small>
-						{!isNaN((props.queue / active_doctors) * 8.25) && <small> (Aproximadamente {Math.round((props.queue / active_doctors) * 8.25)} minutos)</small>}
+						<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
+						{!isNaN((props.queue / active_doctors) * 8.25) && <small> La consulta será en aproximadamente {Math.round((props.queue / active_doctors) * 8.25)} minutos.</small>}
+						<br></br>
+						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera y {active_doctors >= 1 ? active_doctors : "1" } médicos atendiendo</small>}
 					</div>
 				</div>
 			</div>
