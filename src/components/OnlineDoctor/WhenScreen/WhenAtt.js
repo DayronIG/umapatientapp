@@ -78,7 +78,7 @@ const WhenScreen = (props) => {
 	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
-			if(currentUser && type) {
+			if(currentUser) {
 				let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
 				if (assigned) {
 					dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });

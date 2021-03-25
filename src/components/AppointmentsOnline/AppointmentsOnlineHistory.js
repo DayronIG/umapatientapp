@@ -20,6 +20,7 @@ import '../../styles/TurnoConsultorio.scss';
 const AppointmentsOnlineHistory = (props) => {
 	const dispatch = useDispatch()
 	const mrs = useSelector(state => state.queries.medicalRecord)
+	const patient = useSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
 	const [filteredMrs, setFilteredMrs] = useState([])
 	const { incomingCall } = useSelector(state => state.call)
@@ -101,22 +102,25 @@ const AppointmentsOnlineHistory = (props) => {
 		})
 		if (confirmAction) {
 			try {
+				console.log(filteredMrs)
 				let date = moment().format('YYYY-MM-DD HH:mm:ss')
 				let data = {
-					ws: mrs[0].mr.patient.ws,
-					dni: mrs[0].mr.patient.dni || '',
+					ws: filteredMrs[0].patient?.mr?.ws || patient.ws,
+					dni: filteredMrs[0].patient?.mr?.dni || patient.dni,
 					dt: date || '',
-					assignation_id: mrs[0].mr.assignation_id || '',
-					appointment_path: `assignations/${mrs[0].path}` || '',
+					assignation_id: filteredMrs[0].mr?.incidente_id || '',
+					appointment_path: `assignations/${filteredMrs[0].path}` || '',
 					type: 'cancel',
 					complain: '',
 					uid: currentUser.uid,
-					uid_dependant: params.dependant === 'true' ? activeUid: false
+					uid_dependant: params.dependant === 'false' ? false : activeUid
 				}
+				console.log(data)
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
 				return props.history.push('/home')
 			} catch (err) {
+				console.log(err)
 				dispatch({ type: 'ERROR', payload: err })
 				dispatch({ type: 'LOADING', payload: false })
 				dispatch({ type: 'RESET_ALL' })
