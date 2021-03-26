@@ -45,7 +45,7 @@ export const ProfilePic = ({ user }) => {
 	return (
 		<>
 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div className='upload-file'>
+			<div className='umaBtn attachFile upload'>
 					<FiUpload className='attachFile__icon' />
 					<p>Buscar imagen</p>
 				<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
@@ -143,7 +143,7 @@ export const PersonalData = ({ user }) => {
 					action={e=>handleChange(e)}
 				/>
 			</div>
-			<div>
+			<div className='select-sex'>
  				<label className='sex-label'>Sexo</label>
  				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
  					<option value={user.sex}>Seleccionar</option>
