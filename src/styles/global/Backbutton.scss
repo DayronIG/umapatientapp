@@ -13,10 +13,11 @@
    border-bottom: 1px solid rgba(199, 199, 199, 0.14);
    background-color: $white-color;
    z-index: 4;
+   position: absolute;
    a {
       color: #B6B6B6;
       svg {
-         margin-top: 8px;
+         margin: 5px 0;
          padding: 0;
          vertical-align: middle;
       }
