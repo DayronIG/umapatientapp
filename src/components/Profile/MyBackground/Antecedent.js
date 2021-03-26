@@ -12,9 +12,9 @@ const Antecedent =()=> {
     const SwitchContent = () => {
 		if (params.section === 'risk') {
 			return <RiskFactor/>
-		}else if (params.section === 'parents') {
-            return <Parents/>
-        }else {
+		} else if (params.section === 'parents') {
+                        return <Parents/>
+                } else {
 			return 'Esta sección aún no se encuentra disponible';
 		}
     }
