@@ -10,6 +10,8 @@ import Firebase from 'firebase/app';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { node_patient } from "../../../../config/endpoints";
+import MobileModal from '../../../GeneralComponents/Modal/MobileModal';
+import Exclamation from '../../../../assets/illustrations/exclamation.png';
 
 const WelcomeAgain = () => {
     const dispatch = useDispatch();
@@ -18,11 +20,18 @@ const WelcomeAgain = () => {
     const [vincular, setVincular] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [modal, setModal] = useState(false);
     const user = useSelector(state => state.user);
     const { currentUser } = useSelector((state) => state.userActive);
     const {method} = useParams();
+
+    useEffect(() => {
+        if(!Firebase.auth().currentUser) {
+            dispatch({ type: 'RESET_USER_DATA' });
+            history.push('/');
+        }
+    }, [])
 
     useEffect(() => {
         if(method) {
@@ -63,18 +72,40 @@ const WelcomeAgain = () => {
                 })
             })
             .catch(err => {
-                console.log(err)
-                if (err.message === "The email address is already in use by another account.") {
-                    console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
-                } else if (err.message === "User can only be linked to one identity for the given provider.") {
-                    console.error("Ya tienes una cuenta de google vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
-                } else if (err.message === "There is no user record corresponding to this identifier. The user may have been deleted.") {
-                    console.error("No se pudo vincular esta cuenta", "Intenta con otro email", "warning")
-                } else {
-                    console.error("Ocurrió un error", err.message || err, "warning")
-                }
+                showModalError(err.code);
                 dispatch({ type: "LOADING", payload: false })
             })
+    }
+
+    const showModalError = (error) => {
+        switch (error) {
+            case "auth/credential-already-in-use":
+            case "auth/email-already-in-use":
+                setErrorMessage('Ya tienes otra cuenta vinculada a ese email');
+                setModal(true);
+            break;
+            default:
+                setErrorMessage('Hubo un error al vincular su cuenta');
+                setModal(true);
+            break;
+        }
+    }
+
+    const deleteUserAndLogin = () => {
+        try {
+            Firebase.auth().currentUser.delete()
+                .then(() => {
+                    dispatch({ type: 'RESET_USER_DATA' });
+                    history.push('/');
+                })
+                .catch(e => {
+                    dispatch({ type: 'RESET_USER_DATA' });
+                    history.push('/');
+                });
+        } catch (e) {
+            dispatch({ type: 'RESET_USER_DATA' });
+            history.push('/');
+        }
     }
 
     return (
@@ -86,12 +117,33 @@ const WelcomeAgain = () => {
                 <p className='subtitle'>Esto te servirá para recuperar tu cuenta o contraseña en caso que las olvides.</p>
             </section>
             {vincular ? 
-            <section className="login__buttonGroup column">
-                <GoogleButton vincular />
-                <FacebookButton vincular />
-                <MicrosoftButton vincular />
-                <EmailButton vincular />
-            </section>
+                <>
+                    {
+                        modal &&
+                        <MobileModal hideCloseButton hideTitle >
+                            <img src={Exclamation} className='modal__img' alt='Simbolo de exclamacion' />
+                            <p className='modal__text'>{errorMessage}</p>
+                            <div className='actionModal__btns'>
+                                <button className='button-action log' onClick={deleteUserAndLogin}>Ingresar con esa cuenta</button>
+                                <button 
+                                    className='button-action next' 
+                                    onClick={() => {
+                                        setModal(false);
+                                        setErrorMessage('');
+                                    }}
+                                >
+                                    Intentar con otro método
+                                </button>
+                            </div>
+                        </MobileModal>
+                    }
+                    <section className="login__buttonGroup column">
+                        <GoogleButton vincular handleErrors={(error) => showModalError(error)} />
+                        <FacebookButton vincular />
+                        <MicrosoftButton vincular />
+                        <EmailButton vincular />
+                    </section>
+                </>
             :
             <section className='login__mobile'> 
                 {/* teléfono */}
@@ -109,9 +161,7 @@ const WelcomeAgain = () => {
                                 required: true, 
                                 pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
                             }
-                        )
-                        }
-                        // onChange={(e) => setEmail(e.target.value)}
+                        )}
                     />
                     {errors.email && errors.email.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
                     {errors.email && errors.email.type === "pattern" && <p className='invalidField'>Ingrese un mail válido</p>}
