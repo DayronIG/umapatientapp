@@ -56,7 +56,7 @@ const WhenScreen = (props) => {
 			getDocumentFB('parametros/userapp/guardia/variables').then(res => {
 				dispatch({type: 'SET_GUARDIA_VARIABLES', payload: res})
 			})
-			getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires')
+			getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires').subtract(1, 'minutes')
 			.format('YYYYMMDDHHmm')}`).then(res => {
 				dispatch({type: 'SET_GUARDIA_STATS', payload: res})
 			})
@@ -78,12 +78,16 @@ const WhenScreen = (props) => {
 	async function findAssignedAppointments(person, type, test) {
 		try {
 			setAction('Loading');
-			let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
-			if (assigned) {
-				dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-				return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
+			if(currentUser) {
+				let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
+				if (assigned) {
+					dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
+					return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
+				} else {
+					return findFreeAppointments(person, type, test);
+				}
 			} else {
-				return findFreeAppointments(person, type, test);
+				setAction('Empty');
 			}
 		} catch (error) {
 			console.error(error)

@@ -29,6 +29,8 @@ const ConfirmAppointment = (props) => {
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	const {currentUser} = useSelector(state => state.userActive)
+	const patient = useSelector(state => state.user)
+
 
 	useEffect(() => {
 		if (localStorage.getItem('selectedAppointment') && localStorage.getItem('selectedAppointment') !== undefined) {
@@ -83,12 +85,12 @@ const ConfirmAppointment = (props) => {
 				ruta = ''
 			}
 			let data = {
-				age: userVerified.age || '',
+				age: userVerified.age || patient.age,
 				biomarker: biomarkers || [],
 				destino_final: responseIA.destino_final || '',
 				diagnostico: responseIA.diagnostico || '',
 				dt,
-				dni: userVerified.dni || user.dni,
+				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
 				lat: coordinates.lat || '', 
 				lon: coordinates.lng || '',
@@ -97,10 +99,10 @@ const ConfirmAppointment = (props) => {
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
 				ruta: ruta || '',
-				sex: userVerified.sex || '',
+				sex: userVerified.sex || patient.sex,
 				specialty: 'online_clinica_medica',
-				ws: userVerified.ws || user.ws,
-				uid: currentUser.uid,
+				ws: userVerified.ws || patient.ws,
+				uid: currentUser?.uid || patient.core_id,
 				uid_dependant: params.dependant === 'true' ? activeUid : false,
 				category
 			};
@@ -119,15 +121,19 @@ const ConfirmAppointment = (props) => {
 			if(err.response?.data?.fecha === '') {
 				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 			}
-			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente', 'error');
+			console.log(err)
+			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente...', 'error');
 			dispatch({ type: 'LOADING', payload: false });
 		}
 	};
 
 	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
-		const appointId = genAppointmentID(selectedAppointment, yearAndMonth());
-		const lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
+		let appointId = "", lastAssingState = ""
+		if(selectedAppointment) {
+			appointId = genAppointmentID(selectedAppointment, yearAndMonth());
+			lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
+		}
 		if (appointId === '' || lastAssingState?.state === 'FREE') {
 			return postData();
 		} else {

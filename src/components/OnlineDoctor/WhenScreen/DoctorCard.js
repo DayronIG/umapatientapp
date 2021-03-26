@@ -87,7 +87,6 @@ const GuardCardComp = (props) => {
 	const params = queryString.parse(location.search)
 	const { active_doctors } = useSelector((state) => state.front);
 
-
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
 		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
@@ -103,8 +102,10 @@ const GuardCardComp = (props) => {
 				</div>
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
-						<p>Atenderme con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						<small>Hay {props.queue} pacientes en espera y {props.doctorsCount >= 1 ? active_doctors : "1" } médicos atendiendo</small>
+						<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
+						{!isNaN((props.queue / active_doctors) * 8.25) && <small> La consulta será en aproximadamente {Math.round((props.queue / active_doctors) * 8.25)} minutos.</small>}
+						<br></br>
+						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {active_doctors > 1 && <small> y {active_doctors} médicos atendiendo</small>}
 					</div>
 				</div>
 			</div>

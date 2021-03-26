@@ -1,63 +1,70 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
-import { getDocumentsByFilter } from '../../Utils/firebaseUtils';
+import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 
 const DoctorDelay = ({cuit, date, time}) => {
     const appointment = useSelector(state=> state.queries.assignedAppointment)
-    const [queue, setQueue] = useState('1');
-    const [delay, setDelay] = useState('5');
+    const [active, setActive] = useState(1)
+    const [queue, setQueue] = useState(0);
+    const [delay, setDelay] = useState(0);
 
     useEffect(() => {
-        getDelayAndQueue()
-		let interval = setInterval(()=> {
-            getDelayAndQueue()
-        }, 60000)
+        getDelayAndQueue();
+		let interval = setInterval(() => {
+            getDelayAndQueue();
+        }, 10000)
         return () => interval
     }, [cuit]);
 
-    const getDelayAndQueue = useCallback(() => {
+    const getDelayAndQueue = useCallback(async () => {
         let dt = moment().format('YYYYMM');
-        if(cuit && cuit !== '' && cuit !== 'bag'){
+        if(cuit && cuit !== undefined && cuit !== '' && cuit !== 'bag'){
 			let filters = [
 				{field: 'cuit', value: cuit, comparator: '=='},
 				{field: 'status', value: 'ASSIGN', comparator: '=='}			
 			]
-			getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
+			await getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
 				.then(res => {
 					setQueue(res.length || 1)
                     let pendingTime = moment(`${date} ${time}:00`).diff(new Date(), 'minutes')
-                    if(pendingTime <= 0) {
-                        pendingTime = 5
-                    }
-					if(res.length >= 1){ 
+					if(res.length >= 1){
 						setDelay(res.length * 10 + pendingTime)
 					} else {
 						setDelay(pendingTime)
 					}
                 })
             .catch(err => console.log(err))
-		} else if (appointment && appointment.datetime) {
+		} else {
             let filters = [
                 {field: 'state', value: 'ASSIGN', comparator: '=='},
                 {field: 'datetime', value: `${appointment.datetime}`, comparator: '<='}
             ]
-            getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
+            let userQueue = await getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
                     setQueue(res.length || 1)
+                    return res.length
                 })
                 .catch(err => setQueue(0))
-        } else {
-            setQueue(0)
+            await getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires').subtract(1, 'minutes')
+                    .format('YYYYMMDDHHmm')}`).then(res => {
+                        if(res) {
+                            setActive(res.active_doctors)
+                            let calcDelay = parseInt((userQueue / res.active_doctors) * 8.25)
+                            !isNaN(calcDelay) ? setDelay(calcDelay) : setDelay(0)
+                            setQueue(userQueue)
+                            // console.log(res, userQueue)
+                        }
+                    })
         }
-    }, [cuit])
+    }, [active])
     
     return <div className="appointment__delay--container">
         {queue >= 1 && <div className="appointment__delay">
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div>}
-        {cuit && cuit.length > 5 && <div className="appointment__delay">
+        {delay >= 1 && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">minutos de espera aprox.</span>
         </div>}

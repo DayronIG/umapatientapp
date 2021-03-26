@@ -27,7 +27,6 @@ const OnlineSpecialist = ({ match, history }) => {
 
 	const checkPatientPermission = useCallback(
 		async () => {
-			console.log("Entro al check")
 			if (!(Object.keys(user).length > 0)) return;
 			dispatch({ type: 'LOADING', payload: true });
 			if(plan && plan.my_specialist === false) {

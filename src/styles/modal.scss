@@ -90,7 +90,8 @@
   margin-left: 5%;
   .modal__img {
     width: 80px;
-    margin: 20px 0;
+    margin: 20px auto;
+    display: block;
   }
   .modal__text {
     color: $uma-text;

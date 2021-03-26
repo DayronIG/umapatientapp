@@ -15,7 +15,6 @@ export const ProfilePic = ({ user }) => {
 
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
-		e.preventDefault();
 		let data = {
 			newValues: { ...userData },
 		};
@@ -39,6 +38,7 @@ export const ProfilePic = ({ user }) => {
 		let fieldName = e.target.name;
 		uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
 			setUserData({ ...userData, [fieldName]: imgLink });
+			handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink })
 		});
 	};
 
@@ -79,6 +79,7 @@ export const PersonalData = ({ user }) => {
 	const handleSubmit = async (e, userData, user) => {
 		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
+		console.log(userData)
 		let data = {
 			newValues: { ...userData },
 		};

@@ -44,13 +44,6 @@ export default function PositiveResult({finalAction}) {
                     </div>
                 </div>
                     <div className="results-menu-map-container">
-                        {/* <div className="results-menu-map-item">
-                            <div>
-                                <FaUserNurse className="icon" />
-                                UMA Care
-                            </div>
-                            <FaArrowRight className="icon-arrow" />
-                        </div> */}
                         <div className="results-menu-map-item" onClick={()=>setRecomendations(true)}>
                             <div>
                                 <FaListUl className="icon" />
@@ -72,13 +65,6 @@ export default function PositiveResult({finalAction}) {
                             </div>
                             <FaArrowRight className="icon-arrow" />
                         </div>
-                        {/* <div className="results-menu-map-item" onClick={()=>history.push("/")}>
-                            <div>
-                                <FaHome className="icon" />
-                                Ir al inicio
-                            </div>
-                            <FaArrowRight className="icon-arrow" />
-                        </div> */}
                     </div>
             </div>}
      </>)

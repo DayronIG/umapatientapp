@@ -12,12 +12,13 @@ const QueueActions = (props) => {
 	const [contador, setContador] = useState(0);
 	const [File, setFile] = useState([]);
 	const auth = useSelector((state) => state.user);
+	const {path} = useSelector((state) => state.queries.assignedAppointment)
 
 	const uploadImage = e => {
 		let dt = moment().format('DD-MM-YYYY_HH:mm:ss');
 		let file = e.target.files[0];
 		let fileName = e.target.files[0].name;
-		uploadFileToFirebase(file, `${auth.dni}/attached/${props.id}/${dt}_${fileName}`)
+		uploadFileToFirebase(file, `${auth.dni}/attached/${path?.split('/')?.[3]}/${dt}_${fileName}`)
 			.then(imgLink => {
 				setContador(contador + 1);
 				setFile([...File, imgLink]);
