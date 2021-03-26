@@ -58,4 +58,11 @@
           opacity: 0;
         }
       }
+      &.upload {
+        background-color: $white-color;
+        border: 1px solid $uma-primary;
+        box-shadow: $dark-shadow;
+        margin: 20px auto;
+        color: $uma-primary;
+      }
 }
