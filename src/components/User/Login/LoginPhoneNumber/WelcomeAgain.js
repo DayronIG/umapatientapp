@@ -124,7 +124,10 @@ const WelcomeAgain = () => {
                             <img src={Exclamation} className='modal__img' alt='Simbolo de exclamacion' />
                             <p className='modal__text'>{errorMessage}</p>
                             <div className='actionModal__btns'>
-                                <button className='button-action log' onClick={deleteUserAndLogin}>Ingresar con esa cuenta</button>
+                                {
+                                    errorMessage !== 'Hubo un error al vincular su cuenta' &&
+                                    <button className='button-action log' onClick={deleteUserAndLogin}>Ingresar con esa cuenta</button>
+                                }
                                 <button 
                                     className='button-action next' 
                                     onClick={() => {
