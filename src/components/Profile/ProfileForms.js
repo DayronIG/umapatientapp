@@ -21,11 +21,9 @@ export const ProfilePic = ({ user }) => {
 		};
 		await currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			console.log(data)
 			await axios
 				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
-					console.log(res)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
 				.catch((err) => {
@@ -46,13 +44,13 @@ export const ProfilePic = ({ user }) => {
 
 	return (
 		<>
-		<form onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div className='umaBtn attachFile'>
-				<FiUpload className='attachFile__icon' />
-				<p>Buscar Imagen</p>
-				<input type='file' name='profile_pic' onChange={(e) => uploadImage(e)} />
+		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+			<div className='upload-file'>
+					<FiUpload className='attachFile__icon' />
+					<p>Buscar imagen</p>
+				<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
 			</div>
-			<button className='btn btn-blue-lg' type='submit'>
+			<button className='button-submit-edit' type='submit'>
 				Subir
 			</button>
 		</form>
@@ -69,7 +67,8 @@ export const PersonalData = ({ user }) => {
 		fullname: user.fullname || '',
 		dob: user.dob || '',
 		dni: user.dni || '',
-		ws: user.ws || ''
+		ws: user.ws || '',
+		sex: user.sex || ''
 	});
 
 	console.log("Ok")
@@ -128,6 +127,15 @@ export const PersonalData = ({ user }) => {
 			</div>
 			<div>
 				<GenericInputs
+					label='Selecciona tu fecha de nacimiento'
+					type='date'
+					name='dob'
+					value={userData.dob}
+					action={(e) => handleChange(e)}
+				/>
+			</div>
+			<div>
+				<GenericInputs
 					label='Obra social o cobertura de salud'
 					type='text' 
 					name='corporate'
@@ -136,139 +144,139 @@ export const PersonalData = ({ user }) => {
 				/>
 			</div>
 			<div>
-				<GenericInputs
-					label='Selecciona tu fecha de nacimiento'
-					type='date'
-					name='dob'
-					value={userData.dob}
-					action={(e) => handleChange(e)}
-				/>
-			</div>
-			<button className='btn btn-blue-lg' type='submit'>
+ 				<label className='sex-label'>Sexo</label>
+ 				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
+ 					<option value={user.sex}>Seleccionar</option>
+ 					<option value='M'>Hombre</option>
+ 					<option value='F'>Mujer</option>
+ 					<option value='O'>Otro</option>
+ 				</select>
+ 			</div>
+			<button className='button-submit-edit' type='submit'>
 				Editar
 			</button>
 		</form>
 	);
 };
 
-export const ContactData = ({ user }) => {
-	const dispatch = useDispatch();
-	const { currentUser } = useSelector((state) => state.userActive)
-	const { register, errors } = useForm();
-	const [userData, setUserData] = useState({
-		address: user.address || '',
-		piso: user.piso || '',
-		ws: user.ws || ''
-	});
-	const handleSubmit = (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
-		e.preventDefault();
-		let data = {
-			newValues: { ...userData },
-		};
-		currentUser.getIdToken().then(async token => {
-			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
-				.then((res) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-				})
-				.catch((err) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					console.log(err);
-				});
-		})
-		dispatch({type: 'LOADING', payload: false})
-	};
+// export const ContactData = ({ user }) => {
+// 	const dispatch = useDispatch();
+// 	const { currentUser } = useSelector((state) => state.userActive)
+// 	const { register, errors } = useForm();
+// 	const [userData, setUserData] = useState({
+// 		address: user.address || '',
+// 		piso: user.piso || '',
+// 		ws: user.ws || ''
+// 	});
+// 	const handleSubmit = (e, userData, user) => {
+// 		dispatch({type: 'LOADING', payload: true})
+// 		e.preventDefault();
+// 		let data = {
+// 			newValues: { ...userData },
+// 		};
+// 		currentUser.getIdToken().then(async token => {
+// 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+// 			await axios
+// 				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+// 				.then((res) => {
+// 					dispatch({ type: 'TOGGLE_DETAIL' });
+// 				})
+// 				.catch((err) => {
+// 					dispatch({ type: 'TOGGLE_DETAIL' });
+// 					console.log(err);
+// 				});
+// 		})
+// 		dispatch({type: 'LOADING', payload: false})
+// 	};
 
-	const handleChange = (e) => {
-		setUserData({ ...userData, [e.target.name]: e.target.value });
-	};
+// 	const handleChange = (e) => {
+// 		setUserData({ ...userData, [e.target.name]: e.target.value });
+// 	};
 
-	return (
-		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div>
-				<GenericInputs
-					label='Ingresa tu numero de celular'
-					type='number' 
-					name='ws'
-					value={userData.ws}
-					action={e=>handleChange(e)}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-								minLength: 10,
-								maxLenght: 13
-							}
-						)
-					} 
-				/> 
-			</div>
-			<div>
-				<GenericInputs
-					label='Dirección'
-					type='text' 
-					name='address'
-					value={userData.address}
-					action={e=>handleChange(e)}
-				/>
-			</div>
-			<div>
-				<GenericInputs
-					label='Piso/Dpto'
-					type='text' 
-					name='piso'
-					value={userData.piso}
-					action={e=>handleChange(e)}
-				/>
-			</div>
-			<button className='btn btn-blue-lg' type='submit'>
-				Editar
-			</button>
-		</form>
-	);
-};
+// 	return (
+// 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+// 			<div>
+// 				<GenericInputs
+// 					label='Ingresa tu numero de celular'
+// 					type='number' 
+// 					name='ws'
+// 					value={userData.ws}
+// 					action={e=>handleChange(e)}
+// 					inputRef={
+// 						register(
+// 							{ 
+// 								required: false, 
+// 								minLength: 10,
+// 								maxLenght: 13
+// 							}
+// 						)
+// 					} 
+// 				/> 
+// 			</div>
+// 			<div>
+// 				<GenericInputs
+// 					label='Dirección'
+// 					type='text' 
+// 					name='address'
+// 					value={userData.address}
+// 					action={e=>handleChange(e)}
+// 				/>
+// 			</div>
+// 			<div>
+// 				<GenericInputs
+// 					label='Piso/Dpto'
+// 					type='text' 
+// 					name='piso'
+// 					value={userData.piso}
+// 					action={e=>handleChange(e)}
+// 				/>
+// 			</div>
+// 			<button className='btn btn-blue-lg' type='submit'>
+// 				Editar
+// 			</button>
+// 		</form>
+// 	);
+// };
 
-export const HealtData = ({ user }) => {
-	const dispatch = useDispatch();
-	const { currentUser } = useSelector((state) => state.userActive)
-	const [userData, setUserData] = useState({ sex: user.sex || '' });
-	const handleSubmit = (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
-		e.preventDefault();
-		let data = {
-			newValues: { ...userData },
-		};
-		currentUser.getIdToken().then(async token => {
-			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
-				.then((res) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-				})
-				.catch((err) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					console.log(err);
-				});
-		})
-		dispatch({type: 'LOADING', payload: false})
-	};
+// export const HealtData = ({ user }) => {
+// 	const dispatch = useDispatch();
+// 	const { currentUser } = useSelector((state) => state.userActive)
+// 	const [userData, setUserData] = useState({ sex: user.sex || '' });
+// 	const handleSubmit = (e, userData, user) => {
+// 		dispatch({type: 'LOADING', payload: true})
+// 		e.preventDefault();
+// 		let data = {
+// 			newValues: { ...userData },
+// 		};
+// 		currentUser.getIdToken().then(async token => {
+// 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+// 			await axios
+// 				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+// 				.then((res) => {
+// 					dispatch({ type: 'TOGGLE_DETAIL' });
+// 				})
+// 				.catch((err) => {
+// 					dispatch({ type: 'TOGGLE_DETAIL' });
+// 					console.log(err);
+// 				});
+// 		})
+// 		dispatch({type: 'LOADING', payload: false})
+// 	};
 
-	return (
-		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div>
-				<label>Sexo</label>
-				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
-					<option value={user.sex}>Seleccione</option>
-					<option value='M'>Hombre</option>
-					<option value='F'>Mujer</option>
-					<option value='O'>Otro</option>
-				</select>
-			</div>
-			<button className='btn btn-blue-lg' type='submit'>
-				Editar
-			</button>
-		</form>
-	);
-};
+// 	return (
+// 		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
+// 			<div>
+// 				<label>Sexo</label>
+// 				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
+// 					<option value={user.sex}>Seleccione</option>
+// 					<option value='M'>Hombre</option>
+// 					<option value='F'>Mujer</option>
+// 					<option value='O'>Otro</option>
+// 				</select>
+// 			</div>
+// 			<button className='btn btn-blue-lg' type='submit'>
+// 				Editar
+// 			</button>
+// 		</form>
+// 	);
+// };
