@@ -58,10 +58,6 @@ const ProfileComponent = () => {
 	const EditSection = () => {
 		if (section === 'personal') {
 			return <PersonalData user={patient} />;
-		// } else if (section === 'contact') {
-		// 	return <ContactData user={patient} />;
-		// } else if (section === 'health') {
-		// 	return <HealtData user={patient} />;
 		} else if (section === 'pic') {
 			return <ProfilePic user={patient} />;
 		} else {
@@ -113,11 +109,16 @@ const ProfileComponent = () => {
 			<BackButton/>
 			<main className='profile-container'>
 				<section className='profile-header-info'>
-					<EditButton section='pic' className='btn-edit' clase='pic' />
-					{patient.profile_pic ? 
-						<img className='profile-pic' src={patient.profile_pic} alt='Perfil' /> 
+					{patient.profile_pic ?
+						<div className='pic-container'>
+							<img className='profile-pic' src={patient.profile_pic} alt='Perfil' /> 
+							<EditButton section='pic' className='btn-edit' clase='pic' />
+						</div>
 						: 
-						<FaUser size='3.5rem' color='#fff' />
+						<div className='pic-container'>
+							<FaUser size='3.5rem' color='#fff' />
+							<EditButton section='pic' className='btn-edit' clase='pic' />
+						</div>
 					}
 					<h1 className='fullName'>{patient.fullname}</h1>
 					{patientAge && 
@@ -126,7 +127,7 @@ const ProfileComponent = () => {
 						</h2>
 					}
 				</section>
-				 <section className='personal-data'>
+				 {/* <section className='personal-data'>
 					<h2 
 						className={viewData === 'data'? 'data-section clicked' : 'data-section'} 
 						onClick={()=>setViewData('data')}>
@@ -137,7 +138,7 @@ const ProfileComponent = () => {
 						onClick={()=>setViewData('background')}>
 							Mis antecedentes
 					</h2>
-				</section> 
+				</section>  */}
 				<section className='profile-info'>
 					{
 						viewData === 'data' ?
