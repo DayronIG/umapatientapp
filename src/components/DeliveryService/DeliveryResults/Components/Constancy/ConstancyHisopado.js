@@ -38,7 +38,8 @@ class ConstancyHisopado extends React.Component {
                     </div>
                     <br/>
                     <div className="constancy-div">
-                        <b className="constancy-subtitle">Resultado:</b> <b>{result === "POSITIVE"? "POSITIVO": "NEGATIVO"} </b>
+                        <b className="constancy-subtitle">Resultado:</b>
+                        <b>{result === "POSITIVE" && "POSITIVO"} {result === "NEGATIVE" && "NEGATIVO"} </b>
                     </div>
                 </div>
                 <br/>

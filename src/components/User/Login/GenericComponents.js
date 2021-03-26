@@ -91,7 +91,7 @@ export const GenericButton = ({children, action = () => {}}) => {
     )
 };
 
-export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
+export const GoogleButton = ({ circleBtn, signUp, vincular, handleErrors }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
@@ -149,13 +149,7 @@ export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
                             })
                     })
                 }).catch(function (err) {
-                    if (err.message === "The email address is already in use by another account.") {
-                        console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
-                    } else if (err.message === "User can only be linked to one identity for the given provider.") {
-                        console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
-                    } else if (err.message === "This credential is already associated with a different user account.") {
-                        console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
-                    }
+                    handleErrors(err.code);
                 });
         } else if (signUp) {
             signInAndSignUpWithGoogle();
@@ -172,7 +166,7 @@ export const GoogleButton = ({ circleBtn, signUp, vincular }) => {
     )
 }
 
-export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
+export const FacebookButton = ({ circleBtn, signUp, vincular, handleErrors }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
@@ -249,13 +243,7 @@ export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
                             })
                     })
                 }).catch(function (err) {
-                    if (err.message === "The email address is already in use by another account.") {
-                        console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
-                    } else if (err.message === "User can only be linked to one identity for the given provider.") {
-                        console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
-                    } else if (err.message === "This credential is already associated with a different user account.") {
-                        console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
-                    }
+                    handleErrors(err.code);
                 });
         } else if (signUp) {
             signInAndSignUpWithFacebook('/signup/form/2');
@@ -272,7 +260,7 @@ export const FacebookButton = ({ circleBtn, signUp, vincular }) => {
     )
 }
 
-export const MicrosoftButton = ({ circleBtn, signUp, vincular }) => {
+export const MicrosoftButton = ({ circleBtn, signUp, vincular, handleErrors }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
@@ -351,13 +339,7 @@ export const MicrosoftButton = ({ circleBtn, signUp, vincular }) => {
                             })
                     })
                 }).catch(function (err) {
-                    if (err.message === "The email address is already in use by another account.") {
-                        console.error("Esta cuenta ya está en uso", "Intenta con otro email o logueate con la cuenta ya existente", "warning")
-                    } else if (err.message === "User can only be linked to one identity for the given provider.") {
-                        console.error("Ya tienes una cuenta este proveedor vinculada", "No se puede vincular más de una cuenta del mismo sitio. Intenta con otro email.", "warning")
-                    } else if (err.message === "This credential is already associated with a different user account.") {
-                        console.error("Ya tienes otra cuenta vinculada", "No se puede vincular más de una cuenta del mismo sitio.", "warning")
-                    }
+                    handleErrors(err.code);
                 });
         } else if (signUp) {
             signInAndSignUpWithMicrosoft();
