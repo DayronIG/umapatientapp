@@ -20,7 +20,7 @@
    width: 100%;
    min-height: 90vh;
    .profile-header-info {
-       padding-top: 50px;
+       padding-top: 60px;
        display: flex;
        align-items: center;
        justify-content: center;
@@ -29,7 +29,7 @@
         position: relative;
             :nth-child(1) {
                 border-radius: 50%;
-                margin: 0 auto 0 auto;
+                margin: 0 auto;
                 width: 125px;
                 height: 125px;
                 object-fit: cover;
@@ -172,7 +172,7 @@
             background-color: $uma-primary;
             color: $white-color;
             font-weight: 600;
-            margin-top: 50px;
+            margin-top: 30px;
             &:focus {
                 outline: transparent;
             }
