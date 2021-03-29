@@ -24,8 +24,6 @@ const ProfileComponent = () => {
 	const patient = useSelector(state => state.user)
 	const [viewData, setViewData] = useState('data')
 
-	console.log(patient, 'traer patient')
-
 	useEffect(() => {
 		let unsubscribe;
 		if (currentUser?.uid) {
@@ -76,7 +74,7 @@ const ProfileComponent = () => {
 		{
 			item: 2,
 			field: 'Teléfono',
-			data: `${patient.phone}`
+			data: `${patient.ws}`
 		}, 
 		{
 			item: 3,

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
 import { useForm } from "react-hook-form";
+import { checkNum } from '../Utils/stringUtils';
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 import { GenericInputs } from '../User/Login/GenericComponents';
+// import Select from 'react-select'
+// import countryList from 'react-select-country-list'
+
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
@@ -59,6 +63,8 @@ export const PersonalData = ({ user }) => {
 	const dispatch = useDispatch();
 	const { register, errors } = useForm();
 	const { currentUser } = useSelector((state) => state.userActive)
+	const [errorsInputs, setErrorsInputs] = useState({dni: false, ws: false})
+	const [errorMsg, setErrorMsg]= useState('')
 	const [userData, setUserData] = useState({
 		address: user.address || '',
 		corporate: user.corporate || '',
@@ -70,37 +76,50 @@ export const PersonalData = ({ user }) => {
 		ws: user.ws || '',
 	});
 
-	useEffect(() => {
-		console.log(errors, 'errores')
-	}, [errors])
-
 	const handleChange = (e) => {
+		setErrorMsg('')
 		if(e.target.name === 'dni') {
-			console.log(e.target.value, 'value de dni')
+			if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+				setErrorsInputs({...errorsInputs, dni: false})
+				setUserData({ ...userData, dni: e.target.value })
+			}else {
+				setErrorsInputs({...errorsInputs, dni: true})
+			}
+		}if(e.target.name === 'ws') {
+			if (checkNum(e.target.value)) {
+				setErrorsInputs({...errorsInputs, ws: false})
+				setUserData({ ...userData, ws: e.target.value })
+			}else {
+				setErrorsInputs({...errorsInputs, ws: true})
+			}
+		}else {
+			setUserData({ ...userData, [e.target.name]: e.target.value });
 		}
-		setUserData({ ...userData, [e.target.name]: e.target.value });
 	};
 
 	const handleSubmit = async (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
 		e.preventDefault();
-		console.log(userData)
-		let data = {
-			newValues: { ...userData },
-		};
-		await currentUser.getIdToken().then(async token => {
-			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
-				.then((res) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-				})
-				.catch((err) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					console.log(err);
-				});
-		})
-		dispatch({type: 'LOADING', payload: false})
+		if(errorsInputs.dni === false & errorsInputs.ws === false) {
+			dispatch({type: 'LOADING', payload: true})
+			let data = {
+				newValues: { ...userData },
+			};
+			console.log(data, 'data para firebase')
+			await currentUser.getIdToken().then(async token => {
+				let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+				await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+					.then((res) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+					})
+					.catch((err) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+						console.log(err);
+					});
+			})
+			dispatch({type: 'LOADING', payload: false})
+		}else {
+			setErrorMsg('Por favor compruebe que los datos introducidos cumplan con las condiciones')
+		}
 	};
 
 	return (
@@ -136,24 +155,17 @@ export const PersonalData = ({ user }) => {
 						)
 					} 
 				/>
+				{errorsInputs.ws && <p className='invalidField'>El número de teléfono debe tener al menos 10 números</p>}
 			</div>
 			<div>
 				<GenericInputs
-					label='Documento de identidad'
+					label='DNI/Documento de identidad'
 					type='number' 
 					name='dni'
 					value={userData.dni}
 					action={e=>handleChange(e)}
-					inputRef={
-						register(
-							{  	required: true,
-								minLength: 7
-							}
-						)
-					} 
 				/>
-				{errors.dni && errors.dni.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
-                {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El número de identificación debe tener al menos 7 números</p>}
+				{errorsInputs.dni && <p className='invalidField'>El documento de identidad debe tener al menos 7 números</p>}
 			</div>
 			<div>
 				<GenericInputs
@@ -214,6 +226,7 @@ export const PersonalData = ({ user }) => {
  					<option value='O'>Otro</option>
  				</select>
  			</div>
+			 {errorMsg !== '' && <p className='invalidField'>{errorMsg}</p>}
 			<button className='button-submit-edit' type='submit'>
 				Editar
 			</button>
