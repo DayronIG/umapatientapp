@@ -1,25 +1,29 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GenericHeader } from '../GeneralComponents/Headers';
-import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
-import Loading from '../GeneralComponents/Loading';
-import EventsHistory from '../EventsHistory/index';
+import ButtonHome from '../Derivations/ButtonHome';
 import BuyHisopado from '../DeliveryService/BuyButton'
-import ValidateAction from '../ValidateAction';
-import UmaCareHome from '../UmaCare/Home';
+import EventsHistory from '../EventsHistory/index';
+import Loading from '../GeneralComponents/Loading';
 import TrasladosHome from './TrasladosHome';
-import '../../styles/generalcomponents/ModulesMenu.scss';
-import iconGuardia from '../../assets/icons/icon-guardia.svg';
+import UmaCareHome from '../UmaCare/Home';
+import ValidateAction from '../ValidateAction';
+import WhenScreen from '../OnlineDoctor/WhenScreen/WhenAtt';
 import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
-import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
+import iconEstudios from '../../assets/icons/icon-estudios.svg';
+import iconGuardia from '../../assets/icons/icon-guardia.svg';
+import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = () => {
 	const history = useHistory();
 	const dinamic = useSelector((state) => state.front.dinamic);
 	const user = useSelector((state) => state.user);
-	const {plan} = useSelector((state) => state.queries.plan);
+	const derivationActive = useSelector((state) => state.derivations.derivation.derivationActive);
+	const derivationStatus = useSelector((state) => state.derivations.derivation.derivationStatus);
+	const { plan } = useSelector((state) => state.queries.plan);
+	const [showButtonDerivation, setShowButtonDerivation] = useState(false)
 
 	useEffect(()=> {
 		if(user.core_id) {
@@ -32,6 +36,14 @@ const ModulesMenu = () => {
 			}
 		}
 	}, [user])
+
+	useEffect(() => {
+		if(derivationActive && derivationStatus !== 'Finalizado/No registrado') {
+			setShowButtonDerivation(true)
+		}else {
+			setShowButtonDerivation(false)
+		}
+	}, [derivationActive])
 	
 	const returnModule = (link, field, icon, text) => {
 		return (
@@ -55,6 +67,7 @@ const ModulesMenu = () => {
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
 					<BuyHisopado />
+					{showButtonDerivation && <ButtonHome text='Derivación en curso'/>}
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(

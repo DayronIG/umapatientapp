@@ -13,6 +13,7 @@ import Feedback from './views/Feedback';
 import Login from './components/User/Login';
 import Home from './views/Home';
 import Status from './components/User/SignUp/Status';
+import ScreenSteps from './components/Derivations/ScreenSteps';
 
 // Login & Register
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
@@ -137,6 +138,7 @@ function App(props) {
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
+				<PrivateRoute exact path='/derivations/:uid' component={ScreenSteps} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
