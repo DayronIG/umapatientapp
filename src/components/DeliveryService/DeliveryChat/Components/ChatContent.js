@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { useChat } from './useChat';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import { uploadFileToFirebase } from "../../../Utils/postBlobFirebase";
 import BubbleChat from './ChatBubbleComponent'
+import { transcription } from '../../../../config/endpoints';
 import './Chat.scss';
 
 const config = { headers: { 'Content-Type': 'application/json' } };
@@ -25,30 +26,6 @@ export default ({ bubble }) => {
 	const { messages, newMsj, setNewMsgActive } = useChat(isInternal);
 	const token = localStorage.getItem('token');
 
-
-	// function postDataConversation(postValue, corporation) {
-	// 	let date = moment(new Date()).tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
-	// 	corporation = corporation.replace(/[^a-zA-Z ]|\s/g, '')
-	// 	if (!postValue) return null;
-	// 	try {
-	// 		const userInternal = user.replace('-', '')
-	// 		const data = {
-	// 			ws: isInternal ? userInternal : corporation,
-	// 			dni: isInternal ? userInternal : corporation,
-	// 			dt: date,
-	// 			cuil: isInternal ? userInternal : corporation || '',
-	// 			assignation_id: isInternal ? `${date.slice(0, 10)}_${userInternal}` : `${date.slice(0, 10)}_${corporation}` || '',
-	// 			rol: 'doctor',
-	// 			text: postValue || '',
-	// 		};
-	// 		console.log("POST")
-	// 		axios.post('https://uma-v2.appspot.com/transcripcion', data, config);
-	// 	}
-	// 	catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
-
 	function postDataConversation(inputValue) {
 				let date = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD HH:mm:ss')
 				// 'Accept': 'text/plain' 
@@ -61,10 +38,11 @@ export default ({ bubble }) => {
 						'cuil': isInternal ? userInternal : corporation || '',
 						'assignation_id': docId,
 						'rol': 'patient',
-						'text': inputValue || ''
+						'text': inputValue || '',
+						'uid': patient.core_id
 					}
 					let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
-					axios.post('https://uma-v2.appspot.com/transcripcion', data, { headers })
+					axios.post(transcription, data, { headers })
 						.then((res) => {
 							// setInputValue('')
 							// scrollToBottom()
