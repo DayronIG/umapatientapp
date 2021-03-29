@@ -96,7 +96,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan en días hábiles de lunes a viernes de 8hs a 18hs.
+                            Los hisopados se realizan en días hábiles de lunes a viernes de 8hs a 20hs.
                         </article>
                     }
                     <div className="price-center-aligner">
@@ -119,6 +119,8 @@ export default function AskForBuyHisopado() {
                         >
                             Conocé nuestra zona de cobertura
                         </button>
+                        <br />
+                        <span className="coverage-btn" onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
                     </div>
 
                     <div className='read-with-attention'>
@@ -128,7 +130,7 @@ export default function AskForBuyHisopado() {
                         <div className='read-with-attention-content'>
                             <ul>
                                 <li>
-                                Los hisopados se realizan de <b>lunes a viernes de 8hs a 18hs</b>, para todas las compras realizadas antes de las 18hs durante los <b>días hábiles</b>. 
+                                Los hisopados se realizan de <b>lunes a viernes de 8hs a 20hs</b>, para todas las compras realizadas antes de las 18hs durante los <b>días hábiles</b>. 
                                 <br/>
                                 Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.
                                 <br/>
@@ -163,9 +165,6 @@ export default function AskForBuyHisopado() {
 
                     <p className="terms-questions">
                         <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
-                        <br/>
-                        <br/>
-                        <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
                     </p>
                     <div onClick={() => params?.price ? startBuying(): ""} className="hisopados-button">
                         <p className="button-text"><FaCartPlus className="icon"/>Comprar mi hisopado</p>
