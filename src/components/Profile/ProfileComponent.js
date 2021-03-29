@@ -24,6 +24,8 @@ const ProfileComponent = () => {
 	const patient = useSelector(state => state.user)
 	const [viewData, setViewData] = useState('data')
 
+	console.log(patient, 'traer patient')
+
 	useEffect(() => {
 		let unsubscribe;
 		if (currentUser?.uid) {
@@ -73,21 +75,36 @@ const ProfileComponent = () => {
 		},
 		{
 			item: 2,
-			field: 'DNI / Número de identidad',
-			data: `${patient.dni}`
+			field: 'Teléfono',
+			data: `${patient.phone}`
 		}, 
 		{
 			item: 3,
+			field: 'DNI / Número de documento',
+			data: `${patient.dni}`
+		}, 
+		{
+			item: 4,
 			field: 'Fecha de nacimiento',
 			data: `${moment(patient.dob).format('DD-MM-YYYY')}`
 		},
 		{
-			item: 4,
+			item: 5,
 			field: 'Cobertura de salud',
 			data: `${patient.corporate == '' ? 'No posee' : patient.corporate}`
 		},
 		{
-			item: 5,
+			item: 6,
+			field: 'Dirección',
+			data: `${patient.address}`
+		},
+		{
+			item: 7,
+			field: 'Piso/Dpto',
+			data: `${patient.piso}`
+		},
+		{
+			item: 8,
 			field: 'Sexo',
 			data: 
 				`${

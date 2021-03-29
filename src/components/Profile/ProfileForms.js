@@ -50,9 +50,6 @@ export const ProfilePic = ({ user }) => {
 					<p>Buscar imagen</p>
 				<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
 			</div>
-			<button className='button-submit-edit' type='submit'>
-				Subir
-			</button>
 		</form>
 		</>
 	);
@@ -63,16 +60,24 @@ export const PersonalData = ({ user }) => {
 	const { register, errors } = useForm();
 	const { currentUser } = useSelector((state) => state.userActive)
 	const [userData, setUserData] = useState({
+		address: user.address || '',
 		corporate: user.corporate || '',
-		fullname: user.fullname || '',
-		dob: user.dob || '',
 		dni: user.dni || '',
+		dob: user.dob || '',
+		fullname: user.fullname || '',
+		piso: user.piso || '',
+		sex: user.sex || '',
 		ws: user.ws || '',
-		sex: user.sex || ''
 	});
 
+	useEffect(() => {
+		console.log(errors, 'errores')
+	}, [errors])
 
 	const handleChange = (e) => {
+		if(e.target.name === 'dni') {
+			console.log(e.target.value, 'value de dni')
+		}
 		setUserData({ ...userData, [e.target.name]: e.target.value });
 	};
 
@@ -118,19 +123,37 @@ export const PersonalData = ({ user }) => {
 			</div>
 			<div>
 				<GenericInputs
+					label='Teléfono'
+					type='number' 
+					name='ws'
+					action={e=>handleChange(e)}
+					value={userData.ws}
+					inputRef={
+						register(
+							{ 
+								required: false, 
+							}
+						)
+					} 
+				/>
+			</div>
+			<div>
+				<GenericInputs
 					label='Documento de identidad'
-					type='text' 
+					type='number' 
 					name='dni'
 					value={userData.dni}
 					action={e=>handleChange(e)}
 					inputRef={
 						register(
-							{  	required: false,
+							{  	required: true,
 								minLength: 7
 							}
 						)
 					} 
 				/>
+				{errors.dni && errors.dni.type === "required" && <p className='invalidField'>Campo obligatorio</p>}
+                {errors.dni && errors.dni.type === "minLength" && <p className='invalidField'>El número de identificación debe tener al menos 7 números</p>}
 			</div>
 			<div>
 				<GenericInputs
@@ -148,6 +171,38 @@ export const PersonalData = ({ user }) => {
 					name='corporate'
 					value={userData.corporate}
 					action={e=>handleChange(e)}
+				/>
+			</div>
+			<div>
+				<GenericInputs
+					label='Dirección'
+					type='text' 
+					name='address'
+					action={e=>handleChange(e)}
+					value={userData.address}
+					inputRef={
+						register(
+							{ 
+								required: false, 
+							}
+						)
+					} 
+				/>
+			</div>
+			<div>
+				<GenericInputs
+					label='Piso/Depto'
+					type='text' 
+					name='piso'
+					action={e=>handleChange(e)}
+					value={userData.piso}
+					inputRef={
+						register(
+							{ 
+								required: false, 
+							}
+						)
+					} 
 				/>
 			</div>
 			<div className='select-sex'>
