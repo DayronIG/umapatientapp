@@ -13,6 +13,7 @@ import Feedback from './views/Feedback';
 import Login from './components/User/Login';
 import Home from './views/Home';
 import Status from './components/User/SignUp/Status';
+import ScreenSteps from './components/Derivations/ScreenSteps';
 
 // Login & Register
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
@@ -29,6 +30,7 @@ import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 
 /* Profile */
 import Profile from './views/Profile';
+import Antecedents from './components/Profile/MyBackground/Antecedent';
 /* Online Doctor */
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
 import When from './components/OnlineDoctor/WhenScreen/WhenAtt';
@@ -136,6 +138,7 @@ function App(props) {
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
+				<PrivateRoute exact path='/derivations/:uid' component={ScreenSteps} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
@@ -154,6 +157,7 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
+				<PrivateRoute path='/antecedents/:uid?/:section' component={Antecedents}/> 
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />

@@ -34,6 +34,14 @@ const WelcomeAgain = () => {
     }, [])
 
     useEffect(() => {
+        if (user.core_id) {
+            if (!user.ws && !user.dni) {
+                history.push('/signup/form/2');
+            }
+        }
+    }, [user])
+
+    useEffect(() => {
         if(method) {
             setVincular(false);
         }
