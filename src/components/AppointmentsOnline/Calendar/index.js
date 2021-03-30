@@ -22,7 +22,6 @@ import './styles.scss';
 
 const MyCalendar = () => {
 	const patient = useSelector((state) => state.user);
-	const { dni } = useSelector(state => state.user)
 	const [appointmentsOnline, setAppointmentsOnline] = useState([]);
 	const [date, setDate] = useState(moment()
 			.tz('America/Argentina/Buenos_Aires')
@@ -37,9 +36,7 @@ const MyCalendar = () => {
 	const history = useHistory();
 	const location = useLocation()
 	const params = queryString.parse(location.search)
-
 	moment.locale('es');
-
 
 	useEffect(() => {
 		(async function getAppointments() {
@@ -127,9 +124,9 @@ const MyCalendar = () => {
 						type='button'
 						onClick={() =>
 							setDate(
-								moment(date)
-									.subtract(1, 'M')
-									.format()
+							moment(date)
+								.subtract(1, 'M')
+								.format()
 							)
 						}>
 						<FontAwesomeIcon icon={faChevronLeft} />
@@ -153,7 +150,14 @@ const MyCalendar = () => {
 	};
 
 	const customDaysPropGetter = (d) => {
-		let filtered = calendarAppoints.filter((e) => moment(e.start).date() === moment(d).date());
+		let compare = moment(d).date()
+		if(moment(d).format('DD') === '31') {
+			compare = moment(d).add(1, 'days').date()
+		} else if(moment(d).format('DD') === '01') {
+			compare = moment(d).subtract(1, 'days').date()
+		}
+		let filtered = calendarAppoints.filter((e) => moment(e.start).date() === compare);
+		console.log(filtered, d)
 		if (filtered.length !== 0) {
 			return { className: 'events-day' };
 		}
@@ -169,14 +173,14 @@ const MyCalendar = () => {
 						<Calendar
 							localizer={localizer}
 							onNavigate={(dateNav, view) => {
-								// you wont understand this, even if you wanted to. don't change it.
+								// you wont understand this, even if you wanted to. 
+								// don't change it.
 								const year = moment(date).format('YYYY');
 								const month = moment(date)
-									// .subtract(1, 'months')
+									/* .subtract(1, 'months') */
 									.format('MM');
 								const day = moment(dateNav).format('DD');
 								setFilterDt(`${year}-${month}-${day}`);
-								
 							}}
 							events={calendarAppoints}
 							defaultView='month'
