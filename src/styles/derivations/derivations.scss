@@ -34,7 +34,14 @@
     flex-direction: column;
     align-items: center;
     img {
-        margin: 40px 0;
+        margin: 40px 0 20px 0;
+    }
+    .derivation__status__text {
+        max-width: 85%;
+        text-align: center;
+        font-size: 17px; 
+        margin-bottom: 15px;
+        color: $uma-text;
     }
     .derivation__status {
         display: flex;

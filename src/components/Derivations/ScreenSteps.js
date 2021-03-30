@@ -34,6 +34,10 @@ const ScreenSteps = () => {
         <section className='derivation'>
             <BackButton inlineButton/>
             <img src={DoctorScreen} alt='Ilustracion de medico saliendo de la pantalla' />
+            <p className='derivation__status__text'>
+                    Este servicio fue derivado para realizarse por la empresa Emergencias. 
+                    Ante dudas con el servicio consulte al <strong>0810-222-0066</strong>
+            </p>
             <section className='derivation__status'>
                 <div className='derivation__status__steps'>
                     <ul className='derivation__stepper'>
