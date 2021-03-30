@@ -28,5 +28,75 @@
                 color: $uma-text;
             }
         }
+        .contentQuestionnaire {
+            margin: 0 auto;
+            width: 80%;
+            min-height: 70vh;
+            position: relative;
+            h3 {
+                font-size: 19px;
+                color: $uma-text;
+                font-weight: 600;
+            }
+            .questionGroup {
+                margin: 30px 0;
+                width: 100%;
+                .question {
+                    color: $uma-text-secondary;
+                }
+                .answers {
+                    display: flex;
+                    justify-content: space-between;
+                    .buttonAnswer {
+                        width: 46%;
+                        border-radius: 5px;
+                        background-color: $white-color;
+                        border: transparent;
+                        box-shadow: $dark-shadow;
+                        padding: 6px 0;
+                        &.focused {
+                            background-color: $uma-primary;
+                            color: $white-color;
+                        }
+                    }
+                }
+                label {
+                    margin-top: 5px;
+                }
+                select {
+                    border: transparent;
+                    width: 100%;
+                    padding: 8px 0;
+                    border-radius: $regular-borders;
+                    background-color: $white-color;
+                    box-shadow: $dark-shadow;
+                    color: $uma-text;
+                    overflow: scroll;
+                    &:focus {
+                        outline: transparent;
+                        border: 1px solid $uma-primary;
+                    }
+                }
+            }
+            .buttonNext {
+                border: transparent;
+                background-color: $text-light;
+                color: $white-color;
+                font-weight: bold;
+                border-radius: 15px;
+                padding: 10px 0;
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                &:focus {
+                    outline: transparent;
+                }
+                &.next {
+                    background-color: $uma-primary;
+                    color: $white-color;
+                }
+            }
+        }
     }
+
 }

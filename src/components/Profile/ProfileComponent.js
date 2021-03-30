@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
+import { PersonalData, ProfilePic } from './ProfileForms';
+import { getBenficiaries } from '../../store/actions/firebaseQueries';
 import { FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import { SignOut } from '../User/Login';
@@ -19,9 +20,13 @@ const ProfileComponent = () => {
 	const db = DBConnection.firestore()
 	const dispatch = useDispatch()
 	const [patientAge, setPatientAge] = useState(null)
+	const [beneficiaryAge, setBeneficiaryAge] = useState(null)
 	const history = useHistory()
 	const modal = useSelector((state) => state.front.openDetails)
 	const patient = useSelector(state => state.user)
+	const {beneficiaries} = useSelector(state => state.queries)
+	const [selected, setSelected] = useState('owner')
+	const [showDataBeneficiary, setShowDataBeneficiary] = useState('')
 	const [viewData, setViewData] = useState('data')
 
 	useEffect(() => {
@@ -37,10 +42,36 @@ const ProfileComponent = () => {
 		return () => unsubscribe;
 	}, [currentUser]);
 
+	useEffect(() => { 
+		window.scroll(0, 0);
+		if(patient.dni) {
+			dispatch(getBenficiaries(currentUser.uid))
+		}
+	}, [patient]);
+
 	useEffect(()=> {
-		let years = moment().diff(patient.dob, 'years')
-		setPatientAge(years)
-	}, [patient.dob])
+		console.log(patient.core_id, 'core id')
+		let pYears = moment().diff(patient.dob, 'years')
+		setPatientAge(pYears)
+		let bYears = moment().diff(showDataBeneficiary.dob, 'years') 
+		setBeneficiaryAge(bYears)
+	}, [patient.dob, selected]);
+
+	useEffect(() => {
+		if(selected !== 'owner') {
+			const beneficiaryIndex = beneficiaries.findIndex(p => p.id === selected)
+			setShowDataBeneficiary(beneficiaries[beneficiaryIndex])
+		}
+	}, [selected]);
+
+	function selectBeneficiary(active) {
+        if (active === 'owner') {
+            setSelected('owner')
+        } else {
+            let currentDependant = beneficiaries.find(p => p.id === active)
+            setSelected(currentDependant.id)
+        }
+    }
 
 	const EditButton = ({ section, clase }) => {
 		return (
@@ -57,9 +88,9 @@ const ProfileComponent = () => {
 
 	const EditSection = () => {
 		if (section === 'personal') {
-			return <PersonalData user={patient} />;
+			return <PersonalData user={selected === 'owner' ? patient : showDataBeneficiary} />;
 		} else if (section === 'pic') {
-			return <ProfilePic user={patient} />;
+			return <ProfilePic user={selected === 'owner' ? patient : showDataBeneficiary} />;
 		} else {
 			return 'Esta sección aún no se encuentra disponible';
 		}
@@ -118,6 +149,59 @@ const ProfileComponent = () => {
 		},
 	]
 
+	const beneficiarieData = [
+		{
+			item: 1,
+			field: 'Nombre/s',
+			data: `${showDataBeneficiary.fullname}`
+		},
+		{
+			item: 2,
+			field: 'Teléfono',
+			data: `${showDataBeneficiary.ws}`
+		}, 
+		{
+			item: 3,
+			field: 'DNI / Número de documento',
+			data: `${showDataBeneficiary.dni}`
+		}, 
+		{
+			item: 4,
+			field: 'Fecha de nacimiento',
+			data: `${moment(showDataBeneficiary.dob).format('DD-MM-YYYY')}`
+		},
+		{
+			item: 5,
+			field: 'Cobertura de salud',
+			data: `${showDataBeneficiary.corporate == '' ? 'No posee' : showDataBeneficiary.corporate}`
+		},
+		// {
+		// 	item: 6,
+		// 	field: 'País',
+		// 	data: `${patient.country}`
+		// },
+		{
+			item: 7,
+			field: 'Dirección',
+			data: `${showDataBeneficiary.address}`
+		},
+		{
+			item: 8,
+			field: 'Piso/Dpto',
+			data: `${showDataBeneficiary.piso}`
+		},
+		{
+			item: 9,
+			field: 'Sexo',
+			data: 
+				`${
+					showDataBeneficiary.sex === 'F' && 'Femenino' || 
+					showDataBeneficiary.sex === 'M' && 'Masculino' ||
+					showDataBeneficiary.sex === 'O' && 'Otro'
+				}`
+		},
+	]
+
 	return (
 		<>
 			{modal && (
@@ -129,25 +213,55 @@ const ProfileComponent = () => {
 			<BackButton/>
 			<main className='profile-container'>
 				<section className='profile-header-info'>
-					{patient.profile_pic ?
-						<div className='pic-container'>
-							<img className='profile-pic' src={patient.profile_pic} alt='Perfil' /> 
-							<EditButton section='pic' className='btn-edit' clase='pic' />
-						</div>
-						: 
-						<div className='pic-container'>
-							<FaUser size='3.5rem' color='#fff' />
-							<EditButton section='pic' className='btn-edit' clase='pic' />
-						</div>
+					{selected === 'owner' ?
+						patient.profile_pic ?
+							<div className='pic-container'>
+								<img className='profile-pic' 
+									src={ patient.profile_pic} 
+									alt='Perfil' 
+								/> 
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+							: 
+							<div className='pic-container'>
+								<FaUser size='3.5rem' color='#fff' />
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+						:
+						showDataBeneficiary.profile_pic ?
+							<div className='pic-container'>
+								<img className='profile-pic' 
+									src={showDataBeneficiary.profile_pic} 
+									alt='Perfil' 
+								/> 
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+							: 
+							<div className='pic-container'>
+								<FaUser size='3.5rem' color='#fff' />
+								{/* <EditButton section='pic' className='btn-edit' clase='pic' /> */}
+							</div>
 					}
-					<h1 className='fullName'>{patient.fullname}</h1>
-					{patientAge && 
+					{/* <h1 className='fullName'>{patient.fullname}</h1> */}
+					<select className='select-beneficiary' onChange={(p) => selectBeneficiary(p.target.value)}>
+                        <option key={123} value={`owner`}> {patient.fullname} </option>
+                    	{beneficiaries.map((p, index) => {
+                        	return <option key={index} value={`${p.id}`}> {p.fullname} </option>
+                    })}
+                    </select> 
+					{selected === 'owner' ?
+						patientAge && 
+							<h2 className='patient-age'>
+								{patientAge} años
+							</h2>
+						:
+						beneficiaryAge &&
 						<h2 className='patient-age'>
-							{patientAge} años
-						</h2>
+							{beneficiaryAge} años
+						</h2>				
 					}
 				</section>
-				 {/* <section className='personal-data'>
+				 <section className='personal-data'>
 					<h2 
 						className={viewData === 'data'? 'data-section clicked' : 'data-section'} 
 						onClick={()=>setViewData('data')}>
@@ -158,20 +272,34 @@ const ProfileComponent = () => {
 						onClick={()=>setViewData('background')}>
 							Mis antecedentes
 					</h2>
-				</section>  */}
+				</section> 
 				<section className='profile-info'>
 					{
 						viewData === 'data' ?
 						<div>
 							<div className='header-section-info'>
 								<h3 className='text'>Datos personales</h3> 
-								<div className='edit-info'>
-									<p>Editar</p>
-									<EditButton section='personal' className='btn-edit' clase='personal' />
-								</div>
+								{selected === 'owner' && 
+									<div className='edit-info'>
+										<p>Editar</p>
+										<EditButton section='personal' className='btn-edit' clase='personal' />
+									</div>
+								}
 							</div>
 							{
-								personalData.map((item) => {
+								selected === 'owner' &&
+									personalData.map((item) => {
+										return (
+											<div className='data-field' key={item.item}>
+												<p className='field'>{item.field}</p>
+												<p className='data'>{item.data}</p>
+											</div>
+										)
+									})
+							}
+							{
+								selected !== 'owner' && 
+								beneficiarieData.map((item) => {
 									return (
 										<div className='data-field' key={item.item}>
 											<p className='field'>{item.field}</p>

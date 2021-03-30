@@ -3,11 +3,11 @@
 
 .backButtonContainer {
    display: flex;
-   align-items: flex-end;
+   align-items: center;
    justify-content: flex-start;
    font-size: 1.6rem;
    padding-left: 4vw;
-   height: 6vh;
+   height: 7vh;
    width: 100%;
    box-shadow: 0px 2px 5px rgba(199, 199, 199, 0.14);
    border-bottom: 1px solid rgba(199, 199, 199, 0.14);
@@ -15,7 +15,8 @@
    z-index: 4;
    position: absolute;
    a {
-      color: #B6B6B6;
+      // color: #B6B6B6;
+      color: #686464;
       svg {
          margin: 5px 0;
          padding: 0;
@@ -23,7 +24,8 @@
       }
    }
    a:hover {
-      color: #B6B6B6;
+      // color: #B6B6B6;
+      color: #686464;
    }
    &.inlineButton {
       box-shadow: none;

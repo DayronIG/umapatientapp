@@ -25,6 +25,18 @@
        align-items: center;
        justify-content: center;
        flex-direction: column;
+       .select-beneficiary {
+            width: fit-content;
+            border: transparent;
+            border-radius: $regular-borders;
+            background-color: transparent;
+            padding: 6px 0;
+            margin: 5px 0;
+            &:focus {
+                outline: transparent;
+            }
+
+        }
        .pic-container {
         position: relative;
             :nth-child(1) {
@@ -63,7 +75,7 @@
     .personal-data {
         display: flex;
         width: 90%;
-        margin: 40px auto 0 auto;
+        margin: 30px auto 0 auto;
         justify-content: space-around;
         position: relative;
         .data-section {
@@ -85,7 +97,7 @@
     .profile-info {
         display: flex;
         justify-content: center;
-        margin: 20px auto;
+        margin: 0 auto;
         flex-direction: column;
         width: 90%;
         .header-section-info {
