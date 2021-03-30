@@ -91,18 +91,23 @@ const ProfileComponent = () => {
 			field: 'Cobertura de salud',
 			data: `${patient.corporate == '' ? 'No posee' : patient.corporate}`
 		},
+		// {
+		// 	item: 6,
+		// 	field: 'País',
+		// 	data: `${patient.country}`
+		// },
 		{
-			item: 6,
+			item: 7,
 			field: 'Dirección',
 			data: `${patient.address}`
 		},
 		{
-			item: 7,
+			item: 8,
 			field: 'Piso/Dpto',
 			data: `${patient.piso}`
 		},
 		{
-			item: 8,
+			item: 9,
 			field: 'Sexo',
 			data: 
 				`${

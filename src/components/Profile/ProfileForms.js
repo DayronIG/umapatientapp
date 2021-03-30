@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
-import { useForm } from "react-hook-form";
 import { checkNum } from '../Utils/stringUtils';
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 import { GenericInputs } from '../User/Login/GenericComponents';
-// import Select from 'react-select'
-// import countryList from 'react-select-country-list'
-
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
@@ -61,13 +57,13 @@ export const ProfilePic = ({ user }) => {
 
 export const PersonalData = ({ user }) => {
 	const dispatch = useDispatch();
-	const { register, errors } = useForm();
 	const { currentUser } = useSelector((state) => state.userActive)
 	const [errorsInputs, setErrorsInputs] = useState({dni: false, ws: false})
 	const [errorMsg, setErrorMsg]= useState('')
 	const [userData, setUserData] = useState({
 		address: user.address || '',
 		corporate: user.corporate || '',
+		country: user.country || '',
 		dni: user.dni || '',
 		dob: user.dob || '',
 		fullname: user.fullname || '',
@@ -104,7 +100,6 @@ export const PersonalData = ({ user }) => {
 			let data = {
 				newValues: { ...userData },
 			};
-			console.log(data, 'data para firebase')
 			await currentUser.getIdToken().then(async token => {
 				let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
 				await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
@@ -131,13 +126,6 @@ export const PersonalData = ({ user }) => {
 					name='fullname'
 					action={e=>handleChange(e)}
 					value={userData.fullname}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-							}
-						)
-					} 
 				/>
 			</div>
 			<div>
@@ -147,13 +135,6 @@ export const PersonalData = ({ user }) => {
 					name='ws'
 					action={e=>handleChange(e)}
 					value={userData.ws}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-							}
-						)
-					} 
 				/>
 				{errorsInputs.ws && <p className='invalidField'>El número de teléfono debe tener al menos 10 números</p>}
 			</div>
@@ -192,13 +173,6 @@ export const PersonalData = ({ user }) => {
 					name='address'
 					action={e=>handleChange(e)}
 					value={userData.address}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-							}
-						)
-					} 
 				/>
 			</div>
 			<div>
@@ -208,13 +182,6 @@ export const PersonalData = ({ user }) => {
 					name='piso'
 					action={e=>handleChange(e)}
 					value={userData.piso}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-							}
-						)
-					} 
 				/>
 			</div>
 			<div className='select-sex'>
