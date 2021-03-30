@@ -25,18 +25,6 @@ const ModulesMenu = () => {
 	const { plan } = useSelector((state) => state.queries.plan);
 	const [showButtonDerivation, setShowButtonDerivation] = useState(false)
 
-	useEffect(()=> {
-		if(user.core_id) {
-			if(user.phone || user.ws) {
-				if (!user.login || user.login === [] || user.login === "") {
-					history.push('/login/welcomeAgain');
-				}
-			} else {
-				history.push('/signup/form/2');
-			}
-		}
-	}, [user])
-
 	useEffect(() => {
 		if(derivationActive && derivationStatus !== 'Finalizado/No registrado') {
 			setShowButtonDerivation(true)
