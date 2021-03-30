@@ -157,7 +157,6 @@ const MyCalendar = () => {
 			compare = moment(d).subtract(1, 'days').date()
 		}
 		let filtered = calendarAppoints.filter((e) => moment(e.start).date() === compare);
-		console.log(filtered, d)
 		if (filtered.length !== 0) {
 			return { className: 'events-day' };
 		}
