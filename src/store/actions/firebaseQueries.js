@@ -248,10 +248,12 @@ export function getDerivationStatus (uid) {
 			firestore.doc(`user/${uid}/active/derivation`)
 			.onSnapshot(res => {
 				try {
-					dispatch({type: 'USER_DERIVATIONS', payload: {
-						derivationActive: res.data().active,
-						derivationStatus: res.data().status
-					}})
+					if(res.exists) {
+						dispatch({type: 'USER_DERIVATIONS', payload: {
+							derivationActive: res.data().active,
+							derivationStatus: res.data().status
+						}})
+					}
 				}catch(err) {
 					console.log(err)
 				}
