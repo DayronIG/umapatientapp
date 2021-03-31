@@ -1,21 +1,22 @@
 import { combineReducers } from 'redux';
-import queries from './queriesReducers';
-import front from './frontReducers';
-import assignations from './assignReducers';
 import assessment from './assessmentReducers';
+import assignations from './assignReducers';
+import autonomous from './autonomousReducers';
 import biomarkers from './biomarkersReducer';
 import call from './callReducers';
-import survey from './surveyReducers';
-import userActive from './userActiveReducers';
+import cx from './cxReducers';
+import deliveryService from './deliveryReducers';
+import derivations from './derivationsReducers';
+import front from './frontReducers';
 import onboardingSecondStep from './onboardingSecondStepReducers';
 import onboardingThirdStep from './onboardingThirdStepReducers';
-import user from './userReducers';
-import autonomous from './autonomousReducers';
-import umacare from './umacareReducers';
-import deliveryService from './deliveryReducers';
-import transport from './transportReducer';
 import pillbox from './pillboxReducer';
-import cx from './cxReducers';
+import queries from './queriesReducers';
+import survey from './surveyReducers';
+import transport from './transportReducer';
+import umacare from './umacareReducers';
+import user from './userReducers';
+import userActive from './userActiveReducers';
 
 const appReducer = combineReducers({
 	assessment,
@@ -25,6 +26,7 @@ const appReducer = combineReducers({
 	cx,
 	call,
 	deliveryService,
+	derivations,
 	front,
 	queries,
 	onboardingSecondStep,

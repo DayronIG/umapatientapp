@@ -1,18 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMedicalRecord } from '../store/actions/firebaseQueries';
+import { getMedicalRecord, getDerivationStatus } from '../store/actions/firebaseQueries';
 import ModulesMenu from '../components/HomePage/ModulesMenu';
 
 const HomePage = () => {
+	const { currentUser } = useSelector(state=> state.userActive);
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const { currentUser } = useSelector(state=> state.userActive);
 	const mr = useSelector((state) => state.queries.medicalRecord);
 
 	useEffect(() => {
 		if (user && user.dni !== "") {
 			dispatch(getMedicalRecord(currentUser.uid, false))
+		}
+		if(user.core_id != ''){
+			dispatch(getDerivationStatus(user.core_id))
 		}
 	}, [dispatch, user])
 

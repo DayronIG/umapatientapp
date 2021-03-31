@@ -394,7 +394,7 @@ const Register = () => {
                                         register(
                                             { 
                                                 required: true, 
-                                                pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
+                                                pattern: /^[^\s]{2,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
                                             }
                                         )
                                     }
@@ -409,7 +409,7 @@ const Register = () => {
                                         register(
                                             { 
                                                 required: true, 
-                                                pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
+                                                pattern: /^[^\s]{2,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
                                             }
                                         )
                                     }

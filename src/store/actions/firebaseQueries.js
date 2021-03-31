@@ -242,6 +242,28 @@ export function getPrescriptions(uid) {
 	}
 }
 
+export function getDerivationStatus (uid) {
+	return dispatch => {
+		try{
+			firestore.doc(`user/${uid}/active/derivation`)
+			.onSnapshot(res => {
+				try {
+					if(res.exists) {
+						dispatch({type: 'USER_DERIVATIONS', payload: {
+							derivationActive: res.data().active,
+							derivationStatus: res.data().status
+						}})
+					}
+				}catch(err) {
+					console.log(err)
+				}
+			})
+		}catch(err) {
+			console.log(err)
+		}
+	}
+}
+
 export function getMedicalRecord(uid, dependant = false){
 	return dispatch => {
 		try {
