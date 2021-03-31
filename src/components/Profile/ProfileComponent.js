@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PersonalData, ContactData, HealtData, ProfilePic } from './ProfileForms';
+import { PersonalData, ProfilePic } from './ProfileForms';
+import { getBenficiaries } from '../../store/actions/firebaseQueries';
 import { FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import { SignOut } from '../User/Login';
@@ -14,14 +15,18 @@ import File from '../../assets/illustrations/File.png'
 import '../../styles/profile/profile.scss';
 
 const ProfileComponent = () => {
-	const { section } = useSelector((state) => state.front);
+	const { beneficiaries } = useSelector(state => state.queries)
 	const { currentUser } = useSelector(state => state.userActive)
+	const { section } = useSelector((state) => state.front);
+	const modal = useSelector((state) => state.front.openDetails)
+	const patient = useSelector(state => state.user)
 	const db = DBConnection.firestore()
 	const dispatch = useDispatch()
 	const [patientAge, setPatientAge] = useState(null)
+	const [beneficiaryAge, setBeneficiaryAge] = useState(null)
 	const history = useHistory()
-	const modal = useSelector((state) => state.front.openDetails)
-	const patient = useSelector(state => state.user)
+	const [selected, setSelected] = useState('owner')
+	const [dataBeneficiary, setDataBeneficiary] = useState('')
 	const [viewData, setViewData] = useState('data')
 
 	useEffect(() => {
@@ -37,10 +42,35 @@ const ProfileComponent = () => {
 		return () => unsubscribe;
 	}, [currentUser]);
 
+	useEffect(() => { 
+		window.scroll(0, 0);
+		if(patient.dni) {
+			dispatch(getBenficiaries(currentUser.uid))
+		}
+	}, [patient]);
+
 	useEffect(()=> {
-		let years = moment().diff(patient.dob, 'years')
-		setPatientAge(years)
-	}, [patient.dob])
+		let pYears = moment().diff(patient.dob, 'years')
+		setPatientAge(pYears)
+		let bYears = moment().diff(dataBeneficiary.dob, 'years') 
+		setBeneficiaryAge(bYears)
+	}, [patient.dob, dataBeneficiary.dob, selected]);
+
+	useEffect(() => {
+		if(selected !== 'owner') {
+			const beneficiaryIndex = beneficiaries.findIndex(p => p.id === selected)
+			setDataBeneficiary(beneficiaries[beneficiaryIndex])
+		}
+	}, [selected, beneficiaries]);
+
+	const selectBeneficiary = useCallback((active)=> {
+        if (active === 'owner') {
+            setSelected('owner')
+        } else {
+            let currentDependant = beneficiaries.find(p => p.id === active)
+            setSelected(currentDependant.id)
+        }
+    }, [beneficiaries]);
 
 	const EditButton = ({ section, clase }) => {
 		return (
@@ -57,9 +87,9 @@ const ProfileComponent = () => {
 
 	const EditSection = () => {
 		if (section === 'personal') {
-			return <PersonalData user={patient} />;
+			return <PersonalData user={selected === 'owner' ? patient : dataBeneficiary} />;
 		} else if (section === 'pic') {
-			return <ProfilePic user={patient} />;
+			return <ProfilePic user={selected === 'owner' ? patient : dataBeneficiary} />;
 		} else {
 			return 'Esta sección aún no se encuentra disponible';
 		}
@@ -118,8 +148,61 @@ const ProfileComponent = () => {
 		},
 	]
 
+	const beneficiarieData = [
+		{
+			item: 1,
+			field: 'Nombre/s',
+			data: `${dataBeneficiary.fullname}`
+		},
+		{
+			item: 2,
+			field: 'Teléfono',
+			data: `${dataBeneficiary.ws}`
+		}, 
+		{
+			item: 3,
+			field: 'DNI / Número de documento',
+			data: `${dataBeneficiary.dni}`
+		}, 
+		{
+			item: 4,
+			field: 'Fecha de nacimiento',
+			data: `${moment(dataBeneficiary.dob).format('DD-MM-YYYY')}`
+		},
+		{
+			item: 5,
+			field: 'Cobertura de salud',
+			data: `${dataBeneficiary.corporate == '' ? 'No posee' : dataBeneficiary.corporate}`
+		},
+		// {
+		// 	item: 6,
+		// 	field: 'País',
+		// 	data: `${patient.country}`
+		// },
+		{
+			item: 7,
+			field: 'Dirección',
+			data: `${dataBeneficiary.address}`
+		},
+		{
+			item: 8,
+			field: 'Piso/Dpto',
+			data: `${dataBeneficiary.piso}`
+		},
+		{
+			item: 9,
+			field: 'Sexo',
+			data: 
+				`${
+					dataBeneficiary.sex === 'F' && 'Femenino' || 
+					dataBeneficiary.sex === 'M' && 'Masculino' ||
+					dataBeneficiary.sex === 'O' && 'Otro'
+				}`
+		},
+	]
+
 	return (
-		<>
+		<Fragment>
 			{modal && (
 				<MobileModal title='Editar datos'
 				callback={()=>{dispatch({type:"TOGGLE_DETAIL", payload:false})}}>
@@ -129,22 +212,51 @@ const ProfileComponent = () => {
 			<BackButton/>
 			<main className='profile-container'>
 				<section className='profile-header-info'>
-					{patient.profile_pic ?
-						<div className='pic-container'>
-							<img className='profile-pic' src={patient.profile_pic} alt='Perfil' /> 
-							<EditButton section='pic' className='btn-edit' clase='pic' />
-						</div>
-						: 
-						<div className='pic-container'>
-							<FaUser size='3.5rem' color='#fff' />
-							<EditButton section='pic' className='btn-edit' clase='pic' />
-						</div>
+					{selected === 'owner' ?
+						patient.profile_pic ?
+							<div className='pic-container'>
+								<img className='profile-pic' 
+									src={ patient.profile_pic} 
+									alt='Perfil' 
+								/> 
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+							: 
+							<div className='pic-container'>
+								<FaUser size='3.5rem' color='#fff' />
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+						:
+						dataBeneficiary.profile_pic ?
+							<div className='pic-container'>
+								<img className='profile-pic' 
+									src={dataBeneficiary.profile_pic} 
+									alt='Perfil' 
+								/> 
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
+							: 
+							<div className='pic-container'>
+								<FaUser size='3.5rem' color='#fff' />
+								<EditButton section='pic' className='btn-edit' clase='pic' />
+							</div>
 					}
-					<h1 className='fullName'>{patient.fullname}</h1>
-					{patientAge && 
+					<select className='select-beneficiary' onChange={(p) => selectBeneficiary(p.target.value)}>
+                        <option key={123} value={`owner`}> {patient.fullname} </option>
+                    	{beneficiaries.map((p, index) => {
+                        	return <option key={index} value={`${p.id}`}> {p.fullname} </option>
+                    })}
+                    </select> 
+					{selected === 'owner' ?
+						patientAge && 
+							<h2 className='patient-age'>
+								{patientAge} años
+							</h2>
+						:
+						beneficiaryAge &&
 						<h2 className='patient-age'>
-							{patientAge} años
-						</h2>
+							{beneficiaryAge} años
+						</h2>				
 					}
 				</section>
 				 {/* <section className='personal-data'>
@@ -160,18 +272,27 @@ const ProfileComponent = () => {
 					</h2>
 				</section>  */}
 				<section className='profile-info'>
-					{
-						viewData === 'data' ?
+					{viewData === 'data' ?
 						<div>
 							<div className='header-section-info'>
 								<h3 className='text'>Datos personales</h3> 
-								<div className='edit-info'>
-									<p>Editar</p>
-									<EditButton section='personal' className='btn-edit' clase='personal' />
-								</div>
+									<div className='edit-info'>
+										<p>Editar</p>
+										<EditButton section='personal' className='btn-edit' clase='personal' />
+									</div>
 							</div>
-							{
+							{selected === 'owner' &&
 								personalData.map((item) => {
+									return (
+										<div className='data-field' key={item.item}>
+											<p className='field'>{item.field}</p>
+											<p className='data'>{item.data}</p>
+										</div>
+									)
+								})
+							}
+							{selected !== 'owner' && 
+								beneficiarieData.map((item) => {
 									return (
 										<div className='data-field' key={item.item}>
 											<p className='field'>{item.field}</p>
@@ -208,7 +329,7 @@ const ProfileComponent = () => {
 					<Version />
 				</div>
 			</main>
-		</>
+		</Fragment>
 	);
 };
 export default ProfileComponent;
