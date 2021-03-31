@@ -154,8 +154,9 @@ export default function AskForBuyHisopado() {
                         <p className="info-important">Importante</p>
                         <hr className="info-important-line"/>
                         <p>Sólo aceptamos pagos por la <b><u>app </u></b> de ÜMA o a través de un <b><u>link </u></b> de pago enviado via mail por nuestro personal de ÜMA.</p> 
+                        <p>Recibirás la factura por el servicio durante las próximas 72 horas hábiles al email que utilizaste para acreditar tu pago.</p>
                         <p>Si te ofrecen abonar por otro medio, NO ACEPTES, y contactanos inmediatamente.</p>
-                    
+                        
                     </div>
                     <div className="hisopados-flux-container">                        
                         <p className="info-title">Contacto estrecho</p>
