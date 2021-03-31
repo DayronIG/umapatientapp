@@ -151,12 +151,16 @@ const MyCalendar = () => {
 
 	const customDaysPropGetter = (d) => {
 		let compare = moment(d).date()
+		console.log(calendarAppoints)
 		if(moment(d).format('DD') === '31') {
 			compare = moment(d).add(1, 'days').date()
 		} else if(moment(d).format('DD') === '01') {
 			compare = moment(d).subtract(1, 'days').date()
 		}
-		let filtered = calendarAppoints.filter((e) => moment(e.start).date() === compare);
+		let filtered = calendarAppoints.filter((e) => { 
+			//console.log(e, moment(d).add(1, 'days').date())
+			return moment(e.start).date() === compare
+		});
 		if (filtered.length !== 0) {
 			return { className: 'events-day' };
 		}
