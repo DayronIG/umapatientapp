@@ -1,55 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
 import { checkNum } from '../Utils/stringUtils';
+import { Loader } from '../global/Spinner/Loaders';
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 import { GenericInputs } from '../User/Login/GenericComponents';
+import { TiCoffee } from 'react-icons/ti';
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({ profile_pic: user.profile_pic || '' });
+	const [loader, setLoader] = useState(false)
+	const [showError, setShowError] = useState(false)
     const { currentUser } = useSelector((state) => state.userActive)
 
 	const handleSubmit = async (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
+		setLoader(true)
 		let data = {
 			newValues: { ...userData },
+			uid: currentUser.uid
 		};
 		await currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+			if(currentUser.uid === user.id) {
+				await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
+					setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
 				.catch((err) => {
+					// setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 					console.log(err);
 				});
+			}else {
+				await axios.patch(`${node_patient}/updateDependant/${user.id}`, data, {headers})
+				.then((res) => {
+					setLoader(false)
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					// setLoader(false)
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+			}
 		})
-		dispatch({type: 'LOADING', payload: false})
 	};
 
 	const uploadImage = (e) => {
+		setShowError(false)
 		let dt = moment().format('YYYYMMDDHHmmss');
 		let fieldName = e.target.name;
-		uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
-			setUserData({ ...userData, [fieldName]: imgLink });
-			handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink })
-		});
+		let file = e.target.files[0].name
+		let splitFile = file.split(".");
+		let lastVal = splitFile.pop();
+		if( lastVal == 'jpeg' ||
+			lastVal == 'tif'  ||
+			lastVal == 'tiff' ||
+			lastVal == 'bmp'  ||
+			lastVal == 'jpg'  ||
+			lastVal == 'png'
+		){
+			uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
+				setUserData({ ...userData, [fieldName]: imgLink });
+				handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink }, user)
+			});
+		}else {
+			setShowError(true)
+		}
 	};
 
 	return (
 		<>
-		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div className='umaBtn attachFile upload'>
+		<form className='form-edit-profile'>
+			{loader ?
+				<Loader/>
+				:
+				<div className='umaBtn attachFile upload'>
 					<FiUpload className='attachFile__icon' />
 					<p>Buscar imagen</p>
-				<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
-			</div>
+					<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
+				</div>
+			}
+			{showError && <p className='invalidField'>Por favor elija un formato de imagen valido</p>}
 		</form>
 		</>
 	);
@@ -71,6 +108,7 @@ export const PersonalData = ({ user }) => {
 		sex: user.sex || '',
 		ws: user.ws || '',
 	});
+
 
 	const handleChange = (e) => {
 		setErrorMsg('')
@@ -94,15 +132,18 @@ export const PersonalData = ({ user }) => {
 	};
 
 	const handleSubmit = async (e, userData, user) => {
+		console.log(user, 'user')
 		e.preventDefault();
 		if(errorsInputs.dni === false & errorsInputs.ws === false) {
 			dispatch({type: 'LOADING', payload: true})
 			let data = {
 				newValues: { ...userData },
+				uid: currentUser.uid
 			};
 			await currentUser.getIdToken().then(async token => {
 				let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-				await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+				if(currentUser.uid === user.id) {
+					await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 					.then((res) => {
 						dispatch({ type: 'TOGGLE_DETAIL' });
 					})
@@ -110,6 +151,16 @@ export const PersonalData = ({ user }) => {
 						dispatch({ type: 'TOGGLE_DETAIL' });
 						console.log(err);
 					});
+				}else {
+					await axios.patch(`${node_patient}/updateDependant/${user.id}`, data, {headers})
+					.then((res) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+					})
+					.catch((err) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+						console.log(err);
+					});
+				}
 			})
 			dispatch({type: 'LOADING', payload: false})
 		}else {

@@ -128,8 +128,8 @@ export function getUserParentsFirebase(uid) {
 export function getBenficiaries(uid) {
 	let queryUser = firestore.collection(`user/${uid}/dependants`);
 	return (dispatch) => {
-		queryUser.get()
-			.then((beneficiaries) => {
+		queryUser.onSnapshot(
+			(beneficiaries) => {
 				let parentsTemp = [];
 				beneficiaries.forEach((p) => {
 					let data = p.data();
@@ -140,11 +140,8 @@ export function getBenficiaries(uid) {
 					}
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
-			})
-			.catch((err) => {
-				console.log(err)
-			})
-	};
+			}, (error) => console.log(error))
+	}
 }
 
 export function getDoctor(cuit) {
