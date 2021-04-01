@@ -8,6 +8,7 @@ const DoctorDelay = ({cuit, date, time}) => {
     const [active, setActive] = useState(1)
     const [queue, setQueue] = useState(0);
     const [delay, setDelay] = useState(0);
+    const [measureOfTime, setMeasureOfTime] = useState('minutos')
 
     useEffect(() => {
         getDelayAndQueue();
@@ -50,10 +51,15 @@ const DoctorDelay = ({cuit, date, time}) => {
                     .format('YYYYMMDDHHmm')}`).then(res => {
                         if(res) {
                             setActive(res.active_doctors)
-                            let calcDelay = parseInt((userQueue / res.active_doctors) * 8.25)
-                            !isNaN(calcDelay) ? setDelay(calcDelay) : setDelay(0)
                             setQueue(userQueue)
-                            // console.log(res, userQueue)
+                            let calcDelay = parseInt((userQueue / res.active_doctors) * 8.25)
+                            if(calcDelay > 60) {
+                                !isNaN(calcDelay) ? setDelay(Math.round(calcDelay / 60)) : setDelay(0)
+                                setMeasureOfTime('horas')
+                            } else {
+                                !isNaN(calcDelay) ? setDelay(calcDelay) : setDelay(0)
+                                setMeasureOfTime('minutos')
+                            }
                         }
                     })
         }
@@ -66,7 +72,7 @@ const DoctorDelay = ({cuit, date, time}) => {
         </div>}
         {delay >= 1 && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
-            <span className="appointment__detail">minutos de espera aprox.</span>
+            <span className="appointment__detail">{measureOfTime} de espera aprox.</span>
         </div>}
     </div>
 }
