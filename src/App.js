@@ -142,7 +142,7 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
-				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?/:aid?' component={When} />
 				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
@@ -157,7 +157,7 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
-				<PrivateRoute path='/antecedents/:uid?/:section' component={Antecedents}/> 
+				{/* <PrivateRoute path='/antecedents/:uid?/:section' component={Antecedents}/>  */}
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />

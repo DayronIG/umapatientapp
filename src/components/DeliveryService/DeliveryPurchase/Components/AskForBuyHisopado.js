@@ -96,7 +96,7 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan en días hábiles de lunes a viernes de 8hs a 20hs.
+                            Los hisopados se realizan de lunes a sábados de 8hs a 20hs.
                         </article>
                     }
                     <div className="price-center-aligner">
@@ -130,11 +130,11 @@ export default function AskForBuyHisopado() {
                         <div className='read-with-attention-content'>
                             <ul>
                                 <li>
-                                Los hisopados se realizan de <b>lunes a viernes de 8hs a 20hs</b>, para todas las compras realizadas antes de las 18hs durante los <b>días hábiles</b>. 
+                                Los hisopados se realizan de <b>lunes a sábados de 8hs a 20hs</b>, para todas las compras realizadas antes de las 18hs. 
                                 <br/>
                                 Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.
                                 <br/>
-                                <b><u>No se realizan hisopados los días sábados, domingos ni feriados.</u></b>
+                                <b><u>No se realizan hisopados los días domingos ni feriados.</u></b>
                                 </li>
                                 <li>
                                 No lo cubren las obras sociales
@@ -154,8 +154,9 @@ export default function AskForBuyHisopado() {
                         <p className="info-important">Importante</p>
                         <hr className="info-important-line"/>
                         <p>Sólo aceptamos pagos por la <b><u>app </u></b> de ÜMA o a través de un <b><u>link </u></b> de pago enviado via mail por nuestro personal de ÜMA.</p> 
+                        <p>Recibirás la factura por el servicio durante las próximas 72 horas hábiles al email que utilizaste para acreditar tu pago.</p>
                         <p>Si te ofrecen abonar por otro medio, NO ACEPTES, y contactanos inmediatamente.</p>
-                    
+                        
                     </div>
                     <div className="hisopados-flux-container">                        
                         <p className="info-title">Contacto estrecho</p>

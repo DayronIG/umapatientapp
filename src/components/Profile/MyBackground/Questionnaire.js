@@ -1,53 +1,146 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import QuestionGroup from './QuestionGroup';
+import { NODE_SERVER } from '../../../config/endpoints';
+import axios from 'axios';
 
 export const RiskFactor = () => {
     const patient = useSelector(state => state.user)
     const history = useHistory()
+    const { currentUser } = useSelector((state) => state.userActive)
+    const [activeButton, setActiveButton] = useState(false)
     const [riskQuestions, setRiskQuestions] = useState({
         smoke: '',
-        alcohol: {response: '', frequency: ''},
+        alcohol: '',
+        alcoholFrequency: '',
     })
 
+    const nextPage = async () => {
+        if (activeButton) {
+			let data = {
+                history: {
+                    smoke: riskQuestions.smoke,
+                    alcohol: riskQuestions.alcohol,
+                    alcoholFrequency: riskQuestions.alcoholFrequency
+                }
+			};
+            await currentUser.getIdToken().then(async token => {
+				let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                await axios.post(`${NODE_SERVER}/history/self/${patient.core_id}`, data, {headers})
+                    .then((res)=> {
+                        history.push(`/antecedents/${patient.id}/parents`)
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+                });
+        }else {
+            console.error('No completó los datos');
+        }
+	};
+
     useEffect(() => {
-        console.log(riskQuestions, 'risk Question')
+        if(riskQuestions.smoke !== '' && riskQuestions.alcohol !== '') {
+            setActiveButton(true)
+        }
     }, [riskQuestions])
+
 
     return (
         <section className='contentQuestionnaire'>
             <h3>Tus factores de riesgo</h3>
-            <section className='questionGroup'>
-                <p className='question'>¿Fumas?</p>
-                <div className='answers'>
-                    <button onClick={()=>setRiskQuestions({...riskQuestions, fumas: 'Si'})}>Sí</button>
-                    <button onClick={()=>setRiskQuestions({...riskQuestions, fumas: 'No'})}>No</button>
-                </div>
-            </section>
-            <section className='questionGroup'>
-                <p className='question'>¿Tomás alcohol?</p>
-                <div className='answers'>
-                    <button onClick={()=>setRiskQuestions({...riskQuestions, alcohol: 'Si'})}>Sí</button>
-                    <button onClick={()=>setRiskQuestions({...riskQuestions, alcohol: 'No'})}>No</button>
-                </div>
-                {riskQuestions.alcohol === 'Si' &&
-                    <select name='alcoholFrequency'>
-                        <option defaultValue='' selected>- Elige una opción -</option>
-                        <option value="Una vez a la semana">Value 1</option>
-                        <option value="Dos veces a la semana">Value 2</option>
-                        <option value="Tres veces a la semana">Value 3</option>
-                        <option value="Más">Value 3</option>
+            <QuestionGroup question='¿Fumas?'>
+                <Fragment>
+                    <button 
+                        className={riskQuestions.smoke === true ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setRiskQuestions({...riskQuestions, smoke: true})}>
+                            Sí
+                    </button>
+                    <button
+                        className={riskQuestions.smoke === false ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setRiskQuestions({...riskQuestions, smoke: false})}>
+                            No
+                    </button>
+                </Fragment>
+            </QuestionGroup>
+            <QuestionGroup question='¿Tomás alcohol?'>
+                <Fragment>
+                    <button
+                        className={riskQuestions.alcohol === true ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setRiskQuestions({...riskQuestions, alcohol: true})}>
+                            Sí
+                    </button>
+                    <button 
+                        className={riskQuestions.alcohol === false ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setRiskQuestions({...riskQuestions, alcohol: false})}>
+                            No
+                    </button>
+                </Fragment>
+            </QuestionGroup>
+            {riskQuestions.alcohol &&
+                <QuestionGroup question='¿Con qué frecuencia?'>
+                    <select 
+                        className='alcoholFrequency' 
+                        onChange={(e)=>setRiskQuestions({...riskQuestions, alcoholFrequency: e.target.value})}
+                    >
+                        <option defaultValue='Elige una opción'>- Elige una opción -</option>
+                        <option value="Una vez a la semana" >
+                            Una vez a la semana
+                        </option>
+                        <option value="Dos veces a la semana" >
+                            Dos veces a la semana
+                        </option>
+                        <option value="Tres veces a la semana">
+                            Tres veces a la semana
+                        </option>
+                        <option value="Más">
+                            Más
+                        </option>
                     </select>
-                }
-            </section>
+                </QuestionGroup>
+            }
+            <button 
+                onClick={nextPage} 
+                className={activeButton ? 'buttonNext next ' : 'buttonNext'}>
+                    Siguiente
+            </button>
         </section>
     )
 }
 
 export const Parents = () => {
+    const patient = useSelector(state => state.user)
+    const history = useHistory()
+    const { currentUser } = useSelector((state) => state.userActive)
+    const [activeButton, setActiveButton] = useState(false)
+    const [personalQuestions, setPersonalQuestions] = useState({
+        allergy: '',
+        allergyType: ''
+    })
+
     return(
-        <div>
-            Holo parents
-        </div>
+        <section className='contentQuestionnaire'>
+            <h3>Antecedentes personales</h3>
+            <QuestionGroup question='¿Eres alérgico/a?'>
+                <Fragment>
+                    <button
+                        className={personalQuestions.allergy === true ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setPersonalQuestions({...personalQuestions, allergy: true})}>
+                            Sí
+                    </button>
+                    <button 
+                        className={personalQuestions.allergy === false ? 'buttonAnswer focused' : 'buttonAnswer'}
+                        onClick={()=>setPersonalQuestions({...personalQuestions, allergy: false})}>
+                            No
+                    </button>
+                </Fragment>
+            </QuestionGroup>
+            {personalQuestions.allergy === true && 
+                <QuestionGroup question='¿A qué?'>
+                    {/* react-select library */}
+                </QuestionGroup>
+            }
+        </section>
     )
 }

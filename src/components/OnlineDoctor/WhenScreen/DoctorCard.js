@@ -92,6 +92,17 @@ const GuardCardComp = (props) => {
 		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 	};
 	
+	const getTime = () => {
+		let time = Math.round((props.queue / active_doctors) * 8.25)
+		let timeMsg = ``
+		if(time > 60) {
+			timeMsg = `${Math.round(time/60)} horas`
+		} else {
+			timeMsg = `${time} minutos`
+		}
+		return timeMsg
+	}
+	
 	return (
 		<div className='doctorCard-container'>
 			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
@@ -103,7 +114,7 @@ const GuardCardComp = (props) => {
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
 						<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						{!isNaN((props.queue / active_doctors) * 8.25) && <small> La consulta será en aproximadamente {Math.round((props.queue / active_doctors) * 8.25)} minutos.</small>}
+						{!isNaN((props.queue / active_doctors) * 8.25) && <small> La consulta será en aproximadamente {getTime()}.</small>}
 						<br></br>
 						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {active_doctors > 1 && <small> y {active_doctors} médicos atendiendo</small>}
 					</div>

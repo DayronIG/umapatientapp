@@ -130,7 +130,8 @@ const ConfirmAppointment = (props) => {
 	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		let appointId = "", lastAssingState = ""
-		if(selectedAppointment) {
+		console.log(selectedAppointment)
+		if(selectedAppointment?.path) {
 			appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 			lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
 		}

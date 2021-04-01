@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, withRouter } from "react-router-dom";
+import { Route, withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
@@ -14,7 +14,6 @@ import Axios from "axios";
 import { node_patient } from './config/endpoints';
 import version from './config/version.json';
 import moment from 'moment-timezone';
-
 
 const Login = () => {
     const [delay, setDelay] = useState(false)
@@ -31,11 +30,10 @@ const Login = () => {
     }
 }
 
-
-
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore()
+    const history = useHistory()
     const { currentUser } = useContext(AuthContext)
     const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
@@ -79,6 +77,18 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
             }
         }
     }, [user, firestore, call.callRejected, rest.path])
+
+    useEffect(() => {
+        if (user.core_id) {
+            if (user.phone || user.ws) {
+                if (!user.login || user.login === [] || user.login === "") {
+                    history.push('/login/welcomeAgain');
+                }
+            } else {
+                history.push('/signup/form/2');
+            }
+        }
+    }, [user])
 
     useEffect(() => { // Get Device info and save messaging token(push notifications)
 		if (currentUser && currentUser.email) {

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RiskFactor, Parents } from '../MyBackground/Questionnaire';
-import BackButton from '../../GeneralComponents/Backbutton';
+// import BackButton from '../../GeneralComponents/Backbutton';
+import { HistoryHeader } from '../../GeneralComponents/Headers';
 import '../../../styles/profile/antecedents.scss';
 
 const Antecedent =()=> {
+    const history = useHistory()
     const params = useParams()
     const patient = useSelector(state => state.user)
 
@@ -13,15 +15,15 @@ const Antecedent =()=> {
 		if (params.section === 'risk') {
 			return <RiskFactor/>
 		} else if (params.section === 'parents') {
-                        return <Parents/>
-                } else {
-			return 'Esta sección aún no se encuentra disponible';
+            return <Parents/>
+        } else {
+			history.push()
 		}
     }
 
     return (
         <section className='antecedents__container'>
-            <BackButton customTarget={`/profile/${patient.core_id}`}/>
+            <HistoryHeader/>
             <section className='antecedents__container__generic'>
                 <div className='progressBar'></div>
                 <article className='mainText'>

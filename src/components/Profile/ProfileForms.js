@@ -1,58 +1,92 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
-import { useForm } from "react-hook-form";
+import { checkNum } from '../Utils/stringUtils';
+import { Loader } from '../global/Spinner/Loaders';
 import moment from 'moment-timezone';
 import axios from 'axios';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 import { GenericInputs } from '../User/Login/GenericComponents';
+import { TiCoffee } from 'react-icons/ti';
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({ profile_pic: user.profile_pic || '' });
+	const [loader, setLoader] = useState(false)
+	const [showError, setShowError] = useState(false)
     const { currentUser } = useSelector((state) => state.userActive)
 
 	const handleSubmit = async (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
+		setLoader(true)
 		let data = {
 			newValues: { ...userData },
+			uid: currentUser.uid
 		};
 		await currentUser.getIdToken().then(async token => {
 			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+			if(currentUser.uid === user.id) {
+				await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 				.then((res) => {
+					setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
 				.catch((err) => {
+					// setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 					console.log(err);
 				});
+			}else {
+				await axios.patch(`${node_patient}/updateDependant/${user.id}`, data, {headers})
+				.then((res) => {
+					setLoader(false)
+					dispatch({ type: 'TOGGLE_DETAIL' });
+				})
+				.catch((err) => {
+					// setLoader(false)
+					dispatch({ type: 'TOGGLE_DETAIL' });
+					console.log(err);
+				});
+			}
 		})
-		dispatch({type: 'LOADING', payload: false})
 	};
 
 	const uploadImage = (e) => {
+		setShowError(false)
 		let dt = moment().format('YYYYMMDDHHmmss');
 		let fieldName = e.target.name;
-		uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
-			setUserData({ ...userData, [fieldName]: imgLink });
-			handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink })
-		});
+		let file = e.target.files[0].name
+		let splitFile = file.split(".");
+		let lastVal = splitFile.pop();
+		if( lastVal == 'jpeg' ||
+			lastVal == 'tif'  ||
+			lastVal == 'tiff' ||
+			lastVal == 'bmp'  ||
+			lastVal == 'jpg'  ||
+			lastVal == 'png'
+		){
+			uploadFileToFirebase(e.target.files[0], `${currentUser.uid}/profile_pic/${dt}`).then((imgLink) => {
+				setUserData({ ...userData, [fieldName]: imgLink });
+				handleSubmit('profile_pic', { ...userData, [fieldName]: imgLink }, user)
+			});
+		}else {
+			setShowError(true)
+		}
 	};
 
 	return (
 		<>
-		<form className='form-edit-profile' onSubmit={(e) => handleSubmit(e, userData, user, dispatch)}>
-			<div className='umaBtn attachFile upload'>
+		<form className='form-edit-profile'>
+			{loader ?
+				<Loader/>
+				:
+				<div className='umaBtn attachFile upload'>
 					<FiUpload className='attachFile__icon' />
 					<p>Buscar imagen</p>
-				<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
-			</div>
-			<button className='button-submit-edit' type='submit'>
-				Subir
-			</button>
+					<input type='file' className='input-file' name='profile_pic' onChange={(e) => uploadImage(e)} />
+				</div>
+			}
+			{showError && <p className='invalidField'>Por favor elija un formato de imagen valido</p>}
 		</form>
 		</>
 	);
@@ -60,42 +94,78 @@ export const ProfilePic = ({ user }) => {
 
 export const PersonalData = ({ user }) => {
 	const dispatch = useDispatch();
-	const { register, errors } = useForm();
 	const { currentUser } = useSelector((state) => state.userActive)
+	const [errorsInputs, setErrorsInputs] = useState({dni: false, ws: false})
+	const [errorMsg, setErrorMsg]= useState('')
 	const [userData, setUserData] = useState({
+		address: user.address || '',
 		corporate: user.corporate || '',
-		fullname: user.fullname || '',
-		dob: user.dob || '',
+		country: user.country || '',
 		dni: user.dni || '',
+		dob: user.dob || '',
+		fullname: user.fullname || '',
+		piso: user.piso || '',
+		sex: user.sex || '',
 		ws: user.ws || '',
-		sex: user.sex || ''
 	});
 
 
 	const handleChange = (e) => {
-		setUserData({ ...userData, [e.target.name]: e.target.value });
+		setErrorMsg('')
+		if(e.target.name === 'dni') {
+			if (e.target.value.length >= 7 && e.target.value.length <= 8) {
+				setErrorsInputs({...errorsInputs, dni: false})
+				setUserData({ ...userData, dni: e.target.value })
+			}else {
+				setErrorsInputs({...errorsInputs, dni: true})
+			}
+		}if(e.target.name === 'ws') {
+			if (checkNum(e.target.value)) {
+				setErrorsInputs({...errorsInputs, ws: false})
+				setUserData({ ...userData, ws: e.target.value })
+			}else {
+				setErrorsInputs({...errorsInputs, ws: true})
+			}
+		}else {
+			setUserData({ ...userData, [e.target.name]: e.target.value });
+		}
 	};
 
 	const handleSubmit = async (e, userData, user) => {
-		dispatch({type: 'LOADING', payload: true})
+		console.log(user, 'user')
 		e.preventDefault();
-		console.log(userData)
-		let data = {
-			newValues: { ...userData },
-		};
-		await currentUser.getIdToken().then(async token => {
-			let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-			await axios
-				.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
-				.then((res) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-				})
-				.catch((err) => {
-					dispatch({ type: 'TOGGLE_DETAIL' });
-					console.log(err);
-				});
-		})
-		dispatch({type: 'LOADING', payload: false})
+		if(errorsInputs.dni === false & errorsInputs.ws === false) {
+			dispatch({type: 'LOADING', payload: true})
+			let data = {
+				newValues: { ...userData },
+				uid: currentUser.uid
+			};
+			await currentUser.getIdToken().then(async token => {
+				let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+				if(currentUser.uid === user.id) {
+					await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
+					.then((res) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+					})
+					.catch((err) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+						console.log(err);
+					});
+				}else {
+					await axios.patch(`${node_patient}/updateDependant/${user.id}`, data, {headers})
+					.then((res) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+					})
+					.catch((err) => {
+						dispatch({ type: 'TOGGLE_DETAIL' });
+						console.log(err);
+					});
+				}
+			})
+			dispatch({type: 'LOADING', payload: false})
+		}else {
+			setErrorMsg('Por favor compruebe que los datos introducidos cumplan con las condiciones')
+		}
 	};
 
 	return (
@@ -107,30 +177,27 @@ export const PersonalData = ({ user }) => {
 					name='fullname'
 					action={e=>handleChange(e)}
 					value={userData.fullname}
-					inputRef={
-						register(
-							{ 
-								required: false, 
-							}
-						)
-					} 
 				/>
 			</div>
 			<div>
 				<GenericInputs
-					label='Documento de identidad'
-					type='text' 
+					label='Teléfono'
+					type='number' 
+					name='ws'
+					action={e=>handleChange(e)}
+					value={userData.ws}
+				/>
+				{errorsInputs.ws && <p className='invalidField'>El número de teléfono debe tener al menos 10 números</p>}
+			</div>
+			<div>
+				<GenericInputs
+					label='DNI/Documento de identidad'
+					type='number' 
 					name='dni'
 					value={userData.dni}
 					action={e=>handleChange(e)}
-					inputRef={
-						register(
-							{  	required: false,
-								minLength: 7
-							}
-						)
-					} 
 				/>
+				{errorsInputs.dni && <p className='invalidField'>El documento de identidad debe tener al menos 7 números</p>}
 			</div>
 			<div>
 				<GenericInputs
@@ -150,6 +217,24 @@ export const PersonalData = ({ user }) => {
 					action={e=>handleChange(e)}
 				/>
 			</div>
+			<div>
+				<GenericInputs
+					label='Dirección'
+					type='text' 
+					name='address'
+					action={e=>handleChange(e)}
+					value={userData.address}
+				/>
+			</div>
+			<div>
+				<GenericInputs
+					label='Piso/Depto'
+					type='text' 
+					name='piso'
+					action={e=>handleChange(e)}
+					value={userData.piso}
+				/>
+			</div>
 			<div className='select-sex'>
  				<label className='sex-label'>Sexo</label>
  				<select onChange={(e) => setUserData({ ...userData, sex: e.target.value })}>
@@ -159,6 +244,7 @@ export const PersonalData = ({ user }) => {
  					<option value='O'>Otro</option>
  				</select>
  			</div>
+			 {errorMsg !== '' && <p className='invalidField'>{errorMsg}</p>}
 			<button className='button-submit-edit' type='submit'>
 				Editar
 			</button>
