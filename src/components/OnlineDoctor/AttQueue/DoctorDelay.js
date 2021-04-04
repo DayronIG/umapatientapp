@@ -50,9 +50,9 @@ const DoctorDelay = ({cuit, date, time}) => {
             await getDocumentFB(`/assignations/guardia/stats/${moment().tz('America/Argentina/Buenos_Aires').subtract(1, 'minutes')
                     .format('YYYYMMDDHHmm')}`).then(res => {
                         if(res) {
-                            setActive(res.active_doctors)
+                            setActive(res.unique_doctors)
                             setQueue(userQueue)
-                            let calcDelay = parseInt((userQueue / res.active_doctors) * 8.25)
+                            let calcDelay = parseInt((userQueue / res.unique_doctors) * 8.25)
                             if(calcDelay > 60) {
                                 !isNaN(calcDelay) ? setDelay(Math.round(calcDelay / 60)) : setDelay(0)
                                 setMeasureOfTime('horas')
