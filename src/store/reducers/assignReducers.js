@@ -12,7 +12,8 @@ const initialState = {
 	actionHandler: '',
 	selected: {},
 	selectedAppointment: {},
-	selectedDoctor: ''
+	selectedDoctor: '',
+	filesCount: 0
 };
 
 export default (state = initialState, action) => {
@@ -37,6 +38,8 @@ export default (state = initialState, action) => {
 			return { ...state, firstAppointment: action.payload };
 		case 'SET_SELECTED_DOCTOR':
 			return { ...state, selectedAppointment: action.payload };
+		case 'SUM_FILE_COUNT':
+			return {...state, filesCount: state.filesCount + 1}
 		default:
 			return state;
 	}
