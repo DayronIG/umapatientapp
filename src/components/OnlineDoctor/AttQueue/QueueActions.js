@@ -9,7 +9,9 @@ import '../../../styles/questions.scss';
 
 const QueueActions = (props) => {
 	const history = useHistory()
-	const [contador, setContador] = useState(0);
+	const dispatch = useDispatch()
+	const {filesCount} = useSelector(state => state.assignations)
+	
 	const [File, setFile] = useState([]);
 	const auth = useSelector((state) => state.user);
 	const {path} = useSelector((state) => state.queries.assignedAppointment)
@@ -20,7 +22,7 @@ const QueueActions = (props) => {
 		let fileName = e.target.files[0].name;
 		uploadFileToFirebase(file, `${auth.dni}/attached/${path?.split('/')?.[3]}/${dt}_${fileName}`) 
 			.then(imgLink => {
-				setContador(contador + 1);
+				dispatch({type: 'SUM_FILE_COUNT'})
 				setFile([...File, imgLink]);
 				swal('Éxito', 'Archivo cargado exitosamente', 'success');
 			})
@@ -47,7 +49,7 @@ const QueueActions = (props) => {
 			</button>}
 			<div className="umaBtn attachFile">
 				<FaFileMedicalAlt className="attachFile__icon" />
-				<p>{ contador < 1 ? 'Adjuntar archivo' : ( contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos` ) }</p>
+				<p>{ filesCount < 1 ? 'Adjuntar archivo' : ( filesCount === 1 ? `${filesCount} archivo adjunto` : `${filesCount} archivos adjuntos` ) }</p>
 				<input type="file" onChange={uploadImage} />
 			</div>
 			{props.appState !== 'ATT' && props.appState !== 'DONE' && !props.calling && 

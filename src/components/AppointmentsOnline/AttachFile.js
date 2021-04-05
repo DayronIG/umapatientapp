@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  useDispatch } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
@@ -8,10 +8,10 @@ import { FaFileMedicalAlt } from 'react-icons/fa';
 
 const AttachFile = ({ appoint, specialty }) => {
 	const [files, setFiles] = useState([]);
-	const [contador, setContador] = useState(0);
+	const {filesCount} = useSelector(state => state.assignations)
 	const dispatch = useDispatch();
 	let { dni } = useParams();
-		
+	
 	function renderBtnText() {
 		if(specialty === 'medicinalaboral') {
 			return 'Cargar constancia';
@@ -26,8 +26,8 @@ const AttachFile = ({ appoint, specialty }) => {
 		const currentFile = e.target.files[0];
 		const fileName = e.target.files[0].name;
 		uploadFileToFirebase(currentFile, `${dni}/attached/${appoint?.path?.split('/')?.[3]}/${dt}_${fileName}`)
-			.then((imgLink) => {
-				setContador(contador + 1);
+		.then((imgLink) => {
+				dispatch({type: 'SUM_FILE_COUNT'})				
 				setFiles([ ...files, imgLink ]);
 				dispatch({ type: 'LOADING', payload: false });
 				swal('Éxito', 'Archivo cargado exitosamente', 'success');
@@ -42,11 +42,11 @@ const AttachFile = ({ appoint, specialty }) => {
 	return <div className='umaBtn attachFile'>
 					<FaFileMedicalAlt className='attachFile__icon' />
 					<p>
-						{contador < 1
+						{filesCount < 1
 							? renderBtnText()
-							: contador === 1
-							? `${contador} archivo adjunto`
-							: `${contador} archivos adjuntos`
+							: filesCount === 1
+							? `${filesCount} archivo adjunto`
+							: `${filesCount} archivos adjuntos`
 						}
 					</p>
 					<input type='file' onChange={uploadImage} />
