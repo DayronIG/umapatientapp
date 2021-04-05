@@ -22,14 +22,14 @@ const ConfirmAppointment = (props) => {
 	const dispatch = useDispatch();
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [File, setFile] = useState([]);
-	const [contador, setContador] = useState(0);
+	const [File, setFile] = useState([]);	
 	const biomarkers = useSelector(state => state.biomarkers)
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	const {currentUser} = useSelector(state => state.userActive)
 	const patient = useSelector(state => state.user)
+	const {filesCount} = useSelector(state => state.assignations)
 
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ const ConfirmAppointment = (props) => {
 		let fileName = e.target.files[0].name;
 		uploadFileToFirebase(file, `${user.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
 			.then(imgLink => {
-				setContador(contador + 1);
+				dispatch({type: 'SUM_FILE_COUNT'})
 				setFile([...File, imgLink]);
 				setLoading(false);
 				swal('Éxito', 'Archivo cargado exitosamente', 'success');
@@ -130,7 +130,6 @@ const ConfirmAppointment = (props) => {
 	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		let appointId = "", lastAssingState = ""
-		console.log(selectedAppointment)
 		if(selectedAppointment?.path) {
 			appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 			lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
@@ -187,7 +186,7 @@ const ConfirmAppointment = (props) => {
 					:
 					<div className="umaBtn attachFile">
 						<FaFileMedicalAlt className="attachFile__icon" />
-						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
+						<p>{filesCount < 1 ? 'Adjuntar archivo' : (filesCount === 1 ? `${filesCount} archivo adjunto` : `${filesCount} archivos adjuntos`)}</p>
 						<input type="file" onChange={uploadImage} />
 					</div>
 				}

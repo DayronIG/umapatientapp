@@ -19,7 +19,7 @@ const LaboralMotive = ({ unsetScreen }) => {
 			<div className='dinamic-content-container'>
 				<div className='dinamic-question'>
 					<span className='question-title text-white font-weight-bold'>Motivo de la consulta</span>
-					<select className="form-mid-input" style={{ height: "65%" }}
+					<select className="form-mid-input ml-3 mr-3 mb-3 pt-1 pb-1" style={{ height: "65%" }}
 								id="gender" required
 								onChange={e => setOtherSymptoms(e.target.value)} >
 						<option defaultValue>Motivo de la consulta</option>

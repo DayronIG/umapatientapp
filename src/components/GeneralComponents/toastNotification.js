@@ -23,9 +23,7 @@ const ToastNotification = ({ title, description, button, action, audio, unsetNot
 
     return (
         <div className={`toastNotificationContainer ${slide && 'active'}`} >
-
             <div className="toastNotification">
-
                 <audio src={audio} autoPlay />
                 <div className='closeButtonContainer' onClick={closeNotification}>
                     <FontAwesomeIcon icon={faTimesCircle} />
@@ -36,7 +34,6 @@ const ToastNotification = ({ title, description, button, action, audio, unsetNot
                         <p>{description}</p>
                     }
                 </div>
-
                 {action &&
                     <div className="buttonsContainer">
                         <Link to={action}>
@@ -47,8 +44,6 @@ const ToastNotification = ({ title, description, button, action, audio, unsetNot
 
                     </div>
                 }
-
-
             </div>
         </div>
     )

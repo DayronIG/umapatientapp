@@ -47,18 +47,18 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data?._start_date && data._start_date !== '') {
-                        if (!call.callRejected && !rest.path.includes('/attention/')) {
+                        dispatch({ 
+                            type: 'SET_CALL_ROOM', 
+                            payload: { 
+                                room: data.call.room,
+                                token: data.call.token, 
+                                assignation: data.call.assignation_id,
+                                dependant: data.call.dependant,
+                                activeUid: data.call.activeUid
+                            } 
+                        })
+                        if (!call.callRejected && !rest.path.includes('/attention/') && !rest.path.includes('/onlinedoctor/queue/')) {
                             setNotification(true)
-                            dispatch({ 
-                                type: 'SET_CALL_ROOM', 
-                                payload: { 
-                                    room: data.call.room,
-                                    token: data.call.token, 
-                                    assignation: data.call.assignation_id,
-                                    dependant: data.call.dependant,
-                                    activeUid: data.call.activeUid
-                                } 
-                            })
                         }
                     } else {
                         setNotification(false)
