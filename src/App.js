@@ -13,6 +13,7 @@ import Feedback from './views/Feedback';
 import Login from './components/User/Login';
 import Home from './views/Home';
 import Status from './components/User/SignUp/Status';
+import ScreenSteps from './components/Derivations/ScreenSteps';
 
 // Login & Register
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
@@ -29,6 +30,7 @@ import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 
 /* Profile */
 import Profile from './views/Profile';
+import Antecedents from './components/Profile/MyBackground/Antecedent';
 /* Online Doctor */
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
 import When from './components/OnlineDoctor/WhenScreen/WhenAtt';
@@ -116,27 +118,31 @@ function App(props) {
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/old_login/:ws?' component={Login} />
-				{/* <Route exact path='/register/:ws/:ref?' component={Register} /> */}
-				{/* <Route exact path='/:ws?/login' component={Login} /> To be deleted */}
-				{/* <Route exact path='/:ws/register/:ref?' component={Register} /> To be deleted */}
 				<PrivateRoute exact path='/umacare/:ws?' component={UmaCare} />
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
-				{/* <Route exact path='/newregister/:ref?' component={RegisterNew} /> */}
-				{/* <Route exact path='/referredregister/:ref?' component={RegisterNew} /> */}
-				{/* <Route exact path='/referredRegister/:ref?' component={ReferredRegister} /> */}
-				{/* <Route exact path='/registersuccess' component={RegisterSuccess} /> */}
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
+				{/* Delivery Service */}
+				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
+				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
+				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
+				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
+				<PrivateRoute exact path='/hisopado/payment/:ws?' component={Payment} />
+				<PrivateRoute exact path='/hisopado/corporate/:ws?' component={HisopadoCorporate} />
+				<PrivateRoute exact path='/hisopado/deliveryChat/:incidente_id' component={DeliveryChat} />
+				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* General */}
 				<Route exact path='/feedback/:aid?' component={Feedback} />
 				<Route exact path='/notfound/:error?' component={NotFound} />
 				<PrivateRoute exact path='/:ws?' component={Home} />
 				<PrivateRoute exact path='/home/:ws?' component={Home} />
+				<PrivateRoute exact path='/derivations/:uid' component={ScreenSteps} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
-				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?' component={When} />
+				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?/:aid?' component={When} />
 				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
@@ -151,8 +157,8 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
+				{/* <PrivateRoute path='/antecedents/:uid?/:section' component={Antecedents}/>  */}
 				{/* APPOINTMENTS ONLINE */}
-				{/* Temp disabled the chats <PrivateRoute exact path='/chat/:specialty/:dni?' component={Chat} /> */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />
 				<PrivateRoute exact path='/appointmentsonline/:activeUid?/' component={OnlineSpecialist} />
@@ -166,10 +172,10 @@ function App(props) {
 				<PrivateRoute exact path='/:ws/transportUserActive' component={TransportUserActive} />
 				<PrivateRoute exact path='/:ws/createTransportRoute' component={CreateTransportRouteView} />
 				<PrivateRoute exact path='/:ws/scheduleTransport' component={ScheduleTransportView} />
-				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
 				<PrivateRoute exact path='/:ws/scheduledTransportSuccess' component={ScheduledTransportSuccess} />
-				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
 				<PrivateRoute exact path='/:ws/transportRating/:assignation_id' component={TransportRating} />
+				<PrivateRoute exact path='/transportNoDriver' component={TransportNoDriver} />
+				<PrivateRoute exact path='/transportDetails/:date/:assignation_id' component={TransportDetailsView} />
 				{/* AUTONOMOUS */}
 				<PrivateRoute exact path='/autonomous/:dni' component={Autonomous} />
 				<PrivateRoute exact path='/laboratorio/:dni' component={Laboratorio} />
@@ -177,16 +183,6 @@ function App(props) {
 				<PrivateRoute exact path='/wellness/:ws?' component={Wellness} />
 				{/* Patient tracking */}
 				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
-				{/* Delivery Service */}
-				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
-				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
-				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
-				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />
-				<PrivateRoute exact path='/hisopadoResult/:ws?' component={DeliveryResults} />
-				<PrivateRoute exact path='/hisopado/payment/:ws?' component={Payment} />
-				<PrivateRoute exact path='/hisopado/corporate/:ws?' component={HisopadoCorporate} />
-				<PrivateRoute exact path='/hisopado/deliveryChat/:incidente_id' component={DeliveryChat} />
-				<PrivateRoute exact path='/delivery/progress/:ws?/:incidente_id/:service?' component={DeliveryTrackProgress} />
 				{/* VACCINE */}
 				<Route exact path='/invitation/:id' component={Invitation} />
 				<Route exact path='/vacunacion/:id' component={Vaccine} />

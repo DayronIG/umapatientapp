@@ -52,6 +52,15 @@ const Register = () => {
     }])
     const [calendarDay, setCalendarDay] = useState(moment().format('DD'))
 
+    useEffect(() => {
+        if (switchContent === '2') {
+            if(!Firebase.auth().currentUser) {
+                dispatch({ type: 'RESET_USER_DATA' });
+                history.push('/');
+            }
+        }
+    }, [switchContent])
+
     useEffect (()=> {
         if (screen) {
             switch(screen) {
@@ -385,7 +394,7 @@ const Register = () => {
                                         register(
                                             { 
                                                 required: true, 
-                                                pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
+                                                pattern: /^[^\s]{2,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
                                             }
                                         )
                                     }
@@ -400,7 +409,7 @@ const Register = () => {
                                         register(
                                             { 
                                                 required: true, 
-                                                pattern: /^[^\s]{3,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
+                                                pattern: /^[^\s]{2,}( [^\s]+)?( [^\s]+)?( [^\s]+)? *?$/
                                             }
                                         )
                                     }

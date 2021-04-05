@@ -1,0 +1,235 @@
+@import '../global/Vars.scss';
+@import '../global/Fonts.scss';
+
+.btn-edit {
+    border: none;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background-color: $white-color;
+    box-shadow: $main-shadow;
+    position: relative;
+    svg {
+        position: absolute;
+        right: 3px;
+        bottom: 4px;
+    }
+}
+
+.profile-container {
+   width: 100%;
+   min-height: 90vh;
+   .profile-header-info {
+       padding-top: 60px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-direction: column;
+       .select-beneficiary {
+            width: fit-content;
+            border: transparent;
+            border-radius: $regular-borders;
+            background-color: transparent;
+            padding: 6px 0;
+            margin: 5px 0;
+            &:focus {
+                outline: transparent;
+            }
+
+        }
+       .pic-container {
+        position: relative;
+            :nth-child(1) {
+                border-radius: 50%;
+                margin: 0 auto;
+                width: 125px;
+                height: 125px;
+                object-fit: cover;
+                background-color: $secondary-blue;
+            }
+            .btn-edit {
+                position: absolute;
+                top: 82px;
+                right: 3px;
+                svg {
+                    width: 18px;
+                    height: 18px;
+                    background-color: $white-color;
+                }
+            }
+       }
+        .fullName {
+            color: $uma-text;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 10px 0; 
+            padding: 0;
+        }
+        .patient-age {
+            font-size: 16px;
+            color: $uma-text;
+            font-weight: 500;
+            padding: 0;
+        }
+    }
+    .personal-data {
+        display: flex;
+        width: 90%;
+        margin: 30px auto 0 auto;
+        justify-content: space-around;
+        position: relative;
+        .data-section {
+            font-size: 18px;
+            font-weight: 600;
+            width: 50%;
+            padding: 0;
+            &.clicked {
+                &::after {
+                    content: '';
+                    display: block;
+                    background-color: $uma-primary;
+                    height: 2px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .profile-info {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        flex-direction: column;
+        width: 90%;
+        .header-section-info {
+            display: flex;
+            justify-content: space-between;
+            height: 35px;
+            align-items: center;
+            padding: 10px;
+            background-color: $secondary-blue;
+            .text {
+                font-size: 16px;
+                font-weight: bold;
+                margin: 0;
+                color: $uma-text;
+            }
+            .edit-info {
+                display: flex;
+                p {
+                    font-size: 16px;
+                    color: $uma-primary;
+                    margin: 2px 5px 0 0;
+                    padding: 0;
+                }
+            }
+        }
+        .data-field {
+            margin-top: 20px;
+            width: 95%;
+            border-bottom: 1px solid $uma-input;
+            .field {
+                font-size: 15px;
+                margin: 0 0 10px 3px;
+            }
+            .data {
+                margin: 5px 0 3px 10px;
+            }
+        }
+        .empty-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            margin-top: 20px;
+            .file-img {
+                width: 200px;
+            }
+            .background-to-fill {
+                h1 {
+                    color: $uma-text;
+                    font-size: 20px;
+                    margin: 20px 0;
+                    font-weight: 500;
+                }
+                h2 {
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: $uma-text;
+                    margin: 0;
+                }
+            }
+            .get-started {
+                width: 200px;
+                height: 45px;
+                border: transparent;
+                border-radius: $regular-borders;
+                background-color: $green-uma;
+                color: $white-color;
+                font-weight: 600;
+                margin-top: 30px;
+                &:focus {
+                    outline: transparent;
+                }
+            }
+        }
+    }
+    .logOut {
+        text-align: center;
+        .btn-log-out {
+            width: 250px;
+            height: 45px;
+            border: transparent;
+            border-radius: $regular-borders;
+            background-color: $uma-primary;
+            color: $white-color;
+            font-weight: 600;
+            margin-top: 30px;
+            &:focus {
+                outline: transparent;
+            }
+        }
+    }
+}
+
+.form-edit-profile {
+    text-align: center;
+    .button-submit-edit {
+        width: 150px;
+        height: 45px;
+        background-color: $uma-primary;
+        color: $white-color;
+        border: transparent;
+        border-radius: $regular-borders;
+        font-weight: bold;
+        &:focus {
+            border: transparent;
+            outline: transparent;
+        }
+    }
+    .select-sex {
+        display: flex;
+        flex-direction: column;
+        align-items:flex-start;
+        margin: 10px 0 10px 20px;
+        .sex-label {
+            color: $when-dark;
+            font-size: 16px;
+        }
+        select {
+            width: 95%;
+            border: transparent;
+            border-radius: $regular-borders;
+            padding: 6px 0;
+            &:focus {
+                outline:transparent;
+            }
+        }
+    }
+    .invalidField {
+        font-size: 16px;
+        color: $uma-error;
+        padding: 0 20px;
+        margin: 2px;
+    }
+}

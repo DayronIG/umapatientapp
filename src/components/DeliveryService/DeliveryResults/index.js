@@ -21,7 +21,6 @@ export default function HisopadosPurchase() {
         }
     }, [result]) */
 
-    console.log(fluxTrackerHisopado)
 
     const renderContent = () => {
         switch (fluxTrackerHisopado) {

@@ -39,7 +39,7 @@ const PaymentCardMP = () => {
 
     useEffect(() => {
       const multiple_clients = JSON.parse(localStorage.getItem("multiple_clients"))
-      if(deliveryInfo.length < multiple_clients?.length){
+      if(deliveryInfo.length < multiple_clients?.length && Object.keys(multiple_clients?.[0]).length !== 0){
           dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
       }
       // console.log(deliveryInfo.filter(el => el.status && !['DONE:RESULT', 'ASSIGN:ARRIVED', 'ASSIGN:DELIVERY'].includes(el.status)));

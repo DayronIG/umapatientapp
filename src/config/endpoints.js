@@ -1,9 +1,9 @@
 const isLocal = window.location.origin.includes('localhost');
-const NODE_DEV = `http://localhost:8080`;
+export const NODE_DEV = `http://localhost:8080`;
 // default
 const URN_UMA = isLocal ? `https://uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
 // node
-const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
+export const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;
 const UP = `https://dxp.unionpersonal.com.ar`;
 const up_token = 'sdHBFk3PUMtICR0Z-c1W';

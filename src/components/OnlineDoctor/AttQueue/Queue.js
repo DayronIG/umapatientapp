@@ -27,8 +27,8 @@ const Queue = (props) => {
     const [assignation, setAssignation] = useState('')
     const [calling, setCalling] = useState(false)
     const { loading } = useSelector(state => state.front)
-    const assessment = useSelector(state => state.assessment)
-    const { questions, appointments: appointment, callSettings, assignedAppointment } = useSelector(state => state.queries)
+    const {call, assessment} = useSelector(state => state)
+    const { questions, appointments: appointment, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
     const {currentUser} = useSelector(state => state.userActive)
     const mr = useSelector(state => state.queries.medicalRecord[0])
@@ -154,7 +154,7 @@ const Queue = (props) => {
         }
         const interval = setInterval(() => {
             calculateRemainingTime(assignedAppointment)
-            if (callSettings.room === '') {
+            if (call.room === '') {
                 snapshot = getCallStatus()
             }
         }, 10000)
@@ -165,11 +165,11 @@ const Queue = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [assignedAppointment])
 
-    // Effect to listen callSettings
+    // Effect to listen call
     useEffect(() => {
-        if (callSettings.room !== '') setCalling(true)
+        if (call.room !== '') setCalling(true)
         else setCalling(false)
-    }, [callSettings])
+    }, [call])
 
     // Effect to start audio calling
     useEffect(() => {

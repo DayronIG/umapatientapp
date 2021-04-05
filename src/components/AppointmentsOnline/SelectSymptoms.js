@@ -26,7 +26,7 @@ const SelectSymptom = ({ unsetScreen }) => {
               onChange={e => setOtherSymptoms(e.target.value)}
               value={otherSymptoms}
               placeholder='Describa el motivo de la consulta y/o sus síntomas'
-              style={{ height: '50vh', border: 'none', borderRadius: '5px', padding: '10px' }}
+              style={{ margin: '20px', height: '50vh', border: 'none', borderRadius: '5px', padding: '10px' }}
             />
           </div>
           <button type='button' className='btn btn-blue-lg confirmConsultReason'

@@ -12,6 +12,7 @@ export default function ({ appoints, filterDt, unsetDate }) {
   const [symptomsScreen, setSymptomsScreen] = useState(true)
   moment.locale('es')
 
+
   function getSymptomScreen(){
     if(appoints[0].especialidad === 'medicinalaboral') {
       return <LaboralMotive unsetScreen={() => setSymptomsScreen(false)} />

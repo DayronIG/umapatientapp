@@ -96,11 +96,9 @@ export default function AskForBuyHisopado() {
                     {
                         !params.active &&
                         <article className="hisopados-alert">
-                            Los hisopados se realizan en días hábiles de lunes a viernes de 8hs a 18hs.
+                            Los hisopados se realizan de lunes a sábados de 8hs a 20hs.
                         </article>
                     }
-                    {/* <p className="hisopados-title">¡Conocé nuestro <br/> test rápido!</p> */}
-                    {/* <p className="hisopados-subtitle">Te hacemos tu hisopado a domicilio. Ahora podés pedirlo durante todo el día, desde la comodidad de tu hogar.</p> */}
                     <div className="price-center-aligner">
                         <img src={umaLogo} alt='uma_logo' className='uma_logo_hisopados'/>
                         <h2 className="price-title">Test rápido de antígenos</h2>
@@ -112,7 +110,6 @@ export default function AskForBuyHisopado() {
                             <p className="hisopados-price">${params?.price}</p>
                         </div>
                         <p className="disclaimer-result">Indica la presencia del virus</p>
-                        {/* <p className="disclaimer-time">Entrega de resultado en 15 minutos en tu domicilio</p> */}
                     </div>
                     
                     <div className="coverage">
@@ -122,6 +119,8 @@ export default function AskForBuyHisopado() {
                         >
                             Conocé nuestra zona de cobertura
                         </button>
+                        <br />
+                        <span className="coverage-btn" onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
                     </div>
 
                     <div className='read-with-attention'>
@@ -131,11 +130,11 @@ export default function AskForBuyHisopado() {
                         <div className='read-with-attention-content'>
                             <ul>
                                 <li>
-                                Los hisopados se realizan de <b>lunes a viernes de 8hs a 18hs</b>, para todas las compras realizadas antes de las 18hs durante los <b>días hábiles</b>. 
+                                Los hisopados se realizan de <b>lunes a sábados de 8hs a 20hs</b>, para todas las compras realizadas antes de las 18hs. 
                                 <br/>
                                 Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil.
                                 <br/>
-                                <b><u>No se realizan hisopados los días sábados, domingos ni feriados.</u></b>
+                                <b><u>No se realizan hisopados los días domingos ni feriados.</u></b>
                                 </li>
                                 <li>
                                 No lo cubren las obras sociales
@@ -149,44 +148,24 @@ export default function AskForBuyHisopado() {
                             </ul>
                         </div>
                     </div>
-
-                    {/* <div className="hisopados-flux-container">                        
-                        <p className="info-title">¿En qué consiste?</p>
-                        <p>Es un test rápido de detección del Covid-19 avalado por la OMS, realizado por nuestro personal de salud en tu domicilio.<br />
-                        Es una excelente alternativa al hisopado tradicional, económica y veloz, ¡en sólo 15 minutos tienes el resultado!</p>
-                        <p>Además te brindamos <span className="info-destacado">atención médica</span> una vez realizado el hisopado a través de nuestra plataforma.</p>
-                    </div> */}
                     <div className="hisopados-flux-container">                        
                         <p className="info-title-big">Medios de pago</p>
                         <p>Puedes pagarlo con tarjeta de crédito a través de MercadoPago.</p>
                         <p className="info-important">Importante</p>
                         <hr className="info-important-line"/>
                         <p>Sólo aceptamos pagos por la <b><u>app </u></b> de ÜMA o a través de un <b><u>link </u></b> de pago enviado via mail por nuestro personal de ÜMA.</p> 
+                        <p>Recibirás la factura por el servicio durante las próximas 72 horas hábiles al email que utilizaste para acreditar tu pago.</p>
                         <p>Si te ofrecen abonar por otro medio, NO ACEPTES, y contactanos inmediatamente.</p>
-                    
+                        
                     </div>
                     <div className="hisopados-flux-container">                        
                         <p className="info-title">Contacto estrecho</p>
                         <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
                     </div>
-{/* 
-                    <div className="hisopados-atentionContainer">
-                        <h2>A tener en cuenta</h2>
-                        <ul>
-                            <li>• Los hisopados se realizan de lunes a viernes de 8hs a 18hs para todas las compras realizadas antes de las 18hs durante los días hábiles. Si compras fuera de ese rango, te lo realizaremos al siguiente día hábil. No se realizan hisopados los días domingos ni feriados.</li>
-                            <li>• No lo cubren las obras sociales</li>
-                            <li>• No emite certificado oficial</li>
-                            <li>• Consulte con su destino la validez del test rápido para viajar</li>
-                            <li>• El pago no admite cancelaciones ni devoluciones.</li>
-                        </ul>
-                    </div> */}
 
                     <p className="terms-questions">
                         <span onClick={()=>setTermsConditions(true)}>Términos y condiciones</span>
-                        <br/>
-                        <br/>
-                        <span onClick={()=>setFrequentQuestions(true)}>Preguntas frecuentes</span>
                     </p>
                     <div onClick={() => params?.price ? startBuying(): ""} className="hisopados-button">
                         <p className="button-text"><FaCartPlus className="icon"/>Comprar mi hisopado</p>
