@@ -213,7 +213,6 @@
     justify-content: center;
     margin-top: 10px;
     white-space: nowrap;
-    overflow: hidden;
     &.column {
         flex-direction: column;
         align-items: center;
@@ -221,13 +220,12 @@
 
     &.center {
         text-align: center;
-
         .login__button {
+            overflow: hidden;
             &.large {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
                 img {
                     position: static;
                 }
