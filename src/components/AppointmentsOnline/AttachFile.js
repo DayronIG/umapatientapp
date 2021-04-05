@@ -10,8 +10,8 @@ const AttachFile = ({ appoint, specialty }) => {
 	const [files, setFiles] = useState([]);
 	const {filesCount} = useSelector(state => state.assignations)
 	const dispatch = useDispatch();
-	let { dni } = useParams();
-	
+	const {dni} = useSelector(state => state.user)
+
 	function renderBtnText() {
 		if(specialty === 'medicinalaboral') {
 			return 'Cargar constancia';
@@ -19,7 +19,7 @@ const AttachFile = ({ appoint, specialty }) => {
 			return 'Subir archivos';
 		}
 	}
-    
+
 	const uploadImage = (e) => {
 		dispatch({ type: 'LOADING', payload: true });
 		const dt = moment().format('DD-MM-YYYY_HH:mm:ss');
