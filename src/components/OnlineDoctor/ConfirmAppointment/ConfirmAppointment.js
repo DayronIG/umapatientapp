@@ -29,7 +29,7 @@ const ConfirmAppointment = () => {
                 }
                 await axios.post(appointments_confirm, data, config)
                 swal("Confirmado", "Tu turno fue confirmado. En los próximos minútos un médico se contactará contigo", "success")
-                history.push(`/onlinedoctor/queue/${uid}`)
+                history.push(`/onlinedoctor/queue/${uid || currentUser.uid}`)
             }
         } catch (err) {
             console.log(err)
