@@ -10,7 +10,7 @@ const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
 const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
 export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
-export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') } }
+export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') || '' } }
 
 export const user_online = `${URN_UMA}/user_online`;
 export const make_appointment = `${URN_UMA}/make_appointment`;
@@ -41,6 +41,8 @@ export const send_user_code = `${NODE_SERVER}/patients/code`;
 export const node_patient = `${NODE_SERVER}/patients`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
+// Appointments
+export const appointments_confirm = `${NODE_SERVER}/appointments/confirm`;
 // Payments
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
 // Models

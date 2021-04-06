@@ -14,7 +14,6 @@ import Login from './components/User/Login';
 import Home from './views/Home';
 import Status from './components/User/SignUp/Status';
 import ScreenSteps from './components/Derivations/ScreenSteps';
-
 // Login & Register
 import LoginPhoneNumber from './components/User/Login/LoginPhoneNumber/LoginPhoneNumber';
 import ForgottenAccError from './components/User/Login/ForgottenPass/ForgottenAccError';
@@ -27,11 +26,10 @@ import NeedHelp from './components/User/Login/ForgottenPass/NeedHelp';
 import ForgottenPass from './components/User/Login/ForgottenPass/ForgottenPass';
 import ForgottenPassError from './components/User/Login/ForgottenPass/ForgottenPassError';
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
-
 /* Profile */
 import Profile from './views/Profile';
-import Antecedents from './components/Profile/MyBackground/Antecedent';
 /* Online Doctor */
+import ConfirmAppointment from './components/OnlineDoctor/ConfirmAppointment/ConfirmAppointment';
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
 import When from './components/OnlineDoctor/WhenScreen/WhenAtt';
 import Reason from './components/OnlineDoctor/Reason/';
@@ -141,14 +139,13 @@ function App(props) {
 				<PrivateRoute exact path='/derivations/:uid' component={ScreenSteps} />
 				<PrivateRoute exact path='/:ws/constancy' component={Constancy} />
 				{/* Doctor Online */}
+				<PrivateRoute exact path='/onlinedoctor/confirm/:assignation_id?' component={ConfirmAppointment} />
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
 				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?/:aid?' component={When} />
 				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
 				<PrivateRoute exact path='/onlinedoctor/attention/:activeUid?' component={CallContainer} />
-				{/* CUIDADOS DOMICILIARIOS */}
-				<PrivateRoute exact path='/homeCare/:ws?/' component={ComingSoon} />
 				{/* MY HISTORY */}
 				<PrivateRoute exact path='/record/:ws' component={MyRecords} />
 				<PrivateRoute exact path='/history/:ws' component={MyHistory} />
@@ -157,7 +154,6 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
-				{/* <PrivateRoute path='/antecedents/:uid?/:section' component={Antecedents}/>  */}
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />

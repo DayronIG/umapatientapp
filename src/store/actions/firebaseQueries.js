@@ -377,7 +377,12 @@ export function getAppointmentByUid(uid, collectionName, specialty = 'online_cli
 				.get()
 				.then((snap) => {
 					snap.forEach((subDoc) => {
-						let data = subDoc.data();
+						console.log(subDoc, subDoc.ref)
+						let data = {
+							...subDoc.data(),
+							id: subDoc.ref.id,
+							path: subDoc.ref.path
+						};
 						// I compare the date just in case there is another appointment in the past days
 						if (data.date >= compareDate) {
 							appointments.push(data);
