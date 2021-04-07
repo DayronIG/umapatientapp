@@ -88,8 +88,17 @@ const PaymentCardMP = () => {
           dangerMode: false,
         })
         if(confirm) {
-            const form = document.getElementsByTagName('form')[0]
+          const form = document.getElementsByTagName('form')[0]
+          if(!form.elements.email.value){
+            swal({
+              title: "Debe completar su email", 
+              icon: "warning",
+              dangerMode: false,
+            })
+            setLoader(false)
+          } else {
             window.Mercadopago.createToken(form, sdkResponseHandler)
+          }
         } else {
           setLoader(false)
         }
