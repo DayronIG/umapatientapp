@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import firebase from "../../config/DBConnection";
 import Modal from '../GeneralComponents/Modal/MobileModal';
 import '../../styles/generalcomponents/VersionComponent.scss';
-
 export const version_number = require('../../config/version.json');
 
 export const HiddenCacheClearer = ({ platform }) => {
@@ -27,19 +26,17 @@ export const HiddenCacheClearer = ({ platform }) => {
     }, []);
 
     useEffect(() => {
-        console.log("need update?")
+        console.log(version_number?.patients?.replace(/\./g, ""), actual_version?.patients?.replace(/\./g, ""))
         if(version_number?.patients?.replace(/\./g, "") < actual_version?.patients?.replace(/\./g, "")) {
-            console.log("Need update")
             setNeedUpdate(true)
         } else {
-            console.log("Up to date")
             setNeedUpdate(false)
         }
     }, [actual_version])
 
     const clearAll = async () => {
         await clearCache();
-        window.location.reload(true);
+        // window.location.reload(true);
     }
 
     return (<>

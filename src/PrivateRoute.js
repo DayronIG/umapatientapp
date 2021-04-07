@@ -41,6 +41,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	const {token} = useSelector(state => state.userActive)
 
     useEffect(() => {
+        console.log("UMA")
         if (user.ws) {
             try {
                 let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)

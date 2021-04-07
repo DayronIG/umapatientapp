@@ -152,16 +152,11 @@ const Queue = (props) => {
         if (!!assignedAppointment && Object.keys(assignedAppointment).length > 0) {
             calculateRemainingTime(assignedAppointment)
         }
-        const interval = setInterval(() => {
-            calculateRemainingTime(assignedAppointment)
-            if (call.room === '') {
-                snapshot = getCallStatus()
-            }
-        }, 10000)
-        return () => {
-            snapshot()
-            clearInterval(interval)
+        calculateRemainingTime(assignedAppointment)
+        if (call.room === '') {
+            snapshot = getCallStatus()
         }
+        return () => snapshot
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [assignedAppointment])
 
@@ -256,7 +251,6 @@ const Queue = (props) => {
         <>
             <BackButton action={()=> history.push(`/`)} />
             {loading && <Loading />}
-            {guardia_advice && <Advice text={guardia_advice} />}
             {calling ?
                 <>
                     <div className='ico-calling'>
@@ -270,6 +264,7 @@ const Queue = (props) => {
                 </>
                 :
                 <>
+                    {guardia_advice && <Advice text={guardia_advice} />}
                     <DoctorDelay cuit={assignedAppointment.cuit} time={assignedAppointment.time} date={assignedAppointment.date} />
                     <Slider />
                 </>

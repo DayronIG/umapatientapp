@@ -5,6 +5,7 @@ const ref = DBConnection.storage().ref();
 
 export async function getDocumentFB(path) {
 	try {
+		console.log("Una querty document", path)
 		return (await firestore.doc(path).get()).data();
 	} catch (error) {
 		console.error(error);
@@ -13,6 +14,7 @@ export async function getDocumentFB(path) {
 
 export async function getCollectionFB(path) {
 	try {
+		console.log("Una querty collection", path)
 		const res = await firestore.collection(path).get();
 		const documents = res.docs.map((item) => item.data());
 		return documents;
@@ -32,6 +34,8 @@ export async function putFileFB(file, fileName) {
 }
 
 export async function getDocumentsByFilter(route, filters, limit = false, postFilters = false) {
+	console.log("Una querty filter")
+
 	/**
    * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
    * also take into account the fact that .where() querys are inefficient.
@@ -68,6 +72,8 @@ export async function getDocumentsByFilter(route, filters, limit = false, postFi
 }
 
 export async function snapDocumentsByFilter(route, filters, action = (data) => console.log(data),limit = false, postFilters = false) {
+	console.log("Una querty snapdocumentfilter:", route)
+
 	/**
    * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
    * also take into account the fact that .where() querys are inefficient.
