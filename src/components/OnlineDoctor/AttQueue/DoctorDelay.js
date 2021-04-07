@@ -15,7 +15,7 @@ const DoctorDelay = ({cuit, date, time}) => {
 		let interval = setInterval(() => {
             getDelayAndQueue();
         }, 350000)
-        return () => interval
+        return () => clearInterval(interval)
     }, [cuit]);
 
     const getDelayAndQueue = useCallback(async () => {

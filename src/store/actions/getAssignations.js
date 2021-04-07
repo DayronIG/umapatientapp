@@ -62,7 +62,7 @@ export function getFreeAppointments(specialty, doctors, date) {
 				.collection(yearMonth)
 				.where('date', '==', date)
 				.where('state', '==', 'FREE')
-				.limit(8000)
+				.limit(500)
 			query.get().then(function (res) {
 				res.forEach((subDoc) => {
 					const data = { ...subDoc.data(), path: subDoc.ref.path };
@@ -136,13 +136,13 @@ export async function getFreeAppointmentsCustom(date, specialty, condition) {
 				.collection(`assignations/${specialty}/${date}`)
 				.where('state', '==', 'FREE')
 				.where('cuil', '==', condition)
-				.limit(10000);
+				.limit(1000);
 		} else {
 			query = firestore
 				.collection(`assignations/${specialty}/${date}`)
 				.where('state', '==', 'FREE')
 				.where('social_work', 'array-contains-any', condition)
-				.limit(10000);
+				.limit(1000);
 		}
 		const res = await query.get();
 		res.forEach((subDoc) => {
