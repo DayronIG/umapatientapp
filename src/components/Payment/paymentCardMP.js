@@ -93,7 +93,7 @@ const PaymentCardMP = () => {
             swal({
               title: "Debe completar su email", 
               icon: "warning",
-              dangerMode: true,
+              dangerMode: false,
             })
             setLoader(false)
           } else {
