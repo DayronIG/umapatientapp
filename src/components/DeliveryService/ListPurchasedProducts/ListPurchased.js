@@ -13,7 +13,7 @@ export default function ReferredInvitation({finalAction}) {
     const dispatch = useDispatch()
 
     const getCurrentServices = () => {
-        db.firestore().collection('events/requests/delivery')
+        db.firestore(firebaseInitializeApp).collection('events/requests/delivery')
         .where('patient.uid', '==', patient?.core_id)
         .where('status', 'in', ["PREASSIGN",'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', "DONE:RESULT", 'IN_PROCESS'])
         .get()

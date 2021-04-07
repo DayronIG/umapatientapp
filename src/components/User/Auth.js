@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
-import db from "../../config/DBConnection";
+import db, {firebaseInitializeApp} from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
 import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
@@ -8,10 +8,10 @@ export const AuthContext = React.createContext()
 
 function AuthProvider({ children }) {
 	const dispatch = useDispatch()
-	const [currentUser, setCurrentUser] = useState(() => db.auth().currentUser)
+	const [currentUser, setCurrentUser] = useState(() => db.auth(firebaseInitializeApp).currentUser)
 
 	useEffect(() => {  // Get authorization changes
-		const unsubscribe = db.auth().onAuthStateChanged(setCurrentUser)
+		const unsubscribe = db.auth(firebaseInitializeApp).onAuthStateChanged(setCurrentUser)
 		dispatch({ type: 'SET_LOGED_ACTIVE', payload: currentUser })
 		if(currentUser) {
 			getInitialData(currentUser)

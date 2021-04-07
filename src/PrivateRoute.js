@@ -4,7 +4,7 @@ import { Route, withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
-import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
+import db, { askPermissionToRecieveNotifications, firebaseInitializeApp }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
 import tone from './assets/ring.mp3'
@@ -32,7 +32,7 @@ const Login = () => {
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
-    const firestore = db.firestore()
+    const firestore = db.firestore(firebaseInitializeApp)
     const history = useHistory()
     const { currentUser } = useContext(AuthContext)
     const user = useSelector(state => state.user)
@@ -143,11 +143,11 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     })
                     .catch((err) => {
                         if(err.response?.data?.message === "user not found") {
-                            db.auth().signOut()
+                            db.auth(firebaseInitializeApp).signOut()
                             console.log("Signed out")
                             // Si falla el usuario para que no quede en login eterno se lo desloguea
                         }
-                        console.log(err.response?.data);
+                        console.log(err);
                     });
                 })
         }, 1500);

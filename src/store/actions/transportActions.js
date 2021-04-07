@@ -1,13 +1,13 @@
 import store from '../configStore';
 import * as transportTypes from '../types/transportTypes';
-import firebase from '../../config/DBConnection';
+import firebase, {firebaseInitializeApp} from '../../config/DBConnection';
 import { create_traslado } from '../../config/endpoints';
 import { genTransportId } from '../../components/Utils/stringUtils';
 import Axios from 'axios';
 import { buildSheet } from '../../components/Utils/transportUtils';
 import { calculateDistance } from '../../components/Utils/mapsApiHandlers';
 
-const firestore = firebase.firestore();
+const firestore = firebase.firestore(firebaseInitializeApp);
 const { dispatch } = store;
 
 export const handleTransportService = (serviceData) => ({

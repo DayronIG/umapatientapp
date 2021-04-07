@@ -1,11 +1,10 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 
-const firestore = DBConnection.firestore();
-const ref = DBConnection.storage().ref();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
+const ref = DBConnection.storage(firebaseInitializeApp).ref();
 
 export async function getDocumentFB(path) {
 	try {
-		console.log("Una querty document", path)
 		return (await firestore.doc(path).get()).data();
 	} catch (error) {
 		console.error(error);
@@ -14,7 +13,6 @@ export async function getDocumentFB(path) {
 
 export async function getCollectionFB(path) {
 	try {
-		console.log("Una querty collection", path)
 		const res = await firestore.collection(path).get();
 		const documents = res.docs.map((item) => item.data());
 		return documents;
@@ -34,16 +32,14 @@ export async function putFileFB(file, fileName) {
 }
 
 export async function getDocumentsByFilter(route, filters, limit = false, postFilters = false) {
-	console.log("Una querty filter")
-
 	/**
-   * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
-   * also take into account the fact that .where() querys are inefficient.
-   * @param {string} url - The route of the collection.
-   * @param {array} filters -  array of filter objects like so: [
-	  {field: 'specialty', value: 'psicologia', comparator: '=='},
-	  {field: 'domain', value: 'onboarding', comparator: '=='}
-	]
+	 * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
+	 * also take into account the fact that .where() querys are inefficient.
+	 * @param {string} url - The route of the collection.
+	 * @param {array} filters -  array of filter objects like so: [
+		 {field: 'specialty', value: 'psicologia', comparator: '=='},
+		{field: 'domain', value: 'onboarding', comparator: '=='}
+		]
    */
 	let result = [];
 	try {
@@ -72,8 +68,6 @@ export async function getDocumentsByFilter(route, filters, limit = false, postFi
 }
 
 export async function snapDocumentsByFilter(route, filters, action = (data) => console.log(data),limit = false, postFilters = false) {
-	console.log("Una querty snapdocumentfilter:", route)
-
 	/**
    * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
    * also take into account the fact that .where() querys are inefficient.

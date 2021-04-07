@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
-import db from '../../config/DBConnection';
+import db , {firebaseInitializeApp} from '../../config/DBConnection';
 import Loading from '../GeneralComponents/Loading';
 import { send_user_code, node_patient } from '../../config/endpoints';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import 'react-phone-input-2/lib/bootstrap.css';
 import '../../styles/generalcomponents/Login.scss';
 
 export const SignOut = async () => {
-    await db.auth().signOut()
+    await db.auth(firebaseInitializeApp).signOut()
     return null
 }
 
@@ -84,7 +84,7 @@ const SignIn = props => {
                         pass = password.value
                     }
                 })
-            db.auth()
+            db.auth(firebaseInitializeApp)
                 .signInWithEmailAndPassword(email, pass)
                 .then(async (reg) => {
                     reg.user.updateProfile({displayName: validPhone})
@@ -109,9 +109,9 @@ const SignIn = props => {
                         swal('El código introducido no es válido o ya expiró', '', 'warning')
                         // caso ya existe el usuario y el código de ingreso es su pass, entonces lo logueo
                     } else if (err.code === 'auth/email-already-in-use') {
-                        db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
+                        db.auth(firebaseInitializeApp).setPersistence(db.auth.Auth.Persistence.LOCAL)
                             .then(() => {
-                                db.auth()
+                                db.auth(firebaseInitializeApp)
                                     .signInWithEmailAndPassword(`${validPhone}@${code}.com`, code)
                                     .then(() => history.push(`/${validPhone}`))
                             })
@@ -137,9 +137,9 @@ const SignIn = props => {
         let accessCode = localStorage.getItem('accessCode')
         // let validEmail = `${ws}@${code}.com`;
         if (accessCode && code && accessCode === code) {
-            db.auth().setPersistence(db.auth.Auth.Persistence.LOCAL)
+            db.auth(firebaseInitializeApp).setPersistence(db.auth.Auth.Persistence.LOCAL)
                 .then(() => {
-                    db.auth()
+                    db.auth(firebaseInitializeApp)
                         .signInWithEmailAndPassword(`${ws}@${code}.com`, code)
                         .then((ok) => props.history.push(`/${ws}`))
                 })

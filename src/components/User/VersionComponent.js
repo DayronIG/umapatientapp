@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clearCache from './CacheClearer';
 import { useDispatch, useSelector } from 'react-redux';
-import firebase from "../../config/DBConnection";
+import firebase, {firebaseInitializeApp} from "../../config/DBConnection";
 import Modal from '../GeneralComponents/Modal/MobileModal';
 import '../../styles/generalcomponents/VersionComponent.scss';
 export const version_number = require('../../config/version.json');
@@ -10,7 +10,7 @@ export const HiddenCacheClearer = ({ platform }) => {
     const dispatch = useDispatch() 
     const actual_version = useSelector((state) => state.front.versions);
     const [needUpdate, setNeedUpdate] = useState(false);
-    const db = 	firebase.firestore();
+    const db = 	firebase.firestore(firebaseInitializeApp);
 
     useEffect(() => {
         let unsubscribe = () => {}
@@ -26,7 +26,6 @@ export const HiddenCacheClearer = ({ platform }) => {
     }, []);
 
     useEffect(() => {
-        console.log(version_number?.patients?.replace(/\./g, ""), actual_version?.patients?.replace(/\./g, ""))
         if(version_number?.patients?.replace(/\./g, "") < actual_version?.patients?.replace(/\./g, "")) {
             setNeedUpdate(true)
         } else {

@@ -1,7 +1,7 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 
 export function uploadFileToFirebase(blob, fileName) {
-  const ref = DBConnection.storage().ref()
+  const ref = DBConnection.storage(firebaseInitializeApp).ref()
   const fileRef = ref.child(fileName)
   // This function
   // console.log('blob', blob)

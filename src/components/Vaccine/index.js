@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/vaccine/Vaccine.scss';
 import vaccineIllustration from '../../assets/vaccine/vaccine.png';
 import checkIllustration from '../../assets/vaccine/check.png';
-import db from '../../config/DBConnection';
+import db, {firebaseInitializeApp} from '../../config/DBConnection';
 import { useParams } from 'react-router-dom';
 import Loading from '../GeneralComponents/Loading';
 import { vaccine } from '../../config/endpoints';
@@ -11,7 +11,7 @@ import {BackButton} from '../GeneralComponents/Headers'
 
 const Vaccine = () => {
     const { id } = useParams();
-    const firestore = db.firestore();
+    const firestore = db.firestore(firebaseInitializeApp);
     const [modal, setModal] = useState({
         show: false,
         title: '',

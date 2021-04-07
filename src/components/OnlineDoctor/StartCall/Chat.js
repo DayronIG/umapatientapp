@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../../GeneralComponents/Loading';
 import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
-import db from "../../../config/DBConnection";
+import db, {firebaseInitializeApp} from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
 import queryString from 'query-string';
 
@@ -24,7 +24,7 @@ const Chat = (props) => {
     const [dataChat, setDataChat] = useState([])
     const [inputValue, setInputValue] = useState('')
     const chatRef = useRef()
-    const firestore = db.firestore()
+    const firestore = db.firestore(firebaseInitializeApp)
     const {activeUid} = useParams()
     const location = useLocation()
     const dependant = queryString.parse(location.search)
@@ -111,10 +111,10 @@ const Chat = (props) => {
             let compareDate = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD')
             let specialty = 'online_clinica_medica' // Temporal, luego habrá más especialidades
             try {
-                const query = await db.firestore().collection('assignations').doc(specialty).collection(currentDate)
+                const query = await db.firestore(firebaseInitializeApp).collection('assignations').doc(specialty).collection(currentDate)
                     .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
-                const bagQuery = await db.firestore().collection('assignations').doc(specialty).collection("bag")
+                const bagQuery = await db.firestore(firebaseInitializeApp).collection('assignations').doc(specialty).collection("bag")
                     .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
                 return new Promise((resolve, reject) => {

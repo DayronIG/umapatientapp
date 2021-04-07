@@ -5,7 +5,7 @@ import { mapConfig, handleApiLoaded, mapBounds, routeDrawer } from '../Utils/map
 import DeliveryResume from './DeliveryResume';
 import Marker from '../global/Marker';
 import useInterval from '../Hooks/useInterval';
-import db from "../../config/DBConnection"
+import db, {firebaseInitializeApp}  from "../../config/DBConnection"
 
 const PackageOnTheWay = ({ active }) => {
 	const [userLocation, setUserLocation] = useState({ lng: 0, lat: 0 });
@@ -15,7 +15,7 @@ const PackageOnTheWay = ({ active }) => {
 	const [mapBounder, setMapBounder] = useState(undefined);
 	const [drawRoute, setDrawRoute] = useState(undefined);
 	const [duration, setDuration] = useState(undefined);
-	const firestore = db.firestore();
+	const firestore = db.firestore(firebaseInitializeApp);
 	const dispatch = useDispatch()
 
 	function snapDeliveryLatLon(){

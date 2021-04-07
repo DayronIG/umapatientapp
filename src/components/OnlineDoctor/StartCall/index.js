@@ -7,7 +7,7 @@ import { GenericHeader } from '../../GeneralComponents/Headers';
 import StartCall from './StartCall';
 import FooterBtn from '../../GeneralComponents/FooterBtn';
 import Loading from '../../GeneralComponents/Loading';
-import db  from '../../../config/DBConnection';
+import db, {firebaseInitializeApp} from '../../../config/DBConnection';
 import '@opentok/client';
 import './polyfills';
 import '../../../styles/onlinedoctor/Call.scss';
@@ -15,7 +15,7 @@ import '../../../styles/onlinedoctor/Call.scss';
 const CallContainer = (props) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const firestore = db.firestore()
+	const firestore = db.firestore(firebaseInitializeApp)
 	const user = useSelector(state => state.user);
 	const call = useSelector((state) => state.call);
 	const {activeUid} = useParams()

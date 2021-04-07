@@ -1,6 +1,6 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import moment from 'moment-timezone';
-const firestore = DBConnection.firestore();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
 
 export const getAppointments = (apoint) => ({
 	type: 'GET_APPOINTMENTS',

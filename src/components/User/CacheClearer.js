@@ -1,8 +1,8 @@
-import db  from '../../config/DBConnection';
+import db, {firebaseInitializeApp}  from '../../config/DBConnection';
 
 
 export default async (reload = true) => {
-	await db.auth().signOut()
+	await db.auth(firebaseInitializeApp).signOut()
 	await caches.keys().then((keys) => {
 		for (let key of keys) {
 			caches.delete(key).then((res) => {

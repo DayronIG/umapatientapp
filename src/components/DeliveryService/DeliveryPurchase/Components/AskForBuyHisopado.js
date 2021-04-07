@@ -8,7 +8,7 @@ import FrequentQuestions from "./FrequentQuestions"
 import NarrowContactInfo from "./NarrowContactInfo"
 import axios from 'axios';
 import {create_delivery, config} from '../../../../config/endpoints';
-import db from "../../../../config/DBConnection";
+import db, {firebaseInitializeApp}  from "../../../../config/DBConnection";
 import { BackButton } from '../../../GeneralComponents/Headers';
 import swal from 'sweetalert';
 import umaLogo from '../../../../assets/logo_original.png'
@@ -33,7 +33,7 @@ export default function AskForBuyHisopado() {
 
     const getCurrentService = async () => {
         let deliveryInfo = []
-        await db.firestore().collection('events/requests/delivery')
+        await db.firestore(firebaseInitializeApp).collection('events/requests/delivery')
         .where('patient.uid', '==', patient.core_id)
         .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
         .get()
@@ -62,7 +62,7 @@ export default function AskForBuyHisopado() {
         setLoading(true)
         await axios.post(create_delivery, data, config)
             .then(async res => {
-                db.firestore().doc(`/events/requests/delivery/${res.data.id}`)
+                db.firestore(firebaseInitializeApp).doc(`/events/requests/delivery/${res.data.id}`)
                 .get()
                 .then(async query => {
                     // console.log(query, query.data())

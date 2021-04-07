@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from 'firebase/app';
 import axios from 'axios';
 import { node_patient } from "../../config/endpoints"
 import { GoogleButton, MicrosoftButton, EmailButton } from '../User/LoginButtons';
@@ -61,7 +61,7 @@ const EmailForm = (props) => {
         if(parseInt(user.email.split('@')[1].slice(0,6)).length < 5) {
             code = user.ws_code
         }
-        Firebase.auth()
+        Firebase.auth(firebaseInitializeApp)
             .signInWithEmailAndPassword(user.email, code)
             .then(async function(userCredential) {
                 await userCredential.user.updateEmail(email)

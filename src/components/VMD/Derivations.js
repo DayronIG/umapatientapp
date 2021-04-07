@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import db from '../../config/DBConnection';
+import db, {firebaseInitializeApp} from '../../config/DBConnection';
 import moment from 'moment-timezone';
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 // images
@@ -140,7 +140,7 @@ const Derivations = ({history}) => {
 
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(true);
-  const DB = db.firestore();
+  const DB = db.firestore(firebaseInitializeApp);
 
   const { dni } = useSelector(state => state.queries.patient);
 

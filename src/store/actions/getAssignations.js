@@ -1,9 +1,9 @@
 /* eslint-disable array-callback-return */
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
 import moment from 'moment-timezone';
-const firestore = DBConnection.firestore();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
 const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
 const yearMonth = yearAndMonth();
 

@@ -6,7 +6,7 @@ import { getBenficiaries } from '../../store/actions/firebaseQueries';
 import { FaUser } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import { SignOut } from '../User/Login';
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import BackButton from '../GeneralComponents/Backbutton';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
 import Version from '../GeneralComponents/Version';
@@ -20,7 +20,7 @@ const ProfileComponent = () => {
 	const { section } = useSelector((state) => state.front);
 	const modal = useSelector((state) => state.front.openDetails)
 	const patient = useSelector(state => state.user)
-	const db = DBConnection.firestore()
+	const db = DBConnection.firestore(firebaseInitializeApp)
 	const dispatch = useDispatch()
 	const [patientAge, setPatientAge] = useState(null)
 	const [beneficiaryAge, setBeneficiaryAge] = useState(null)

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import DinamicScreen from '../GeneralComponents/DinamicScreen';
 import Carousel from "nuka-carousel";
 import slides from '../slider-content';
@@ -18,7 +18,7 @@ import TrackingSelector from './TrackingSelector';
 
 const UmaCare = _ => {
   const dispatch = useDispatch();
-  let db = DBConnection.firestore();
+  let db = DBConnection.firestore(firebaseInitializeApp);
   const { dni, ws } = useSelector(state => state.user);
   const umacare = useSelector(state => state.umacare)
   const {loading, modal} = useSelector(state => state.front)

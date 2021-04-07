@@ -5,7 +5,7 @@ import axios from 'axios';
 import { sound_online, start_biomarker } from '../../../config/endpoints.js';
 import moment from 'moment-timezone';
 import stethoscope from '../../../assets/sthetoscop.jpeg';
-import DBConnection from '../../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../../config/DBConnection';
 import '../../../styles/onlinedoctor/Biomarkers.scss';
 
 const Sthetoscope = (props) => {
@@ -94,8 +94,7 @@ const Sthetoscope = (props) => {
     const handleFileChange = blobUrl => {
         let dt =  moment().tz("America/Argentina/Buenos_Aires").format('YYYYMMDDHHmmss')
         console.log("Uploading foto")
-        // const firestore = DBConnection.firestore(),
-        let ref  = DBConnection.storage().ref()
+        let ref  = DBConnection.storage(firebaseInitializeApp).ref()
         let fileRef = ref.child(`${patient.dni}/source/${dt}_stethoscopeAudio`)
         getFileBlob(blobUrl, file => {
             fileRef.put(file).then(snap => { console.log("Uploaded ", snap, fileRef) })

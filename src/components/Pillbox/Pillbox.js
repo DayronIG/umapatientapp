@@ -8,7 +8,7 @@ import { FaPills, FaPlus, FaMinus } from "react-icons/fa"
 import { BsClock } from "react-icons/bs"
 import { MdToday } from "react-icons/md"
 import { BackButton } from '../GeneralComponents/Headers';
-import DB from '../../config/DBConnection';
+import DB, {firebaseInitializeApp} from '../../config/DBConnection';
 import DayTimeSelector from "./Components/DayTimeSelector"
 import HoursSelector from "./Components/HoursSelector"
 import swal from 'sweetalert';
@@ -31,7 +31,7 @@ const Pillbox = props => {
     const setRecipesFromFirebase = () => {
         dispatch({type: "SET_LOADING_REMINDERS", payload: true})
         DB
-        .firestore()
+        .firestore(firebaseInitializeApp)
         .collection(`/user/${core_id}/pillbox`)
         .get()
         .then((snapshot) => {

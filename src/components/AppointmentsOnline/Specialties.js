@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
-import DB from '../../config/DBConnection';
+import DB, {firebaseInitializeApp} from '../../config/DBConnection';
 import moment from 'moment-timezone';
 import swal from 'sweetalert';
 import { Loader } from '../global/Spinner/Loaders';
 import { getDependant } from '../../store/actions/firebaseQueries';
 import { getDocumentFB } from '../Utils/firebaseUtils';
 
-const db = DB.firestore();
+const db = DB.firestore(firebaseInitializeApp);
 
 const Specialties = (props) => {
 	const dispatch = useDispatch();

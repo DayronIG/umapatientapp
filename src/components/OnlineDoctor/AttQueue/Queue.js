@@ -12,7 +12,7 @@ import { BackButton } from '../../GeneralComponents/Headers';
 import QueueActions from './QueueActions';
 import Advice from './Advice';
 import DoctorDelay from './DoctorDelay';
-import DBConnection from '../../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../../config/DBConnection';
 import Slider from './Slider';
 import Loading from '../../GeneralComponents/Loading';
 import tone from '../../../assets/ring.mp3';
@@ -21,7 +21,7 @@ import swal from 'sweetalert';
 import 'moment/locale/es';
 
 const Queue = (props) => {
-    const firestore = DBConnection.firestore();
+    const firestore = DBConnection.firestore(firebaseInitializeApp);
     const {guardia_advice} = useSelector((state) => state.front);
     const dispatch = useDispatch();
     const [assignation, setAssignation] = useState('')

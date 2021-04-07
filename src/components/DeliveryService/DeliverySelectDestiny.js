@@ -14,7 +14,7 @@ import Marker from '../global/Marker';
 import { mobility_address } from '../../config/endpoints';
 import { handleAddressValidForHisopado } from "../../store/actions/deliveryActions"
 import '../../styles/deliveryService/selectDestiny.scss';
-import db from "../../config/DBConnection";
+import db, {firebaseInitializeApp} from "../../config/DBConnection";
 
 
 const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) => {
@@ -47,7 +47,7 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
     const getCurrentService = async () => {
         if(!isModal){
 		let deliveryInfo = []
-        await db.firestore().collection('events/requests/delivery')
+        await db.firestore(firebaseInitializeApp).collection('events/requests/delivery')
         .where('patient.uid', '==', user.core_id)
         .where('status', 'in', ['FREE', 'FREE:IN_RANGE', 'FREE:FOR_OTHER',  'PREASSIGN', 'ASSIGN:DELIVERY', 'ASSIGN:ARRIVED', 'DONE:RESULT', 'IN_PROCESS'])
         .get()

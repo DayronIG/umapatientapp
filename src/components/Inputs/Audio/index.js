@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {Link} from 'react-router-dom';
 import {FaPlay, FaPause} from "react-icons/fa"
 import Sthetoscope from "./Sthetoscope";
-import { storage } from "firebase"
+import { storage, firebaseInitializeApp } from "firebase"
 import instructionsAortico from "./assets/focoaortico.jpg"
 import instructionsMitral from "./assets/focomitral.png"
 import getBlobFirebase from "../../Utils/getBlobFirebase"
@@ -59,7 +59,7 @@ export default function SthetoscopeTrigger({ finalAction, upload_url_prop, auton
     useEffect(() => {
         var imageRecognizer = `AOT`
         if(showResults){
-            storage().ref().child(upload_url_prop).listAll()
+            storage(firebaseInitializeApp).ref().child(upload_url_prop).listAll()
             .then(res => {
                 Promise.all(res.items.map(async item => {
                     await item.getDownloadURL()

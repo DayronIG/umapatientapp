@@ -3,7 +3,7 @@ import LoginIllustation from '../../../assets/illustrations/Login-Illustration.p
 import { GenericInputs, GenericButton, TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from 'firebase/app';
 import Logo from '../../../assets/logo.png';
 import '../../../styles/user/login.scss';
 
@@ -14,7 +14,7 @@ const Login = () =>  {
     const [errorData, setErrorData] = useState(false);
 
     const handleSignIn = async () => {
-        await Firebase.auth().signInWithEmailAndPassword(email, password)
+        await Firebase.auth(firebaseInitializeApp).signInWithEmailAndPassword(email, password)
             .then(()=>setErrorData(false))
             .catch(()=>setErrorData(true))
     }

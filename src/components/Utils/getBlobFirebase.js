@@ -1,7 +1,7 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 
 export default function (path) {
-  const ref = DBConnection.storage().ref()
+  const ref = DBConnection.storage(firebaseInitializeApp).ref()
   return new Promise(function (resolve, reject) {
     ref.child(path).getDownloadURL().then(function(url) {
       // `url` is the download URL for 'images/stars.jpg'

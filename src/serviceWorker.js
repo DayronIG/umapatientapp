@@ -9,6 +9,9 @@ const isLocalhost = Boolean(
     )
 );
 
+const {firebaseInitializeApp} = require("./config/DBConnection");
+
+
 export default function register(onUpdate) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -35,7 +38,7 @@ export default function register(onUpdate) {
           return /iphone|ipad|ipod|Instagram|opera|instagram/.test(userAgent)
         }
         !isIos && navigator.serviceWorker.ready.then(registration => {
-                  firebase.messaging().useServiceWorker(registration)
+                  firebase.messaging(firebaseInitializeApp).useServiceWorker(registration)
                 })
       }
     })
