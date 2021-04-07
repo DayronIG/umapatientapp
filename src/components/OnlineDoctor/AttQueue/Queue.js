@@ -90,7 +90,7 @@ const Queue = (props) => {
                 dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
             } else {
                 return history.replace(`/home`)
-            } 
+            }
         }
     }
 
@@ -219,7 +219,6 @@ const Queue = (props) => {
                 let queryUser = firestore.collection('user').doc(currentUser.uid)
                 return queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
-                    dispatch({ type: 'LOADING', payload: false })
                     if (data.call?.room && data.call?.room !== '' && data !== "geo") {
                         dispatch(
                             { 
@@ -237,11 +236,9 @@ const Queue = (props) => {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
                     }
                 })
-            } else {
-                console.log("Cargando", patient)
-                dispatch({ type: 'LOADING', payload: true })
-            }
+            } 
         } catch (err) {
+            dispatch({ type: 'LOADING', payload: true })
             dispatch({ type: 'ERROR', payload: 'FAILED QueryUser ' + err })
         }
     }, [patient, assignedAppointment])
