@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BackButton  from '../../../GeneralComponents/Backbutton';
 import { GenericInputs, GenericButton } from '../GenericComponents';
 import {useParams, useHistory} from 'react-router-dom';
-import Firebase, {firebaseInitializeApp} from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../../config/DBConnection';
 import { checkNum } from '../../../Utils/stringUtils';
 import { node_patient } from '../../../../config/endpoints';
 import {useDispatch} from 'react-redux';

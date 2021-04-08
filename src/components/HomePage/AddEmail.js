@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import MobileModal from '../GeneralComponents/Modal/MobileModal';
-import Firebase, {firebaseInitializeApp} from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../config/DBConnection';
 import axios from 'axios';
 import { node_patient } from "../../config/endpoints"
 import { GoogleButton, MicrosoftButton, EmailButton } from '../User/LoginButtons';

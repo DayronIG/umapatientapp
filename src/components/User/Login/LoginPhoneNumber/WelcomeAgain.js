@@ -5,7 +5,7 @@ import showPass from '../../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../../assets/icons/eyeopenpass.png';
 import {useParams, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import Firebase, {firebaseInitializeApp} from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../../config/DBConnection';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { node_patient } from "../../../../config/endpoints";

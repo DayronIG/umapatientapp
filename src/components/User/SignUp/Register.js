@@ -4,7 +4,7 @@ import {checkNum} from '../../Utils/stringUtils';
 import {useSelector, useDispatch} from 'react-redux';
 import { ConditionButtons, GenericInputs, Stepper, GenericButton } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
-import Firebase, {firebaseInitializeApp} from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../config/DBConnection';
 import axios from 'axios';
 import Modal from '../SignUp/Modal';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
@@ -107,7 +107,7 @@ const Register = () => {
                         })
                     }
                 });
-            }catch {
+            }catch (e) {
                 setLoading(false)
                 setEmailExists(true)
             }
