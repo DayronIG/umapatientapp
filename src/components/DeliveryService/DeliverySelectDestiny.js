@@ -69,16 +69,19 @@ const DeliverySelectDestiny = ({isModal=false, dependantIndex=0, finalAction}) =
                 if(params.zones) {
 					// eslint-disable-next-line array-callback-return
 					Object.keys(params.zones).map(zone => {
-						let coordsArrayByZone = []
-						params.zones[zone].map(coord => {
-							let coordToNumber = {
-								lat: Number(coord.lat),
-								lng: Number(coord.lng)
-							}
-							coordsArrayByZone.push(coordToNumber);
-						})
-						coordsArray.push(coordsArrayByZone)
+						if(params.active_zones.includes(zone)){
+							let coordsArrayByZone = []
+							params.zones[zone].map(coord => {
+								let coordToNumber = {
+									lat: Number(coord.lat),
+									lng: Number(coord.lng)
+								}
+								coordsArrayByZone.push(coordToNumber);
+							})
+							coordsArray.push(coordsArrayByZone)
+						}
 					})
+					
 				}
 				
 				let coveragesArray = []
