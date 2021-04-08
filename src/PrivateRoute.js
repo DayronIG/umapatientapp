@@ -41,10 +41,13 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 	const {token} = useSelector(state => state.userActive)
 
     useEffect(() => {
-        console.log("UMA")
-        if (user.ws) {
+        let subscription = () => {}
+        !localStorage.getItem('last_call_check') && localStorage.setItem('last_call_check', new Date())
+        if (user.ws && (moment().diff(new Date(localStorage.getItem('last_call_check')), 'minutes') > 5)) {
+            localStorage.setItem('last_call_check', new Date())
+            console.log("Check call")
             try {
-                let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
+                let queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data?._start_date && data._start_date !== '') {
@@ -66,15 +69,15 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '', assignation: '' } })
                     }
                 })
-                return () => {
-                    if (typeof subscription === 'function') {
-                        setNotification(false)
-                        subscription()
-                    }
-                }
             } catch (error) {
                 setNotification(false)
                 console.log(error)
+            }
+        }
+        return () => {
+            if (typeof subscription === 'function') {
+                setNotification(false)
+                subscription()
             }
         }
     }, [user, firestore, call.callRejected, rest.path])
@@ -114,6 +117,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		// now we get the current user
 		if (currentUser && currentUser.email) {
 			try {
+            if(version.patients !== localStorage.getItem('uma_version') || userToken !== localStorage.getItem('messaging_token')) {
 				let dt = moment().format('YYYY-MM-DD HH:mm:ss')
 				let device = {
 						messaging_token: userToken || '',
@@ -122,7 +126,13 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						last_login: dt,
 						uma_version: version.patients
                     }
+                localStorage.setItem('uma_version', version.patients)
+                localStorage.setItem('messaging_token', userToken)
+                console.log("UMA UPDATE")
                 await handleSubmit(device)
+            } else {
+                console.log("UMA OK")
+            }
 			} catch (err) {
 				console.log(err)
 			}
