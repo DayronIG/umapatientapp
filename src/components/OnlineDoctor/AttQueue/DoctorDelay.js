@@ -12,10 +12,10 @@ const DoctorDelay = ({cuit, date, time}) => {
 
     useEffect(() => {
         getDelayAndQueue();
-		let interval = setInterval(() => {
+		/* let interval = setInterval(() => {
             getDelayAndQueue();
         }, 350000)
-        return () => clearInterval(interval)
+        return () => clearInterval(interval) */
     }, [cuit]);
 
     const getDelayAndQueue = useCallback(async () => {
