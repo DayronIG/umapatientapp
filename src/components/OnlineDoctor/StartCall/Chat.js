@@ -12,6 +12,7 @@ import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
 import db, {firebaseInitializeApp} from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
 import queryString from 'query-string';
+import { IoMdClose } from 'react-icons/io'
 
 const Chat = (props) => {
     const dispatch = useDispatch()
@@ -187,7 +188,7 @@ const Chat = (props) => {
     return (
         <>
             <div className="chatWrapper">
-                <button onClick={() => props.visible(false)} className="closeChat">Volver</button>
+                <button onClick={() => props.visible(false)} className="closeChat"><IoMdClose /></button>
                 {dataChat.length >= 1 ? dataChat.map((content, index) =>
                     <div className="listContainer" key={index} ref={chatRef}>
                         {content.rol === 'doctor' &&
