@@ -74,22 +74,22 @@ const ModulesMenu = () => {
 								'Seguimiento COVID'
 							)}
 							{returnModule(
-								`/autonomous/${user.ws}`,
-								'autonomous',
-								iconAutodiagnostico,
-								'Auto Diagnóstico'
+								`/appointmentsonline/who?redirectConsultory=true`,
+								'my_specialist',
+								iconEspecialista,
+								'Mi especialista'
 							)}
 							{returnModule(
 								`/wellness/${user.ws}`,
 								'wellness',
 								iconEstudios,
 								'Estudios'
-							)}
+								)}
 							{returnModule(
-								`/appointmentsonline/who?redirectConsultory=true`,
-								'my_specialist',
-								iconEspecialista,
-								'Mi especialista'
+								`/autonomous/${user.ws}`,
+								'autonomous',
+								iconAutodiagnostico,
+								'Auto Diagnóstico'
 							)}
 						</div>
 					</section>
