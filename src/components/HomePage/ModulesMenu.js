@@ -94,7 +94,6 @@ const ModulesMenu = () => {
 						</div>
 					</section>
 					<EventsHistory />
-					<UmaCareHome />
 					{plan?.translation && <TrasladosHome />}
 				</>
 			) : (

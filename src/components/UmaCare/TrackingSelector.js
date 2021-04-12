@@ -20,7 +20,7 @@ const TrackingSelector = () => {
     return (
         <div className="trackingSelector__container">
             <div className="trackingSelector__title">
-                <h4>Ver todos mis trackings</h4>
+                <h4>Ver todos mis seguimientos</h4>
                 {!tracking ? 
                 <MdMenu {...iconProperties} /> :
                 <MdExpandLess {...iconProperties} /> 

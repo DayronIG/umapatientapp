@@ -1,21 +1,18 @@
 import moment from 'moment'
 import axios from 'axios'
-import { config, umacare_tracking } from '../../config/endpoints'
+import { config, umacare } from '../../config/endpoints'
 
-export const activateUmacareTraking = (uid, from, to) => {
-    return dispatch => {
-        const trakingId = `${uid}_${moment().format('YYYYMMDDHHmm')}`  
-        const data = {
-            id: trakingId,
-            from,
-            to
-        }      
-        axios.post(`${umacare_tracking}/${trakingId}`, data, config)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+export const activateUmacareTraking = async (uid) => {
+    const from = moment().format('YYYY-MM-DD')
+    const to = moment().add(9, 'days').format('YYYY-MM-DD')
+    const mr = {
+        mr_diagnostico: 'Seguimiento COVID'
     }
+    const data = {
+        id: uid,
+        from,
+        to,
+        mr
+    }      
+    await axios.post(`${umacare}/create`, data, config)           
 }

@@ -2,15 +2,16 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { AiFillReconciliation } from 'react-icons/ai';
-import '../../styles/generalcomponents/AccessDenied.scss';
-import { useDispatch } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { activateUmacareTraking } from '../../store/actions/umaCareActions';
 import ContinueButton from '../GeneralComponents/ContinueButton';
+import '../../styles/generalcomponents/AccessDenied.scss';
 
 const NoTracking = (props) => {
-	const dispatch = useDispatch()
-	const activeHandler = () => {
-		dispatch(activateUmacareTraking('xoxNie7wG7USMiMHPXc19OC0FLe2', "2020-11-14", "2020-11-18"))
+	const user = useSelector(state => state.user)
+
+	const activeHandler = async () => {
+		await activateUmacareTraking(user.id)
 	}
 
 	return (
@@ -18,7 +19,7 @@ const NoTracking = (props) => {
 			<div className='accessDenied'>
 				<div className='accessDenied__container'>
 					<span className='accessDenied__container--icon'>
-            <AiFillReconciliation />
+            			<AiFillReconciliation />
 					</span>
 				</div>
 				<div className='accessDenied__container'>
@@ -30,9 +31,9 @@ const NoTracking = (props) => {
 					</p>
 				</div>
 				<div className="buttonActionContainer">
-					<ContinueButton callback={activeHandler}>
+					<button onClick={activeHandler}>
 						Activar seguimiento
-					</ContinueButton>
+					</button>
 				</div>
 			</div>
 			<FooterBtn mode='single' text='Volver' callback={() => props.history.push('/home')} />
