@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { OTSession, OTPublisher, OTStreams, OTSubscriber, preloadScript } from 'opentok-react';
 import Chat from './Chat';
+import { IoIosChatbubbles } from 'react-icons/io'
 
 const StartCall = (props) => {
 	const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const StartCall = (props) => {
 	const [error, setError] = useState(false);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
+	const [showChat, setShowChat] = useState(false);
 
 
 	const sessionEventHandlers = {
@@ -110,8 +112,12 @@ const StartCall = (props) => {
 
 	return (
 		<>
-			{!!error ? 
-			<Chat />: 
+			{
+				!showChat && <button className="bubbleChat" onClick={() => setShowChat(true)}><IoIosChatbubbles /></button>
+			}
+			{
+				showChat && <Chat visible={(v) => setShowChat(v)} />
+			}
 			<OTSession
 				apiKey={'46424032'}
 				sessionId={props.sala}
@@ -153,7 +159,6 @@ const StartCall = (props) => {
 					</div>
 				</>
 			</OTSession>
-			}
 		</>
 	);
 };
