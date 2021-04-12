@@ -5,7 +5,7 @@ import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import store from "./store/configStore";
 import App from "./App";
-import serviceWorker from "./serviceWorker";
+import serviceWorker from "./service-worker";
 import AuthProvider from "./components/User/Auth";
 import DBConnection, { askPermissionToRecieveNotifications } from "./config/DBConnection"
 import isIos from './components/Utils/isIos';

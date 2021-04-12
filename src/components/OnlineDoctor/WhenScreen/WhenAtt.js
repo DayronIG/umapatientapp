@@ -34,6 +34,10 @@ const WhenScreen = (props) => {
     const params = queryString.parse(location.search)
 
 	useEffect(() => {
+		dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: {}})
+	}, [])
+
+	useEffect(() => {
 		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
 			dispatch(getDependant(currentUser.uid, activeUid))
 		}

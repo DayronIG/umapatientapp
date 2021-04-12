@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-restricted-globals
+const ignored = self.__WB_MANIFEST;
+
 /* eslint-disable no-undef */
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -10,7 +13,6 @@ const isLocalhost = Boolean(
 );
 
 const {firebaseInitializeApp} = require("./config/DBConnection");
-
 
 export default function register(onUpdate) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
