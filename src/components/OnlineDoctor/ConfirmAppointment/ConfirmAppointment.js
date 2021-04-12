@@ -19,7 +19,10 @@ const ConfirmAppointment = () => {
 
     const _handleConfirm = async (e) => {
         try {
-            const appointment = await getAppointmentByUid(uid || currentUser.uid, 'bag')
+            let validuid = uid || currentUser.uid
+            console.log(uid, currentUser)
+            const appointment = await getAppointmentByUid(validuid, 'bag')
+            console.log(appointment)
             if(!appointment) {
                 swal("No se pudo confirmar", "Este turno ya fue confirmado, cancelado o finalizado", "warning")
                 history.push('/home')

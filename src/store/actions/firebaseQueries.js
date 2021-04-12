@@ -357,7 +357,6 @@ export function getVoucherById(user, aid) {
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
 export function getAppointmentByUid(uid, collectionName, specialty = 'online_clinica_medica') {
-	console.log(uid, collectionName, specialty)
 	if (uid !== '') {
 		let appointments = [];
 		let currentDate = moment(new Date())
@@ -372,6 +371,7 @@ export function getAppointmentByUid(uid, collectionName, specialty = 'online_cli
 			.collection(collectionName || currentDate)
 			.where('patient.uid', '==', uid)
 			.where('state', '==', 'ASSIGN');
+			console.log("Promesa")
 		return new Promise((resolve, reject) => {
 			query
 				.get()
@@ -383,10 +383,9 @@ export function getAppointmentByUid(uid, collectionName, specialty = 'online_cli
 							id: subDoc.ref.id,
 							path: subDoc.ref.path
 						};
+						console.log(data)
 						// I compare the date just in case there is another appointment in the past days
-						if (data.date >= compareDate) {
-							appointments.push(data);
-						}
+						appointments.push(data);
 					});
 					return resolve(appointments[0]);
 				})

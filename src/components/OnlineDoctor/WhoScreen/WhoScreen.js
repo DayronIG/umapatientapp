@@ -13,6 +13,7 @@ import { findAllAssignedAppointment } from '../../Utils/appointmentsUtils';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import 'moment/locale/es';
 import '../../../styles/whoScreen.scss';
+import swal from 'sweetalert';
 
 const WhenScreen = (props) => {
 	const dispatch = useDispatch();
@@ -55,7 +56,21 @@ const WhenScreen = (props) => {
 		return () => clearTimeout(unmountTimeout)
 	}, [user, userDni]);
 
-	useEffect(() => {
+	useEffect(() => {	
+		if(!userDataToJson.corporate_norm || userDataToJson.corporate_norm.includes('SIN OBRA SOCIAL')){
+			swal({
+				title: 'Espere',
+				text: 'Su cobertura de salud no cuenta con este servicio disponible. Próximamente podrás suscribirte a nuestros planes de manera particular, por el momento podemos ofrecerte realizar una consulta de autodiagnóstico.',
+				icon: 'info',
+				buttons: true
+			}).then((res) => {
+					if(res){
+						props.history.replace(`/autonomous/${userDataToJson.dni}`)
+					} else {
+						props.history.replace('/')
+					}
+				})
+		}
 		if (user.dni) {
 			getUserParentsFirebase(user.core_id)
 				.then(function (userParents) {
