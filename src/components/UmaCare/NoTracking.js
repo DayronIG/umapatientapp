@@ -3,8 +3,16 @@ import { withRouter } from 'react-router-dom';
 import FooterBtn from '../GeneralComponents/FooterBtn';
 import { AiFillReconciliation } from 'react-icons/ai';
 import '../../styles/generalcomponents/AccessDenied.scss';
+import { useDispatch } from 'react-redux';
+import { activateUmacareTraking } from '../../store/actions/umaCareActions';
+import ContinueButton from '../GeneralComponents/ContinueButton';
 
 const NoTracking = (props) => {
+	const dispatch = useDispatch()
+	const activeHandler = () => {
+		dispatch(activateUmacareTraking('xoxNie7wG7USMiMHPXc19OC0FLe2', "2020-11-14", "2020-11-18"))
+	}
+
 	return (
 		<>
 			<div className='accessDenied'>
@@ -20,6 +28,11 @@ const NoTracking = (props) => {
 					<p className='accessDenied__container--text'>
 						Actualmente no tienes ningún seguimiento activo
 					</p>
+				</div>
+				<div className="buttonActionContainer">
+					<ContinueButton callback={activeHandler}>
+						Activar seguimiento
+					</ContinueButton>
 				</div>
 			</div>
 			<FooterBtn mode='single' text='Volver' callback={() => props.history.push('/home')} />

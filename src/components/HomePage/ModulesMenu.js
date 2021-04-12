@@ -14,6 +14,7 @@ import iconAutodiagnostico from '../../assets/icons/icon-autodiagnostico.svg';
 import iconEspecialista from '../../assets/icons/icon-especialista.svg';
 import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
+import iconUmaCare from '../../assets/icons/icon-umaCare.svg'
 import '../../styles/generalcomponents/ModulesMenu.scss';
 
 const ModulesMenu = () => {
@@ -36,13 +37,15 @@ const ModulesMenu = () => {
 	const returnModule = (link, field, icon, text) => {
 		return (
 			<ValidateAction action='redirect' field={field}>
-				<div className='module-button'>
-					<Link to={link} className='module-name'>
-							<div className='module-ico'>
-								<img src={icon} alt={text} />
-							</div>
-						<p className='module-title'>{text}</p>
-					</Link>
+				<div className='home-module'>
+					<div className='module-button'>
+						<Link to={link} className='module-name'>
+								<div className='module-ico'>
+									<img src={icon} alt={text} />
+								</div>
+						</Link>
+					</div>
+					<p className='module-title'>{text}</p>
 				</div>
 			</ValidateAction>
 		);
@@ -63,6 +66,12 @@ const ModulesMenu = () => {
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
+							)}
+							{returnModule(
+								`/umacare`,
+								'umacare',
+								iconUmaCare,
+								'Seguimiento COVID'
 							)}
 							{returnModule(
 								`/autonomous/${user.ws}`,
