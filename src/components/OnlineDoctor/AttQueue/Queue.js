@@ -162,7 +162,7 @@ const Queue = (props) => {
 
     // Effect to listen call
     useEffect(() => {
-        if (call.room !== '') setCalling(true)
+        if (call.room && call.room !== '') setCalling(true)
         else setCalling(false)
     }, [call])
 
