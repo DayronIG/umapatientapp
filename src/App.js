@@ -91,6 +91,7 @@ import Support from './views/Support'
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
 import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
+import Checkout from './components/Payment/Checkout'
 
 function App(props) {
 	return (
@@ -186,6 +187,8 @@ function App(props) {
 				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* SUPPORT */}
 				<PrivateRoute exact path='/support/:section?' component={Support} />
+				{/* PAYMENT */}
+				<Route exact path='/checkout' component={Checkout} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

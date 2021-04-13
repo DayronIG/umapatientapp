@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSelector,useDispatch } from 'react-redux';
 import Loading from '../GeneralComponents/Loading';
 import { BackButton } from '../GeneralComponents/Headers';
-import '../../styles/payments/checkout.scss'
+import '../../styles/payments/Checkout.scss'
 
 const Checkout = () => {
     const dispatch = useDispatch();

@@ -88,8 +88,9 @@ const GuardCardComp = (props) => {
 	const { unique_doctors } = useSelector((state) => state.front);
 
 	const selectGuard = () => {
-		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		// dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
+		// props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		props.history.replace(`/checkout`);
 	};
 	
 	const getTime = () => {
