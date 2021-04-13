@@ -187,8 +187,8 @@ function App(props) {
 				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* SUPPORT */}
 				<PrivateRoute exact path='/support/:section?' component={Support} />
-				{/* PAYMENT */}
-				<Route exact path='/checkout' component={Checkout} />
+				{/* PAYMENTS */}
+				<PrivateRoute exact path='/checkout' component={Checkout} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}
