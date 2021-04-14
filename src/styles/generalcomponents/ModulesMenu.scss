@@ -4,33 +4,6 @@
 /* MODULES CONTAINER */
 .modules-container {
    position: relative;
-
-   // &::before{
-   //    content: '';
-   //      width: 8px;
-   //      height: 90%;
-   //      border-radius: 7px;
-   //      display: block;
-   //      position: absolute;
-   //      left: 4px;
-   //      bottom: 5%;
-   //      z-index: -1;
-   //      background: $uma-secondary;
-   // }
-
-   // &::after{
-   //    content: '';
-   //      width: 8px;
-   //      height: 90%;
-   //      border-radius: 7px;
-   //      display: block;
-   //      position: absolute;
-   //      right: 4px;
-   //      bottom: 5%;
-   //      z-index: -1;
-   //      background: $uma-secondary;
-   // }
-
   @include wrapper(
       $margin: 20px auto,
       $width: 95%, 
@@ -41,17 +14,17 @@
   .card{
       width: 100%;
       background-color: transparent;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      flex-wrap: wrap;
       border: none;
       overflow-x: hidden;
       border-radius: 6px;
-      // box-shadow: 0px 4px 24px #E6E6E6;
-
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      flex-direction: row;
       .home-module{
-         max-width: 100px;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
       &.length3 .module-button {
 				width: 33.33%;
 				// border: 1px solid #E6E6E6;
@@ -98,7 +71,6 @@
       }
 
     .module-button {
-      padding: 1.5rem;
       margin-left: 3vw;
       margin-right: 3vw;
       background-color: $white-color;
@@ -106,8 +78,9 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      border-radius: 70px;
+      border-radius: 50%;
       height: 85px;
+      width: 85px;
 
       .module-name {
          color: $text-color;
@@ -162,15 +135,11 @@
    .module-title {
       // font-size: 14px;
       // line-height: 1.5;
-      margin-bottom: 1vh;
-      padding: 0;
       font-weight: bold;
-      font-size: 12px;
-      line-height: 16px;
       text-align: center;
       color: #686464;
+      max-width: 110px;
    }
-
 }
 
    .lang-text {
