@@ -30,7 +30,9 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
       qa1: answers || '',
       qa_next: [`${qa_next.pregunta} .${resx}`],
       qa_acumulado: [...qa_acumulado.last, `${qa_next.pregunta} .${resx}`],
-      key: qa_next.key ? qa_next.key : '0'
+      key: qa_next.key ? qa_next.key : '0',
+      uid: patient.core_id,
+      uid_dependant: false
     }, {
       headers: {
         'Content-Type': 'application/json',

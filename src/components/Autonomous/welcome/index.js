@@ -41,7 +41,9 @@ export default (props)=>{
             dob: patient.dob || '',
             motivo_de_consulta: firstAnswer,
             lat: '',
-            lon: ''
+            lon: '',
+            uid: patient.core_id,
+            uid_dependant: false
         },{
             headers:{ 
                 'Content-Type': 'application/json',

@@ -74,6 +74,12 @@ const ModulesMenu = () => {
 								'Seguimiento COVID'
 							)}
 							{returnModule(
+								`/autonomous/${user.ws}`,
+								'autonomous',
+								iconAutodiagnostico,
+								'Diagnóstico asistido'
+							)}
+							{returnModule(
 								`/appointmentsonline/who?redirectConsultory=true`,
 								'my_specialist',
 								iconEspecialista,
@@ -85,12 +91,7 @@ const ModulesMenu = () => {
 								iconEstudios,
 								'Estudios'
 								)}
-							{returnModule(
-								`/autonomous/${user.ws}`,
-								'autonomous',
-								iconAutodiagnostico,
-								'Auto Diagnóstico'
-							)}
+							
 						</div>
 					</section>
 					<EventsHistory />

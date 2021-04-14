@@ -82,7 +82,9 @@ export default ({ questions }) => {
       lon: '',
       qa1: Object.values({ ...firstStepEnd, [actualQuestion.position]: `${actualQuestion.content['0']} .${resx}` }),
       qa_next: [],
-      qa_acumulado: []
+      qa_acumulado: [],
+      uid: patient.core_id,
+      uid_dependant: false
     }
     axios.post(URL, data, {
       headers: {
