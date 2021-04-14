@@ -43,33 +43,35 @@ const SelectedTracking = ({setTextDetail}) => {
 
     const getStep = (actual) => {
         let { resp } = actual
-        let [ hisopado, result, cuarentena ] = actual?.status?.split('///');
-        if ( result === 'idky' || result === undefined) result = '';
-        setResult(result)
-        if(hisopado === 'yes') {
-            setPercent(35);
-        } else if (result === 'positive' || result === 'negative') {
-            setPercent(70) 
-        } else if (cuarentena) {
-            setPercent(71) 
-        } else if(actual.active !== 'ok') {
-            setPercent(100);
-        }
-        let keys = Object.keys(resp);
-        for (let i = keys.length; i >= 0; i--) {
-          if(resp[keys[i]] && resp[keys[i]].faces !== "") {
-            let face = resp[keys[i]].faces   
-            if (face === "better") {
-              setColor('green')
-            } else if (face === "equal") {
-              setColor('yellow')
-            } else if (face === "worst") {
-              setColor('red')
-            } 
-            break
-          } else {
-            setColor('gray')
-          }
+        if(actual.status) {
+            let [ hisopado, result, cuarentena ] = actual?.status?.split('///');
+            if ( result === 'idky' || result === undefined) result = '';
+            setResult(result)
+            if(hisopado === 'yes') {
+                setPercent(35);
+            } else if (result === 'positive' || result === 'negative') {
+                setPercent(70) 
+            } else if (cuarentena) {
+                setPercent(71) 
+            } else if(actual.active !== 'ok') {
+                setPercent(100);
+            }
+            let keys = Object.keys(resp);
+            for (let i = keys.length; i >= 0; i--) {
+              if(resp[keys[i]] && resp[keys[i]].faces !== "") {
+                let face = resp[keys[i]].faces   
+                if (face === "better") {
+                  setColor('green')
+                } else if (face === "equal") {
+                  setColor('yellow')
+                } else if (face === "worst") {
+                  setColor('red')
+                } 
+                break
+              } else {
+                setColor('gray')
+              }
+            }
         }
     }
 
