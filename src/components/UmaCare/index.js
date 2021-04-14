@@ -19,11 +19,10 @@ import TrackingSelector from './TrackingSelector';
 const UmaCare = _ => {
   const dispatch = useDispatch();
   let db = DBConnection.firestore(firebaseInitializeApp);
-  const { dni, ws } = useSelector(state => state.user);
+  const { ws } = useSelector(state => state.user);
   const umacare = useSelector(state => state.umacare)
   const {loading, modal} = useSelector(state => state.front)
   const [textDetail, setTextDetail] = useState('');
-  const [exists, setExists] = useState(true);
 
   const carouselProperties = {
     autoplay: true,
@@ -37,10 +36,10 @@ const UmaCare = _ => {
 
 
   useEffect(() => {
-    if(dni) {
+    dispatch({type: 'LOADING', payload: true})
+    if(ws) {
       db.collection('events/labs/umacare').where("patient_ws", "==", ws)
       .onSnapshot(data => {
-        setExists(!data.empty);
         let activeTracking = [], inactiveTracking = [], allTrackings = []
         data.forEach((el) => {
           let data = { ...el.data(), id: el.ref.id }
@@ -52,22 +51,24 @@ const UmaCare = _ => {
         })
         allTrackings = activeTracking.concat(inactiveTracking)
         dispatch({type: 'UMACARE_SET_TRACKINGS', payload: {activeTracking, inactiveTracking, allTrackings}})
+        dispatch({type: 'LOADING', payload: false})
       }, (err) => console.error(err))
     }
-  }, [dni])
+  }, [ws])
 
 
   return (
     <>
       { loading && <CustomUmaLoader  /> }
-      {modal && 
-            <Modal title="Información" callback={() => {
-                dispatch({ type: "CLOSE_MODAL" });
-              }}>
-              <p className="text-center">{textDetail}</p>
-            </Modal>}
-      {!exists ? <NoTracking /> 
-        :
+      {modal && (
+          <Modal title="Información" callback={() => {
+              dispatch({ type: "CLOSE_MODAL" });
+            }}>
+            <p className="text-center">{textDetail}</p>
+          </Modal>
+      )}
+      {!loading && umacare.allTrackings && umacare.allTrackings.length === 0 && <NoTracking />}
+      {!loading && umacare.allTrackings && umacare.allTrackings.length > 0 && (
         <DinamicScreen>
           <TrackingSelector />
           {umacare.allTrackings[umacare.selectedTracking]
@@ -82,7 +83,7 @@ const UmaCare = _ => {
           </div>
           <Link className="back-home" to="/">Volver al Home</Link>
         </DinamicScreen>
-      }
+      )}
     </>
   )
 }
