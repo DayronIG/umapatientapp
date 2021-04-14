@@ -86,11 +86,11 @@ const SelectedTracking = ({setTextDetail}) => {
             </div>
             {umacare.allTrackings[umacare.selectedTracking]?.active === "ok" &&
             <div className="tracking__status">
-                <h3>Actualizar mi estado</h3>
-                <p>Realiza el test diario para actualizar tu estado de salud</p>
+                <h3>Realizar reporte diario</h3>
+                <p>Realiza el test diario para actualizar tu estado de salud y completar el seguimiento.</p>
                 <button type="button"
                         onClick={() => goToUmacare()}>
-                    Realizar test
+                    Comenzar
                 </button>
             </div>}
 

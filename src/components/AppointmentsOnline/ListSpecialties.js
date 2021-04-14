@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
+import Switch from 'react-switch';
 import queryString from 'query-string';
 import { getMedicalRecord } from '../../store/actions/firebaseQueries';
 import { GenericHeader, BackButton } from '../GeneralComponents/Headers';
@@ -45,6 +46,15 @@ const ListSpecialties = (props) => {
 			<div className='listSpecialties'>
 				<BackButton />
 				<div className='listSpecialties__container'>
+					<h6 className='listSpecialties__container--title'>Seleccionar modalidad</h6>
+{/* 					<div className="listSpecialties__type">
+						<span>Online</span>
+						<Switch type='checkbox'
+											id='medicalVisit'
+											name='medicalVisit'
+											onChange={() => console.log("Si")} />
+						<span>Presencial</span>
+					</div> */}
 					<h6 className='listSpecialties__container--title'>Seleccionar especialidad</h6>
 					<Specialties />
 				</div>

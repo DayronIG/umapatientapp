@@ -5,7 +5,7 @@ import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 
 const DoctorDelay = ({cuit, date, time}) => {
     const appointment = useSelector(state=> state.queries.assignedAppointment)
-    const [active, setActive] = useState(1)
+    const [active, setActive] = useState(10)
     const [queue, setQueue] = useState(0);
     const [delay, setDelay] = useState(0);
     const [measureOfTime, setMeasureOfTime] = useState('minutos')
@@ -43,7 +43,7 @@ const DoctorDelay = ({cuit, date, time}) => {
             ]
             let userQueue = await getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
-                    setQueue(res.length || 1)
+                    setQueue(res.length || 0)
                     return res.length
                 })
                 .catch(err => setQueue(0))

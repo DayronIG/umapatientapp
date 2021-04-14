@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, useParams, useLocation } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,7 @@ import RecipeInput from './RecipeInput'
 
 const SelectReason = (props) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const questionsList = useSelector((state) => state.queries.questions);
 	const symptomsList = useSelector((state) => state.queries.symptoms);
 	const selectedSymptoms = useSelector((state) => state.assessment.selectedSymptoms);
@@ -69,7 +70,7 @@ const SelectReason = (props) => {
 	function redirect() {
 		//dispatch({ type: 'SET_OTHER_SYMPTOMS', payload: otherSymptoms });
 		if (!selectedSymptoms.includes(otherSymptoms)) dispatch({ type: 'SET_SYMPTOM', payload: otherSymptoms });
-		props.history.replace(`/onlinedoctor/questions/${activeUid}?dependant=${params.dependant}`);
+		history.replace(`/onlinedoctor/questions/${activeUid}?dependant=${params.dependant}`);
 	}
 	
 	function addOtherSympton(e){
@@ -107,6 +108,13 @@ const SelectReason = (props) => {
 				</div>
 			</div>
 			<div className='symptom-list-container'>
+					<div
+						className='symptom-list d-flex justify-content-between'
+						key={"Seguimiento de Covid"}
+						onClick={() => history.push('/umacare')}>
+						<span className='symptom-text'>Seguimiento de Covid</span>
+						<FontAwesomeIcon icon={faPlusCircle} className='symptom-addicon' />
+					</div>
 				{symptomsList.map((symptom) => (
 					<div
 						className='symptom-list d-flex justify-content-between'
@@ -135,4 +143,4 @@ const SelectReason = (props) => {
 	);
 };
 
-export default withRouter(SelectReason);
+export default SelectReason;
