@@ -74,7 +74,6 @@ const SelectedTracking = ({setTextDetail}) => {
     }
 
     const goToUmacare = () => {
-        console.log(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`)
         history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`)
     }
 
