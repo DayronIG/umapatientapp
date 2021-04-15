@@ -188,6 +188,27 @@
 		}
 	}
 }
+.buttonActionContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	bottom: 35px;
+	button{
+		background: #0A6DD7;
+		border-radius: 5px;
+		color: #ffffff;
+		font-family: Nunito;
+		font-size: 18px;
+		font-weight: 800;
+		width: 90%;
+		margin-top: 20px;
+		height: 47px;
+		border: none;
+		&:focus{
+			outline: none;
+		}
+	}
+}
 
 .back-home {
 	padding: 15px;

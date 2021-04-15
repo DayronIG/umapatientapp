@@ -15,14 +15,16 @@ import "react-step-progress-bar/styles.css";
 import "../../styles/umaCare/umaCare.scss";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import TrackingSelector from './TrackingSelector';
+import ContinueButton from '../GeneralComponents/ContinueButton';
 
 const UmaCare = _ => {
   const dispatch = useDispatch();
   let db = DBConnection.firestore(firebaseInitializeApp);
   const { ws } = useSelector(state => state.user);
   const umacare = useSelector(state => state.umacare)
-  const {loading, modal} = useSelector(state => state.front)
+  const {modal} = useSelector(state => state.front)
   const [textDetail, setTextDetail] = useState('');
+  const [loading, setLoading] = useState(true)
 
   const carouselProperties = {
     autoplay: true,
@@ -36,7 +38,6 @@ const UmaCare = _ => {
 
 
   useEffect(() => {
-    dispatch({type: 'LOADING', payload: true})
     if(ws) {
       db.collection('events/labs/umacare').where("patient_ws", "==", ws)
       .onSnapshot(data => {
@@ -51,11 +52,10 @@ const UmaCare = _ => {
         })
         allTrackings = activeTracking.concat(inactiveTracking)
         dispatch({type: 'UMACARE_SET_TRACKINGS', payload: {activeTracking, inactiveTracking, allTrackings}})
-        dispatch({type: 'LOADING', payload: false})
+        setLoading(false)
       }, (err) => console.error(err))
     }
   }, [ws])
-
 
   return (
     <>
@@ -80,7 +80,7 @@ const UmaCare = _ => {
                 { slides.map((slide, i) => <SlideItem slide={slide} key={i} />) }
               </Carousel>
             </div>
-          </div>
+          </div>          
           <Link className="back-home" to="/">Volver al Home</Link>
         </DinamicScreen>
       )}
