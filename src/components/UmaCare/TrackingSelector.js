@@ -7,7 +7,7 @@ import moment from 'moment-timezone';
 const TrackingSelector = () => {
     const dispatch = useDispatch()
     const [tracking, setTracking] = useState(false);
-    const umacare = useSelector(state => state.umacare)
+    const allTrackings = useSelector(state => state.umacare.allTrackings)
     const iconProperties = {
         onClick: () => setTracking(!tracking),
         'size':"1.5rem",
@@ -28,12 +28,11 @@ const TrackingSelector = () => {
             </div>
             <div className="collapse mt-2" id="collapseExample">
                 <div className="trackingSelector__list">
-                {umacare.allTrackings.map((el, index) => {
+                {allTrackings.map((el, index) => {
                     return (
                     <div className="event" key={el.id} 
                         onClick={() => {
                             dispatch({type: 'UMACARE_SET_ACTIVE', payload: index})
-                            setTracking(!tracking)
                             }}>
                         <FaUserMd size="1.2rem" />
                         <span>{el.mr_diagnostico}</span>

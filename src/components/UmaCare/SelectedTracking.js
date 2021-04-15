@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { CovidSteps } from './CovidSteps';
 import Steper from './Steper';
+import { activateUmacareTraking } from '../../store/actions/umaCareActions';
 import moment from 'moment-timezone';
 
 const SelectedTracking = ({setTextDetail}) => {
     const history = useHistory()
+    const dispatch = useDispatch()
     const patient = useSelector(state=> state.user)
     const umacare = useSelector(state=> state.umacare)
     const [color, setColor] = useState('');
@@ -43,11 +45,13 @@ const SelectedTracking = ({setTextDetail}) => {
 
     const getStep = (actual) => {
         let { resp } = actual
-        if(actual.status) {
+        if(actual.status !== undefined) {
             let [ hisopado, result, cuarentena ] = actual?.status?.split('///');
             if ( result === 'idky' || result === undefined) result = '';
             setResult(result)
-            if(hisopado === 'yes') {
+            if(actual.status === '' || actual.status === 'no'){
+                setPercent(0)
+            } else if(hisopado === 'yes') {
                 setPercent(35);
             } else if (result === 'positive' || result === 'negative') {
                 setPercent(70) 
@@ -75,26 +79,38 @@ const SelectedTracking = ({setTextDetail}) => {
         }
     }
 
+    const activateHandler = async () => {
+        await activateUmacareTraking(patient.id)
+        dispatch({type: 'UMACARE_SET_ACTIVE', payload: 0})
+    }
+
     const goToUmacare = () => {
         history.push(`/${patient.ws}/umacare/${moment().format('YYYY-MM-DD')}/${umacare.allTrackings[umacare.selectedTracking]?.id}`)
     }
-
     return(
         <div className="tracking__container">
             <Steper percent={percent} color={color} result={result} title={steperTitle} />
             <div className={`tracking__detail ${color ? color : 'gray'}`}>
                 <CovidSteps percent={percent}
                     setTextDetail={(text) => setTextDetail(text)} result={result} />
-            </div>
+                {umacare.activeTracking.length === 0 && (
+                    <div className="buttonActionContainer">
+                        <button onClick={activateHandler} >
+                            Activar nuevo seguimiento
+                        </button>
+                    </div>
+                )}
+            </div>            
             {umacare.allTrackings[umacare.selectedTracking]?.active === "ok" &&
-            <div className="tracking__status">
-                <h3>Realizar reporte diario</h3>
-                <p>Realiza el test diario para actualizar tu estado de salud y completar el seguimiento.</p>
-                <button type="button"
-                        onClick={() => goToUmacare()}>
-                    Comenzar
-                </button>
-            </div>}
+                <div className="tracking__status">
+                    <h3>Realizar reporte diario</h3>
+                    <p>Realiza el test diario para actualizar tu estado de salud y completar el seguimiento.</p>
+                    <button type="button"
+                            onClick={() => goToUmacare()}>
+                        Comenzar
+                    </button>
+                </div>
+            }
 
       </div>
     )
