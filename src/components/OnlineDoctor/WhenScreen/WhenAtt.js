@@ -2,8 +2,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useParams, useLocation } from 'react-router-dom';
+import db , {firebaseInitializeApp} from '../../../config/DBConnection';
 import queryString from 'query-string'
 import moment from 'moment';
+import axios from 'axios';
+import {NODE_SERVER} from '../../../config/endpoints'
 import * as DetectRTC from 'detectrtc';
 import Comments from './Comments.js';
 import { Loader } from '../../GeneralComponents/Loading';
@@ -29,16 +32,36 @@ const WhenScreen = (props) => {
 	const [queue, setQueue] = useState("1")
 	const [pediatric, setPediatric] = useState(false);
 	const dispatch = useDispatch();
-	const { activeUid } = useParams()
+	const { activeUid, aid } = useParams()
 	const location = useLocation()
     const params = queryString.parse(location.search)
+	
+	useEffect(() => {
+		if(aid) {
+			loginExternal()
+		}
+	}, [])
+
+	const loginExternal = useCallback(async () => {
+		dispatch({ type: 'LOADING', payload: true })
+		await axios.post(`${NODE_SERVER}/uma/sendCode`, { uid: activeUid }, { headers: { 'Content-Type': 'application/json' } }).then(res => {
+			// console.log(`${res.data.ws}@${res.data.code}.com`)
+			db.auth(firebaseInitializeApp)
+				.signInWithEmailAndPassword(`${res.data.ws}@${res.data.code}.com`, res.data.code)
+				.then((reg) => {
+					console.log("Loged in")
+				})
+				.catch(err => console.log(err))
+			})
+		dispatch({ type: 'LOADING', payload: false })
+	}, [activeUid])
 
 	useEffect(() => {
 		dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: {}})
 	}, [])
 
 	useEffect(() => {
-		if (activeUid && currentUser && activeUid !== currentUser?.uid) {
+		if (activeUid && currentUser && activeUid !== currentUser?.uid && !aid) {
 			dispatch(getDependant(currentUser.uid, activeUid))
 		}
 	}, [currentUser, activeUid]);
@@ -71,7 +94,7 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		if(user) {
+		if(user && !aid) {
 			let test = user.context === "temp" ? true : false
 			const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 			setPediatric(type);
@@ -167,7 +190,7 @@ const WhenScreen = (props) => {
 								))}
 						</div>
 					)}
-					{action === 'Loading' && (
+					{action === 'Loading' && false && (
 						<div className='when__loading'>
 							<Loader />
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>
