@@ -1,7 +1,7 @@
 const isLocal = window.location.origin.includes('localhost');
 export const NODE_DEV = `http://localhost:8080`;
 // default
-const URN_UMA = isLocal ? `https://20210414t180825-dot-uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
+const URN_UMA = isLocal ? `https://20210415t202436-dot-uma-v2.uc.r.appspot.com` : `https://uma-v2.uc.r.appspot.com/v2` 
 // node
 export const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;

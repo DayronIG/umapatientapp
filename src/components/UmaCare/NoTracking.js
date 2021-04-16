@@ -31,7 +31,7 @@ const NoTracking = (props) => {
 					</p>
 				</div>
 				<div className="buttonActionContainer">
-					<button onClick={activeHandler}>
+					<button type="button" onClick={activeHandler}>
 						Activar seguimiento
 					</button>
 				</div>
