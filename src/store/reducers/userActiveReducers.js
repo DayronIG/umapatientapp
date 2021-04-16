@@ -2,7 +2,8 @@
 const initialState = {
     cancelTripComments: '',
     token: '',
-    currentUser: {}
+    currentUser: {},
+    login: {}
 }
 
 export default function cancelTrip(state = initialState, action) {
@@ -13,6 +14,8 @@ export default function cancelTrip(state = initialState, action) {
             return { ...state, token: `Bearer ${action.payload}`}
         case 'SET_LOGED_ACTIVE':
             return { ...state, currentUser: action.payload }
+        case 'SET_USER_LOGIN':
+            return { ...state, login: action.payload }
         default:
             return state;
     }
