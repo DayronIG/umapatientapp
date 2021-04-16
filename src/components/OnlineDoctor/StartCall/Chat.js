@@ -67,8 +67,8 @@ const Chat = (props) => {
                         tempArray.push(content.data())
                     })
                     tempArray.sort(function (a, b) {
-                        var keyA = new Date(a.dt),
-                            keyB = new Date(b.dt);
+                        var keyA = new Date(a.dt.slice(0, -7).replace(' ', 'T')),
+                            keyB = new Date(b.dt.slice(0, -7).replace(' ', 'T'));
                         // Compare the 2 dates
                         if (keyA < keyB) return -1;
                         if (keyA > keyB) return 1;
@@ -197,7 +197,7 @@ const Chat = (props) => {
                                     <div className="conversation">{content.msg.toString()}</div>
                                     <div className="right-column umaChatProfile"></div>
                                 </div>
-                                <small className="umaChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="umaChatDate">{content.dt}</small>
                             </div>}
                         {content.rol === 'patient' &&
                             <div>
@@ -207,7 +207,7 @@ const Chat = (props) => {
                                     </div>
                                     <div className="conversation">{content.msg}</div>
                                 </div>
-                                <small className="userChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="userChatDate">{content.dt}</small>
                             </div>}
                     </div>
                 ) :
