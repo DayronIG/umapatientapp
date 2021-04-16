@@ -11,8 +11,7 @@ const Checkout = () => {
     const dispatch = useDispatch();
     const [datos, setDatos] = useState('');
     let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
-    const { ws } = useSelector(state => state.user);
-    const paymentData = useSelector(state => state.payment);
+    const paymentData = useSelector(state => state.payments);
     const  { deliveryInfo }  = useSelector(state => state.deliveryService);
     // const discount = useSelector(state => state.deliveryService.params.discount?.code)
 
@@ -31,8 +30,6 @@ const Checkout = () => {
         if(deliveryInfo.length < multiple_clients?.length && Object.keys(multiple_clients?.[0]).length !== 0){
             dispatch({type: 'SET_DELIVERY_FROM_ZERO', payload: multiple_clients})
         }
-        console.log(deliveryInfo)
-
       }, [deliveryInfo])
 
     useEffect(() => {
@@ -45,7 +42,9 @@ const Checkout = () => {
                 uid: paymentData.uid,
                 id: paymentData.id,
                 service: paymentData.service,
-                clients: deliveryInfo
+                clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
+                dependant: paymentData.dependant,
+                price: parseInt(paymentData.price)
                 //   discount
                 },
                 {headers} )
@@ -60,7 +59,7 @@ const Checkout = () => {
         { datos ? 
             (
                 <div className='checkout-background'>
-                <BackButton inlineButton={true} customTarget={`/hisopado/carrito/${ws}`}/>
+                <BackButton inlineButton={true} customTarget={`/`}/>
                     <div className='checkout-header'>
                         <h2 className='checkout-header-title'>Checkout</h2>
                         {/* <p className='checkout-header-text'>Resumen de tu compra:</p> */}
@@ -70,7 +69,7 @@ const Checkout = () => {
                             <div className='checkout-body-subtitle'>
                                 <h2 className='checkout-body-currency'>AR$ <span className='checkout-body-price'>{datos.price}</span></h2> 
                         </div>
-                        <p className='checkout-body-text'>Al clickear el boton de pago seras redirigido a MercadoPago y luego de pagar volveras a la app de UMA.</p>
+                        <p className='checkout-body-text'>Al clickear el boton de "Pagar" seras redirigido a MercadoPago y luego de pagar volveras a la app de UMA.</p>
                         <MPbutton data={datos}/>
                     </div>
                 </div>

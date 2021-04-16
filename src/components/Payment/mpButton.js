@@ -10,9 +10,9 @@ export default function MPbutton({ data }){
         script.src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"; 
         script.setAttributeNode(attr_data_preference) 
 
-        const texto = document.createAttribute('data-button-label')
-        texto.value = 'COMPRAR'
-        script.setAttributeNode(texto)
+        // const texto = document.createAttribute('data-button-label')
+        // texto.value = 'COMPRAR'
+        // script.setAttributeNode(texto)
         const colorElements = document.createAttribute('data-elements-color')
         colorElements.value = '#0A6DD7'
         script.setAttributeNode(colorElements)
@@ -28,7 +28,7 @@ export default function MPbutton({ data }){
     
     return(
         <div>
-            <button id='form1' style={{backgroundColor: 'white', border: 'none'}} data-button-label="Comprar"></button>
+            <button id='form1' style={{backgroundColor: 'white', border: 'none'}}></button>
         </div>
     )
 }

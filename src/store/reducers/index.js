@@ -17,6 +17,7 @@ import transport from './transportReducer';
 import umacare from './umacareReducers';
 import user from './userReducers';
 import userActive from './userActiveReducers';
+import payments from './payments';
 
 const appReducer = combineReducers({
 	assessment,
@@ -37,6 +38,7 @@ const appReducer = combineReducers({
 	umacare,
 	transport,
 	userActive,
+	payments,
 });
 
 const rootReducer = (state, action) => {
