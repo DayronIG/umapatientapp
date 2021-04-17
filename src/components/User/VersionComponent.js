@@ -35,7 +35,7 @@ export const HiddenCacheClearer = ({ platform }) => {
 
     const clearAll = async () => {
         await clearCache();
-        window.location.reload(true);
+        window.location.reload();
     }
 
     return (<>
