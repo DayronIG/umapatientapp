@@ -42,7 +42,7 @@ export const SymptomsEnd = ({ history }) => {
                 </div>
                 <div className='symptomsStatus__container'>
                     <p className='symptomsStatus__container--text'>
-                        Su ciclo evolutivo de 15 días se ha completado satisfactoriamente. <br />
+                        Su ciclo evolutivo de 10 días se ha completado satisfactoriamente. <br />
                         {' '}Si sus síntomas vuelven, no dude en realizar una consulta autónoma.
                     </p>
                 </div>

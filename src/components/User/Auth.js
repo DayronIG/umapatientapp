@@ -49,6 +49,7 @@ function AuthProvider({ children }) {
 		plan = await getCoverage(userAuth)
 		if (!!userAuth) {
 			dispatch({ type: 'GET_PATIENT', payload: userAuth })
+			dispatch({ type: 'SET_USER_LOGIN', payload: userAuth.login })
 			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			getDeliveryInfo(userAuth)
 		}

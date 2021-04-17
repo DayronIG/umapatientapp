@@ -75,10 +75,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 country: action.payload
             })
-        case 'SET_USER_LOGIN':
-            return Object.assign({}, state, {
-                login: action.payload
-            })
         case 'GET_BILLS':
             return Object.assign({}, state, {
                 bills: action.payload
