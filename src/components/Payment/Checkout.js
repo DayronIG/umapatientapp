@@ -33,6 +33,7 @@ const Checkout = () => {
       }, [deliveryInfo])
 
     useEffect(() => {
+        if(paymentData.uid) {
             const isLocal = window.location.origin.includes('localhost');
             axios.post(mp_payment_url,
                 {
@@ -52,6 +53,7 @@ const Checkout = () => {
                 setDatos(data.data)
             })
             .catch(err => console.error(err))
+        }
     }, [paymentData]);
 
     return (

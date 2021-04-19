@@ -100,7 +100,6 @@ const GuardCardComp = (props) => {
 			payAppointment()
 		}
 	};
-	console.log("PRICE",copayPrice)
 
 	const getCopay = async () => {
 		const response = await db.collection('corporate').where("name", "==", user.corporate_norm).get()
@@ -113,7 +112,6 @@ const GuardCardComp = (props) => {
 	}
 
 	useEffect(() => {
-		console.log("ENTREE")
 		if(user.corporate_norm && user.corporate_norm !== "") {
 			if(user.corporate_norm === 'SIN OBRA SOCIAL (UMA)') {
 				setcopayPrice('550')
@@ -133,7 +131,8 @@ const GuardCardComp = (props) => {
 			  uid: currentUser.uid,
 			  service: 'GUARDIA',
 			  dependant: params.dependant,
-			  price: copayPrice
+			  price: copayPrice,
+			  mercadoPago: true,
 			}
 		})
 		localStorage.setItem('paymentData', JSON.stringify({
@@ -143,7 +142,8 @@ const GuardCardComp = (props) => {
 			uid: currentUser.uid,
 			service: 'GUARDIA',
 			dependant: params.dependant,
-			price: copayPrice
+			price: copayPrice,
+			mercadoPago: true
 		}));
 		props.history.push(`/payments/checkout/${currentUser.uid}`)
 	}
