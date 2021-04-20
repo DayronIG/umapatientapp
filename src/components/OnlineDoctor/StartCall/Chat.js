@@ -12,6 +12,7 @@ import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
 import db, {firebaseInitializeApp} from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
 import queryString from 'query-string';
+import { IoMdClose } from 'react-icons/io'
 
 const Chat = (props) => {
     const dispatch = useDispatch()
@@ -66,8 +67,8 @@ const Chat = (props) => {
                         tempArray.push(content.data())
                     })
                     tempArray.sort(function (a, b) {
-                        var keyA = new Date(a.dt),
-                            keyB = new Date(b.dt);
+                        var keyA = new Date(a.dt.slice(0, -7).replace(' ', 'T')),
+                            keyB = new Date(b.dt.slice(0, -7).replace(' ', 'T'));
                         // Compare the 2 dates
                         if (keyA < keyB) return -1;
                         if (keyA > keyB) return 1;
@@ -187,6 +188,7 @@ const Chat = (props) => {
     return (
         <>
             <div className="chatWrapper">
+                <button onClick={() => props.visible(false)} className="closeChat"><IoMdClose /></button>
                 {dataChat.length >= 1 ? dataChat.map((content, index) =>
                     <div className="listContainer" key={index} ref={chatRef}>
                         {content.rol === 'doctor' &&
@@ -195,7 +197,7 @@ const Chat = (props) => {
                                     <div className="conversation">{content.msg.toString()}</div>
                                     <div className="right-column umaChatProfile"></div>
                                 </div>
-                                <small className="umaChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="umaChatDate">{content.dt}</small>
                             </div>}
                         {content.rol === 'patient' &&
                             <div>
@@ -205,7 +207,7 @@ const Chat = (props) => {
                                     </div>
                                     <div className="conversation">{content.msg}</div>
                                 </div>
-                                <small className="userChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="userChatDate">{content.dt}</small>
                             </div>}
                     </div>
                 ) :
@@ -229,7 +231,7 @@ const Chat = (props) => {
                     >Enviar</button>
                 </div>
             </div>
-            <div className="chat__ad">El chat se mantendrá activo mientras no haya conexión de audio o video</div>
+            {/* <div className="chat__ad">El chat se mantendrá activo mientras no haya conexión de audio o video</div> */}
         </>
     );
 }

@@ -12,7 +12,7 @@ import { BackButton } from '../../GeneralComponents/Headers';
 import QueueActions from './QueueActions';
 import Advice from './Advice';
 import DoctorDelay from './DoctorDelay';
-import DBConnection, {firebaseInitializeApp} from '../../../config/DBConnection';
+import DBConnection, { firebaseInitializeApp } from '../../../config/DBConnection';
 import Slider from './Slider';
 import Loading from '../../GeneralComponents/Loading';
 import tone from '../../../assets/ring.mp3';
@@ -22,23 +22,23 @@ import 'moment/locale/es';
 
 const Queue = (props) => {
     const firestore = DBConnection.firestore(firebaseInitializeApp);
-    const {guardia_advice} = useSelector((state) => state.front);
+    const { guardia_advice } = useSelector((state) => state.front);
     const dispatch = useDispatch();
     const [assignation, setAssignation] = useState('')
     const [calling, setCalling] = useState(false)
     const { loading } = useSelector(state => state.front)
-    const {call, assessment} = useSelector(state => state)
+    const { call, assessment } = useSelector(state => state)
     const { questions, appointments: appointment, assignedAppointment } = useSelector(state => state.queries)
     const patient = useSelector(state => state.user)
-    const {currentUser} = useSelector(state => state.userActive)
+    const { currentUser } = useSelector(state => state.userActive)
     const mr = useSelector(state => state.queries.medicalRecord[0])
-    const {activeUid} = useParams()
+    const { activeUid } = useParams()
     const history = useHistory()
     const location = useLocation()
     const params = queryString.parse(location.search)
 
     useEffect(() => {
-        if(currentUser?.uid) {
+        if (currentUser?.uid) {
             checkAssignedAppointment(currentUser.uid)
         }
     }, [currentUser])
@@ -57,7 +57,7 @@ const Queue = (props) => {
     }, [assignedAppointment])
 
     useEffect(() => {
-        let snapshot = () => {}
+        let snapshot = () => { }
         if (patient.dni && assignation) {
             snapshot = firestore.doc(`events/mr/${patient.dni}/${assignation}`)
                 .onSnapshot(res => {
@@ -71,14 +71,14 @@ const Queue = (props) => {
                     }
                 })
         }
-        return () =>  snapshot
+        return () => snapshot
     }, [assignation, mr])
 
     async function checkAssignedAppointment(uid) {
         if (Object.keys(assignedAppointment).length === 0) {
             dispatch({ type: 'LOADING', payload: true })
             let user = {}
-            if(params.dependant !== "false") {
+            if (params.dependant !== "false") {
                 user = await getDocumentFB(`user/${uid}/dependants/${activeUid}`)
             } else {
                 user = await getDocumentFB(`user/${uid}`)
@@ -162,7 +162,7 @@ const Queue = (props) => {
 
     // Effect to listen call
     useEffect(() => {
-        if (call.room !== '') setCalling(true)
+        if (call.room && call.room !== '') setCalling(true)
         else setCalling(false)
     }, [call])
 
@@ -209,34 +209,34 @@ const Queue = (props) => {
         questionsForEachSymptom()
     }, [assessment.selectedSymptoms, questions, dispatch])
 
-    const getCallStatus = useCallback(() =>{
+    const getCallStatus = useCallback(() => {
         // WIP
         try {
             if ((!patient.ws || patient.ws === '') && assignedAppointment) {
                 patient.ws = assignedAppointment.appointments?.['0']?.['6']
             }
-            if(patient.ws && patient.ws !== "") {
+            if (patient.ws && patient.ws !== "") {
                 let queryUser = firestore.collection('user').doc(currentUser.uid)
                 return queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data.call?.room && data.call?.room !== '' && data !== "geo") {
                         dispatch(
-                            { 
-                                type: 'SET_CALL_ROOM', 
-                                payload: { 
+                            {
+                                type: 'SET_CALL_ROOM',
+                                payload: {
                                     activeUid: data.call.activeUid,
                                     assignation_id: data.call.assignation_id,
                                     dependant: data.call.dependant,
                                     date: data.call.date,
-                                    room: data.call.room, 
-                                    token: data.call.token, 
-                                } 
+                                    room: data.call.room,
+                                    token: data.call.token,
+                                }
                             })
                     } else {
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '' } })
                     }
                 })
-            } 
+            }
         } catch (err) {
             dispatch({ type: 'LOADING', payload: true })
             dispatch({ type: 'ERROR', payload: 'FAILED QueryUser ' + err })
@@ -246,7 +246,7 @@ const Queue = (props) => {
 
     return (
         <>
-            <BackButton action={()=> history.push(`/`)} />
+            <BackButton action={() => history.push(`/`)} />
             {loading && <Loading />}
             {calling ?
                 <>
@@ -261,14 +261,16 @@ const Queue = (props) => {
                 </>
                 :
                 <>
-                    {guardia_advice && <Advice text={guardia_advice} />}
+                    <div className="p-2">
+                        {guardia_advice && <Advice text={guardia_advice} />}
+                    </div>
                     <DoctorDelay cuit={assignedAppointment.cuit} time={assignedAppointment.time} date={assignedAppointment.date} />
                     <Slider />
                 </>
             }
             <QueueActions
                 id={assignedAppointment?.appointments?.[0][14]}
-                calling={calling} 
+                calling={calling}
                 appState={appointment.state}
                 activeUid={activeUid}
                 dependant={params.dependant}

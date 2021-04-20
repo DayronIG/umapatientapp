@@ -38,7 +38,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
     const call = useSelector(state => state.call)
-	const {token} = useSelector(state => state.userActive)
+	const {token, login} = useSelector(state => state.userActive)
 
     useEffect(() => {
         let subscription = () => {}
@@ -85,7 +85,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     useEffect(() => {
         if (user.core_id) {
             if (user.phone || user.ws) {
-                if (!user.login || user.login === [] || user.login === "") {
+                if (!login || login === [] || login === "") {
                     history.push('/login/welcomeAgain');
                 }
             } else {

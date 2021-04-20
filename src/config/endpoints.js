@@ -1,7 +1,7 @@
 const isLocal = window.location.origin.includes('localhost');
 export const NODE_DEV = `http://localhost:8080`;
 // default
-const URN_UMA = isLocal ? `https://uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
+const URN_UMA = isLocal ? `https://20210416t181109-dot-uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
 // node
 export const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;
@@ -24,6 +24,7 @@ export const sound_online = `${POL}/sound_online`;
 export const start_biomarker = `${URN_UMA}/biomarkers`;
 export const cobertura = `${URN_UMA}/cobertura`;
 export const umacare_tracking = `${URN_UMA}/umacare`;
+export const umacare = `${NODE_SERVER}/umacare`;
 export const write_os = `${URN_UMA}/check_user`;
 export const transcription = `${URN_UMA}/transcripcion`;
 export const reassign_portal = `${URN_UMA}/reassign_portal`;

@@ -5,7 +5,7 @@ import { getDocumentsByFilter, getDocumentFB } from '../../Utils/firebaseUtils';
 
 const DoctorDelay = ({cuit, date, time}) => {
     const appointment = useSelector(state=> state.queries.assignedAppointment)
-    const [active, setActive] = useState(1)
+    const [active, setActive] = useState(10)
     const [queue, setQueue] = useState(0);
     const [delay, setDelay] = useState(0);
     const [measureOfTime, setMeasureOfTime] = useState('minutos')
@@ -27,7 +27,7 @@ const DoctorDelay = ({cuit, date, time}) => {
 			]
 			await getDocumentsByFilter(`/assignations/online_clinica_medica/${dt}`, filters)
 				.then(res => {
-					setQueue(res.length || 1)
+					setQueue(res.length)
                     let pendingTime = moment(`${date} ${time}:00`).diff(new Date(), 'minutes')
 					if(res.length >= 1){
 						setDelay(res.length * 10 + pendingTime)
@@ -43,7 +43,7 @@ const DoctorDelay = ({cuit, date, time}) => {
             ]
             let userQueue = await getDocumentsByFilter(`/assignations/online_clinica_medica/bag`, filters)
                 .then(res => {
-                    setQueue(res.length || 1)
+                    setQueue(res.length || 0)
                     return res.length
                 })
                 .catch(err => setQueue(0))
@@ -70,7 +70,7 @@ const DoctorDelay = ({cuit, date, time}) => {
             <span className="appointment__number">{queue}</span>
             <span className="appointment__detail">pacientes en espera</span>
         </div>}
-        {delay >= 1 && <div className="appointment__delay">
+        {delay >= 5 && <div className="appointment__delay">
             <span className="appointment__number">{delay}</span>
             <span className="appointment__detail">{measureOfTime} de espera aprox.</span>
         </div>}

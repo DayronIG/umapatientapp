@@ -12,19 +12,34 @@
   display: none;
 }
 .chatWrapper {
+  background: #fff;
   padding: 15px 15px 7vh 15px;
-  height: 90%;
+  height: calc(100vh - 52px);
   width: 100%;
   background-size: cover;
   overflow-y: scroll;
   overflow-x: hidden;
   position: absolute;
+  z-index: 10;
   /*
   background-image: url('../img/ws_image.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center; 
   */
+
+  .closeChat {
+    background: $uma-error;
+    color: $white-color;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: none;
+    
+    svg {
+      font-size: 20px;
+    }
+  }
+
   .chatEmpty {
     width: 100%;
     text-align: center;

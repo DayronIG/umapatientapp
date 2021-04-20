@@ -143,7 +143,7 @@ function App(props) {
 				{/* Doctor Online */}
 				<PrivateRoute exact path='/onlinedoctor/confirm/:uid?' component={ConfirmAppointment} />
 				<PrivateRoute exact path='/onlinedoctor/who' component={Who} />
-				<PrivateRoute exact path='/onlinedoctor/when/:activeUid?/:aid?' component={When} />
+				<Route exact path='/onlinedoctor/when/:activeUid?/:aid?' component={When} />
 				<PrivateRoute exact path='/onlinedoctor/questions/:activeUid?' component={Questions} />
 				<PrivateRoute exact path='/onlinedoctor/reason/:activeUid?' component={Reason} />
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
