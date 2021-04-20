@@ -67,6 +67,8 @@ import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
+import HisopadoType from './components/Hisopados'
+import HisopadoSede from './components/Hisopados/HisopadoSede'
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
 import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
@@ -122,6 +124,8 @@ function App(props) {
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* Delivery Service */}
+				<Route exact path='/hisopado/type' component={HisopadoType} />
+				<Route exact path='/hisopado/sede' component={HisopadoSede} />
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
 				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
 				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
