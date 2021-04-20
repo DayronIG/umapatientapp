@@ -30,8 +30,6 @@ const {token, currentUser} = useSelector((state) => state.userActive);
 	const location = useLocation()
     const params = queryString.parse(location.search)
 
-	console.log("Ahora sí")
-
 	const watchError = () => console.log('Hubo un error al rastrear la posición');
 
 	const currentPos = ({ coords }) => {
@@ -146,6 +144,8 @@ const {token, currentUser} = useSelector((state) => state.userActive);
 				)}/${appFullDt}_${doctor.cuit}`;
 				let data = {
 					age: patient.age || '',
+					category: "MI_ESPECIALISTA",
+					cuit: `${doctor.cuit}`,
 					dni: patient.dni,
 					dt: [
 						'TurnoConsultorioOnline',
@@ -160,13 +160,11 @@ const {token, currentUser} = useSelector((state) => state.userActive);
 					motivo_de_consulta: selectedSymptomsString,
 					msg: 'make_appointment',
 					ruta: id,
-					cuit: `${doctor.cuit}`,
 					specialty: `${doctor.matricula_especialidad}`,
 					sex: patient.sex || '',
-					ws: patient.ws,
 					uid: currentUser.uid,
-					category: "MI_ESPECIALISTA",
-					uid_dependant: params.dependant === 'true' ? activeUid: false
+					uid_dependant: params.dependant === 'true' ? activeUid: false,
+					ws: patient.ws
 				};
 				const res = await post(make_appointment, data, {
 					headers: { 'Content-Type': 'application/json', 'Authorization': token },
