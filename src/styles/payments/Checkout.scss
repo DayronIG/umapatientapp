@@ -1,0 +1,93 @@
+@import './../global/Vars.scss';
+@import './../global/Fonts.scss';
+
+.checkout-background {
+    background-color: $white-color;
+    text-align: center;
+}
+
+.checkout-header{
+    .checkout-header-title {
+        font-family: Nunito Sans;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 24px;
+        line-height: 30px;
+    }
+    .checkout-header-text {
+        font-family: Nunito;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+.checkout-body {
+    width: 335px;
+    height: 600px;
+    margin: 30px 20px ;
+    /* Background */
+    background: #FFFFFF;
+    box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding-top: 10px;
+
+    .checkout-body-title {
+        position: static;
+        height: 30px;
+        font-family: Nunito Sans;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 30px;
+        color: $uma-text;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 40px 0px;
+    }
+
+    .checkout-body-subtitle {
+        width: 100%;
+        padding-top: 20px;
+        .checkout-body-currency {
+            width: 100%;
+            height: 30px;
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 30px;
+            color: $uma-primary;
+        }
+        .checkout-body-price {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 40px;
+            line-height: 37px;
+            color: $uma-primary;
+            width: 72px;
+            height: 37px;
+            margin-left: 5px;
+        }
+    }
+
+    .checkout-body-text {
+        font-family: Nunito Sans;
+        font-family: Nunito Sans;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 30px;
+        padding: 4rem;
+    }
+    .mercadopago-button {
+        background:$uma-primary;
+        border-radius: 10px;
+        width: 288px;
+        height: 39px;
+        font-weight: bold;
+    }
+}
