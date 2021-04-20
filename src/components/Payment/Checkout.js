@@ -5,11 +5,13 @@ import axios from 'axios';
 import { useSelector,useDispatch } from 'react-redux';
 import Loading from '../GeneralComponents/Loading';
 import { BackButton } from '../GeneralComponents/Headers';
-import '../../styles/payments/Checkout.scss'
+import '../../styles/payments/Checkout.scss';
+import crossIcon from '../../../src/assets/img/hisopados_cross.svg';
 
 const Checkout = () => {
     const dispatch = useDispatch();
     const [datos, setDatos] = useState('');
+    const [loading, setLoading] = useState(false)
     let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
     const paymentData = useSelector(state => state.payments);
     const  { deliveryInfo }  = useSelector(state => state.deliveryService);
@@ -34,6 +36,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if(paymentData.uid) {
+            setLoading(true)
             const isLocal = window.location.origin.includes('localhost');
             axios.post(mp_payment_url,
                 {
@@ -51,16 +54,22 @@ const Checkout = () => {
                 {headers} )
             .then((data)=>{
                 setDatos(data.data)
+                setLoading(false)
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err)
+                setLoading(false)
+            })
         }
     }, [paymentData]);
 
     return (
         <>
-        { datos ? 
+        { loading ? 
+            <Loading /> :
             (
-                <div className='checkout-background'>
+               datos ?
+               <div className='checkout-background'>
                 <BackButton inlineButton={true} customTarget={`/`}/>
                     <div className='checkout-header'>
                         <h2 className='checkout-header-title'>Checkout</h2>
@@ -75,8 +84,22 @@ const Checkout = () => {
                         <MPbutton data={datos}/>
                     </div>
                 </div>
-            ) : 
-            <Loading />
+                : 
+                <div className='checkout-background'>
+                    <BackButton inlineButton={true} customTarget={`/`}/>
+                    <div className='checkout-header'>
+                        <h2 className='checkout-header-title'>Checkout</h2>
+                    </div>
+                    <div className='checkout-body'>
+                        <div className='rejected-icon'>
+                            <img src={crossIcon} alt='crossIcon'/>
+                        </div>
+                        <h3 className='checkout-body-title'>Lo sentimos, ocurrio un problema interno.</h3>
+                        <p className='checkout-body-text'>Puedes volver a intentarlo tocando el boton de abajo.</p>
+                        <button className='btn btn-blue-lg mb-5' onClick={() => window.location.reload()}>Volver a intentar</button>
+                    </div>
+                </div>
+            )
         }
         </>
     )
