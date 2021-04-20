@@ -23,8 +23,7 @@ const PaymentStatus = () => {
         if(paid === 'true') {
             localStorage.removeItem('paymentData')
             dispatch({
-                type: 'SET_PAYMENT',
-                payload: { mercadoPago: false }
+                type: 'RESET_PAYMENT'
             })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
         }
@@ -35,7 +34,7 @@ const PaymentStatus = () => {
         if (paymentDataLocal) {
             dispatch({
                 type: 'SET_PAYMENT',
-                payload: {mercadoPago: paymentDataLocal.mercadoPago}
+                payload: paymentDataLocal
               })
         } 
     },[]);
@@ -50,7 +49,7 @@ const PaymentStatus = () => {
                 </div>
                 <div className='rejected-payment-body'>
                     <h3 className='rejected-payment-body-title-rejected'>¡Lo sentimos!</h3>
-                    <div className='rejected-payemnt-body-text-container'>
+                    <div className='rejected-payment-body-text-container'>
                         <p className='rejected-payment-body-text'>Ha ocurrido un error y el pago fue rechazado por MercadoPago.</p>
                         <p className='rejected-payment-body-text'>No te preocupes, no hemos cobrado ningún monto. Por favor, intenta nuevamente.</p>
                     </div>
@@ -66,8 +65,8 @@ const PaymentStatus = () => {
                 </div>
                 <div className='rejected-payment-body'>
                     <h3 className='rejected-payment-body-title-pending'>El pago esta siendo procesado</h3>
-                    <div className='rejected-payemnt-body-text-container'>
-                        <p className='rejected-payment-body-text'>Cuando el pago sea confirmado te avisaremos avisaremos por whatsapp con un link para continuar con el proceso.</p>
+                    <div className='rejected-payment-body-text-container'>
+                        <p className='rejected-payment-body-text'>Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.</p>
                     </div>
                     <Link to={'/'} className='rejected-payment-body-link'>Ir al inicio</Link>
                 </div>
@@ -81,7 +80,7 @@ const PaymentStatus = () => {
                 </div>
                 <div className='rejected-payment-body'>
                     <h3 className='rejected-payment-body-title-confirmed'>¡Hemos recibo el pago!</h3>
-                    <div className='rejected-payemnt-body-text-container'>
+                    <div className='rejected-payment-body-text-container'>
                         {/* <p className='rejected-payment-body-text'>Algun texto que se les ocurra poner en esta parte.</p> */}
                         <p className='rejected-payment-body-text'>Toca en "Continuar" para seguir con el proceso de la consulta medica.</p>
                     </div>
@@ -97,7 +96,7 @@ const PaymentStatus = () => {
                 </div>
                 <div className='rejected-payment-body'>
                     <h3 className='rejected-payment-body-title-rejected'>Debes realizar un pago para obtener el servicio.</h3>
-                    <div className='rejected-payemnt-body-text-container'>
+                    <div className='rejected-payment-body-text-container'>
                         <p className='rejected-payment-body-text'>Algun texto que se les ocurra poner en esta parte.</p>
                         <p className='rejected-payment-body-text'>Otro texto por aqui.</p>
                     </div>

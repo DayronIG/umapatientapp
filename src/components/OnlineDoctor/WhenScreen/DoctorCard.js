@@ -114,12 +114,23 @@ const GuardCardComp = (props) => {
 	useEffect(() => {
 		if(user.corporate_norm && user.corporate_norm !== "") {
 			if(user.corporate_norm === 'SIN OBRA SOCIAL (UMA)') {
-				setcopayPrice('550')
+				setcopayPrice('NO COPAY')
 			} else {
 				getCopay()
 			}
 		}
 	},[user])
+	
+	//Solo para DOSUBA
+	// useEffect(() => { 
+		// if(user.corporate_norm && user.corporate_norm !== "") {
+			// if(user.corporate_norm === 'DOSUBA') {
+				// getCopay()
+			// } else {
+				// setcopayPrice('NO COPAY')
+			// }
+		// }
+	// },[user])
 
 	const payAppointment = () => {
 		dispatch({
