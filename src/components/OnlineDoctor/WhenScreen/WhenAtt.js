@@ -27,7 +27,7 @@ const WhenScreen = (props) => {
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
 	const {currentUser} = useSelector((state) => state.userActive);
-	const [action, setAction] = useState('Loading');
+	const [action, setAction] = useState('Empty');
 	const [assignations, setAssignations] = useState([]);
 	const [queue, setQueue] = useState("1")
 	const [pediatric, setPediatric] = useState(false);
@@ -98,7 +98,7 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		if(user && params.aid) {
+		if(user) {
 			let os = user.context === "temp" ? "temp" : false
 			if(user.corporate_norm === "VALE") {
 				os = "EC"
@@ -128,6 +128,8 @@ const WhenScreen = (props) => {
 				console.error("Error", error)
 				return props.history.replace('/');
 			}
+		} else {
+			setAction("Empty")
 		}
 	}
 
