@@ -20,7 +20,7 @@ export default ({ answers, assignation, biomarkers, qa_next, qa_acumulado }) => 
 
   const getNewQuestion = (parsed_date, resx) => {
     setLoading(true);
-    let URL = `${TRIAGE_UMA}/autonomous_next`;
+    let URL = `${TRIAGE_UMA}/v2/autonomous_next`;
     axios.post(URL, {
       biomarker: biomarkers || '',
       dni: parsed_date,

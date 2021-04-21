@@ -72,7 +72,7 @@ export default ({ questions }) => {
       type: 'AUTONOMOUS_SET_VALIDATION_LIST',
       payload: { answers: Object.values({ ...firstStepEnd, [actualQuestion.position]: `${actualQuestion.content['0']} .${resx}` }) }
     })
-    let URL = `${TRIAGE_UMA}/autonomous_next`;
+    let URL = `${TRIAGE_UMA}/v2/autonomous_next`;
     let data = {
       biomarker: biomarkers,
       dni: parsed_date || '',
