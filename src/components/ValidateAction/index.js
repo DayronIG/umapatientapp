@@ -10,7 +10,6 @@ function ValidateAction(props) {
     const [activated, setActivated] = React.useState(false)
 
     React.useEffect(() => {
-        console.log(props.field, plan.plan)
         if (props.field && (plan?.plan?.[props.field] === true || plan?.onlinedoctor?.[props.field] === '1'))
             setActivated(true)
         else

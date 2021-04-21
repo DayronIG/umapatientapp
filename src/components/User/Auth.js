@@ -61,7 +61,6 @@ function AuthProvider({ children }) {
 		
 		if (!!user?.coverage && Array.isArray(user?.coverage) && plan) { 
 			let all_coverages = user.coverage
-			
 			user.coverage.push({plan: user.corporate_norm, type: "corporate_norm"})
 			// Un usuario puede tener multiples subscriptions
 			// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
