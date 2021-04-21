@@ -91,9 +91,10 @@ const GuardCardComp = (props) => {
 	const user = useSelector(state => state.user);
 	const db = DB.firestore(firebaseInitializeApp);
 	const [copayPrice, setcopayPrice] = useState('')
+	const [umaCreditos, setUmaCreditos] = useState(0)
 
 	const selectGuard = () => {
-		if(copayPrice === 'NO COPAY') {
+		if(copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) {
 			dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' }); 
 			props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
 		} else {
@@ -111,13 +112,20 @@ const GuardCardComp = (props) => {
 		setcopayPrice(copay[0] || 'NO COPAY')
 	}
 
+	const getUmaCreditosFromDB = async () => {
+		const response = await db.doc(`user/${currentUser.uid}`).get()
+		const creditos = response.data().uma_creditos;
+		setUmaCreditos(creditos || 0)
+	}
+
+	useEffect(() => {
+		getUmaCreditosFromDB()
+	},[])
+
+
 	useEffect(() => {
 		if(user.corporate_norm && user.corporate_norm !== "") {
-			if(user.corporate_norm === 'SIN OBRA SOCIAL (UMA)') {
-				setcopayPrice('NO COPAY')
-			} else {
-				getCopay()
-			}
+			getCopay()
 		}
 	},[user])
 	
@@ -182,7 +190,7 @@ const GuardCardComp = (props) => {
 				</div>
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
-					{ copayPrice === 'NO COPAY' && 
+					{ (copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) && 
 						(
 							<>
 								<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
@@ -192,7 +200,7 @@ const GuardCardComp = (props) => {
 							</>
 						)
 					}
-					{!['', 'NO COPAY'].includes(copayPrice) &&
+					{!['', 'NO COPAY'].includes(copayPrice) && umaCreditos < copayPrice &&
 						(
 							<>
 								<p>Consulta con copago</p>

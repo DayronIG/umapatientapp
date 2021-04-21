@@ -61,8 +61,9 @@ const WhenScreen = (props) => {
 	}, [])
 
 	useEffect(() => {
-		if (activeUid && currentUser && activeUid !== currentUser?.uid && !aid) {
-			dispatch(getDependant(currentUser.uid, activeUid))
+		if (activeUid && currentUser && !aid) {
+			if (activeUid !== currentUser?.uid) return dispatch(getDependant(currentUser.uid, activeUid))
+			return dispatch(getDependant(currentUser.uid))
 		}
 	}, [currentUser, activeUid]);
 
