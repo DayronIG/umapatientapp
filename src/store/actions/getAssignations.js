@@ -1,9 +1,9 @@
 /* eslint-disable array-callback-return */
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import { yearAndMonth } from '../../components/Utils/dateUtils';
 import { regexNumbers } from '../../components/Utils/regex';
 import moment from 'moment-timezone';
-const firestore = DBConnection.firestore();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
 const currentMonth = moment().tz('America/Argentina/Buenos_Aires').format('YYYYMM');
 const yearMonth = yearAndMonth();
 
@@ -22,11 +22,12 @@ export function getAssignedAppointments(specialty, collectionName, doctors, uid,
 						const u = JSON.parse(localStorage.getItem('userData'));
 						let match;
 						if (collectionName !== 'bag') {
-							if (u && u.context === 'temp') {
+							match = true
+							/* if (u && u.context === 'temp') {
 								match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'temp');
 							} else {
 								match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'si');
-							}
+							} */
 						} else {
 							match = true;
 						}
@@ -45,7 +46,8 @@ export function getAssignedAppointments(specialty, collectionName, doctors, uid,
 						}
 					});
 					resolve(assigned);
-				});
+				})
+				.catch(err => console.log(err));
 		} catch (error) {
 			reject(error);
 		}
@@ -62,7 +64,7 @@ export function getFreeAppointments(specialty, doctors, date) {
 				.collection(yearMonth)
 				.where('date', '==', date)
 				.where('state', '==', 'FREE')
-				.limit(8000)
+				.limit(500)
 			query.get().then(function (res) {
 				res.forEach((subDoc) => {
 					const data = { ...subDoc.data(), path: subDoc.ref.path };
@@ -136,13 +138,13 @@ export async function getFreeAppointmentsCustom(date, specialty, condition) {
 				.collection(`assignations/${specialty}/${date}`)
 				.where('state', '==', 'FREE')
 				.where('cuil', '==', condition)
-				.limit(10000);
+				.limit(1000);
 		} else {
 			query = firestore
 				.collection(`assignations/${specialty}/${date}`)
 				.where('state', '==', 'FREE')
 				.where('social_work', 'array-contains-any', condition)
-				.limit(10000);
+				.limit(1000);
 		}
 		const res = await query.get();
 		res.forEach((subDoc) => {

@@ -1,6 +1,6 @@
 
-import DB from '../../config/DBConnection';
-const db = DB.firestore();
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
+const db = DBConnection.firestore(firebaseInitializeApp);
 
 export const getCountry = async (ws) => {
     let country = 'AR'

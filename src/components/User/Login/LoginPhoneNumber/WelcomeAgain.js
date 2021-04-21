@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import '../../../../styles/user/signUp/signUp.scss';
 import Logo from '../../../../assets/logo.png';
 import { ConditionButtons, GenericButton, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from '../GenericComponents';
 import showPass from '../../../../assets/icons/showpassword.png';
 import eyeOpenPass from '../../../../assets/icons/eyeopenpass.png';
 import {useParams, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../../config/DBConnection';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { node_patient } from "../../../../config/endpoints";
@@ -27,7 +26,7 @@ const WelcomeAgain = () => {
     const {method} = useParams();
 
     useEffect(() => {
-        if(!Firebase.auth().currentUser) {
+        if(!Firebase.auth(firebaseInitializeApp).currentUser) {
             dispatch({ type: 'RESET_USER_DATA' });
             history.push('/');
         }
@@ -56,7 +55,7 @@ const WelcomeAgain = () => {
         if (parseInt(user.email.split('@')[1].slice(0, 6)).length < 5) {
             code = user.ws_code
         }
-        Firebase.auth()
+        Firebase.auth(firebaseInitializeApp)
             .signInWithEmailAndPassword(user.email, code)
             .then(async function (userCredential) {
                 await userCredential.user.updateEmail(dataVal.email)
@@ -101,7 +100,7 @@ const WelcomeAgain = () => {
 
     const deleteUserAndLogin = () => {
         try {
-            Firebase.auth().currentUser.delete()
+            Firebase.auth(firebaseInitializeApp).currentUser.delete()
                 .then(() => {
                     dispatch({ type: 'RESET_USER_DATA' });
                     history.push('/');

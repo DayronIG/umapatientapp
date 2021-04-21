@@ -4,7 +4,7 @@ import { Route, withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
-import db, { askPermissionToRecieveNotifications }  from './config/DBConnection';
+import db, { askPermissionToRecieveNotifications, firebaseInitializeApp }  from './config/DBConnection';
 import Loading from './components/GeneralComponents/Loading';
 import ToastNotification from '../src/components/GeneralComponents/toastNotification'
 import tone from './assets/ring.mp3'
@@ -32,48 +32,52 @@ const Login = () => {
 
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
-    const firestore = db.firestore()
+    const firestore = db.firestore(firebaseInitializeApp)
     const history = useHistory()
     const { currentUser } = useContext(AuthContext)
     const user = useSelector(state => state.user)
     const [notification, setNotification] = useState(false)
     const call = useSelector(state => state.call)
-	const {token} = useSelector(state => state.userActive)
+	const {token, login} = useSelector(state => state.userActive)
 
     useEffect(() => {
-        if (user.ws) {
+        let subscription = () => {}
+        !localStorage.getItem('last_call_check') && localStorage.setItem('last_call_check', new Date())
+        if (user.ws && (moment().diff(new Date(localStorage.getItem('last_call_check')), 'minutes') > 5)) {
+            localStorage.setItem('last_call_check', new Date())
+            console.log("Check call")
             try {
-                let subscription, queryUser = firestore.doc(`user/${currentUser.uid}`)
+                let queryUser = firestore.doc(`user/${currentUser.uid}`)
                 subscription = queryUser.onSnapshot(async function (doc) {
                     let data = doc.data()
                     if (data?._start_date && data._start_date !== '') {
-                        if (!call.callRejected && !rest.path.includes('/attention/')) {
+                        dispatch({ 
+                            type: 'SET_CALL_ROOM', 
+                            payload: { 
+                                room: data.call.room,
+                                token: data.call.token, 
+                                assignation: data.call.assignation_id,
+                                dependant: data.call.dependant,
+                                activeUid: data.call.activeUid
+                            } 
+                        })
+                        if (!call.callRejected && !rest.path.includes('/attention/') && !rest.path.includes('/onlinedoctor/queue/')) {
                             setNotification(true)
-                            dispatch({ 
-                                type: 'SET_CALL_ROOM', 
-                                payload: { 
-                                    room: data.call.room,
-                                    token: data.call.token, 
-                                    assignation: data.call.assignation_id,
-                                    dependant: data.call.dependant,
-                                    activeUid: data.call.activeUid
-                                } 
-                            })
                         }
                     } else {
                         setNotification(false)
                         dispatch({ type: 'SET_CALL_ROOM', payload: { room: '', token: '', assignation: '' } })
                     }
                 })
-                return () => {
-                    if (typeof subscription === 'function') {
-                        setNotification(false)
-                        subscription()
-                    }
-                }
             } catch (error) {
                 setNotification(false)
                 console.log(error)
+            }
+        }
+        return () => {
+            if (typeof subscription === 'function') {
+                setNotification(false)
+                subscription()
             }
         }
     }, [user, firestore, call.callRejected, rest.path])
@@ -81,7 +85,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     useEffect(() => {
         if (user.core_id) {
             if (user.phone || user.ws) {
-                if (!user.login || user.login === [] || user.login === "") {
+                if (!login || login === [] || login === "") {
                     history.push('/login/welcomeAgain');
                 }
             } else {
@@ -113,6 +117,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		// now we get the current user
 		if (currentUser && currentUser.email) {
 			try {
+            if(version.patients !== localStorage.getItem('uma_version') || userToken !== localStorage.getItem('messaging_token')) {
 				let dt = moment().format('YYYY-MM-DD HH:mm:ss')
 				let device = {
 						messaging_token: userToken || '',
@@ -121,7 +126,13 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 						last_login: dt,
 						uma_version: version.patients
                     }
+                localStorage.setItem('uma_version', version.patients)
+                localStorage.setItem('messaging_token', userToken)
+                console.log("UMA UPDATE")
                 await handleSubmit(device)
+            } else {
+                console.log("UMA OK")
+            }
 			} catch (err) {
 				console.log(err)
 			}
@@ -142,11 +153,11 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     })
                     .catch((err) => {
                         if(err.response?.data?.message === "user not found") {
-                            db.auth().signOut()
+                            db.auth(firebaseInitializeApp).signOut()
                             console.log("Signed out")
                             // Si falla el usuario para que no quede en login eterno se lo desloguea
                         }
-                        console.log(err.response?.data);
+                        console.log(err);
                     });
                 })
         }, 1500);

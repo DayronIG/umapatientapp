@@ -7,7 +7,7 @@ import Switch from 'react-switch';
 import { node_patient } from '../config/endpoints';
 import axios from 'axios';
 import { install_event } from '../config/endpoints';
-import app from '../config/DBConnection';
+import app, {firebaseInitializeApp} from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
@@ -74,7 +74,7 @@ const Register = props => {
             let user = `${getWs}@${pwd}.com`
             localStorage.setItem('codeRegistered', pwd)
             try {
-                await app.auth()
+                await app.auth(firebaseInitializeApp)
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {

@@ -4,11 +4,11 @@ import {withRouter} from 'react-router-dom';
 import {GenericHeader} from '../components/GeneralComponents/Headers';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons'
-import db from "../config/DBConnection";
+import db, {firebaseInitializeApp} from "../config/DBConnection";
 
 const Reset = (props) => {
     React.useEffect(() => {
-        db.auth().signOut()
+        db.auth(firebaseInitializeApp).signOut()
         localStorage.removeItem('userRegistered')
         localStorage.removeItem('userToken')
         localStorage.clear()

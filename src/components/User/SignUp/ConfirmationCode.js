@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { Stepper, GenericButton } from '../Login/GenericComponents';
 import {node_patient} from '../../../config/endpoints';
 import {useHistory} from 'react-router-dom';
-import db from '../../../config/DBConnection';
+import db, {firebaseInitializeApp} from '../../../config/DBConnection';
 import Confirm from '../../../assets/illustrations/ConfirmMail.png';
 import Logo from '../../../assets/logo.png';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
@@ -37,9 +37,9 @@ const ConfirmationCode = () => {
                     setModalMessage('Ha ocurrido un error. Por favor intente nuevamente.');
                 })
             
-            db.auth().signInWithEmailAndPassword(email, pass)
+            db.auth(firebaseInitializeApp).signInWithEmailAndPassword(email, pass)
             .then(async (user) => {
-                db.auth().currentUser.getIdToken().then(async token => {
+                db.auth(firebaseInitializeApp).currentUser.getIdToken().then(async token => {
                     let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
                     let data = {
                         newValues: {
@@ -47,7 +47,7 @@ const ConfirmationCode = () => {
                         }
                     }
 
-                    let uid = db.auth().currentUser.uid;
+                    let uid = db.auth(firebaseInitializeApp).currentUser.uid;
 
                     await axios.patch(`${node_patient}/update/${uid}`, data, { headers })
                         .then(res => {

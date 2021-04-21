@@ -1,4 +1,4 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 var d = new Date()
 var currentMonth = ('0' + (d.getMonth() + 1)).substr(-2)
 const currentDate = [d.getFullYear(), currentMonth].join('')
@@ -20,7 +20,7 @@ export const saveAppointment = (assigns) => ({
 
 
 export function listenAppointment(specialty, key, cm) {
-    const firestore = DBConnection.firestore()
+    const firestore = DBConnection.firestore(firebaseInitializeApp)
     const query = firestore.collection('assignations').doc(specialty).collection(currentMonth).doc(key)
     var appointment = {}
     return dispatch => {

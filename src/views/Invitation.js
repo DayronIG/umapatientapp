@@ -6,14 +6,14 @@ import welcomeImg from '../assets/icons/doctors.png';
 import checkIllustration from '../assets/vaccine/check.png';
 import Loading from '../components/GeneralComponents/Loading';
 import {BackButton} from '../components/GeneralComponents/Headers'
-import db from '../config/DBConnection';
+import db, {firebaseInitializeApp} from '../config/DBConnection';
 import { invitation } from '../config/endpoints';
 import swal from 'sweetalert';
 
 const Vaccine = () => {
     const history = useHistory()
     const { id } = useParams();
-    const firestore = db.firestore();
+    const firestore = db.firestore(firebaseInitializeApp);
     const [modal, setModal] = useState({
         show: false,
         title: '',

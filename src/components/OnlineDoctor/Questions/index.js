@@ -8,9 +8,9 @@ import BackButton from '../../GeneralComponents/Backbutton';
 import ProgressBar from './ProgressBar';
 import '../../../styles/questions.scss';
 import '../../../styles/onlinedoctor/QuestionsModal.scss';
-import DB from '../../../config/DBConnection';
+import DB, {firebaseInitializeApp} from '../../../config/DBConnection';
 
-const db = DB.firestore();
+const db = DB.firestore(firebaseInitializeApp);
 
 const Questions = () => {
 	const dispatch = useDispatch();

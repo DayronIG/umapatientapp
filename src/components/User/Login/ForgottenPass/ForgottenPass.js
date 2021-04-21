@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BackButton  from '../../../GeneralComponents/Backbutton';
 import { GenericInputs, GenericButton } from '../GenericComponents';
 import {useParams, useHistory} from 'react-router-dom';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../../config/DBConnection';
 import { checkNum } from '../../../Utils/stringUtils';
 import { node_patient } from '../../../../config/endpoints';
 import {useDispatch} from 'react-redux';
@@ -86,7 +86,7 @@ const ForgottenPass = () => {
     const handleResetPassword = () => {
         window.gtag('event', 'forgot_password_confirm')
         try {
-            Firebase.auth().sendPasswordResetEmail(email)
+            Firebase.auth(firebaseInitializeApp).sendPasswordResetEmail(email)
             .then(() => {
                 history.push('/forgot/finalStep/sendEmail');
             })

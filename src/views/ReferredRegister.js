@@ -8,7 +8,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {generatePassword} from '../components/Utils/generatePassword';
 import 'react-datepicker/dist/react-datepicker.css';
-import app from '../config/DBConnection';
+import app, {firebaseInitializeApp} from '../config/DBConnection';
 import Loading from '../components/GeneralComponents/Loading';
 import { GenericHeader } from '../components/GeneralComponents/Headers';
 import MobileModal from '../components/GeneralComponents/Modal/MobileModal';
@@ -16,7 +16,6 @@ import {getCountry} from '../components/Utils/getCountry.js';
 import swal from 'sweetalert';
 import moment from 'moment';
 import { validateInput } from '../components/Utils/stringUtils';
-import { installPrompt } from '../components/Utils/installPrompt';
 import 'moment-timezone';
 import '../styles/generalcomponents/referredRegister.scss';
 
@@ -104,7 +103,7 @@ const Register = props => {
             let user = `${getWs}@${pwd}.com`
             localStorage.setItem('codeRegistered', pwd)
             try {
-                return await app.auth()
+                return await app.auth(firebaseInitializeApp)
                     .createUserWithEmailAndPassword(user, pwd)
                     .then(reg => handleSubmit(reg.user.uid, reg.user, pwd))
                     .catch(err => {

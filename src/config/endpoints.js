@@ -1,7 +1,7 @@
 const isLocal = window.location.origin.includes('localhost');
 export const NODE_DEV = `http://localhost:8080`;
 // default
-const URN_UMA = isLocal ? `https://uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
+const URN_UMA = isLocal ? `https://20210420t190621-dot-uma-v2.uc.r.appspot.com/v2` : `https://uma-v2.uc.r.appspot.com/v2` 
 // node
 export const NODE_SERVER = isLocal ? NODE_DEV : `https://nodeserver-dot-uma-v2.appspot.com`;
 const POL = `https://pol-dot-uma-v2.appspot.com`;
@@ -10,7 +10,7 @@ const up_token = 'sdHBFk3PUMtICR0Z-c1W';
 const url_facePos = 'https://teachablemachine.withgoogle.com/models/-Eupnxuwx';
 const computer_vision = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com';
 export const TRIAGE_UMA = 'https://triage-dot-uma-v2.appspot.com';
-export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') } }
+export const config = { headers: { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('Notification_Token') || '' } }
 
 export const user_online = `${URN_UMA}/user_online`;
 export const make_appointment = `${URN_UMA}/make_appointment`;
@@ -24,6 +24,7 @@ export const sound_online = `${POL}/sound_online`;
 export const start_biomarker = `${URN_UMA}/biomarkers`;
 export const cobertura = `${URN_UMA}/cobertura`;
 export const umacare_tracking = `${URN_UMA}/umacare`;
+export const umacare = `${NODE_SERVER}/umacare`;
 export const write_os = `${URN_UMA}/check_user`;
 export const transcription = `${URN_UMA}/transcripcion`;
 export const reassign_portal = `${URN_UMA}/reassign_portal`;
@@ -41,6 +42,8 @@ export const send_user_code = `${NODE_SERVER}/patients/code`;
 export const node_patient = `${NODE_SERVER}/patients`;
 export const push_token = `${NODE_SERVER}/firebase/push_user_token`;
 export const login_core = `${NODE_SERVER}/firebase/login_core`;
+// Appointments
+export const appointments_confirm = `${NODE_SERVER}/appointments/confirm`;
 // Payments
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
 // Models

@@ -1,5 +1,6 @@
 const initialState = {
     active_guardia: true,
+    active_guardia_ec: false,
     active_list: true,
     alert: {
         active: false,
@@ -142,6 +143,8 @@ export default function frontReducers(state = initialState, action) {
             return { ...state, back_translate_thursday: action.payload };
         case 'SET_BACK_TRANSLATE_FRIDAY':
             return { ...state, back_translate_friday: action.payload };
+        case 'SET_VERSIONS':
+            return { ...state, versions: action.payload }
         default:
             return state;
     }

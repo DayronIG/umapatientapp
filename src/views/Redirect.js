@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DBConnection from "../config/DBConnection";
+import DBConnection, {firebaseInitializeApp} from "../config/DBConnection";
 import Register from "./Register";
 import LoginComponent from "../components/User/Login/Login";
 // import LoginAnterior from '../components/User/Login'
@@ -8,7 +8,7 @@ import Loading from "../components/GeneralComponents/Loading";
 
 const Redirect = props => {
   const [isRegistered, setRegistered] = useState();
-  const firestore = DBConnection.firestore();
+  const firestore = DBConnection.firestore(firebaseInitializeApp);
   const { loading } = useSelector(state => state.front);
   const { ws } = props.match.params;
   const dispatch = useDispatch();

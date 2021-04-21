@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import DinamicScreen from '../GeneralComponents/DinamicScreen';
 import Carousel from "nuka-carousel";
 import slides from '../slider-content';
@@ -15,15 +15,16 @@ import "react-step-progress-bar/styles.css";
 import "../../styles/umaCare/umaCare.scss";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import TrackingSelector from './TrackingSelector';
+import ContinueButton from '../GeneralComponents/ContinueButton';
 
 const UmaCare = _ => {
   const dispatch = useDispatch();
-  let db = DBConnection.firestore();
-  const { dni, ws } = useSelector(state => state.user);
+  let db = DBConnection.firestore(firebaseInitializeApp);
+  const { ws } = useSelector(state => state.user);
   const umacare = useSelector(state => state.umacare)
-  const {loading, modal} = useSelector(state => state.front)
+  const {modal} = useSelector(state => state.front)
   const [textDetail, setTextDetail] = useState('');
-  const [exists, setExists] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   const carouselProperties = {
     autoplay: true,
@@ -37,10 +38,9 @@ const UmaCare = _ => {
 
 
   useEffect(() => {
-    if(dni) {
+    if(ws) {
       db.collection('events/labs/umacare').where("patient_ws", "==", ws)
       .onSnapshot(data => {
-        setExists(!data.empty);
         let activeTracking = [], inactiveTracking = [], allTrackings = []
         data.forEach((el) => {
           let data = { ...el.data(), id: el.ref.id }
@@ -52,22 +52,23 @@ const UmaCare = _ => {
         })
         allTrackings = activeTracking.concat(inactiveTracking)
         dispatch({type: 'UMACARE_SET_TRACKINGS', payload: {activeTracking, inactiveTracking, allTrackings}})
+        setLoading(false)
       }, (err) => console.error(err))
     }
-  }, [dni])
-
+  }, [ws])
 
   return (
     <>
       { loading && <CustomUmaLoader  /> }
-      {modal && 
-            <Modal title="Información" callback={() => {
-                dispatch({ type: "CLOSE_MODAL" });
-              }}>
-              <p className="text-center">{textDetail}</p>
-            </Modal>}
-      {!exists ? <NoTracking /> 
-        :
+      {modal && (
+          <Modal title="Información" callback={() => {
+              dispatch({ type: "CLOSE_MODAL" });
+            }}>
+            <p className="text-center">{textDetail}</p>
+          </Modal>
+      )}
+      {!loading && umacare.allTrackings && umacare.allTrackings.length === 0 && <NoTracking />}
+      {!loading && umacare.allTrackings && umacare.allTrackings.length > 0 && (
         <DinamicScreen>
           <TrackingSelector />
           {umacare.allTrackings[umacare.selectedTracking]
@@ -79,10 +80,10 @@ const UmaCare = _ => {
                 { slides.map((slide, i) => <SlideItem slide={slide} key={i} />) }
               </Carousel>
             </div>
-          </div>
+          </div>          
           <Link className="back-home" to="/">Volver al Home</Link>
         </DinamicScreen>
-      }
+      )}
     </>
   )
 }

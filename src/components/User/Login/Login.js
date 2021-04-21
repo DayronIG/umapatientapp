@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import LoginIllustation from '../../../assets/illustrations/Login-Illustration.png';
-import { GenericInputs, GenericButton, TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from './GenericComponents';
+import { GenericInputs, TextAndLink, GoogleButton, FacebookButton, MicrosoftButton, EmailButton } from './GenericComponents';
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../config/DBConnection';
 import Logo from '../../../assets/logo.png';
 import '../../../styles/user/login.scss';
 
@@ -14,7 +13,7 @@ const Login = () =>  {
     const [errorData, setErrorData] = useState(false);
 
     const handleSignIn = async () => {
-        await Firebase.auth().signInWithEmailAndPassword(email, password)
+        await Firebase.auth(firebaseInitializeApp).signInWithEmailAndPassword(email, password)
             .then(()=>setErrorData(false))
             .catch(()=>setErrorData(true))
     }
@@ -56,10 +55,6 @@ const Login = () =>  {
                 if(errorData) setErrorData(false)}} 
             />
            <section className='login__needHelp'>
-                {/* <aside className='login__needHelp__activeSession'>
-                    <input className='check' type='checkbox'/>
-                    <p className='text'>Mantener sesión iniciada</p>
-                </aside> */}
                 <button 
                     className='login__needHelp--btn' 
                     onClick={() => {
@@ -74,9 +69,6 @@ const Login = () =>  {
                <button className='login__actions--btnlog' onClick={handleSignIn}>
                    Ingresar
                </button>
-                {/* <GenericButton action={handleSignIn}>
-                    Ingresar
-                </GenericButton> */}
                 <TextAndLink 
                     text='¿Eres nuevo en ÜMA?' 
                     link='Registrarme' 

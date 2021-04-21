@@ -13,7 +13,7 @@ import './payment.scss';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 import Cleave from 'cleave.js/react';
-import db from "../../config/DBConnection";
+import db, {firebaseInitializeApp} from "../../config/DBConnection";
 
 const PaymentCardMP = () => {
     const isLocal = window.location.origin.includes('localhost');
@@ -47,7 +47,7 @@ const PaymentCardMP = () => {
     }, [deliveryInfo])
 
     const getCurrentService = async () => {
-      await db.firestore().collection('events/requests/delivery')
+      await db.firestore(firebaseInitializeApp).collection('events/requests/delivery')
       .where('patient.uid', '==', user.core_id)
       .where('status', 'in', ['FREE', 'FREE:IN_RANGE'])
       .get()
@@ -88,8 +88,17 @@ const PaymentCardMP = () => {
           dangerMode: false,
         })
         if(confirm) {
-            const form = document.getElementsByTagName('form')[0]
+          const form = document.getElementsByTagName('form')[0]
+          if(!form.elements.email.value){
+            swal({
+              title: "Debe completar su email", 
+              icon: "warning",
+              dangerMode: false,
+            })
+            setLoader(false)
+          } else {
             window.Mercadopago.createToken(form, sdkResponseHandler)
+          }
         } else {
           setLoader(false)
         }

@@ -1,6 +1,6 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 import moment from 'moment-timezone';
-const firestore = DBConnection.firestore();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
 
 export const getAppointments = (apoint) => ({
 	type: 'GET_APPOINTMENTS',
@@ -18,17 +18,18 @@ export const getOneRecord = (patient) => ({
 });
 
 
-export async function getFreeGuardia(test = false, country = false, type = false) {
+export async function getFreeGuardia(os = false, country = false, type = false) {
 	let docQuery = []
-	if(test === true) {
+	if(os !== false) {
 		await firestore
-			.collection('assignations/guardia/test')
+			.collection(`assignations/guardia/${os}`)
 			.get()
 			.then(snap => {
 				snap.forEach((element) => {
 					docQuery.push(element.data())
 				})
 			})
+			.catch(err => console.log(err))
 	} else {
 		await firestore
 			.collection('assignations/guardia/upcoming')
@@ -357,7 +358,6 @@ export function getVoucherById(user, aid) {
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
 export function getAppointmentByUid(uid, collectionName, specialty = 'online_clinica_medica') {
-	console.log(uid, collectionName, specialty)
 	if (uid !== '') {
 		let appointments = [];
 		let currentDate = moment(new Date())
@@ -372,16 +372,21 @@ export function getAppointmentByUid(uid, collectionName, specialty = 'online_cli
 			.collection(collectionName || currentDate)
 			.where('patient.uid', '==', uid)
 			.where('state', '==', 'ASSIGN');
+			console.log("Promesa")
 		return new Promise((resolve, reject) => {
 			query
 				.get()
 				.then((snap) => {
 					snap.forEach((subDoc) => {
-						let data = subDoc.data();
+						console.log(subDoc, subDoc.ref)
+						let data = {
+							...subDoc.data(),
+							id: subDoc.ref.id,
+							path: subDoc.ref.path
+						};
+						console.log(data)
 						// I compare the date just in case there is another appointment in the past days
-						if (data.date >= compareDate) {
-							appointments.push(data);
-						}
+						appointments.push(data);
 					});
 					return resolve(appointments[0]);
 				})

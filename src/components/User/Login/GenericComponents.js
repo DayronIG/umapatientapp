@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Firebase from 'firebase/app';
-import db from '../../../config/DBConnection';
+import db, {firebaseInitializeApp} from '../../../config/DBConnection';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { node_patient } from '../../../config/endpoints'; 
@@ -103,7 +103,7 @@ export const GoogleButton = ({ circleBtn, signUp, vincular, handleErrors }) => {
         googleProvider.addScope('profile');
         googleProvider.addScope('email');
 
-        db.auth().signInWithPopup(googleProvider)
+        db.auth(firebaseInitializeApp).signInWithPopup(googleProvider)
             .then(result => {
                 history.push('/');
             })
@@ -177,7 +177,7 @@ export const FacebookButton = ({ circleBtn, signUp, vincular, handleErrors }) =>
         facebookProvider = new Firebase.auth.FacebookAuthProvider();
         facebookProvider.addScope('email');
 
-        db.auth().signInWithPopup(facebookProvider)
+        db.auth(firebaseInitializeApp).signInWithPopup(facebookProvider)
             .then(result => {
                 history.push('/')
             })
@@ -272,7 +272,7 @@ export const MicrosoftButton = ({ circleBtn, signUp, vincular, handleErrors }) =
         microsoftProvider.addScope('mail.read');
         microsoftProvider.addScope('calendars.read');
 
-        db.auth().signInWithPopup(microsoftProvider)
+        db.auth(firebaseInitializeApp).signInWithPopup(microsoftProvider)
             .then(result => {
                 history.push('/')
             })

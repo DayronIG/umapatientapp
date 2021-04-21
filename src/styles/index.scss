@@ -910,7 +910,14 @@
 		font-size: 2rem;
 		cursor: pointer;
 	}
-
+	.module-title {
+		line-height: 1.7rem;
+		font-size: 1.7rem !important;
+		text-align: center;
+		margin: 0;
+		display: flex;
+		justify-content: center;
+	}
 	.subheader-container {
 		padding-top: 0px;
 	}
@@ -934,9 +941,6 @@
 			.module-ico {
 				font-size: 2rem !important;
 				margin: 0 10px;
-			}
-			.module-title {
-				margin: -10px 10px !important;
 			}
 		}
 	}
@@ -975,11 +979,7 @@
 		font-size: 3rem !important;
 		color: $white-color;
 	}
-	.module-title {
-		margin-top: 20px;
-		line-height: 2rem;
-		font-size: 1.7rem !important;
-	}
+
 
 	#sessionStatus {
 		text-align: center !important;

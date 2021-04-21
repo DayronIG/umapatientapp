@@ -110,12 +110,12 @@ const Predict = ({predicted, history})=>{
         if(autonomous.final_predict.boton === "3"){
         return(
             <div className="sugested-action green" onClick={() => _getOnlineAppointment()}>
-                <div className="suggested-title">
+{/*                 <div className="suggested-title">
                     <span>{autonomous.final_predict.speech}</span>
                 </div>
                 <div className="suggested-ico">
                     <FontAwesomeIcon icon={faChevronRight} />
-                </div>
+                </div> */}
             </div>
         )
         } else if(autonomous.final_predict.boton === "2") {
@@ -142,12 +142,12 @@ const Predict = ({predicted, history})=>{
         } else if(autonomous.final_predict.boton === "4") {
             return(
                 <div className="sugested-action violet" onClick={() => _getOnlineAppointment()}>
-                    <div className="suggested-title">
+{/*                     <div className="suggested-title">
                         <span>{autonomous.final_predict.speech}</span>
                     </div>
                     <div className="suggested-ico">
                     <FontAwesomeIcon icon={faChevronRight} />
-                </div>
+                </div> */}
                 </div>
             )
         }

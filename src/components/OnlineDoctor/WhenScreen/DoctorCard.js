@@ -30,7 +30,7 @@ const DoctorCard = (props) => {
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 	}
 
 	return (
@@ -85,15 +85,15 @@ const GuardCardComp = (props) => {
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
-	const { active_doctors } = useSelector((state) => state.front);
+	const { unique_doctors } = useSelector((state) => state.front);
 
 	const selectGuard = () => {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 	};
 	
 	const getTime = () => {
-		let time = Math.round((props.queue / active_doctors) * 8.25)
+		let time = Math.round((props.queue / unique_doctors) * 8.25)
 		let timeMsg = ``
 		if(time > 60) {
 			timeMsg = `${Math.round(time/60)} horas`
@@ -114,9 +114,9 @@ const GuardCardComp = (props) => {
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
 						<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						{!isNaN((props.queue / active_doctors) * 8.25) && <small> La consulta será en aproximadamente {getTime()}.</small>}
+						{!isNaN((props.queue / unique_doctors) * 8.25) && <small> La consulta será en aproximadamente {getTime()}.</small>}
 						<br></br>
-						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {active_doctors > 1 && <small> y {active_doctors} médicos atendiendo</small>}
+						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {unique_doctors > 1 && <small> y {unique_doctors} médicos atendiendo</small>}
 					</div>
 				</div>
 			</div>
@@ -141,7 +141,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 	}
 
 	return (

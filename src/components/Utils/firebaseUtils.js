@@ -1,7 +1,7 @@
-import DBConnection from '../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
 
-const firestore = DBConnection.firestore();
-const ref = DBConnection.storage().ref();
+const firestore = DBConnection.firestore(firebaseInitializeApp);
+const ref = DBConnection.storage(firebaseInitializeApp).ref();
 
 export async function getDocumentFB(path) {
 	try {
@@ -33,13 +33,13 @@ export async function putFileFB(file, fileName) {
 
 export async function getDocumentsByFilter(route, filters, limit = false, postFilters = false) {
 	/**
-   * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
-   * also take into account the fact that .where() querys are inefficient.
-   * @param {string} url - The route of the collection.
-   * @param {array} filters -  array of filter objects like so: [
-	  {field: 'specialty', value: 'psicologia', comparator: '=='},
-	  {field: 'domain', value: 'onboarding', comparator: '=='}
-	]
+	 * takes in a route and filters as parameters, be mindfull, more than 3 filters will need an index
+	 * also take into account the fact that .where() querys are inefficient.
+	 * @param {string} url - The route of the collection.
+	 * @param {array} filters -  array of filter objects like so: [
+		 {field: 'specialty', value: 'psicologia', comparator: '=='},
+		{field: 'domain', value: 'onboarding', comparator: '=='}
+		]
    */
 	let result = [];
 	try {

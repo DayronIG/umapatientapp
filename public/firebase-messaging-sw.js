@@ -1,9 +1,10 @@
 importScripts('https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/6.3.4/firebase-messaging.js');
-firebase.initializeApp({
-  messagingSenderId: "1062407524656"
+const firebaseInitializeApp = firebase.initializeApp({
+  messagingSenderId: "1062407524656",
+  name: "patients_app"
 });
-const messaging = firebase.messaging();
+const messaging = firebase.messaging(firebaseInitializeApp);
 
 messaging.setBackgroundMessageHandler(function(payload) {
   // Customize notification here

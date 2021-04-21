@@ -10,7 +10,7 @@ const DinamicScreen = props => {
   const userDataToJson = JSON.parse(localStorage.getItem('userData'));
   return (
     <div className="dinamic-template">
-      <GenericHeader children={userDataToJson.fullname} />
+      <GenericHeader children={userDataToJson?.fullname} />
       {loading ? (
         <Loading />
       ) : (

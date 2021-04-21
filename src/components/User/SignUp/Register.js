@@ -4,7 +4,7 @@ import {checkNum} from '../../Utils/stringUtils';
 import {useSelector, useDispatch} from 'react-redux';
 import { ConditionButtons, GenericInputs, Stepper, GenericButton } from '../Login/GenericComponents';
 import { useHistory, useParams } from 'react-router-dom';
-import Firebase from 'firebase/app';
+import Firebase, {firebaseInitializeApp} from '../../../config/DBConnection';
 import axios from 'axios';
 import Modal from '../SignUp/Modal';
 import MobileModal from '../../GeneralComponents/Modal/MobileModal';
@@ -54,7 +54,7 @@ const Register = () => {
 
     useEffect(() => {
         if (switchContent === '2') {
-            if(!Firebase.auth().currentUser) {
+            if(!Firebase.auth(firebaseInitializeApp).currentUser) {
                 dispatch({ type: 'RESET_USER_DATA' });
                 history.push('/');
             }
@@ -77,7 +77,7 @@ const Register = () => {
         if(data.email && data.password) {
             setLoading(true)
             try {
-                await Firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+                await Firebase.auth(firebaseInitializeApp).createUserWithEmailAndPassword(data.email, data.password)
                 .then(async user => {
                     setSwitchContent('2');
                     setLoading(false)
@@ -107,7 +107,7 @@ const Register = () => {
                         })
                     }
                 });
-            }catch {
+            }catch (e) {
                 setLoading(false)
                 setEmailExists(true)
             }
@@ -117,13 +117,13 @@ const Register = () => {
     const updatePatient = async (uid, method, dataVal) => {
         setLoading(true)
         const phoneChecked = checkNum(dataVal.phone)
-        await Firebase.auth().currentUser.getIdToken().then(async token => {
+        await Firebase.auth(firebaseInitializeApp).currentUser.getIdToken().then(async token => {
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
             let finalSex = sex === 'Masculino' ? 'M' : sex === 'Femenino' ? 'F' : 'Otro';
             let data = {
                 newValues: {
                     login: [method],
-                    email: email || Firebase.auth().currentUser?.providerData[0]?.email || '',
+                    email: email || Firebase.auth(firebaseInitializeApp).currentUser?.providerData[0]?.email || '',
                     fullname: `${dataVal.firstname} ${dataVal.lastname}` || '',
                     dni: dataVal.dni || '',
                     ws: phoneChecked|| '',
@@ -175,13 +175,13 @@ const Register = () => {
             return false
         } 
         if(email !== '' && password !== '') {
-            await Firebase.auth().currentUser.sendEmailVerification()
+            await Firebase.auth(firebaseInitializeApp).currentUser.sendEmailVerification()
             .then(async () => {
                 updatePatient(uid, 'email', dataVal);
             })
             .catch(e => console.error(e))
         } else {
-            const providerName = await Firebase.auth().currentUser.providerData[0].providerId
+            const providerName = await Firebase.auth(firebaseInitializeApp).currentUser.providerData[0].providerId
             updatePatient(uid, providerName, dataVal)
         }
     }
@@ -211,19 +211,19 @@ const Register = () => {
     const redirectUserHome = (e) => {
         e.preventDefault()
 
-        Firebase.auth().currentUser.delete()
+        Firebase.auth(firebaseInitializeApp).currentUser.delete()
         .then(() => {
             dispatch({ type: 'RESET_USER_DATA' });
             history.push('/');
         })
         .catch(e => {
             if (e.code === 'auth/requires-recent-login') {
-                const user = Firebase.auth().currentUser;
+                const user = Firebase.auth(firebaseInitializeApp).currentUser;
                 let credential = Firebase.auth.EmailAuthProvider.credential(email, password);
     
                 user.reauthenticateWithCredential(credential)
                     .then(() => {
-                        Firebase.auth().currentUser.delete()
+                        Firebase.auth(firebaseInitializeApp).currentUser.delete()
                         .then(res => {
                             dispatch({ type: 'RESET_USER_DATA' });
                             history.push('/')
@@ -281,19 +281,19 @@ const Register = () => {
     }
 
     const cancelSignUp = () => {
-        Firebase.auth().currentUser.delete()
+        Firebase.auth(firebaseInitializeApp).currentUser.delete()
             .then(() => {
                 dispatch({ type: 'RESET_USER_DATA' });
                 history.push('/')
             })
             .catch(e => {
                 if (e.code === 'auth/requires-recent-login') {
-                    const user = Firebase.auth().currentUser;
+                    const user = Firebase.auth(firebaseInitializeApp).currentUser;
                     let credential = Firebase.auth.EmailAuthProvider.credential(email, password);
 
                     user.reauthenticateWithCredential(credential)
                         .then(() => {
-                            Firebase.auth().currentUser.delete()
+                            Firebase.auth(firebaseInitializeApp).currentUser.delete()
                                 .then(res => {
                                     dispatch({ type: 'RESET_USER_DATA' });
                                     history.push('/')

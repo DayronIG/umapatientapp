@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import db from "../../../../config/DBConnection"
+import db, {firebaseInitializeApp} from "../../../../config/DBConnection"
 import moment from "moment"
 
 export const useChat = (isInternal) => {
@@ -13,7 +13,7 @@ export const useChat = (isInternal) => {
     // const [corporation] = useState("uma");
     // const [user] = useState("patient")
     const patient = useSelector(state => state.user)
-    const firestore = db.firestore();
+    const firestore = db.firestore(firebaseInitializeApp);
     const {currentHisopadoIndex} = useSelector(state => state.deliveryService)
 	const {incidente_id} = useParams()
 	const docId = useSelector(state => state.deliveryService.deliveryInfo[currentHisopadoIndex]?.docId) || incidente_id

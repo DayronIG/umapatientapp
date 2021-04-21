@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {withRouter} from 'react-router-dom';
-import app from "../../config/DBConnection";
+import app, {firebaseInitializeApp} from "../../config/DBConnection";
 import { GenericHeader } from '../GeneralComponents/Headers';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('')
     const [msg, setMessage] = useState('')
-    var auth = app.auth();
+    var auth = app.auth(firebaseInitializeApp);
     function resetPassword(e) {
         e.preventDefault()
         setMessage("Compruebe su casilla de email")

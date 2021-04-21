@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import UMA_LOGO from '../../assets/icons/icon-168.png';
 import moment from 'moment-timezone';
-import db from '../../config/DBConnection';
+import db, {firebaseInitializeApp}  from '../../config/DBConnection';
 import '../../styles/orders.scss';
 
 class OrderPDF extends React.Component {
@@ -60,7 +60,7 @@ class OrderPDF extends React.Component {
 
 
 function StudiesOrder({ att, doc }) {
-    const firebase = db.firestore();
+    const firebase = db.firestore(firebaseInitializeApp);
     const { mr, patient } = att
     const [order, setOrder] = useState({ indications: '' })
     const compRef = useRef()

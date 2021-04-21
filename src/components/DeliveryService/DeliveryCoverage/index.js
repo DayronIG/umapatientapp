@@ -23,6 +23,7 @@ const HisopadosCoverage = () => {
         if(!allCoords.length) {
             const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
             Object.keys(params.zones).map(zone => {
+            if(params.active_zones.includes(zone)){
                 let coordsArrayByZone = []
                 params.zones[zone].forEach(coord => {
                     let coordToNumber = {
@@ -32,6 +33,7 @@ const HisopadosCoverage = () => {
                     coordsArrayByZone.push(coordToNumber);
                 });
                 coordsArray.push(coordsArrayByZone)
+            }
         })}
 
         let coveragesArray = []

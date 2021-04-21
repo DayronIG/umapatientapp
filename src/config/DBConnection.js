@@ -20,12 +20,14 @@ var config = {
     measurementId: "G-9E186399VJ"
 };
 
+
+export const firebaseInitializeApp = Firebase.initializeApp(config, "patients_app");
+
 function DBConnection() {
-    Firebase.initializeApp(config);
-    Firebase.performance();
+    // Firebase.performance(firebaseInitializeApp);
     const ios = isIos()
     if (!ios) {
-        messaging = Firebase.messaging();
+        messaging = Firebase.messaging(firebaseInitializeApp);
         messaging.usePublicVapidKey(
             'BDpPH-rMBfK3XOpw_ZoGFkT0surd8f6NQeUlHjiumSHKBU0s0KxTKcFk8EHBm8sU4myk-SQ7ln1fXcWoejaRZYU'
         );

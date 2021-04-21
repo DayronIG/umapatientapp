@@ -42,7 +42,7 @@ export const SymptomsEnd = ({ history }) => {
                 </div>
                 <div className='symptomsStatus__container'>
                     <p className='symptomsStatus__container--text'>
-                        Su ciclo evolutivo de 15 días se ha completado satisfactoriamente. <br />
+                        Su ciclo evolutivo de 10 días se ha completado satisfactoriamente. <br />
                         {' '}Si sus síntomas vuelven, no dude en realizar una consulta autónoma.
                     </p>
                 </div>
@@ -130,17 +130,17 @@ export const SymptomsWarning = ({ history }) => {
                         El cuadro podría estar empeorando, por favor realice una consulta online a la brevedad.
                     </p>
                 </div>
-                <div className='symptomsStatus__container'>
+                {/* <div className='symptomsStatus__container'>
                     <button className='symptomsStatus__container--btn'
                         onClick={() => _getOnlineAppointment()}
                     >
                         realizar consulta online
                     </button>
-                </div>
+                </div> */}
                 <NotifyFriends />
             </div>
             <FooterBtn text='Volver a inicio'
-                callback={() => history.push(`/${user.dni}/core/${user.core_id}`)} />
+                callback={() => history.push(`/home`)} />
         </>
     )
 }

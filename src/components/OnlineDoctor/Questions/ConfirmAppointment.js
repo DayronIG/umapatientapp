@@ -22,14 +22,14 @@ const ConfirmAppointment = (props) => {
 	const dispatch = useDispatch();
 	const [selectedAppointment, setSelectedAppointment] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [File, setFile] = useState([]);
-	const [contador, setContador] = useState(0);
+	const [File, setFile] = useState([]);	
 	const biomarkers = useSelector(state => state.biomarkers)
 	const { activeUid } = useParams()
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	const {currentUser} = useSelector(state => state.userActive)
 	const patient = useSelector(state => state.user)
+	const {filesCount} = useSelector(state => state.assignations)
 
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ const ConfirmAppointment = (props) => {
 		let fileName = e.target.files[0].name;
 		uploadFileToFirebase(file, `${user.dni}/attached/${selectedAppointment?.path?.split('/')?.[3]}/${dt}_${fileName}`)
 			.then(imgLink => {
-				setContador(contador + 1);
+				dispatch({type: 'SUM_FILE_COUNT'})
 				setFile([...File, imgLink]);
 				setLoading(false);
 				swal('Éxito', 'Archivo cargado exitosamente', 'success');
@@ -76,6 +76,11 @@ const ConfirmAppointment = (props) => {
 		let symptoms = '', userVerified = user;
 		if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 		try {
+			let coords = {lat: '', lon: ''}
+/* 			await navigator.geolocation.getCurrentPosition((pos) => {
+				coords = {lat: pos.coords.latitude, lon: pos.coords.longitude}
+				console.log("Error: no se pudo obtener coordenadas")	
+			}); */
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
@@ -92,8 +97,9 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '', 
-				lon: coordinates.lng || '',
+				incidente_id: localStorage.getItem('external_reference') || false,
+				lat: coords.lat || '', 
+				lon: coords.lng || '',
 				msg: 'make_appointment',
 				cuit: `${selectedAppointment.cuit}`,
 				motivo_de_consulta: symptoms,
@@ -118,19 +124,16 @@ const ConfirmAppointment = (props) => {
 				return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			}
 		} catch (err) {
-			if(err.response?.data?.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
-			}
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente...', 'error');
 			dispatch({ type: 'LOADING', payload: false });
+			return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 		}
 	};
 
 	const submitRequest = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true });
 		let appointId = "", lastAssingState = ""
-		console.log(selectedAppointment)
 		if(selectedAppointment?.path) {
 			appointId = genAppointmentID(selectedAppointment, yearAndMonth());
 			lastAssingState = await getDocumentFB(`${selectedAppointment.path}`);
@@ -187,7 +190,7 @@ const ConfirmAppointment = (props) => {
 					:
 					<div className="umaBtn attachFile">
 						<FaFileMedicalAlt className="attachFile__icon" />
-						<p>{contador < 1 ? 'Adjuntar archivo' : (contador === 1 ? `${contador} archivo adjunto` : `${contador} archivos adjuntos`)}</p>
+						<p>{filesCount < 1 ? 'Adjuntar archivo' : (filesCount === 1 ? `${filesCount} archivo adjunto` : `${filesCount} archivos adjuntos`)}</p>
 						<input type="file" onChange={uploadImage} />
 					</div>
 				}

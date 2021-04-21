@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../../GeneralComponents/Loading';
 import { getUserMedicalRecord } from '../../../store/actions/firebaseQueries';
-import db from "../../../config/DBConnection";
+import db, {firebaseInitializeApp} from "../../../config/DBConnection";
 import '../../../styles/onlinedoctor/Chat.scss';
 import queryString from 'query-string';
+import { IoMdClose } from 'react-icons/io'
 
 const Chat = (props) => {
     const dispatch = useDispatch()
@@ -24,7 +25,7 @@ const Chat = (props) => {
     const [dataChat, setDataChat] = useState([])
     const [inputValue, setInputValue] = useState('')
     const chatRef = useRef()
-    const firestore = db.firestore()
+    const firestore = db.firestore(firebaseInitializeApp)
     const {activeUid} = useParams()
     const location = useLocation()
     const dependant = queryString.parse(location.search)
@@ -66,8 +67,8 @@ const Chat = (props) => {
                         tempArray.push(content.data())
                     })
                     tempArray.sort(function (a, b) {
-                        var keyA = new Date(a.dt),
-                            keyB = new Date(b.dt);
+                        var keyA = new Date(a.dt.slice(0, -7).replace(' ', 'T')),
+                            keyB = new Date(b.dt.slice(0, -7).replace(' ', 'T'));
                         // Compare the 2 dates
                         if (keyA < keyB) return -1;
                         if (keyA > keyB) return 1;
@@ -111,10 +112,10 @@ const Chat = (props) => {
             let compareDate = moment(new Date()).tz("America/Argentina/Buenos_Aires").format('YYYY-MM-DD')
             let specialty = 'online_clinica_medica' // Temporal, luego habrá más especialidades
             try {
-                const query = await db.firestore().collection('assignations').doc(specialty).collection(currentDate)
+                const query = await db.firestore(firebaseInitializeApp).collection('assignations').doc(specialty).collection(currentDate)
                     .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
-                const bagQuery = await db.firestore().collection('assignations').doc(specialty).collection("bag")
+                const bagQuery = await db.firestore(firebaseInitializeApp).collection('assignations').doc(specialty).collection("bag")
                     .where('patient.uid', '==', uid)
                     .where("state", "in", ["ASSIGN", "ATT"])
                 return new Promise((resolve, reject) => {
@@ -187,6 +188,7 @@ const Chat = (props) => {
     return (
         <>
             <div className="chatWrapper">
+                <button onClick={() => props.visible(false)} className="closeChat"><IoMdClose /></button>
                 {dataChat.length >= 1 ? dataChat.map((content, index) =>
                     <div className="listContainer" key={index} ref={chatRef}>
                         {content.rol === 'doctor' &&
@@ -195,7 +197,7 @@ const Chat = (props) => {
                                     <div className="conversation">{content.msg.toString()}</div>
                                     <div className="right-column umaChatProfile"></div>
                                 </div>
-                                <small className="umaChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="umaChatDate">{content.dt}</small>
                             </div>}
                         {content.rol === 'patient' &&
                             <div>
@@ -205,7 +207,7 @@ const Chat = (props) => {
                                     </div>
                                     <div className="conversation">{content.msg}</div>
                                 </div>
-                                <small className="userChatDate">{content.dt.slice(0, -7)}</small>
+                                <small className="userChatDate">{content.dt}</small>
                             </div>}
                     </div>
                 ) :
@@ -229,7 +231,7 @@ const Chat = (props) => {
                     >Enviar</button>
                 </div>
             </div>
-            <div className="chat__ad">El chat se mantendrá activo mientras no haya conexión de audio o video</div>
+            {/* <div className="chat__ad">El chat se mantendrá activo mientras no haya conexión de audio o video</div> */}
         </>
     );
 }

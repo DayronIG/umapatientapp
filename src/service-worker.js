@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-restricted-globals
+const ignored = self.__WB_MANIFEST;
+
 /* eslint-disable no-undef */
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -8,6 +11,8 @@ const isLocalhost = Boolean(
       /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
     )
 );
+
+const {firebaseInitializeApp} = require("./config/DBConnection");
 
 export default function register(onUpdate) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -35,7 +40,7 @@ export default function register(onUpdate) {
           return /iphone|ipad|ipod|Instagram|opera|instagram/.test(userAgent)
         }
         !isIos && navigator.serviceWorker.ready.then(registration => {
-                  firebase.messaging().useServiceWorker(registration)
+                  firebase.messaging(firebaseInitializeApp).useServiceWorker(registration)
                 })
       }
     })

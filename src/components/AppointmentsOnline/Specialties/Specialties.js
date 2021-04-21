@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useHistory, useParams, useLocation} from 'react-router-dom';
 import queryString from 'query-string'
-import DB from '../../../config/DBConnection';
+import DB, {firebaseInitializeApp} from '../../../config/DBConnection';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { Loader } from '../../global/Spinner/Loaders';
 import { getDependant } from '../../../store/actions/firebaseQueries';
-const db = DB.firestore();
+const db = DB.firestore(firebaseInitializeApp);
 
 const Specialties = () => {
 	const dispatch = useDispatch();

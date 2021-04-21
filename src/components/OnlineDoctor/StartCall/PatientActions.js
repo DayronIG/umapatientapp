@@ -6,7 +6,7 @@ import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment-timezone';
 import Snackbar from '../../GeneralComponents/Snackbar/Snackbar';
 import Sthetoscope from '../Biomarkers/Sthethoscope';
-import DBConnection from '../../../config/DBConnection';
+import DBConnection, {firebaseInitializeApp} from '../../../config/DBConnection';
 
 const PatientActions = (props) => {
     const patient = useSelector(state => state.user)
@@ -30,8 +30,7 @@ const PatientActions = (props) => {
         let file = event.target.files[0]
         let dt =  moment().tz("America/Argentina/Buenos_Aires").format('YYYYMMDDHHmmss')
         console.log("Uploading foto")
-        // const firestore = DBConnection.firestore(),
-        let ref  = DBConnection.storage().ref()
+        let ref  = DBConnection.storage(firebaseInitializeApp).ref()
         let fileRef = ref.child(`${props.match.params.dni}/analysis/${dt}_adjunto`)
         fileRef.put(file).then(snap => { console.log("Uploaded ", snap, fileRef) })
     }
