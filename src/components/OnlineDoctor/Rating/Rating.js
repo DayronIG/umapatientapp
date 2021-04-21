@@ -8,7 +8,6 @@ import axios from 'axios';
 import queryString from 'query-string';
 import { feedback } from '../../../config/endpoints';
 import { getMedicalRecord } from '../../../store/actions/firebaseQueries';
-import state from 'sweetalert/typings/modules/state';
 
 const Rating = () => {
 	const dispatch = useDispatch();
@@ -18,7 +17,7 @@ const Rating = () => {
 	const [notes, setNotes] = useState('');
 	const token = useSelector((state) => state.userActive.token);
 	const mr = useSelector((state) => state.queries.medicalRecord);
-	const user = useSelector(() => state.user)
+	const user = useSelector((state) => state.user)
     const uid = useSelector(state => state.userActive?.currentUser?.uid)
 	const location = useLocation()
     const { dependant, activeUid, assignation_id } = queryString.parse(location.search)
