@@ -22,11 +22,12 @@ export function getAssignedAppointments(specialty, collectionName, doctors, uid,
 						const u = JSON.parse(localStorage.getItem('userData'));
 						let match;
 						if (collectionName !== 'bag') {
-							if (u && u.context === 'temp') {
+							match = true
+							/* if (u && u.context === 'temp') {
 								match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'temp');
 							} else {
 								match = doctors.find((d) => d.cuit === data.cuil && d.enable === 'si');
-							}
+							} */
 						} else {
 							match = true;
 						}
@@ -45,7 +46,8 @@ export function getAssignedAppointments(specialty, collectionName, doctors, uid,
 						}
 					});
 					resolve(assigned);
-				});
+				})
+				.catch(err => console.log(err));
 		} catch (error) {
 			reject(error);
 		}

@@ -211,9 +211,9 @@ export const genAppointmentID = (selectedAppointment, yearAndMonth) => {
 
 export const findAllAssignedAppointment = async (uid, type = '') => {
 	const doctors = await searchActiveProviders('online', type);
-	const assignedBag = getAssignedAppointments('online_clinica_medica', 'bag', doctors, uid, currentDt);
-	const assignedToday = getAssignedAppointments('online_clinica_medica', yearMonth, doctors, uid, currentDt);
-	const assignedTomorrow = getAssignedAppointments('online_clinica_medica', yearMonth, doctors, uid, dtNextDay);
+	const assignedBag = await getAssignedAppointments('online_clinica_medica', 'bag', doctors, uid, currentDt);
+	const assignedToday = await getAssignedAppointments('online_clinica_medica', yearMonth, doctors, uid, currentDt);
+	const assignedTomorrow = await getAssignedAppointments('online_clinica_medica', yearMonth, doctors, uid, dtNextDay);
 	const resolve = await Promise.all([assignedBag, assignedToday, assignedTomorrow]);
 	const assigned = resolve.find((res) => !!res && res);
 	return assigned;

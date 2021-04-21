@@ -23,11 +23,11 @@ import 'moment/locale/es';
 
 const WhenScreen = (props) => {
 	const modal = useSelector((state) => state.front.openDetails);
-	const {active_guardia, active_list, guardia_advice} = useSelector((state) => state.front);
+	const {active_guardia, active_guardia_ec, active_list, guardia_advice} = useSelector((state) => state.front);
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
 	const {currentUser} = useSelector((state) => state.userActive);
-	const [action, setAction] = useState('Loading');
+	const [action, setAction] = useState('Empty');
 	const [assignations, setAssignations] = useState([]);
 	const [queue, setQueue] = useState("1")
 	const [pediatric, setPediatric] = useState(false);
@@ -37,22 +37,26 @@ const WhenScreen = (props) => {
     const params = queryString.parse(location.search)
 	
 	useEffect(() => {
-		if(aid) {
+		if(params.aid) {
+			localStorage.setItem('external_reference', params.aid)
 			loginExternal()
 		}
 	}, [])
 
 	const loginExternal = useCallback(async () => {
 		dispatch({ type: 'LOADING', payload: true })
-		await axios.post(`${NODE_SERVER}/uma/sendCode`, { uid: activeUid }, { headers: { 'Content-Type': 'application/json' } }).then(res => {
-			// console.log(`${res.data.ws}@${res.data.code}.com`)
-			db.auth(firebaseInitializeApp)
-				.signInWithEmailAndPassword(`${res.data.ws}@${res.data.code}.com`, res.data.code)
-				.then((reg) => {
-					console.log("Loged in")
-				})
-				.catch(err => console.log(err))
+		await axios.post(`${NODE_SERVER}/uma/sendCode`, { uid: activeUid }, { headers: { 'Content-Type': 'application/json' } })
+			.then(res => {
+				if(res.data.code) {
+				db.auth(firebaseInitializeApp)
+					.signInWithEmailAndPassword(`${res.data.ws}@${res.data.code}.com`, res.data.code)
+					.then((reg) => {
+						console.log("Loged in")
+					})
+					.catch(err => console.log(err))
+				}
 			})
+			.catch(err => console.log(err))
 		dispatch({ type: 'LOADING', payload: false })
 	}, [activeUid])
 
@@ -95,38 +99,45 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		if(user && !aid) {
-			let test = user.context === "temp" ? true : false
+		if(user) {
+			let os = user.context === "temp" ? "temp" : false
+			if(user.corporate_norm === "VALE") {
+				os = "EC"
+			}
 			const type = moment().diff(user.dob, 'years') <= 16 ? 'pediatria' : '';
 			setPediatric(type);
-			findAssignedAppointments(user, type, test);
+			findAssignedAppointments(user, type, os);
 		}
 	}, [user])
 
-	async function findAssignedAppointments(person, type, test) {
-		try {
-			setAction('Loading');
-			if(currentUser) {
-				let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
-				if (assigned) {
-					dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
-					return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
+	async function findAssignedAppointments(person, type, os) {
+		if(currentUser.uid){
+			try {
+				setAction('Loading');
+				if(currentUser) {
+					let assigned = await findAllAssignedAppointment(currentUser?.uid, type);
+					if (assigned) {
+						dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned });
+						return props.history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
+					} else {
+						return findFreeAppointments(person, type, os);
+					}
 				} else {
-					return findFreeAppointments(person, type, test);
+					setAction('Empty');
 				}
-			} else {
-				setAction('Empty');
+			} catch (error) {
+				console.error("Error", error)
+				return props.history.replace('/');
 			}
-		} catch (error) {
-			console.error(error)
-			return props.history.replace('/');
+		} else {
+			setAction("Empty")
 		}
 	}
 
-	const findFreeAppointments = useCallback(async (person, type, test) => {
+	const findFreeAppointments = useCallback(async (person, type, os) => {
 		try {
 			let freeAppoints =  []
-			freeAppoints = await getFreeGuardia(test, user.country, type); // WIP
+			freeAppoints = await getFreeGuardia(os, user.country, type); // WIP
 			if (freeAppoints.length > 0) {
 				setAssignations(freeAppoints);
 				return setAction('Doctors');
@@ -178,9 +189,11 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{guardia_advice && <Advice text={guardia_advice} />}
-					{(active_guardia || user.country !== "AR" || pediatric) && <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
-					{((active_list && action === 'Doctors') || user.context === "temp") && (
+					{guardia_advice && user.country === "AR" && <Advice text={guardia_advice} />}
+					{((active_guardia && user.corporate_norm !== "VALE")
+						|| pediatric) 
+						&& <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
+					{((active_list && action === 'Doctors') || user.context === "temp" || user.corporate_norm === "VALE") && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
@@ -191,7 +204,7 @@ const WhenScreen = (props) => {
 								))}
 						</div>
 					)}
-					{action === 'Loading' && false && (
+					{action === 'Loading' && (
 						<div className='when__loading'>
 							<Loader />
 							<div className='p-3 text-center'>Buscando especialistas, esto puede demorar algunos segundos...</div>

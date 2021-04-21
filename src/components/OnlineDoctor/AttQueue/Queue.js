@@ -75,6 +75,7 @@ const Queue = (props) => {
     }, [assignation, mr])
 
     async function checkAssignedAppointment(uid) {
+        console.log("Check assigned", uid)
         if (Object.keys(assignedAppointment).length === 0) {
             dispatch({ type: 'LOADING', payload: true })
             let user = {}
@@ -85,10 +86,12 @@ const Queue = (props) => {
             }
             const type = (moment().diff(user?.dob, 'years') <= 16) ? 'pediatria' : ''
             const assigned = await findAllAssignedAppointment(uid, type)
+            console.log(assigned)
             dispatch({ type: 'LOADING', payload: false })
             if (assigned) {
                 dispatch({ type: 'SET_ASSIGNED_APPOINTMENT', payload: assigned })
             } else {
+                console.log("Redirecting...")
                 return history.replace(`/home`)
             }
         }

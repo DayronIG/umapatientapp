@@ -76,6 +76,11 @@ const ConfirmAppointment = (props) => {
 		let symptoms = '', userVerified = user;
 		if (localStorage.getItem('appointmentUserData')) userVerified = JSON.parse(localStorage.getItem('appointmentUserData'));
 		try {
+			let coords = {lat: '', lon: ''}
+/* 			await navigator.geolocation.getCurrentPosition((pos) => {
+				coords = {lat: pos.coords.latitude, lon: pos.coords.longitude}
+				console.log("Error: no se pudo obtener coordenadas")	
+			}); */
 			if (!!symptomsForDoc) symptoms = await cleanSyntoms();
 			let dt = moment().tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD HH:mm:ss');
 			let category = selectedAppointment.path?.split('assignations/')[1] ? "GUARDIA_MEDICO" : "GUARDIA_RANDOM"
@@ -92,8 +97,9 @@ const ConfirmAppointment = (props) => {
 				dt,
 				dni: userVerified.dni || patient.dni,
 				epicrisis: responseIA.epicrisis || '',
-				lat: coordinates.lat || '', 
-				lon: coordinates.lng || '',
+				incidente_id: localStorage.getItem('external_reference') || false,
+				lat: coords.lat || '', 
+				lon: coords.lng || '',
 				msg: 'make_appointment',
 				cuit: `${selectedAppointment.cuit}`,
 				motivo_de_consulta: symptoms,
@@ -118,12 +124,10 @@ const ConfirmAppointment = (props) => {
 				return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 			}
 		} catch (err) {
-			if(err.response?.data?.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
-			}
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente...', 'error');
 			dispatch({ type: 'LOADING', payload: false });
+			return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
 		}
 	};
 
