@@ -58,15 +58,14 @@ function AuthProvider({ children }) {
 	const getCoverage = async (user) => {
 		// Busco BASIC primero porque es el básico sin ningun permiso
 		let plan = await getDocumentFB('services/porfolio/BASIC/active')
-		let free = await getDocumentFB('services/porfolio/FREE/active')
-		if(plan && free) {
-			plan["onlinedoctor"] = free.onlinedoctor
-		}
+		
 		if (!!user?.coverage && Array.isArray(user?.coverage) && plan) { 
-			// Este else if es el mas importante. 
+			let all_coverages = user.coverage
+			
+			user.coverage.push({plan: user.corporate_norm, type: "corporate_norm"})
 			// Un usuario puede tener multiples subscriptions
 			// El usuario tiene como servicios el resultado de la sumatoria de ellos (de los true)
-			user && user.coverage && user.coverage.forEach(async each => {
+			all_coverages.forEach(async each => {
 				if(each?.plan) {
 					let path = `services/porfolio/${each?.plan?.toUpperCase()}/active`
 					let coverageTemp = await getDocumentFB(path)

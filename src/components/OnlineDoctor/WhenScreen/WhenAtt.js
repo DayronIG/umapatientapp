@@ -99,7 +99,7 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if(user) {
-			let os = user.context === "temp" ? "temp" : false
+			let os = user.context === "test" ? "test" : false
 			if(user.corporate_norm === "VALE") {
 				os = "EC"
 			}
