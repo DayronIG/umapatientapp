@@ -18,17 +18,18 @@ export const getOneRecord = (patient) => ({
 });
 
 
-export async function getFreeGuardia(test = false, country = false, type = false) {
+export async function getFreeGuardia(os = false, country = false, type = false) {
 	let docQuery = []
-	if(test === true) {
+	if(os !== false) {
 		await firestore
-			.collection('assignations/guardia/test')
+			.collection(`assignations/guardia/${os}`)
 			.get()
 			.then(snap => {
 				snap.forEach((element) => {
 					docQuery.push(element.data())
 				})
 			})
+			.catch(err => console.log(err))
 	} else {
 		await firestore
 			.collection('assignations/guardia/upcoming')
