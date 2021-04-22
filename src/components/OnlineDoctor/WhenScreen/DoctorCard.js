@@ -31,7 +31,7 @@ const DoctorCard = (props) => {
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
 		localStorage.setItem('selectedAppointment', JSON.stringify(selected));
-		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 	}
 
 	return (
@@ -95,7 +95,7 @@ const GuardCardComp = (props) => {
 	const selectGuard = () => {
 		if(copayPrice === 'NO COPAY') {
 			dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' }); 
-			props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+			props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 		} else {
 			payAppointment()
 		}
@@ -228,7 +228,7 @@ const DoctorCardOfficeComp = ({ doctor, history, dni }) => {
 
 	function selectDoctor(selected) {
 		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: selected });
-		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant}`);
+		history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 	}
 
 	return (

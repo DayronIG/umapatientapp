@@ -1,5 +1,6 @@
 const initialState = {
     active_guardia: true,
+    active_guardia_ec: false,
     active_list: true,
     alert: {
         active: false,
