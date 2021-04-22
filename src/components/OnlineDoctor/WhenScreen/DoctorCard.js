@@ -94,10 +94,16 @@ const GuardCardComp = (props) => {
 	const [umaCreditos, setUmaCreditos] = useState(0)
 
 	const selectGuard = () => {
-		if(copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) {
+		if(false) {
+			window.gtag('event', 'select_item', {
+				'item_list_name': 'Guardia sin copago'
+			})
 			dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' }); 
 			props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
 		} else {
+			window.gtag('event', 'select_item', {
+				'item_list_name': 'Guardia con copago'
+			})
 			payAppointment()
 		}
 	};
@@ -147,6 +153,7 @@ const GuardCardComp = (props) => {
 			  product: 'guardia',
 			  quantity: 1,
 			  title: 'Consulta de guardia',
+			  description: 'Consulta de guardia médica en el día',
 			  uid: currentUser.uid,
 			  service: 'GUARDIA',
 			  dependant: params.dependant,
@@ -158,6 +165,7 @@ const GuardCardComp = (props) => {
 			product: 'guardia',
 			quantity: 1,
 			title: 'Consulta de guardia',
+			description: 'Consulta de guardia médica en el día',
 			uid: currentUser.uid,
 			service: 'GUARDIA',
 			dependant: params.dependant,
@@ -190,7 +198,9 @@ const GuardCardComp = (props) => {
 				</div>
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
-					{ (copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) && 
+					{/* Habilitar cuando usemos pagos pendients */}
+					{/* { (copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) &&  */}
+					{ true &&
 						(
 							<>
 								<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
@@ -200,7 +210,9 @@ const GuardCardComp = (props) => {
 							</>
 						)
 					}
-					{!['', 'NO COPAY'].includes(copayPrice) && umaCreditos < copayPrice &&
+					{/* Habilitar cuando usemos pagos pendients */}
+					{/* {!['', 'NO COPAY'].includes(copayPrice) && umaCreditos < copayPrice && */}
+					{ false &&
 						(
 							<>
 								<p>Consulta con copago</p>

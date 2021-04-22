@@ -16,17 +16,35 @@ const PaymentStatus = () => {
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
     const { mercadoPago } = useSelector((state) => state.payments);
-    const { paid, dependant } = queryString.parse(location.search);
+    const { paid, dependant, product, method } = queryString.parse(location.search);
 
     const handleClick = () => {
-        if(paid === 'rejected') return history.push(`/payments/checkout/${currentUser.uid}`)   
-        if(paid === 'true') {
-            localStorage.removeItem('paymentData')
-            dispatch({
-                type: 'RESET_PAYMENT'
+        if(paid === 'rejected') {
+            window.gtag('event', `${product}_payment_rejected`)
+            window.gtag('event', `${product}_payment_method`, {
+                'method': method,
+                'status': 'rejected'
             })
+            history.push(`/payments/checkout/${currentUser.uid}`)
+        }   
+        if(paid === 'true') {
+            window.gtag('event', `${product}_payment_success`)
+            window.gtag('event', `${product}_payment_method`, {
+                'method': method,
+                'status': 'success'
+            })
+            localStorage.removeItem('paymentData')
+            dispatch({ type: 'RESET_PAYMENT' })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
         }
+        if(paid === 'pending') {
+            window.gtag('event', `${product}_payment_pending`)
+            window.gtag('event', `${product}_payment_method`, {
+                'method': method,
+                'status': 'pending'
+            })
+        }
+
     }
 
     useEffect(() => {
@@ -68,7 +86,7 @@ const PaymentStatus = () => {
                     <div className='rejected-payment-body-text-container'>
                         <p className='rejected-payment-body-text'>Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.</p>
                     </div>
-                    <Link to={'/'} className='rejected-payment-body-link'>Ir al inicio</Link>
+                    <Link to={'/'} className='rejected-payment-body-link' onClick={handleClick}>Ir al inicio</Link>
                 </div>
             </div>
         }
@@ -97,8 +115,7 @@ const PaymentStatus = () => {
                 <div className='rejected-payment-body'>
                     <h3 className='rejected-payment-body-title-rejected'>Debes realizar un pago para obtener el servicio.</h3>
                     <div className='rejected-payment-body-text-container'>
-                        <p className='rejected-payment-body-text'>Algun texto que se les ocurra poner en esta parte.</p>
-                        <p className='rejected-payment-body-text'>Otro texto por aqui.</p>
+                        <p className='rejected-payment-body-text'>El link que utilizaste ya caducó.</p>
                     </div>
                     <Link to={'/'} className='rejected-payment-body-link'>Ir al inicio</Link>
                 </div>
