@@ -100,7 +100,7 @@ const WhenScreen = (props) => {
 
 	useEffect(() => {
 		if(user) {
-			let os = user.context === "temp" ? "temp" : false
+			let os = user.context === "test" ? "test" : false
 			if(user.corporate_norm === "VALE") {
 				os = "EC"
 			}
@@ -193,7 +193,7 @@ const WhenScreen = (props) => {
 					{((active_guardia && user.corporate_norm !== "VALE")
 						|| pediatric) 
 						&& <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
-					{((active_list && action === 'Doctors') || user.context === "temp" || user.corporate_norm === "VALE") && (
+					{((active_list && action === 'Doctors') || user.context === "test" || user.corporate_norm === "VALE") && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard
