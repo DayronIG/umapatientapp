@@ -60,7 +60,9 @@ const ModulesMenu = () => {
 					{/* { user.country !== "EC" && <BuyHisopado /> } */}
 					{ 
 						user.country !== "EC" && 
-						<button onClick={() => history.push('/hisopado/type')}>Quiero mi hisopado</button>
+						<div className="hisopados-btn-container">
+							<button className="hisopados-btn" onClick={() => history.push('/hisopado/type')}>Quiero mi hisopado</button>
+						</div>
 					}
 					{showButtonDerivation && <ButtonHome text='Derivación en curso'/>}
 					<section className='modules-container'>

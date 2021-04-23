@@ -13,12 +13,11 @@ const HisopadoType = () => {
             <GenericHeader children={fullname} />
 
             <section className="hisopados__type">
-                <BuyHisopado />
-
                 <div className="hisopado__container">
-                    <button onClick={() => history.push('/hisopado/sede')}>Hisopado PCR</button>
-                    <br/>
-                    <button onClick={() => history.push('/hisopado/sede')}>Test de Abbott</button>
+                    <div className="hisopado__btnsContainer">
+                        <BuyHisopado />
+                        <button className="hisopados-type-btn" onClick={() => history.push('/hisopado/sede')}>Test de Abbott</button>
+                    </div>
                 </div>
             </section>
         </>

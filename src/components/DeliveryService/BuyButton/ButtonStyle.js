@@ -18,8 +18,8 @@ export default function ButtonStyle({title, innerText, checkoutText, finalAction
                 <p>A sólo <span>${price}</span></p>
             </div>}
         </div>
-        {showPrice && <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>}
-            <button className="hisopado__btn">{checkoutText} <FaChevronRight /></button>
+        {/* {showPrice && <img src={HomeHisopado} className="hisopado__img" alt="¡Hisopate hoy!"/>} */}
+        <button className="hisopado__btn">{checkoutText} <FaChevronRight /></button>
     </section>
     )
 }

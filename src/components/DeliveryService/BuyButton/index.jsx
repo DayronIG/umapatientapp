@@ -37,24 +37,33 @@ const BuyHisopado = () => {
         history.push(`/hisopado/corporate/${patient.ws}`)
     }
 
+    const handleWantHisopado = () => {
+        if (patient.corporate_norm !== 'IOMA') {
+            buyHisopado()
+        } else {
+            confirmHisopado()
+        }
+    }
+
     const renderButtonContentFromState = () => {
                 if(deliveryStatus === "TRACKING"){
                     return <ButtonAllHisopados innerText="Mis hisopados" finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 } else if (deliveryStatus === "RESULT"){
                     return <ButtonAllHisopados innerText="Ya tienes tu resultado" finalAction={()=>history.push(`/hisopado/listTracker/${patient.ws}`)} />
                 } else {
-                    return <ButtonStyle 
-                    title="Hisopado a domicilio" 
-                    innerText={`¡Pídelo ahora y tienes tu resultado ${params?.delay}!`}
-                    checkoutText="Quiero mi hisopado" 
-                    finalAction={() => {
-                        if (patient.corporate_norm !== 'IOMA') {
-                            buyHisopado()
-                        } else {
-                            confirmHisopado()
-                        }
-                    }} 
-                    showPrice={true}/>
+                    return <button className="hisopados-type-btn" onClick={handleWantHisopado}>Hisopado antígenos a domicilio</button>
+                    // return <ButtonStyle 
+                    // title="Hisopado a domicilio" 
+                    // innerText={`¡Pídelo ahora y tienes tu resultado ${params?.delay}!`}
+                    // checkoutText="Quiero mi hisopado" 
+                    // finalAction={() => {
+                    //     if (patient.corporate_norm !== 'IOMA') {
+                    //         buyHisopado()
+                    //     } else {
+                    //         confirmHisopado()
+                    //     }
+                    // }} 
+                    // showPrice={true}/>
                 }
 
     }
