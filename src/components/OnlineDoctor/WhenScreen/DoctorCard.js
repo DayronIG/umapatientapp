@@ -163,6 +163,7 @@ const GuardCardComp = (props) => {
 			  dependant: params.dependant,
 			  price: copayPrice,
 			  mercadoPago: true,
+			  corporate: user.corporate_norm
 			}
 		})
 		localStorage.setItem('paymentData', JSON.stringify({
@@ -174,7 +175,8 @@ const GuardCardComp = (props) => {
 			service: 'GUARDIA',
 			dependant: params.dependant,
 			price: copayPrice,
-			mercadoPago: true
+			mercadoPago: true,
+			corporate: user.corporate_norm
 		}));
 		props.history.push(`/payments/checkout/${currentUser.uid}`)
 	}

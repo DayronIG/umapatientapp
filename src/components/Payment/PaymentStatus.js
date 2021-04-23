@@ -75,6 +75,7 @@ const PaymentStatus = () => {
                         <p className='rejected-payment-body-text'>No te preocupes, no hemos cobrado ningún monto. Por favor, intenta nuevamente.</p>
                     </div>
                     <button className='btn btn-blue-lg mb-5' onClick={handleClick}>Intentar de nuevo</button>
+                    <Link to={'/'} className='rejected-payment-body-link'>Ir al inicio</Link>
                 </div>
             </div>
         }
