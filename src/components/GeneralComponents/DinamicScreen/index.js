@@ -7,10 +7,12 @@ import "../../../styles/dinamic.scss";
 
 const DinamicScreen = props => {
   const loading = useSelector(state => state.front.loading);
-  const userDataToJson = JSON.parse(localStorage.getItem('userData'));
+  // const userDataToJson = JSON.parse(localStorage.getItem('userData'));
+  const { fullname } = useSelector(state => state.user)
   return (
     <div className="dinamic-template">
-      <GenericHeader children={userDataToJson?.fullname} />
+      {/* <GenericHeader children={userDataToJson?.fullname} /> */}
+      <GenericHeader children={fullname} />
       {loading ? (
         <Loading />
       ) : (

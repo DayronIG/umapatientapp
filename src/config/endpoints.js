@@ -46,6 +46,7 @@ export const login_core = `${NODE_SERVER}/firebase/login_core`;
 export const appointments_confirm = `${NODE_SERVER}/appointments/confirm`;
 // Payments
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
+export const mp_payment_url = `${NODE_SERVER}/payments/mercadopago/checkoutPro`
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;

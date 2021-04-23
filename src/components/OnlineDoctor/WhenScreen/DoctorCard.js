@@ -8,6 +8,7 @@ import { getDoctor, getFeedback } from '../../../store/actions/firebaseQueries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
+import DB, {firebaseInitializeApp} from '../../../../src/config/DBConnection';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
@@ -86,11 +87,97 @@ const GuardCardComp = (props) => {
 	const location = useLocation()
 	const params = queryString.parse(location.search)
 	const { unique_doctors } = useSelector((state) => state.front);
+	const { currentUser } = useSelector((state) => state.userActive);
+	const user = useSelector(state => state.user);
+	const db = DB.firestore(firebaseInitializeApp);
+	const [copayPrice, setcopayPrice] = useState('')
+	const [umaCreditos, setUmaCreditos] = useState(0)
 
 	const selectGuard = () => {
-		dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' });
-		props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
+		if(copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) {
+			window.gtag('event', 'select_item', {
+				'item_list_name': 'Guardia sin copago'
+			})
+			dispatch({ type: 'SET_SELECTED_DOCTOR', payload: '' }); 
+			props.history.replace(`/onlinedoctor/reason/${activeUid}?dependant=${params.dependant || false}`);
+		} else {
+			window.gtag('event', 'select_item', {
+				'item_list_name': 'Guardia con copago'
+			})
+			payAppointment()
+		}
+		window.gtag('event','select_content', {
+			'content_type': 'guardia_doctors',
+			'item_id': 'Consulta con medico de guardia'
+		})
 	};
+
+	const getCopay = async () => {
+		const response = await db.collection('corporate').where("name", "==", user.corporate_norm).get()
+		let copay = [];
+		response.forEach(doc => {
+			const data = doc.data();
+			copay.push(data.copay.default.guardia_copay)
+		})
+		setcopayPrice(copay[0] || 'NO COPAY')
+	}
+
+	const getUmaCreditosFromDB = async () => {
+		const response = await db.doc(`user/${currentUser.uid}`).get()
+		const creditos = response.data().uma_creditos;
+		setUmaCreditos(creditos || 0)
+	}
+
+	useEffect(() => {
+		getUmaCreditosFromDB()
+	},[])
+
+
+	useEffect(() => {
+		if(user.corporate_norm && user.corporate_norm !== "") {
+			getCopay()
+		}
+	},[user])
+	
+	//Solo para DOSUBA
+	// useEffect(() => { 
+		// if(user.corporate_norm && user.corporate_norm !== "") {
+			// if(user.corporate_norm === 'DOSUBA') {
+				// getCopay()
+			// } else {
+				// setcopayPrice('NO COPAY')
+			// }
+		// }
+	// },[user])
+
+	const payAppointment = () => {
+		dispatch({
+			type: 'SET_PAYMENT',
+			payload: {
+			  product: 'guardia',
+			  quantity: 1,
+			  title: 'Consulta de guardia',
+			  description: 'Les informamos que a partir de este momento deberá abonar un copago para su atención en guardia.',
+			  uid: currentUser.uid,
+			  service: 'GUARDIA',
+			  dependant: params.dependant,
+			  price: copayPrice,
+			  mercadoPago: true,
+			}
+		})
+		localStorage.setItem('paymentData', JSON.stringify({
+			product: 'guardia',
+			quantity: 1,
+			title: 'Consulta de guardia',
+			description: 'Les informamos que a partir de este momento deberá abonar un copago para su atención en guardia.',
+			uid: currentUser.uid,
+			service: 'GUARDIA',
+			dependant: params.dependant,
+			price: copayPrice,
+			mercadoPago: true
+		}));
+		props.history.push(`/payments/checkout/${currentUser.uid}`)
+	}
 	
 	const getTime = () => {
 		let time = Math.round((props.queue / unique_doctors) * 8.25)
@@ -102,8 +189,10 @@ const GuardCardComp = (props) => {
 		}
 		return timeMsg
 	}
-	
+
 	return (
+		<>
+		{ copayPrice ? 
 		<div className='doctorCard-container'>
 			<div className='doctorCard-firstRow guardia' onClick={selectGuard}>
 				<div className='doctorCard-photoContainer guardia'>
@@ -113,14 +202,36 @@ const GuardCardComp = (props) => {
 				</div>
 				<div className='doctorCard-doctorInfo'>
 					<div className='doctorName guardia'>
-						<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
-						{!isNaN((props.queue / unique_doctors) * 8.25) && <small> La consulta será en aproximadamente {getTime()}.</small>}
-						<br></br>
-						{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {unique_doctors > 1 && <small> y {unique_doctors} médicos atendiendo</small>}
+					{/* Habilitar cuando usemos pagos pendients */}
+					{/* { (copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) &&  */}
+					{ true &&
+						(
+							<>
+								<p>Clic aquí para atenderte con el próximo {props.pediatric ? 'pediatra' : 'médico'} disponible</p>
+								{!isNaN((props.queue / unique_doctors) * 8.25) && <small> La consulta será en aproximadamente {getTime()}.</small>}
+								<br></br>
+								{props.queue > 1 && <small>Hay {props.queue} pacientes en espera.</small>} {unique_doctors > 1 && <small> y 	{unique_doctors} médicos atendiendo</small>}
+							</>
+						)
+					}
+					{/* Habilitar cuando usemos pagos pendients */}
+					{/* {!['', 'NO COPAY'].includes(copayPrice) && umaCreditos < copayPrice && */}
+					{ false &&
+						(
+							<>
+								<p>Consulta con copago</p>
+								<small>Deberas pagar un copago de <strong>{`$${copayPrice}`}</strong> y tendras una atencion mas rapida.</small>
+							</>
+						)
+					}
 					</div>
 				</div>
 			</div>
 		</div>
+		:
+		null
+		}
+		</>
 	);
 };
 
