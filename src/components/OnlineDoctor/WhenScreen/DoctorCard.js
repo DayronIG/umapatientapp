@@ -94,7 +94,7 @@ const GuardCardComp = (props) => {
 	const [umaCreditos, setUmaCreditos] = useState(0)
 
 	const selectGuard = () => {
-		if(false) {
+		if(copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) {
 			window.gtag('event', 'select_item', {
 				'item_list_name': 'Guardia sin copago'
 			})
@@ -106,6 +106,10 @@ const GuardCardComp = (props) => {
 			})
 			payAppointment()
 		}
+		window.gtag('event','select_content', {
+			'content_type': 'guardia_doctors',
+			'item_id': 'Consulta con medico de guardia'
+		})
 	};
 
 	const getCopay = async () => {
@@ -153,7 +157,7 @@ const GuardCardComp = (props) => {
 			  product: 'guardia',
 			  quantity: 1,
 			  title: 'Consulta de guardia',
-			  description: 'Consulta de guardia médica en el día',
+			  description: 'Les informamos que a partir de este momento deberá abonar un copago para su atención en guardia.',
 			  uid: currentUser.uid,
 			  service: 'GUARDIA',
 			  dependant: params.dependant,
@@ -165,7 +169,7 @@ const GuardCardComp = (props) => {
 			product: 'guardia',
 			quantity: 1,
 			title: 'Consulta de guardia',
-			description: 'Consulta de guardia médica en el día',
+			description: 'Les informamos que a partir de este momento deberá abonar un copago para su atención en guardia.',
 			uid: currentUser.uid,
 			service: 'GUARDIA',
 			dependant: params.dependant,

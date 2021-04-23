@@ -16,8 +16,8 @@ const PaymentStatus = () => {
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
     const { mercadoPago } = useSelector((state) => state.payments);
-    const { paid, dependant, product, method } = queryString.parse(location.search);
-
+    const { paid, dependant, product, method, amount } = queryString.parse(location.search);
+    
     const handleClick = () => {
         if(paid === 'rejected') {
             window.gtag('event', `${product}_payment_rejected`)
@@ -33,6 +33,10 @@ const PaymentStatus = () => {
                 'method': method,
                 'status': 'success'
             })
+            window.gtag('event', 'earn_virtual_currency', {
+                'virtual_currency_name': 'uma_creditos',
+                'value': amount
+            })
             localStorage.removeItem('paymentData')
             dispatch({ type: 'RESET_PAYMENT' })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
@@ -44,7 +48,6 @@ const PaymentStatus = () => {
                 'status': 'pending'
             })
         }
-
     }
 
     useEffect(() => {
