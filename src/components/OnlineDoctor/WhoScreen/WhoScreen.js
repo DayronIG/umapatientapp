@@ -88,6 +88,17 @@ const WhenScreen = (props) => {
 		if (redirectToConsultory === 'true') {
 			props.history.replace(`/appointmentsonline/specialty/${id}?dependant=${dependant}`);
 		} else {
+			if(dependant) {
+				window.gtag('event','select_content', {
+					'content_type': 'guardia_join',
+                    'item_id': 'Dependant true'
+				})
+			} else {
+				window.gtag('event','select_content', {
+					'content_type': 'guardia_join',
+                    'item_id': 'Dependant false'
+				})
+			}
 			props.history.replace(`/onlinedoctor/when/${id}?dependant=${dependant}`);
 		}
 	}
