@@ -72,11 +72,11 @@ const Checkout = () => {
                <div className='checkout-background'>
                 <BackButton inlineButton={true} customTarget={`/`}/>
                     <div className='checkout-header'>
-                        <h2 className='checkout-header-title'>Checkout</h2>
+                        <h2 className='checkout-header-title'>{paymentData.title}</h2>
                         {/* <p className='checkout-header-text'>Resumen de tu compra:</p> */}
                     </div>
                     <div className='checkout-body'>
-                            <h3 className='checkout-body-title'>{paymentData.title}</h3>
+                            <h3 className='checkout-body-title'>{paymentData.description}</h3>
                             <div className='checkout-body-subtitle'>
                                 <h2 className='checkout-body-currency'>AR$ <span className='checkout-body-price'>{datos.price}</span></h2> 
                         </div>
