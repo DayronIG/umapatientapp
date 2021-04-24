@@ -1,11 +1,40 @@
 import React, { useState } from 'react'
 import { GenericHeader } from '../GeneralComponents/Headers'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import '../../styles/hisopado/sedes.scss'
+import { useHistory } from 'react-router-dom'
 
 const HisopadoSede = () => {
+    const dispatch = useDispatch()
+    const history = useHistory()
     const { fullname } = useSelector(state => state.user)
-    const [selected, setSelected] = useState('Las Heras');
+    const { currentUser } = useSelector((state) => state.userActive)
+    const [selected, setSelected] = useState('Las Heras')
+
+    const payHisopado = () => {
+        dispatch({
+            type: 'SET_PAYMENT',
+            payload: {
+                product: 'hisopados',
+                quantity: 1,
+                title: 'Test de abbott',
+                uid: currentUser.uid,
+                service: 'GUARDIA',
+                price: '150',
+                mercadoPago: true,
+            }
+        })
+        localStorage.setItem('paymentData', JSON.stringify({
+            product: 'hisopados',
+            quantity: 1,
+            title: 'Test de abbott',
+            uid: currentUser.uid,
+            service: 'GUARDIA',
+            price: '150',
+            mercadoPago: true
+        }));
+        history.push(`/payments/checkout/${currentUser.uid}`)
+    }
 
     return (
         <>
@@ -38,7 +67,7 @@ const HisopadoSede = () => {
                     </div>
                 </label>
 
-                <button>Continuar</button>
+                <button onClick={payHisopado}>Continuar</button>
             </section>
         </>
     )
