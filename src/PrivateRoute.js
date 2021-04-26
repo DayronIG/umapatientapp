@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter, useHistory } from "react-router-dom";
+import { getAntecedents, getBenficiaries } from '../src/store/actions/firebaseQueries';
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
@@ -81,6 +82,19 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
             }
         }
     }, [user, firestore, call.callRejected, rest.path])
+
+    useEffect(() => {
+        if(currentUser && !localStorage.getItem('beneficiaries')) {
+            dispatch(getBenficiaries(currentUser.uid))
+        }else if(localStorage.getItem('beneficiaries')) {
+            dispatch({ type: 'GET_BENEFICIARIES', payload: JSON.parse(localStorage.getItem('beneficiaries'))});
+        }
+        if(currentUser && !localStorage.getItem('userHistory')) {
+            dispatch(getAntecedents(currentUser.uid)) 
+        }else if(localStorage.getItem('userHistory')) {
+            dispatch({type: 'GET_HISTORY', payload: JSON.parse(localStorage.getItem('userHistory'))})
+        }
+    }, [currentUser])
 
     useEffect(() => {
         if (user.core_id) {

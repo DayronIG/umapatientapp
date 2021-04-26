@@ -4,6 +4,7 @@ import db, {firebaseInitializeApp} from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
 import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
+import moment from 'moment-timezone';
 export const AuthContext = React.createContext()
 
 function AuthProvider({ children }) {
@@ -26,7 +27,7 @@ function AuthProvider({ children }) {
 				dispatch({ type: 'SET_LOGED_TOKEN', payload: token })
 			})
 		}
-	})
+	}, [currentUser])
 
     async function getDeliveryInfo(userAuth) {
 		const params = await getDocumentFB('parametros/userapp/delivery/hisopados')
@@ -83,7 +84,7 @@ function AuthProvider({ children }) {
 
 	return (
 		<AuthContext.Provider value={{ currentUser }}>
-			<HiddenCacheClearer />
+			{/* <HiddenCacheClearer /> */}
 			{children}
 		</AuthContext.Provider>
 	)
