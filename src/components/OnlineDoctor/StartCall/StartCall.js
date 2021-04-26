@@ -113,7 +113,7 @@ const StartCall = (props) => {
 	return (
 		<>
 			{
-				props.token === '.' && 
+				props.token === '.' && !showChat &&
 				<div className='chatProposal__container'>
 					<p>
 						Si no le aparece su médico, ingrese al chat.
@@ -126,6 +126,7 @@ const StartCall = (props) => {
 			{
 				showChat && <Chat visible={(v) => setShowChat(v)} />
 			}
+			{ props.token !== '.' && props.session !== '.' && 
 			<OTSession
 				apiKey={'46424032'}
 				sessionId={props.sala}
@@ -167,6 +168,7 @@ const StartCall = (props) => {
 					</div>
 				</>
 			</OTSession>
+			}
 		</>
 	);
 };
