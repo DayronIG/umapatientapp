@@ -113,6 +113,14 @@ const StartCall = (props) => {
 	return (
 		<>
 			{
+				props.token === '.' && 
+				<div className='chatProposal__container'>
+					<p>
+						Si no le aparece su médico, ingrese al chat.
+					</p>
+				</div>
+			}
+			{
 				!showChat && <button className="bubbleChat" onClick={() => setShowChat(true)}><IoIosChatbubbles /></button>
 			}
 			{
