@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { GenericHeader } from '../GeneralComponents/Headers'
 import { useSelector, useDispatch } from 'react-redux'
 import '../../styles/hisopado/sedes.scss'
@@ -9,31 +9,44 @@ const HisopadoSede = () => {
     const history = useHistory()
     const { fullname } = useSelector(state => state.user)
     const { currentUser } = useSelector((state) => state.userActive)
-    const [selected, setSelected] = useState('Las Heras')
+    const { params } = useSelector((state) => state.inPersonService)
+    const [rooms, setRooms] = useState([])
+    const [selected, setSelected] = useState(null)
+
+    useEffect(() => {
+        if(params) {
+            setRooms(params.consulting_rooms)
+        }
+    }, [params])
 
     const payHisopado = () => {
-        dispatch({
-            type: 'SET_PAYMENT',
-            payload: {
+        if (selected) {
+            dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: { type: 'Test de Abbott', office: selected } })
+            dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
+
+            dispatch({
+                type: 'SET_PAYMENT',
+                payload: {
+                    product: 'hisopados',
+                    quantity: 1,
+                    title: 'Test de abbott',
+                    uid: currentUser.uid,
+                    service: '',
+                    price: params.price,
+                    mercadoPago: true,
+                }
+            })
+            localStorage.setItem('paymentData', JSON.stringify({
                 product: 'hisopados',
                 quantity: 1,
                 title: 'Test de abbott',
                 uid: currentUser.uid,
-                service: 'GUARDIA',
-                price: '150',
-                mercadoPago: true,
-            }
-        })
-        localStorage.setItem('paymentData', JSON.stringify({
-            product: 'hisopados',
-            quantity: 1,
-            title: 'Test de abbott',
-            uid: currentUser.uid,
-            service: 'GUARDIA',
-            price: '150',
-            mercadoPago: true
-        }));
-        history.push(`/payments/checkout/${currentUser.uid}`)
+                service: '',
+                price: params.price,
+                mercadoPago: true
+            }));
+            history.push(`/payments/checkout/${currentUser.uid}`)
+        }
     }
 
     return (
@@ -45,29 +58,19 @@ const HisopadoSede = () => {
 
                 <p>Todos los consultorios atienden de 8 a 20hs.</p>
 
-                <label onClick={() => setSelected('Las Heras')} className={selected === 'Las Heras' ? 'selected' : ''}>
-                    <input type="radio" name="sede" value="Las Heras" checked/>
-                    <div>
-                        <h3>Las Heras</h3>
-                        <p>Av. General Las Heras 3038</p>
-                    </div>
-                </label>
-                <label onClick={() => setSelected('Olivos')} className={selected === 'Olivos' ? 'selected' : ''}>
-                    <input type="radio" name="sede" value="Olivos"/>
-                    <div>
-                        <h3>Olivos</h3>
-                        <p>Av. Maipu 3625</p>
-                    </div>
-                </label>
-                <label onClick={() => setSelected('Lomas')} className={selected === 'Lomas' ? 'selected' : ''}>
-                    <input type="radio" name="sede" value="Lomas"/>
-                    <div>
-                        <h3>Lomas</h3>
-                        <p>Leandro N. Alen 498</p>
-                    </div>
-                </label>
+                {
+                    rooms.map(room => (
+                        <label key={room.address} onClick={() => setSelected(room)} className={selected?.name === room.name ? 'selected' : ''}>
+                            <input type="radio" name="sede" value={room.name} />
+                            <div>
+                                <h3>{room.name}</h3>
+                                <p>{room.address}</p>
+                            </div>
+                        </label>
+                    ))
+                }
 
-                <button onClick={payHisopado}>Continuar</button>
+                <button disabled={!selected ? true : false} onClick={payHisopado}>Continuar</button>
             </section>
         </>
     )
