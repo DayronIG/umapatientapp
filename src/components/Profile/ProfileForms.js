@@ -1,14 +1,14 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiUpload } from 'react-icons/fi';
 import { checkNum } from '../Utils/stringUtils';
 import { Loader } from '../global/Spinner/Loaders';
-import moment from 'moment-timezone';
-import axios from 'axios';
+import { EditButton } from './EditComponent';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import { node_patient } from '../../config/endpoints';
 import { GenericInputs } from '../User/Login/GenericComponents';
-import { TiCoffee } from 'react-icons/ti';
+import moment from 'moment-timezone';
+import axios from 'axios';
 
 export const ProfilePic = ({ user }) => {
 	const dispatch = useDispatch();
@@ -30,9 +30,9 @@ export const ProfilePic = ({ user }) => {
 				.then((res) => {
 					setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
+					dispatch({ type: 'GET_PATIENT', payload: data.newValues});
 				})
 				.catch((err) => {
-					// setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 					console.log(err);
 				});
@@ -43,7 +43,6 @@ export const ProfilePic = ({ user }) => {
 					dispatch({ type: 'TOGGLE_DETAIL' });
 				})
 				.catch((err) => {
-					// setLoader(false)
 					dispatch({ type: 'TOGGLE_DETAIL' });
 					console.log(err);
 				});
@@ -75,7 +74,6 @@ export const ProfilePic = ({ user }) => {
 	};
 
 	return (
-		<>
 		<form className='form-edit-profile'>
 			{loader ?
 				<Loader/>
@@ -88,8 +86,19 @@ export const ProfilePic = ({ user }) => {
 			}
 			{showError && <p className='invalidField'>Por favor elija un formato de imagen valido</p>}
 		</form>
-		</>
 	);
+};
+
+export const PersonalHistory = ({ title, children, section }) => {
+	return(
+		<section className='profile-history'>
+			<section className='header-section-info'>
+				<h3 className='text'>{title}</h3>
+				<EditButton section={section}/>
+			</section>
+			{children}
+		</section>
+	)
 };
 
 export const PersonalData = ({ user }) => {
@@ -108,7 +117,6 @@ export const PersonalData = ({ user }) => {
 		sex: user.sex || '',
 		ws: user.ws || '',
 	});
-
 
 	const handleChange = (e) => {
 		setErrorMsg('')
@@ -132,7 +140,6 @@ export const PersonalData = ({ user }) => {
 	};
 
 	const handleSubmit = async (e, userData, user) => {
-		console.log(user, 'user')
 		e.preventDefault();
 		if(errorsInputs.dni === false & errorsInputs.ws === false) {
 			dispatch({type: 'LOADING', payload: true})
@@ -146,6 +153,7 @@ export const PersonalData = ({ user }) => {
 					await axios.patch(`${node_patient}/update/${currentUser.uid}`, data, {headers})
 					.then((res) => {
 						dispatch({ type: 'TOGGLE_DETAIL' });
+						dispatch({ type: 'GET_PATIENT', payload: data.newValues});
 					})
 					.catch((err) => {
 						dispatch({ type: 'TOGGLE_DETAIL' });
@@ -246,7 +254,7 @@ export const PersonalData = ({ user }) => {
  			</div>
 			 {errorMsg !== '' && <p className='invalidField'>{errorMsg}</p>}
 			<button className='button-submit-edit' type='submit'>
-				Editar
+				Guardar
 			</button>
 		</form>
 	);
