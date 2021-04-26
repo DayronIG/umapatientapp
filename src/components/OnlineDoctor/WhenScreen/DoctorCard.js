@@ -114,19 +114,20 @@ const GuardCardComp = (props) => {
 	};
 
 	const getCopay = async () => {
-		const document = await getDocumentFB(`user/${user.id}`)
+		const document = await getDocumentFB(`user/${currentUser.uid}`)
         let coverages = []
         if (document.coverage.length >= 1) coverages = [...document.coverage]
         if (document.corporate_norm) coverages.push({plan: document.corporate_norm})
         let copayPrices = []
         for (let i = 0; i < coverages.length; i++){
            const copayPrice = await db.collection('corporate').where("name", "==", coverages[i]['plan']).get()
+		   console.log(coverages[i]['plan'])
 		   copayPrice.forEach(doc => {
 			   const data = doc.data();
 			   if (data) copayPrices.push(data.copay.default.guardia_copay)
 		   })
         }
-        const copay = Math.min(...copayPrices)
+        const copay = copayPrices.length ? Math.min(...copayPrices) : 0
 		setcopayPrice(copay || 'NO COPAY')
 	}
 
@@ -137,14 +138,12 @@ const GuardCardComp = (props) => {
 	}
 
 	useEffect(() => {
-		getUmaCreditosFromDB()
-	},[])
+		if (currentUser.uid) getUmaCreditosFromDB()
+	},[user])
 
 
 	useEffect(() => {
-		if(user.corporate_norm && user.corporate_norm !== "") {
-			getCopay()
-		}
+		if(user.corporate_norm && user.corporate_norm !== "" && currentUser.uid) getCopay()
 	},[user])
 
 	const payAppointment = () => {
