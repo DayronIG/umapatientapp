@@ -80,12 +80,12 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [user, firestore, call.callRejected, rest.path])
 
     useEffect(() => {
-        if(currentUser && !localStorage.getItem('beneficiaries')) {
+        if(currentUser && (localStorage.getItem('beneficiaries') === 'undefined')) {
             dispatch(getBenficiaries(currentUser.uid))
         }else if(localStorage.getItem('beneficiaries') !== 'undefined') {
             dispatch({ type: 'GET_BENEFICIARIES', payload: JSON.parse(localStorage.getItem('beneficiaries'))});
         }
-        if(currentUser && !localStorage.getItem('userHistory')) {
+        if(currentUser && (localStorage.getItem('userHistory') === 'undefined')) {
             dispatch(getAntecedents(currentUser.uid)) 
         }else if(localStorage.getItem('userHistory') !== 'undefined') {
             dispatch({type: 'GET_HISTORY', payload: JSON.parse(localStorage.getItem('userHistory'))})
