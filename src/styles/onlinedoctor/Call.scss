@@ -22,11 +22,9 @@
 
 .call-container {
     z-index: 5;
-    display: flex;
-    justify-content: center;
     .chatProposal__container{
         background-color: $white-color;
-        width: 70vw;
+        width: 100vw;
         height: 15vh;
         margin-top: 30vh;
         display: flex;
