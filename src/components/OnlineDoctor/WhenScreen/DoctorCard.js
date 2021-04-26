@@ -121,7 +121,6 @@ const GuardCardComp = (props) => {
         let copayPrices = []
         for (let i = 0; i < coverages.length; i++){
            const copayPrice = await db.collection('corporate').where("name", "==", coverages[i]['plan']).get()
-		   console.log(coverages[i]['plan'])
 		   copayPrice.forEach(doc => {
 			   const data = doc.data();
 			   if (data) copayPrices.push(data.copay.default.guardia_copay)
