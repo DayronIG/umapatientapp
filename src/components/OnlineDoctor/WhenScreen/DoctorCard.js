@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/onlinedoctor/DoctorCard.scss';
 import DB, {firebaseInitializeApp} from '../../../../src/config/DBConnection';
+import { getDocumentFB } from '../../Utils/firebaseUtils';
 
 const DoctorCard = (props) => {
 	const dispatch = useDispatch();
@@ -94,6 +95,10 @@ const GuardCardComp = (props) => {
 	const [umaCreditos, setUmaCreditos] = useState(0)
 
 	const selectGuard = () => {
+		window.gtag('event','select_content', {
+			'content_type': 'guardia_doctors',
+			'item_id': 'Consulta con medico de guardia'
+		})
 		if(copayPrice === 'NO COPAY' || umaCreditos >= copayPrice) {
 			window.gtag('event', 'select_item', {
 				'item_list_name': 'Guardia sin copago'
@@ -106,20 +111,24 @@ const GuardCardComp = (props) => {
 			})
 			payAppointment()
 		}
-		window.gtag('event','select_content', {
-			'content_type': 'guardia_doctors',
-			'item_id': 'Consulta con medico de guardia'
-		})
 	};
 
 	const getCopay = async () => {
-		const response = await db.collection('corporate').where("name", "==", user.corporate_norm).get()
-		let copay = [];
-		response.forEach(doc => {
-			const data = doc.data();
-			copay.push(data.copay.default.guardia_copay)
-		})
-		setcopayPrice(copay[0] || 'NO COPAY')
+		const document = await getDocumentFB(`user/${currentUser.uid}`)
+        let coverages = []
+        if (document.coverage.length >= 1) coverages = [...document.coverage]
+        if (document.corporate_norm) coverages.push({plan: document.corporate_norm})
+        let copayPrices = []
+        for (let i = 0; i < coverages.length; i++){
+           const copayPrice = await db.collection('corporate').where("name", "==", coverages[i]['plan']).get()
+		   console.log(coverages[i]['plan'])
+		   copayPrice.forEach(doc => {
+			   const data = doc.data();
+			   if (data) copayPrices.push(data.copay.default.guardia_copay)
+		   })
+        }
+        const copay = copayPrices.length ? Math.min(...copayPrices) : 0
+		setcopayPrice(copay || 'NO COPAY')
 	}
 
 	const getUmaCreditosFromDB = async () => {
@@ -129,26 +138,13 @@ const GuardCardComp = (props) => {
 	}
 
 	useEffect(() => {
-		getUmaCreditosFromDB()
-	},[])
+		if (currentUser.uid) getUmaCreditosFromDB()
+	},[user])
 
 
 	useEffect(() => {
-		if(user.corporate_norm && user.corporate_norm !== "") {
-			getCopay()
-		}
+		if(user.corporate_norm && user.corporate_norm !== "" && currentUser.uid) getCopay()
 	},[user])
-	
-	//Solo para DOSUBA
-	// useEffect(() => { 
-		// if(user.corporate_norm && user.corporate_norm !== "") {
-			// if(user.corporate_norm === 'DOSUBA') {
-				// getCopay()
-			// } else {
-				// setcopayPrice('NO COPAY')
-			// }
-		// }
-	// },[user])
 
 	const payAppointment = () => {
 		dispatch({
@@ -163,6 +159,7 @@ const GuardCardComp = (props) => {
 			  dependant: params.dependant,
 			  price: copayPrice,
 			  mercadoPago: true,
+			  corporate: user.corporate_norm
 			}
 		})
 		localStorage.setItem('paymentData', JSON.stringify({
@@ -174,7 +171,8 @@ const GuardCardComp = (props) => {
 			service: 'GUARDIA',
 			dependant: params.dependant,
 			price: copayPrice,
-			mercadoPago: true
+			mercadoPago: true,
+			corporate: user.corporate_norm
 		}));
 		props.history.push(`/payments/checkout/${currentUser.uid}`)
 	}
