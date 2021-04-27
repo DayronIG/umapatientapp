@@ -1,0 +1,66 @@
+@import '../global/Vars.scss';
+
+.wrapper__select {
+    width: 100%;
+    height: fit-content;
+    .dropdown__btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: $main-shadow;
+        border-radius: $regular-borders;
+        padding: 10px 5px;
+        &:focus {
+            outline: transparent;
+            border: 1px solid $uma-primary;
+        }
+        .select__title__bold {
+            color: $uma-text;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    .select__list {
+        margin-top: 10px;
+        width: 100%;
+        height: 170px;
+        overflow: scroll;
+        box-shadow: $blured-box-shadow;
+        border-radius: $regular-borders;
+        box-sizing: border-box;
+        .list__item {
+            width: 100%;
+            button {
+                width: 100%;
+                border: transparent;
+                display: flex;
+                justify-content: space-between;
+                padding: 0;
+                margin: 0;
+                text-align: start;
+                position: relative;
+                .value {
+                    padding: 8px 5px;
+                    width: 100%;
+                    color: $uma-text;
+                    background-color: $white-color;
+                   &.Selected {
+                       background-color: $light-blue;
+                       color: $white-color;
+                   }
+                }
+                svg {
+                    position: absolute;
+                    right: 10px;
+                    top: 10px;
+                    color: $when-dark;
+                }
+            }
+            .lineDrop {
+                width: 100%;
+                height: 1px;
+                background-color: $uma-input;
+            }
+        }
+    }
+}

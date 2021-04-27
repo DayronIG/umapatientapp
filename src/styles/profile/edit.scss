@@ -1,0 +1,320 @@
+@import '../global/Vars.scss';
+
+.edit__genericSelect {
+    display: flex;
+    flex-direction: column;
+    label {
+        color: $uma-text;
+        margin: 10px 0;
+    }
+    .edit__select {
+        border: transparent;
+        width: 100%;
+        padding: 8px 0;
+        border-radius: $regular-borders;
+        background-color: $white-color;
+        box-shadow: $dark-shadow;
+        color: $uma-text;
+        &:focus {
+            outline: transparent;
+            border: 1px solid $uma-primary;
+        }
+    }
+}
+
+.edit__riskQuestions {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+    width: 100%;
+    .alcoholFrequencySelect {
+        label {
+            color: $uma-text;
+            margin: 10px 0;
+        }
+        .edit__select {
+            border: transparent;
+            width: 100%;
+            padding: 8px 0;
+            border-radius: $regular-borders;
+            background-color: $white-color;
+            box-shadow: $dark-shadow;
+            color: $uma-text;
+            &:focus {
+                outline: transparent;
+                border: 1px solid $uma-primary;
+            }
+        }
+    }
+    .edit__saveData {
+        border: transparent;
+        background-color: $uma-primary;
+        color: $white-color;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px 0;
+        width: 200px;
+        margin: 20px 10px 0 20px;
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+.edit__allergies {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .allergies {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 5px;
+        width: 50%;
+        margin: 5px 0;
+        background-color: $secondary-blue;
+        padding: 5px;
+        flex-direction: row;
+        p{
+            margin: 0;
+        }
+    }
+    .edit__add {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+        .edit__other { 
+            width: 210px;
+            border-radius: $regular-borders;
+            border: 1px solid $uma-primary;
+            box-shadow: $main-shadow;
+            padding: 5px 0;
+            &:focus {
+                outline: transparent;
+                border: 1px solid $uma-primary;
+            }
+        }
+        .edit__other__btn {
+            border: transparent;
+            border-radius: $regular-borders;
+            background-color: $uma-primary;
+            color: $white-color;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 8px;
+        }
+    }
+    .edit__saveData {
+        border: transparent;
+        background-color: $uma-primary;
+        color: $white-color;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px 0;
+        width: 200px;
+        margin: 20px;
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+.edit__items {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .questionGroup {
+        margin: 10px 40px;
+        .operationQuestions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            .group {
+                label {
+                    color: $uma-text;
+                }
+                input {
+                    color: $uma-text;
+                    width: 100%;
+                    border-radius: $regular-borders;
+                    border: 1px solid $uma-primary;
+                    padding: 5px;
+                    &:focus {
+                        outline: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    .operation__traumatism {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 5px;
+        width: fit-content;
+        margin: 5px 0;
+        background-color: $secondary-blue;
+        padding: 5px;
+        flex-direction: row;
+        p {
+            margin: 0;
+        }
+        svg {
+            margin: 0 10px;
+        }
+        :nth-child(1) {
+            &::after {
+                content: '-';
+                display: inline-block;
+                margin: 0 10px;
+            }
+        }
+    }
+
+    .other__btn {
+        margin: 10px 0;
+        border: 1px solid $uma-primary;
+        border-radius: $regular-borders;
+        background-color: transparent;
+        color: $uma-primary;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px;
+    }
+
+    .edit__saveData {
+        border: transparent;
+        background-color: $uma-primary;
+        color: $white-color;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px 0;
+        width: 200px;
+        margin: 10px;
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+.edit__personalQuestions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+    label {
+        margin: 10px 0;
+    }
+    .edit__select {
+        border: transparent;
+        width: 100%;
+        padding: 8px 0;
+        border-radius: $regular-borders;
+        background-color: $white-color;
+        box-shadow: $dark-shadow;
+        color: $uma-text;
+        &:focus {
+            outline: transparent;
+            border: 1px solid $uma-primary;
+        }
+    }
+
+    .edit__saveData {
+        border: transparent;
+        background-color: $uma-primary;
+        color: $white-color;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px 0;
+        width: 200px;
+        margin: 15px auto;
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+.edit__familyDetails {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    .familyDetails__title {
+        font-weight: 400;
+        font-size: 18px;
+    }
+    .familyDetails {
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        width: fit-content;
+        margin: 5px auto;
+        background-color: $secondary-blue;
+        padding: 5px;
+        flex-direction: row;
+        :nth-child(1) {
+            &::after {
+                content: '-';
+                display: inline-block;
+                margin: 0 5px;
+            }
+        }
+        p {
+            margin: 0 5px;
+        }
+        svg {
+            margin: 0 5px;
+        }
+    }
+    .questionFamilyGroup {
+        width: 100%;
+        .options {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            align-items: center;
+            select {
+                border-radius: 5px;
+                border: 1px solid $uma-primary;
+                padding: 10px 10px;
+                background-color: $white-color;
+                &:focus {
+                    outline: transparent;
+                }
+            }
+        }
+    }
+    .other__btn {
+        margin: 10px 0;
+        border: 1px solid $uma-primary;
+        border-radius: $regular-borders;
+        background-color: transparent;
+        color: $uma-primary;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px;
+    }
+
+    .edit__saveData {
+        border: transparent;
+        background-color: $uma-primary;
+        color: $white-color;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px 0;
+        width: 200px;
+        margin: 10px;
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+

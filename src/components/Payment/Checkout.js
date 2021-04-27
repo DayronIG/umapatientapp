@@ -48,7 +48,7 @@ const Checkout = () => {
                 service: paymentData.service,
                 clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
                 dependant: paymentData.dependant,
-                price: parseInt(paymentData.price)
+                corporate: paymentData.corporate,
                 //   discount
                 },
                 {headers} )

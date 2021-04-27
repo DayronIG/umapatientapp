@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import Logo from '../../../assets/logo.png';
 import Balloons from '../../../assets/illustrations/balloons.png';
@@ -13,12 +14,15 @@ const Status = () => { // Congrats / Error / DataSaved
     const [startAnimate, setStartAnimate] = useState(false)
     const {status} = useParams()
     const history = useHistory()
+    const {currentUser} = useSelector(state=> state.userActive)
 
     useEffect(() => {
-        setTimeout(() => {
-            setStartAnimate(true) 
-        }, 100);
-        // set time out also redirects
+        if(status === 'dataSaved') {
+            setStartAnimate(true)
+            setTimeout(() => {
+                history.push(`/profile/${currentUser.uid}`)
+            }, 2000);
+        }
     }, [])
 
     useEffect(() => {

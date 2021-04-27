@@ -19,6 +19,7 @@ import transport from './transportReducer';
 import umacare from './umacareReducers';
 import user from './userReducers';
 import userActive from './userActiveReducers';
+import userHistory from './userHistoryReducers';
 
 const appReducer = combineReducers({
 	assessment,
@@ -31,6 +32,8 @@ const appReducer = combineReducers({
 	derivations,
 	front,
 	inPersonService,
+	userHistory,
+	queries,
 	onboardingSecondStep,
 	onboardingThirdStep,
 	payments,
@@ -49,7 +52,8 @@ const rootReducer = (state, action) => {
 			queries: state.queries, 
 			deliveryService: state.deliveryService,
 			user: state.user,
-			userActive: state.userActive
+			userActive: state.userActive,
+			userHistory: state.userHistory
 		};
 	}
 	return appReducer(state, action);

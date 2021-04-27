@@ -28,6 +28,7 @@ import ForgottenPassError from './components/User/Login/ForgottenPass/ForgottenP
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 /* Profile */
 import Profile from './views/Profile';
+import AntecedentScreen from './components/Profile/MyBackground/AntecedentScreen';
 /* Online Doctor */
 import ConfirmAppointment from './components/OnlineDoctor/ConfirmAppointment/ConfirmAppointment';
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
@@ -160,6 +161,7 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
+				<PrivateRoute path='/antecedents/:uid?/:section' component={AntecedentScreen}/> 
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />
