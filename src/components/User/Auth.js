@@ -43,6 +43,10 @@ function AuthProvider({ children }) {
 		}
 	}
 
+    async function getAnalysisInfo() {
+		const params = await getDocumentFB('parametros/userapp/analysis/abbott')
+		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: params})
+	}
 
 	async function getInitialData(user) {
 		const userAuth = await getAuth(user.uid)
@@ -53,6 +57,7 @@ function AuthProvider({ children }) {
 			dispatch({ type: 'SET_USER_LOGIN', payload: userAuth.login })
 			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			getDeliveryInfo(userAuth)
+			getAnalysisInfo()
 		}
 	}	
 	
