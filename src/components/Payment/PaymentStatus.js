@@ -8,13 +8,15 @@ import crossIcon from '../../../src/assets/img/hisopados_cross.svg';
 import payedIcon from '../../../src/assets/img/hisopados_payment.svg';
 import queryString from 'query-string';
 import { FaClock } from 'react-icons/fa'
+import axios from 'axios'
+import { analysis } from '../../config/endpoints'
 
 const PaymentStatus = () => {
     const history = useHistory();
     const location = useLocation();
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
-    const { mercadoPago } = useSelector((state) => state.payments);
+    const { mercadoPago, doc_id } = useSelector((state) => state.payments);
     const { paid, dependant, product, method, amount, service } = queryString.parse(location.search);
     const [message, setMessage] = useState({
         status: '',
@@ -98,6 +100,36 @@ const PaymentStatus = () => {
     }
 
     useEffect(() => {
+        if (localStorage.hasOwnProperty('pcr_express_doc_id')) {
+            let status;
+
+            if(paid === 'true') {
+                status = 'PAYMENT:SUCCESS'
+            } else if (paid === 'rejected') {
+                status = 'PAYMENT:REJECTED'
+            } else if (paid === 'pending') {
+                status = 'PAYMENT:PENDING'
+            }
+
+            const data = {
+                doc_id: localStorage.getItem('pcr_express_doc_id'),
+                newValues: {
+                    assigned_status: status ? status : 'FREE',
+                }
+            }
+            try {
+                axios.patch(`${analysis}/`, data)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(e => {
+                        console.error(e)
+                    })
+            } catch (e) {
+                console.error(e)
+            }
+        }
+
         const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
         if (paymentDataLocal) {
             dispatch({
@@ -105,7 +137,7 @@ const PaymentStatus = () => {
                 payload: paymentDataLocal
               })
         } 
-    },[]);
+    }, []);
 
     return (
         <>

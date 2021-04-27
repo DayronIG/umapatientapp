@@ -70,7 +70,8 @@ const Abbott = () => {
             axios.post(`${analysis}/`, data)
                 .then(res => {
                     setLoader(false)
-                    console.log(res)
+                    dispatch({ type: 'SET_DOC_ID', payload: res.data.id })
+                    localStorage.setItem('pcr_express_doc_id', res.data.id)
                     history.push(`/payments/checkout/${currentUser.uid}`)
                 })
                 .catch(e => {
