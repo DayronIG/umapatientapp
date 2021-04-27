@@ -6,6 +6,9 @@ import MktTextBlock from '../Mkt/MktTextBlock'
 import MktBuyButton from '../Mkt/MktBuyButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory} from 'react-router-dom'
+import axios from 'axios'
+import { analysis } from '../../config/endpoints'
+import CustomUmaLoader from '../GeneralComponents/Loading'
  
 const Abbott = () => {
     const dispatch = useDispatch()
@@ -13,6 +16,7 @@ const Abbott = () => {
     const { currentUser } = useSelector((state) => state.userActive)
     const { params } = useSelector((state) => state.inPersonService)
     const [rooms, setRooms] = useState([])
+    const [loader, setLoader] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -25,6 +29,7 @@ const Abbott = () => {
     }, [params])
 
     const payHisopado = () => {
+        setLoader(true)
         dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express'})
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
 
@@ -35,7 +40,7 @@ const Abbott = () => {
                 quantity: 1,
                 title: 'PCR Express',
                 uid: currentUser.uid,
-                service: '',
+                service: 'PCR Express',
                 price: params.price,
                 mercadoPago: true,
             }
@@ -45,11 +50,41 @@ const Abbott = () => {
             quantity: 1,
             title: 'PCR Express',
             uid: currentUser.uid,
-            service: '',
+            service: 'PCR Express',
             price: params.price,
             mercadoPago: true
         }));
-        history.push(`/payments/checkout/${currentUser.uid}`)
+
+        try {
+            const data = {
+                uid: currentUser.uid,
+                service: 'PCR Express',
+                destination: {
+                    address: '',
+                    floor: '',
+                    lat: '',
+                    lon: '',
+                    number: ''
+                },
+            }
+            axios.post(`${analysis}/`, data)
+                .then(res => {
+                    setLoader(false)
+                    console.log(res)
+                    history.push(`/payments/checkout/${currentUser.uid}`)
+                })
+                .catch(e => {
+                    console.error(e)
+                    setLoader(false)
+                })
+        } catch (e) {
+            console.error(e)
+            setLoader(false)
+        }
+    }
+
+    if(loader) {
+        return <CustomUmaLoader />
     }
 
     return (

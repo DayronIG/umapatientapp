@@ -74,3 +74,5 @@ export const invitation = `${NODE_SERVER}/invitation`;
 export const post_biomarkers = `${NODE_SERVER}/events/biomarkers`;
 // Vaccine
 export const vaccine = `${NODE_SERVER}/vaccine`;
+// Vaccine
+export const analysis = `${NODE_SERVER}/analysis`;
