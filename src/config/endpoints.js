@@ -48,6 +48,7 @@ export const appointments_confirm = `${NODE_SERVER}/appointments/confirm`;
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
 export const mp_payment_url = `${NODE_SERVER}/payments/mercadopago/checkoutPro`
 export const mp_payment_url_refunds = `${NODE_SERVER}/payments/mercadopago/refunds`
+export const mp_payment_url_payments = `${NODE_SERVER}/payments/mercadopago/payments`
 
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
