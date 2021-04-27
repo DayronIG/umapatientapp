@@ -92,8 +92,10 @@ import Support from './views/Support'
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
 import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
+/* Payments */
 import Checkout from './components/Payment/Checkout'
 import PaymentStatus from './components/Payment/PaymentStatus.js';
+import PaymentRefund from './components/Payment/PaymentRefund';
 
 function App(props) {
 	return (
@@ -193,6 +195,7 @@ function App(props) {
 				{/* PAYMENTS */}
 				<PrivateRoute exact path='/payments/checkout/:uid' component={Checkout} />
 				<PrivateRoute exact path='/payments/status/:uid' component={PaymentStatus} />
+				<PrivateRoute exact path='/payments/refunds/:uid' component={PaymentRefund} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

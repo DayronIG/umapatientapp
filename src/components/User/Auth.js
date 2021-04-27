@@ -53,6 +53,13 @@ function AuthProvider({ children }) {
 			dispatch({ type: 'SET_USER_LOGIN', payload: userAuth.login })
 			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			getDeliveryInfo(userAuth)
+			const fecha = userAuth.dob.split('-').join('')
+			window.gtag('set', 'user_properties', {
+				'primary_corporate': userAuth.corporate_norm,
+				'sex': userAuth.sex,
+				'age': moment().diff(moment(fecha, 'YYYYMMDD'), 'years')
+			  });
+		
 		}
 	}	
 	
