@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import '../../styles/hisopado/landingTypes.scss'
 import { BackButton } from '../GeneralComponents/Headers'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import BuyHisopado from '../DeliveryService/BuyButton'
-import DBConnection, { firebaseInitializeApp } from '../../config/DBConnection'
 import { BsChevronDoubleDown } from 'react-icons/bs'
 import CardButton from '../DeliveryService/BuyButton/CardButton'
 import imgAntigenos from '../../assets/cardAntigenos.png'
@@ -12,8 +10,6 @@ import imgExpress from '../../assets/cardExpress.png'
 
 const HisopadoType = () => {
     const history = useHistory()
-    const dispatch = useDispatch()
-    const db = DBConnection.firestore(firebaseInitializeApp)
     const patient = useSelector(state => state.user)
     const inPersonServiceParams = useSelector(state => state.inPersonService.params)
     const deliveryServiceParams = useSelector(state => state.deliveryService.params)
@@ -55,8 +51,18 @@ const HisopadoType = () => {
                 <div className="hisopados__typeContent">
                     <CardButton 
                         img={imgAntigenos} 
-                        destinies={['A domicilio', 'En sede']} 
-                        title="Test de antígenos" 
+                        destinies={['A domicilio']} 
+                        title="Test de antígenos a domicilio" 
+                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
+                        result="Resultado en 15 minutos." 
+                        price={deliveryServiceParams.price}
+                        action={handleWantHisopado}
+                    />
+                    
+                    <CardButton 
+                        img={imgAntigenos} 
+                        destinies={['En sede']} 
+                        title="Test de antígenos en sede" 
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
                         result="Resultado en 15 minutos." 
                         price={deliveryServiceParams.price}
@@ -70,7 +76,7 @@ const HisopadoType = () => {
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
                         result="Resultado en 15 minutos." 
                         price={inPersonServiceParams.price}
-                        action={handleWantHisopado}
+                        action={() => history.push('/hisopado/abbott')}
                     />
                 </div>
                 <div className="hisopados__typeFooter">
