@@ -114,11 +114,11 @@ const PaymentStatus = () => {
             const data = {
                 doc_id: localStorage.getItem('pcr_express_doc_id'),
                 newValues: {
-                    assigned_status: status ? status : 'FREE',
+                    payment_status: status ? status : 'FREE',
                 }
             }
             try {
-                axios.patch(`${analysis}/`, data)
+                axios.patch(`${analysis}/payment/status/`, data)
                     .then(res => {
                         console.log(res)
                     })
