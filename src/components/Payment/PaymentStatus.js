@@ -86,13 +86,18 @@ const PaymentStatus = () => {
             history.push(`/payments/checkout/${currentUser.uid}`)
         }   
         if(paid === 'true') {
-            window.gtag('event', 'earn_virtual_currency', {
-                'virtual_currency_name': 'uma_creditos',
-                'value': amount
-            })
             localStorage.removeItem('paymentData')
             dispatch({ type: 'RESET_PAYMENT' })
-            history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
+
+            if (service !== 'hisopado') {
+                window.gtag('event', 'earn_virtual_currency', {
+                    'virtual_currency_name': 'uma_creditos',
+                    'value': amount
+                })
+                history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
+            } else if (service === 'hisopado') {
+                history.push('/')
+            }
         }
         if(paid === 'pending') {
             history.push('/')
@@ -110,6 +115,8 @@ const PaymentStatus = () => {
             } else if (paid === 'pending') {
                 status = 'PAYMENT:PENDING'
             }
+
+            console.log(status)
 
             const data = {
                 doc_id: localStorage.getItem('pcr_express_doc_id'),

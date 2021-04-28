@@ -92,9 +92,9 @@ const Abbott = () => {
         <>
             <BackButton />
             <div className="generalLanding">
-                <MktHeader title="PCR Express" price="3499" text="Indica la presencia del virus" />
+                <MktHeader title="PCR Express" price={params.price} text="Resultado en 15 minutos" />
 
-                <MktTextBlock title="Sedes">
+                <MktTextBlock title="Puntos de testeo">
                     {
                         !!rooms &&
                         rooms.map((room, index) => (

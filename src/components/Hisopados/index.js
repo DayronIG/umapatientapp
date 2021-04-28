@@ -59,7 +59,7 @@ const HisopadoType = () => {
                         action={handleWantHisopado}
                     />
                     
-                    <CardButton 
+                    {/* <CardButton 
                         img={imgAntigenos} 
                         destinies={['En sede']} 
                         title="Test de antígenos en sede" 
@@ -67,7 +67,7 @@ const HisopadoType = () => {
                         result="Resultado en 15 minutos." 
                         price={deliveryServiceParams.price}
                         action={handleWantHisopado}
-                    />
+                    /> */}
                     
                     <CardButton 
                         img={imgExpress} 
@@ -76,7 +76,7 @@ const HisopadoType = () => {
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
                         result="Resultado en 15 minutos." 
                         price={inPersonServiceParams.price}
-                        action={() => history.push('/hisopado/abbott')}
+                        action={() => history.push('/hisopado/express')}
                     />
                 </div>
                 <div className="hisopados__typeFooter">
