@@ -7,6 +7,8 @@ import { user_cancel } from '../../../../config/endpoints';
 import swal from 'sweetalert';
 import queryString from 'query-string';
 import axios from 'axios';
+import { mp_payment_url_refunds } from "../../../../config/endpoints";
+
 
 const CancelAppointment = () => {
     const dispatch = useDispatch();
@@ -65,6 +67,29 @@ const CancelAppointment = () => {
         }
     }
 
+    const refund = async () => {
+        swal("Como quieres que te reintegremos el monto de la consulta?", {
+            buttons: {
+              UmaCreditos: "UmaCreditos",
+              MercadoPago: "MercadoPago"
+            },
+          })
+          .then(async (value) => {
+            // const response = await axios.post(mp_payment_url_refunds, {
+            //     cashback: value === 'MercadoPago' ? true : false,
+            //     uid,
+            //     paymentId,
+            //     transactionAmount 
+            // }, { headers })
+            // if (value === 'MercadoPago') {
+            //     if (response.status === 200) return swal("Reintegro confirmado", "El monto fue reintegrado a tu cuenta de Mercadopago", "success");
+            //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+            // } else {
+            //     if (response.status === 200) return swal("Reintegro confirmado", `Te sumamos ${transactionAmount} umaCreditos a tu cuenta`, "success");
+            //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+            // }
+        });
+    }
     const verifyIfCanCancel = () => {
         if(assignedAppointment && (assignedAppointment.status === "ATT" || assignedAppointment.status === "DONE")) {
             swal(`No se puede cancelar esta atención`, 

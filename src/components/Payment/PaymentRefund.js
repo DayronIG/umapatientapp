@@ -19,20 +19,19 @@ const PaymentRefund = () => {
         setPayments(response.data)
     }
     const handleClick = async (paymentId, transactionAmount) => {
-            const response = await axios.post(mp_payment_url_refunds, {
-            cashback,
-            uid,
-            paymentId,
-            transactionAmount 
-
-        }, { headers })
-        if (cashback) {
-            if (response.status === 200) return swal("Reintegro confirmado", "El monto fue reintegrado a tu cuenta de Mercadopago", "success");
-            swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
-        } else {
-            if (response.status === 200) return swal("Reintegro confirmado", `Te sumamos ${transactionAmount} umaCreditos a tu cuenta`, "success");
-            swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
-        }
+        // const response = await axios.post(mp_payment_url_refunds, {
+        //     cashback,
+        //     uid,
+        //     paymentId,
+        //     transactionAmount 
+        // }, { headers })
+        // if (cashback) {
+        //     if (response.status === 200) return swal("Reintegro confirmado", "El monto fue reintegrado a tu cuenta de Mercadopago", "success");
+        //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+        // } else {
+        //     if (response.status === 200) return swal("Reintegro confirmado", `Te sumamos ${transactionAmount} umaCreditos a tu cuenta`, "success");
+        //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+        // }
         
     }
 
@@ -66,6 +65,7 @@ const PaymentRefund = () => {
                         )
                     })}
                 </ul>
+                { !payments && <p style={{ textAlign: 'center' }}>Todavía no has realizado ningun pago. Cuando tengas pagos registrados se mostraran en un listado.</p>}
             </main>
         </>
     )
