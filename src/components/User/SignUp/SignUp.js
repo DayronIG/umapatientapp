@@ -26,7 +26,7 @@ const SignUp = () => {
                     <section className="login__buttonGroup column">
                         <GoogleButton signUp />
                         <FacebookButton signUp />
-                        <MicrosoftButton signUp />
+                        {/* <MicrosoftButton signUp /> */}
                         <EmailButton signUp />
                     </section>
                 </div>

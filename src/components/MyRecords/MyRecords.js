@@ -38,7 +38,7 @@ const MyRecords = () => {
         }
     }
 
-    console.log(selected)
+    console.log(patient, beneficiaries, 'patient and ben')
 
     return (
         <>
@@ -49,8 +49,8 @@ const MyRecords = () => {
                 </div>
                 <div className='my-history-beneficiary'> 
                     <select className='select-beneficiary' onChange={(p) => selectBeneficiarieMr(p.target.value)}>
-                        <option key={123} value={`owner`}> {patient.fullname} </option>
-                    {beneficiaries.map((p, index) => {
+                        <option key={123} value={`owner`}> {patient?.fullname} </option>
+                    {beneficiaries?.map((p, index) => {
                         return <option key={index} value={`${p.id}`}> {p.fullname} </option>
                     })}
                     </select>
@@ -63,29 +63,30 @@ const MyRecords = () => {
                     {records && records.map((r, index) => {
                         return ( 
                             r.mr.destino_final !== 'USER CANCEL' && 
-                            r.mr.destino_final !== 'Anula el paciente' && r.mr.destino_final !== 'Paciente ausente' &&
+                            r.mr.destino_final !== 'Anula el paciente' && 
+                            r.mr.destino_final !== 'Paciente ausente' &&
                             r.mr.dt_cierre !== '' &&  r.incidente_id !== 'auto' &&
                             r.patient.dni === selected &&
                             <React.Fragment key={index}>
                                 <li className='my-history-consultation'>
                                         <Link to={`/history/${r.patient.dni}/${r.assignation_id}`} className='consult-link'>
                                             
-                                                <div className='left-icon'>
-                                                {r.mr_preds.pre_clasif === '' ?
-                                                    <FontAwesomeIcon icon={faUserNurse} />
+                                            <div className='left-icon'>
+                                            {r.mr_preds.pre_clasif === '' ?
+                                                <FontAwesomeIcon icon={faUserNurse} />
+                                                : 
+                                                <FontAwesomeIcon icon={faUserMd} />
+                                            }
+                                            </div>
+                                            <section className='title-date'> 
+                                                    {typeof r.mr_preds.pre_clasif === 'string' ?
+                                                    <p className='title-clasif'>Guardia</p> 
                                                     : 
-                                                    <FontAwesomeIcon icon={faUserMd} />
-                                                }
-                                                </div>
-                                                <section className='title-date'> 
-                                                        {typeof r.mr_preds.pre_clasif === 'string' ?
-                                                        <p className='title-clasif'>Guardia</p> 
-                                                        : 
-                                                        <p className='title-clasif'>{r.mr_preds?.pre_clasif?.[2] || 'Médico clínico'}</p>
-                                                        }
-                                                    
-                                                    <p className='consult-date'>{!!r.mr && moment(r.mr?.dt_cierre).format('DD-MM-YYYY')}</p>
-                                                </section>
+                                                    <p className='title-clasif'>{r.mr_preds?.pre_clasif?.[2] || 'Médico clínico'}</p>
+                                                    }
+                                                
+                                                <p className='consult-date'>{!!r.mr && moment(r.mr?.dt_cierre).format('DD-MM-YYYY')}</p>
+                                            </section>
                                         </Link>
                                     </li>
                                 <hr/>
