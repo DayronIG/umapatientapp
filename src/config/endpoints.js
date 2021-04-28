@@ -14,6 +14,7 @@ export const config = { headers: { 'Content-Type': 'application/json', 'Authoriz
 
 export const user_online = `${URN_UMA}/user_online`;
 export const make_appointment = `${URN_UMA}/make_appointment`;
+export const node_make_appointment = `${NODE_SERVER}/appointments/makeAppointment`
 export const feedback = `${URN_UMA}/feedback`;
 export const get_labels = `${URN_UMA}/labels`;
 export const user_cancel = `${URN_UMA}/user_cancel`;

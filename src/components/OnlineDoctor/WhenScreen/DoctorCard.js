@@ -116,8 +116,8 @@ const GuardCardComp = (props) => {
 	const getCopay = async () => {
 		const document = await getDocumentFB(`user/${currentUser.uid}`)
         let coverages = []
-        if (document.coverage.length >= 1) coverages = [...document.coverage]
-        if (document.corporate_norm) coverages.push({plan: document.corporate_norm})
+        if (document?.coverage.length >= 1) coverages = [...document.coverage]
+        if (document?.corporate_norm) coverages.push({plan: document.corporate_norm})
         let copayPrices = []
         for (let i = 0; i < coverages.length; i++){
            const copayPrice = await db.collection('corporate').where("name", "==", coverages[i]['plan']).get()
@@ -138,7 +138,7 @@ const GuardCardComp = (props) => {
 	}
 
 	useEffect(() => {
-		if (currentUser.uid) getUmaCreditosFromDB()
+		if (currentUser?.uid) getUmaCreditosFromDB()
 	},[user])
 
 
