@@ -103,7 +103,7 @@ const ProfileComponent = () => {
 					}
 					<select className='select-beneficiary' onChange={(p) => selectBeneficiary(p.target.value)}>
                         <option key={123} value={`owner`}> {patient.fullname} </option>
-                    	{beneficiaries.map((p, index) => {
+                    	{beneficiaries?.map((p, index) => {
                         	return <option key={index} value={`${p.id}`}> {p.fullname} </option>
                     })}
                     </select> 

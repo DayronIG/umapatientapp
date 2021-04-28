@@ -220,13 +220,12 @@
 
     &.center {
         text-align: center;
-
         .login__button {
+            overflow: hidden;
             &.large {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
                 img {
                     position: static;
                 }
