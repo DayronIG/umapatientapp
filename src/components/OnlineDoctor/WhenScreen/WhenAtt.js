@@ -27,7 +27,7 @@ const WhenScreen = (props) => {
 	const permissions = useSelector((state) => state.front.mic_cam_permissions);
 	const user = useSelector((state) => state.user);
 	const {currentUser} = useSelector((state) => state.userActive);
-	const [action, setAction] = useState('Loading');
+	const [action, setAction] = useState('Empty');
 	const [assignations, setAssignations] = useState([]);
 	const [queue, setQueue] = useState("1")
 	const [pediatric, setPediatric] = useState(false);
@@ -65,8 +65,9 @@ const WhenScreen = (props) => {
 	}, [])
 
 	useEffect(() => {
-		if (activeUid && currentUser && activeUid !== currentUser?.uid && !params.aid) {
-			dispatch(getDependant(currentUser.uid, activeUid))
+		if (activeUid && currentUser && !aid) {
+			if (activeUid !== currentUser?.uid) return dispatch(getDependant(currentUser.uid, activeUid))
+			return dispatch(getDependant(currentUser.uid))
 		}
 	}, [currentUser, activeUid]);
 
@@ -98,8 +99,8 @@ const WhenScreen = (props) => {
 
 
 	useEffect(() => {
-		if(user && params.aid) {
-			let os = user.context === "temp" ? "temp" : false
+		if(user) {
+			let os = user.context === "test" ? "test" : false
 			if(user.corporate_norm === "VALE") {
 				os = "EC"
 			}
@@ -128,6 +129,8 @@ const WhenScreen = (props) => {
 				console.error("Error", error)
 				return props.history.replace('/');
 			}
+		} else {
+			setAction("Empty")
 		}
 	}
 
@@ -190,7 +193,7 @@ const WhenScreen = (props) => {
 					{((active_guardia && user.corporate_norm !== "VALE")
 						|| pediatric) 
 						&& <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
-					{((active_list && action === 'Doctors') || user.context === "temp" || user.corporate_norm === "VALE") && (
+					{((active_list && action === 'Doctors') || user.context === "test" || user.corporate_norm === "VALE") && (
 						<div>
 							{assignations?.map((assignation, index) => (
 								<DoctorCard

@@ -16,11 +16,20 @@
     }
 }
 
+.antecedentsHistory {
+    width: 100%;
+    .profile-history {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        flex-direction: column;
+    }
+}
 .profile-container {
    width: 100%;
    min-height: 90vh;
    .profile-header-info {
-       padding: 20px 0;
+       padding-top: 30px;
        display: flex;
        align-items: center;
        justify-content: center;
@@ -141,15 +150,15 @@
             justify-content: center;
             flex-direction: column;
             text-align: center;
-            margin-top: 20px;
+            // margin-top: 20px;
             .file-img {
                 width: 200px;
             }
             .background-to-fill {
                 h1 {
                     color: $uma-text;
-                    font-size: 20px;
-                    margin: 20px 0;
+                    font-size: 22px;
+                    margin: 20px 0 10px 0;
                     font-weight: 500;
                 }
                 h2 {
@@ -164,7 +173,7 @@
                 height: 45px;
                 border: transparent;
                 border-radius: $regular-borders;
-                background-color: $green-uma;
+                background-color: $uma-primary;
                 color: $white-color;
                 font-weight: 600;
                 margin-top: 30px;
@@ -181,8 +190,8 @@
             height: 45px;
             border: transparent;
             border-radius: $regular-borders;
-            background-color: $uma-primary;
-            color: $white-color;
+            background-color: $white-color;
+            color: $uma-primary;
             font-weight: 600;
             margin-top: 30px;
             &:focus {
@@ -231,5 +240,47 @@
         color: $uma-error;
         padding: 0 20px;
         margin: 2px;
+    }
+}
+
+.bgModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    .modalText {
+        h1 {
+            font-size: 24px;
+            color: $uma-primary;
+            font-weight: 600;
+        }
+        p {
+            color: $uma-text;
+        }
+    }
+    .modalActions {
+        display: flex;
+        flex-direction: column;
+        .getStarted {
+            width: 200px;
+            height: 45px;
+            border: transparent;
+            border-radius: $regular-borders;
+            background-color: $uma-primary;
+            color: $white-color;
+            font-weight: 600;
+            &:focus {
+                outline: transparent;
+            }
+        }
+        :nth-child(2) {
+            border: none;
+            background-color: transparent;
+            color: $uma-primary;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     }
 }

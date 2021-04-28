@@ -28,6 +28,7 @@ import ForgottenPassError from './components/User/Login/ForgottenPass/ForgottenP
 import ConfirmAcc from './components/User/Login/ForgottenPass/ConfirmAcc';
 /* Profile */
 import Profile from './views/Profile';
+import AntecedentScreen from './components/Profile/MyBackground/AntecedentScreen';
 /* Online Doctor */
 import ConfirmAppointment from './components/OnlineDoctor/ConfirmAppointment/ConfirmAppointment';
 import Who from './components/OnlineDoctor/WhoScreen/WhoScreen';
@@ -91,6 +92,8 @@ import Support from './views/Support'
 import HisopadoCorporate from './components/DeliveryService/HisopadoCorporate';
 import Invitation from './views/Invitation';
 import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
+import Checkout from './components/Payment/Checkout'
+import PaymentStatus from './components/Payment/PaymentStatus.js';
 
 function App(props) {
 	return (
@@ -154,6 +157,7 @@ function App(props) {
 				<PrivateRoute exact path='/recipes/:ws?' component={RecipeSection} />
 				{/* PROFILE */}
 				<PrivateRoute path='/profile/:uid?' component={Profile} />
+				<PrivateRoute path='/antecedents/:uid?/:section' component={AntecedentScreen}/> 
 				{/* APPOINTMENTS ONLINE */}
 				<PrivateRoute exact path='/appointmentsonline/who' component={Who} />
 				<PrivateRoute exact path='/appointmentsonline/pending/:activeUid?/' component={AppointmentsOnlineHistory} />
@@ -186,6 +190,9 @@ function App(props) {
 				<PrivateRoute exact path='/pillbox/:ws?' component={Pillbox} />
 				{/* SUPPORT */}
 				<PrivateRoute exact path='/support/:section?' component={Support} />
+				{/* PAYMENTS */}
+				<PrivateRoute exact path='/payments/checkout/:uid' component={Checkout} />
+				<PrivateRoute exact path='/payments/status/:uid' component={PaymentStatus} />
 				{/* ACCESS DENIED */}
 				<Route exact path='/:ws?/comingSoon' component={ComingSoon} />
 				{/* NOT FOUND */}

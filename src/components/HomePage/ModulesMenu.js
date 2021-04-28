@@ -57,7 +57,7 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
-					<BuyHisopado />
+					{user.country !== "EC" && <BuyHisopado />}
 					{showButtonDerivation && <ButtonHome text='Derivación en curso'/>}
 					<section className='modules-container'>
 						<div className='card length4'>

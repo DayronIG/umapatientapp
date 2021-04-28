@@ -1,0 +1,80 @@
+@import './../global/Vars.scss';
+@import './../global/Fonts.scss';
+
+.rejected-payment {
+    background-color: $white-color;
+    height: 100vh;
+
+    .rejected-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 70px 0;
+        svg {
+            font-size: 5rem;
+            color:$uma-error;
+        }
+    }
+
+    .rejected-payment-body {
+        height: 380px;
+        text-align: center;
+
+        .rejected-payment-body-title-rejected {
+            color:$uma-error;
+            height: 31.17px;
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 900;
+            font-size: 28px;
+            line-height: 29px;
+            margin-bottom: 4rem;
+        }
+
+        .rejected-payment-body-title-pending {
+            color: $uma-primary;
+            height: 31.17px;
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 900;
+            font-size: 28px;
+            line-height: 29px;
+            margin-bottom: 100px;
+        }
+
+        .rejected-payment-body-title-confirmed {
+            color: $uma-primary;
+            height: 31.17px;
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 900;
+            font-size: 28px;
+            line-height: 29px;
+            margin-bottom: 40px;
+        }
+
+        .rejected-payment-body-text-container {
+            margin-bottom: 40px;
+        }
+
+        .rejected-payment-body-text {
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+            padding: 0 40px;
+        }
+
+        .rejected-payment-body-link{
+            width: 42px;
+            height: 13px;
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 20px;
+            line-height: 13px;
+            text-decoration-line: underline;
+        }
+    }
+}

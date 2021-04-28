@@ -17,6 +17,7 @@ const Rating = () => {
 	const [notes, setNotes] = useState('');
 	const token = useSelector((state) => state.userActive.token);
 	const mr = useSelector((state) => state.queries.medicalRecord);
+	const user = useSelector((state) => state.user)
     const uid = useSelector(state => state.userActive?.currentUser?.uid)
 	const location = useLocation()
     const { dependant, activeUid, assignation_id } = queryString.parse(location.search)
@@ -83,8 +84,8 @@ const Rating = () => {
 				// let mr = JSON.parse(localStorage.getItem('userMr'))
 				// let assignation_id = JSON.parse(localStorage.getItem('currentMr'))
 				let data = {
-					'ws': u.ws,
-					'dni': u.dni,
+					'ws': u.ws || user.ws,
+					'dni': u.dni || user.dni,
 					'dt': date,
 					'assignation_id': assignation_id,
 					'uma_eval': ratingApp.toString(),
@@ -97,6 +98,7 @@ const Rating = () => {
 				history.push('/home')
 			} catch (err) {
 				console.error(err)
+				history.push('/home');
 			}
 		},
 		[ratingApp, ratingMed, notes],

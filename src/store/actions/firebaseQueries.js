@@ -1,4 +1,5 @@
 import DBConnection, {firebaseInitializeApp} from '../../config/DBConnection';
+import {useDispatch} from 'react-redux';
 import moment from 'moment-timezone';
 const firestore = DBConnection.firestore(firebaseInitializeApp);
 
@@ -141,9 +142,43 @@ export function getBenficiaries(uid) {
 					}
 				})
 				dispatch({ type: 'GET_BENEFICIARIES', payload: parentsTemp });
+				localStorage.setItem('beneficiaries', JSON.stringify(parentsTemp))
 			}, (error) => console.log(error))
 	}
 }
+
+
+export function getAntecedents(uid) {
+	return dispatch => {
+		try{
+			firestore.doc(`user/${uid}/history/self`)
+			.get()
+			.then((user)=> {
+				dispatch({type: 'GET_HISTORY', payload: user.data()})
+				localStorage.setItem('userHistory', JSON.stringify(user.data()))
+			})
+			.catch(err => console.log(err))
+		}catch(err) {
+			console.error(err)
+		}
+	}
+}
+
+export function setAntecedentsActive() {
+	return dispatch => {
+		try{
+			firestore.doc(`/parametros/userapp/profile/variables`)
+			.get()
+			.then((res)=> {
+				dispatch({type: 'USER_HISTORY_ACTIVE', payload: res.data()})
+			})
+			.catch(err => console.log(err))
+		}catch(err) {
+			console.error(err)
+		}
+	}
+}
+
 
 export function getDoctor(cuit) {
 	return new Promise((resolve, reject) => {

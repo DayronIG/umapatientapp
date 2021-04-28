@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter, useHistory } from "react-router-dom";
+import { getAntecedents, getBenficiaries } from '../src/store/actions/firebaseQueries';
 import { AuthContext } from "./components/User/Auth";
 // ----- Login
 import LoginComponent from "./components/User/Login/Login";
@@ -14,10 +15,8 @@ import Axios from "axios";
 import { node_patient } from './config/endpoints';
 import version from './config/version.json';
 import moment from 'moment-timezone';
-
 const Login = () => {
     const [delay, setDelay] = useState(false)
-
     useEffect(() => {
         let timeout = setTimeout(() => setDelay(true), 2000)
         return () => clearTimeout(timeout)
@@ -29,7 +28,6 @@ const Login = () => {
         return <Loading />
     }
 }
-
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore(firebaseInitializeApp)
@@ -39,7 +37,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const [notification, setNotification] = useState(false)
     const call = useSelector(state => state.call)
 	const {token, login} = useSelector(state => state.userActive)
-
     useEffect(() => {
         let subscription = () => {}
         !localStorage.getItem('last_call_check') && localStorage.setItem('last_call_check', new Date())
@@ -83,6 +80,19 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [user, firestore, call.callRejected, rest.path])
 
     useEffect(() => {
+        if(currentUser && (localStorage.getItem('beneficiaries') === 'undefined')) {
+            dispatch(getBenficiaries(currentUser.uid))
+        }else if(localStorage.getItem('beneficiaries') !== 'undefined') {
+            dispatch({ type: 'GET_BENEFICIARIES', payload: JSON.parse(localStorage.getItem('beneficiaries'))});
+        }
+        if(currentUser && (localStorage.getItem('userHistory') === 'undefined')) {
+            dispatch(getAntecedents(currentUser.uid)) 
+        }else if(localStorage.getItem('userHistory') !== 'undefined') {
+            dispatch({type: 'GET_HISTORY', payload: JSON.parse(localStorage.getItem('userHistory'))})
+        }
+    }, [currentUser])
+
+    useEffect(() => {
         if (user.core_id) {
             if (user.phone || user.ws) {
                 if (!login || login === [] || login === "") {
@@ -93,7 +103,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
             }
         }
     }, [user])
-
+    
     useEffect(() => { // Get Device info and save messaging token(push notifications)
 		if (currentUser && currentUser.email) {
 			DetectRTC.load(function () {
@@ -107,7 +117,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentUser, token])
-
 	async function messaginTokenUpdate(currentUser, deviceInfo, deviceWithPush) {
 		//first we get the messaging token
         let userToken = ''
@@ -164,7 +173,6 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     }, [currentUser])
     
     return (
-
         <>
             {notification && <>
                 <ToastNotification
@@ -181,10 +189,7 @@ const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
                     !!currentUser ? <RouteComponent {...routeProps} /> : <Login />
                 }
             />
-
         </>
     )
 }
-
-
 export default withRouter(PrivateRoute)

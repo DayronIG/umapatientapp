@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io"
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLaptopMedical, faArrowLeft, faUserCircle, faCheck, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import logo from '../../assets/logo.png';
 import umacare from '../../assets/umacare.png';
+import { Modal } from './Modal/MobileModal';
 import '../../styles/global/Backbutton.scss';
 import '../../styles/global/Header.scss';
 
@@ -95,12 +96,14 @@ export const HistoryHeader = (props) => {
 	const history = useHistory()
 
 	return(
-		<section className={props.color === 'blue' ? 'header-container blue' : 'header-container history'}>	
-				<div onClick={() => history.goBack()} className='back-btn'>
-					<FontAwesomeIcon icon={faChevronLeft} /> 
-				</div>
-				<p className='header-title'>{props.children}</p>
-		</section>
+		<Fragment>
+			<section className={props.color === 'blue' ? 'header-container blue' : 'header-container history'}>	
+					<div onClick={() => history.goBack()} className='back-btn'>
+						<FontAwesomeIcon icon={faChevronLeft} /> 
+					</div>
+					<p className='header-title'>{props.children}</p>
+			</section>
+		</Fragment>
 	)
 }
 

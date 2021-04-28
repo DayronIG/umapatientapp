@@ -113,11 +113,20 @@ const StartCall = (props) => {
 	return (
 		<>
 			{
+				props.token === '.' && !showChat &&
+				<div className='chatProposal__container'>
+					<p>
+						Si no le aparece su médico, ingrese al chat.
+					</p>
+				</div>
+			}
+			{
 				!showChat && <button className="bubbleChat" onClick={() => setShowChat(true)}><IoIosChatbubbles /></button>
 			}
 			{
 				showChat && <Chat visible={(v) => setShowChat(v)} />
 			}
+			{ props.token !== '.' && props.session !== '.' && 
 			<OTSession
 				apiKey={'46424032'}
 				sessionId={props.sala}
@@ -159,6 +168,7 @@ const StartCall = (props) => {
 					</div>
 				</>
 			</OTSession>
+			}
 		</>
 	);
 };

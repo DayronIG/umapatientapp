@@ -57,20 +57,21 @@ const WhenScreen = (props) => {
 	}, [user, userDni]);
 
 	useEffect(() => {	
-		if(!userDataToJson.corporate_norm || userDataToJson.corporate_norm.includes('SIN OBRA SOCIAL')){
-			swal({
-				title: 'Espere',
-				text: 'Su cobertura de salud no cuenta con este servicio disponible. Próximamente podrás suscribirte a nuestros planes de manera particular, por el momento podemos ofrecerte realizar una consulta de autodiagnóstico.',
-				icon: 'info',
-				buttons: true
-			}).then((res) => {
-					if(res){
-						props.history.replace(`/autonomous/${userDataToJson.dni}`)
-					} else {
-						props.history.replace('/')
-					}
-				})
-		}
+		// Coementado por implementacion de copagos
+		// if(!userDataToJson.corporate_norm || userDataToJson.corporate_norm.includes('SIN OBRA SOCIAL')){
+		// 	swal({
+		// 		title: 'Espere',
+		// 		text: 'Su cobertura de salud no cuenta con este servicio disponible. Próximamente podrás suscribirte a nuestros planes de manera particular, por el momento podemos ofrecerte realizar una consulta de autodiagnóstico.',
+		// 		icon: 'info',
+		// 		buttons: true
+		// 	}).then((res) => {
+		// 			if(res){
+		// 				props.history.replace(`/autonomous/${userDataToJson.dni}`)
+		// 			} else {
+		// 				props.history.replace('/')
+		// 			}
+		// 		})
+		// }
 		if (user.dni) {
 			getUserParentsFirebase(user.core_id)
 				.then(function (userParents) {
@@ -87,6 +88,17 @@ const WhenScreen = (props) => {
 		if (redirectToConsultory === 'true') {
 			props.history.replace(`/appointmentsonline/specialty/${id}?dependant=${dependant}`);
 		} else {
+			if(dependant) {
+				window.gtag('event','select_content', {
+					'content_type': 'guardia_join',
+                    'item_id': 'Dependant true'
+				})
+			} else {
+				window.gtag('event','select_content', {
+					'content_type': 'guardia_join',
+                    'item_id': 'Dependant false'
+				})
+			}
 			props.history.replace(`/onlinedoctor/when/${id}?dependant=${dependant}`);
 		}
 	}
