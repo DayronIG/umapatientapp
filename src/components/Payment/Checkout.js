@@ -53,7 +53,9 @@ const Checkout = () => {
                 },
                 {headers} )
             .then((data)=>{
-                setDatos(data.data)
+                if (!data.data.error) {
+                    setDatos(data.data)
+                }
                 setLoading(false)
             })
             .catch(err => {

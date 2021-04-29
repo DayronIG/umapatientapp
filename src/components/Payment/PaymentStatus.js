@@ -16,7 +16,7 @@ const PaymentStatus = () => {
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
     const { mercadoPago } = useSelector((state) => state.payments);
-    const { paid, dependant, product, method, amount } = queryString.parse(location.search);
+    const { paid, dependant, product, method, amount, payment_id } = queryString.parse(location.search);
     
     const handleClick = () => {
         if(paid === 'rejected') {
@@ -37,8 +37,6 @@ const PaymentStatus = () => {
                 'virtual_currency_name': 'uma_creditos',
                 'value': amount
             })
-            localStorage.removeItem('paymentData')
-            dispatch({ type: 'RESET_PAYMENT' })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
         }
         if(paid === 'pending') {
@@ -58,6 +56,26 @@ const PaymentStatus = () => {
                 payload: paymentDataLocal
               })
         } 
+        return (()=> {
+            if (product === 'guardia'){
+                dispatch({ 
+                    type: 'SET_PAYMENT',
+                    payload: {
+                        id: payment_id,
+                        mercadoPago: false,
+                        price: amount
+                    }
+                })
+                localStorage.setItem('paymentData', JSON.stringify({
+                    mercadoPago: false,
+                    id: payment_id,
+                    price: amount
+                }));
+            } else {
+                dispatch({ type: 'RESET_PAYMENT' })
+                localStorage.removeItem('paymentData')
+            }
+        })
     },[]);
 
     return (
