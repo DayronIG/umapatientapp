@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
-import { make_appointment } from '../../../config/endpoints';
+import { node_make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { yearAndMonth } from '../../Utils/dateUtils';
 import { genAppointmentID } from '../../Utils/appointmentsUtils';
@@ -101,7 +101,7 @@ const ConfirmAppointment = (props) => {
 				lat: coords.lat || '', 
 				lon: coords.lng || '',
 				msg: 'make_appointment',
-				cuit: `${selectedAppointment.cuit}`,
+				cuit: `${selectedAppointment.cuit}` || '',
 				motivo_de_consulta: symptoms,
 				alertas: alerta,
 				ruta: ruta || '',
@@ -109,20 +109,17 @@ const ConfirmAppointment = (props) => {
 				specialty: 'online_clinica_medica',
 				ws: userVerified.ws || patient.ws,
 				uid: currentUser?.uid || patient.core_id,
-				uid_dependant: params.dependant === 'true' ? activeUid : false,
-				category
+				dependantUid: params.dependant === 'true' ? activeUid : false,
+				category: category,
+				isdependant: params.dependant === 'true' ? true : false,
 			};
 
 			const headers = { 'Content-type': 'application/json' };
-			const res = await axios.post(make_appointment, data, headers);
+			const res = await axios.post(node_make_appointment, data, headers);
+			localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
+			localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
 			dispatch({ type: 'LOADING', payload: false });
-			if (res.data.fecha === '') {
-				return history.replace(`/onlinedoctor/when/${activeUid}?dependant=${params.dependant}`);
-			} else {
-				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
-				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
-				return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
-			}
+			return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 		} catch (err) {
 			console.log(err)
 			swal('Error', 'Hubo un error al agendar el turno, intente nuevamente...', 'error');

@@ -14,6 +14,7 @@ export const config = { headers: { 'Content-Type': 'application/json', 'Authoriz
 
 export const user_online = `${URN_UMA}/user_online`;
 export const make_appointment = `${URN_UMA}/make_appointment`;
+export const node_make_appointment = `${NODE_SERVER}/appointments/makeAppointment`
 export const feedback = `${URN_UMA}/feedback`;
 export const get_labels = `${URN_UMA}/labels`;
 export const user_cancel = `${URN_UMA}/user_cancel`;
@@ -47,6 +48,9 @@ export const appointments_confirm = `${NODE_SERVER}/appointments/confirm`;
 // Payments
 export const payment_url = `${NODE_SERVER}/payments/mercadopago`;
 export const mp_payment_url = `${NODE_SERVER}/payments/mercadopago/checkoutPro`
+export const mp_payment_url_refunds = `${NODE_SERVER}/payments/mercadopago/refunds`
+export const mp_payment_url_payments = `${NODE_SERVER}/payments/mercadopago/payments`
+
 // Models
 export const url_facePos_model = `${url_facePos}/model.json`;
 export const url_facePos_metadata = `${url_facePos}/metadata.json`;

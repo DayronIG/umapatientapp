@@ -17,7 +17,7 @@ const PaymentStatus = () => {
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
     const { mercadoPago, doc_id } = useSelector((state) => state.payments);
-    const { paid, dependant, product, method, amount, service } = queryString.parse(location.search);
+    const { paid, dependant, product, method, amount, service, payment_id } = queryString.parse(location.search);
     const [message, setMessage] = useState({
         status: '',
         header: '',
