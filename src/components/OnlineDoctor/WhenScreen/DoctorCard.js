@@ -121,12 +121,17 @@ const GuardCardComp = (props) => {
         let copayPrices = []
         for (let i = 0; i < coverages.length; i++){
            const copayPrice = await db.collection('corporate').where("name", "==", coverages[i]['plan']).get()
-		   copayPrice.forEach(doc => {
-			   const data = doc.data();
-			   if (data) copayPrices.push(data.copay.default.guardia_copay)
-		   })
+		   if (copayPrice.docs.length){
+			   copayPrice.forEach(doc => {
+				   const data = doc.data();
+				   if (data) copayPrices.push(data.copay.default.guardia_copay)
+			   })
+		   } else {
+			   copayPrices.push(0)
+		   }
         }
-        const copay = copayPrices.length ? Math.min(...copayPrices) : 0
+        const copay = Math.min(...copayPrices) 
+		console.log('copay', copay)
 		setcopayPrice(copay || 'NO COPAY')
 	}
 

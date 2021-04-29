@@ -37,21 +37,6 @@ const PaymentStatus = () => {
                 'virtual_currency_name': 'uma_creditos',
                 'value': amount
             })
-            if (product === 'guardia'){
-                dispatch({ 
-                    type: 'SET_PAYMENT',
-                    payload: {
-                        id: payment_id,
-                        mercadoPago: false
-                    }
-                })
-                localStorage.setItem('paymentData', JSON.stringify({
-                    mercadoPago: false,
-                    id: payment_id
-                }));
-            }
-            dispatch({ type: 'RESET_PAYMENT' })
-            localStorage.removeItem('paymentData')
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
         }
         if(paid === 'pending') {
@@ -71,6 +56,26 @@ const PaymentStatus = () => {
                 payload: paymentDataLocal
               })
         } 
+        return (()=> {
+            if (product === 'guardia'){
+                dispatch({ 
+                    type: 'SET_PAYMENT',
+                    payload: {
+                        id: payment_id,
+                        mercadoPago: false,
+                        price: amount
+                    }
+                })
+                localStorage.setItem('paymentData', JSON.stringify({
+                    mercadoPago: false,
+                    id: payment_id,
+                    price: amount
+                }));
+            } else {
+                dispatch({ type: 'RESET_PAYMENT' })
+                localStorage.removeItem('paymentData')
+            }
+        })
     },[]);
 
     return (
