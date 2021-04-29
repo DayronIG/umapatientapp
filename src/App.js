@@ -68,8 +68,7 @@ import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
-import HisopadoType from './components/Hisopados'
-import HisopadoSede from './components/Hisopados/HisopadoSede'
+import HisopadoType from './components/Services/OnSite/Hisopados'
 import Abbott from './components/Landings/Abbott'
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
@@ -97,6 +96,9 @@ import Invitation from './views/Invitation';
 import TermsConditions from './components/DeliveryService/DeliveryPurchase/Components/TermsConditions.js';
 import Checkout from './components/Payment/Checkout'
 import PaymentStatus from './components/Payment/PaymentStatus.js';
+
+/* REFACTOR DE HISOPADOS Y SERVICIOS NUEVOS */
+import Results from './components/Services/General/ResultReveal'
 
 function App(props) {
 	return (
@@ -129,9 +131,15 @@ function App(props) {
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* Delivery Service */}
 				<PrivateRoute exact path='/hisopado/type' component={HisopadoType} />
-				{/* <Route exact path='/hisopado/sede' component={HisopadoSede} /> */}
 				<Route exact path='/hisopado/express' component={Abbott} />
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				{/*
+					EMPIEZA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
+				*/}
+				<PrivateRoute exact path='/result/:service/:docId' component={Results} />
+				{/*
+					TERMINA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
+				*/}
 				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
 				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
 				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />

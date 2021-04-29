@@ -1,12 +1,12 @@
 import React from 'react'
-import '../../styles/hisopado/landingTypes.scss'
-import { BackButton } from '../GeneralComponents/Headers'
+import '../../../../styles/hisopado/landingTypes.scss'
+import { BackButton } from '../../../GeneralComponents/Headers'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { BsChevronDoubleDown } from 'react-icons/bs'
-import CardButton from '../DeliveryService/BuyButton/CardButton'
-import imgAntigenos from '../../assets/cardAntigenos.png'
-import imgExpress from '../../assets/cardExpress.png'
+import CardButton from '../../../DeliveryService/BuyButton/CardButton'
+import imgAntigenos from '../../../../assets/cardAntigenos.png'
+import imgExpress from '../../../../assets/cardExpress.png'
 
 const HisopadoType = () => {
     const history = useHistory()
