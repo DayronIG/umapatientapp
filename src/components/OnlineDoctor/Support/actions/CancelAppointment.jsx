@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useLocation, useHistory, useParams} from 'react-router-dom';
 import { getAppointmentByUid } from '../../../../store/actions/firebaseQueries';
@@ -19,7 +19,8 @@ const CancelAppointment = () => {
     const [cancelOptions, setCancelOptions] = useState('')
     const [cancelDescription, setCancelDescription] = useState('');
     const { id, dependant, activeUid } = queryString.parse(location.search)
-    const { currentUser } = useSelector((state) => state.userActive)
+    const { currentUser, token } = useSelector((state) => state.userActive)
+    const payments = useSelector((state) => state.payments)
 
     async function cancelAppointment() {
         dispatch({ type: 'LOADING', payload: true })
@@ -51,13 +52,17 @@ const CancelAppointment = () => {
             await currentUser.getIdToken().then(async token => {
                 let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
                 await axios.post(user_cancel, data, {headers})
+            })
+            dispatch({ type: 'RESET_ALL' })
+            if (payments.price) {
+                refund()
+            } else {
                 await swal(`Consulta cancelada`, 
                 `Será redireccionado/a al inicio`, 
                 'success')
-            })
-            dispatch({ type: 'RESET_ALL' })
+                history.push('/home')
+            }
             dispatch({ type: 'LOADING', payload: false })
-            return history.push('/home')
         } catch (err) {
             console.error(err)
             await swal(`Ocurrió un error`, 
@@ -67,6 +72,16 @@ const CancelAppointment = () => {
         }
     }
 
+    useEffect(() => {
+        const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
+        if (!payments.price && paymentDataLocal) {
+            dispatch({
+                type: 'SET_PAYMENT',
+                payload: paymentDataLocal
+              })
+        }
+    },[])
+
     const refund = async () => {
         swal("Como quieres que te reintegremos el monto de la consulta?", {
             buttons: {
@@ -75,21 +90,35 @@ const CancelAppointment = () => {
             },
           })
           .then(async (value) => {
-            // const response = await axios.post(mp_payment_url_refunds, {
-            //     cashback: value === 'MercadoPago' ? true : false,
-            //     uid,
-            //     paymentId,
-            //     transactionAmount 
-            // }, { headers })
-            // if (value === 'MercadoPago') {
-            //     if (response.status === 200) return swal("Reintegro confirmado", "El monto fue reintegrado a tu cuenta de Mercadopago", "success");
-            //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
-            // } else {
-            //     if (response.status === 200) return swal("Reintegro confirmado", `Te sumamos ${transactionAmount} umaCreditos a tu cuenta`, "success");
-            //     swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
-            // }
+            let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
+            const response = await axios.post(mp_payment_url_refunds, {
+                cashback: value === 'MercadoPago' ? true : false,
+                uid: currentUser.uid,
+                paymentId: payments.id,
+                transactionAmount: payments.price 
+            }, { headers })
+            console.log(response)
+            if (value === 'MercadoPago') {
+                if (response.data === 'refunded') {
+                    await swal("Reintegro confirmado", "El monto fue reintegrado a tu cuenta de Mercadopago", "success");
+                    dispatch({ type: 'RESET_PAYMENT' })
+                    localStorage.removeItem('paymentData')
+                } else {
+                    await swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+                }
+            } else if(value === 'UmaCreditos') {
+                if (response.data === 'umaCredits') {
+                    await swal("Reintegro confirmado", `Te sumamos ${payments.price} umaCreditos a tu cuenta`, "success");
+                    dispatch({ type: 'RESET_PAYMENT' })
+                    localStorage.removeItem('paymentData')
+                } else {
+                    await swal("Lo sentimos", "Ocurrio un problema interno y no se pudo realizar el reintegro", "error");
+                }
+            }
+            history.push('/home')
         });
     }
+
     const verifyIfCanCancel = () => {
         if(assignedAppointment && (assignedAppointment.status === "ATT" || assignedAppointment.status === "DONE")) {
             swal(`No se puede cancelar esta atención`, 

@@ -131,7 +131,6 @@ const GuardCardComp = (props) => {
 		   }
         }
         const copay = Math.min(...copayPrices) 
-		console.log('copay', copay)
 		setcopayPrice(copay || 'NO COPAY')
 	}
 
