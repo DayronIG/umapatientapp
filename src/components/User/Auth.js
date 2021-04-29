@@ -43,6 +43,10 @@ function AuthProvider({ children }) {
 		}
 	}
 
+    async function getAnalysisInfo() {
+		const params = await getDocumentFB('parametros/userapp/analysis/abbott')
+		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: params})
+	}
 
 	async function getInitialData(user) {
 		const userAuth = await getAuth(user.uid)
@@ -59,7 +63,7 @@ function AuthProvider({ children }) {
 				'sex': userAuth.sex,
 				'age': moment().diff(moment(fecha, 'YYYYMMDD'), 'years')
 			  });
-		
+			getAnalysisInfo()
 		}
 	}	
 	

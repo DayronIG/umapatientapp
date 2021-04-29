@@ -16,6 +16,7 @@ import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconUmaCare from '../../assets/icons/icon-umaCare.svg'
 import '../../styles/generalcomponents/ModulesMenu.scss';
+import ButtonStyle from '../DeliveryService/BuyButton/ButtonStyle';
 
 const ModulesMenu = () => {
 	const history = useHistory();
@@ -57,7 +58,10 @@ const ModulesMenu = () => {
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
-					{user.country !== "EC" && <BuyHisopado />}
+					{
+						user.country !== "EC" &&
+						<ButtonStyle checkoutText="Quiero mi hisopado" finalAction={() => history.push('/hisopado/type')} />
+					}
 					{showButtonDerivation && <ButtonHome text='Derivación en curso'/>}
 					<section className='modules-container'>
 						<div className='card length4'>

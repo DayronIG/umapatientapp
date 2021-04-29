@@ -1,0 +1,75 @@
+@import '../../../styles/global/Vars.scss';
+@import '../../../styles/global/Fonts.scss';
+
+.mktTextBlock {
+    background: $white-color;
+    box-shadow: 0px 2px 6px rgba(99, 99, 99, 0.15);
+    border-radius: 2rem;
+    padding: 1rem 0 1.5rem;
+    margin-bottom: 2rem;
+
+    h2 {
+        text-align: center;
+        color: $uma-text;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .content {
+        p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin: 0;
+            color: $uma-text;
+            padding: 0 1rem;
+            
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .group {
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                padding: 0 1rem;
+            }
+        }
+
+        .outstanding {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: 600;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .clarification {
+            color: $uma-primary;
+        }
+
+        .important {
+            background: rgba(161, 61, 223, 0.3);
+            text-align: left;
+            line-height: 1;
+            font-size: 1.2em;
+            font-weight: 600;
+            padding: 0.8rem 1rem;
+        }
+    }
+
+}

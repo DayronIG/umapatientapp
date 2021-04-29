@@ -8,8 +8,10 @@ import cx from './cxReducers';
 import deliveryService from './deliveryReducers';
 import derivations from './derivationsReducers';
 import front from './frontReducers';
+import inPersonService from './inPersonServiceReducers'
 import onboardingSecondStep from './onboardingSecondStepReducers';
 import onboardingThirdStep from './onboardingThirdStepReducers';
+import payments from './payments';
 import pillbox from './pillboxReducer';
 import queries from './queriesReducers';
 import survey from './surveyReducers';
@@ -18,29 +20,30 @@ import umacare from './umacareReducers';
 import user from './userReducers';
 import userActive from './userActiveReducers';
 import userHistory from './userHistoryReducers';
-import payments from './payments';
 
 const appReducer = combineReducers({
 	assessment,
 	assignations,
 	autonomous,
 	biomarkers,
-	cx,
 	call,
+	cx,
 	deliveryService,
 	derivations,
 	front,
+	inPersonService,
 	userHistory,
 	queries,
 	onboardingSecondStep,
 	onboardingThirdStep,
-	pillbox,
-	user,
-	survey,
-	umacare,
-	transport,
-	userActive,
 	payments,
+	pillbox,
+	queries,
+	survey,
+	transport,
+	umacare,
+	user,
+	userActive,
 });
 
 const rootReducer = (state, action) => {

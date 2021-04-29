@@ -1,0 +1,12 @@
+@import '../../styles/global/Vars.scss';
+@import '../../styles/global/Fonts.scss';
+
+.generalLanding {
+    min-height: 100vh;
+    padding: 4rem 5% 0;
+    background-image: url('../../assets/bgGeneralLandingsHeader.png');
+    background-position: top center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: $white-color;
+}
