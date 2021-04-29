@@ -38,7 +38,7 @@ const Chat = (props) => {
 
     useEffect(() => {
         if (activeUid) {
-            getAppointmentByUid(activeUid, dependant).then((appoint) => {
+            getAppointmentByUid(currentUser.uid).then((appoint) => {
                 if (appoint) {
                     dispatch({ type: "GET_CURRENT_ASSIGNATION", payload: appoint })
                 } else {
