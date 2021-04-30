@@ -3,7 +3,7 @@
 
 .twocolumns{
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 96%;
     grid-gap: 2%;
     flex-wrap: wrap;   
     justify-content: center; 
@@ -14,43 +14,41 @@
 
 .twocolumns__title{
     display: grid;
-    grid-template-columns: 100%;
-    grid-gap: 2%;
+    grid-template-columns: 96%;
+    // grid-gap: 2%;
     justify-content: center;
 
     .badge__enSede{
         display: flex;
         flex-direction: column;
-        width: 100%;
-        grid-gap: 2%;
-        height: 100%;
+        width: 100%;    
         background: #A13DDF;  
         border-top-left-radius: 2.6rem;
         border-top-right-radius: 2.6rem;
         text-align: center;
         justify-content: center;
-        margin-top: 2%;
 
         .badge__testSpots{
             display: grid;
-            grid-template-columns: 39% 25% 36%;
+            grid-template-columns: 36% 26% 38%;
             justify-content: flex-start;
 
             .group{
-                padding-top: 3%;
+                padding: 0.1rem
             }
 
             .group:nth-of-type(odd){
                 background-color:rgb(255, 255, 255)
             }
             .group:nth-of-type(even){
-                background-color:rgb(235, 230, 230)
+                background-color:rgb(240, 240, 240)
             }
             
             h3{
                 font-family: 'Nunito Sans', sans-serif;
                 font-size: 1rem;
                 font-weight: 600;
+                padding: 0.1rem;
             }
             p{
                 font-family: 'Nunito Sans', sans-serif;
@@ -71,7 +69,7 @@
 
     .onecolumn{
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 96%;
     flex-wrap: wrap;   
     justify-content: center; 
 
@@ -79,7 +77,7 @@
 }
     .onecolumn__title{
             display: grid;
-            grid-template-columns: 100%;
+            grid-template-columns: 96%;
             justify-content: center;
     
     .badge__enSede2{
@@ -191,7 +189,7 @@
                 &.price {
                     color: $uma-secondary;
                     font-weight: 700;
-                    font-size: 1.4rem;
+                    font-size: 1.3rem;
                 }
 
                 &.action {
@@ -199,7 +197,7 @@
                     display: flex;
                     align-items: center;
                     font-weight: 700;
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
 
                     svg {
                         margin-left: 0.3rem;
