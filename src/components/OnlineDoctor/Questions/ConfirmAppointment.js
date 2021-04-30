@@ -115,7 +115,7 @@ const ConfirmAppointment = (props) => {
 			};
 
 			const headers = { 'Content-type': 'application/json' };
-			if(selectedAppointment.doc?.cuit === "bag") {
+			if(bag) {
 				const res = await axios.post(node_make_appointment, data, headers);
 				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
 				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
