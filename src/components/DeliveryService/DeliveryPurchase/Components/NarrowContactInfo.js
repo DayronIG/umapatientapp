@@ -8,7 +8,7 @@ export default function NarrowContactInfo({goBack}) {
     }, []);
 
     return (
-        <div className="allwhite-hisopados-background" >
+        <div className="hisopados-flux" >
                 <div className="narrow__contact__container">
                     <img src={narrowContact} alt="hisopado_neg" className="narrow__image"/>
                     <p className="hisopados-title">¿Soy contacto estrecho?</p>

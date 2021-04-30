@@ -70,6 +70,7 @@ import UmaCare from './components/UmaCare/index.js';
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
 import HisopadoType from './components/Services/OnSite/Hisopados'
 import Abbott from './components/Landings/Abbott'
+import AntigenosSede from './components/Landings/AntigenosSede';
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
 import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
@@ -99,6 +100,7 @@ import PaymentStatus from './components/Payment/PaymentStatus.js';
 
 /* REFACTOR DE HISOPADOS Y SERVICIOS NUEVOS */
 import Results from './components/Services/General/ResultReveal'
+
 
 function App(props) {
 	return (
@@ -132,6 +134,7 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute exact path='/hisopado/type' component={HisopadoType} />
 				<Route exact path='/hisopado/express' component={Abbott} />
+				<Route exact path='/hisopado/antigenos_sede' component={AntigenosSede}/>
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
 				{/*
 					EMPIEZA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
