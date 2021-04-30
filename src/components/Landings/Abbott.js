@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { BackButton } from '../GeneralComponents/Headers'
 import './GeneralLandingsStyles.scss'
+import { analysis } from '../../config/endpoints'
+import { BackButton } from '../GeneralComponents/Headers'
+import { setNewService } from '../../store/actions/servicesActions'
+import { useHistory} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
+import CustomUmaLoader from '../GeneralComponents/Loading'
+import MktBuyButton from '../Mkt/MktBuyButton'
 import MktHeader from '../Mkt/MktHeader'
 import MktTextBlock from '../Mkt/MktTextBlock'
-import MktBuyButton from '../Mkt/MktBuyButton'
-import { useSelector, useDispatch } from 'react-redux'
-import { useHistory} from 'react-router-dom'
-import axios from 'axios'
-import { analysis } from '../../config/endpoints'
-import CustomUmaLoader from '../GeneralComponents/Loading'
  
 const Abbott = () => {
     const dispatch = useDispatch()

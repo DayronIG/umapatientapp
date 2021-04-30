@@ -14,6 +14,7 @@ import onboardingThirdStep from './onboardingThirdStepReducers';
 import payments from './payments';
 import pillbox from './pillboxReducer';
 import queries from './queriesReducers';
+import services from './servicesReducers';
 import survey from './surveyReducers';
 import transport from './transportReducer';
 import umacare from './umacareReducers';
@@ -32,18 +33,18 @@ const appReducer = combineReducers({
 	derivations,
 	front,
 	inPersonService,
-	userHistory,
-	queries,
 	onboardingSecondStep,
 	onboardingThirdStep,
 	payments,
 	pillbox,
 	queries,
+	services,
 	survey,
 	transport,
 	umacare,
 	user,
 	userActive,
+	userHistory,
 });
 
 const rootReducer = (state, action) => {

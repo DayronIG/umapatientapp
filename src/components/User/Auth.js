@@ -5,6 +5,7 @@ import { getAuth } from '../../store/actions/firebaseQueries';
 import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
 import moment from 'moment-timezone';
+import { setAllServices } from '../../store/actions/servicesActions'
 export const AuthContext = React.createContext()
 
 function AuthProvider({ children }) {
@@ -43,9 +44,17 @@ function AuthProvider({ children }) {
 		}
 	}
 
-    async function getAnalysisInfo() {
+	async function getAnalysisInfo(userAuth) {
 		const params = await getDocumentFB('parametros/userapp/analysis/abbott')
 		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: params})
+		if (userAuth.dni) {
+			let filters = [{ field: 'status', value: ['FREE', 'PAYMENT', 'DONE:RESULT'], comparator: 'in' }, { field: 'patient.uid', value: userAuth.core_id, comparator: '==' }]
+			await snapDocumentsByFilter('events/requests/analysis', filters, (data) => {
+				if (data.length > 0) {
+					dispatch(setAllServices(data))
+				}
+			})
+		}
 	}
 
 	async function getInitialData(user) {
@@ -57,7 +66,7 @@ function AuthProvider({ children }) {
 			dispatch({ type: 'SET_USER_LOGIN', payload: userAuth.login })
 			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
 			getDeliveryInfo(userAuth)
-			getAnalysisInfo()
+			getAnalysisInfo(userAuth)
 			const fecha = userAuth.dob.split('-').join('')
 			window.gtag('set', 'user_properties', {
 				'primary_corporate': userAuth.corporate_norm,
