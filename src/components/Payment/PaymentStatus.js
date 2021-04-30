@@ -17,7 +17,7 @@ const PaymentStatus = () => {
     const dispatch = useDispatch();
 	const { currentUser } = useSelector((state) => state.userActive);
     const { mercadoPago, doc_id } = useSelector((state) => state.payments);
-    const { paid, dependant, product, method, amount, service, payment_id } = queryString.parse(location.search);
+    const { paid, dependant, product, method, amount, payment_id } = queryString.parse(location.search);
     const [message, setMessage] = useState({
         status: '',
         header: '',
@@ -55,7 +55,7 @@ const PaymentStatus = () => {
                         header: 'Pago Pendiente',
                         icon: <FaClock style={{ color: '#ff9933' }} />,
                         title: 'El pago esta siendo procesado',
-                        paragraphs: service !== 'hisopado' ? ['Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.'] : ['Cuando el pago sea confirmado te enviaremos una notificación para que puedas continuar'],
+                        paragraphs: product !== 'pcr_express' ? ['Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.'] : ['Cuando el pago sea confirmado te enviaremos una notificación para que puedas continuar'],
                         button: 'Ir al inicio',
                     })
                 break;
@@ -65,7 +65,7 @@ const PaymentStatus = () => {
                         header: 'Pago Confirmado',
                         icon: payedIcon,
                         title: '¡Hemos recibo el pago!',
-                        paragraphs: service !== 'hisopado' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte al consultorio seleccionado para realizar el test'],
+                        paragraphs: product !== 'pcr_express' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte al consultorio seleccionado para realizar el test'],
                         button: 'Continuar',
                     })
                 break;
@@ -97,13 +97,13 @@ const PaymentStatus = () => {
             })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
             
-            if (service !== 'hisopado') {
+            if (product !== 'pcr_express') {
                 window.gtag('event', 'earn_virtual_currency', {
                     'virtual_currency_name': 'uma_creditos',
                     'value': amount
                 })
                 history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
-            } else if (service === 'hisopado') {
+            } else if (product === 'pcr_express') {
                 history.push('/')
             }
         }
