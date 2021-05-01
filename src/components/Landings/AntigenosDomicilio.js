@@ -129,10 +129,9 @@ const AntigenosDomicilio = () => {
                     </MktTextBlock>
 
 
-
                     <MktTextBlock title="Horarios">
-                        <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>
-                        <p>Reserva tu hisopado cuando desees a través de la app y dirigite a cualquiera de nuestros centros de testeo para realizarlo.</p>
+                        <p className="outstanding center">De lunes a viernes de 8hs a 20hs para todas las compras realizadas antes de las 18hs. </p>
+                        <p>No se realizan hisopados los días domingos ni feriados.</p>
                         <p>Si compras fuera del rango de atención, te lo realizaremos al siguiente día hábil.</p>
                         <p className="bold underline">No se realizan hisopados los días sábados, domingos ni feriados.</p>
                     </MktTextBlock>
