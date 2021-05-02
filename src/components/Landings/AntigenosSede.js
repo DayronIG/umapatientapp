@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import '../../styles/hisopado/hisopadosFlux.scss'
-import './GeneralLandingsStyles.scss'
-import "../../styles/hisopado/frequentQuestions.scss";
-import "../../styles/hisopado/hisopadosFlux.scss";
-import { analysis } from '../../config/endpoints'
 import { BackButton } from '../GeneralComponents/Headers'
-import { useHistory} from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-import CustomUmaLoader from '../GeneralComponents/Loading'
-import FrequentQuestionsPCR from "../DeliveryService/DeliveryPurchase/Components/FrequentQuestionsPCR"
-import MktBuyButton from '../Mkt/MktBuyButton'
+import './GeneralLandingsStyles.scss'
+import '../../styles/hisopado/hisopadosFlux.scss'
 import MktHeader from '../Mkt/MktHeader'
 import MktTextBlock from '../Mkt/MktTextBlock'
-import NarrowContactInfo from '../DeliveryService/DeliveryPurchase/Components/NarrowContactInfo'
+import MktBuyButton from '../Mkt/MktBuyButton'
+import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { analysis } from '../../config/endpoints'
+import CustomUmaLoader from '../GeneralComponents/Loading'
+import FrequentQuestionsSede from "../DeliveryService/DeliveryPurchase/Components/FrequentQuestionsSede"
 import TermsConditions from "../DeliveryService/DeliveryPurchase/Components/TermsConditions"
+import NarrowContactInfo from '../DeliveryService/DeliveryPurchase/Components/NarrowContactInfo'
+import "../../styles/hisopado/hisopadosFlux.scss";
+import "../../styles/hisopado/frequentQuestions.scss";
 
 
-const Abbott = () => {
+const AntigenosSede = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const { currentUser } = useSelector((state) => state.userActive)
@@ -40,7 +40,7 @@ const Abbott = () => {
 
     const payHisopado = () => {
         setLoader(true)
-        dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express'})
+        dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express' })
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
 
         dispatch({
@@ -94,16 +94,16 @@ const Abbott = () => {
         }
     }
 
-    if(loader) {
+    if (loader) {
         return <CustomUmaLoader />
     }
-    
+
 
     const renderContent = () => {
         if (termsConditions) {
             return <TermsConditions goBack={() => setTermsConditions(false)} />
         } else if (frequentQuestions) {
-            return <FrequentQuestionsPCR goBack={() => setFrequentQuestions(false)} />
+            return <FrequentQuestionsSede goBack={() => setFrequentQuestions(false)} />
         } else if (narrowContactInfo) {
             return <NarrowContactInfo goBack={() => setNarrowContactInfo(false)} />
         } else {
@@ -111,7 +111,7 @@ const Abbott = () => {
                 <>
                     <BackButton />
                     <div className="generalLanding">
-                        <MktHeader title="PCR Express" price={params.price} text="Resultado en 15 minutos" />
+                        <MktHeader title="Test Antígenos" price={params.price} text="Resultado en 15 minutos" />
 
                         <MktTextBlock title="Puntos de testeo">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>
@@ -129,12 +129,12 @@ const Abbott = () => {
                         </MktTextBlock>
 
 
-                
+
                         <MktTextBlock title="Horarios">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>
                             <p>Reserva tu hisopado cuando desees a través de la app y dirigite a cualquiera de nuestros centros de testeo para realizarlo.</p>
                             <p>Si compras fuera del rango de atención, te lo realizaremos al siguiente día hábil.</p>
-                    <p className="bold underline">No se realizan hisopados los días sábados, domingos ni feriados.</p>
+                            <p className="bold underline">No se realizan hisopados los días sábados, domingos ni feriados.</p>
                         </MktTextBlock>
 
                         <MktTextBlock title="Cobertura">
@@ -171,10 +171,10 @@ const Abbott = () => {
         }
     }
 
-    
-    return( <>
+
+    return (<>
         {renderContent()}
     </>)
 }
 
-export default Abbott
+export default AntigenosSede
