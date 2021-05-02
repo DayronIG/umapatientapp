@@ -68,7 +68,7 @@ import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
-import HisopadoType from './components/Services/OnSite/Hisopados'
+import HisopadoType from './components/Services/Hisopados'
 import Abbott from './components/Landings/Abbott'
 import AntigenosSede from './components/Landings/AntigenosSede';
 import AntigenosDomicilio from './components/Landings/AntigenosDomicilio.js';

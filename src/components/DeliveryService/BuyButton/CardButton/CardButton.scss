@@ -1,135 +1,32 @@
 @import '../../../../styles/global/Vars.scss';
 @import '../../../../styles/global/Fonts.scss';
 
-.twocolumns{
-    display: grid;
-    grid-template-columns: 96%;
-    grid-gap: 2%;
-    flex-wrap: wrap;   
-    justify-content: center; 
-    margin-bottom: 8%;
-    margin-top: 2%;
-
-}
-
-.twocolumns__title{
-    display: grid;
-    grid-template-columns: 96%;
-    // grid-gap: 2%;
-    justify-content: center;
-
-    .badge__enSede{
-        display: flex;
-        flex-direction: column;
-        width: 100%;    
-        background: #A13DDF;  
-        border-top-left-radius: 2.6rem;
-        border-top-right-radius: 2.6rem;
-        text-align: center;
-        justify-content: center;
-
-        .badge__testSpots{
-            display: grid;
-            grid-template-columns: 36% 26% 38%;
-            justify-content: flex-start;
-
-            .group{
-                padding: 0.1rem
-            }
-
-            .group:nth-of-type(odd){
-                background-color:rgb(255, 255, 255)
-            }
-            .group:nth-of-type(even){
-                background-color:rgb(255, 255, 255);
-                border: 1px solid rgba(223, 221, 221, 0.541)
-            }
-            
-            h3{
-                font-family: 'Nunito Sans', sans-serif;
-                font-size: 1rem;
-                font-weight: 600;
-                padding: 0.1rem;
-            }
-            p{
-                font-family: 'Nunito Sans', sans-serif;
-                font-size: 70%;
-                padding: 0.1rem;
-            }
-        }
-        
-        
-        h2{
-            color: rgb(255, 255, 255);
-            font-weight: 800;
-            margin: 0;
-            padding: 2%;
-            font-size: 1.5rem;
-        }
-    }}
-
-    .onecolumn{
-    display: grid;
-    grid-template-columns: 96%;
-    flex-wrap: wrap;   
-    justify-content: center; 
-
-
-}
-    .onecolumn__title{
-            display: grid;
-            grid-template-columns: 96%;
-            justify-content: center;
-    
-    .badge__enSede2{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        grid-gap: 2%;
-        height: 100%;
-        background: #A13DDF;  
-        border-top-left-radius: 2.6rem;
-        border-top-right-radius: 2.6rem;
-        text-align: center;
-        justify-content: center;
-        margin-top: 2%;
-        
-        h2{
-            color: rgb(255, 255, 255);
-            font-weight: 800;
-            font-size: 1.5rem;
-            margin: 0;
-            padding: 2%;
-        }
-    }}
-
-
-
 .cardButton {
     background: $white-color;
-    border-top-left-radius: 2.6rem;
-    border-top-right-radius: 2.6rem;
+    border-radius: 1.8rem;
     width: 100%;
-    box-shadow: 0px 4px 12px rgba(99, 99, 99, 0.15);
-    // margin-bottom: 2rem;
+    box-shadow: 0px 4px 12px rgba(99, 99, 99, 0.25);
+    margin-bottom: 2rem;
+    overflow: hidden;
 
     .image {
         img {
             width: 100%;
-            height: 80px;
+            height: 100px;
+            object-fit: cover;
         }
     }
 
     .infoCardButton {
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         position: relative;
 
         .cardRow {
-            // margin-bottom: 2rem;
+            margin-bottom: 1rem;
 
             .badges {
                 position: absolute;
-                top: -28px;
+                top: -14px;
                 
                 & > span {
                     background: $uma-secondary;
@@ -137,7 +34,7 @@
                     text-transform: uppercase;
                     color: $white-color;
                     border-radius: 0.3rem;
-                    font-size: 0.7rem;
+                    font-size: 1rem;
                     font-weight: 600;
                     line-height: 1.4;
                     
@@ -150,20 +47,18 @@
     
             h2 {
                 text-align: left;
-                // margin-top: 1rem;
                 color: $uma-text;
                 font-family: 'Nunito Sans', sans-serif;
                 font-weight: 700;
-                font-size: 1.2rem;
-                // margin-bottom: 0.3rem;
-                margin-bottom: 2%;
+                font-size: 1.8rem;
+                margin-bottom: 0.3rem;
                 padding: 0;
             }
     
             p {
-                font-size: 0.9rem;
+                font-size: 1rem;
                 color: $uma-text;
-                margin-bottom: 2%;
+                margin-bottom: 0.5rem;
     
                 span {
                     font-weight: 600;
@@ -175,13 +70,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-                
-            
-            .break {
-            flex-basis: 100%;
-            height: 0;
-            }
 
             p {
                 margin: 0;
@@ -190,7 +78,7 @@
                 &.price {
                     color: $uma-secondary;
                     font-weight: 700;
-                    font-size: 1.3rem;
+                    font-size: 1.9rem;
                 }
 
                 &.action {
@@ -198,7 +86,7 @@
                     display: flex;
                     align-items: center;
                     font-weight: 700;
-                    font-size: 1.1rem;
+                    font-size: 1rem;
 
                     svg {
                         margin-left: 0.3rem;
