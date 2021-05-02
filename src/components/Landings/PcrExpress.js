@@ -109,7 +109,7 @@ const Abbott = () => {
         } else {
             return (
                 <>
-                    <BackButton />
+                    <BackButton customTarget="/hisopado/type" />
                     <div className="generalLanding">
                         <MktHeader title="PCR Express" price={params.price} text="Resultado en 15 minutos" />
 
@@ -124,11 +124,7 @@ const Abbott = () => {
                                     </div>
                                 ))
                             }
-                            {/* <p style={{fontWeight:'bold', textAlign:'center'}}>Horarios</p> */}
-
                         </MktTextBlock>
-
-
                 
                         <MktTextBlock title="Horarios">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>

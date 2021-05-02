@@ -19,9 +19,6 @@ import db, { firebaseInitializeApp } from "../../config/DBConnection";
 import { create_delivery, config } from '../../config/endpoints';
 import swal from 'sweetalert';
 
-
-
-
 const AntigenosDomicilio = () => {
     const isLocal = window.location.origin.includes('localhost');
     const userActive = useSelector(state => state.userActive)
@@ -97,79 +94,63 @@ const AntigenosDomicilio = () => {
             return <NarrowContactInfo goBack={() => setNarrowContactInfo(false)} />
         } else {
             return (
-            <>
-                <BackButton />
-                <div className="generalLanding">
-                    <MktHeader title="Test Antígenos A Domicilio" price={params.price} text="Resultado en 15 minutos" />
+                <>
+                    <BackButton customTarget="/hisopado/type" />
+                    <div className="generalLanding">
+                        <MktHeader title="Test Antígenos A Domicilio" price={params.price} text="Resultado en 15 minutos" />
+                            <MktTextBlock title="Conocé Nuestra Zona De Cobertura">
+                                <div className="hisopados-flux">
+                                    <div className="coverage">
+                                        <button
+                                            className="coverage-btn"
+                                            onClick={() => history.push(`/hisopado/cobertura/${patient.ws}`)}
+                                            >Zona de cobertura</button>
+                                        <br />
+                                        <span className="coverage-btn" onClick={() => setFrequentQuestions(true)}>Preguntas frecuentes</span>
+                                    </div>
+                            </div>
+                        </MktTextBlock>
 
+                        <MktTextBlock title="Horarios">
+                            <p className="outstanding center">De lunes a viernes de 8hs a 20hs para todas las compras realizadas antes de las 18hs. </p>
+                            <p>No se realizan hisopados los días domingos ni feriados.</p>
+                            <p>Si compras fuera del rango de atención, te lo realizaremos al siguiente día hábil.</p>
+                            <p className="bold underline">No se realizan hisopados los días sábados, domingos ni feriados.</p>
+                        </MktTextBlock>
 
+                        <MktTextBlock title="Cobertura">
+                            <p>Es un hisopado particular, por ende no lo cubren las obras sociales.</p>
+                            <p>Recomendamos consultar con su destino la validez del test rápido para viajar.</p>
+                        </MktTextBlock>
 
-                        <MktTextBlock title="Conocé Nuestra Zona De Cobertura">
-                            <div className="hisopados-flux">
-                                <div className="coverage">
-                                    <button
-                                        className="coverage-btn"
-                                        onClick={() => history.push(`/hisopado/cobertura/${patient.ws}`)}
-                                        >Zona de cobertura</button>
-                                    <br />
-                                    <span className="coverage-btn" onClick={() => setFrequentQuestions(true)}>Preguntas frecuentes</span>
-                                </div>
+                        <MktTextBlock title="Medios de pago">
+                            <p>Puedes pagarlo con tarjeta de débito, crédito o con dinero disponible en MercadoPago.</p>
+                            <p className="clarification">El pago no admite cancelaciones ni devoluciones.</p>
+
+                            <p className="important">IMPORTANTE</p>
+                            <p>Es un hisopado particular, por ende no lo cubren las obras sociales.</p>
+                            <p>Sólo aceptamos pagos por la <span className="bold">APP de ÜMA</span>, si te ofrecen abonar por otro medio, NO ACEPTES y contactanos inmediatamente.</p>
+
+                        </MktTextBlock>
+
+                        <MktTextBlock title="Contacto estrecho">
+                            <p>Si eres contacto estrecho y <span className="bold underline">no</span> presentas síntomas, es importante que te hagas el test a los <span className="bold">5 días</span> del contacto para asegurar la efectividad del resultado.</p>
+                            <p>¿Cómo saber si soy contacto estrecho? <br /> ¡Averígualo <a className="link__to__narrow__contact" onClick={() => setNarrowContactInfo(true)}>aquí</a>!</p>
+                        </MktTextBlock>
+
+                        <div className='FAQTC'>
+                            <span className="coverage-btn" onClick={() => setFrequentQuestions(true)}>Preguntas frecuentes</span>
+                            <div className="break" style={{ flexBasis: '100%', height: '0' }}></div>
+                            <span className="coverage-btn" onClick={() => setTermsConditions(true)}
+                            >Términos y condiciones</span>
                         </div>
-                        {/* {
-                            !!rooms &&
-                            rooms.map((room, index) => (
-                                <div className="group" key={index}>
-                                    <h3 className="bold underline">{room.name}</h3>
-                                    <p className="no_margin">{room.address}</p>
-                                </div>
-                            ))
-                        } */}
-                        {/* <p style={{fontWeight:'bold', textAlign:'center'}}>Horarios</p> */}
-
-                    </MktTextBlock>
-
-
-                    <MktTextBlock title="Horarios">
-                        <p className="outstanding center">De lunes a viernes de 8hs a 20hs para todas las compras realizadas antes de las 18hs. </p>
-                        <p>No se realizan hisopados los días domingos ni feriados.</p>
-                        <p>Si compras fuera del rango de atención, te lo realizaremos al siguiente día hábil.</p>
-                        <p className="bold underline">No se realizan hisopados los días sábados, domingos ni feriados.</p>
-                    </MktTextBlock>
-
-                    <MktTextBlock title="Cobertura">
-                        <p>Es un hisopado particular, por ende no lo cubren las obras sociales.</p>
-                        <p>Recomendamos consultar con su destino la validez del test rápido para viajar.</p>
-                    </MktTextBlock>
-
-                    <MktTextBlock title="Medios de pago">
-                        <p>Puedes pagarlo con tarjeta de débito, crédito o con dinero disponible en MercadoPago.</p>
-                        <p className="clarification">El pago no admite cancelaciones ni devoluciones.</p>
-
-                        <p className="important">IMPORTANTE</p>
-                        <p>Es un hisopado particular, por ende no lo cubren las obras sociales.</p>
-                        <p>Sólo aceptamos pagos por la <span className="bold">APP de ÜMA</span>, si te ofrecen abonar por otro medio, NO ACEPTES y contactanos inmediatamente.</p>
-
-                    </MktTextBlock>
-
-                    <MktTextBlock title="Contacto estrecho">
-                        <p>Si eres contacto estrecho y <span className="bold underline">no</span> presentas síntomas, es importante que te hagas el test a los <span className="bold">5 días</span> del contacto para asegurar la efectividad del resultado.</p>
-                        <p>¿Cómo saber si soy contacto estrecho? <br /> ¡Averígualo <a className="link__to__narrow__contact" onClick={() => setNarrowContactInfo(true)}>aquí</a>!</p>
-                    </MktTextBlock>
-
-                    <div className='FAQTC'>
-                        <span className="coverage-btn" onClick={() => setFrequentQuestions(true)}>Preguntas frecuentes</span>
-                        <div className="break" style={{ flexBasis: '100%', height: '0' }}></div>
-                        <span className="coverage-btn" onClick={() => setTermsConditions(true)}
-                        >Términos y condiciones</span>
                     </div>
-                </div>
 
                     <MktBuyButton action={() => params?.price ? startBuying() : ""}>Comprar</MktBuyButton>
-            </>
-        )
+                </>
+            )
+        }
     }
-    }
-
 
     return (
         <div>

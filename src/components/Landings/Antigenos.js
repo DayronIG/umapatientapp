@@ -17,7 +17,7 @@ import "../../styles/hisopado/hisopadosFlux.scss";
 import "../../styles/hisopado/frequentQuestions.scss";
 
 
-const AntigenosSede = () => {
+const Antigenos = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const { currentUser } = useSelector((state) => state.userActive)
@@ -109,7 +109,7 @@ const AntigenosSede = () => {
         } else {
             return (
                 <>
-                    <BackButton />
+                    <BackButton customTarget="/hisopado/type" />
                     <div className="generalLanding">
                         <MktHeader title="Test Antígenos" price={params.price} text="Resultado en 15 minutos" />
 
@@ -124,11 +124,7 @@ const AntigenosSede = () => {
                                     </div>
                                 ))
                             }
-                            {/* <p style={{fontWeight:'bold', textAlign:'center'}}>Horarios</p> */}
-
                         </MktTextBlock>
-
-
 
                         <MktTextBlock title="Horarios">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>
@@ -171,10 +167,9 @@ const AntigenosSede = () => {
         }
     }
 
-
     return (<>
         {renderContent()}
     </>)
 }
 
-export default AntigenosSede
+export default Antigenos

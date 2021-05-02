@@ -31,11 +31,11 @@ const HisopadoType = () => {
             'promotion_name': 'Hisopado',
             'location_id': 'home'
         });
-        history.push(`/hisopado/${patient.ws}`)
+        history.push(`/hisopado/antigenos-domicilio`)
     }
 
     const confirmHisopado = () => {
-        history.push(`/hisopado/corporate/${patient.ws}`)
+        history.push(`/hisopado/antigenos`)
     }
 
     const handleWantHisopado = () => {
@@ -64,7 +64,7 @@ const HisopadoType = () => {
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
                         price={inPersonServiceParams.price}
-                        action={() => history.push('/hisopado/express')}
+                        action={() => history.push('/hisopado/pcr-express')}
                     />
 
                     <CardButton 
@@ -73,7 +73,7 @@ const HisopadoType = () => {
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
                         price={deliveryServiceParams.price}
-                        action={handleWantHisopado}
+                        action={() => history.push('/hisopado/antigenos')}
                     />
 
                     <h2>A domicilio</h2>
