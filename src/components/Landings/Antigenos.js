@@ -40,27 +40,27 @@ const Antigenos = () => {
 
     const payHisopado = () => {
         setLoader(true)
-        dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express' })
+        dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'Antigenos' })
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
 
         dispatch({
             type: 'SET_PAYMENT',
             payload: {
-                product: 'pcr_express',
+                product: 'antigenos',
                 quantity: 1,
-                title: 'PCR Express',
+                title: 'Antigenos',
                 uid: currentUser.uid,
-                service: 'PCR Express',
+                service: 'Antigenos',
                 price: params.price,
                 mercadoPago: true,
             }
         })
         localStorage.setItem('paymentData', JSON.stringify({
-            product: 'pcr_express',
+            product: 'antigenos',
             quantity: 1,
-            title: 'PCR Express',
+            title: 'Antigenos',
             uid: currentUser.uid,
-            service: 'PCR Express',
+            service: 'Antigenos',
             price: params.price,
             mercadoPago: true
         }));
@@ -68,7 +68,7 @@ const Antigenos = () => {
         try {
             const data = {
                 uid: currentUser.uid,
-                service: 'PCR Express',
+                service: 'Antigenos',
                 destination: {
                     address: '',
                     floor: '',
@@ -81,7 +81,7 @@ const Antigenos = () => {
                 .then(res => {
                     setLoader(false)
                     dispatch({ type: 'SET_DOC_ID', payload: res.data.id })
-                    localStorage.setItem('pcr_express_doc_id', res.data.id)
+                    localStorage.setItem('antigenos_doc_id', res.data.id)
                     history.push(`/payments/checkout/${currentUser.uid}`)
                 })
                 .catch(e => {

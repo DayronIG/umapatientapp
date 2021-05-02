@@ -17,7 +17,6 @@ const HisopadoType = () => {
     const { params } = useSelector((state) => state.inPersonService)
     const [rooms, setRooms] = useState([])
 
-
     useEffect(() => {
         if (params) {
             setRooms(params.consulting_rooms)
@@ -31,7 +30,7 @@ const HisopadoType = () => {
             'promotion_name': 'Hisopado',
             'location_id': 'home'
         });
-        history.push(`/hisopado/antigenos-domicilio`)
+        history.push(`/hisopado/${patient.ws}`)
     }
 
     const confirmHisopado = () => {
@@ -67,20 +66,20 @@ const HisopadoType = () => {
                         action={() => history.push('/hisopado/pcr-express')}
                     />
 
-                    <CardButton 
+                    {/* <CardButton 
                         img={imgAntigenos} 
                         title="Test de antígenos"
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
                         price={deliveryServiceParams.price}
                         action={() => history.push('/hisopado/antigenos')}
-                    />
+                    /> */}
 
                     <h2>A domicilio</h2>
                     <CardButton
                         img={imgAntigenos}
                         title="Test de antígenos"
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
+                        text={`¡Pídelo ahora y tienes tu resultado ${deliveryServiceParams.delay}!`}
                         result="Resultado en 15 minutos."
                         price={deliveryServiceParams.price}
                         action={handleWantHisopado}
