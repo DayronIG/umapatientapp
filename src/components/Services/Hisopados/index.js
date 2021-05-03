@@ -66,14 +66,14 @@ const HisopadoType = () => {
                         action={() => history.push('/hisopado/pcr-express')}
                     />
 
-                    {/* <CardButton 
+                    <CardButton 
                         img={imgAntigenos} 
                         title="Test de antígenos"
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
                         price={deliveryServiceParams.price}
                         action={() => history.push('/hisopado/antigenos')}
-                    /> */}
+                    />
 
                     <h2>A domicilio</h2>
                     <CardButton
