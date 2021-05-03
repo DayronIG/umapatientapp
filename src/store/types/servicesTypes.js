@@ -1,0 +1,2 @@
+export const SET_NEW_SERVICE = 'SET_NEW_SERVICE';
+export const SET_ALL_SERVICE = 'SET_ALL_SERVICE';

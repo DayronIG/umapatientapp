@@ -1,0 +1,64 @@
+@import '../../../../styles/index.scss';
+
+.homeSlider {
+    padding: 1.5rem 0;
+
+    .currentServices {
+        width: 90%;
+        margin: 0 auto 1.5rem;
+        background: $uma-pink;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            margin: 0;
+            color: $white-color;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        svg {
+            color: $white-color;
+            font-size: 1.2rem;
+        }
+    }
+
+    .slide {
+        background: $uma-primary;
+        border-radius: 0.8rem;
+        overflow: hidden;
+        margin: auto;
+        width: 90%;
+
+        .text {
+            padding: 1rem;
+
+            h1 {
+                margin: 0;
+                color: $white-color;
+                font-size: 3rem;
+                font-weight: 800;
+                text-align: center;
+            }
+        }
+
+        .button {
+            .slide__btn {
+                width: 100%;
+                border: none;
+                background: $uma-pink;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.8rem 1rem;
+                color: $white-color;
+                font-weight: 600;
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

@@ -1,18 +1,27 @@
-import React from 'react'
-import '../../../../styles/hisopado/landingTypes.scss'
-import { BackButton } from '../../../GeneralComponents/Headers'
+import React, { useState, useEffect } from 'react'  
+import '../../../styles/hisopado/landingTypes.scss'
+import { BackButton } from '../../GeneralComponents/Headers'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { BsChevronDoubleDown } from 'react-icons/bs'
-import CardButton from '../../../DeliveryService/BuyButton/CardButton'
-import imgAntigenos from '../../../../assets/cardAntigenos.png'
-import imgExpress from '../../../../assets/cardExpress.png'
+import CardButton from '../../DeliveryService/BuyButton/CardButton'
+import imgAntigenos from '../../../assets/cardAntigenos.png'
+import imgExpress from '../../../assets/cardExpress.png'
+import MktTextBlock from '../../Mkt/MktTextBlock'
 
 const HisopadoType = () => {
     const history = useHistory()
     const patient = useSelector(state => state.user)
     const inPersonServiceParams = useSelector(state => state.inPersonService.params)
     const deliveryServiceParams = useSelector(state => state.deliveryService.params)
+    const { params } = useSelector((state) => state.inPersonService)
+    const [rooms, setRooms] = useState([])
+
+    useEffect(() => {
+        if (params) {
+            setRooms(params.consulting_rooms)
+        }
+    }, [params])
 
     const buyHisopado = () => {
         window.gtag('event', 'view_promotion', {
@@ -25,7 +34,7 @@ const HisopadoType = () => {
     }
 
     const confirmHisopado = () => {
-        history.push(`/hisopado/corporate/${patient.ws}`)
+        history.push(`/hisopado/antigenos`)
     }
 
     const handleWantHisopado = () => {
@@ -43,40 +52,37 @@ const HisopadoType = () => {
             <section className="hisopados__type">
                 <div className="hisopados__typeHeader">
                     <h1>Testeos de COVID-19</h1>
-                    <p>Desde UMA queremos cuidarte, ¡y por eso tenemos diversas opciones para que te testees y estés tranquilo!</p>
-                    <span className="hisopados__typeChevron">
-                        <BsChevronDoubleDown />
-                    </span>
+                    {/* <p>Desde UMA queremos cuidarte, ¡y por eso tenemos diversas opciones para que te testees y estés tranquilo!</p> */}
                 </div>
                 <div className="hisopados__typeContent">
-                    <CardButton 
-                        img={imgAntigenos} 
-                        destinies={['A domicilio']} 
-                        title="Test de antígenos a domicilio" 
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
-                        result="Resultado en 15 minutos." 
-                        price={deliveryServiceParams.price}
-                        action={handleWantHisopado}
+                    <h2>En puntos de testeo</h2>
+                    <CardButton
+                        img={imgExpress}
+                        destinies={['En sede']}
+                        title="PCR Express"
+                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
+                        result="Resultado en 15 minutos."
+                        price={inPersonServiceParams.price}
+                        action={() => history.push('/hisopado/pcr-express')}
                     />
-                    
+
                     {/* <CardButton 
                         img={imgAntigenos} 
-                        destinies={['En sede']} 
-                        title="Test de antígenos en sede" 
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
-                        result="Resultado en 15 minutos." 
+                        title="Test de antígenos"
+                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
+                        result="Resultado en 15 minutos."
+                        price={deliveryServiceParams.price}
+                        action={() => history.push('/hisopado/antigenos')}
+                    /> */}
+
+                    <h2>A domicilio</h2>
+                    <CardButton
+                        img={imgAntigenos}
+                        title="Test de antígenos"
+                        text={`¡Pídelo ahora y tienes tu resultado ${deliveryServiceParams.delay}!`}
+                        result="Resultado en 15 minutos."
                         price={deliveryServiceParams.price}
                         action={handleWantHisopado}
-                    /> */}
-                    
-                    <CardButton 
-                        img={imgExpress} 
-                        destinies={['En sede']}
-                        title="PCR Express" 
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo." 
-                        result="Resultado en 15 minutos." 
-                        price={inPersonServiceParams.price}
-                        action={() => history.push('/hisopado/express')}
                     />
                 </div>
                 <div className="hisopados__typeFooter">

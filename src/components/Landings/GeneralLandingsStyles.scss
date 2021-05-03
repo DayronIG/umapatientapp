@@ -9,4 +9,18 @@
     background-size: 100%;
     background-repeat: no-repeat;
     background-color: $white-color;
+
+    .FAQTC{
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+
+        span{
+            color:blue;
+            text-decoration: underline;
+            margin-bottom: 5%;
+        }
+    }
 }
+
