@@ -22,4 +22,12 @@
             }
         }
     }
+
+    .twocolumns{
+        display: grid;
+        grid-template-columns: 70% 30%;
+        justify-content: flex-start;
+        align-content: flex-start;
+    }
+    
 }
