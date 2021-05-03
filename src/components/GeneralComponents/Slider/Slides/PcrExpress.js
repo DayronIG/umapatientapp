@@ -5,13 +5,20 @@ import { useHistory } from 'react-router-dom'
 
 const PcrExpress = () => {
     const history = useHistory()
-    const price = useSelector((state) => state.deliveryService.params?.price);
+    const price = useSelector((state) => state.inPersonService.params?.price);
     const corporate = useSelector((state) => state.user?.corporate_norm);
 
     return (
         <div className="slide" onClick={() => history.push('/hisopado/type')}>
-            <div className="text">
-                <h1>Nuevo PCR Express</h1>
+            <div className='twocolumns'>
+                <div className="text">
+                    <h2>NUEVO</h2>
+                    <h1>PCR EXPRESS</h1>
+                </div>
+                <div className='price'>
+                    <p>A sólo</p>
+                    <h1>${price}</h1>
+                </div>
             </div>
             <div className="button">
                 <button className="slide__btn">Quiero mi hisopado <FaChevronRight /></button>
@@ -21,3 +28,4 @@ const PcrExpress = () => {
 }
 
 export default PcrExpress
+
