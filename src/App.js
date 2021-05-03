@@ -102,6 +102,7 @@ import PaymentStatus from './components/Payment/PaymentStatus.js';
 import PaymentRefund from './components/Payment/PaymentRefund';
 
 /* REFACTOR DE HISOPADOS Y SERVICIOS NUEVOS */
+import ServicesTracker from './components/Services/General/ServicesTracker'
 import Results from './components/Services/General/ResultReveal'
 
 
@@ -144,6 +145,7 @@ function App(props) {
 				{/*
 					EMPIEZA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
 				*/}
+				<PrivateRoute exact path='/services/tracker' component={ServicesTracker} />
 				<PrivateRoute exact path='/result/:service/:docId' component={Results} />
 				{/*
 					TERMINA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS

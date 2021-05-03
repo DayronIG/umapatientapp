@@ -11,23 +11,20 @@ const HomeSlider = () => {
         <PcrExpress />,
         <AntigenoDelivery />
     ]
-    const [status, setStatus] = useState(false);
+    const [activeServices, setActiveServices] = useState(0);
     const { currentServices } = useSelector(state => state.services)
 
-    // useEffect(() => {
-    //     const status = currentServices.find(el => el.status === 'DONE:RESULT')
+    useEffect(() => {
+        const allServices = [].concat(currentServices.delivery, currentServices.onSite)
+        const active = allServices.filter(service => service.status !== 'FREE' && service.status !== 'FREE:IN_RANGE' && service.status !== 'FREE:OUT_OF_RANGE')
 
-    //     if(status) {
-    //         setStatus(true)
-    //     } else {
-    //         setStatus(false)
-    //     }
-    // }, [currentServices])
+        setActiveServices(active.length)
+    }, [currentServices])
 
     return (
         <section className="homeSlider">
             {
-                status && <CurrentServicesHome />
+                !!activeServices && <CurrentServicesHome qty={activeServices} />
             }
             <Slider slides={slides} />
         </section>
