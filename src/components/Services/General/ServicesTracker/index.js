@@ -41,18 +41,18 @@ export default function ListTracker({ finalAction }) {
     }
 
     const handleOnSiteDerivation = (index) => {
-        switch (deliveryPurchases[index].status) {
+        switch (onSitePurchases[index].status) {
             case ("PAYMENT"):
-                return history.push(`/delivery/progress/${patient.ws}/${deliveryId}/`);
+                return history.push(`/`);
             case ("DONE:RESULT"): {
                 if (onSiteStatus === 'DONE:RESULT') {
-                    return history.push(`/hisopadoResult/${patient.ws}/`);
+                    return history.push(`/result/antigeno-domicilio/${onSiteId}`);
                 } else {
-                    return history.push(`/delivery/progress/${patient.ws}/${deliveryId}/`);
+                    return history.push(`/`);
                 }
             }
             default:
-                history.push(`/hisopado/${patient.ws}`)
+                history.push(`/`)
         }
     }
 
@@ -76,7 +76,7 @@ export default function ListTracker({ finalAction }) {
                             onClick={() => handleOnSiteDerivation(index)}>
                             <div>
                                 <p className="item_address">{purchase.patient.fullname}</p>
-                                <p className="item_address">{purchase.service}</p>
+                                <p className="item_address">{purchase.service} en punto de testeo</p>
                                 <p className="item_status">{state}</p>
                             </div>
                             {state !== "En preparación" && <FaArrowRight className="icon-arrow" />}
