@@ -137,7 +137,7 @@ function App(props) {
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* Delivery Service */}
 				<PrivateRoute exact path='/hisopado/type' component={HisopadoType} />
-				<Route exact path='/hisopado/pcr-express' component={PcrExpress} />
+				<Route exact path='/hisopado/express' component={PcrExpress} />
 				<Route exact path='/hisopado/antigenos' component={Antigenos}/>
 				<Route exact path='/hisopado/antigenos-domicilio' component={AntigenosDomicilio}/>
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />

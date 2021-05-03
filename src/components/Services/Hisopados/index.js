@@ -63,7 +63,7 @@ const HisopadoType = () => {
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
                         price={inPersonServiceParams.price}
-                        action={() => history.push('/hisopado/pcr-express')}
+                        action={() => history.push('/hisopado/express')}
                     />
 
                     <CardButton 
