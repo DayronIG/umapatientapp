@@ -121,7 +121,9 @@ function App(props) {
 				<Route exact path='/:ws?/sendws' component={Whatsapp} />
 				<Route exact path='/redirectws/:ws' component={RedirectWs} />
 				<Route exact path='/old_login/:ws?' component={Login} />
+				{/* Umacare */}
 				<PrivateRoute exact path='/umacare/:ws?' component={UmaCare} />
+				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* New Register */}
 				<Route exact path='/install/:ref?' component={Install} />
 				{/* Referred Register Index */}
@@ -183,8 +185,6 @@ function App(props) {
 				<PrivateRoute exact path='/laboratorio/:dni' component={Laboratorio} />
 				{/* Wellness */}
 				<PrivateRoute exact path='/wellness/:ws?' component={Wellness} />
-				{/* Patient tracking */}
-				<Route exact path='/:ws/umacare/:key?/:data?' component={SymptomsTracking} />
 				{/* VACCINE */}
 				<Route exact path='/invitation/:id' component={Invitation} />
 				<Route exact path='/vacunacion/:id' component={Vaccine} />

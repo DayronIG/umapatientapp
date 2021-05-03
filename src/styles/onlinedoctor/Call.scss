@@ -1,27 +1,76 @@
 @import '../global/Vars.scss';
 
 
-.bubbleChat {
-    position: fixed;
-    left: 5vh;
-    bottom: 12vh;
-    z-index: 5;
-    border: none;
-    background: $uma-primary;
-    color: $white-color;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    font-weight: 600;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    
-    svg {
-        font-size: 40px;
-    }
-}
 
 .call-container {
     z-index: 5;
+    .doctorInfo__container {
+        position: fixed;
+        left: 5vh;
+        top: 10vh;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        .doctorInfo__profilePic {
+            color: $white-color;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid $white-color;
+            font-weight: 600;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            overflow:hidden;
+            img {
+                width: 100%;
+            }
+        }
+        .doctorInfo__fullname {
+            color: $uma-text;
+            background: $white-color;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-weight: bolder;
+            font-size: 11px;
+            margin: 0 10px;
+        }
+    }
+    .bubbles__container {
+        position: fixed;
+        left: 5vh;
+        bottom: 12vh;
+        z-index: 5;
+        width: 80vw;
+        display: flex;
+        justify-content: flex-start;
+        .bubbleChat {
+            border: none;
+            background: $uma-primary;
+            color: $white-color;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: 600;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            svg {
+                font-size: 25px;
+            }
+        }
+        .bubbleDisconnect {
+            border: none;
+            background: $uma-error;
+            color: $white-color;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 20px;
+            font-weight: 600;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            svg {
+                font-size: 25px;
+            }
+        }
+    }
+    
     .chatProposal__container{
         background-color: $white-color;
         width: 100vw;
@@ -49,7 +98,7 @@
         overflow: hidden;
         background: #A3BDCC;
         border-radius: 50%;
-        border: 2px solid $blue-button;
+        border: 2px solid $white-color;
     }
     
     .DoctorContainerMedia {

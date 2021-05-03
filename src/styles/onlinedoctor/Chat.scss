@@ -33,10 +33,13 @@
     color: $white-color;
     margin-bottom: 20px;
     font-size: 16px;
+    font-weight: 700;
     border: none;
-    
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
     svg {
-      font-size: 20px;
+      font-size: 15px;
     }
   }
 

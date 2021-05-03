@@ -38,6 +38,8 @@ export default function userReducers(state = initialState, action) {
   switch (action.type) {
     case 'GET_PATIENT':
       return {...state, ...action.payload };
+    case 'USER_ACTIVE_APPOINTMENT':
+      return { ...state, active_appointment: action.payload }
     case "USER_FIRST_CORE":
       return { ...state, core_id: action.payload };
     case "USER_FIRST_EMAIL":
