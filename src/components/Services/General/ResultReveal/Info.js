@@ -4,8 +4,9 @@ import { useHistory } from 'react-router-dom'
 import ReactToPrint from 'react-to-print'
 import resultIcon from '../../../../assets/img/hisopados_list.svg'
 import './ResultReveal.scss'
+import ConstancyTrigger from '../Constancy/Trigger'
 
-const Info = () => {
+const Info = ({ finalAction, constancy }) => {
     const history = useHistory()
     const constRef = useRef()
 
@@ -19,7 +20,7 @@ const Info = () => {
                     <p className="title">Conoce tu resultado</p>
                     <p className="text">Ya se encuentra a tu disposición el resultado de tu hisopado</p>
 
-                    <div onClick={() => { }} className="blue-button">
+                    <div onClick={() => finalAction()} className="blue-button">
                         Ver resultado
                     </div>
 
@@ -27,19 +28,7 @@ const Info = () => {
                         Ir al inicio
                     </div>
 
-                    <ReactToPrint
-                        trigger={() => (
-                            <div className="blue-text">Descargar constancia</div>
-                        )}
-                        content={() => constRef.current}
-                    />
-
-                    {
-                        false && false &&
-                        <div className="hisopado-results-contancy-dowloader">
-                            {/* <ConstancyHisopado id={docId} patient={user} date={date} result={result} ref={constRef} /> */}
-                        </div>
-                    }
+                    <ConstancyTrigger rowData={constancy} CustomButton={<div className="blue-text">Descargar constancia</div>} />
                 </div>
             </div>
         </>

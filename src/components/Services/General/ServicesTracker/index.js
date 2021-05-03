@@ -46,7 +46,7 @@ export default function ListTracker({ finalAction }) {
                 return history.push(`/`);
             case ("DONE:RESULT"): {
                 if (onSiteStatus === 'DONE:RESULT') {
-                    return history.push(`/result/antigeno-domicilio/${onSiteId}`);
+                    return history.push(`/result/antigeno/${onSiteId}`);
                 } else {
                     return history.push(`/`);
                 }
