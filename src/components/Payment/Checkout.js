@@ -41,6 +41,7 @@ const Checkout = () => {
             const isLocal = window.location.origin.includes('localhost');
             currentUser.getIdToken().then(async token => {
                 let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+<<<<<<< HEAD
                 axios.post(mp_payment_url,
                     {
                         product: paymentData.product, 
@@ -57,6 +58,27 @@ const Checkout = () => {
                         abbottId: paymentData.abbottId
                     },
                     {headers} )
+=======
+                
+            axios.post(mp_payment_url,
+                {
+                    product: paymentData.product, 
+                    quantity: paymentData.quantity,
+                    isLocal,
+                    uid: paymentData.uid,
+                    id: paymentData.id,
+                    service: paymentData.service,
+                    clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
+                    dependant: paymentData.dependant,
+                    corporate: paymentData.corporate,
+                    fullname: paymentData.fullname,
+                    dni: paymentData.dni,
+                    abbottId: paymentData.abbottId
+                    //   discount
+                },
+                {headers}
+            )
+>>>>>>> 3b1a56fd4b684076e21ccfc11fdbf5b2774d6730
                 .then((data)=>{
                     if (!data.data.error) {
                         setDatos(data.data)

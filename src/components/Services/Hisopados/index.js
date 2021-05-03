@@ -16,12 +16,26 @@ const HisopadoType = () => {
     const deliveryServiceParams = useSelector(state => state.deliveryService.params)
     const { params } = useSelector((state) => state.inPersonService)
     const [rooms, setRooms] = useState([])
+    const [pcrPrice, setPcrPrice] = useState(null)
+    const [antigenosPrice, setAntigenosPrice] = useState(null)
 
     useEffect(() => {
         if (params) {
             setRooms(params.consulting_rooms)
         }
     }, [params])
+
+    useEffect(() => {
+        if (inPersonServiceParams.length) {
+            inPersonServiceParams.map(service => {
+                if(service.test === 'abbott') {
+                    setPcrPrice(service.price)
+                } else if (service.test === 'antígenos') {
+                    setAntigenosPrice(service.price)
+                }
+            })
+        }
+    }, [inPersonServiceParams])
 
     const buyHisopado = () => {
         window.gtag('event', 'view_promotion', {
@@ -62,18 +76,18 @@ const HisopadoType = () => {
                         title="PCR Express"
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
-                        price={inPersonServiceParams.price}
-                        action={() => history.push('/hisopado/pcr-express')}
+                        price={pcrPrice}
+                        action={() => history.push('/hisopado/express')}
                     />
 
-                    {/* <CardButton 
+                    <CardButton 
                         img={imgAntigenos} 
                         title="Test de antígenos"
                         text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
                         result="Resultado en 15 minutos."
-                        price={deliveryServiceParams.price}
+                        price={antigenosPrice}
                         action={() => history.push('/hisopado/antigenos')}
-                    /> */}
+                    />
 
                     <h2>A domicilio</h2>
                     <CardButton

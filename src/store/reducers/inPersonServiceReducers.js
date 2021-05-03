@@ -3,7 +3,7 @@ import * as ips from '../types/inPersonServiceTypes';
 const initialState = {
     service: "",
     current: "",
-    params: ""
+    params: []
 };
 
 export default function inPersonServiceReducers (state = initialState, { type, payload }) {

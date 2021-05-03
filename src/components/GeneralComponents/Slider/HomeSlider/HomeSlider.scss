@@ -27,8 +27,24 @@
         }
     }
 
+    .your-item {
+        position: relative;
+      }
+      
+      .your-item:after {
+        content: '';
+        height: 100%; //You can change this if you want smaller/bigger borders
+        width: 1px;
+      
+        position: absolute;
+        right: 0;
+        top: 0; // If you want to set a smaller height and center it, change this value
+      
+        background-color: #000000; // The color of your border
+      }
+
     .slide {
-        background: $uma-primary;
+        background: $white-color;
         border-radius: 0.8rem;
         overflow: hidden;
         margin: auto;
@@ -36,14 +52,53 @@
 
         .text {
             padding: 1rem;
+            position: relative;
+
+            
 
             h1 {
                 margin: 0;
-                color: $white-color;
-                font-size: 3rem;
+                color: $uma-primary;
+                font-size: 1.5rem;
                 font-weight: 800;
-                text-align: center;
+                text-align: left;
             }
+            h2 {
+                margin: 0;
+                color: $uma-primary;
+                font-size: 1.5rem;
+                font-weight: 800;
+                text-align: left;
+                padding: 0;
+            }
+        }
+        .price {
+            padding: 1rem;
+            position: relative;
+            text-align: center;
+            display: grid;
+            
+            p{
+                color:$uma-secondary;
+                margin:0;
+            }
+            h1 {
+                margin: 0;
+                color:$uma-secondary;
+                font-size: 1.5rem;
+                font-weight: 800;
+                text-align: left;
+            }
+        }
+
+        .text:after{
+            content: '';
+            height: 80%;
+            width: 2px;
+            position: absolute;
+            right: 0;
+            top: 10%;
+            background-color: $uma-primary;
         }
 
         .button {

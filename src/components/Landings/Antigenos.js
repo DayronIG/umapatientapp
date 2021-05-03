@@ -21,7 +21,8 @@ const Antigenos = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const { currentUser } = useSelector((state) => state.userActive)
-    const { params } = useSelector((state) => state.inPersonService)
+    const inPersonServiceParams = useSelector(state => state.inPersonService.params)
+    const [antigenosPrice, setAntigenosPrice] = useState(null)
     const [rooms, setRooms] = useState([])
     const [loader, setLoader] = useState(false)
     const [termsConditions, setTermsConditions] = useState(false)
@@ -33,10 +34,15 @@ const Antigenos = () => {
     }, [])
 
     useEffect(() => {
-        if (params) {
-            setRooms(params.consulting_rooms)
+        if (inPersonServiceParams.length) {
+            inPersonServiceParams.map(service => {
+                if (service.test === 'antígenos') {
+                    setAntigenosPrice(service.price)
+                    setRooms(service.consulting_rooms)
+                }
+            })
         }
-    }, [params])
+    }, [inPersonServiceParams])
 
     const payHisopado = () => {
         setLoader(true)
@@ -50,8 +56,8 @@ const Antigenos = () => {
                 quantity: 1,
                 title: 'Antigenos',
                 uid: currentUser.uid,
-                service: 'Antigenos',
-                price: params.price,
+                service: 'Antígenos',
+                price: antigenosPrice,
                 mercadoPago: true,
             }
         })
@@ -60,15 +66,15 @@ const Antigenos = () => {
             quantity: 1,
             title: 'Antigenos',
             uid: currentUser.uid,
-            service: 'Antigenos',
-            price: params.price,
+            service: 'Antígenos',
+            price: antigenosPrice,
             mercadoPago: true
         }));
 
         try {
             const data = {
                 uid: currentUser.uid,
-                service: 'Antigenos',
+                service: 'Antígenos',
                 destination: {
                     address: '',
                     floor: '',
@@ -111,7 +117,7 @@ const Antigenos = () => {
                 <>
                     <BackButton customTarget="/hisopado/type" />
                     <div className="generalLanding">
-                        <MktHeader title="Test Antígenos" price={params.price} text="Resultado en 15 minutos" />
+                        <MktHeader title="Test Antígenos" price={antigenosPrice} text="Resultado en 15 minutos" />
 
                         <MktTextBlock title="Puntos de testeo">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>

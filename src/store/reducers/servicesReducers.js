@@ -51,15 +51,26 @@ import * as service from '../types/servicesTypes'
 */
 
 const initialState = {
-    currentServices: []
+    currentServices: {
+        delivery: [],
+        onSite: [],
+    }
 }
 
 export default function servicesReducers (state = initialState, { type, payload }) {
     switch (type) {
-        case service.SET_NEW_SERVICE:
-            return state
-        case service.SET_ALL_SERVICE:
-            return { ...state, currentServices: payload}
+        case service.GET_EXISTING_DELIVERY_SERVICES:
+            return { ...state, currentServices: {...state.currentServices, delivery: payload}}
+        case service.GET_EXISTING_ON_SITE_SERVICES:
+            return { ...state, currentServices: {...state.currentServices, onSite: payload}}
+        case service.SET_ALL_DELIVERY_SERVICE:
+            return { ...state, currentServices: { ...state.currentServices, delivery: payload}}
+        case service.SET_ALL_ON_SITE_SERVICE:
+            return { ...state, currentServices: { ...state.currentServices, onSite: payload}}
+        case service.SET_NEW_DELIVERY_SERVICE:
+            return { ...state, currentServices: {...state.currentServices, delivery: [...state.currentServices.delivery, payload]}}
+        case service.SET_NEW_ON_SITE_SERVICE:
+            return { ...state, currentServices: {...state.currentServices, onSite: [...state.currentServices.onSite, payload]}}
         default:
             return state
     }
