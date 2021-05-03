@@ -14,15 +14,15 @@ const HomeSlider = () => {
     const [status, setStatus] = useState(false);
     const { currentServices } = useSelector(state => state.services)
 
-    useEffect(() => {
-        const status = currentServices.find(el => el.status === 'DONE:RESULT')
+    // useEffect(() => {
+    //     const status = currentServices.find(el => el.status === 'DONE:RESULT')
 
-        if(status) {
-            setStatus(true)
-        } else {
-            setStatus(false)
-        }
-    }, [currentServices])
+    //     if(status) {
+    //         setStatus(true)
+    //     } else {
+    //         setStatus(false)
+    //     }
+    // }, [currentServices])
 
     return (
         <section className="homeSlider">
