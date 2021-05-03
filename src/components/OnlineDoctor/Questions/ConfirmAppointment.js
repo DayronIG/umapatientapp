@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
-import { node_make_appointment } from '../../../config/endpoints';
+import { node_make_appointment, make_appointment } from '../../../config/endpoints';
 import { getDocumentFB } from '../../Utils/firebaseUtils';
 import { yearAndMonth } from '../../Utils/dateUtils';
 import { genAppointmentID } from '../../Utils/appointmentsUtils';
@@ -115,9 +115,16 @@ const ConfirmAppointment = (props) => {
 			};
 
 			const headers = { 'Content-type': 'application/json' };
-			const res = await axios.post(node_make_appointment, data, headers);
-			localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
-			localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
+			if(bag) {
+				const res = await axios.post(node_make_appointment, data, headers);
+				dispatch({ type: 'USER_ACTIVE_APPOINTMENT', payload: true });
+				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
+				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
+			} else {
+				const res = await axios.post(make_appointment, data, headers);
+				localStorage.setItem('currentAppointment', JSON.stringify(data.ruta));
+				localStorage.setItem('currentMr', JSON.stringify(res.data.assignation_id));
+			}
 			dispatch({ type: 'LOADING', payload: false });
 			return history.replace(`/onlinedoctor/queue/${activeUid}?dependant=${params.dependant}`);
 		} catch (err) {

@@ -15,8 +15,10 @@ import Axios from "axios";
 import { node_patient } from './config/endpoints';
 import version from './config/version.json';
 import moment from 'moment-timezone';
+
 const Login = () => {
     const [delay, setDelay] = useState(false)
+    
     useEffect(() => {
         let timeout = setTimeout(() => setDelay(true), 2000)
         return () => clearTimeout(timeout)
@@ -28,6 +30,7 @@ const Login = () => {
         return <Loading />
     }
 }
+
 const PrivateRoute = ({ component: RouteComponent, authed, ...rest }) => {
     const dispatch = useDispatch()
     const firestore = db.firestore(firebaseInitializeApp)

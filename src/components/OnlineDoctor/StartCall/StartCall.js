@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { OTSession, OTPublisher, OTStreams, OTSubscriber, preloadScript } from 'opentok-react';
 import Chat from './Chat';
-import { IoIosChatbubbles } from 'react-icons/io'
+import { IoIosChatbubbles } from 'react-icons/io';
+import { MdCallEnd } from 'react-icons/md';
+import swal from 'sweetalert';
 
 const StartCall = (props) => {
 	const dispatch = useDispatch();
 	const history = useHistory()
 	const { session, assignation_id } = useSelector((state) => state.call);
+	const { current } = useSelector((state) => state.assignations);
 	const [error, setError] = useState(false);
 	const [publishVideo, ] = useState(true);
 	const [dni, setDni] = useState('');
@@ -110,18 +113,41 @@ const StartCall = (props) => {
 		}
 	}, [error]);
 
+	const callEnd = useCallback(async () => {
+		const confirmAction = await swal({
+			title: '¿Seguro desea salir de la consulta?',
+			icon: 'warning',
+			buttons: true,
+		})
+		if (confirmAction) {
+			history.replace(`/feedback?assignation_id=${assignation_id}&activeUid=${props.activeUid}&dependant=${props.dependant}`);
+		}
+	}, [assignation_id])
+
 	return (
 		<>
 			{
 				props.token === '.' && !showChat &&
 				<div className='chatProposal__container'>
 					<p>
-						Si no le aparece su médico, ingrese al chat.
+						Si tiene algún problema de conexión o su médico no contesta inmediatamente puede escribir por chat.
 					</p>
 				</div>
 			}
+
 			{
-				!showChat && <button className="bubbleChat" onClick={() => setShowChat(true)}><IoIosChatbubbles /></button>
+				!showChat && 
+				<>
+				{current.path_profile_pic && current.fullname && 
+				<div className="doctorInfo__container">
+					<div className="doctorInfo__profilePic"><img src={current.path_profile_pic} alt={current.fulname} /></div>
+					<div className="doctorInfo__fullname">{current.fullname}</div>
+				</div>}
+				<div className="bubbles__container">
+					<button className="bubbleChat" onClick={() => setShowChat(true)}><IoIosChatbubbles /></button>
+					<button className="bubbleDisconnect" onClick={() => callEnd(true)}><MdCallEnd /></button>
+				</div>
+				</>
 			}
 			{
 				showChat && <Chat visible={(v) => setShowChat(v)} />

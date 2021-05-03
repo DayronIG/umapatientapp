@@ -12,9 +12,9 @@ const Checkout = () => {
     const dispatch = useDispatch();
     const [datos, setDatos] = useState('');
     const [loading, setLoading] = useState(false)
-    let headers = { 'Content-Type': 'Application/Json', 'Authorization': localStorage.getItem('token') }
     const paymentData = useSelector(state => state.payments);
     const  { deliveryInfo }  = useSelector(state => state.deliveryService);
+    const {currentUser} = useSelector(state => state.userActive)
     // const discount = useSelector(state => state.deliveryService.params.discount?.code)
 
     useEffect(() => {
@@ -38,29 +38,33 @@ const Checkout = () => {
         if(paymentData.uid) {
             setLoading(true)
             const isLocal = window.location.origin.includes('localhost');
-            axios.post(mp_payment_url,
-                {
-                product: paymentData.product, 
-                quantity: paymentData.quantity,
-                isLocal,
-                uid: paymentData.uid,
-                id: paymentData.id,
-                service: paymentData.service,
-                clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
-                dependant: paymentData.dependant,
-                corporate: paymentData.corporate,
-                //   discount
-                },
-                {headers} )
-            .then((data)=>{
-                if (!data.data.error) {
-                    setDatos(data.data)
-                }
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error(err)
-                setLoading(false)
+            currentUser.getIdToken().then(async token => {
+                let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
+                axios.post(mp_payment_url,
+                    {
+                        product: paymentData.product, 
+                        quantity: paymentData.quantity,
+                        isLocal,
+                        uid: paymentData.uid,
+                        id: paymentData.id,
+                        service: paymentData.service,
+                        clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
+                        dependant: paymentData.dependant,
+                        corporate: paymentData.corporate,
+                        dni: paymentData.dni,
+                        fullname: paymentData.fullname
+                    },
+                    {headers} )
+                .then((data)=>{
+                    if (!data.data.error) {
+                        setDatos(data.data)
+                    }
+                    setLoading(false)
+                })
+                .catch(err => {
+                    console.error(err)
+                    setLoading(false)
+                })
             })
         }
     }, [paymentData]);
