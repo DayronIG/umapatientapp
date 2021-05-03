@@ -49,28 +49,6 @@ const Antigenos = () => {
         dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'Antigenos' })
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
 
-        dispatch({
-            type: 'SET_PAYMENT',
-            payload: {
-                product: 'antigenos',
-                quantity: 1,
-                title: 'Antigenos',
-                uid: currentUser.uid,
-                service: 'Antígenos',
-                price: antigenosPrice,
-                mercadoPago: true,
-            }
-        })
-        localStorage.setItem('paymentData', JSON.stringify({
-            product: 'antigenos',
-            quantity: 1,
-            title: 'Antigenos',
-            uid: currentUser.uid,
-            service: 'Antígenos',
-            price: antigenosPrice,
-            mercadoPago: true
-        }));
-
         try {
             const data = {
                 uid: currentUser.uid,
@@ -87,7 +65,29 @@ const Antigenos = () => {
                 .then(res => {
                     setLoader(false)
                     dispatch({ type: 'SET_DOC_ID', payload: res.data.id })
-                    localStorage.setItem('antigenos_doc_id', res.data.id)
+                    dispatch({
+                        type: 'SET_PAYMENT',
+                        payload: {
+                            product: 'antigenos',
+                            quantity: 1,
+                            title: 'Antigenos',
+                            uid: currentUser.uid,
+                            service: 'Antígenos',
+                            price: antigenosPrice,
+                            mercadoPago: true,
+                            abbottId: res.data.id || res.data.doc_id
+                        }
+                    })
+                    localStorage.setItem('paymentData', JSON.stringify({
+                        product: 'antigenos',
+                        quantity: 1,
+                        title: 'Antigenos',
+                        uid: currentUser.uid,
+                        service: 'Antígenos',
+                        price: antigenosPrice,
+                        mercadoPago: true,
+                        abbottId: res.data.id || res.data.doc_id
+                    }));
                     history.push(`/payments/checkout/${currentUser.uid}`)
                 })
                 .catch(e => {
