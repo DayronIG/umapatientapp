@@ -20,6 +20,7 @@ const Checkout = () => {
     useEffect(() => {
         if (!paymentData.product) {
             const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
+            console.log('local', paymentDataLocal)
             dispatch({
                 type: 'SET_PAYMENT',
                 payload: paymentDataLocal
@@ -40,21 +41,25 @@ const Checkout = () => {
             const isLocal = window.location.origin.includes('localhost');
             currentUser.getIdToken().then(async token => {
                 let headers = { 'Content-Type': 'Application/Json', 'Authorization': `Bearer ${token}` }
-                axios.post(mp_payment_url,
-                    {
-                        product: paymentData.product, 
-                        quantity: paymentData.quantity,
-                        isLocal,
-                        uid: paymentData.uid,
-                        id: paymentData.id,
-                        service: paymentData.service,
-                        clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
-                        dependant: paymentData.dependant,
-                        corporate: paymentData.corporate,
-                        dni: paymentData.dni,
-                        fullname: paymentData.fullname
-                    },
-                    {headers} )
+                
+            axios.post(mp_payment_url,
+                {
+                    product: paymentData.product, 
+                    quantity: paymentData.quantity,
+                    isLocal,
+                    uid: paymentData.uid,
+                    id: paymentData.id,
+                    service: paymentData.service,
+                    clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
+                    dependant: paymentData.dependant,
+                    corporate: paymentData.corporate,
+                    fullname: paymentData.fullname,
+                    dni: paymentData.dni,
+                    abbottId: paymentData.abbottId
+                    //   discount
+                },
+                {headers}
+            )
                 .then((data)=>{
                     if (!data.data.error) {
                         setDatos(data.data)

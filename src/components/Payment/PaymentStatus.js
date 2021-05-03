@@ -86,9 +86,17 @@ const PaymentStatus = () => {
             history.push(`/payments/checkout/${currentUser.uid}`)
         }   
         if(paid === 'true') {
-            localStorage.removeItem('paymentData')
-            dispatch({ type: 'RESET_PAYMENT' })
-
+            window.gtag('event', `${product}_payment_success`)
+            window.gtag('event', `${product}_payment_method`, {
+                'method': method,
+                'status': 'success'
+            })
+            window.gtag('event', 'earn_virtual_currency', {
+                'virtual_currency_name': 'uma_creditos',
+                'value': amount
+            })
+            history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
+            
             if (product !== 'pcr_express') {
                 window.gtag('event', 'earn_virtual_currency', {
                     'virtual_currency_name': 'uma_creditos',
@@ -105,38 +113,6 @@ const PaymentStatus = () => {
     }
 
     useEffect(() => {
-        if (localStorage.hasOwnProperty('pcr_express_doc_id')) {
-            let status;
-
-            if(paid === 'true') {
-                status = 'PAYMENT:SUCCESS'
-            } else if (paid === 'rejected') {
-                status = 'PAYMENT:REJECTED'
-            } else if (paid === 'pending') {
-                status = 'PAYMENT:PENDING'
-            }
-
-            console.log(status)
-
-            const data = {
-                doc_id: localStorage.getItem('pcr_express_doc_id'),
-                newValues: {
-                    payment_status: status ? status : 'FREE',
-                }
-            }
-            try {
-                axios.patch(`${analysis}/payment/status/`, data)
-                    .then(res => {
-                        console.log(res)
-                    })
-                    .catch(e => {
-                        console.error(e)
-                    })
-            } catch (e) {
-                console.error(e)
-            }
-        }
-
         const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
         if (paymentDataLocal) {
             dispatch({
@@ -144,7 +120,27 @@ const PaymentStatus = () => {
                 payload: paymentDataLocal
               })
         } 
-    }, []);
+        return (()=> {
+            if (product === 'guardia'){
+                dispatch({ 
+                    type: 'SET_PAYMENT',
+                    payload: {
+                        id: payment_id,
+                        mercadoPago: false,
+                        price: amount
+                    }
+                })
+                localStorage.setItem('paymentData', JSON.stringify({
+                    mercadoPago: false,
+                    id: payment_id,
+                    price: amount
+                }));
+            } else {
+                dispatch({ type: 'RESET_PAYMENT' })
+                localStorage.removeItem('paymentData')
+            }
+        })
+    },[]);
 
     return (
         <>

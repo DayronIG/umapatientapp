@@ -100,7 +100,6 @@ function AuthProvider({ children }) {
 				'sex': userAuth.sex,
 				'age': moment().diff(moment(fecha, 'YYYYMMDD'), 'years')
 			  });
-		
 		}
 	}	
 	
