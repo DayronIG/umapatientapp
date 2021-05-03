@@ -113,38 +113,6 @@ const PaymentStatus = () => {
     }
 
     useEffect(() => {
-        if (localStorage.hasOwnProperty('pcr_express_doc_id')) {
-            let status;
-
-            if(paid === 'true') {
-                status = 'PAYMENT:SUCCESS'
-            } else if (paid === 'rejected') {
-                status = 'PAYMENT:REJECTED'
-            } else if (paid === 'pending') {
-                status = 'PAYMENT:PENDING'
-            }
-
-            console.log(status)
-
-            const data = {
-                doc_id: localStorage.getItem('pcr_express_doc_id'),
-                newValues: {
-                    payment_status: status ? status : 'FREE',
-                }
-            }
-            try {
-                axios.patch(`${analysis}/payment/status/`, data)
-                    .then(res => {
-                        console.log(res)
-                    })
-                    .catch(e => {
-                        console.error(e)
-                    })
-            } catch (e) {
-                console.error(e)
-            }
-        }
-
         const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
         if (paymentDataLocal) {
             dispatch({

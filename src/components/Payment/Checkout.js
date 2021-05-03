@@ -49,6 +49,8 @@ const Checkout = () => {
                 clients: paymentData.service === 'HISOPADO' ? deliveryInfo : '',
                 dependant: paymentData.dependant,
                 corporate: paymentData.corporate,
+                fullname: paymentData.fullname,
+			    dni: paymentData.dni
                 //   discount
                 },
                 {headers} )
