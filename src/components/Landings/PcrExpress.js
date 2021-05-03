@@ -21,7 +21,8 @@ const Abbott = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const { currentUser } = useSelector((state) => state.userActive)
-    const { params } = useSelector((state) => state.inPersonService)
+    const inPersonServiceParams = useSelector(state => state.inPersonService.params)
+    const [pcrPrice, setPcrPrice] = useState(null)
     const [rooms, setRooms] = useState([])
     const [loader, setLoader] = useState(false)
     const [termsConditions, setTermsConditions] = useState(false)
@@ -33,10 +34,15 @@ const Abbott = () => {
     }, [])
 
     useEffect(() => {
-        if (params) {
-            setRooms(params.consulting_rooms)
+        if (inPersonServiceParams.length) {
+            inPersonServiceParams.map(service => {
+                if (service.test === 'abbott') {
+                    setPcrPrice(service.price)
+                    setRooms(service.consulting_rooms)
+                }
+            })
         }
-    }, [params])
+    }, [inPersonServiceParams])
 
     const payHisopado = () => {
         setLoader(true)
@@ -67,7 +73,7 @@ const Abbott = () => {
                             title: 'PCR Express',
                             uid: currentUser.uid,
                             service: 'PCR Express',
-                            price: params.price,
+                            price: pcrPrice,
                             mercadoPago: true,
                             abbottId: res.data.id || res.data.doc_id
                         }
@@ -78,7 +84,7 @@ const Abbott = () => {
                         title: 'PCR Express',
                         uid: currentUser.uid,
                         service: 'PCR Express',
-                        price: params.price,
+                        price: pcrPrice,
                         mercadoPago: true,
                         abbottId: res.data.id || res.data.doc_id
                     }));
@@ -111,7 +117,7 @@ const Abbott = () => {
                 <>
                     <BackButton customTarget="/hisopado/type" />
                     <div className="generalLanding">
-                        <MktHeader title="PCR Express" price={params.price} text="Resultado en 15 minutos" />
+                        <MktHeader title="PCR Express" price={pcrPrice} text="Resultado en 15 minutos" />
 
                         <MktTextBlock title="Puntos de testeo">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>

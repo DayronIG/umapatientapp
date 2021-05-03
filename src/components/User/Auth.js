@@ -2,7 +2,7 @@ import React, { useEffect, useState} from "react";
 import { useDispatch } from 'react-redux';
 import db, {firebaseInitializeApp} from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
-import { getDocumentFB, snapDocumentsByFilter, getDocumentsByFilter } from '../Utils/firebaseUtils';
+import { getDocumentFB, snapDocumentsByFilter, getDocumentsByFilter, getCollectionFB } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
 import moment from 'moment-timezone';
 import { getExistingDeliveryServices, getExistingOnSiteServices, setAllDeliveryServices, setAllOnSiteServices } from '../../store/actions/servicesActions'
@@ -46,7 +46,8 @@ function AuthProvider({ children }) {
 	}
 
     async function getOnSiteInfo(userAuth) {
-		const params = await getDocumentFB('parametros/userapp/analysis/abbott')
+		// const params = await getDocumentFB('parametros/userapp/analysis/abbott')
+		const params = await getCollectionFB('parametros/userapp/analysis')
 		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: params})
 		if(userAuth.dni) {
 			let filters = [{ field: 'status', value: ['FREE', 'PAYMENT', 'DONE:RESULT'], comparator: 'in' }, { field: 'patient.uid', value: userAuth.core_id, comparator: '==' }]
@@ -60,7 +61,8 @@ function AuthProvider({ children }) {
 
 	async function getHisopadosInfo(userAuth) {
 		const deliveryParams = await getDocumentFB('parametros/userapp/delivery/hisopados')
-		const onSiteParams = await getDocumentFB('parametros/userapp/analysis/abbott')
+		// const onSiteParams = await getDocumentFB('parametros/userapp/analysis/abbott')
+		const onSiteParams = await getCollectionFB('parametros/userapp/analysis')
 		dispatch({ type: 'SET_DELIVERY_PARAMS', payload: deliveryParams })
 		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: onSiteParams})
 
