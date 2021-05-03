@@ -12,7 +12,7 @@ const AntigenoDelivery = () => {
         <div className="slide" onClick={() => history.push('/hisopado/type')}>
             <div className='twocolumns'>
                 <div className="text">
-                    <h1>Hisopado a domicilio</h1>
+                    <h1>Test de antígenos a domicilio</h1>
                 </div>
                 <div className='price'>
                     <p>A sólo</p>
