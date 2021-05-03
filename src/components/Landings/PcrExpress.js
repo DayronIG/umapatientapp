@@ -43,28 +43,6 @@ const Abbott = () => {
         dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express'})
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
 
-        dispatch({
-            type: 'SET_PAYMENT',
-            payload: {
-                product: 'pcr_express',
-                quantity: 1,
-                title: 'PCR Express',
-                uid: currentUser.uid,
-                service: 'PCR Express',
-                price: params.price,
-                mercadoPago: true,
-            }
-        })
-        localStorage.setItem('paymentData', JSON.stringify({
-            product: 'pcr_express',
-            quantity: 1,
-            title: 'PCR Express',
-            uid: currentUser.uid,
-            service: 'PCR Express',
-            price: params.price,
-            mercadoPago: true
-        }));
-
         try {
             const data = {
                 uid: currentUser.uid,
@@ -81,7 +59,29 @@ const Abbott = () => {
                 .then(res => {
                     setLoader(false)
                     dispatch({ type: 'SET_DOC_ID', payload: res.data.id })
-                    localStorage.setItem('pcr_express_doc_id', res.data.id)
+                    dispatch({
+                        type: 'SET_PAYMENT',
+                        payload: {
+                            product: 'pcr_express',
+                            quantity: 1,
+                            title: 'PCR Express',
+                            uid: currentUser.uid,
+                            service: 'PCR Express',
+                            price: params.price,
+                            mercadoPago: true,
+                            abbottId: res.data.id || res.data.doc_id
+                        }
+                    })
+                    localStorage.setItem('paymentData', JSON.stringify({
+                        product: 'pcr_express',
+                        quantity: 1,
+                        title: 'PCR Express',
+                        uid: currentUser.uid,
+                        service: 'PCR Express',
+                        price: params.price,
+                        mercadoPago: true,
+                        abbottId: res.data.id || res.data.doc_id
+                    }));
                     history.push(`/payments/checkout/${currentUser.uid}`)
                 })
                 .catch(e => {
