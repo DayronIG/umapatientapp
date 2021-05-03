@@ -1,11 +1,12 @@
 import React from 'react'
-import { useSelector } from "react-redux";
 import { FaChevronRight } from 'react-icons/fa'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import imgAntigeno from '../../../../assets/img/home-hisopado.png'
 
 const AntigenoDelivery = () => {
     const history = useHistory()
-    const price = useSelector((state) => state.deliveryService.params?.price);
+    const deliveryServiceParams = useSelector(state => state.deliveryService?.params)
     const corporate = useSelector((state) => state.user?.corporate_norm);
 
     return (
@@ -13,15 +14,18 @@ const AntigenoDelivery = () => {
             <div className='twocolumns'>
                 <div className="text">
                     <h1>Test de antígenos a domicilio</h1>
+                    <p>{`¡Pídelo ahora y tienes tu resultado ${deliveryServiceParams?.delay}!`}</p>
                 </div>
                 <div className='price'>
                     <p>A sólo</p>
-                    <h1>${price}</h1>
+                    <h1>${deliveryServiceParams?.price}</h1>
                 </div>
             </div>
-
+            <div className="img">
+                <img src={imgAntigeno} alt="Test de antígenos"/>
+            </div>
             <div className="button">
-                <button className="slide__btn">Quiero mi hisopado <FaChevronRight /></button>
+                <button className="slide__btn">Comprá tu hisopado <FaChevronRight /></button>
             </div>
         </div>
     )

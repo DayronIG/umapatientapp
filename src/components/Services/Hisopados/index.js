@@ -74,7 +74,7 @@ const HisopadoType = () => {
                         img={imgExpress}
                         destinies={['En sede']}
                         title="PCR Express"
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
+                        text="Te lo podés realizar con o sin síntomas. Apto para viajar."
                         result="Resultado en 15 minutos."
                         price={pcrPrice}
                         action={() => history.push('/hisopado/express')}
@@ -83,7 +83,7 @@ const HisopadoType = () => {
                     <CardButton 
                         img={imgAntigenos} 
                         title="Test de antígenos"
-                        text="Indica la presencia de virus mediante un hisopado nasofaríngeo."
+                        text="Demuestra mayor efectividad si se realiza con síntomas o posterior al 5to día de contacto estrecho. No apto para viajar."
                         result="Resultado en 15 minutos."
                         price={antigenosPrice}
                         action={() => history.push('/hisopado/antigenos')}

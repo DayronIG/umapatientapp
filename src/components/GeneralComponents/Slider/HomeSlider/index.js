@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux'
 import Slider from '../'
 import PcrExpress from '../Slides/PcrExpress'
 import AntigenoDelivery from '../Slides/AntigenoDelivery'
+import AntigenoOnSite from '../Slides/AntigenoOnSite'
 import CurrentServicesHome from '../../CurrentServicesHome/'
 import './HomeSlider.scss'
 
 const HomeSlider = () => {
     const slides = [
         <PcrExpress />,
+        <AntigenoOnSite />,
         <AntigenoDelivery />
     ]
     const [activeServices, setActiveServices] = useState(0);
