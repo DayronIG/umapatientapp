@@ -1,6 +1,6 @@
 export const labels = {
     studiesTypes: {
-        ANTIGENO: 'Antígeno',
+        ANTIGENO: 'Antígenos',
         PCR: 'PCR Express'
     },
     patientData:{
@@ -12,7 +12,7 @@ export const labels = {
 }
 
 export const texts = {
-    'Antígeno': {
+    'Antígenos': {
         description: {
             title: {
                 es: 'PRUEBA RÁPIDA PARA LA DETECCIÓN DE ANTÍGENOS PARA COVID-19',

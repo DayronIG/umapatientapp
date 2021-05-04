@@ -55,7 +55,7 @@ const PaymentStatus = () => {
                         header: 'Pago Pendiente',
                         icon: <FaClock style={{ color: '#ff9933' }} />,
                         title: 'El pago esta siendo procesado',
-                        paragraphs: product !== 'pcr_express' ? ['Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.'] : ['Cuando el pago sea confirmado te enviaremos una notificación para que puedas continuar'],
+                        paragraphs: product === 'guardia' ? ['Cuando el pago sea confirmado te enviaremos una notificación con un link para continuar con el proceso de la consulta medica.'] : ['Cuando el pago sea confirmado te enviaremos una notificación para que puedas continuar'],
                         button: 'Ir al inicio',
                     })
                 break;
@@ -65,7 +65,7 @@ const PaymentStatus = () => {
                         header: 'Pago Confirmado',
                         icon: payedIcon,
                         title: '¡Hemos recibo el pago!',
-                        paragraphs: product !== 'pcr_express' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte a cualquier punto de testeo para completar el proceso'],
+                        paragraphs: product === 'guardia' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte a cualquier punto de testeo para completar el proceso'],
                         button: 'Continuar',
                     })
                 break;
@@ -97,7 +97,7 @@ const PaymentStatus = () => {
             })
             history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
             
-            if (product !== 'pcr_express') {
+            if (product === 'guardia') {
                 window.gtag('event', 'earn_virtual_currency', {
                     'virtual_currency_name': 'uma_creditos',
                     'value': amount
