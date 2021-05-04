@@ -141,8 +141,8 @@ function App(props) {
 				{/* Delivery Service */}
 				<PrivateRoute exact path='/hisopado/type' component={HisopadoType} />
 				<Route exact path='/hisopado/express' component={PcrExpress} />
-				<Route exact path='/hisopado/antigenos' component={Antigenos}/>
-				<Route exact path='/hisopado/antigenos-domicilio' component={AntigenosDomicilio}/>
+				<PrivateRoute exact path='/hisopado/antigenos' component={Antigenos}/>
+				<PrivateRoute exact path='/hisopado/antigenos-domicilio' component={AntigenosDomicilio}/>
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
 				{/*
 					EMPIEZA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
