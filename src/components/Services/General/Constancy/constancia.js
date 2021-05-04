@@ -1,3 +1,4 @@
+import React from 'react'
 import "./constancia.scss"
 import {texts} from './texts'
 import QRCode from 'qrcode.react';
