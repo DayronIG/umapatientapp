@@ -54,10 +54,10 @@ export default function PositiveResult({ finalAction }) {
                             </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>
-                    <div className="results-menu-map-item" onClick={() => history.push(`/autonomous/${patient.ws}`)}>
+                    <div className="results-menu-map-item" onClick={() => history.push('/umacare')}>
                         <div>
                             <FaStethoscope className="icon" />
-                                Hacer autodiagnóstico
+                                Seguimiento COVID
                             </div>
                         <FaArrowRight className="icon-arrow" />
                     </div>

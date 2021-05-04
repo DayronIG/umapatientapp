@@ -9,7 +9,7 @@ export default function NegativeResult({ finalAction }) {
     const history = useHistory();
     const patient = useSelector(state => state.user)
     const goBackButton = () => {
-        return history.push("/")
+        return history.goBack()
     }
 
     return (

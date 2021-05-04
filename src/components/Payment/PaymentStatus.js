@@ -65,7 +65,7 @@ const PaymentStatus = () => {
                         header: 'Pago Confirmado',
                         icon: payedIcon,
                         title: '¡Hemos recibo el pago!',
-                        paragraphs: product !== 'pcr_express' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte al consultorio seleccionado para realizar el test'],
+                        paragraphs: product !== 'pcr_express' ? ['Toca en "Continuar" para seguir con el proceso de la consulta medica.'] : ['Ya puedes acercarte a cualquier punto de testeo para completar el proceso'],
                         button: 'Continuar',
                     })
                 break;

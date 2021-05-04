@@ -69,9 +69,9 @@ export default function ListTracker({ finalAction }) {
                 {onSitePurchases.map((purchase, index) => {
                     if (!["FREE"].includes(purchase.status)) {
                         let state;
-                        if (purchase.status === "PAYMENT" && purchase.payment.status === "PAYMENT:SUCCESS") { state = "El pago fue procesado correctamente" }
+                        if (purchase.status === "PAYMENT" && purchase.payment.status === "PAYMENT:SUCCESS") { state = "Debes acercarte a un punto de testo para completar el proceso" }
                         if (purchase.status === "PAYMENT" && purchase.payment.status === "PAYMENT:REJECTED") { state = "El pago fue rechazado" }
-                        if (purchase.status === "DONE:RESULT") { state = "Ver resultado" }
+                        if (purchase.status === "DONE:RESULT") { state = "Mirá tu resultado y descargá tu constancia" }
                         return <div key={`${purchase.patient?.dni}_${index}`} className="results-menu-map-item fit_content_item"
                             onClick={() => handleOnSiteDerivation(index)}>
                             <div>

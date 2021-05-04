@@ -125,7 +125,7 @@ const Antigenos = () => {
                                 !!rooms &&
                                 rooms.map((room, index) => (
                                     <div className="group" key={index}>
-                                        <h3 className="bold underline">{room.name}</h3>
+                                        <h3 className="bold underline">{room.name}:</h3>
                                         <p className="no_margin">{room.address}</p>
                                     </div>
                                 ))
