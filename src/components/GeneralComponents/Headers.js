@@ -114,7 +114,7 @@ export const BackButton = (props) => {
 		<section 
 			onClick={() => history.push(props.customTarget ? `${props.customTarget}` : '/')}
 			className={props.inlineButton ? 'backButtonContainer inlineButton' : 'backButtonContainer'} >
-				<IoIosArrowBack onClick={props.action? () => props.action(): () => console.log('')} icon={faArrowLeft} />
+				<IoIosArrowBack onClick={props.action? () => props.action(): () => {}} icon={faArrowLeft} />
 		</section>
 	);
 };

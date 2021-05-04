@@ -1,0 +1,99 @@
+@import '../../../../styles/global/Vars.scss';
+@import '../../../../styles/global/Fonts.scss';
+
+.cardButton {
+    background: $white-color;
+    border-radius: 1.8rem;
+    width: 100%;
+    box-shadow: 0px 4px 12px rgba(99, 99, 99, 0.25);
+    margin-bottom: 2rem;
+    overflow: hidden;
+
+    .image {
+        img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+    }
+
+    .infoCardButton {
+        padding: 0.5rem 1rem;
+        position: relative;
+
+        .cardRow {
+            margin-bottom: 1rem;
+
+            .badges {
+                position: absolute;
+                top: -14px;
+                
+                & > span {
+                    background: $uma-secondary;
+                    padding: 0.2rem 0.5rem;
+                    text-transform: uppercase;
+                    color: $white-color;
+                    border-radius: 0.3rem;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    line-height: 1.4;
+                    
+                    &:not(:first-child) {
+                        margin-left: 0.5rem;
+                    }
+                }
+            }
+
+    
+            h2 {
+                text-align: left;
+                color: $uma-text;
+                font-family: 'Nunito Sans', sans-serif;
+                font-weight: 700;
+                font-size: 1.8rem;
+                margin-bottom: 0.3rem;
+                padding: 0;
+            }
+    
+            p {
+                font-size: 1rem;
+                color: $uma-text;
+                margin-bottom: 0.5rem;
+    
+                span {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .cardRowColums {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+                margin: 0;
+                font-family: 'Nunito Sans', sans-serif;
+
+                &.price {
+                    color: $uma-secondary;
+                    font-weight: 700;
+                    font-size: 1.9rem;
+                }
+
+                &.action {
+                    color: $uma-primary;
+                    display: flex;
+                    align-items: center;
+                    font-weight: 700;
+                    font-size: 1rem;
+
+                    svg {
+                        margin-left: 0.3rem;
+                        font-size: 0.7rem;
+                    }
+                }
+            }
+        }
+    }
+}

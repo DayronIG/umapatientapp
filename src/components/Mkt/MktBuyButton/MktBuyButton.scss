@@ -1,0 +1,18 @@
+@import '../../../styles/global/Vars.scss';
+@import '../../../styles/global/Fonts.scss';
+
+.MktBuyButton {
+    width: 100%;
+    background: $uma-secondary;
+    color: $white-color;
+    text-align: center;
+    border: none;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    padding: 1.2rem 0 1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    font-family: 'Nunito Sans', sans-serif;
+}

@@ -16,6 +16,9 @@ import iconEstudios from '../../assets/icons/icon-estudios.svg';
 import iconGuardia from '../../assets/icons/icon-guardia.svg';
 import iconUmaCare from '../../assets/icons/icon-umaCare.svg'
 import '../../styles/generalcomponents/ModulesMenu.scss';
+import ButtonStyle from '../DeliveryService/BuyButton/ButtonStyle';
+import UmaSlider from '../GeneralComponents/Slider'
+import HomeSlider from '../GeneralComponents/Slider/HomeSlider'
 
 const ModulesMenu = () => {
 	const history = useHistory();
@@ -51,13 +54,18 @@ const ModulesMenu = () => {
 		);
 	};
 
+	// const slides = [<ButtonStyle checkoutText="Quiero mi hisopado" finalAction={() => history.push('/hisopado/type')} />, <ButtonStyle checkoutText="Quiero mi hisopado" finalAction={() => history.push('/hisopado/type')} />]
+
 	return (
 		<>
 			{user.ws ? (
 				<>
 					{dinamic && dinamic.whenScreen && <WhenScreen />}
 					<GenericHeader children={user.fullname} />
-					{user.country !== "EC" && <BuyHisopado />}
+					{
+						user.country !== "EC" &&
+						<HomeSlider />
+					}
 					{showButtonDerivation && <ButtonHome text='Derivación en curso'/>}
 					<section className='modules-container'>
 						<div className='card length4'>

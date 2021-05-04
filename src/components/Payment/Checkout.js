@@ -20,6 +20,7 @@ const Checkout = () => {
     useEffect(() => {
         if (!paymentData.product) {
             const paymentDataLocal = JSON.parse(localStorage.getItem('paymentData'))
+            console.log('local', paymentDataLocal)
             dispatch({
                 type: 'SET_PAYMENT',
                 payload: paymentDataLocal
@@ -52,7 +53,8 @@ const Checkout = () => {
                         dependant: paymentData.dependant,
                         corporate: paymentData.corporate,
                         dni: paymentData.dni,
-                        fullname: paymentData.fullname
+                        fullname: paymentData.fullname,
+                        abbottId: paymentData.abbottId
                     },
                     {headers} )
                 .then((data)=>{

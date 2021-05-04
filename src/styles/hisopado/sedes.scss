@@ -1,0 +1,88 @@
+@import '../index.scss';
+
+.sedes__container {
+    width: 90%;
+    margin: 20px auto 0;
+    background: $white-color;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    h2 + p {
+        text-align: center;
+        font-size: 1rem;
+        color: $uma-text;
+        width: 80%;
+        margin: auto;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: 1rem;
+
+        &::before {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            background: $white-color;
+            border-radius: 50%;
+            border: 1px solid $uma-primary;
+        }
+
+        &.selected {
+            background: $uma-input;
+            &::before {
+                background: $uma-primary;
+            }
+        }
+
+        input {
+            display: none;
+        }
+        
+
+        &:first-of-type {
+            margin-top: 2rem;
+        }
+
+        div {
+            margin-left: 1rem;
+
+            h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.1rem;
+                font-weight: 600;
+                color: $uma-secondary;
+            }
+
+            p {
+                font-size: 0.8rem;
+                margin: 0;
+            }
+        }
+    }
+
+    button {
+        border: none;
+        background: $uma-primary;
+        color: $white-color;
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 0.5rem 0;
+        border-radius: 1rem;
+
+        &:disabled {
+            opacity: 0.3;
+        }
+    }
+}
