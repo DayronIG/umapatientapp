@@ -407,21 +407,19 @@ export function getAppointmentByUid(uid, collectionName, specialty = 'online_cli
 			.collection(collectionName || currentDate)
 			.where('patient.uid', '==', uid)
 			.where('state', '==', 'ASSIGN');
-			console.log("Promesa")
 		return new Promise((resolve, reject) => {
 			query
 				.get()
 				.then((snap) => {
 					snap.forEach((subDoc) => {
-						console.log(subDoc, subDoc.ref)
 						let data = {
 							...subDoc.data(),
 							id: subDoc.ref.id,
 							path: subDoc.ref.path
 						};
-						console.log(data)
-						// I compare the date just in case there is another appointment in the past days
-						appointments.push(data);
+						if(data) {
+							appointments.push(data);
+						}
 					});
 					return resolve(appointments[0]);
 				})

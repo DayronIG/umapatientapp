@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, Link, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'
@@ -22,7 +22,7 @@ const AppointmentsOnlineHistory = (props) => {
 	const mrs = useSelector(state => state.queries.medicalRecord)
 	const patient = useSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
-	const [filteredMrs, setFilteredMrs] = useState([])
+	const [filteredMrs, setFilteredMrs] = useState(null)
 	const { incomingCall } = useSelector(state => state.call)
 	const {currentUser, token} = useSelector(state => state.userActive)
 	const { activeUid } = useParams()
@@ -66,26 +66,27 @@ const AppointmentsOnlineHistory = (props) => {
 		setLoading(true)
 		try {
 			if (mrs && mrs.length) {
-				let filteredRecords = []
-				mrs.forEach(function (mr) {
-					if (mr.mr_preds.pre_clasif?.length > 0 || mr.att_category === "MI_ESPECIALISTA") {
-						let appointment = getAppointmentByUid(uid, undefined, `online_${mr.especialidad}`)
-						let scheduledTurn = mr.mr_preds.pre_clasif?.[0]
-						const doctorName = mr.mr_preds.pre_clasif?.[1] || appointment.fullname
-						const specialty = mr.mr_preds.pre_clasif?.[2] || mr.especialidad
-						const date = mr.mr_preds.pre_clasif?.[3] || mr.date
-						const time = mr.mr_preds.pre_clasif?.[4] || mr.time
-						const path = mr.mr_preds.pre_clasif?.[5] 
-						if(mr.att_category && mr.att_category === "MI_ESPECIALISTA") {
-							scheduledTurn = 'TurnoConsultorioOnline'
-						}
-						if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === "") {
-							filteredRecords.push({ doctorName, specialty, date, time, mr, path })
-						}
+				let getFirst = 0
+				mrs.forEach(async function (mr) {
+					if (mr.att_category === "MI_ESPECIALISTA" && getFirst === 0) {
+						getFirst++
+						await getAppointmentByUid(uid, undefined, `online_${mr.especialidad}`).then(appointment => {
+							let scheduledTurn = appointment?.time
+							const doctorName = appointment?.fullname
+							const specialty = appointment?.especialidad
+							const date = appointment?.date
+							const time = appointment?.time
+							const path = appointment?.path 
+							if(mr.att_category && mr.att_category === "MI_ESPECIALISTA") {
+								scheduledTurn = 'TurnoConsultorioOnline'
+							}
+							if (scheduledTurn === 'TurnoConsultorioOnline' && mr.mr.destino_final === "") {
+								setFilteredMrs({ ...mr, doctorName, specialty, date, time, path })
+							}
+						})
 					}
 				})
 				setLoading(false)
-				setFilteredMrs(filteredRecords)
 			}
 		} catch (error) {
 			console.log(error)
@@ -93,7 +94,7 @@ const AppointmentsOnlineHistory = (props) => {
 		}
 	}
 
-	async function cancelAppointment() {
+	const cancelAppointment = useCallback(async () => {
 		const confirmAction = await swal({
 			title: 'Confirmar',
 			text: 'Está seguro que desea cancelar el turno?',
@@ -102,20 +103,18 @@ const AppointmentsOnlineHistory = (props) => {
 		})
 		if (confirmAction) {
 			try {
-				console.log(filteredMrs)
 				let date = moment().format('YYYY-MM-DD HH:mm:ss')
 				let data = {
-					ws: filteredMrs[0].patient?.mr?.ws || patient.ws,
-					dni: filteredMrs[0].patient?.mr?.dni || patient.dni,
+					ws: filteredMrs.patient?.ws || patient.ws,
+					dni: filteredMrs.patient?.dni || patient.dni,
 					dt: date || '',
-					assignation_id: filteredMrs[0].mr?.incidente_id || '',
-					appointment_path: `assignations/${filteredMrs[0].path}` || '',
+					assignation_id: filteredMrs.assignation_id || '',
+					appointment_path: `${filteredMrs.path}` || '',
 					type: 'cancel',
 					complain: '',
 					uid: currentUser.uid,
 					uid_dependant: params.dependant === 'false' ? false : activeUid
 				}
-				console.log(data)
 				await axios.post(user_cancel, data, {headers: { 'Content-Type': 'Application/Json', 'Authorization': token }})
 				dispatch({ type: 'RESET_ALL' })
 				return props.history.push('/home')
@@ -127,7 +126,7 @@ const AppointmentsOnlineHistory = (props) => {
 				return props.history.push('/home')
 			}
 		}
-	}
+	}, [filteredMrs])
 
 	return (
 		<div className="appointmentInPlace">
@@ -143,18 +142,16 @@ const AppointmentsOnlineHistory = (props) => {
 					<span className="successScheduledContainer__container--text">No olvides acudir a tu cita</span>
 				</div>
 			</div>
-			{(!!filteredMrs && filteredMrs.length > 0) &&
+			{!!filteredMrs &&
 				<>
 					<div className="listScheduledAppoints">
 						<ul className="listScheduledAppoints__list">
-							{filteredMrs.map((mr, index) => (
-								mr.att_category === "MI_ESPECIALISTA" && <li key={index} className="listScheduledAppoints__list--item">
-									<span className="name">Doctor: <b>{mr.provider.fullname}</b></span> <br />
-									<span className="specialty">Especialidad: {mr.specialty}</span><br />
-									<span className="date">Fecha: {mr.date}</span> <br />
-									<span className="time">Hora: {mr.time}</span> <br />
+							 <li className="listScheduledAppoints__list--item">
+									<span className="name">Doctor: <b>{filteredMrs.doctorName}</b></span> <br />
+									<span className="specialty">Especialidad: {filteredMrs.specialty}</span><br />
+									<span className="date">Fecha: {filteredMrs.date}</span> <br />
+									<span className="time">Hora: {filteredMrs.time}</span> <br />
 								</li>
-							))}
 						</ul>
 					</div>
 					{incomingCall &&
