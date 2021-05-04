@@ -134,7 +134,7 @@ const AntigenosDomicilio = () => {
                         </MktTextBlock>
 
                         <MktTextBlock title="Contacto estrecho">
-                            <p>Si eres contacto estrecho y <span className="bold underline">no</span> presentas síntomas, es importante que te hagas el test a los <span className="bold">5 días</span> del contacto para asegurar la efectividad del resultado.</p>
+                            <p>Si eres contacto estrecho y <span className="bold underline">no</span> presentas síntomas, es importante que te hagas el test a partir de los <span className="bold">5 días</span> del contacto para asegurar la efectividad del resultado.</p>
                             <p>¿Cómo saber si soy contacto estrecho? <br /> ¡Averígualo <a className="link__to__narrow__contact" onClick={() => setNarrowContactInfo(true)}>aquí</a>!</p>
                         </MktTextBlock>
 
