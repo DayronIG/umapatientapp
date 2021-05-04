@@ -103,7 +103,7 @@ const PaymentStatus = () => {
                     'value': amount
                 })
                 history.push(`/onlinedoctor/reason/${currentUser.uid}?dependant=${dependant}?paid=true`)
-            } else if (product === 'pcr_express') {
+            } else {
                 history.push('/')
             }
         }
