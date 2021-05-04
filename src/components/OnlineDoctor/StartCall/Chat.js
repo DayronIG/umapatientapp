@@ -161,7 +161,7 @@ const Chat = (props) => {
                 'rol': 'patient',
                 'text': inputValue || '',
                 'uid': currentUser.uid,
-                'uid_dependant': (dependant !== 'false'? dependant: false)
+                'uid_dependant': (dependant !== 'false'? activeUid: false)
             }
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
             axios.post(transcription, data, { headers })
