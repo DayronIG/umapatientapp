@@ -45,6 +45,9 @@ const Abbott = () => {
     }, [inPersonServiceParams])
 
     const payHisopado = () => {
+        if(!currentUser) {
+            history.push('/')
+        }
         setLoader(true)
         dispatch({ type: 'SET_IN_PERSON_SERVICE', payload: 'PCR Express'})
         dispatch({ type: 'SET_CURRENT_IN_PERSON_SERVICE_USER', payload: currentUser })
@@ -117,18 +120,32 @@ const Abbott = () => {
                 <>
                     <BackButton customTarget="/hisopado/type" />
                     <div className="generalLanding">
-                        <MktHeader title="PCR Express" price={pcrPrice} text="Resultado en 15 minutos" />
+                        <MktHeader title="PCR Express" price={pcrPrice || '7500'} text="Resultado en 15 minutos" />
 
                         <MktTextBlock title="Puntos de testeo">
                             <p className="outstanding center">De lunes a viernes de 8hs a 20hs</p>
                             {
-                                !!rooms &&
+                                rooms.length ?
                                 rooms.map((room, index) => (
                                     <div className="group" key={index}>
                                         <h3 className="bold underline">{room.name}:</h3>
                                         <p className="no_margin">{room.address}</p>
                                     </div>
-                                ))
+                                )) :
+                                <>
+                                    <div className="group">
+                                        <h3 className="bold underline">CABA:</h3>
+                                        <p className="no_margin">Av. General Las Heras 3029</p>
+                                    </div>
+                                    <div className="group">
+                                        <h3 className="bold underline">Olivos:</h3>
+                                        <p className="no_margin">Av. Maipu 3625</p>
+                                    </div>
+                                    <div className="group">
+                                        <h3 className="bold underline">Lomas de Zamora:</h3>
+                                        <p className="no_margin">Rivera 382</p>
+                                    </div>
+                                </>
                             }
                         </MktTextBlock>
                 
