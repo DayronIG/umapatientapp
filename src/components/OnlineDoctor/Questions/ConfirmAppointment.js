@@ -15,7 +15,6 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import '../../../styles/questions.scss';
-import { TRUE } from 'node-sass';
 
 const ConfirmAppointment = (props) => {
 	const {symptomsForDoc, answers, responseIA, user, coordinates, alerta } = props;
