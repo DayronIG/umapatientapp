@@ -19,7 +19,7 @@ const Constancy = (props) => {
                 {logo?.length > 0 && (
                     <div className="logosContainer">
                         {logo?.map((el, i) => (
-                            <img id='logo' key={i} className="logo-uma" src={el} alt="logo" />
+                            <img id='logo' key={i} className="logos" src={el} alt="logo" />
                         ))}
                     </div>                
                 )}
