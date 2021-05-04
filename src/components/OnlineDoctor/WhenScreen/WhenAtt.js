@@ -189,9 +189,8 @@ const WhenScreen = (props) => {
 			<DinamicScreen>
 				<Backbutton />
 				<div className='when__container'>
-					{guardia_advice && user.country === "AR" && <Advice text={guardia_advice} />}
-					{((active_guardia && user.corporate_norm !== "VALE")
-						|| pediatric) 
+					{guardia_advice && (user.country === "AR") && <Advice text={guardia_advice} />}
+					{(active_guardia && user.corporate_norm !== "VALE") 
 						&& <GuardCard pediatric={pediatric} dni={user.dni} doctorsCount={assignations.length} queue={queue} />}
 					{((active_list && action === 'Doctors') || user.context === "test" || user.corporate_norm === "VALE") && (
 						<div>
