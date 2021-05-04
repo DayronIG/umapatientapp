@@ -1,7 +1,22 @@
   
 @import '../index.scss';
 
-/* MODULES CONTAINER */
+.hisopados-btn-container {
+   width: 90%;
+   margin: 20px auto 0;
+
+   .hisopados-btn {
+      width: 100%;
+      border: none;
+      border-radius: 0.6rem;
+      background: $uma-pink;
+      padding: 10px 0;
+      color: $white-color;
+      font-weight: 600;
+      font-size: 1.3rem;
+   }
+}
+
 .modules-container {
    position: relative;
   @include wrapper(

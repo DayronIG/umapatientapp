@@ -1,0 +1,131 @@
+@import '../../../../styles/index.scss';
+
+.homeSlider {
+    padding: 1.5rem 0;
+
+    .currentServices {
+        width: 90%;
+        margin: 0 auto 1.5rem;
+        background: $uma-pink;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            margin: 0;
+            color: $white-color;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        svg {
+            color: $white-color;
+            font-size: 1.2rem;
+        }
+    }
+
+    .your-item {
+        position: relative;
+      }
+      
+      .your-item:after {
+        content: '';
+        height: 100%; //You can change this if you want smaller/bigger borders
+        width: 1px;
+      
+        position: absolute;
+        right: 0;
+        top: 0; // If you want to set a smaller height and center it, change this value
+      
+        background-color: #000000; // The color of your border
+      }
+
+    .slide {
+        background: $white-color;
+        border-radius: 0.8rem;
+        overflow: hidden;
+        margin: auto;
+        width: 90%;
+        box-shadow: 0px 4px 12px rgba(99, 99, 99, 0.15);
+
+        .text {
+            padding: 1rem;
+            position: relative;
+
+            h1 {
+                margin: 0;
+                color: $uma-primary;
+                font-size: 1.5rem;
+                font-weight: 800;
+                text-align: left;
+                min-height: 55px;
+            }
+
+            p {
+                margin: 0.5rem 0 0;
+                font-size: 0.9rem;
+                color: $uma-primary;
+            }
+        }
+
+        .price {
+            padding: 1rem;
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            
+            p{
+                color:$uma-secondary;
+                margin:0;
+            }
+            h1 {
+                margin: 0;
+                color:$uma-secondary;
+                font-size: 1.5rem;
+                font-weight: 800;
+                text-align: left;
+            }
+        }
+
+        .text:after{
+            content: '';
+            height: 80%;
+            width: 2px;
+            position: absolute;
+            right: 0;
+            top: 10%;
+            background-color: $uma-primary;
+        }
+
+        .img {
+            
+            img {
+                width: 100%;
+                height: 100px;
+                object-fit: cover;
+            }
+
+        }
+
+        .button {
+            .slide__btn {
+                width: 100%;
+                border: none;
+                background: $uma-pink;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.8rem 1rem;
+                color: $white-color;
+                font-weight: 600;
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

@@ -68,6 +68,10 @@ import SymptomsTracking from './views/SymptomsTrackingView';
 import UmaCare from './components/UmaCare/index.js';
 /* Autonomous */
 import DeliveryPurchase from "./components/DeliveryService/DeliveryPurchase"
+import HisopadoType from './components/Services/Hisopados'
+import PcrExpress from './components/Landings/PcrExpress'
+import Antigenos from './components/Landings/Antigenos';
+import AntigenosDomicilio from './components/Landings/AntigenosDomicilio.js';
 import DeliveryCoverage from './components/DeliveryService/DeliveryCoverage'
 import DeliveryResults from "./components/DeliveryService/DeliveryResults";
 import DeliveryListTracker from "./components/DeliveryService/DeliveryListTracker/DeliveryListTracker";
@@ -96,6 +100,12 @@ import TermsConditions from './components/DeliveryService/DeliveryPurchase/Compo
 import Checkout from './components/Payment/Checkout'
 import PaymentStatus from './components/Payment/PaymentStatus.js';
 import PaymentRefund from './components/Payment/PaymentRefund';
+
+/* REFACTOR DE HISOPADOS Y SERVICIOS NUEVOS */
+import ServicesTracker from './components/Services/General/ServicesTracker'
+import Results from './components/Services/General/ResultReveal'
+
+
 
 function App(props) {
 	return (
@@ -129,7 +139,19 @@ function App(props) {
 				{/* Referred Register Index */}
 				<PrivateRoute exact path='/referred/:ws?/:ref?' component={Referred} />
 				{/* Delivery Service */}
+				<PrivateRoute exact path='/hisopado/type' component={HisopadoType} />
+				<Route exact path='/hisopado/express' component={PcrExpress} />
+				<PrivateRoute exact path='/hisopado/antigenos' component={Antigenos}/>
+				<PrivateRoute exact path='/hisopado/antigenos-domicilio' component={AntigenosDomicilio}/>
 				<Route exact path='/hisopado/cobertura/:ws?' component={DeliveryCoverage} />
+				{/*
+					EMPIEZA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
+				*/}
+				<PrivateRoute exact path='/services/tracker' component={ServicesTracker} />
+				<PrivateRoute exact path='/result/:service/:docId' component={Results} />
+				{/*
+					TERMINA EL REFACTOR DE HISOPADOS Y LOS SERVICIOS NUEVOS
+				*/}
 				<PrivateRoute exact path='/hisopado/listTracker/:ws?' component={DeliveryListTracker} />
 				<PrivateRoute exact path='/hisopado/carrito/:ws?' component={HisopadoCart} />
 				<PrivateRoute exact path='/hisopado/:ws?' component={DeliveryPurchase} />

@@ -12,6 +12,7 @@ import db, {firebaseInitializeApp}  from "../../../../config/DBConnection";
 import { BackButton } from '../../../GeneralComponents/Headers';
 import swal from 'sweetalert';
 import umaLogo from '../../../../assets/logo_original.png'
+import { setNewDeliveryServices } from '../../../../store/actions/servicesActions'
 
 export default function AskForBuyHisopado() {
     const isLocal = window.location.origin.includes('localhost');
@@ -65,7 +66,6 @@ export default function AskForBuyHisopado() {
                 db.firestore(firebaseInitializeApp).doc(`/events/requests/delivery/${res.data.id}`)
                 .get()
                 .then(async query => {
-                    // console.log(query, query.data())
                     let data = {
                         ...query.data(),
                         id: res.data.id
@@ -73,6 +73,9 @@ export default function AskForBuyHisopado() {
                     localStorage.setItem("multiple_clients", JSON.stringify([data]))
                     dispatch({type: 'SET_DELIVERY_ALL', payload: [data]})
                     dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
+                    if (query.data()) {
+                        dispatch(setNewDeliveryServices(data))
+                    }
                     setLoading(false)
                 })
             })
@@ -160,7 +163,7 @@ export default function AskForBuyHisopado() {
                     </div>
                     <div className="hisopados-flux-container">                        
                         <p className="info-title">Contacto estrecho</p>
-                        <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
+                        <p>Si eres contacto estrecho y <u><b>no</b></u> presentas síntomas, es importante que te hagas el test a partir de los <b>5 días</b> del contacto para asegurar la efectividad del resultado.</p>
                         <p>¿Cómo saber si soy contacto estrecho? <br/> ¡Averígualo <a className="link__to__narrow__contact" onClick={()=>setNarrowContactInfo(true)}>aquí</a>!</p>
                     </div>
 

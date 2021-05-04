@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import { BackButton, GenericHeader } from '../../GeneralComponents/Headers';
 import AskForBuyHisopado from "./Components/AskForBuyHisopado"
@@ -9,10 +9,14 @@ import "../../../styles/hisopado/hisopadosFlux.scss";
 import "../../../styles/hisopado/frequentQuestions.scss";
 
 export default function HisopadosPurchase() {
-    const {step} = useSelector((state) => state.deliveryService);
+    const { step } = useSelector((state) => state.deliveryService);
     const { ws } = useSelector(state => state.user);
     const history = useHistory()
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, [])
 
     const renderContent = () => {
         // if(!["PREASSING", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT"].includes(status) ){
@@ -45,9 +49,9 @@ export default function HisopadosPurchase() {
             case "ZONE_COVERED":
                 return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ADDRESS_PICKER"})
             case "PAYMENT":
-                return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})           
+                return  dispatch({type: 'SET_DELIVERY_STEP', payload: "ZONE_COVERED"})
             default: 
-                return dispatch({type: 'SET_DELIVERY_STEP', payload: "ASK_FOR_BUY"})        
+                return dispatch({type: 'SET_DELIVERY_STEP', payload: "ASK_FOR_BUY"})
         }
     }
 

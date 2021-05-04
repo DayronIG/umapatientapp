@@ -1,0 +1,33 @@
+@import '../../../styles/index.scss';
+
+.slider {
+    .slick-dots {
+        bottom: -30px;
+
+        button {
+            width: 10px;
+            height: 10px;
+            background: $white-color;
+            border: 1px solid $uma-primary;
+            border-radius: 50%;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        .slick-active {
+            button {
+                background: $uma-primary;
+            }
+        }
+    }
+
+    .twocolumns{
+        display: grid;
+        grid-template-columns: 70% 30%;
+        justify-content: flex-start;
+        align-content: flex-start;
+    }
+    
+}

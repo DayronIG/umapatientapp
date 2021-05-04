@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import { useDispatch } from 'react-redux';
 import db, {firebaseInitializeApp} from "../../config/DBConnection";
 import { getAuth } from '../../store/actions/firebaseQueries';
-import { getDocumentFB, snapDocumentsByFilter } from '../Utils/firebaseUtils';
+import { getDocumentFB, snapDocumentsByFilter, getDocumentsByFilter, getCollectionFB } from '../Utils/firebaseUtils';
 import { HiddenCacheClearer } from './VersionComponent';
 import moment from 'moment-timezone';
+import { getExistingDeliveryServices, getExistingOnSiteServices, setAllDeliveryServices, setAllOnSiteServices } from '../../store/actions/servicesActions'
 export const AuthContext = React.createContext()
 
 function AuthProvider({ children }) {
@@ -38,11 +39,51 @@ function AuthProvider({ children }) {
 				if(data.length > 0) {
 					dispatch({type: 'CLEAN_DELIVERY', payload: "CLEAN"})
 					dispatch({type: 'SET_DELIVERY_ALL', payload: data})
+					dispatch(setAllDeliveryServices(data))
 				}
 			})
 		}
 	}
 
+    async function getOnSiteInfo(userAuth) {
+		// const params = await getDocumentFB('parametros/userapp/analysis/abbott')
+		const params = await getCollectionFB('parametros/userapp/analysis')
+		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: params})
+		if(userAuth.dni) {
+			let filters = [{ field: 'status', value: ['FREE', 'PAYMENT', 'DONE:RESULT'], comparator: 'in' }, { field: 'patient.uid', value: userAuth.core_id, comparator: '==' }]
+			await snapDocumentsByFilter('events/requests/analysis', filters, (data) => {
+				if (data.length > 0) {
+					dispatch(setAllOnSiteServices(data))
+				}
+			})
+		}
+	}
+
+	async function getHisopadosInfo(userAuth) {
+		const deliveryParams = await getDocumentFB('parametros/userapp/delivery/hisopados')
+		// const onSiteParams = await getDocumentFB('parametros/userapp/analysis/abbott')
+		const onSiteParams = await getCollectionFB('parametros/userapp/analysis')
+		dispatch({ type: 'SET_DELIVERY_PARAMS', payload: deliveryParams })
+		dispatch({ type: 'SET_PARAMS_IN_PERSON_SERVICE', payload: onSiteParams})
+
+		if (userAuth.dni) {
+			let deliveryFilters = [{ field: 'status', value: ["PREASSIGN", "ASSIGN:DELIVERY", "ASSIGN:ARRIVED", "DONE:RESULT", "FREE:IN_RANGE", 'IN_PROCESS', 'FREE'], comparator: 'in' }, { field: 'patient.uid', value: userAuth.core_id, comparator: '==' }]
+			let onSiteFilters = [{ field: 'status', value: ['FREE', 'PAYMENT', 'DONE:RESULT'], comparator: 'in' }, { field: 'patient.uid', value: userAuth.core_id, comparator: '==' }]
+
+			await getDocumentsByFilter('events/requests/delivery', deliveryFilters)
+				.then(data => {
+					if (data.length > 0) {
+						dispatch(getExistingDeliveryServices(data))
+					}
+				})
+			await getDocumentsByFilter('events/requests/analysis', onSiteFilters)
+				.then(data => {
+					if (data.length > 0) {
+						dispatch(getExistingOnSiteServices(data))
+					}
+				})
+		}
+	}
 
 	async function getInitialData(user) {
 		const userAuth = await getAuth(user.uid)
@@ -52,14 +93,15 @@ function AuthProvider({ children }) {
 			dispatch({ type: 'GET_PATIENT', payload: userAuth })
 			dispatch({ type: 'SET_USER_LOGIN', payload: userAuth.login })
 			dispatch({ type: 'SET_PLAN_DATA', payload: plan })
-			getDeliveryInfo(userAuth)
+			await getHisopadosInfo(userAuth)
+			await getDeliveryInfo(userAuth)
+			await getOnSiteInfo(userAuth)
 			const fecha = userAuth.dob.split('-').join('')
 			window.gtag('set', 'user_properties', {
 				'primary_corporate': userAuth.corporate_norm,
 				'sex': userAuth.sex,
 				'age': moment().diff(moment(fecha, 'YYYYMMDD'), 'years')
 			  });
-		
 		}
 	}	
 	
