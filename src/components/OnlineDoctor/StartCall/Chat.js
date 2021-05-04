@@ -160,7 +160,8 @@ const Chat = (props) => {
                 'assignation_id': current?.appointments && (current?.assignation_id || current?.appointments[0]["14"]),
                 'rol': 'patient',
                 'text': inputValue || '',
-                'uid': currentUser.uid
+                'uid': currentUser.uid,
+                'uid_dependant': (dependant !== 'false'? dependant: false)
             }
             let headers = { 'Content-Type': 'Application/Json', 'Authorization': token }
             axios.post(transcription, data, { headers })
