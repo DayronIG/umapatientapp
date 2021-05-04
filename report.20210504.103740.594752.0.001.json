@@ -1,0 +1,402 @@
+
+{
+  "header": {
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20210504.103740.594752.0.001.json",
+    "dumpEventTime": "2021-05-04T10:37:40Z",
+    "dumpEventTimeStamp": "1620135460200",
+    "processId": 594752,
+    "cwd": "/home/farid/Desktop/uma/Patient-app",
+    "commandLine": [
+      "/usr/local/bin/node",
+      "/home/farid/Desktop/uma/Patient-app/node_modules/react-scripts/scripts/build.js"
+    ],
+    "nodejsVersion": "v12.4.0",
+    "glibcVersionRuntime": "2.31",
+    "glibcVersionCompiler": "2.17",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.4.0",
+      "v8": "7.4.288.27-node.18",
+      "uv": "1.29.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.38.0",
+      "napi": "4",
+      "llhttp": "1.1.3",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1b",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.4.0/node-v12.4.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.4.0/node-v12.4.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "5.4.0-73-generic",
+    "osVersion": "#82-Ubuntu SMP Wed Apr 14 17:39:42 UTC 2021",
+    "osMachine": "x86_64",
+    "host": "farid"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000000aadaf5",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::string const&, v8::Local<v8::String>) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x000000000098fec3",
+      "symbol": "node::OnFatalError(char const*, char const*) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000b1552e",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000b158a9",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000f20105",
+      "symbol": " [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000f2aa6b",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000f2b787",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000f2e225",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000000ef9250",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationSpace) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x00000000011cb0ce",
+      "symbol": "v8::internal::Runtime_AllocateInNewSpace(int, unsigned long*, v8::internal::Isolate*) [/usr/local/bin/node]"
+    },
+    {
+      "pc": "0x0000000001a93942",
+      "symbol": " [/usr/local/bin/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2158239744,
+    "totalCommittedMemory": 2156884936,
+    "usedMemory": 2093673336,
+    "availableMemory": 50960920,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 524288,
+        "committedMemory": 32024,
+        "capacity": 523976,
+        "used": 31712,
+        "available": 492264
+      },
+      "new_space": {
+        "memorySize": 8388608,
+        "committedMemory": 8388480,
+        "capacity": 4191808,
+        "used": 255328,
+        "available": 3936480
+      },
+      "old_space": {
+        "memorySize": 1976164352,
+        "committedMemory": 1975742688,
+        "capacity": 1928839416,
+        "used": 1926074600,
+        "available": 2764816
+      },
+      "code_space": {
+        "memorySize": 3309568,
+        "committedMemory": 2960608,
+        "capacity": 2833280,
+        "used": 2833280,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 12062720,
+        "committedMemory": 11970928,
+        "capacity": 7068560,
+        "used": 7068560,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 157167616,
+        "committedMemory": 157167616,
+        "capacity": 156859296,
+        "used": 156859296,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 550560,
+        "used": 550560,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 4191808,
+        "used": 0,
+        "available": 4191808
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 238.796,
+    "kernelCpuSeconds": 5.76844,
+    "cpuConsumptionPercent": 168.665,
+    "maxRss": 2325377024,
+    "pageFaults": {
+      "IORequired": 0,
+      "IONotRequired": 1914942
+    },
+    "fsActivity": {
+      "reads": 87696,
+      "writes": 178064
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 138.11,
+    "kernelCpuSeconds": 2.73522,
+    "cpuConsumptionPercent": 97.1349,
+    "fsActivity": {
+      "reads": 70712,
+      "writes": 21744
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "SUDO_GID": "1000",
+    "npm_package_dependencies_geocoder": "0.2.3",
+    "npm_package_dependencies_react_spinners": "^0.5.4",
+    "npm_package_dependencies_react_geocode": "0.2.1",
+    "npm_package_dependencies_react_add_to_homescreen": "1.1.0",
+    "npm_package_dependencies_apexcharts": "^3.22.0",
+    "npm_package_dependencies__material_ui_icons": "^3.0.2",
+    "MAIL": "/var/mail/root",
+    "LANGUAGE": "",
+    "USER": "root",
+    "npm_package_dependencies_nuka_carousel": "4.7.0",
+    "npm_package_dependencies_node_sass": "^4.0.0",
+    "npm_package_dependencies_mercadopago": "1.2.1",
+    "npm_config_version_commit_hooks": "true",
+    "npm_config_user_agent": "yarn/1.22.10 npm/? node/v12.4.0 linux x64",
+    "npm_package_dependencies_react_simple_code_editor": "0.11.0",
+    "npm_package_dependencies_add": "2.0.6",
+    "npm_package_dependencies__material_ui_core": "4.9.7",
+    "npm_config_bin_links": "true",
+    "npm_node_execpath": "/usr/local/bin/node",
+    "npm_package_dependencies_react_slick": "^0.28.1",
+    "npm_package_dependencies_opentok_react": "0.11.0",
+    "npm_package_dependencies_html2pdf_js": "0.9.1",
+    "npm_config_init_version": "1.0.0",
+    "npm_package_dependencies_react_json_editor_ajrm": "2.5.9",
+    "npm_package_dependencies_react_hook_form": "^6.15.4",
+    "npm_package_dependencies_detectrtc": "1.3.9",
+    "HOME": "/root",
+    "npm_package_browserslist_production_0": ">0.2%",
+    "npm_package_dependencies_moment_timezone": "^0.5.31",
+    "npm_package_dependencies_device_uuid": "^1.0.4",
+    "npm_package_browserslist_production_1": "not dead",
+    "npm_package_dependencies_jspdf": "1.5.3",
+    "npm_package_browserslist_production_2": "not op_mini all",
+    "npm_config_init_license": "MIT",
+    "YARN_WRAP_OUTPUT": "false",
+    "npm_package_dependencies_react_moment": "^1.0.0",
+    "npm_config_version_tag_prefix": "v",
+    "LC_CTYPE": "",
+    "npm_package_dependencies_redux_thunk": "2.3.0",
+    "npm_package_dependencies_react_mic_record": "1.0.6",
+    "npm_package_dependencies_react_icons": "3.10.0",
+    "npm_package_dependencies__tensorflow_models_mobilenet": "2.0.4",
+    "npm_package_dependencies_react_switch": "5.0.1",
+    "npm_package_dependencies_react_step_progress_bar": "1.0.3",
+    "npm_package_dependencies_react_google_maps": "9.4.5",
+    "npm_package_dependencies_moment": "^2.29.1",
+    "COLORTERM": "truecolor",
+    "npm_package_description": "[Flujo componentes](https://whimsical.com/login-nuevo-LipVUyPvthtNazS2JJvd5B)",
+    "npm_package_dependencies_react_scripts": "4.0.3",
+    "npm_package_dependencies_react_router_dom": "^5.2.0",
+    "npm_package_dependencies__tensorflow_tfjs_core": "2.0.1",
+    "npm_package_dependencies__fortawesome_free_solid_svg_icons": "5.9.0",
+    "npm_package_readmeFilename": "README.md",
+    "npm_package_dependencies_react_circular_progressbar": "^2.0.3",
+    "npm_package_dependencies_google_map_react": "2.0.8",
+    "npm_package_dependencies_bowser": "2.9.0",
+    "SUDO_UID": "1000",
+    "npm_package_dependencies_sweetalert": "2.1.2",
+    "npm_package_dependencies_prismjs": "1.20.0",
+    "npm_package_dependencies__date_io_date_fns": "^1.3.13",
+    "LOGNAME": "root",
+    "npm_package_dependencies_react_datepicker": "2.8.0",
+    "npm_package_dependencies_redux_devtools_extension": "2.13.8",
+    "npm_package_dependencies_query_string": "^6.14.0",
+    "npm_package_dependencies__opentok_client": "2.19.0",
+    "npm_package_private": "true",
+    "npm_package_dependencies_react_speech_recognition": "2.0.4",
+    "npm_package_dependencies_popper": "1.0.1",
+    "npm_config_registry": "https://registry.yarnpkg.com",
+    "TERM": "xterm-256color",
+    "npm_package_dependencies_react_localization": "1.0.15",
+    "npm_package_dependencies_proptypes": "1.1.0",
+    "npm_package_dependencies_anychart": "8.7.1",
+    "npm_package_dependencies__tensorflow_models_handpose": "0.0.5",
+    "npm_package_scripts_start": "react-scripts start",
+    "npm_package_dependencies__material_ui_pickers": "^3.2.10",
+    "npm_config_ignore_scripts": "",
+    "LC_COLLATE": "",
+    "npm_package_browserslist_development_0": "last 1 chrome version",
+    "npm_package_dependencies_react_simple_chatbot": "0.6.1",
+    "npm_package_dependencies_axios": "0.19.0",
+    "npm_package_dependencies__fortawesome_react_fontawesome": "0.1.4",
+    "PATH": "/tmp/yarn--1620135314266-0.20380707899828598:/home/farid/Desktop/uma/Patient-app/node_modules/.bin:/usr/local/share/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
+    "NODE": "/usr/local/bin/node",
+    "npm_package_browserslist_development_1": "last 1 firefox version",
+    "npm_package_name": "patient",
+    "npm_package_browserslist_development_2": "last 1 safari version",
+    "npm_package_dependencies_react_redux": "7.1.0",
+    "npm_package_dependencies_cleave_js": "^1.6.0",
+    "npm_package_dependencies__sweetalert_with_react": "0.1.1",
+    "DISPLAY": ":0",
+    "npm_package_scripts_eject": "react-scripts eject",
+    "npm_package_dependencies_react_credit_cards": "0.8.3",
+    "npm_package_dependencies_jsbarcode": "3.11.0",
+    "LANG": "en_US.UTF-8",
+    "npm_package_dependencies_redux": "4.0.1",
+    "npm_package_dependencies_react_dom": "^16.8.6",
+    "XAUTHORITY": "/run/user/1000/gdm/Xauthority",
+    "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "npm_lifecycle_script": "react-scripts build",
+    "npm_package_dependencies_geofirestore": "4.3.0",
+    "npm_package_dependencies__tensorflow_tfjs_converter": "2.0.1",
+    "LC_MESSAGES": "",
+    "SUDO_COMMAND": "/usr/bin/yarn build",
+    "npm_package_scripts_test": "react-scripts test",
+    "npm_package_dependencies_react_star_ratings": "2.3.0",
+    "npm_config_version_git_message": "v%s",
+    "SHELL": "/bin/bash",
+    "npm_lifecycle_event": "build",
+    "npm_package_dependencies_slick_carousel": "^1.8.1",
+    "npm_package_dependencies_jquery": "3.4.1",
+    "npm_package_dependencies_array_prototype_findindex": "2.0.2",
+    "npm_package_version": "1.1.115",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"build\"],\"original\":[\"build\"]}",
+    "npm_package_scripts_build": "react-scripts build",
+    "npm_package_dependencies_react_phone_input_2": "2.12.1",
+    "SUDO_USER": "farid",
+    "npm_package_dependencies__teachablemachine_image": "0.8.3",
+    "npm_package_dependencies__fortawesome_free_brands_svg_icons": "5.12.0",
+    "npm_package_dependencies_qrcode_react": "0.9.3",
+    "npm_config_version_git_tag": "true",
+    "npm_config_version_git_sign": "",
+    "npm_config_strict_ssl": "true",
+    "npm_package_dependencies_firebase": "6.2.4",
+    "npm_package_dependencies__fortawesome_free_regular_svg_icons": "5.12.0",
+    "npm_execpath": "/usr/lib/node_modules/yarn/bin/yarn.js",
+    "npm_package_dependencies_bootstrap": "4.3.1",
+    "PWD": "/home/farid/Desktop/uma/Patient-app",
+    "npm_package_dependencies_react_html5_camera_photo": "1.5.4",
+    "npm_package_dependencies_react_big_calendar": "0.24.0",
+    "npm_package_dependencies_styled_components": "5.1.1",
+    "npm_config_save_prefix": "^",
+    "npm_config_ignore_optional": "",
+    "npm_package_dependencies_react_date_range": "^1.1.3",
+    "npm_package_dependencies_react_card_slide": "1.0.13",
+    "npm_package_dependencies_react_to_print": "^2.11.0",
+    "npm_package_dependencies_react_loading_skeleton": "2.0.1",
+    "npm_package_dependencies__uiw_react_monacoeditor": "2.2.1",
+    "npm_package_dependencies__fortawesome_fontawesome_svg_core": "1.2.19",
+    "INIT_CWD": "/home/farid/Desktop/uma/Patient-app",
+    "npm_package_eslintConfig_extends": "react-app",
+    "npm_package_dependencies_react_apexcharts": "1.3.7",
+    "npm_package_dependencies_react": "^16.8.6",
+    "npm_package_dependencies__tensorflow_tfjs": "1.3.1",
+    "BABEL_ENV": "production",
+    "NODE_ENV": "production",
+    "MERCADOPAGO_PUBLIC_KEY": "APP_USR-e4b12d23-e4c0-44c8-bf3e-6a93d18a4fc9",
+    "FIREBASE_CONFIG": "{",
+    "FIREBASE_API_KEY": "AIzaSyAGQ-AMCmpkcgErO2UVW0b_BFcFFHTCAJw",
+    "FIREBASE_API_ID": "1:320149797683:web:6cb56009aaa69a3dc9dc46",
+    "FIREBASE_MESSAGING_SENDER_ID": "320149797683",
+    "FIREBASE_MEASUREMENT_ID": "G-9E186399VJ",
+    "NODE_PATH": ""
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 67108864,
+      "hard": 67108864
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 1048576,
+      "hard": 1048576
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 78679,
+      "hard": 78679
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/lib/x86_64-linux-gnu/libdl.so.2",
+    "/lib/x86_64-linux-gnu/librt.so.1",
+    "/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "/lib/x86_64-linux-gnu/libm.so.6",
+    "/lib/x86_64-linux-gnu/libgcc_s.so.1",
+    "/lib/x86_64-linux-gnu/libpthread.so.0",
+    "/lib/x86_64-linux-gnu/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2",
+    "/home/farid/Desktop/uma/Patient-app/node_modules/node-sass/vendor/linux-x64-72/binding.node"
+  ]
+}

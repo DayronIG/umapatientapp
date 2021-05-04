@@ -1,13 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { TiPlus } from 'react-icons/ti';
-import { BsCalendar } from 'react-icons/bs'
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-	MuiPickersUtilsProvider,
-	DatePicker,
-} from '@material-ui/pickers';
 import 'date-fns'
 
 

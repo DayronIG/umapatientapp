@@ -70,7 +70,7 @@ const ModulesMenu = () => {
 					<section className='modules-container'>
 						<div className='card length4'>
 							{returnModule(
-								!user.active_appointment ? `/onlinedoctor/who` : `/onlinedoctor/queue/IdWgBGMzFGUAT5tI3Lo85lUdQnk1`,
+								!user.active_appointment ? `/onlinedoctor/who` : `/onlinedoctor/queue/${user.core_id}`,
 								'onlinedoctor',
 								iconGuardia,
 								'Guardia'
