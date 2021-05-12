@@ -13,6 +13,7 @@ const TestDiabetes = () => {
     const [camera, setCamera] = useState('false')
     const { core_id } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
+    const [prediction, setPrediction] = useState('');
     const dispatch = useDispatch();
     
 
@@ -43,8 +44,12 @@ const TestDiabetes = () => {
                 'Content-Type': 'application/json',
             },
         }).then((res) => {
-            console.log(url)
-            console.log(res)
+            if(res.data.prediction === 'non_diabetic'){
+                setPrediction(`Tu test de diabetes dió negativo con una probabilidad del ${res.data.probability * 100}%`)
+            }
+            else{
+                setPrediction(`Tu test de diabetes dió positivo con una probabilidad del ${res.data.probability * 100}%`)
+            }
         })
     };
 
@@ -76,6 +81,7 @@ const TestDiabetes = () => {
                         dataType="blob"
                         className="camera"
                         innerHtmlToRender={innerHtmlToRender}
+                        style={{height:'70%'}}
                          />
             </>}
         </>
