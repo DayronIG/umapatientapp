@@ -1,0 +1,28 @@
+.testDiabetes__main{
+
+    h1{
+        text-align: center;
+        color: blue;
+        margin-top: 1rem;
+    }
+
+    .testDiabetes__button{
+        display: flex;
+        justify-content: center;
+        
+        button {
+        margin-top: 1rem;
+        background: #0A6DD7;
+        border: none;
+        padding: 0.5rem 2rem;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 1.5rem;
+        transition: background 0.5s;
+
+        &:hover {
+            background: #0556ad;
+        }
+    }
+    }
+}
