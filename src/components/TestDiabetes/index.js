@@ -34,10 +34,10 @@ const TestDiabetes = () => {
 
         let data = {
             bucket_name: "uma-v2.appspot.com",
-            blob_path: url,
+            blob_path: `${core_id}/labs/diabetes_${date}.png`,
         };
 
-        axios.post(url, data, {
+        axios.post('https://computer-vision-dot-uma-v2.uc.r.appspot.com/diabetes_predictor', data, {
             headers: {
                 'Content-Type': 'application/json',
             },
