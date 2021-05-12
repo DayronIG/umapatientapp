@@ -14,6 +14,7 @@ const TestDiabetes = () => {
     const { core_id } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState('');
+    const [probability, setProbability] = useState('');
     const dispatch = useDispatch();
     
 
@@ -30,6 +31,8 @@ const TestDiabetes = () => {
 
     const handleSubmit = async (file) => {
 
+        setLoading(true)
+
         const date = moment().format('YYYYMMDDHHmm')
         const url = await uploadFileToFirebase(file, `/${core_id}/labs/diabetes_${date}.png`);
         const modelURL = 'https://computer-vision-dot-uma-v2.uc.r.appspot.com/diabetes_predictor'
@@ -44,13 +47,19 @@ const TestDiabetes = () => {
                 'Content-Type': 'application/json',
             },
         }).then((res) => {
+            console.log(res.data)
+
             if(res.data.prediction === 'non_diabetic'){
-                setPrediction(`Tu test de diabetes dió negativo con una probabilidad del ${res.data.probability * 100}%`)
+                setPrediction('NEGATIVO')
+                setProbability((res.data.probability * 100).toFixed())
             }
             else{
-                setPrediction(`Tu test de diabetes dió positivo con una probabilidad del ${res.data.probability * 100}%`)
+                setPrediction('POSITIVO')
+                setProbability((res.data.probability * 100).toFixed())
             }
         })
+        setCamera('false')
+        setLoading(false)
     };
 
     const innerHtmlToRender =
@@ -62,7 +71,13 @@ const TestDiabetes = () => {
 
     return (
         <>
-        {camera == 'false' ?
+        {loading ? 
+        <>
+        <Loader/>
+        </>
+        :
+
+                camera == 'false' && !prediction ?
         <>
             <div className="testDiabetes__main">
                 <h1>Test Diabetes</h1>
@@ -73,6 +88,8 @@ const TestDiabetes = () => {
             
         </>
             :
+
+            camera === 'true'  ? 
             <>
             <Camera 
                         facingMode="environment"
@@ -83,6 +100,10 @@ const TestDiabetes = () => {
                         innerHtmlToRender={innerHtmlToRender}
                         style={{height:'70%'}}
                          />
+            </>
+            :
+            <>
+                <h1 style={{color:'red'}}>Tu test dio {prediction} con un {probability}% de probabilidad</h1>
             </>}
         </>
     )
