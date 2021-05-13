@@ -2,11 +2,14 @@ import React, {useState} from 'react'
 import Camera from '../../components/GeneralComponents/Camera'
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../GeneralComponents/Loading';
+import logo from '../../assets/icons/icon.png';
 import '../../styles/inputs/picture/PictureComponent.scss';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import './diabetes.scss'
 import moment from 'moment'
 import axios from "axios"
+import { CustomUmaLoader } from '../global/Spinner/Loaders';
+
 
 
 const TestDiabetes = () => {
@@ -19,11 +22,18 @@ const TestDiabetes = () => {
     
 
     const activateCamera = () => {
-        if(camera === 'false'){
+        if(camera === 'false' && prediction === ''){
             setCamera('true')
         }
-        else{
+        else if (camera === 'true' && prediction === ''){
             setCamera('false')
+        }
+        else if(camera === 'false' && prediction !== '' ){
+            setCamera('true')
+            setPrediction('')
+        }
+        else{
+            console.log('error')
         }
     }
 
@@ -59,7 +69,7 @@ const TestDiabetes = () => {
             }
         })
         setCamera('false')
-        setLoading(false)
+		setTimeout(() => setLoading(false), 2000);
     };
 
     const innerHtmlToRender =
@@ -73,13 +83,14 @@ const TestDiabetes = () => {
         <>
         {loading ? 
         <>
-        <Loader/>
+        <CustomUmaLoader/>
         </>
         :
 
-                camera == 'false' && !prediction ?
+                camera == 'false' && prediction === '' ?
         <>
             <div className="testDiabetes__main">
+                <img src={logo}></img>
                 <h1>Test Diabetes</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Tomar Foto</button>
@@ -103,7 +114,14 @@ const TestDiabetes = () => {
             </>
             :
             <>
-                <h1 style={{color:'red'}}>Tu test dio {prediction} con un {probability}% de probabilidad</h1>
+            <div className="testDiabetes__main">
+                <img src={logo}></img>
+                <h1>Tu test dio <span>{prediction}</span></h1>
+                <h1>Con un <span>{probability}%</span> de probabilidad</h1>
+                <div className="testDiabetes__button">
+                    <button onClick={activateCamera}>Repetir Test</button>
+                </div>
+            </div>
             </>}
         </>
     )
