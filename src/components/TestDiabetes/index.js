@@ -38,6 +38,8 @@ const TestDiabetes = () => {
     }
 
 
+    
+
 
     const handleSubmit = async (file) => {
 
@@ -57,15 +59,14 @@ const TestDiabetes = () => {
                 'Content-Type': 'application/json',
             },
         }).then((res) => {
-            console.log(res.data)
-
+            // console.log(res.data)
             if(res.data.prediction === 'non_diabetic'){
                 setPrediction('NEGATIVO')
                 setProbability((res.data.probability * 100).toFixed())
             }
             else{
                 setPrediction('POSITIVO')
-                setProbability((res.data.probability * 100).toFixed())
+                setProbability((1 - res.data.probability * 100).toFixed())
             }
         })
         setCamera('false')
@@ -91,7 +92,7 @@ const TestDiabetes = () => {
         <>
             <div className="testDiabetes__main">
                 <img src={logo}></img>
-                <h1>Test Diabetes</h1>
+                <h1>TEST DIABETES</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Tomar Foto</button>
                 </div>
@@ -103,7 +104,7 @@ const TestDiabetes = () => {
             camera === 'true'  ? 
             <>
             <Camera 
-                        facingMode="environment"
+                        facingMode="user"
                         onTakePhoto={handleSubmit}
                         errorHandler={(e) => console.log(e)}
                         dataType="blob"
