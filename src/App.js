@@ -104,7 +104,7 @@ import PaymentRefund from './components/Payment/PaymentRefund';
 /* REFACTOR DE HISOPADOS Y SERVICIOS NUEVOS */
 import ServicesTracker from './components/Services/General/ServicesTracker'
 import Results from './components/Services/General/ResultReveal'
-import TestDiabetes from './components/TestDiabetes/index.js';
+import IndexDiabetes from './components/TestDiabetes/index.js';
 
 
 
@@ -177,7 +177,7 @@ function App(props) {
 				<PrivateRoute exact path='/onlinedoctor/queue/:activeUid?' component={AttQueue} />
 				<PrivateRoute exact path='/onlinedoctor/attention/:activeUid?' component={CallContainer} />
 
-				<PrivateRoute exact path='/onlinedoctor/test_diabetes:ws?' component={TestDiabetes} />
+				<PrivateRoute exact path='/onlinedoctor/test_diabetes:ws?' component={IndexDiabetes} />
 				{/* MY HISTORY */}
 				<PrivateRoute exact path='/record/:ws' component={MyRecords} />
 				<PrivateRoute exact path='/history/:ws' component={MyHistory} />

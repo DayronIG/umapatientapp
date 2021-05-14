@@ -1,3 +1,9 @@
+@import '../../styles/global/Vars.scss';
+
+*{
+    font-family: 'Nunito', helvetica !important;
+}
+
 .testDiabetes__main{
 
         display: flex;
@@ -5,22 +11,38 @@
         justify-content: center;
         align-content: center;
 
-    h1{
-        text-align: center;
-        color: blue;
-        margin-top: 1rem;
-        font-size: 30px;
-    }
+        .testDiabetes__header{
+            display: flex;
+            flex-direction: column;
+            background-color: $uma-primary;
+            margin-bottom: 5%;
+
+            h1{
+                text-align: center;
+                color: white;
+                margin-top: 1rem;
+                font-size: 25px;
+                font-weight: 700;
+            }
+
+            img{
+                align-self: center;
+                width: 70px;
+                height: auto;
+            }
+        }
+
+        .testDiabetes__form{
+            background-color: $uma-primary !important;
+        }
+
+
     span{
         font-weight: 700;
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    img{
-        align-self: center;
-        width: 200px;
-        height: auto;
-    }
+
 
     .testDiabetes__button{
         display: flex;
@@ -46,4 +68,207 @@
 
 .testDiabetes__loader{
     display: flex;
+}
+
+*{
+    font-family: 'Nunito', sans-serif;
+}
+.indications{
+    margin: 2vh;
+    text-align: center;
+}
+button{
+    background: #0A6DD7;
+    margin: 5vw;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 5px;
+    width: 200px;
+    height: 45px;
+    border: none;
+    margin-top: 10%;
+}
+input,
+select{
+    margin-top: 10px;
+    width: 90%;
+    padding: 3px 3px 3px 3px;
+    min-height: 31px;
+    border: none;
+    border-radius: 25px;
+    border-bottom: 2px solid #0a6dd7;
+    transition: transform 0.3s linear;
+    font-size: 18px;
+    &:focus {
+        outline: none;
+        border-bottom: 2px solid #0A6dd7;
+    }
+
+    option{
+        font-size: 10px;
+    }
+}
+img{
+    max-width: 50vw;
+}
+.home{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.collector{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+}
+.docInvitation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    .inputContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 10vh;
+    }
+    .wellInvited{
+        color: green;
+    }
+    .badInvited{
+        color:red;
+    }
+}
+.oximeter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    .question_spo2_bpm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 18vh;
+        .inputContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 4vh; 
+            label{
+                margin-bottom: 1vh;
+            }
+        }
+    }
+}
+.terms{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    p{
+        margin: 0 4vh;
+        line-height: 3vh;
+        text-align: center;
+    }
+    .terms_buttons{
+        margin-top: 2vh;
+    }
+    .inputContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 2vh; 
+        label{
+            margin-bottom: 1vh;
+        }
+        select{
+            width: 40vw;
+        }
+    }
+}
+.diabetes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 85vh;
+    .question_diabetes{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 15vh;
+        margin-top: 5%;
+        .inputContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1vh; 
+            label{
+                margin-bottom: 0.5vh;
+            }
+            select{
+                width: 40vw;
+            }
+        }
+    }
+}
+.contenedor-video{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .contenedor-btn-reproducir{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 20vh;
+        width: 82vw;
+        background: #FFFFFF;
+        box-shadow: 0px 1px 14px rgba(126, 147, 163, 0.25);
+        border-radius: 6px;
+        .title-video{
+            text-align: center;
+            padding: 6vw;
+        }
+    }
+}
+.thank_you{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    div{
+        margin-bottom: 2vh;
+        .deleteLink{
+            color: red;
+            text-decoration: underline;
+        }
+    }
+}
+.instructionsContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    text-align: center;
+    margin-bottom: 12vh;
+    width: 100vw;
+    .imagesContainer{
+        margin-bottom: 6vh;
+        img{
+            margin: 2vw;
+            max-width: 35vw;
+        }
+    }
 }
