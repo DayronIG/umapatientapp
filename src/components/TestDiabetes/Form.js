@@ -4,31 +4,64 @@ import axios from 'axios'
 import swal from 'sweetalert';
 import {NODE_SERVER} from '../../config/endpoints'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 
-
-const Form = () => {
-
+const Form = ({step, setStep}) => {
+    const dispatch = useDispatch();
     const [send, setSend] = useState(false)
-    const { dni } = useSelector(state => state.user)    
+    const { dni } = useSelector(state => state.user)   
+    const [años, setAños] = useState('')
     const [values, setValues] = useState({
-        sexo: 'masculino',
-        fumador: 'no',
-        diabetes: 'no',
-        hipertension: 'no',
-        antecedentes: 'no',
-        fechaNac: '',})
+        sex: 'Masculino',
+        smoker: 'no',
+        diabetic: 'no',
+        hypertensive: 'no',
+        medical_records: 'no',
+        dob: '',
+        age:''})
 
-    const handleChange = e => {
-        setValues({
-            ...values,
-            [e.target.name] : e.target.value
-        })
+
+
+        const handleChange = e => {
+            setValues({
+                ...values,
+                [e.target.name] : e.target.value
+            })
+            setTimeout(2000)
+            dispatch({ type: "DIABETIC_TEST_FILL", payload: values })
+
+            if(values.dob){
+                setAges()
+                dispatch({ type: 'DIABETIC_TEST_FILL', payload: {... values, age: años}})
+            }
+            // else if(age){
+            //     setScore()
+            // }
+        }
+
+
+	const setAges = () => {
+		let pAge = moment().diff(values.dob, 'years')
+		setAños(pAge)   
     }
 
-
+    // const setScore = () => {
+    //         let score = 0
+    //         if(age >=60 && age < 70) {score += 2}
+    //         if(age >=70) {score += 3}
+    //         if(values.sex === "Masculino") {score += 2}
+    //         if(values.smoker === 'si') {score += 2}
+    //         if(values.diabetic === 'si') {score += 3}
+    //         if(values.hypertensive === 'si') {score += 2}
+    //         if(values.medical_records === 'si') {score += 1}
+    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 1}
+    //         if(DIAB_PROB >= 0.75) {score += 1}
+    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 2}
+    //         if(DIAB_PROB >= 0.75) {score += 3}
+    // }
 
     const createDatasetDocument = useCallback(() => {
-        if(!values.fechaNac){
+        if(!values.dob){
             swal('Aviso', 'Debe completar los campos', 'warning');
         } else {
             let data = {
@@ -36,19 +69,6 @@ const Form = () => {
                 "researchId":"diabetes",
                 "data": values
             }
-            // let score = 0
-            // if(EDAD >=60 && edad < 70) {score += 2}
-            // if(EDAD >=70) {score += 3}
-            // if(GENERO = "M") {score += 2}
-            // if(FUMADOR = true) {score += 2}
-            // if(DIABETES = true) {score += 3}
-            // if(HIPERTENSION = true) {score += 2}
-            // if(INFARTO_PRECOZ = true) {score += 1}
-            // if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 1}
-            // if(DIAB_PROB >= 0.75) {score += 1}
-            // if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 2}
-            // if(DIAB_PROB >= 0.75) {score += 3}
-
               axios.post(`${NODE_SERVER}/research`, data, {headers: {'Content-Type': 'application/json'}})
               .then(function (response) {
                 console.log(JSON.stringify(response.data));
@@ -57,7 +77,9 @@ const Form = () => {
                 console.log(error);
               });
               setSend(true)
+
         }
+
     }, [values])
 
 
@@ -67,18 +89,18 @@ const Form = () => {
                 <div className='question_diabetes'>
                     <div className='inputContainer'>
                         <label>Fecha de Nacimiento:</label>
-                        <input type="date" value={values.fechaNac} name='fechaNac' onChange={handleChange}/>
+                        <input type="date" value={values.fechaNac} name='dob' onChange={handleChange}/>
                     </div>
                     <div className='inputContainer'>
                         <label>Sexo:</label>
-                        <select type="text" value={values.sexo} name='sexo' onChange={handleChange}>
+                        <select type="text" value={values.sexo} name='sex' onChange={handleChange}>
                             <option value='masculino'>Masculino</option>
                             <option value='femenino'>Femenino</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Eres fumador? </label>
-                        <select type="text" value={values.fumador} name='fumador' onChange={handleChange}>
+                        <select type="text" value={values.fumador} name='smoker' onChange={handleChange}>
                             <option value='si'>SI</option>
                             <option value='no'>NO</option>
                             <option value='ocasional'>Oscasional</option>\
@@ -86,28 +108,34 @@ const Form = () => {
                     </div>
                     <div className='inputContainer'>
                         <label>Eres diabético? </label>
-                        <select type="text" value={values.diabetes} name='diabetes' onChange={handleChange}>
+                        <select type="text" value={values.diabetes} name='diabetic' onChange={handleChange}>
                             <option value='si'>SI</option>
                             <option value='no'>NO</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Sufres hipertensión? </label>
-                        <select type="text" value={values.hipertension} name='hipertension' onChange={handleChange}>
+                        <select type="text" value={values.hipertension} name='hypertensive' onChange={handleChange}>
                             <option value='si'>SI</option>
                             <option value='no'>NO</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Antecedentes:</label>
-                        <select type="text" value={values.antecedentes} name='antecedentes' onChange={handleChange}>
+                        <select type="text" value={values.antecedentes} name='medical_records' onChange={handleChange}>
                             <option value='si'>SI</option>
                             <option value='no'>NO</option>
                         </select>
                     </div>
-                    <button onClick={()=>createDatasetDocument()}>
-                        Enviar
-                    </button>
+                    {/* <button onClick={()=>createDatasetDocument()}> */}
+                    <div className='diabetesForm__buttons'>
+                        <button onClick={() => {setStep(2)}}>
+                            Enviar
+                        </button>
+                        <button onClick={() => {setStep(0)}}>
+                            Atrás
+                        </button>
+                    </div>
                 </div>
             
         </div>

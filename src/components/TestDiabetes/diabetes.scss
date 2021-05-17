@@ -11,6 +11,7 @@
         justify-content: center;
         align-content: center;
 
+
         .testDiabetes__header{
             display: flex;
             flex-direction: column;
@@ -59,10 +60,51 @@
         border-radius: 1.5rem;
         transition: background 0.5s;
 
+        
+
         &:hover {
             background: #0556ad;
         }
     }
+    }
+
+    .diabetes__TermsAndConditions{
+
+        padding: 2%;
+
+        h1{
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 5%;
+        }
+        p{
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 5%;
+        }
+        img{   
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%; 
+            margin-bottom: 5%;
+        }
+        .diabetes__TermsAndConditionsButtons{
+            display: flex;
+            justify-content: center;
+            button{
+                background: #0A6DD7;
+                margin: 5vw;
+                font-weight: bolder;
+                font-size: 1rem;
+                color: #FFFFFF;
+                border-radius: 8px;
+                padding: 5px;
+                width: 120px;
+                height: 45px;
+                border: none;
+            }
+        }
     }
 }
 
@@ -77,21 +119,10 @@
     margin: 2vh;
     text-align: center;
 }
-button{
-    background: #0A6DD7;
-    margin: 5vw;
-    font-weight: bolder;
-    font-size: 1.2rem;
-    color: #FFFFFF;
-    border-radius: 8px;
-    padding: 5px;
-    width: 200px;
-    height: 45px;
-    border: none;
-    margin-top: 10%;
-}
+
 input,
 select{
+    background: #FFFF;
     margin-top: 10px;
     width: 90%;
     padding: 3px 3px 3px 3px;
@@ -218,6 +249,21 @@ img{
             }
             select{
                 width: 40vw;
+            }
+        }
+        .diabetesForm__buttons{
+            button{
+                background: #0A6DD7;
+                margin: 5vw;
+                font-weight: bolder;
+                font-size: 1rem;
+                color: #FFFFFF;
+                border-radius: 8px;
+                padding: 5px;
+                width: 120px;
+                height: 45px;
+                border: none;
+                margin-bottom: 5%;
             }
         }
     }

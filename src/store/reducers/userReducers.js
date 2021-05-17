@@ -32,7 +32,19 @@ const initialState = {
   sex: "",
   year: "",
   ws: "",
+  diabetic_test:{
+    sex: '',
+    smoker: '',
+    diabetic: '',
+    hypertensive: '',
+    medical_records: '',
+    dob: '',
+    age: '',
+    test_score:'',
+  },
 };
+
+
 
 export default function userReducers(state = initialState, action) {
   switch (action.type) {
@@ -86,6 +98,8 @@ export default function userReducers(state = initialState, action) {
       return { ...state, phone: action.payload };
     case "SET_COORDS":
       return { ...state, lat: action.payload.lat, lon: action.payload.lon };
+    case "DIABETIC_TEST_FILL":
+      return { ...state, diabetic_test: action.payload };
     case "RESET_USER_DATA":
       return initialState;
     case "FILL_REGISTER":
