@@ -41,7 +41,7 @@ const initialState = {
     dob: '',
     age: '',
     probability: '',
-    test_score:'',
+    score:'',
   },
 };
 
