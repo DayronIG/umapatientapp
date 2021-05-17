@@ -22,7 +22,7 @@ const IndexDiabetes = ({step, setStep}) => {
     const history = useHistory()
     const [values, setValues] = useState({
         probability: '',
-        test_score: ''
+        test_score: '',
     })
 
         // const setScore = () => {
@@ -87,7 +87,7 @@ const IndexDiabetes = ({step, setStep}) => {
                 setTestResult((1 - res.data.probability * 100).toFixed())
             }})
 
-        dispatch({ type: 'DIABETIC_TEST_FILL', payload: {... values, probability: test_result }})
+        dispatch({ type: 'DIABETIC_TEST_FILL', payload: {... values, probability: testResult }})
         setCamera('false')
 		setTimeout(() => setLoading(false), 2000);
     };
@@ -124,7 +124,7 @@ const IndexDiabetes = ({step, setStep}) => {
             <div className="testDiabetes__main">
                 <img src={icon}></img>
                 <h1>Tu test dio <span>{prediction}</span></h1>
-                <h1>Con un <span>{probability}%</span> de probabilidad</h1>
+                <h1>Con un <span>{testResult}%</span> de probabilidad</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
