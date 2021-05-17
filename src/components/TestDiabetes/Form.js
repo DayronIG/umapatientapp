@@ -45,20 +45,7 @@ const Form = ({step, setStep}) => {
 		setAños(pAge)   
     }
 
-    // const setScore = () => {
-    //         let score = 0
-    //         if(age >=60 && age < 70) {score += 2}
-    //         if(age >=70) {score += 3}
-    //         if(values.sex === "Masculino") {score += 2}
-    //         if(values.smoker === 'si') {score += 2}
-    //         if(values.diabetic === 'si') {score += 3}
-    //         if(values.hypertensive === 'si') {score += 2}
-    //         if(values.medical_records === 'si') {score += 1}
-    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 1}
-    //         if(DIAB_PROB >= 0.75) {score += 1}
-    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 2}
-    //         if(DIAB_PROB >= 0.75) {score += 3}
-    // }
+
 
     const createDatasetDocument = useCallback(() => {
         if(!values.dob){
