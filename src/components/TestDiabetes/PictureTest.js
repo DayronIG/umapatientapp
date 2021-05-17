@@ -102,7 +102,7 @@ const IndexDiabetes = ({step, setStep}) => {
                 <h1>Con un <span>{probability}%</span> de probabilidad</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
-                    <button onClick={history.go(0)}></button>
+                    <button onClick={() => history.go(0)}>Volver Al Inicio</button>
                 </div>
             </div>
             </>}
