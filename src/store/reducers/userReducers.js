@@ -40,6 +40,7 @@ const initialState = {
     medical_records: '',
     dob: '',
     age: '',
+    probability: '',
     test_score:'',
   },
 };

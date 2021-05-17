@@ -17,9 +17,30 @@ const IndexDiabetes = ({step, setStep}) => {
     const { core_id } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState('');
-    const [probability, setProbability] = useState('');
+    const [testResult, setTestResult] = useState('');
     const dispatch = useDispatch();
     const history = useHistory()
+    const [values, setValues] = useState({
+        probability: '',
+        test_score: ''
+    })
+
+        // const setScore = () => {
+    //         let score = 0
+    //         if(age >=60 && age < 70) {score += 2}
+    //         if(age >=70) {score += 3}
+    //         if(values.sex === "Masculino") {score += 2}
+    //         if(values.smoker === 'si') {score += 2}
+    //         if(values.diabetic === 'si') {score += 3}
+    //         if(values.hypertensive === 'si') {score += 2}
+    //         if(values.medical_records === 'si') {score += 1}
+    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 1}
+    //         if(DIAB_PROB >= 0.75) {score += 1}
+    //         if(DIAB_PROB > 0.5 && DIAB_PROB < 0.75) {score += 2}
+    //         if(DIAB_PROB >= 0.75) {score += 3}
+    // }
+
+
 
     const activateCamera = () => {
         if(camera === 'false' && prediction === ''){
@@ -35,6 +56,8 @@ const IndexDiabetes = ({step, setStep}) => {
         else{
             console.log('error')
         }}
+
+    
 
     const handleSubmit = async (file) => {
 
@@ -57,12 +80,14 @@ const IndexDiabetes = ({step, setStep}) => {
             // console.log(res.data)
             if(res.data.prediction === 'non_diabetic'){
                 setPrediction('NEGATIVO')
-                setProbability((res.data.probability * 100).toFixed())
+                setTestResult((res.data.probability * 100).toFixed())
             }
             else{
                 setPrediction('POSITIVO')
-                setProbability((1 - res.data.probability * 100).toFixed())
+                setTestResult((1 - res.data.probability * 100).toFixed())
             }})
+
+        dispatch({ type: 'DIABETIC_TEST_FILL', payload: {... values, probability: test_result }})
         setCamera('false')
 		setTimeout(() => setLoading(false), 2000);
     };

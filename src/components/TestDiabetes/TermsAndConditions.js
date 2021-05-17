@@ -19,8 +19,8 @@ const TermsAndConditions = ({step, setStep}) => {
                 El estudio es totalmente voluntario. Sus datos sólo serán recabados con fines de investigación, y serán resguardados durante todo el proceso. No almacenaremos información sensible.</p> 
 
                 <div className='diabetes__TermsAndConditionsButtons'>
-                    <button onClick={() => setStep(1)}>ACEPTAR</button>
                     <button onClick={() => setStep(0)}>RECHAZAR</button>
+                    <button onClick={() => setStep(1)}>ACEPTAR</button>
                 </div>
         </div>
     )
