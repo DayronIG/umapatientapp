@@ -12,8 +12,8 @@ import { CustomUmaLoader } from '../global/Spinner/Loaders';
 
 
 
-const IndexDiabetes = () => {
-    const [camera, setCamera] = useState('false')
+const IndexDiabetes = ({step, setStep}) => {
+    const [camera, setCamera] = useState('true')
     const { core_id } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState('');
@@ -82,18 +82,6 @@ const IndexDiabetes = () => {
         <CustomUmaLoader/>
         </>
         :
-            camera == 'false' && prediction === '' ?
-        <>
-            <div className="testDiabetes__main">
-                <img src={logo}></img>
-                <h1>TEST DIABETES</h1>
-                <div className="testDiabetes__button">
-                    <button onClick={activateCamera}>Tomar Foto</button>
-                </div>
-            </div>
-        </>
-            :
-
             camera === 'true'  ? 
             <>
             <Camera 
