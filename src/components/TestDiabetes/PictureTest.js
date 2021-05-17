@@ -2,14 +2,14 @@ import React, {useState} from 'react'
 import Camera from '../../components/GeneralComponents/Camera'
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../GeneralComponents/Loading';
-import logo from '../../assets/icons/icon.png';
+import icon from '../../assets/icon.png';
 import '../../styles/inputs/picture/PictureComponent.scss';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import './diabetes.scss'
 import moment from 'moment'
 import axios from "axios"
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
-
+import { useHistory } from 'react-router'
 
 
 const IndexDiabetes = ({step, setStep}) => {
@@ -19,7 +19,7 @@ const IndexDiabetes = ({step, setStep}) => {
     const [prediction, setPrediction] = useState('');
     const [probability, setProbability] = useState('');
     const dispatch = useDispatch();
-    
+    const history = useHistory()
 
     const activateCamera = () => {
         if(camera === 'false' && prediction === ''){
@@ -97,11 +97,12 @@ const IndexDiabetes = ({step, setStep}) => {
             :
             <>
             <div className="testDiabetes__main">
-                <img src={logo}></img>
+                <img src={icon}></img>
                 <h1>Tu test dio <span>{prediction}</span></h1>
                 <h1>Con un <span>{probability}%</span> de probabilidad</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
+                    <button onClick={history.go(0)}></button>
                 </div>
             </div>
             </>}

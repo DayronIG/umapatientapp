@@ -129,11 +129,11 @@ const Form = ({step, setStep}) => {
                     </div>
                     {/* <button onClick={()=>createDatasetDocument()}> */}
                     <div className='diabetesForm__buttons'>
-                        <button onClick={() => {setStep(2)}}>
-                            Enviar
-                        </button>
                         <button onClick={() => {setStep(0)}}>
                             Atrás
+                        </button>
+                        <button onClick={() => {setStep(2)}}>
+                            Enviar
                         </button>
                     </div>
                 </div>
