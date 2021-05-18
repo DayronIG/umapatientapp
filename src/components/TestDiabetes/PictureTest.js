@@ -17,7 +17,7 @@ const IndexDiabetes = ({step, setStep}) => {
     const { core_id } = useSelector(state => state.user);
     const [loading, setLoading] = useState(false);
     const [prediction, setPrediction] = useState('');
-    const [test_probability, setTestProbability] = useState('');
+    const [testProbability, setTestProbability] = useState('');
     const dispatch = useDispatch();
     const history = useHistory()
     const [values, setValues] = useState({
@@ -104,7 +104,7 @@ const IndexDiabetes = ({step, setStep}) => {
             <div className="testDiabetes__main">
                 <img src={icon}></img>
                 <h1>Tu test dio <span>{prediction}</span></h1>
-                <h1>Con un <span>{test_probability}%</span> de probabilidad</h1>
+                <h1>Con un <span>{testProbability}%</span> de probabilidad</h1>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
