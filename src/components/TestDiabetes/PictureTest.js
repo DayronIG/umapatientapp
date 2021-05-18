@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Camera from '../../components/GeneralComponents/Camera'
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../GeneralComponents/Loading';
@@ -23,6 +23,12 @@ const IndexDiabetes = ({step, setStep}) => {
 
     const user_test_data = useSelector(state => state.user.diabetic_test)
     const user_test_results = useSelector(state => state.user.diabetic_score)
+
+        useEffect(() => {
+        if(user_test_results.probability){
+            scoreCalculator()
+        }
+    }, [user_test_results.probability])
     
 
     const activateCamera = () => {
@@ -61,7 +67,7 @@ const IndexDiabetes = ({step, setStep}) => {
         if (user_test_results.prediction === 'diabetic' &&
             user_test_results.probability >= 0.75) { calculatedScore += 3 }
 
-        dispatch({ type: 'DIABETIC_TEST_SCORE_FILL', payload: { score: calculatedScore } })
+        dispatch({ type: 'DIABETIC_TEST_SCORE_FILL', payload: {probability:user_test_results.probability, score: calculatedScore}  })
 
     }
 
@@ -87,18 +93,16 @@ const IndexDiabetes = ({step, setStep}) => {
             if(res.data.prediction === 'non_diabetic'){
                 setPrediction('NEGATIVO')
                 // setuser.user_test_results.probability((res.data.probability * 100).toFixed())
-                dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (res.data.probability * 100).toFixed()}})
-                scoreCalculator()
+                dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (res.data.probability * 100).toFixed(), score: user_test_results.score}})
 
             }
             else{
                 setPrediction('POSITIVO')
                 // setuser.user_test_results.probability((1 - res.data.probability * 100).toFixed())
-                dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (1 - res.data.probability * 100).toFixed() } })
-                scoreCalculator()
+                dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (1 - res.data.probability * 100).toFixed(), score: user_test_results.score} })
 
             }})
-        
+        scoreCalculator()
         setCamera('false')
 		setTimeout(() => setLoading(false), 5000);
     };

@@ -4,7 +4,6 @@ import axios from 'axios'
 import swal from 'sweetalert';
 import {NODE_SERVER} from '../../config/endpoints'
 import { useDispatch, useSelector } from 'react-redux'
-import moment from 'moment'
 
 const Form = ({step, setStep}) => {
     const dispatch = useDispatch();
