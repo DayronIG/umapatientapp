@@ -10,14 +10,12 @@ const Form = ({step, setStep}) => {
     const dispatch = useDispatch();
     const [send, setSend] = useState(false)
     const { dni } = useSelector(state => state.user)   
-    const [años, setAños] = useState('')
     const [values, setValues] = useState({
         sex: 'Masculino',
         smoker: 'no',
         diabetic: 'no',
         hypertensive: 'no',
         medical_records: 'no',
-        dob: '',
         age:''})
 
 
@@ -27,30 +25,14 @@ const Form = ({step, setStep}) => {
                 ...values,
                 [e.target.name] : e.target.value
             })
-            setTimeout(2000)
-            dispatch({ type: "DIABETIC_TEST_FILL", payload: values })
-
-            if(values.dob){
-                setAges()
-                dispatch({ type: 'DIABETIC_TEST_FILL', payload: {... values, age: años}})
             }
-            // else if(age){
-            //     setScore()
-            // }
-        }
-
-
-	const setAges = () => {
-		let pAge = moment().diff(values.dob, 'years')
-		setAños(pAge)   
-    }
-
 
 
     const createDatasetDocument = useCallback(() => {
-        if(!values.dob){
+        if(!values.age){
             swal('Aviso', 'Debe completar los campos', 'warning');
         } else {
+            dispatch({ type: "DIABETIC_TEST_FILL", payload: values })
             let data = {
                 "dni": `${dni}`,
                 "researchId":"diabetes",
@@ -75,8 +57,8 @@ const Form = ({step, setStep}) => {
 
                 <div className='question_diabetes'>
                     <div className='inputContainer'>
-                        <label>Fecha de Nacimiento:</label>
-                        <input type="date" value={values.fechaNac} name='dob' onChange={handleChange}/>
+                        <label>Edad</label>
+                        <input type="text" value={values.age} name='age' onChange={handleChange}/>
                     </div>
                     <div className='inputContainer'>
                         <label>Sexo:</label>
@@ -109,7 +91,7 @@ const Form = ({step, setStep}) => {
                     </div>
                     <div className='inputContainer'>
                         <label>Antecedentes:</label>
-                        <select type="text" value={values.antecedentes} name='medical_records' onChange={handleChange}>
+                        <select type="text" value={values.medical_records} name='medical_records' onChange={handleChange}>
                             <option value='si'>SI</option>
                             <option value='no'>NO</option>
                         </select>
@@ -119,7 +101,7 @@ const Form = ({step, setStep}) => {
                         <button onClick={() => {setStep(0)}}>
                             Atrás
                         </button>
-                        <button onClick={() => {setStep(2)}}>
+                    <button onClick={() => {createDatasetDocument(); setStep(2)}}>
                             Enviar
                         </button>
                     </div>

@@ -38,11 +38,12 @@ const initialState = {
     diabetic: '',
     hypertensive: '',
     medical_records: '',
-    dob: '',
     age: '',
+  },
+  diabetic_score:{
     probability: '',
     score:'',
-  },
+  }
 };
 
 
@@ -101,6 +102,8 @@ export default function userReducers(state = initialState, action) {
       return { ...state, lat: action.payload.lat, lon: action.payload.lon };
     case "DIABETIC_TEST_FILL":
       return { ...state, diabetic_test: action.payload };
+    case "DIABETIC_TEST_SCORE_FILL":
+      return { ...state, diabetic_score: action.payload };
     case "RESET_USER_DATA":
       return initialState;
     case "FILL_REGISTER":
