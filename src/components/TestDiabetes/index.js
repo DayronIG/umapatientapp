@@ -25,7 +25,7 @@ const Index = () => {
             step === 2 ?
             <PictureTest step={step} setStep={setStep}/>
             :
-            'asd'}
+            ''}
         </div>
 
     </>
