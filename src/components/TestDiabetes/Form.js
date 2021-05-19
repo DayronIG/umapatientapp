@@ -4,6 +4,7 @@ import axios from 'axios'
 import swal from 'sweetalert';
 import {NODE_SERVER} from '../../config/endpoints'
 import { useDispatch, useSelector } from 'react-redux'
+import labsicon from '../../assets/labsicon.png'
 
 const Form = ({step, setStep}) => {
     const dispatch = useDispatch();
@@ -53,9 +54,12 @@ const Form = ({step, setStep}) => {
 
     return (
         <>
+            <img src={labsicon} style={{width:'50%'}}></img>
             <h2>Por favor, complete la siguiente información</h2>
         <div className='diabetes'>
-                <div className='question_diabetes'>
+
+            <div className='question_diabetes'>
+                    
                 <div className='inputContainer'>
                     <label>Edad</label>
                     <select type="text" value={values.age} name='age' onChange={handleChange} >
@@ -104,11 +108,11 @@ const Form = ({step, setStep}) => {
                         <button onClick={() => {setStep(0)}}>
                             Atrás
                         </button>
-                    <button className='button1' onClick={() => {createDatasetDocument()}}>
-                            Enviar
+                        <button className='button1' onClick={() => {createDatasetDocument()}}>
+                            Continuar
                         </button>
                     </div>
-                </div>
+            </div>
             
         </div>
     </>
