@@ -150,20 +150,12 @@ const IndexDiabetes = ({step, setStep}) => {
                     </div>
                     <div className="resultCard__secondCol">
                         <h1>Probabilidad</h1>
-                                        <Tilt className="Tilt" options={{ max: 25 }} style={{ height: 250, width: 250 }} >
-                                            <div className="Tilt-inner">
-                                                <div className="circle">
-                                                    <span>{user_test_results.probability}%</span>
-                                                </div>
-                                            </div>
-                                        </Tilt>
-
                     </div>
                 </div>
                 <h2 style={{fontSize:'2rem', textAlign:'center', marginTop:'10%', fontWeight:'400', color:'black'}}>Muchas gracias por tu tiempo!</h2>
                 <div className="testDiabetes__button">
-                    <button className='button1' onClick={activateCamera}>Tomar Otra Foto</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
+                    <button className='button1' onClick={activateCamera}>Tomar Otra Foto</button>
                 </div>
             </div>
             </>}
