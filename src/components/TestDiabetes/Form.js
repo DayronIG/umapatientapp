@@ -52,8 +52,9 @@ const Form = ({step, setStep}) => {
     const ageRange = [...Array.from(new Array(100),(x,i) => i + 18)]
 
     return (
+        <>
+            <h2>Por favor, complete la siguiente información</h2>
         <div className='diabetes'>
-
                 <div className='question_diabetes'>
                 <div className='inputContainer'>
                     <label>Edad</label>
@@ -110,6 +111,7 @@ const Form = ({step, setStep}) => {
                 </div>
             
         </div>
+    </>
     )
 }
 
