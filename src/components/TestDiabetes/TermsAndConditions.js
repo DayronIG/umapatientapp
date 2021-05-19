@@ -1,12 +1,12 @@
 import React from 'react'
 import './diabetes.scss'
-import icon from '../../assets/icon.png'
+import labsicon from '../../assets/labsicon.png'
 
 const TermsAndConditions = ({step, setStep}) => {
     return (
 
         <div className='diabetes__TermsAndConditions'>
-                     <img src={icon}></img>
+            <img src={labsicon}></img>
             <h1> Lo invitamos a participar en un estudio de investigación</h1>
 
                 <p>
