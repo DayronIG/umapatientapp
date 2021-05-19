@@ -51,17 +51,13 @@ const IndexDiabetes = ({step, setStep}) => {
         let calculatedScore = 0
         if (user_test_data.age >= 60 && user_test_data.age < 70) { calculatedScore += 2 }
         if (user_test_data.age >= 70) { calculatedScore += 3 }
-        if (user_test_data.sex = "masculino") { calculatedScore += 2 }
-        if (user_test_data.smoker = 'si') { calculatedScore += 2 }
-        if (user_test_data.diabetic = 'si') { calculatedScore += 3 }
-        if (user_test_data.hypertensive = 'si') { calculatedScore += 2 }
-        if (user_test_data.medical_record = 'si') { calculatedScore += 1 }
-        if (user_test_results.prediction === 'non_diabetic' &&
-            user_test_results.probability > 0.5 &&
-            user_test_results.probability < 0.75) { calculatedScore += 1 }
-        if (user_test_results.prediction === 'non_diabetic' &&
-            user_test_results.probability >= 0.75) { calculatedScore += 1 }
-        if (user_test_results.prediction === 'diabetic' &&
+        if (user_test_data.sex === "Masculino") { calculatedScore += 2 }
+        if (user_test_data.smoker === 'si') { calculatedScore += 2 }
+        if (user_test_data.diabetic === 'si') { calculatedScore += 3 }
+        if (user_test_data.hypertensive === 'si') { calculatedScore += 2 }
+        if (user_test_data.medical_records === 'si') { calculatedScore += 1 }
+        if (prediction === 'non_diabetic') { calculatedScore += 0 }
+        if (prediction === 'diabetic' &&
             user_test_results.probability > 0.5 &&
             user_test_results.probability < 0.75) { calculatedScore += 2 }
         if (user_test_results.prediction === 'diabetic' &&
@@ -89,7 +85,7 @@ const IndexDiabetes = ({step, setStep}) => {
                 'Content-Type': 'application/json',
             },
         }).then((res) => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.prediction === 'non_diabetic'){
                 setPrediction('NEGATIVO')
                 dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (res.data.probability * 100).toFixed(), score: user_test_results.score}})
