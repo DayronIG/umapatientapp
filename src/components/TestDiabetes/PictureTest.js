@@ -101,12 +101,8 @@ const IndexDiabetes = ({step, setStep}) => {
 		setTimeout(() => setLoading(false), 5000);
     };
 
-    const innerHtmlToRender =
-        <div className="picture-container">
-            <div className="title">
-                <h2>Encuadrate lo más derecho que puedas</h2>
-            </div>
-        </div>;
+    const innerHtmlToRender = <h2 style={{fontSize:'1.6rem', marginBottom:'5%'}}>Encuadrate lo más derecho que puedas</h2>
+
 
 
     return (
@@ -147,6 +143,7 @@ const IndexDiabetes = ({step, setStep}) => {
                 <img src={icon}></img>
                 <h1>Tu test dio <span>{prediction}</span></h1>
                 <h1>Con un <span>{user_test_results.probability}%</span> de probabilidad</h1>
+                <h2>Muchas gracias por confiar en UMA!</h2>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
