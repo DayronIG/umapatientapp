@@ -92,13 +92,11 @@ const IndexDiabetes = ({step, setStep}) => {
             console.log(res.data)
             if(res.data.prediction === 'non_diabetic'){
                 setPrediction('NEGATIVO')
-                // setuser.user_test_results.probability((res.data.probability * 100).toFixed())
                 dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (res.data.probability * 100).toFixed(), score: user_test_results.score}})
 
             }
             else{
                 setPrediction('POSITIVO')
-                // setuser.user_test_results.probability((1 - res.data.probability * 100).toFixed())
                 dispatch({ type: "DIABETIC_TEST_SCORE_FILL", payload: { probability: (1 - res.data.probability * 100).toFixed(), score: user_test_results.score} })
 
             }})
