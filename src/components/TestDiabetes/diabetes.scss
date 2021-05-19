@@ -116,6 +116,7 @@
         .diabetes__TermsAndConditionsButtons{
             display: flex;
             justify-content: center;
+
             button{
                 background: #0A6DD7;
                 margin: 5vw;
@@ -128,6 +129,10 @@
                 height: 45px;
                 border: none;
             }
+                            .button1{
+                    background: $uma-error;
+                    color: white;
+                }
         }
     }
 
@@ -174,7 +179,7 @@ select{
     transition: transform 0.3s linear;
     font-size: 18px;
     color: white;
-    font-weight: 800;
+    font-weight: 600;
     &:focus {
         outline: none;
         border-bottom: 2px solid #0A6dd7;
@@ -183,9 +188,10 @@ select{
 
 
     option{
-        font-size: 15px;
-        width: 100px;
+        font-size: 10px;
+        width: 20%;
         font-weight: 600;
+
     }
 }
 img{
@@ -282,9 +288,9 @@ img{
                 margin-bottom: 0.5vh;
             }
             select{
-                width: 40vw;
+                width: 35vw;
                 text-align-last: center;
-                font-size: 15px;
+                font-size: 12px;
             }
 }
         .diabetesForm__buttons{
@@ -309,12 +315,20 @@ img{
                 
             }
 
+            .button2{
+                background: $uma-input;
+                color: $uma-primary;
+                border: none;
+                grid-column: 1/2;
+
+            }
             .button1{
-                background: $uma-secondary;
+                background: $uma-primary;
                 color: white;
                 border: none;
                 grid-column: 1/2;
             }
+
         }
     }
 }

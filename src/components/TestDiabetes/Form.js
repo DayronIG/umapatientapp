@@ -28,7 +28,7 @@ const Form = ({step, setStep}) => {
 
 
     const createDatasetDocument = useCallback(() => {
-        if(values.age === ''){
+        if (isNaN(values.age)){
             swal('Aviso', 'Debe seleccionar su edad', 'warning');
         } else {
             dispatch({ type: "DIABETIC_TEST_FILL", payload: values })
@@ -63,7 +63,7 @@ const Form = ({step, setStep}) => {
                 <div className='inputContainer'>
                     <label>Edad</label>
                     <select type="text" value={values.age} name='age' onChange={handleChange} >
-                        <option selected ='selected'></option>
+                        <option selected ='selected'>Seleccione Edad</option>
                         {ageRange.map(years => (<option>{years}</option>))}
                     </select>
                 </div>
@@ -105,7 +105,7 @@ const Form = ({step, setStep}) => {
                     </div>
                     {/* <button onClick={()=>createDatasetDocument()}> */}
                     <div className='diabetesForm__buttons'>
-                        <button onClick={() => {setStep(0)}}>
+                        <button className='button2' onClick={() => {setStep(0)}}>
                             Atrás
                         </button>
                         <button className='button1' onClick={() => {createDatasetDocument()}}>

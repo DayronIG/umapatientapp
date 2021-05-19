@@ -10,8 +10,7 @@ import moment from 'moment'
 import axios from "axios"
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 import { useHistory } from 'react-router'
-import userReducers from '../../store/reducers/userReducers';
-import Tilt from 'react-tilt'
+
 
 const IndexDiabetes = ({step, setStep}) => {
     const [camera, setCamera] = useState('true')
