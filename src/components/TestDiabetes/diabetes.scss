@@ -70,7 +70,7 @@
         margin-top: 2%;
         
         button {
-                background: #0A6DD7;
+                background: $uma-secondary;
                 margin: 5vw;
                 font-weight: bolder;
                 font-size: 1rem;
@@ -88,7 +88,7 @@
         }
     }
     .button1{
-        background: $uma-secondary;
+        background: $uma-primary;
     }
     }
 
@@ -316,8 +316,8 @@ img{
             }
 
             .button2{
-                background: $uma-input;
-                color: $uma-primary;
+                background: $uma-secondary;
+                color: $white-color;
                 border: none;
                 grid-column: 1/2;
 
