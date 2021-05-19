@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Camera from '../../components/GeneralComponents/Camera'
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../GeneralComponents/Loading';
-import icon from '../../assets/icon.png';
+import labsicon from '../../assets/labsicon.png'
 import '../../styles/inputs/picture/PictureComponent.scss';
 import { uploadFileToFirebase } from '../Utils/postBlobFirebase';
 import './diabetes.scss'
@@ -11,7 +11,7 @@ import axios from "axios"
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 import { useHistory } from 'react-router'
 import userReducers from '../../store/reducers/userReducers';
-
+import Tilt from 'react-tilt'
 
 const IndexDiabetes = ({step, setStep}) => {
     const [camera, setCamera] = useState('true')
@@ -128,7 +128,7 @@ const IndexDiabetes = ({step, setStep}) => {
             user_test_results.probability < 0 ?
             <>
             <div className="testDiabetes__main">
-                <img src={icon}></img>
+                <img src={labsicon}></img>
                 <h1>No pudimos procesar correctamente tu imagen!</h1>
                 <h1>Probamos de nuevo?</h1>
                 <div className="testDiabetes__button">
@@ -140,12 +140,29 @@ const IndexDiabetes = ({step, setStep}) => {
             :
             <>
             <div className="testDiabetes__main">
-                <img src={icon}></img>
-                <h1>Tu test dio <span>{prediction}</span></h1>
-                <h1>Con un <span>{user_test_results.probability}%</span> de probabilidad</h1>
-                <h2>Muchas gracias por confiar en UMA!</h2>
+                <img src={labsicon}></img>
+                <div className='testDiabetes__resultCard'>
+                    <div className="resultCard__firstCol">
+                        <h1>Resultado</h1>
+                        <div className="circle">
+                            <span>{prediction}</span>
+                        </div>
+                    </div>
+                    <div className="resultCard__secondCol">
+                        <h1>Probabilidad</h1>
+                                        <Tilt className="Tilt" options={{ max: 25 }} style={{ height: 250, width: 250 }} >
+                                            <div className="Tilt-inner">
+                                                <div className="circle">
+                                                    <span>{user_test_results.probability}%</span>
+                                                </div>
+                                            </div>
+                                        </Tilt>
+
+                    </div>
+                </div>
+                <h2 style={{fontSize:'2rem', textAlign:'center', marginTop:'10%', fontWeight:'400', color:'black'}}>Muchas gracias por tu tiempo!</h2>
                 <div className="testDiabetes__button">
-                    <button onClick={activateCamera}>Repetir Test</button>
+                    <button className='button1' onClick={activateCamera}>Tomar Otra Foto</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
                 </div>
             </div>
