@@ -134,11 +134,11 @@
     text-align: center;
 }
 
-input,
-select{
-    background: #FFFF;
+input{
+    width: 120px;
+    text-align-last: center;
+    background: $uma-primary;
     margin-top: 10px;
-    width: 90%;
     padding: 3px 3px 3px 3px;
     min-height: 31px;
     border: none;
@@ -146,6 +146,26 @@ select{
     border-bottom: 2px solid #0a6dd7;
     transition: transform 0.3s linear;
     font-size: 18px;
+    font-weight: 800;
+    color: white;
+    &:focus {
+        outline: none;
+        border-bottom: 2px solid #0A6dd7;
+    }
+}
+select{
+    background: $uma-primary;
+    margin-top: 10px;
+    width: 80px;
+    padding: 3px 3px 3px 3px;
+    min-height: 31px;
+    border: none;
+    border-radius: 25px;
+    border-bottom: 2px solid #0a6dd7;
+    transition: transform 0.3s linear;
+    font-size: 18px;
+    color: white;
+    font-weight: 800;
     &:focus {
         outline: none;
         border-bottom: 2px solid #0A6dd7;
@@ -153,94 +173,14 @@ select{
 
     option{
         font-size: 10px;
+        width: 10px;
+        font-weight: 600;
     }
 }
 img{
     max-width: 50vw;
 }
-.home{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-.collector{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-}
-.docInvitation{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    .inputContainer{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        height: 10vh;
-    }
-    .wellInvited{
-        color: green;
-    }
-    .badInvited{
-        color:red;
-    }
-}
-.oximeter{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 80vh;
-    .question_spo2_bpm{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        height: 18vh;
-        .inputContainer{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 4vh; 
-            label{
-                margin-bottom: 1vh;
-            }
-        }
-    }
-}
-.terms{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    p{
-        margin: 0 4vh;
-        line-height: 3vh;
-        text-align: center;
-    }
-    .terms_buttons{
-        margin-top: 2vh;
-    }
-    .inputContainer{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 2vh; 
-        label{
-            margin-bottom: 1vh;
-        }
-        select{
-            width: 40vw;
-        }
-    }
-}
+
 .diabetes{
     display: flex;
     align-items: center;
@@ -262,22 +202,30 @@ img{
                 margin-bottom: 0.5vh;
             }
             select{
-                width: 40vw;
+                width: 30vw;
+                text-align-last: center;
+                font-size: 15px;
             }
         }
         .diabetesForm__buttons{
             button{
-                background: #0A6DD7;
+                background: $uma-primary;
                 margin: 5vw;
                 font-weight: bolder;
                 font-size: 1rem;
-                color: #FFFFFF;
-                border-radius: 8px;
+                color:white;
+                border: 2px solid $uma-primary;
+                border-radius: 10%;
                 padding: 5px;
                 width: 120px;
                 height: 45px;
-                border: none;
                 margin-bottom: 5%;
+            }
+
+            .button1{
+                background: $uma-secondary;
+                color: white;
+                border: none;
             }
         }
     }

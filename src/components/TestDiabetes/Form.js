@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Form = ({step, setStep}) => {
     const dispatch = useDispatch();
-    const [send, setSend] = useState(false)
     const { dni } = useSelector(state => state.user)   
     const [values, setValues] = useState({
         sex: 'Masculino',
@@ -28,8 +27,8 @@ const Form = ({step, setStep}) => {
 
 
     const createDatasetDocument = useCallback(() => {
-        if(!values.age){
-            swal('Aviso', 'Debe completar los campos', 'warning');
+        if(values.age === ''){
+            swal('Aviso', 'Debe seleccionar su edad', 'warning');
         } else {
             dispatch({ type: "DIABETIC_TEST_FILL", payload: values })
             let data = {
@@ -44,21 +43,25 @@ const Form = ({step, setStep}) => {
               .catch(function (error) {
                 console.log(error);
               });
-              setSend(true)
+              setStep(2)
 
         }
 
     }, [values])
 
+    const ageRange = [...Array.from(new Array(100),(x,i) => i + 18)]
 
     return (
         <div className='diabetes'>
 
                 <div className='question_diabetes'>
-                    <div className='inputContainer'>
-                        <label>Edad</label>
-                        <input type="text" value={values.age} name='age' onChange={handleChange}/>
-                    </div>
+                <div className='inputContainer'>
+                    <label>Edad</label>
+                    <select type="text" value={values.age} name='age' onChange={handleChange} >
+                        <option selected ='selected'></option>
+                        {ageRange.map(years => (<option>{years}</option>))}
+                    </select>
+                </div>
                     <div className='inputContainer'>
                         <label>Sexo:</label>
                         <select type="text" value={values.sexo} name='sex' onChange={handleChange}>
@@ -69,30 +72,30 @@ const Form = ({step, setStep}) => {
                     <div className='inputContainer'>
                         <label>Eres fumador? </label>
                         <select type="text" value={values.fumador} name='smoker' onChange={handleChange}>
-                            <option value='si'>SI</option>
                             <option value='no'>NO</option>
-                            <option value='ocasional'>Oscasional</option>\
+                            <option value='si'>SI</option>
+                            <option value='ocasional'>Oscasional</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Eres diabético? </label>
                         <select type="text" value={values.diabetes} name='diabetic' onChange={handleChange}>
-                            <option value='si'>SI</option>
                             <option value='no'>NO</option>
+                            <option value='si'>SI</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Sufres hipertensión? </label>
                         <select type="text" value={values.hipertension} name='hypertensive' onChange={handleChange}>
-                            <option value='si'>SI</option>
                             <option value='no'>NO</option>
+                            <option value='si'>SI</option>
                         </select>
                     </div>
                     <div className='inputContainer'>
                         <label>Antecedentes:</label>
                         <select type="text" value={values.medical_records} name='medical_records' onChange={handleChange}>
-                            <option value='si'>SI</option>
                             <option value='no'>NO</option>
+                            <option value='si'>SI</option>
                         </select>
                     </div>
                     {/* <button onClick={()=>createDatasetDocument()}> */}
@@ -100,7 +103,7 @@ const Form = ({step, setStep}) => {
                         <button onClick={() => {setStep(0)}}>
                             Atrás
                         </button>
-                    <button onClick={() => {createDatasetDocument(); setStep(2)}}>
+                    <button className='button1' onClick={() => {createDatasetDocument()}}>
                             Enviar
                         </button>
                     </div>
