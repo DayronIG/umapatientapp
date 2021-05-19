@@ -149,6 +149,9 @@ const IndexDiabetes = ({step, setStep}) => {
                     </div>
                     <div className="resultCard__secondCol">
                         <h1>Probabilidad</h1>
+                        <div className="circle">
+                            <span>{user_test_results.probability}%</span>
+                        </div>
                     </div>
                 </div>
                 <h2 style={{fontSize:'2rem', textAlign:'center', marginTop:'10%', fontWeight:'400', color:'black'}}>Muchas gracias por tu tiempo!</h2>
