@@ -146,6 +146,8 @@ const IndexDiabetes = ({step, setStep}) => {
                         <div className="circle">
                             <span>{prediction}</span>
                         </div>
+                        <span>score: {user_test_results.score}</span>
+
                     </div>
                     <div className="resultCard__secondCol">
                         <h1>Probabilidad</h1>
@@ -154,7 +156,11 @@ const IndexDiabetes = ({step, setStep}) => {
                         </div>
                     </div>
                 </div>
-                <h2 style={{fontSize:'2rem', textAlign:'center', marginTop:'10%', fontWeight:'400', color:'black'}}>Muchas gracias por tu tiempo!</h2>
+                <div className="resultCard__comments">
+                    <p>Recuerda que la medición no es exacta y puede contener errores.</p>
+                    <h2>MUCHAS GRACIAS<br></br> por tu tiempo!</h2>
+                </div>
+
                 <div className="testDiabetes__button">
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
                     <button className='button1' onClick={activateCamera}>Tomar Otra Foto</button>
