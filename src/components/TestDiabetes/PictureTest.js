@@ -124,12 +124,14 @@ const IndexDiabetes = ({step, setStep}) => {
                          />
             </>
             :
-            user_test_results.probability < 0 ?
+            user_test_results.probability < 0 || user_test_results.probability === '' ?
             <>
-            <div className="testDiabetes__main">
+            <div className="testDiabetes__main" >
                 <img src={labsicon}></img>
-                <h1>No pudimos procesar correctamente tu imagen!</h1>
-                <h1>Probamos de nuevo?</h1>
+                <div style={{marginTop:'15%'}}>
+                                    <h1>No pudimos procesar correctamente tu imagen!</h1>
+                                    <h1>Probamos de nuevo?</h1>
+                </div>
                 <div className="testDiabetes__button">
                     <button onClick={activateCamera}>Repetir Test</button>
                     <button onClick={() => history.go(0)}>Volver Al Inicio</button>
@@ -139,8 +141,27 @@ const IndexDiabetes = ({step, setStep}) => {
             :
             <>
             <div className="testDiabetes__main">
-                <img src={labsicon}></img>
-                <div className='testDiabetes__resultCard'>
+                <div className="testDiabetes__summary">
+                    <img src={labsicon}></img>
+                    {user_test_results.score <= 5 ? 
+                    <h1>Su riesgo cardiovascular es BAJO</h1>
+                    :
+                    <h1>Su riesgo cardiovascular es ALTO</h1>}
+                        <div className="testDiabetes__result">
+                            <h2>Su test de diabetes dió {prediction} con una probabilidad de {user_test_results.probability}%</h2>
+                            <div className='testDiabetes__range'>
+                                0%<input type="range" min="0" max="100" step="5" value={user_test_results.probability} list='tickmarks' />100%
+                            </div>
+                            <p>Recuerda que la medición no es exacta y puede contener errores.</p>
+                        </div>
+
+
+
+                </div>
+                <div>
+                    <h2 style={{ marginTop: '10%' }}>Le sugerimos igualmente completar los chequeos con un médico clínico  y seguir recomendaciones saludables:</h2>
+                </div>
+                {/* <div className='testDiabetes__resultCard'>
                     <div className="resultCard__firstCol">
                         <h1>Resultado</h1>
                         <div className="circle">
@@ -155,10 +176,18 @@ const IndexDiabetes = ({step, setStep}) => {
                             <span>{user_test_results.probability}%</span>
                         </div>
                     </div>
-                </div>
+                </div> */}
+
+
+
                 <div className="resultCard__comments">
-                    <p>Recuerda que la medición no es exacta y puede contener errores.</p>
-                    <h2>MUCHAS GRACIAS<br></br> por tu tiempo!</h2>
+                    <ul>
+                        <li>No fumar</li>
+                        <li>Reducir el consumo de carnes, grasas, embutidos e incoporar una dieta basada en legumbres, granos y vegetales</li>
+                        <li>No agregar sal o azúcar a sus comidas y evitar los productos ultraprocesados</li>
+                        <li>Mantener actividad física regular al menos 3 veces x semana.</li>
+                    </ul>
+
                 </div>
 
                 <div className="testDiabetes__button">
