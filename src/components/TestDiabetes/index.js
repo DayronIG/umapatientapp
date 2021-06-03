@@ -4,10 +4,11 @@ import './diabetes.scss'
 import Form from './Form'
 import TermsAndConditions from './TermsAndConditions'
 import PictureTest from './PictureTest'
+import Test from './Test'
 
 const Index = () => {
 
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(2)
     
     return (
     <>
@@ -20,7 +21,7 @@ const Index = () => {
             <TermsAndConditions step={step} setStep={setStep}/>
             :
             step === 1 ?
-                <Form step={step} setStep={setStep}/>
+            <Form step={step} setStep={setStep}/>
             :
             step === 2 ?
             <PictureTest step={step} setStep={setStep}/>

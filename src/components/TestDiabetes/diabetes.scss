@@ -34,7 +34,6 @@
             display: flex;
             flex-direction: column;
             background-color: $uma-primary;
-            margin-bottom: 5%;
 
             h1{
                 text-align: center;
@@ -198,6 +197,30 @@
                 font-size: 1rem;
                 font-weight: 700;
             }
+        }
+    }
+
+    .TestCamera__buttons{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        margin-top: 5%;
+
+        h1{
+            font-size: 1.3rem;
+        }
+        button{
+            background: $uma-primary;
+            color: white;
+            border-radius: 25px;
+            width: 200px;
+            height: 40px;
+            font-weight: 800;
+            border:none;
+            margin: 2%;
         }
     }
 

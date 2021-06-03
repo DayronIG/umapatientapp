@@ -10,7 +10,7 @@ import moment from 'moment'
 import axios from "axios"
 import { CustomUmaLoader } from '../global/Spinner/Loaders';
 import { useHistory } from 'react-router'
-
+import Test from './Test'
 
 const IndexDiabetes = ({step, setStep}) => {
     const [camera, setCamera] = useState('true')
@@ -113,7 +113,7 @@ const IndexDiabetes = ({step, setStep}) => {
         :
             camera === 'true'  ? 
             <>
-            <Camera 
+            {/* <Camera 
                         facingMode="user"
                         onTakePhoto={handleSubmit}
                         errorHandler={(e) => console.log(e)}
@@ -122,6 +122,8 @@ const IndexDiabetes = ({step, setStep}) => {
                         innerHtmlToRender={innerHtmlToRender}
                         style={{height:'70%'}}
                          />
+            </> */}
+            <Test handleSubmit={handleSubmit}/>
             </>
             :
             user_test_results.probability < 0 || user_test_results.probability === '' ?
