@@ -5,16 +5,27 @@ import Form from './Form'
 import TermsAndConditions from './TermsAndConditions'
 import PictureTest from './PictureTest'
 import Test from './Test'
+import {FaArrowLeft} from 'react-icons/fa' 
 
 const Index = () => {
 
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(0)
+
+    const previousStep = (step) => {
+        if(step !== 0){
+            setStep(step - 1)
+        }
+        else{
+            console.log('asd')
+        }
+    }
     
     return (
     <>
         <div className='testDiabetes__main'>
             <div className='testDiabetes__header'>
-                <h1>Test Diabetes</h1>
+                    <FaArrowLeft style={{color:'white'}} onClick={() => previousStep(step)}/>
+                {/* <h1>Test Diabetes</h1> */}
             </div>
 
             {step === 0 ?
