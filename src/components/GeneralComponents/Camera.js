@@ -10,7 +10,7 @@ export default function Camera({
 	innerHtmlToRender = "",
 	modal = false}) {
 
-    const camView = useRef(), camOutput = useRef(), camSensor = useRef()
+	const camView = useRef(), camOutput = useRef(), camSensor = useRef()
     // Facingmode: 'user' or 'environment'
     useEffect(() => {
         let track = {};
